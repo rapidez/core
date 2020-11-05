@@ -1,0 +1,42 @@
+{
+    "name": "rapidez/core",
+    "description": "Rapidez Core",
+    "keywords": [
+        "rapidez"
+    ],
+    "homepage": "https://rapidez.io",
+    "authors": [
+        {
+            "name": "Roy Duineveld",
+            "email": "royduineveld@gmail.com",
+            "homepage": "https://royduineveld.nl",
+            "role": "Developer"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": "^7.4",
+        "cviebrock/laravel-elasticsearch": "^8.0",
+        "illuminate/database": "^8.0",
+        "illuminate/events": "^8.0",
+        "illuminate/queue": "^8.0",
+        "illuminate/support": "^8.0",
+        "tormjens/eventy": "^0.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rapidez\\Core\\": "src"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Rapidez\\Core\\RapidezServiceProvider"
+            ]
+        }
+    }
+}
