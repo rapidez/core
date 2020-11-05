@@ -49,7 +49,7 @@ class OnlyProductAttributesScope implements Scope
                 ->join('catalog_eav_attribute', 'eav_attribute.attribute_id', '=', 'catalog_eav_attribute.attribute_id')
                 ->leftJoin('eav_attribute_label', function ($join) {
                     $join->on('eav_attribute.attribute_id', '=', 'eav_attribute_label.attribute_id')
-                         ->where('store_id', config('shop.store'));
+                         ->where('store_id', config('rapidez.store'));
                 })
                 ->where('entity_type_id', 4); // catalog_product
     }

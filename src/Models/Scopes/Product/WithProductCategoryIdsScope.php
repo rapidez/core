@@ -19,7 +19,7 @@ class WithProductCategoryIdsScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        $query = DB::table('catalog_category_product_index_store' . config('shop.store'))
+        $query = DB::table('catalog_category_product_index_store' . config('rapidez.store'))
             ->selectRaw('GROUP_CONCAT(category_id)')
             ->whereColumn('product_id', $model->getTable() . '.entity_id');
 

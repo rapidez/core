@@ -43,7 +43,7 @@ class WithProductSuperAttributesScope implements Scope
             ->leftJoin('catalog_product_super_attribute_label', function ($join) {
                 $join
                     ->on('catalog_product_super_attribute_label.product_super_attribute_id', '=', 'catalog_product_super_attribute.product_super_attribute_id')
-                    ->where('catalog_product_super_attribute_label.store_id', config('shop.store'));
+                    ->where('catalog_product_super_attribute_label.store_id', config('rapidez.store'));
             })
             ->whereColumn('product_id', $model->getTable() . '.entity_id')
             ->orderBy('position');

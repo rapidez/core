@@ -46,7 +46,7 @@ class WithProductAttributesScope implements Scope
             } else {
                 if ($attribute->input == 'select') {
                     $builder
-                        ->selectRaw('COALESCE('.$attribute->code.'_option_value_'.config('shop.store').'.value, '.$attribute->code.'_option_value_0.value) AS '.$attribute->code)
+                        ->selectRaw('COALESCE('.$attribute->code.'_option_value_'.config('rapidez.store').'.value, '.$attribute->code.'_option_value_0.value) AS '.$attribute->code)
                         ->leftJoin(
                             'catalog_product_entity_'.$attribute->type.' AS '.$attribute->code,
                             function ($join) use ($builder, $attribute) {
@@ -55,10 +55,10 @@ class WithProductAttributesScope implements Scope
                                      ->where($attribute->code.'.store_id', 0);
                             }
                         )->leftJoin(
-                            'eav_attribute_option_value AS '.$attribute->code.'_option_value_'.config('shop.store'),
+                            'eav_attribute_option_value AS '.$attribute->code.'_option_value_'.config('rapidez.store'),
                             function ($join) use ($attribute) {
-                                $join->on($attribute->code.'_option_value_'.config('shop.store').'.option_id', '=', $attribute->code.'.value')
-                                     ->where($attribute->code.'_option_value_'.config('shop.store').'.store_id', config('shop.store'));
+                                $join->on($attribute->code.'_option_value_'.config('rapidez.store').'.option_id', '=', $attribute->code.'.value')
+                                     ->where($attribute->code.'_option_value_'.config('rapidez.store').'.store_id', config('rapidez.store'));
                             }
                         )->leftJoin(
                             'eav_attribute_option_value AS '.$attribute->code.'_option_value_0',
@@ -69,13 +69,13 @@ class WithProductAttributesScope implements Scope
                         );
                 } else {
                     $builder
-                        ->selectRaw('COALESCE('.$attribute->code.'_'.config('shop.store').'.value, '.$attribute->code.'_0.value) AS '.$attribute->code)
+                        ->selectRaw('COALESCE('.$attribute->code.'_'.config('rapidez.store').'.value, '.$attribute->code.'_0.value) AS '.$attribute->code)
                         ->leftJoin(
-                            'catalog_product_entity_'.$attribute->type.' AS '.$attribute->code.'_'.config('shop.store'),
+                            'catalog_product_entity_'.$attribute->type.' AS '.$attribute->code.'_'.config('rapidez.store'),
                             function ($join) use ($builder, $attribute) {
-                                $join->on($attribute->code.'_'.config('shop.store').'.entity_id', '=', $builder->getQuery()->from.'.entity_id')
-                                     ->where($attribute->code.'_'.config('shop.store').'.attribute_id', $attribute->id)
-                                     ->where($attribute->code.'_'.config('shop.store').'.store_id', config('shop.store'));
+                                $join->on($attribute->code.'_'.config('rapidez.store').'.entity_id', '=', $builder->getQuery()->from.'.entity_id')
+                                     ->where($attribute->code.'_'.config('rapidez.store').'.attribute_id', $attribute->id)
+                                     ->where($attribute->code.'_'.config('rapidez.store').'.store_id', config('rapidez.store'));
                             }
                         )->leftJoin(
                             'catalog_product_entity_'.$attribute->type.' AS '.$attribute->code.'_0',

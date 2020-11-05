@@ -79,7 +79,7 @@ class Quote extends Model
                 ->leftJoin('quote_item_option', function ($join) {
                     $join->on('quote_item.item_id', '=', 'quote_item_option.item_id')->where('code', 'attributes');
                 })
-                ->leftJoin('catalog_product_flat_'.config('shop.store').' AS product', 'product.entity_id', '=', 'quote_item.product_id')
+                ->leftJoin('catalog_product_flat_'.config('rapidez.store').' AS product', 'product.entity_id', '=', 'quote_item.product_id')
                 ->groupBy('quote.entity_id');
         });
     }

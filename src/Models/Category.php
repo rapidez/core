@@ -20,7 +20,7 @@ class Category extends Model
 
     public function getTable()
     {
-        return 'catalog_category_flat_store_' . config('shop.store');
+        return 'catalog_category_flat_store_' . config('rapidez.store');
     }
 
     public function getUrlAttribute(): string

@@ -31,7 +31,7 @@ class Rewrite extends Model
         parent::boot();
 
         static::addGlobalScope('store', function (Builder $builder) {
-            $builder->where('store_id', config('shop.store'));
+            $builder->where('store_id', config('rapidez.store'));
         });
     }
 }

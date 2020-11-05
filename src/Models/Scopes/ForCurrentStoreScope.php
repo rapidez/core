@@ -37,7 +37,7 @@ class ForCurrentStoreScope implements Scope
             ->leftJoin($joinTable, function ($join) use ($currentTable, $type, $joinTable) {
                 $join->on($currentTable.'.'.$type.'_id', '=', $joinTable.'.'.$type.'_id');
             })
-            ->whereIn('store_id', [0, config('shop.store')])
+            ->whereIn('store_id', [0, config('rapidez.store')])
             ->orderByDesc('store_id')
             ->limit(1);
     }

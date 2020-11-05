@@ -33,7 +33,7 @@ class Config extends Model
 
         static::addGlobalScope('scope-fallback', function (Builder $builder) {
             $builder
-                ->whereIn('scope_id', [0, config('shop.store')])
+                ->whereIn('scope_id', [0, config('rapidez.store')])
                 ->orderByDesc('scope_id')
                 ->limit(1);
         });
@@ -41,7 +41,7 @@ class Config extends Model
 
     public static function getCachedByPath(string $path, $default = null): ?string
     {
-        $cacheKey = 'config.'.config('shop.store').'.'.str_replace('/', '.', $path);
+        $cacheKey = 'config.'.config('rapidez.store').'.'.str_replace('/', '.', $path);
 
         return Cache::rememberForever($cacheKey, function () use ($path, $default) {
             return self::where('path', $path)->first('value')->value ?? $default;

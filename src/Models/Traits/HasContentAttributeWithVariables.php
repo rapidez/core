@@ -19,7 +19,7 @@ trait HasContentAttributeWithVariables
 
     protected function processMediaAndStoreUrl(string $content): string
     {
-        return preg_replace('/{{(media|store) url=("|&quot;|\')(.*?)("|&quot;|\')}}/m', config('shop.media_url') . '/${3}', $content);
+        return preg_replace('/{{(media|store) url=("|&quot;|\')(.*?)("|&quot;|\')}}/m', config('rapidez.media_url') . '/${3}', $content);
     }
 
     protected function processStoreDirectUrl(string $content): string

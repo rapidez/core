@@ -34,7 +34,7 @@ class IndexProductsCommand extends Command
     {
         foreach (Store::all() as $store) {
             $this->line('Store: '.$store->name);
-            config()->set('shop.store', $store->store_id);
+            config()->set('rapidez.store', $store->store_id);
 
             $this->createIndexIfNeeded('products_' . $store->store_id, $this->option('fresh'));
 

@@ -50,7 +50,7 @@ class OptionSwatch extends Model
                 ->leftJoin('eav_attribute_option_value as eav_attribute_option_value_store', function ($query) use ($swatchAttributes) {
                     $query->on('eav_attribute_option.option_id', '=', 'eav_attribute_option_value_store.option_id')
                         ->whereIn('eav_attribute_option.attribute_id', $swatchAttributes)
-                        ->where('eav_attribute_option_value_store.store_id', '=', config('shop.store'));
+                        ->where('eav_attribute_option_value_store.store_id', '=', config('rapidez.store'));
                 })
                 ->join('eav_attribute_option_value', function ($query) use ($swatchAttributes) {
                     $query->on('eav_attribute_option.option_id', '=', 'eav_attribute_option_value.option_id')

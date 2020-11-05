@@ -45,7 +45,7 @@ class Product extends Model
 
     public function getTable(): string
     {
-        return 'catalog_product_flat_' . config('shop.store');
+        return 'catalog_product_flat_' . config('rapidez.store');
     }
 
     public function getCasts(): array

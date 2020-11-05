@@ -23,17 +23,17 @@ class DetermineAndSetShop
                 return $store['code'] == $storeCode;
             });
 
-            config()->set('shop.store', $store['store_id']);
-            config()->set('shop.store_code', $store['code']);
+            config()->set('rapidez.store', $store['store_id']);
+            config()->set('rapidez.store_code', $store['code']);
         }
 
         // Find the store code by the default store id.
-        if (!config('shop.store_code')) {
+        if (!config('rapidez.store_code')) {
             $store = Store::getCachedWhere(function ($store) {
-                return $store['store_id'] == config('shop.store');
+                return $store['store_id'] == config('rapidez.store');
             });
 
-            config()->set('shop.store_code', $store['code']);
+            config()->set('rapidez.store_code', $store['code']);
         }
 
         return $next($request);
