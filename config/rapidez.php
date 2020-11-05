@@ -19,4 +19,7 @@ return [
         'media_url',
         'magento_url',
     ],
+
+    // Should the routes be registered?
+    'routes' => true,
 ];
