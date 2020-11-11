@@ -11,7 +11,7 @@
             <div class="flex flex-wrap items-center">
                 @foreach($product->images as $image)
                     <img
-                        src="/image/467/catalog/product{{ $image->value }}" alt="{{ $product->name }}"
+                        src="/storage/resizes/467/catalog/product{{ $image->value }}" alt="{{ $product->name }}"
                         class="{{ $product->images->count() == 1 ? 'w-full sm:w-1/2' : 'w-1/2' }}"
                     />
                 @endforeach

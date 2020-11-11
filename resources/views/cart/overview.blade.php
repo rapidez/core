@@ -12,7 +12,7 @@
                     <a :href="item.url" class="block">
                         <img
                             :alt="item.name"
-                            :src="'/image/100x100/catalog/product' + item.image"
+                            :src="'/storage/resizes/100x100/catalog/product' + item.image"
                             width="100"
                         />
                     </a>

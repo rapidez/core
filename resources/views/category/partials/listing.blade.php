@@ -13,7 +13,7 @@
     <div class="flex w-1/2 sm:w-1/3 lg:w-1/4 px-1 my-1" slot="renderItem" slot-scope="{ item }">
         <div class="flex flex-col justify-between w-full bg-white rounded hover:border hover:shadow group relative" :key="item.id">
             <a :href="item.url">
-                <img :src="'/image/200/catalog/product' + item.thumbnail" class="object-contain h-48 w-full mb-3" />
+                <img :src="'/storage/resizes/200/catalog/product' + item.thumbnail" class="object-contain h-48 w-full mb-3" />
                 <div class="px-2">
                     <div class="hyphens">@{{ item.name }}</div>
                     <div class="font-semibold">@{{ item.formatted_price }}</div>
