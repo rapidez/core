@@ -5,6 +5,7 @@ namespace Rapidez\Core;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Rapidez\Core\Commands\IndexProductsCommand;
 use Rapidez\Core\Models\Attribute;
 use Rapidez\Core\Models\Config;
 
@@ -22,6 +23,10 @@ class RapidezServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__.'/../resources/views' => resource_path('views/vendor/rapidez'),
             ], 'views');
+
+            $this->commands([
+                IndexProductsCommand::class,
+            ]);
         }
 
         if (config('rapidez.routes')) {
