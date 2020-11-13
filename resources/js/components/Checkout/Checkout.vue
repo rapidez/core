@@ -67,7 +67,7 @@
                     }
                 })
 
-                if (validated) {
+                if (validated && !this.$root.checkout.doNotGoToTheNextStep) {
                     this.checkout.step = goToStep
                 }
             },
@@ -86,6 +86,7 @@
                         }
                     })
                     this.checkout.payment_methods = response.data.payment_methods
+                    this.$root.$emit('CheckoutCredentialsSaved')
                     return true
                 } catch (error) {
                     alert(error.response.data.message)
@@ -129,6 +130,7 @@
                     localStorage.removeItem('mask')
                     localStorage.removeItem('cart')
                     this.$root.cart = null
+                    this.$root.$emit('CheckoutPaymentSaved')
                     return true
                 } catch (error) {
                     alert(error.response.data.message)
