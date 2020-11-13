@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="container mx-auto">
-        <checkout v-cloak v-slot="{ checkout, cart, hasItems, loading, inputChange, save }">
+        <checkout v-cloak v-slot="{ checkout, cart, hasItems, inputChange, save }">
             <div>
                 <div v-if="checkout.step == 1 && hasItems">
                     @include('rapidez::checkout.steps.login')
