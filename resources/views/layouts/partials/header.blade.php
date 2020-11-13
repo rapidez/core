@@ -2,7 +2,9 @@
     <div class="w-1/6 sm:w-3/12">
         <div class="text-xl sm:text-3xl ml-3">
             <a href="/">
-                <span class="hidden sm:inline">Rapidez</span>
+                <span class="hidden sm:inline">
+                    <img src="https://raw.githubusercontent.com/rapidez/art/master/logos.svg" alt="" class="h-12">
+                </span>
                 <span class="inline sm:hidden">🚀</span>
             </a>
         </div>
