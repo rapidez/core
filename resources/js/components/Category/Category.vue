@@ -51,9 +51,9 @@
 
         computed: {
             filters: function () {
-                return _.filter(this.attributes, function (attribute) {
+                return _.sortBy(_.filter(this.attributes, function (attribute) {
                     return attribute.filter;
-                })
+                }), 'position')
             },
             sortings: function () {
                 return _.filter(this.attributes, function (attribute) {
