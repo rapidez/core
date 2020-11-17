@@ -94,6 +94,21 @@ class Product extends Model
         return '/' . $this->url_key . Config::getCachedByPath('catalog/seo/product_url_suffix', '.html');
     }
 
+    public function getImageAttribute($image): ?string
+    {
+        return $image !== 'no_selection' ? $image : null;
+    }
+
+    public function getSmallImageAttribute($image): ?string
+    {
+        return $this->getImageAttribute($image);
+    }
+
+    public function getThumbnailAttribute($image): ?string
+    {
+        return $this->getImageAttribute($image);
+    }
+
     public static function exist($productId): bool
     {
         return self::withoutGlobalScopes()->where('entity_id', $productId)->exists();

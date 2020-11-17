@@ -7,14 +7,16 @@
     <h1 class="font-bold text-4xl">{{ $product->name }}</h1>
 
     <div class="flex flex-col sm:flex-row mb-5">
-        <div class="sm:w-2/3">
+        <div class="sm:w-2/3 sm:mr-5">
             <div class="flex flex-wrap items-center">
-                @foreach($product->images as $image)
+                @forelse($product->images as $image)
                     <img
                         src="/storage/resizes/467/catalog/product{{ $image->value }}" alt="{{ $product->name }}"
-                        class="{{ $product->images->count() == 1 ? 'w-full sm:w-1/2' : 'w-1/2' }}"
+                        class="{{ $product->images->count() == 1 ? 'w-full sm:w-1/2 rounded' : 'w-1/2' }}"
                     />
-                @endforeach
+                @empty
+                    <x-rapidez::no-image class="rounded h-64"/>
+                @endforelse
             </div>
         </div>
         <div class="sm:w-1/3">
