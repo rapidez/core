@@ -44,7 +44,7 @@ class Config extends Model
         $cacheKey = 'config.'.config('rapidez.store').'.'.str_replace('/', '.', $path);
 
         return Cache::rememberForever($cacheKey, function () use ($path, $default) {
-            return self::where('path', $path)->first('value')->value ?? $default;
+            return ($config = self::where('path', $path)->first('value')) ? $config->value : $default;
         });
     }
 }
