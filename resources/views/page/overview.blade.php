@@ -6,6 +6,10 @@
 @section('content')
     <h1 class="font-bold text-4xl">{{ $page->content_heading }}</h1>
     <div class="mb-5">
-        {!! $page->content ?: '<i>This page doesn\'t have any content because most likely everything is rendered with layout updates or widgets.</i>' !!}
+        @if($page->content)
+            {!! $page->content !!}
+        @else
+            <i>@lang('This page doesn\'t have any content because most likely everything is rendered with layout updates or widgets. Add content or build this page yourself.')</i>
+        @endif
     </div>
 @endsection

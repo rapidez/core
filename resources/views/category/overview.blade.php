@@ -34,7 +34,7 @@
             </div>
         </category>
     @else
-        <i>This is a non anchor category without any content because most likely everything is rendered with layout updates or widgets.</i>
+        <i>@lang('This is a non anchor category without any content because most likely everything is rendered with layout updates or widgets. Change the category to anchor or build this page yourself.')</i>
     @endif
 
     {!! str_replace('<h2>', '<h2 class="font-bold text-2xl">', $category->description) !!}
