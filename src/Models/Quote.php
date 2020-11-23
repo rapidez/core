@@ -50,11 +50,11 @@ class Quote extends Model
                     'items_qty',
                 ])
                 ->selectRaw('
-                    ANY_VALUE(quote_address.subtotal_incl_tax) as subtotal,
-                    ANY_VALUE(quote_address.tax_amount) as tax,
-                    ANY_VALUE(quote_address.grand_total) as total,
-                    ANY_VALUE(quote_address.discount_amount) as discount_amount,
-                    ANY_VALUE(quote_address.discount_description) as discount_name
+                    MAX(quote_address.subtotal_incl_tax) as subtotal,
+                    MAX(quote_address.tax_amount) as tax,
+                    MAX(quote_address.grand_total) as total,
+                    MAX(quote_address.discount_amount) as discount_amount,
+                    MAX(quote_address.discount_description) as discount_name
                 ')
                 ->selectRaw('JSON_REMOVE(JSON_OBJECTAGG(IFNULL(quote_item.item_id, "null__"), JSON_OBJECT(
                     "item_id", quote_item.item_id,
@@ -71,7 +71,7 @@ class Quote extends Model
                 ->leftJoin('quote_id_mask', 'quote_id_mask.quote_id', '=', 'quote.entity_id')
                 ->leftJoin('oauth_token', 'oauth_token.customer_id', '=', 'quote.customer_id')
                 ->leftJoin('quote_address', function ($join) {
-                    $join->on('quote_address.quote_id', '=', 'quote.entity_id')->where('address_type', 'shipping');
+                    $join->on('quote_address.quote_id', '=', 'quote.entity_id');
                 })
                 ->leftJoin('quote_item', function ($join) {
                     $join->on('quote_item.quote_id', '=', 'quote.entity_id')->whereNull('parent_item_id');
