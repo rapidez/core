@@ -16,7 +16,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": "^7.4",
+        "php": "^7.4|^8.0",
         "cviebrock/laravel-elasticsearch": "^8.0",
         "illuminate/database": "^8.0",
         "illuminate/events": "^8.0",
