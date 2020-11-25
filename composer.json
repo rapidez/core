@@ -24,9 +24,18 @@
         "illuminate/support": "^8.0",
         "tormjens/eventy": "^0.6"
     },
+    "require-dev": {
+        "orchestra/testbench": "^6.4",
+        "phpunit/phpunit": "^9.4"
+    },
     "autoload": {
         "psr-4": {
             "Rapidez\\Core\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Rapidez\\Core\\Tests\\": "tests"
         }
     },
     "config": {
