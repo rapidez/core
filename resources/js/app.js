@@ -13,10 +13,10 @@ Vue.use(ReactiveSearch)
 import AsyncComputed from 'vue-async-computed'
 Vue.use(AsyncComputed)
 
-require('@/axios')
-require('@/filters')
-require('@/mixins')
-require('@/turbolinks')
+require('./axios')
+require('./filters')
+require('./mixins')
+require('./turbolinks')
 
 /**
  * The following block of code may be used to automatically register your
@@ -29,16 +29,16 @@ require('@/turbolinks')
 const files = require.context('./', true, /\.vue$/i)
 files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('cart', require('@/components/Cart/Cart.vue').default)
-Vue.component('category', require('@/components/Category/Category.vue').default)
-Vue.component('category-filter', require('@/components/Category/Filters/CategoryFilter.vue').default)
-Vue.component('swatch-filter', require('@/components/Category/Filters/SwatchFilter.vue').default)
-Vue.component('checkout', require('@/components/Checkout/Checkout.vue').default)
-Vue.component('login', require('@/components/Checkout/Login.vue').default)
-Vue.component('coupon', require('@/components/Coupon/Coupon.vue').default)
-Vue.component('toggler', require('@/components/Elements/Toggler.vue').default)
-Vue.component('add-to-cart', require('@/components/Product/AddToCart.vue').default)
-Vue.component('user', require('@/components/User/User.vue').default)
+Vue.component('cart', require('./components/Cart/Cart.vue').default)
+Vue.component('category', require('./components/Category/Category.vue').default)
+Vue.component('category-filter', require('./components/Category/Filters/CategoryFilter.vue').default)
+Vue.component('swatch-filter', require('./components/Category/Filters/SwatchFilter.vue').default)
+Vue.component('checkout', require('./components/Checkout/Checkout.vue').default)
+Vue.component('login', require('./components/Checkout/Login.vue').default)
+Vue.component('coupon', require('./components/Coupon/Coupon.vue').default)
+Vue.component('toggler', require('./components/Elements/Toggler.vue').default)
+Vue.component('add-to-cart', require('./components/Product/AddToCart.vue').default)
+Vue.component('user', require('./components/User/User.vue').default)
 
 try {
     Vue.component('product-compare-widget', require('Vendor/rapidez/compare/src/components/Widget.vue').default)
