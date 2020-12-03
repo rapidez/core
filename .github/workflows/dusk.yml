@@ -1,0 +1,66 @@
+name: dusk
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  dusk:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - magento-version: 2.3.6
+            magento-php-version: php73-fpm
+            rapidez-php-version: 7.4
+          - magento-version: 2.4.1
+            magento-php-version: php74-fpm
+            rapidez-php-version: 7.4
+
+    services:
+      magento:
+        image: michielgerritsen/magento-project-community-edition:${{matrix.magento-php-version}}-magento${{matrix.magento-version}}-sample-data
+        env:
+          URL: http://localhost:1234/
+          FLAT_TABLES: true
+        ports:
+          - 3307:3306
+          - 1234:80
+
+    name: P${{ matrix.rapidez-php-version }} - M${{matrix.magento-version}} on ${{matrix.magento-php-version}}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.rapidez-php-version }}
+          extensions: mbstring, dom, fileinfo, mysql
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction
+
+      - name: Prepare Laravel Dusk
+        run: composer run dusk:prepare
+
+      - name: Compile assets
+        run: composer run dusk:assets
+
+      - name: Execute tests
+        run: composer run dusk:test
+
+      - name: Upload Artifact
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifact
+          path: |
+            tests/Browser/screenshots
+            tests/Browser/console
+            vendor/orchestra/testbench-dusk/laravel/storage/logs/laravel.log

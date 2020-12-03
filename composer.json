@@ -25,7 +25,9 @@
         "tormjens/eventy": "^0.6"
     },
     "require-dev": {
+        "laravel/dusk": "^6.9",
         "orchestra/testbench": "^6.4",
+        "orchestra/testbench-dusk": "^6.4",
         "phpunit/phpunit": "^9.4"
     },
     "autoload": {
@@ -47,5 +49,17 @@
                 "Rapidez\\Core\\RapidezServiceProvider"
             ]
         }
+    },
+    "scripts": {
+        "dusk:prepare": [
+            "./vendor/bin/dusk-updater detect --auto-update",
+            "@php -r \"file_exists('phpunit.dusk.xml') || copy('phpunit.dusk.xml.dist', 'phpunit.dusk.xml'); \""
+        ],
+        "dusk:assets": [
+            "yarn install --frozen-lockfile",
+            "yarn run prod",
+            "cp -r public/. vendor/orchestra/testbench-dusk/laravel/public/"
+        ],
+        "dusk:test": ["./vendor/bin/phpunit -c phpunit.dusk.xml --colors=always"]
     }
 }

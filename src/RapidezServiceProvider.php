@@ -2,18 +2,24 @@
 
 namespace Rapidez\Core;
 
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Rapidez\Core\Commands\IndexProductsCommand;
+use Rapidez\Core\Commands\InstallCommand;
+use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
 use Rapidez\Core\Models\Attribute;
 use Rapidez\Core\Models\Config;
+use Rapidez\Core\ViewComponents\PlaceholderComponent;
 
 class RapidezServiceProvider extends ServiceProvider
 {
     public function boot()
     {
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'rapidez');
+        Blade::component('placeholder', PlaceholderComponent::class);
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
@@ -26,6 +32,7 @@ class RapidezServiceProvider extends ServiceProvider
 
             $this->commands([
                 IndexProductsCommand::class,
+                InstallCommand::class,
             ]);
         }
 
@@ -33,6 +40,8 @@ class RapidezServiceProvider extends ServiceProvider
             $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
             $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
         }
+
+        $this->app->make(Kernel::class)->pushMiddleware(DetermineAndSetShop::class);
 
         View::composer('rapidez::layouts.app', function ($view) {
             $exposedFrontendConfigValues = Arr::only(

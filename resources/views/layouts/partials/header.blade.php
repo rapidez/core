@@ -17,6 +17,7 @@
         @include('rapidez::layouts.partials.header.minicart')
     </div>
     <div class="w-full">
-        <x-menu/>
+        {{-- Because the lack of an @includeIf or @includeWhen equivalent for Blade components we're using a placeholder --}}
+        <x-dynamic-component :component="App::providerIsLoaded('Rapidez\Menu\MenuServiceProvider') ? 'menu' : 'placeholder'" />
     </div>
 </div>

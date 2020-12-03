@@ -1,6 +1,6 @@
 <?php
 
-namespace Rapidez\Core\Tests;
+namespace Rapidez\Core\Tests\Feature;
 
 use Rapidez\Core\Models\Product;
 use Rapidez\Core\Tests\TestCase;

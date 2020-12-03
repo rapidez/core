@@ -15,7 +15,7 @@ use TorMorten\Eventy\Facades\Eventy;
 
 class IndexProductsCommand extends Command
 {
-    protected $signature = 'index:products {--fresh : Recreate the indexes}';
+    protected $signature = 'rapidez:index {--fresh : Recreate the indexes}';
 
     protected $description = 'Index the products in Elasticsearch';
 

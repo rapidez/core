@@ -1,3 +1,7 @@
 .phpunit.result.cache
+/node_modules
+/public
+/vendor
 composer.lock
-vendor
+phpunit.dusk.xml
+phpunit.xml

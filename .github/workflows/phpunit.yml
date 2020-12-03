@@ -1,4 +1,4 @@
-name: run-tests
+name: phpunit
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  run-tests:
+  phpunit:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
