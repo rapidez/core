@@ -2,7 +2,10 @@
 
 namespace Rapidez\Core\Http\ViewComposers;
 
+use Illuminate\Support\Arr;
 use Illuminate\View\View;
+use Rapidez\Core\Models\Attribute;
+use Rapidez\Core\Models\Config;
 
 class ConfigComposer
 {
