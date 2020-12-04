@@ -21,7 +21,7 @@ class OnlyProductAttributesScope implements Scope
         $builder
                 ->selectRaw('
                     eav_attribute.attribute_id AS id,
-                    IFNULL(value, attribute_code) AS name,
+                    COALESCE(value, frontend_label, attribute_code) AS name,
                     attribute_code AS code,
                     backend_type AS type,
                     frontend_input AS input,
