@@ -10,6 +10,7 @@ use Illuminate\Support\ServiceProvider;
 use Rapidez\Core\Commands\IndexProductsCommand;
 use Rapidez\Core\Commands\InstallCommand;
 use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
+use Rapidez\Core\Http\ViewComposers\ConfigComposer;
 use Rapidez\Core\Models\Attribute;
 use Rapidez\Core\Models\Config;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
@@ -18,9 +19,35 @@ class RapidezServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'rapidez');
-        Blade::component('placeholder', PlaceholderComponent::class);
+        $this
+            ->bootCommands()
+            ->bootPublishables()
+            ->bootRoutes()
+            ->bootViews()
+            ->bootBladeComponents()
+            ->bootMiddleware();
+    }
 
+    public function register()
+    {
+        $this
+            ->registerConfigs();
+    }
+
+    protected function bootCommands(): self
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                IndexProductsCommand::class,
+                InstallCommand::class,
+            ]);
+        }
+
+        return $this;
+    }
+
+    protected function bootPublishables(): self
+    {
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__ . '/../config/rapidez.php' => config_path('rapidez.php'),
@@ -29,42 +56,48 @@ class RapidezServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__.'/../resources/views' => resource_path('views/vendor/rapidez'),
             ], 'views');
-
-            $this->commands([
-                IndexProductsCommand::class,
-                InstallCommand::class,
-            ]);
         }
 
+        return $this;
+    }
+
+    protected function bootRoutes(): self
+    {
         if (config('rapidez.routes')) {
             $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
             $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
         }
 
-        $this->app->make(Kernel::class)->pushMiddleware(DetermineAndSetShop::class);
-
-        View::composer('rapidez::layouts.app', function ($view) {
-            $exposedFrontendConfigValues = Arr::only(
-                config('rapidez'),
-                array_merge(config('rapidez.exposed'), ['store_code'])
-            );
-
-            config(['frontend' => array_merge(
-                config('frontend') ?: [],
-                $exposedFrontendConfigValues
-            )]);
-
-            config(['frontend.locale' => Config::getCachedByPath('general/locale/code', 'en_US')]);
-            config(['frontend.currency' => Config::getCachedByPath('currency/options/default')]);
-
-            config(['frontend.searchable' => Arr::pluck(Attribute::getCachedWhere(function ($attribute) {
-                return $attribute['search'];
-            }), 'code')]);
-        });
+        return $this;
     }
 
-    public function register()
+    protected function bootViews(): self
+    {
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'rapidez');
+
+        View::composer('rapidez::layouts.app', ConfigComposer::class);
+
+        return $this;
+    }
+
+    protected function bootBladeComponents(): self
+    {
+        Blade::component('placeholder', PlaceholderComponent::class);
+
+        return $this;
+    }
+
+    protected function bootMiddleware(): self
+    {
+        $this->app->make(Kernel::class)->pushMiddleware(DetermineAndSetShop::class);
+
+        return $this;
+    }
+
+    protected function registerConfigs(): self
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/rapidez.php', 'rapidez');
+
+        return $this;
     }
 }
