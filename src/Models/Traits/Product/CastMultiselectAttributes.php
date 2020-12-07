@@ -18,6 +18,6 @@ trait CastMultiselectAttributes
             $casts[$multiselectAttribute] = Multiselect::class;
         }
 
-        return $casts;
+        return $casts ?? [];
     }
 }
