@@ -33,7 +33,7 @@ class IndexProductJob implements ShouldQueue
     public function handle(Elasticsearch $elasticsearch)
     {
         $elasticsearch->index([
-            'index' => 'products_' . $this->data['store'],
+            'index' => config('rapidez.es_prefix') . '_products_' . $this->data['store'],
             'id'    => $this->data['id'],
             'body'  => $this->data,
         ]);

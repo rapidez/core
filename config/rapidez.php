@@ -6,6 +6,9 @@ return [
     // Elasticsearch url.
     'es_url' => env('ELASTICSEARCH_URL', 'http://localhost:9200'),
 
+    // Elasticsearch prefix.
+    'es_prefix' => env('ELASTICSEARCH_PREFIX', 'rapidez'),
+
     // Media url.
     'media_url' => env('MEDIA_URL', env('MAGENTO_URL') . '/media'),
 
@@ -16,6 +19,7 @@ return [
     'exposed' => [
         'store',
         'es_url',
+        'es_prefix',
         'media_url',
         'magento_url',
     ],

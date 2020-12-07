@@ -36,7 +36,7 @@ class IndexProductsCommand extends Command
             $this->line('Store: '.$store->name);
             config()->set('rapidez.store', $store->store_id);
 
-            $this->createIndexIfNeeded('products_' . $store->store_id, $this->option('fresh'));
+            $this->createIndexIfNeeded(config('rapidez.es_prefix') . '_products_' . $store->store_id, $this->option('fresh'));
 
             $productQuery = Product::where('visibility', 4)->selectOnlyIndexable();
 
