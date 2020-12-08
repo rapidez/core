@@ -36,12 +36,10 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function bootCommands(): self
     {
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                IndexProductsCommand::class,
-                InstallCommand::class,
-            ]);
-        }
+        $this->commands([
+            IndexProductsCommand::class,
+            InstallCommand::class,
+        ]);
 
         return $this;
     }

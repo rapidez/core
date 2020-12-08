@@ -1,8 +1,9 @@
 <?php
 
+use Illuminate\Http\Request;
+use Rapidez\Core\Http\Middleware\VerifyAdminToken;
 use Rapidez\Core\Models\Attribute;
 use Rapidez\Core\Models\OptionSwatch;
-use Illuminate\Http\Request;
 use Rapidez\Core\Models\Quote;
 
 Route::middleware('api')->prefix('api')->group(function () {
@@ -21,5 +22,10 @@ Route::middleware('api')->prefix('api')->group(function () {
             $query->where('masked_id', $quoteIdMaskOrCustomerToken)
                   ->orWhere('token', $quoteIdMaskOrCustomerToken);
         })->firstOrFail();
+    });
+
+    Route::prefix('admin')->middleware(VerifyAdminToken::class)->group(function () {
+        Route::get('cache/clear', fn() => Artisan::call('cache:clear'));
+        Route::get('index/products', fn() => Artisan::call('rapidez:index'));
     });
 });
