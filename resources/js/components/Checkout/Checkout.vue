@@ -29,17 +29,7 @@
             },
 
             hasOnlyVirtualItems() {
-                let result
-                Object.values(this.cart.items).forEach(cartItem => {
-                    if (cartItem.type == 'downloadable') {
-                        result = true
-                    } else {
-                        result = false
-                        return false
-                    }
-                })
-
-                return result
+                return Object.values(this.cart.items).filter((item) => item.type == 'downloadable').length === Object.values(this.cart.items).length
             },
 
             async getShippingMethods() {
@@ -92,22 +82,19 @@
                 }
 
                 try {
-                    let response = null
-                    if (this.hasOnlyVirtualItems()) {
-                        response = await this.magentoCart('post', 'shipping-information', {
-                            addressInformation: {
-                                shipping_address: this.shippingAddress
-                            }
-                        })
-                    } else {
-                        response = await this.magentoCart('post', 'shipping-information', {
-                            addressInformation: {
-                                shipping_address: this.shippingAddress,
-                                shipping_carrier_code: this.checkout.shipping_method.split('_')[0],
-                                shipping_method_code: this.checkout.shipping_method.split('_')[1],
-                            }
-                        })
+                    let addressInformation = {
+                        shipping_address: this.shippingAddress
                     }
+
+                    if (!this.hasOnlyVirtualItems()) {
+                        addressInformation.shipping_carrier_code = this.checkout.shipping_method.split('_')[0]
+                        addressInformation.shipping_method_code = this.checkout.shipping_method.split('_')[1]
+                    }
+
+                    let response = await this.magentoCart('post', 'shipping-information', {
+                        addressInformation: addressInformation
+                    })
+
                     this.checkout.payment_methods = response.data.payment_methods
                     this.$root.$emit('CheckoutCredentialsSaved')
                     return true
