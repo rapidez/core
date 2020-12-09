@@ -66,7 +66,8 @@ class Quote extends Model
                     "qty", quote_item.qty,
                     "price", quote_item.price_incl_tax,
                     "total", quote_item.row_total_incl_tax,
-                    "attributes", quote_item_option.value
+                    "attributes", quote_item_option.value,
+                    "type", quote_item.product_type
                 )), "$.null__") AS items')
                 ->leftJoin('quote_id_mask', 'quote_id_mask.quote_id', '=', 'quote.entity_id')
                 ->leftJoin('oauth_token', 'oauth_token.customer_id', '=', 'quote.customer_id')
