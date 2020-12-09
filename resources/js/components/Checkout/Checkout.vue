@@ -28,6 +28,20 @@
                 this.checkout[type][e.target.id] = e.target.value
             },
 
+            hasOnlyVirtualItems() {
+                let result
+                Object.values(this.cart.items).forEach(cartItem => {
+                    if (cartItem.type == 'downloadable') {
+                        result = true
+                    } else {
+                        result = false
+                        return false
+                    }
+                })
+
+                return result
+            },
+
             async getShippingMethods() {
                 try {
                     let response = await this.magentoCart('post', 'estimate-shipping-methods', {
@@ -78,13 +92,22 @@
                 }
 
                 try {
-                    let response = await this.magentoCart('post', 'shipping-information', {
-                        addressInformation: {
-                            shipping_address: this.shippingAddress,
-                            shipping_carrier_code: this.checkout.shipping_method.split('_')[0],
-                            shipping_method_code: this.checkout.shipping_method.split('_')[1],
-                        }
-                    })
+                    let response = null
+                    if (this.hasOnlyVirtualItems()) {
+                        response = await this.magentoCart('post', 'shipping-information', {
+                            addressInformation: {
+                                shipping_address: this.shippingAddress
+                            }
+                        })
+                    } else {
+                        response = await this.magentoCart('post', 'shipping-information', {
+                            addressInformation: {
+                                shipping_address: this.shippingAddress,
+                                shipping_carrier_code: this.checkout.shipping_method.split('_')[0],
+                                shipping_method_code: this.checkout.shipping_method.split('_')[1],
+                            }
+                        })
+                    }
                     this.checkout.payment_methods = response.data.payment_methods
                     this.$root.$emit('CheckoutCredentialsSaved')
                     return true
@@ -96,10 +119,13 @@
 
             validateCredentials() {
                 let validated = true
-
-                if (!this.checkout.shipping_method) {
+                if (!this.checkout.shipping_method && !this.hasOnlyVirtualItems()) {
                     alert('No shipping method selected')
                     validated = false
+                }
+
+                if (!this.checkout.shipping_method && this.hasOnlyVirtualItems()) {
+                    return true
                 }
 
                 Object.entries(this.checkout.shipping_address).forEach(([key, val]) => {
