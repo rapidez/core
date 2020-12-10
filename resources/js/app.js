@@ -44,6 +44,8 @@ try {
     Vue.component('product-compare-widget', require('Vendor/rapidez/compare/src/components/Widget.vue').default)
     Vue.component('product-compare-checkbox', require('Vendor/rapidez/compare/src/components/Checkbox.vue').default)
     Vue.component('product-compare-overview', require('Vendor/rapidez/compare/src/components/Overview.vue').default)
+
+    Vue.component('graphql', require('Vendor/rapidez/account/resources/js/components/Graphql.vue').default)
 } catch (e) {}
 
 /**

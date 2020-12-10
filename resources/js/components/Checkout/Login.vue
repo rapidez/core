@@ -4,7 +4,12 @@
     export default {
         mixins: [InteractWithUser],
 
-        props: ['step'],
+        props: {
+            checkoutLogin: {
+                type: Boolean,
+                default: true,
+            }
+        },
 
         data: () => ({
             email: process.env.MIX_DEBUG ? 'roy@justbetter.nl' : null,
@@ -22,16 +27,20 @@
             })
         },
 
-        mounted() {
+        created() {
             this.refreshUser(false)
             if (this.$root.user) {
-                this.$root.checkout.step = 2
+                this.successfulLogin()
             }
         },
 
         methods: {
             go() {
-                // TODO: Validation.
+                if (!this.checkoutLogin && (!this.email || !this.password)) {
+                    alert('You did not specify an email or password')
+                    return
+                }
+
                 if (this.email && this.password) {
                     this.login()
                 } else if (this.email) {
@@ -65,13 +74,13 @@
                     localStorage.token = response.data
                     window.magentoUser.defaults.headers.common['Authorization'] = `Bearer ${localStorage.token}`;
                     await this.refreshUser()
-                    this.$root.checkout.step = 2
 
                     if (this.$root.cart) {
                         await this.linkUserToCart()
                         localStorage.mask = this.$root.cart.entity_id
                     }
 
+                    this.successfulLogin()
                 })
                 .catch((error) => {
                     alert(error.response.data.message)
@@ -81,6 +90,14 @@
 
             loginInputChange(e) {
                 this[e.target.id] = e.target.value
+            },
+
+            successfulLogin() {
+                if (this.checkoutLogin) {
+                    this.$root.checkout.step = 2
+                } else {
+                    Turbolinks.visit('/account')
+                }
             },
 
             async linkUserToCart() {

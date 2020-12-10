@@ -8,6 +8,8 @@ module.exports = {
         './vendor/rapidez/core/resources/css/**/*.css',
         './vendor/rapidez/core/resources/js/**/*.vue',
 
+        './vendor/rapidez/account/resources/views/**/*.blade.php',
+
         './vendor/rapidez/menu/src/config/menu.php',
     ],
     theme: {
