@@ -28,6 +28,10 @@
                 this.checkout[type][e.target.id] = e.target.value
             },
 
+            hasOnlyVirtualItems() {
+                return Object.values(this.cart.items).filter((item) => item.type == 'downloadable').length === Object.values(this.cart.items).length
+            },
+
             async getShippingMethods() {
                 try {
                     let response = await this.magentoCart('post', 'estimate-shipping-methods', {
@@ -78,13 +82,19 @@
                 }
 
                 try {
+                    let addressInformation = {
+                        shipping_address: this.shippingAddress
+                    }
+
+                    if (!this.hasOnlyVirtualItems()) {
+                        addressInformation.shipping_carrier_code = this.checkout.shipping_method.split('_')[0]
+                        addressInformation.shipping_method_code = this.checkout.shipping_method.split('_')[1]
+                    }
+
                     let response = await this.magentoCart('post', 'shipping-information', {
-                        addressInformation: {
-                            shipping_address: this.shippingAddress,
-                            shipping_carrier_code: this.checkout.shipping_method.split('_')[0],
-                            shipping_method_code: this.checkout.shipping_method.split('_')[1],
-                        }
+                        addressInformation: addressInformation
                     })
+
                     this.checkout.payment_methods = response.data.payment_methods
                     this.$root.$emit('CheckoutCredentialsSaved')
                     return true
@@ -96,10 +106,13 @@
 
             validateCredentials() {
                 let validated = true
-
-                if (!this.checkout.shipping_method) {
+                if (!this.checkout.shipping_method && !this.hasOnlyVirtualItems()) {
                     alert('No shipping method selected')
                     validated = false
+                }
+
+                if (!this.checkout.shipping_method && this.hasOnlyVirtualItems()) {
+                    return true
                 }
 
                 Object.entries(this.checkout.shipping_address).forEach(([key, val]) => {

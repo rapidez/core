@@ -88,7 +88,7 @@
         </div>
     </div>
 
-    <h1 class="font-bold text-4xl mt-5 mb-3">@lang('Shipping method')</h1>
+    <h1 v-if="checkout.shipping_methods.length" class="font-bold text-4xl mt-5 mb-3">@lang('Shipping method')</h1>
 
     <div class="my-2" v-for="method in checkout.shipping_methods">
         <input
