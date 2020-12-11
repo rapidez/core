@@ -39,13 +39,12 @@ Vue.component('coupon', require('./components/Coupon/Coupon.vue').default)
 Vue.component('toggler', require('./components/Elements/Toggler.vue').default)
 Vue.component('add-to-cart', require('./components/Product/AddToCart.vue').default)
 Vue.component('user', require('./components/User/User.vue').default)
+Vue.component('graphql', require('./components/Graphql.vue').default)
 
 try {
     Vue.component('product-compare-widget', require('Vendor/rapidez/compare/src/components/Widget.vue').default)
     Vue.component('product-compare-checkbox', require('Vendor/rapidez/compare/src/components/Checkbox.vue').default)
     Vue.component('product-compare-overview', require('Vendor/rapidez/compare/src/components/Overview.vue').default)
-
-    Vue.component('graphql', require('Vendor/rapidez/account/resources/js/components/Graphql.vue').default)
 } catch (e) {}
 
 /**

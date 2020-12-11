@@ -27,13 +27,13 @@ export default {
             }
         },
 
-        logout() {
+        logout(redirect = '/') {
             localStorage.removeItem('token')
             localStorage.removeItem('user')
             localStorage.removeItem('mask')
             localStorage.removeItem('cart')
             this.$root.user = null
-            Turbolinks.visit('/')
+            Turbolinks.visit(redirect)
         }
     },
 
