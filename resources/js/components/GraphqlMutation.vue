@@ -33,6 +33,8 @@
 
         methods: {
             async mutate() {
+                delete this.changes.id
+
                 try {
                     let response = await axios.post(config.magento_url + '/graphql', {
                         query: this.query.replace('changes', this.queryfy(this.changes))
@@ -58,20 +60,24 @@
             },
 
             // Credits: https://stackoverflow.com/a/54262737/622945
-            queryfy (obj) {
-                if( typeof obj === 'number' ) {
-                    return obj;
+            queryfy (obj, key = null) {
+                if(typeof obj === 'number') {
+                    return obj
                 }
 
-                if( typeof obj !== 'object' || Array.isArray( obj ) ) {
-                    return JSON.stringify( obj );
+                if (obj === null) {
+                    return JSON.stringify('')
                 }
 
-                let props = Object.keys( obj ).map( key =>
-                    `${key}:${this.queryfy( obj[key] )}`
-                ).join( ',' );
+                if(typeof obj !== 'object' || Array.isArray( obj )) {
+                    return key == 'country_code' ? obj : JSON.stringify( obj )
+                }
 
-                return `{${props}}`;
+                let props = Object.keys(obj).map(key =>
+                     `${key}:${this.queryfy(obj[key], key)}`
+                ).join(',')
+
+                return `{${props}}`
             }
         }
     }
