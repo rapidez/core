@@ -3,88 +3,25 @@
 <form class="lg:w-2/3" v-on:submit.prevent="save(['credentials'], 3)">
     <div class="grid grid-cols-12 gap-4 mb-3">
         <div class="col-span-12 sm:col-span-6">
-            <label class="text-gray-700 text-sm" for="firstname">@lang('Fistname')</label>
-            <input
-                type="text"
-                class="form-input w-full"
-                id="firstname"
-                dusk="firstname"
-                placeholder="@lang('Firstname')"
-                :value="checkout.shipping_address.firstname"
-                @input="inputChange('shipping_address', $event)"
-            >
+            <x-rapidez::input name="firstname" v-model="checkout.shipping_address.firstname" required/>
         </div>
         <div class="col-span-12 sm:col-span-6">
-            <label class="text-gray-700 text-sm" for="firstname">@lang('Lastname')</label>
-            <input
-                type="text"
-                class="form-input w-full"
-                id="lastname"
-                dusk="lastname"
-                placeholder="@lang('Lastname')"
-                :value="checkout.shipping_address.lastname"
-                @input="inputChange('shipping_address', $event)"
-            >
+            <x-rapidez::input name="lastname" v-model="checkout.shipping_address.lastname" required/>
         </div>
         <div class="col-span-6 sm:col-span-3">
-            <label class="text-gray-700 text-sm" for="zipcode">@lang('Postcode')</label>
-            <input
-                type="text"
-                class="form-input w-full"
-                id="zipcode"
-                dusk="zipcode"
-                placeholder="@lang('Zipcode')"
-                :value="checkout.shipping_address.zipcode"
-                @input="inputChange('shipping_address', $event)"
-            >
+            <x-rapidez::input name="zipcode" v-model="checkout.shipping_address.zipcode" required/>
         </div>
         <div class="col-span-6 sm:col-span-3">
-            <label class="text-gray-700 text-sm" for="housenumber">@lang('Housenumber')</label>
-            <input
-                type="text"
-                class="form-input w-full"
-                id="housenumber"
-                dusk="housenumber"
-                placeholder="@lang('Nr.')"
-                :value="checkout.shipping_address.housenumber"
-                @input="inputChange('shipping_address', $event)"
-            >
+            <x-rapidez::input name="housenumber" v-model="checkout.shipping_address.housenumber" :placeholder="__('Nr.')" required/>
         </div>
         <div class="col-span-12 sm:col-span-6 sm:col-start-1">
-            <label class="text-gray-700 text-sm" for="street">@lang('Street')</label>
-            <input
-                type="text"
-                class="form-input w-full"
-                id="street"
-                dusk="street"
-                placeholder="@lang('Street')"
-                :value="checkout.shipping_address.street"
-                @input="inputChange('shipping_address', $event)"
-            >
+            <x-rapidez::input name="street" v-model="checkout.shipping_address.street" required/>
         </div>
         <div class="col-span-12 sm:col-span-6 sm:col-start-1">
-            <label class="text-gray-700 text-sm" for="city">@lang('City')</label>
-            <input
-                type="text"
-                class="form-input w-full"
-                id="city"
-                dusk="city"
-                placeholder="@lang('City')"
-                :value="checkout.shipping_address.city"
-                @input="inputChange('shipping_address', $event)"
-            >
+            <x-rapidez::input name="city" v-model="checkout.shipping_address.city" required/>
         </div>
         <div class="col-span-12 sm:col-span-6 sm:col-start-1">
-            <label class="text-gray-700 text-sm" for="telephone">@lang('Telephone')</label>
-            <input
-                type="text"
-                class="form-input w-full"
-                id="telephone"
-                dusk="telephone"
-                placeholder="@lang('Telephone')"
-                :value="checkout.shipping_address.telephone"
-                @input="inputChange('shipping_address', $event)"
-            >
+            <x-rapidez::input name="telephone" v-model="checkout.shipping_address.telephone" required/>
         </div>
     </div>
 

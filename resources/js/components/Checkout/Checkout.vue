@@ -9,7 +9,6 @@
                 hasItems: this.hasItems,
                 cart: this.cart,
                 checkout: this.checkout,
-                inputChange: this.inputChange,
                 save: this.save,
             })
         },
@@ -24,10 +23,6 @@
         },
 
         methods: {
-            inputChange(type, e) {
-                this.checkout[type][e.target.id] = e.target.value
-            },
-
             hasOnlyVirtualItems() {
                 return Object.values(this.cart.items).filter((item) => item.type == 'downloadable').length === Object.values(this.cart.items).length
             },
