@@ -4,6 +4,8 @@
     :data-field="filter.code"
     :title="filter.name.replace('_', ' ')"
     :show-filter="false"
-    class="filter"
+    :inner-class="{
+        title: 'capitalize font-semibold',
+    }"
     u-r-l-params
 ></dynamic-range-slider>

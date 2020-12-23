@@ -1,0 +1,7 @@
+.vue-slider-component .vue-slider-tooltip {
+    @apply bg-primary border-primary !important;
+}
+
+.vue-slider-process {
+    @apply bg-primary !important;
+}
