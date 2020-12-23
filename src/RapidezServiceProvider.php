@@ -75,7 +75,7 @@ class RapidezServiceProvider extends ServiceProvider
 
         View::composer('rapidez::layouts.app', ConfigComposer::class);
 
-        View::addExtension('graphql', 'file');
+        View::addExtension('graphql', 'blade');
 
         return $this;
     }
