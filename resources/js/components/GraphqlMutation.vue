@@ -11,12 +11,16 @@
             },
             changes: {
                 type: Object,
-                required: true,
+                default: () => ({}),
             },
             refreshUserInfo: {
                 type: Boolean,
                 default: false,
             },
+            redirect: {
+                type: String,
+                default: '',
+            }
         },
 
         data: () => ({
@@ -54,6 +58,10 @@
                     setTimeout(function(){
                         me.mutated = false
                     }, 2500);
+
+                    if (this.redirect) {
+                        Turbolinks.visit(this.redirect)
+                    }
                 } catch (e) {
                     alert('Something went wrong, please try again')
                 }
