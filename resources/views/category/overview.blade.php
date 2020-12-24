@@ -21,7 +21,7 @@
                     :url="config.es_url"
                     v-if="loaded"
                 >
-                    <selected-filters />
+                    <selected-filters></selected-filters>
                     <div class="flex flex-col md:flex-row">
                         <div class="md:w-1/5">
                             @include('rapidez::category.partials.filters')
