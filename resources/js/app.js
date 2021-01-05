@@ -82,6 +82,8 @@ document.addEventListener('turbolinks:load', () => {
                 payment_method: null,
                 payment_methods: [],
 
+                agreement_ids: [],
+
                 // This can be used to prevent the checkout from going
                 // to the next step which is useful in combination
                 // with the "CheckoutPaymentSaved" event to

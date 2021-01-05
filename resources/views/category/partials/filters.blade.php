@@ -1,6 +1,10 @@
-<x-rapidez::slideover>
+<x-rapidez::slideover :mobile-only="true">
     <x-slot name="button">
-        <button type="button" class="md:hidden btn btn-primary w-full mb-3" @click="toggle">@lang('Filters')</button>
+        <button type="button" class="md:hidden btn btn-primary w-full mb-3" v-on:click="toggle">@lang('Filters')</button>
+    </x-slot>
+
+    <x-slot name="title">
+        @lang('Filters')
     </x-slot>
 
     <reactive-component component-id="category">

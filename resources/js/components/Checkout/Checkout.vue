@@ -131,7 +131,10 @@
                         billingAddress: this.shippingAddress,
                         email: this.$root.guestEmail,
                         paymentMethod: {
-                            method: this.checkout.payment_method
+                            method: this.checkout.payment_method,
+                            extension_attributes: {
+                                agreement_ids: this.checkout.agreement_ids
+                            }
                         }
                     })
                     // response.data = orderId
