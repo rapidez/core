@@ -37,7 +37,7 @@
                     </x-slot>
 
                     <div v-if="agreement.is_html" v-html="agreement.content"></div>
-                    <div v-else v-text="agreement.content" class="whitespace-pre"></div>
+                    <div v-else v-text="agreement.content" class="whitespace-pre-line"></div>
                 </x-rapidez::slideover>
             </div>
         </div>
