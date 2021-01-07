@@ -63,10 +63,16 @@
             reactiveFilters: function () {
                 return _.map(this.filters, function (filter) {
                     return filter.code;
-                }).concat(['category']);
+                }).concat(['category', 'searchterm']);
             },
             sortOptions: function () {
-                return _.flatMap(this.sortings, function (sorting) {
+                return [
+                    {
+                        label: 'Relevance',
+                        dataField: '_score',
+                        sortBy: 'desc'
+                    }
+                ].concat(_.flatMap(this.sortings, function (sorting) {
                     return _.map(['asc', 'desc'], function (direction) {
                         return {
                             label: sorting.name + ' ' + direction,
@@ -74,7 +80,7 @@
                             sortBy: direction
                         }
                     })
-                })
+                }))
             }
         }
     }

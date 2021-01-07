@@ -7,11 +7,19 @@
         @lang('Filters')
     </x-slot>
 
-    <reactive-component component-id="category">
+    <reactive-component component-id="category" v-if="config.category">
         <div slot-scope="{ setQuery }">
             <category-filter :set-query="setQuery"></category-filter>
         </div>
     </reactive-component>
+
+    @if(Route::currentRouteName() == 'search')
+        <reactive-component component-id="searchterm">
+            <div slot-scope="{ setQuery }">
+                <search-term-filter :set-query="setQuery" term="{{ request('q') }}"></search-term-filter>
+            </div>
+        </reactive-component>
+    @endif
 
     <template v-for="filter in filters">
         @include('rapidez::category.partials.filter.price')

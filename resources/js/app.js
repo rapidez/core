@@ -89,6 +89,12 @@ document.addEventListener('turbolinks:load', () => {
                 // with the "CheckoutPaymentSaved" event to
                 // implement payment providers.
                 doNotGoToTheNextStep: false,
+            },
+            valueselected: 'valueSelected'
+        },
+        methods: {
+            search(value) {
+                Turbolinks.visit('/search?q=' + value)
             }
         },
     })
