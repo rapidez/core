@@ -30,7 +30,14 @@
             </div>
         </category>
     @else
-        <i>@lang('This is a non anchor category without any content because most likely everything is rendered with layout updates or widgets. Change the category to anchor or build this page yourself.')</i>
+        <div class="flex flex-col md:flex-row">
+            <div class="md:w-1/5">
+                @widget('sidebar.main', 'anchor_categories', 'catalog_category_view_type_layered', $category->entity_id)
+            </div>
+            <div class="md:w-4/5">
+                @widget('content.top', 'anchor_categories', 'catalog_category_view_type_layered', $category->entity_id)
+            </div>
+        </div>
     @endif
 
     {!! str_replace('<h2>', '<h2 class="font-bold text-2xl">', $category->description) !!}

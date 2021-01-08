@@ -39,7 +39,7 @@ trait HasContentAttributeWithVariables
 
             switch ($type) {
                 default:
-                    return '<i>The "'.$type.'" widget is not implemented yet.</i>';
+                    return '<hr>'.__('The ":type" widget type is not supported.', ['type' => $type]).'<hr>';
             }
         }, $content);
     }

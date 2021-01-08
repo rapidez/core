@@ -14,6 +14,7 @@ use Rapidez\Core\Http\ViewComposers\ConfigComposer;
 use Rapidez\Core\Models\Attribute;
 use Rapidez\Core\Models\Config;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
+use Rapidez\Core\ViewDirectives\WidgetDirective;
 
 class RapidezServiceProvider extends ServiceProvider
 {
@@ -31,7 +32,8 @@ class RapidezServiceProvider extends ServiceProvider
     public function register()
     {
         $this
-            ->registerConfigs();
+            ->registerConfigs()
+            ->registerBindings();
     }
 
     protected function bootCommands(): self
@@ -84,6 +86,10 @@ class RapidezServiceProvider extends ServiceProvider
     {
         Blade::component('placeholder', PlaceholderComponent::class);
 
+        Blade::directive('widget', function ($expression) {
+            return "<?php echo app('widget-directive')->render($expression) ?>";
+        });
+
         return $this;
     }
 
@@ -97,6 +103,13 @@ class RapidezServiceProvider extends ServiceProvider
     protected function registerConfigs(): self
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/rapidez.php', 'rapidez');
+
+        return $this;
+    }
+
+    protected function registerBindings(): self
+    {
+        $this->app->bind('widget-directive', WidgetDirective::class);
 
         return $this;
     }

@@ -4,12 +4,11 @@
 @section('description', $page->meta_description)
 
 @section('content')
-    <h1 class="font-bold text-4xl">{{ $page->content_heading }}</h1>
-    <div class="mb-5">
-        @if($page->content)
+    <div class="container mx-auto">
+        <h1 class="font-bold text-4xl">{{ $page->content_heading }}</h1>
+        <div class="mb-5">
+            @widget('content', 'pages', ($page->identifier == 'home' ? 'cms' : $page->identifier).'_index_index')
             {!! $page->content !!}
-        @else
-            <i>@lang('This page doesn\'t have any content because most likely everything is rendered with layout updates or widgets. Add content or build this page yourself.')</i>
-        @endif
+        </div>
     </div>
 @endsection
