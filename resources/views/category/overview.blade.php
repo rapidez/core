@@ -6,10 +6,6 @@
 @section('content')
     <h1 class="font-bold text-3xl">{{ $category->name }}</h1>
 
-    @if($block = Rapidez\Core\Models\Block::find($category->banners))
-        {!! str_replace('<ul>', '<ul class="flex">', $block->content) !!}
-    @endif
-
     @if($category->is_anchor)
         <category v-cloak>
             <div
