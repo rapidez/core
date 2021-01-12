@@ -9,15 +9,21 @@
             </a>
         </div>
     </div>
-    <div class="w-6/12 h-12 flex items-center">
-        @include('rapidez::layouts.partials.header.autocomplete')
-    </div>
+    @if(Route::currentRouteName() !== 'checkout')
+        <div class="w-6/12 h-12 flex items-center">
+            @include('rapidez::layouts.partials.header.autocomplete')
+        </div>
+    @endif
     <div class="w-1/3 sm:w-1/4 flex justify-end pr-3">
         @include('rapidez::layouts.partials.header.account')
-        @include('rapidez::layouts.partials.header.minicart')
+        @if(Route::currentRouteName() !== 'checkout')
+            @include('rapidez::layouts.partials.header.minicart')
+        @endif
     </div>
-    <div class="w-full">
-        {{-- Because the lack of an @includeIf or @includeWhen equivalent for Blade components we're using a placeholder --}}
-        <x-dynamic-component :component="App::providerIsLoaded('Rapidez\Menu\MenuServiceProvider') ? 'menu' : 'placeholder'" />
-    </div>
+    @if(Route::currentRouteName() !== 'checkout')
+        <div class="w-full">
+            {{-- Because the lack of an @includeIf or @includeWhen equivalent for Blade components we're using a placeholder --}}
+            <x-dynamic-component :component="App::providerIsLoaded('Rapidez\Menu\MenuServiceProvider') ? 'menu' : 'placeholder'" />
+        </div>
+    @endif
 </div>
