@@ -78,7 +78,8 @@
 
                 try {
                     let addressInformation = {
-                        shipping_address: this.shippingAddress
+                        shipping_address: this.shippingAddress,
+                        billing_address: this.billingAddress
                     }
 
                     if (!this.hasOnlyVirtualItems()) {
@@ -128,7 +129,8 @@
 
                 try {
                     let response = await this.magentoCart('post', 'payment-information', {
-                        billingAddress: this.shippingAddress,
+                        billingAddress: this.billingAddress,
+                        shippingAddress: this.shippingAddress,
                         email: this.$root.guestEmail,
                         paymentMethod: {
                             method: this.checkout.payment_method,
@@ -154,7 +156,6 @@
             checkout: function () {
                 return this.$root.checkout
             },
-
             shippingAddress: function () {
                 return {
                     firstname: this.checkout.shipping_address.firstname,
@@ -167,6 +168,24 @@
                     city: this.checkout.shipping_address.city,
                     country_id: 'NL',
                     telephone: this.checkout.shipping_address.telephone,
+                }
+            },
+            billingAddress: function () {
+                if (this.checkout.hide_billing) {
+                    return this.shippingAddress;
+                }
+
+                return {
+                    firstname: this.checkout.billing_address.firstname,
+                    lastname: this.checkout.billing_address.lastname,
+                    postcode: this.checkout.billing_address.zipcode,
+                    street: [
+                        this.checkout.billing_address.street,
+                        this.checkout.billing_address.housenumber,
+                    ],
+                    city: this.checkout.billing_address.city,
+                    country_id: 'NL',
+                    telephone: this.checkout.billing_address.telephone
                 }
             }
         }
