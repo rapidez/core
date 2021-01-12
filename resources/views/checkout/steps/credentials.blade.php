@@ -2,6 +2,9 @@
 
 <form class="lg:w-2/3" v-on:submit.prevent="save(['credentials'], 3)">
     <div class="grid grid-cols-12 gap-4 mb-3">
+        <p class="col-span-12 font-bold text-2xl">
+            @lang('Shipping address')
+        </p>
         <div class="col-span-12 sm:col-span-6">
             <x-rapidez::input name="firstname" v-model="checkout.shipping_address.firstname" required/>
         </div>
@@ -22,6 +25,37 @@
         </div>
         <div class="col-span-12 sm:col-span-6 sm:col-start-1">
             <x-rapidez::input name="telephone" v-model="checkout.shipping_address.telephone" required/>
+        </div>
+    </div>
+
+    <div class="col-span-12">
+        <input type="checkbox" v-model="checkout.hide_billing" id="hide_billing">
+        <label for="hide_billing">@lang('My billing and shipping address are the same')</label>
+    </div>
+    <div v-if="!checkout.hide_billing" class="grid grid-cols-12 gap-4 mb-3">
+        <p class="col-span-12 font-bold text-2xl">
+            @lang('Billing address')
+        </p>
+        <div class="col-span-12 sm:col-span-6">
+            <x-rapidez::input name="firstname" v-bind:required="!checkout.hide_billing" v-model="checkout.billing_address.firstname"/>
+        </div>
+        <div class="col-span-12 sm:col-span-6">
+            <x-rapidez::input name="lastname" v-bind:required="!checkout.hide_billing" v-model="checkout.billing_address.lastname"/>
+        </div>
+        <div class="col-span-6 sm:col-span-3">
+            <x-rapidez::input name="zipcode" v-bind:required="!checkout.hide_billing" v-model="checkout.billing_address.zipcode"/>
+        </div>
+        <div class="col-span-6 sm:col-span-3">
+            <x-rapidez::input name="housenumber" v-bind:required="!checkout.hide_billing" v-model="checkout.billing_address.housenumber" :placeholder="__('Nr.')"/>
+        </div>
+        <div class="col-span-12 sm:col-span-6 sm:col-start-1">
+            <x-rapidez::input name="street" v-bind:required="!checkout.hide_billing" v-model="checkout.billing_address.street"/>
+        </div>
+        <div class="col-span-12 sm:col-span-6 sm:col-start-1">
+            <x-rapidez::input name="city" v-bind:required="!checkout.hide_billing" v-model="checkout.billing_address.city"/>
+        </div>
+        <div class="col-span-12 sm:col-span-6 sm:col-start-1">
+            <x-rapidez::input name="telephone" v-bind:required="!checkout.hide_billing" v-model="checkout.billing_address.telephone"/>
         </div>
     </div>
 
