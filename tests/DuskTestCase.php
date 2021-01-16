@@ -10,6 +10,8 @@ use TorMorten\Eventy\EventServiceProvider;
 
 abstract class DuskTestCase extends BaseTestCase
 {
+    public string $flat;
+
     public Product $testProduct;
 
     protected function setUp(): void
@@ -21,11 +23,13 @@ abstract class DuskTestCase extends BaseTestCase
             return $this;
         });
 
+        $this->flat = (new Product)->getTable();
+
         $this->testProduct = Product::selectAttributes([
             'name',
             'price',
             'url_key',
-        ])->firstWhere('sku', '24-WB02');
+        ])->firstWhere($this->flat.'.sku', '24-WB02');
     }
 
     protected function getPackageProviders($app)
