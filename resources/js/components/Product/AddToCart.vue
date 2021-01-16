@@ -57,6 +57,10 @@
             disabledOptions: function () {
                 var disabledOptions = {};
 
+                if (!config.product.super_attributes) {
+                    return disabledOptions
+                }
+
                 Object.entries(config.product.super_attributes).forEach(([attributeId, attribute]) => {
                     disabledOptions[attribute.code] = []
                 })
