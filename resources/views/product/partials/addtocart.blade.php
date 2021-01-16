@@ -1,5 +1,5 @@
 <add-to-cart v-cloak>
-    <div slot-scope="{ options, error, add }">
+    <div slot-scope="{ options, error, add, disabledOptions }">
         <div v-for="(superAttribute, superAttributeId) in config.product.super_attributes">
             <label :for="'super_attribute_'+superAttributeId">@{{ superAttribute.label }}</label>
             <div class="relative w-64 mb-3">
@@ -14,6 +14,7 @@
                         v-for="(label, value) in config.product[superAttribute.code]"
                         v-text="label"
                         :value="value"
+                        :disabled="disabledOptions[superAttribute.code].includes(value)"
                     />
                 </select>
                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -24,7 +25,7 @@
         <button
             class="block btn btn-primary"
             :disabled="$root.loading"
-            @click="add"
+            v-on:click="add"
             dusk="add-to-cart"
         >
             @lang('Add to cart')

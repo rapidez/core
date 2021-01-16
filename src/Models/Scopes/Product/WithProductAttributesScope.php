@@ -32,21 +32,21 @@ class WithProductAttributesScope implements Scope
 
         $builder
             ->select($builder->getQuery()->from.'.entity_id AS id')
-            ->addSelect('sku');
+            ->addSelect($builder->getQuery()->from.'.sku');
 
         foreach ($attributes as $attribute) {
             $attribute = (object)$attribute;
 
             if ($attribute->flat) {
                 if ($attribute->input == 'select' && !in_array($attribute->code, ['tax_class_id'])) {
-                    $builder->addSelect($attribute->code.'_value AS '.$attribute->code);
+                    $builder->addSelect($builder->getQuery()->from.'.'.$attribute->code.'_value AS '.$attribute->code);
                 } else {
                     $builder->addSelect($builder->getQuery()->from.'.'.$attribute->code.' AS '.$attribute->code);
                 }
             } else {
                 if ($attribute->input == 'select') {
                     $builder
-                        ->selectRaw('COALESCE('.$attribute->code.'_option_value_'.config('rapidez.store').'.value, '.$attribute->code.'_option_value_0.value) AS '.$attribute->code)
+                        ->selectRaw('COALESCE(ANY_VALUE('.$attribute->code.'_option_value_'.config('rapidez.store').'.value), ANY_VALUE('.$attribute->code.'_option_value_0.value)) AS '.$attribute->code)
                         ->leftJoin(
                             'catalog_product_entity_'.$attribute->type.' AS '.$attribute->code,
                             function ($join) use ($builder, $attribute) {
@@ -69,7 +69,7 @@ class WithProductAttributesScope implements Scope
                         );
                 } else {
                     $builder
-                        ->selectRaw('COALESCE('.$attribute->code.'_'.config('rapidez.store').'.value, '.$attribute->code.'_0.value) AS '.$attribute->code)
+                        ->selectRaw('COALESCE(ANY_VALUE('.$attribute->code.'_'.config('rapidez.store').'.value), ANY_VALUE('.$attribute->code.'_0.value)) AS '.$attribute->code)
                         ->leftJoin(
                             'catalog_product_entity_'.$attribute->type.' AS '.$attribute->code.'_'.config('rapidez.store'),
                             function ($join) use ($builder, $attribute) {
