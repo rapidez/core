@@ -77,6 +77,8 @@ document.addEventListener('turbolinks:load', () => {
                 billing_address: {},
                 hide_billing: true,
 
+                totals: {},
+
                 shipping_method: null,
                 shipping_methods: [],
 

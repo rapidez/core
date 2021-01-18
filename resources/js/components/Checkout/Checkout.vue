@@ -20,6 +20,7 @@
             }
 
             this.getShippingMethods()
+            this.getTotalsInformation()
         },
 
         methods: {
@@ -39,6 +40,25 @@
                     if (response.data.length === 1) {
                         this.checkout.shipping_method = response.data[0].carrier_code+'_'+response.data[0].method_code
                     }
+
+                    return true
+                } catch (error) {
+                    alert(error.response.data.message)
+                    return false
+                }
+            },
+
+            async getTotalsInformation() {
+                try {
+                    let response = await this.magentoCart('post', 'totals-information', {
+                        addressInformation: {
+                            address: {
+                                countryId: 'NL',
+                            }
+                        }
+                    })
+
+                    this.checkout.totals = response.data
 
                     return true
                 } catch (error) {
@@ -92,6 +112,7 @@
                     })
 
                     this.checkout.payment_methods = response.data.payment_methods
+                    this.checkout.totals = response.data.totals
                     this.$root.$emit('CheckoutCredentialsSaved')
                     return true
                 } catch (error) {
