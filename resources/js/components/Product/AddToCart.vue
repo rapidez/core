@@ -7,18 +7,25 @@
         data: () => ({
             options: {},
             error: null,
+            qty: 1,
         }),
 
         render() {
             return this.$scopedSlots.default({
                 disabledOptions: this.disabledOptions,
+                changeQty: this.changeQty,
                 options: this.options,
                 error: this.error,
                 add: this.add,
+                qty: this.qty,
             })
         },
 
         methods: {
+            changeQty(event) {
+                this.qty = event.target.value
+            },
+
             async add() {
                 await this.getMask()
 
@@ -26,7 +33,7 @@
                     cartItem: {
                         sku: config.product.sku,
                         quote_id: localStorage.getItem('mask'),
-                        qty: 1,
+                        qty: this.qty,
                         product_option: this.productOptions
                     }
                 }).then((response) => {
