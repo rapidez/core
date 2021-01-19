@@ -13,6 +13,7 @@
                     <img
                         src="/storage/resizes/467/catalog/product{{ $image->value }}" alt="{{ $product->name }}"
                         class="{{ $product->images->count() == 1 ? 'w-full sm:w-1/2 rounded' : 'w-1/2' }}"
+                        loading="lazy"
                     />
                 @empty
                     <x-rapidez::no-image class="rounded h-64"/>
