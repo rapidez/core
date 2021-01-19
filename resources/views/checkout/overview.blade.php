@@ -4,8 +4,9 @@
 
 @section('content')
     <div class="container mx-auto">
-        <checkout v-cloak v-slot="{ checkout, cart, hasItems, save }">
+        <checkout v-cloak v-slot="{ checkout, cart, hasItems, save, goToStep }">
             <div>
+                @include('rapidez::checkout.partials.progressbar')
                 <div v-if="checkout.step == 1 && hasItems">
                     @include('rapidez::checkout.steps.login')
                 </div>
