@@ -10,6 +10,7 @@
                 cart: this.cart,
                 checkout: this.checkout,
                 save: this.save,
+                goToStep: this.goToStep,
             })
         },
 
@@ -67,7 +68,7 @@
                 }
             },
 
-            async save(savedItems, goToStep) {
+            async save(savedItems, targetStep) {
                 let validated = true
                 await this.asyncForEach(savedItems, async item => {
                     switch(item) {
@@ -87,8 +88,17 @@
                 })
 
                 if (validated && !this.$root.checkout.doNotGoToTheNextStep) {
-                    this.checkout.step = goToStep
+                    this.goToStep(targetStep);
                 }
+            },
+
+            goToStep(step) {
+                if (step === 0) {
+                    Turbolinks.visit("/cart");
+                    return
+                }
+
+                this.checkout.step = step;
             },
 
             async saveCredentials() {
