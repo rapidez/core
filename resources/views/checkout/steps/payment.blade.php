@@ -44,8 +44,8 @@
     </graphql>
 
     <button
-        type="submit mt-5"
-        class="btn btn-primary"
+        type="submit"
+        class="btn btn-primary mt-5"
         :disabled="$root.loading"
         dusk="continue"
     >
