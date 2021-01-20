@@ -12,7 +12,7 @@
         },
 
         data: () => ({
-            email: process.env.MIX_DEBUG ? 'roy@justbetter.nl' : null,
+            email: window.debug ? 'roy@justbetter.nl' : null,
             password: null,
             emailAvailable: true,
         }),

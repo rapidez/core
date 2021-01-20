@@ -1,6 +1,7 @@
 window._ = require('lodash')
 window.axios = require('axios')
 window.Vue = require('vue')
+window.debug = process.env.MIX_DEBUG == 'true'
 
 window.Turbolinks = require('turbolinks')
 Turbolinks.start()
@@ -66,13 +67,13 @@ document.addEventListener('turbolinks:load', () => {
             checkout: {
                 step: 1,
                 shipping_address: {
-                    'firstname': process.env.MIX_DEBUG ? 'Roy' : null,
-                    'lastname': process.env.MIX_DEBUG ? 'Duineveld' : null,
-                    'zipcode': process.env.MIX_DEBUG ? '1823CW' : null,
-                    'housenumber': process.env.MIX_DEBUG ? 7 : null,
-                    'street': process.env.MIX_DEBUG ? 'Pettemerstraat' : null,
-                    'city': process.env.MIX_DEBUG ? 'Alkmaar' : null,
-                    'telephone': process.env.MIX_DEBUG ? '0727100094' : null,
+                    'firstname': window.debug ? 'Roy' : null,
+                    'lastname': window.debug ? 'Duineveld' : null,
+                    'zipcode': window.debug ? '1823CW' : null,
+                    'housenumber': window.debug ? 7 : null,
+                    'street': window.debug ? 'Pettemerstraat' : null,
+                    'city': window.debug ? 'Alkmaar' : null,
+                    'telephone': window.debug ? '0727100094' : null,
                 },
                 billing_address: {},
                 hide_billing: true,
