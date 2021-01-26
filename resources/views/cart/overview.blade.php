@@ -28,9 +28,16 @@
                 </div>
                 <div class="w-2/6 sm:w-1/6 lg:w-1/12">
                     <div class="inline-flex">
-                        <x-rapidez::input class="text-right" type="number" min="1" name="test" v-model="item.qty" v-bind:dusk="'qty-'+index" />
+                        <x-rapidez::input
+                            class="text-right"
+                            type="number"
+                            min="1"
+                            name="qty"
+                            v-model="item.qty"
+                            v-bind:dusk="'qty-'+index"
+                        />
                         <button
-                            @click="changeQty(item)"
+                            v-on:click="changeQty(item)"
                             class="btn btn-primary ml-1"
                             :disabled="$root.loading"
                             title="@lang('Update')"
