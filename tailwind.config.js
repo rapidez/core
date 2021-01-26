@@ -18,26 +18,22 @@ module.exports = {
                 primary: 'var(--color-primary)',
                 secondary: 'var(--color-secondary)',
             },
-            inset: {
-                '-full': '-100%',
-                '1/2': '50%',
-            },
             width: {
-                '80': '20rem',
                 '400px': '400px',
                 '960px': '960px'
             }
         }
     },
     variants: {
-        cursor: ['responsive', 'disabled'],
-        display: ['responsive', 'group-hover'],
-        opacity: ['responsive', 'hover', 'focus', 'disabled'],
+        extend: {
+            cursor: ['disabled'],
+            display: ['group-hover'],
+            opacity: ['disabled'],
+        }
     },
     plugins: [
-        require('@tailwindcss/ui'),
-    ],
-    experimental: {
-        applyComplexClasses: true,
-    }
+        require('@tailwindcss/forms'),
+        require('@tailwindcss/typography'),
+        require('@tailwindcss/aspect-ratio'),
+    ]
 }

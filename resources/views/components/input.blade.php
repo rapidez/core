@@ -1,10 +1,5 @@
-<div>
-    @if(!isset($label) || (isset($label) && $label))
-        <label class="font-semibold text-gray-700 text-sm" for="{{ $name }}">@lang($label ?? ucfirst($name))</label>
-    @endif
-    <input
-        {{ $attributes->merge(['class' => 'form-input w-full', 'type' => 'text', 'placeholder' => __($label ?? ucfirst($name))]) }}
-        id="{{ $name }}"
-        dusk="{{ $name }}"
-    >
-</div>
+<input
+    {{ $attributes->merge(['class' => 'w-full py-2 px-3 border-gray-300 rounded focus:ring-green-500 focus:border-green-500', 'type' => 'text', 'placeholder' => __($placeholder ?? ucfirst($name))]) }}
+    id="{{ $name }}"
+    dusk="{{ $name }}"
+>

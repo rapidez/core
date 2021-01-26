@@ -5,71 +5,30 @@
         <p class="col-span-12 font-bold text-2xl">
             @lang('Shipping address')
         </p>
-        <div class="col-span-12 sm:col-span-6">
-            <x-rapidez::input name="firstname" v-model="checkout.shipping_address.firstname" required/>
-        </div>
-        <div class="col-span-12 sm:col-span-6">
-            <x-rapidez::input name="lastname" v-model="checkout.shipping_address.lastname" required/>
-        </div>
-        <div class="col-span-6 sm:col-span-3">
-            <x-rapidez::input name="zipcode" v-model="checkout.shipping_address.zipcode" required/>
-        </div>
-        <div class="col-span-6 sm:col-span-3">
-            <x-rapidez::input name="housenumber" v-model="checkout.shipping_address.housenumber" :placeholder="__('Nr.')" required/>
-        </div>
-        <div class="col-span-12 sm:col-span-6 sm:col-start-1">
-            <x-rapidez::input name="street" v-model="checkout.shipping_address.street" required/>
-        </div>
-        <div class="col-span-12 sm:col-span-6 sm:col-start-1">
-            <x-rapidez::input name="city" v-model="checkout.shipping_address.city" required/>
-        </div>
-        <div class="col-span-12 sm:col-span-6 sm:col-start-1">
-            <x-rapidez::input name="telephone" v-model="checkout.shipping_address.telephone" required/>
-        </div>
+        @include('rapidez::checkout.partials.form', ['type' => 'shipping'])
     </div>
 
-    <div class="col-span-12">
-        <input type="checkbox" v-model="checkout.hide_billing" id="hide_billing">
-        <label for="hide_billing">@lang('My billing and shipping address are the same')</label>
+    <div class="col-span-12 my-5">
+        <x-rapidez::checkbox v-model="checkout.hide_billing">
+            @lang('My billing and shipping address is the same')
+        </x-rapidez::checkbox>
     </div>
     <div v-if="!checkout.hide_billing" class="grid grid-cols-12 gap-4 mb-3">
         <p class="col-span-12 font-bold text-2xl">
             @lang('Billing address')
         </p>
-        <div class="col-span-12 sm:col-span-6">
-            <x-rapidez::input name="firstname" v-bind:required="!checkout.hide_billing" v-model="checkout.billing_address.firstname"/>
-        </div>
-        <div class="col-span-12 sm:col-span-6">
-            <x-rapidez::input name="lastname" v-bind:required="!checkout.hide_billing" v-model="checkout.billing_address.lastname"/>
-        </div>
-        <div class="col-span-6 sm:col-span-3">
-            <x-rapidez::input name="zipcode" v-bind:required="!checkout.hide_billing" v-model="checkout.billing_address.zipcode"/>
-        </div>
-        <div class="col-span-6 sm:col-span-3">
-            <x-rapidez::input name="housenumber" v-bind:required="!checkout.hide_billing" v-model="checkout.billing_address.housenumber" :placeholder="__('Nr.')"/>
-        </div>
-        <div class="col-span-12 sm:col-span-6 sm:col-start-1">
-            <x-rapidez::input name="street" v-bind:required="!checkout.hide_billing" v-model="checkout.billing_address.street"/>
-        </div>
-        <div class="col-span-12 sm:col-span-6 sm:col-start-1">
-            <x-rapidez::input name="city" v-bind:required="!checkout.hide_billing" v-model="checkout.billing_address.city"/>
-        </div>
-        <div class="col-span-12 sm:col-span-6 sm:col-start-1">
-            <x-rapidez::input name="telephone" v-bind:required="!checkout.hide_billing" v-model="checkout.billing_address.telephone"/>
-        </div>
+        @include('rapidez::checkout.partials.form', ['type' => 'billing'])
     </div>
 
     <h1 v-if="checkout.shipping_methods.length" class="font-bold text-4xl mt-5 mb-3">@lang('Shipping method')</h1>
 
     <div class="my-2" v-for="method in checkout.shipping_methods">
-        <input
-            type="radio"
-            name="shipping_method"
-            :value="method.carrier_code+'_'+method.method_code"
-            :id="method.carrier_code+'_'+method.method_code"
+        <x-rapidez::radio
+            v-bind:value="method.carrier_code+'_'+method.method_code"
             v-model="checkout.shipping_method"
         >
-        <label :for="method.carrier_code+'_'+method.method_code">@{{ method.method_title }}</label>
+            @{{ method.method_title }}
+        </x-rapidez::radio>
     </div>
 
     <button
