@@ -5,7 +5,7 @@
 
 @section('content')
     <div class="container mx-auto">
-        <h1 class="font-bold text-4xl">{{ $page->content_heading }}</h1>
+        <h1 class="font-bold text-4xl mb-5">{{ $page->content_heading }}</h1>
         @widget('content', 'pages', ($page->identifier == 'home' ? 'cms' : $page->identifier).'_index_index')
         <div class="mb-5 prose prose-green">
             {!! $page->content !!}
