@@ -1,8 +1,9 @@
 <script>
+    import GetCart from './../Cart/mixins/GetCart'
     import InteractWithUser from './../User/mixins/InteractWithUser'
 
     export default {
-        mixins: [InteractWithUser],
+        mixins: [GetCart, InteractWithUser],
 
         props: {
             checkoutLogin: {
@@ -80,6 +81,8 @@
                     if (this.$root.cart) {
                         await this.linkUserToCart()
                         localStorage.mask = this.$root.cart.entity_id
+                    } else {
+                        await this.refreshCart()
                     }
 
                     this.successfulLogin()
