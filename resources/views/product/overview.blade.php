@@ -4,7 +4,7 @@
 @section('description', $product->meta_description)
 
 @section('content')
-    <h1 class="font-bold text-4xl">{{ $product->name }}</h1>
+    <h1 class="font-bold text-4xl mb-5">{{ $product->name }}</h1>
 
     <div class="flex flex-col sm:flex-row mb-5">
         <div class="sm:w-2/3 sm:mr-5">
