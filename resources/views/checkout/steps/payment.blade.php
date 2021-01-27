@@ -15,7 +15,9 @@
             <div v-for="agreement in data.checkoutAgreements">
                 <x-rapidez::slideover>
                     <x-slot name="button">
-                        <a href="#" v-on:click.prevent="toggle" v-if="agreement.mode == 'AUTO'">@{{ agreement.checkbox_text }}</a>
+                        <a class="text-gray-700" href="#" v-on:click.prevent="toggle" v-if="agreement.mode == 'AUTO'">
+                            @{{ agreement.checkbox_text }}
+                        </a>
                         <div v-else>
                             <x-rapidez::checkbox
                                 name="agreement_ids[]"
