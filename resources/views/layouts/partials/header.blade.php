@@ -1,4 +1,4 @@
-<div class="flex flex-wrap items-center mb-5 border-b shadow">
+<div class="flex flex-wrap items-center mb-5 border-b shadow {{ Route::currentRouteName() == 'checkout' ? 'justify-between' : '' }}">
     <div class="w-1/6 sm:w-3/12">
         <div class="text-xl sm:text-3xl ml-3">
             <a href="/" aria-label="@lang('Go to home')">
