@@ -7,7 +7,7 @@
             <div>
                 <form class="mt-5 flex" @submit.prevent="applyCoupon">
                     <x-rapidez::input
-                        class="mr-3"
+                        :label="false"
                         name="couponCode"
                         placeholder="Coupon code"
                         v-on="inputEvents"
@@ -16,7 +16,7 @@
                     />
                     <button
                         type="submit"
-                        class="btn btn-primary"
+                        class="btn btn-primary ml-3"
                         :disabled="$root.loading"
                     >
                         @lang('Apply')

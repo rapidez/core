@@ -29,6 +29,7 @@
                 <div class="w-2/6 sm:w-1/6 lg:w-1/12">
                     <div class="inline-flex">
                         <x-rapidez::input
+                            :label="false"
                             class="text-right"
                             type="number"
                             min="1"
