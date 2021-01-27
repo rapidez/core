@@ -1,8 +1,9 @@
 <script>
     import GetCart from './../Cart/mixins/GetCart'
+    import InteractWithUser from './../User/mixins/InteractWithUser'
 
     export default {
-        mixins: [GetCart],
+        mixins: [GetCart, InteractWithUser],
 
         data: () => ({
             options: {},
@@ -40,6 +41,10 @@
                     this.refreshCart()
                     this.error = null
                 }).catch((error) => {
+                    if (error.response.status == 401) {
+                        alert('Your session expired, please login again')
+                        this.logout('/login')
+                    }
                     this.error = error.response.data.message
                 })
             },
