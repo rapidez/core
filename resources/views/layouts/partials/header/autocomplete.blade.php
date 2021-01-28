@@ -4,8 +4,7 @@
     v-cloak
 >
     <data-search
-        {{-- This workaround can be removed when this is released: https://github.com/appbaseio/reactivesearch/pull/1584 --}}
-        @[valueselected]="search"
+        v-on:value-selected="search"
         component-id="autocomplete"
         :inner-class="{ input: 'rounded' }"
         :data-field="config.searchable"

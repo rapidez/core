@@ -94,7 +94,6 @@ document.addEventListener('turbolinks:load', () => {
                 // implement payment providers.
                 doNotGoToTheNextStep: false,
             },
-            valueselected: 'valueSelected'
         },
         methods: {
             search(value) {
