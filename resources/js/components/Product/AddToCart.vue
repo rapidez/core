@@ -68,6 +68,7 @@
 
             disabledOptions: function () {
                 var disabledOptions = {};
+                var valuesPerAttribute = {};
 
                 if (!config.product.super_attributes) {
                     return disabledOptions
@@ -75,17 +76,37 @@
 
                 Object.entries(config.product.super_attributes).forEach(([attributeId, attribute]) => {
                     disabledOptions[attribute.code] = []
+                    valuesPerAttribute[attributeId] = []
+
+                    // Fill list with products per attribute value
+                    Object.entries(config.product.children).forEach(([productId, option]) => {
+                        if (!valuesPerAttribute[attributeId][option[attribute.code]]) {
+                            valuesPerAttribute[attributeId][option[attribute.code]] = []
+                        }
+
+                        valuesPerAttribute[attributeId][option[attribute.code]].push(productId)
+                    })
                 })
 
-                // Some looping and filtering magic should be performed here to match
-                // the children with the selected options and disabled options based
-                // on which children are available. Have a look at the Magento demo
-                // to see how it's working. When that's working the price also
-                // needs to change based on the selection, first things first
-                Object.entries(config.product.children).forEach(([productId, option]) => {
-                    Object.entries(this.options).forEach(([attributeId, optionId]) => {
-                        let attributeCode = config.product.super_attributes[attributeId].code
-                        // disabledOptions[attributeCode].push(optionId)
+                // Here we cross reference the attributes with each other
+                // keeping in mind the products we have with the current
+                // selected attribute values.
+                Object.entries(valuesPerAttribute).forEach(([attributeId, productsPerValue]) => {
+                    Object.entries(valuesPerAttribute).forEach(([attributeId2, productsPerValue2]) => {
+                        if (attributeId !== attributeId2) {
+                            var selectedValueId = this.options[attributeId]
+                            if (selectedValueId) {
+                                Object.entries(productsPerValue2).forEach(([valueId, products]) => {
+                                    var intersects = productsPerValue[selectedValueId].filter(value => products.includes(value))
+                                    // If there is no product that intersects for this attribute value
+                                    // there will be no product available for this attribute value
+                                    if (intersects.length <= 0) {
+                                        var attributeCode = config.product.super_attributes[attributeId2].code
+                                        disabledOptions[attributeCode].push(valueId)
+                                    }
+                                })
+                            }
+                        }
                     })
                 })
 
