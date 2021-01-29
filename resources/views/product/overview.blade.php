@@ -24,7 +24,6 @@
             <div class="p-3 my-5 sm:mt-0 bg-gray-200 rounded">
                 {!! $product->description !!}
             </div>
-            <div class="font-bold text-3xl mb-3">{{ $product->formattedPrice }}</div>
             @include('rapidez::product.partials.addtocart')
         </div>
     </div>
