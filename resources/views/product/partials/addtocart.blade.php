@@ -1,5 +1,6 @@
 <add-to-cart v-cloak>
-    <div slot-scope="{ qty, changeQty, options, error, add, disabledOptions }">
+    <div slot-scope="{ qty, changeQty, options, error, add, disabledOptions, price }">
+        <div class="font-bold text-3xl mb-3">@{{ price | price}}</div>
         <div v-for="(superAttribute, superAttributeId) in config.product.super_attributes">
             <x-rapidez::label v-bind:for="'super_attribute_'+superAttributeId">@{{ superAttribute.label }}</x-rapidez::label>
             <x-rapidez::select

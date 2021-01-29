@@ -13,6 +13,7 @@
 
         render() {
             return this.$scopedSlots.default({
+                price: this.simpleProduct.price,
                 disabledOptions: this.disabledOptions,
                 changeQty: this.changeQty,
                 options: this.options,
@@ -51,6 +52,29 @@
         },
 
         computed: {
+            simpleProduct: function() {
+                var product = config.product
+
+                var simpleProducts = Object.values(config.product.children).filter(childProduct => {
+                    let isMatching = true
+                    Object.entries(this.options).forEach(([attributeId, valueId]) => {
+                        var attributeCode = config.product.super_attributes[attributeId].code
+
+                        if (Number(childProduct[attributeCode]) !== Number(valueId)) {
+                            isMatching = false
+                        }
+                    })
+                    return isMatching
+                })
+
+                if (simpleProducts.length) {
+                    product = simpleProducts[0]
+                }
+
+                return product
+            },
+
+
             productOptions: function () {
                 let options = []
                 Object.entries(this.options).forEach(([key, val]) => {
