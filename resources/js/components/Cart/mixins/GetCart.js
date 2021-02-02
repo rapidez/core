@@ -50,5 +50,9 @@ export default {
         hasItems: function () {
             return this.cart && this.cart.items && Object.keys(this.cart.items).length
         },
+
+        hasVirtualItems: function () {
+            return Object.values(this.cart.items).filter((item) => item.type == 'downloadable').length
+        }
     },
 }

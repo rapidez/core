@@ -12,6 +12,10 @@ Vue.mixin({
             } else {
                 return await magento[method]('guest-carts/' + localStorage.mask + '/' + endpoint, data)
             }
+        },
+
+        async magentoCustomer(method, endpoint, data) {
+            return await magentoUser[method](endpoint, data)
         }
     }
 })

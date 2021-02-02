@@ -1,15 +1,16 @@
 <script>
     import GetCart from './../Cart/mixins/GetCart'
+    import InteractWithUser from './../User/mixins/InteractWithUser'
 
     export default {
-        mixins: [GetCart],
+        mixins: [GetCart, InteractWithUser],
 
         render() {
             return this.$scopedSlots.default({
                 hasItems: this.hasItems,
                 cart: this.cart,
                 checkout: this.checkout,
-                save: this.save,
+                save: this.save
             })
         },
 
@@ -19,12 +20,13 @@
                 return
             }
 
+            this.checkout.hasVirtualItems = this.hasVirtualItems
             this.getShippingMethods()
         },
 
         methods: {
             hasOnlyVirtualItems() {
-                return Object.values(this.cart.items).filter((item) => item.type == 'downloadable').length === Object.values(this.cart.items).length
+                return this.hasVirtualItems === this.hasItems
             },
 
             async getShippingMethods() {
@@ -55,6 +57,7 @@
                             if (!await this.saveCredentials()) {
                                 validated = false
                             }
+
                             break
                         case 'payment_method':
                             if (!await this.savePaymentMethod()) {
@@ -87,6 +90,15 @@
                         addressInformation.shipping_method_code = this.checkout.shipping_method.split('_')[1]
                     }
 
+                    if (this.checkout.password) {
+                        let customer = await this.createCustomer(addressInformation)
+                        if (!customer) {
+                            return false
+                        }
+
+                        this.login(customer);
+                    }
+
                     let response = await this.magentoCart('post', 'shipping-information', {
                         addressInformation: addressInformation
                     })
@@ -107,7 +119,12 @@
                     validated = false
                 }
 
-                if (!this.checkout.shipping_method && this.hasOnlyVirtualItems()) {
+                if (validated && this.checkout.password != this.checkout.password_repeat) {
+                    alert('Please make sure your password match')
+                    validated = false
+                }
+
+                if (!this.checkout.shipping_method && this.hasOnlyVirtualItems() && validated) {
                     return true
                 }
 
@@ -128,10 +145,14 @@
                 }
 
                 try {
+                    let email = this.$root.guestEmail
+                    if (this.user.email) {
+                        email = this.user.email
+                    }
                     let response = await this.magentoCart('post', 'payment-information', {
                         billingAddress: this.billingAddress,
                         shippingAddress: this.shippingAddress,
-                        email: this.$root.guestEmail,
+                        email: email,
                         paymentMethod: {
                             method: this.checkout.payment_method,
                             extension_attributes: {
@@ -149,6 +170,75 @@
                     alert(error.response.data.message)
                     return false
                 }
+            },
+
+            async createCustomer(addressInformation) {
+                try {
+                    let response = await this.magentoCustomer('post', 'customers', {
+                        customer: {
+                            email: this.$root.guestEmail,
+                            firstname: this.shippingAddress.firstname,
+                            lastname: this.shippingAddress.lastname,
+                            addresses: [
+                                {
+                                    defaultShipping: true,
+                                    firstname: this.shippingAddress.firstname,
+                                    lastname: this.shippingAddress.lastname,
+                                    postcode: this.shippingAddress.postcode,
+                                    street: this.shippingAddress.street,
+                                    city: this.shippingAddress.city,
+                                    countryId: this.shippingAddress.country_id,
+                                    telephone:  this.shippingAddress.telephone
+                                },
+                                {
+                                    defaultBilling: true,
+                                    firstname: this.billingAddress.firstname,
+                                    lastname: this.billingAddress.lastname,
+                                    postcode: this.billingAddress.postcode,
+                                    street: this.billingAddress.street,
+                                    city: this.billingAddress.city,
+                                    countryId: this.billingAddress.country_id,
+                                    telephone:  this.billingAddress.telephone
+                                }
+                            ]
+                        },
+                        password: this.checkout.password
+                    })
+                    alert('Account has been created')
+                    return response.data
+                } catch (error) {
+                    alert(error.response.data.message)
+                    return false
+                }
+            },
+
+            async login(customer) {
+                magento.post('integration/customer/token', {
+                    username: customer.email,
+                    password: this.checkout.password
+                })
+                .then(async(response) => {
+                    localStorage.token = response.data
+                    window.magentoUser.defaults.headers.common['Authorization'] = `Bearer ${localStorage.token}`;
+                    await this.refreshUser(false)
+                    if (this.$root.cart) {
+                        await this.linkUserToCart(customer.id)
+                        localStorage.mask = this.$root.cart.entity_id
+                    }
+                })
+                .catch((error) => {
+                    alert(error.response.data.message)
+                    return false
+                })
+            },
+
+            async linkUserToCart(customerId) {
+                await magentoUser.put('guest-carts/' + localStorage.mask, {
+                    customerId: customerId,
+                    storeId: config.store
+                }).catch((error) => {
+                    alert(error.response.data.message)
+                })
             }
         },
 

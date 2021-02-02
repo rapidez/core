@@ -72,6 +72,22 @@
         <label :for="method.carrier_code+'_'+method.method_code">@{{ method.method_title }}</label>
     </div>
 
+    <p v-if="!user" class="col-span-12 font-bold text-2xl">
+        @lang('Create account')
+    </p>
+    <div class="grid grid-cols-12 gap-4 mb-3" v-if="!user">
+        <div class="col-span-12" v-if="!checkout.hasVirtualItems">
+            <input type="checkbox" v-model="checkout.create_account" id="create_account">
+            <label for="create_account">@lang('Create an account')</label>
+        </div>
+        <div class="col-span-12 sm:col-span-6" v-if="checkout.create_account || checkout.hasVirtualItems">
+            <x-rapidez::input name="password" type="password" v-model="checkout.password" required />
+        </div>
+        <div class="col-span-12 sm:col-span-6" v-if="checkout.create_account || checkout.hasVirtualItems">
+            <x-rapidez::input name="password_repeat" type="password" v-model="checkout.password_repeat" required />
+        </div>
+    </div>
+
     <button
         type="submit"
         class="btn btn-primary mt-3"
