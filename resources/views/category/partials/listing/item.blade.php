@@ -5,9 +5,9 @@
             <x-rapidez::no-image v-else class="rounded-t h-48 mb-3"/>
             <div class="px-2">
                 <div class="hyphens">@{{ item.name }}</div>
-                <div class="font-semibold">@{{ item.formatted_price }}</div>
             </div>
         </a>
+        @include('rapidez::category.partials.listing.item.addtocart')
         <product-compare-checkbox
             class="absolute right-0 top-0 p-1 mt-3 hidden group-hover:flex items-center flex-row-reverse bg-gray-100 text-gray-500 rounded-l lowercase"
             :key="item.id"
