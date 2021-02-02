@@ -10,7 +10,8 @@
                 hasItems: this.hasItems,
                 cart: this.cart,
                 checkout: this.checkout,
-                save: this.save
+                save: this.save,
+                goToStep: this.goToStep,
             })
         },
 
@@ -22,6 +23,7 @@
 
             this.checkout.hasVirtualItems = this.hasVirtualItems
             this.getShippingMethods()
+            this.getTotalsInformation()
         },
 
         methods: {
@@ -49,7 +51,26 @@
                 }
             },
 
-            async save(savedItems, goToStep) {
+            async getTotalsInformation() {
+                try {
+                    let response = await this.magentoCart('post', 'totals-information', {
+                        addressInformation: {
+                            address: {
+                                countryId: 'NL',
+                            }
+                        }
+                    })
+
+                    this.checkout.totals = response.data
+
+                    return true
+                } catch (error) {
+                    alert(error.response.data.message)
+                    return false
+                }
+            },
+
+            async save(savedItems, targetStep) {
                 let validated = true
                 await this.asyncForEach(savedItems, async item => {
                     switch(item) {
@@ -70,8 +91,17 @@
                 })
 
                 if (validated && !this.$root.checkout.doNotGoToTheNextStep) {
-                    this.checkout.step = goToStep
+                    this.goToStep(targetStep);
                 }
+            },
+
+            goToStep(step) {
+                if (step === 0) {
+                    Turbolinks.visit("/cart");
+                    return
+                }
+
+                this.checkout.step = step;
             },
 
             async saveCredentials() {
@@ -104,6 +134,7 @@
                     })
 
                     this.checkout.payment_methods = response.data.payment_methods
+                    this.checkout.totals = response.data.totals
                     this.$root.$emit('CheckoutCredentialsSaved')
                     return true
                 } catch (error) {

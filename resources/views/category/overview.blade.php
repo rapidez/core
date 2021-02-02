@@ -4,7 +4,7 @@
 @section('description', $category->meta_description)
 
 @section('content')
-    <h1 class="font-bold text-3xl">{{ $category->name }}</h1>
+    <h1 class="font-bold text-3xl mb-5">{{ $category->name }}</h1>
 
     @if($category->is_anchor)
         <category v-cloak>

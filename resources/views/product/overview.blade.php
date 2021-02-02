@@ -4,7 +4,7 @@
 @section('description', $product->meta_description)
 
 @section('content')
-    <h1 class="font-bold text-4xl">{{ $product->name }}</h1>
+    <h1 class="font-bold text-4xl mb-5">{{ $product->name }}</h1>
 
     <div class="flex flex-col sm:flex-row mb-5">
         <div class="sm:w-2/3 sm:mr-5">
@@ -13,6 +13,7 @@
                     <img
                         src="/storage/resizes/467/catalog/product{{ $image->value }}" alt="{{ $product->name }}"
                         class="{{ $product->images->count() == 1 ? 'w-full sm:w-1/2 rounded' : 'w-1/2' }}"
+                        loading="lazy"
                     />
                 @empty
                     <x-rapidez::no-image class="rounded h-64"/>
@@ -23,7 +24,6 @@
             <div class="p-3 my-5 sm:mt-0 bg-gray-200 rounded">
                 {!! $product->description !!}
             </div>
-            <div class="font-bold text-3xl mb-3">{{ $product->formattedPrice }}</div>
             @include('rapidez::product.partials.addtocart')
         </div>
     </div>

@@ -1,35 +1,33 @@
 <h1 class="font-bold text-4xl mb-5">@lang('Payment method')</h1>
 <form v-on:submit.prevent="save(['payment_method'], 4)">
     <div class="my-2" v-for="(method, index) in checkout.payment_methods">
-        <input
-            type="radio"
-            name="payment_method"
-            :value="method.code"
-            :id="method.code"
-            :dusk="'method-'+index"
+        <x-rapidez::radio
+            v-bind:value="method.code"
+            v-bind:dusk="'method-'+index"
             v-model="checkout.payment_method"
         >
-        <label :for="method.code">@{{ method.title }}</label>
+            @{{ method.title }}
+        </x-rapidez::radio>
     </div>
 
     <graphql query="{ checkoutAgreements { agreement_id name checkbox_text content is_html mode } }">
-        <div v-if="data" slot-scope="{ data }">
+        <div v-if="data" slot-scope="{ data }" class="mt-5">
             <div v-for="agreement in data.checkoutAgreements">
                 <x-rapidez::slideover>
                     <x-slot name="button">
-                        <input type="checkbox" v-if="agreement.mode == 'AUTO'" checked disabled>
-                        <input
-                            v-else
-                            type="checkbox"
-                            name="agreement_ids[]"
-                            :value="agreement.agreement_id"
-                            :id="'agreement_'+agreement.agreement_id"
-                            v-model="checkout.agreement_ids"
-                            required
-                        >
-                        <label :for="'agreement_'+agreement.agreement_id">
-                            <a href="#" v-on:click.prevent="toggle">@{{ agreement.checkbox_text }}</a>
-                        </label>
+                        <a class="text-gray-700" href="#" v-on:click.prevent="toggle" v-if="agreement.mode == 'AUTO'">
+                            @{{ agreement.checkbox_text }}
+                        </a>
+                        <div v-else>
+                            <x-rapidez::checkbox
+                                name="agreement_ids[]"
+                                v-bind:value="agreement.agreement_id"
+                                v-model="checkout.agreement_ids"
+                                required
+                            >
+                                <a href="#" v-on:click.prevent="toggle">@{{ agreement.checkbox_text }}</a>
+                            </x-rapidez::checkbox>
+                        </div>
                     </x-slot>
 
                     <x-slot name="title">
@@ -44,8 +42,8 @@
     </graphql>
 
     <button
-        type="submit mt-5"
-        class="btn btn-primary"
+        type="submit"
+        class="btn btn-primary mt-5"
         :disabled="$root.loading"
         dusk="continue"
     >

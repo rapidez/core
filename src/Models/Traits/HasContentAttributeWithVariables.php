@@ -38,9 +38,35 @@ trait HasContentAttributeWithVariables
             }
 
             switch ($type) {
+                case 'Magento\CatalogWidget\Block\Product\ProductsList':
+                    return $this->productListWidget($options);
                 default:
                     return '<hr>'.__('The ":type" widget type is not supported.', ['type' => $type]).'<hr>';
             }
         }, $content);
+    }
+
+    protected function productListWidget(array $options): string
+    {
+        $conditions = collect($this->fancyMagentoSyntaxDecoder($options['conditions_encoded']));
+        $condition = $conditions->first(function ($condition) {
+            return $condition->type == 'Magento\CatalogWidget\Model\Rule\Condition\Product';
+        });
+
+        return view('rapidez::widget.productlist', compact('options', 'condition'));
+    }
+
+    protected function fancyMagentoSyntaxDecoder(string $encodedString): object
+    {
+        $mapping = [
+            '{' => '^[',
+            '}' => '^]',
+            '"' => '`',
+            '\\' => '|',
+            '<' => '^(',
+            '>' => '^)'
+        ];
+
+        return json_decode(str_replace(array_values($mapping), array_keys($mapping), $encodedString));
     }
 }

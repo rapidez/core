@@ -7,8 +7,10 @@ $page = \Rapidez\Core\Models\Page::firstWhere('identifier', 'no-route')
 @section('description', $page->meta_description)
 
 @section('content')
-    <h1 class="font-bold text-4xl">{{ $page->content_heading }}</h1>
-    <div class="mb-5">
-        {!! $page->content !!}
+    <div class="container mx-auto">
+        <h1 class="font-bold text-4xl mb-5">{{ $page->content_heading }}</h1>
+        <div class="mb-5 prose prose-green">
+            {!! $page->content !!}
+        </div>
     </div>
 @endsection

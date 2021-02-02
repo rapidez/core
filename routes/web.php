@@ -21,7 +21,7 @@ Route::middleware('web')->group(function () {
 
             if ($rewrite->entity_type == 'product') {
                 if ($product = Product::selectForProductPage()->find($rewrite->entity_id)) {
-                    $attributes = ['sku', 'super_attributes'];
+                    $attributes = ['sku', 'super_attributes', 'children', 'price'];
                     foreach ($product->super_attributes ?: [] as $superAttribute) {
                         $attributes[] = $superAttribute->code;
                     }

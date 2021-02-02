@@ -38,7 +38,8 @@ class IndexProductsCommand extends Command
 
             $this->createIndexIfNeeded(config('rapidez.es_prefix') . '_products_' . $store->store_id, $this->option('fresh'));
 
-            $productQuery = Product::where('visibility', 4)->selectOnlyIndexable();
+            $flat = (new Product)->getTable();
+            $productQuery = Product::where($flat.'.visibility', 4)->selectOnlyIndexable();
 
             $scopes = Eventy::filter('index.product.scopes') ?: [];
             foreach ($scopes as $scope) {
@@ -87,6 +88,9 @@ class IndexProductsCommand extends Command
                         'properties' => [
                             'price' => [
                                 'type' => 'double',
+                            ],
+                            'children' => [
+                                'type' => 'flattened',
                             ]
                         ]
                     ]

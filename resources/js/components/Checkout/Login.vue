@@ -1,8 +1,9 @@
 <script>
+    import GetCart from './../Cart/mixins/GetCart'
     import InteractWithUser from './../User/mixins/InteractWithUser'
 
     export default {
-        mixins: [InteractWithUser],
+        mixins: [GetCart, InteractWithUser],
 
         props: {
             checkoutLogin: {
@@ -12,8 +13,8 @@
         },
 
         data: () => ({
-            email: process.env.MIX_DEBUG ? 'roy@justbetter.nl' : null,
-            password: null,
+            email: window.debug ? 'roy@justbetter.nl' : '',
+            password: '',
             emailAvailable: true,
         }),
 
@@ -59,7 +60,9 @@
                         this.$root.guestEmail = this.email
                         this.$root.checkout.step = 2
                     } else {
-                        // TODO: Focus on password.
+                        this.$nextTick(function() {
+                            this.$scopedSlots.default()[0].context.$refs.password.focus()
+                        })
                     }
                 })
                 .catch((error) => alert(error.response.data.message))
@@ -78,6 +81,8 @@
                     if (this.$root.cart) {
                         await this.linkUserToCart()
                         localStorage.mask = this.$root.cart.entity_id
+                    } else {
+                        await this.refreshCart()
                     }
 
                     this.successfulLogin()
@@ -89,6 +94,9 @@
             },
 
             loginInputChange(e) {
+                if (e.target.id == 'email') {
+                    this.emailAvailable = true
+                }
                 this[e.target.id] = e.target.value
             },
 

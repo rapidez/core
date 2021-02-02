@@ -2,30 +2,36 @@
 
 namespace Rapidez\Core\ViewDirectives;
 
+use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Models\Widget;
 
 class WidgetDirective
 {
     public function render($location, $type, $handle = 'default', $entities = null)
     {
-        $html = '';
+        return Cache::rememberForever(
+            'widget.'.md5(serialize(func_get_args())),
+            function () use ($location, $type, $handle, $entities) {
+                $html = '';
 
-        if ($type == 'pages') {
-            $type = ['pages', 'all_pages'];
-        }
+                if ($type == 'pages') {
+                    $type = ['pages', 'all_pages'];
+                }
 
-        $widgets = Widget::where('layout_handle', $handle)
-            ->{is_array($type) ? 'whereIn' : 'where'}('page_group', $type)
-            ->where('block_reference', $location);
+                $widgets = Widget::where('layout_handle', $handle)
+                    ->{is_array($type) ? 'whereIn' : 'where'}('page_group', $type)
+                    ->where('block_reference', $location);
 
-        if ($entities) {
-            $widgets->where('entities', $entities);
-        }
+                if ($entities) {
+                    $widgets->where('entities', $entities);
+                }
 
-        foreach ($widgets->get() as $widget) {
-            $html .= $widget->content;
-        }
+                foreach ($widgets->get() as $widget) {
+                    $html .= $widget->content;
+                }
 
-        return $html;
+                return $html;
+            }
+        );
     }
 }

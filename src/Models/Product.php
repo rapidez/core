@@ -2,18 +2,19 @@
 
 namespace Rapidez\Core\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use NumberFormatter;
 use Rapidez\Core\Casts\DecodeHtmlEntities;
 use Rapidez\Core\Models\Config;
 use Rapidez\Core\Models\Model;
 use Rapidez\Core\Models\Scopes\Product\WithProductAttributesScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductCategoryIdsScope;
+use Rapidez\Core\Models\Scopes\Product\WithProductChildrenScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductSuperAttributesScope;
 use Rapidez\Core\Models\Traits\Product\CastMultiselectAttributes;
 use Rapidez\Core\Models\Traits\Product\CastSuperAttributes;
 use Rapidez\Core\Models\Traits\Product\SelectAttributeScopes;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use NumberFormatter;
 use TorMorten\Eventy\Facades\Eventy;
 
 class Product extends Model
@@ -33,8 +34,11 @@ class Product extends Model
         static::addGlobalScope(new WithProductAttributesScope);
         static::addGlobalScope(new WithProductSuperAttributesScope);
         static::addGlobalScope(new WithProductCategoryIdsScope);
-        static::addGlobalScope('only-supported-types', function (Builder $builder) {
-            $builder->whereNotIn('type_id', ['grouped', 'bundle']);
+        static::addGlobalScope(new WithProductChildrenScope);
+        static::addGlobalScope('defaults', function (Builder $builder) {
+            $builder
+                ->whereNotIn($builder->getQuery()->from.'.type_id', ['grouped', 'bundle'])
+                ->groupBy($builder->getQuery()->from.'.entity_id');
         });
 
         $scopes = Eventy::filter('product.scopes') ?: [];
@@ -52,7 +56,10 @@ class Product extends Model
     {
         return array_merge(
             parent::getCasts(),
-            ['name' => DecodeHtmlEntities::class],
+            [
+                'name' => DecodeHtmlEntities::class,
+                'children' => 'object',
+            ],
             $this->getSuperAttributeCasts(),
             $this->getMultiselectAttributeCasts(),
             Eventy::filter('product.casts') ?: [],

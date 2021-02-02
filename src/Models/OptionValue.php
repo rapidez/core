@@ -32,15 +32,20 @@ class OptionValue extends Model
 
     public static function getCachedByOptionId(int $optionId): string
     {
-        $optionValue = Cache::rememberForever('optionvalues', function () {
-            return self::select('option_id')
-                ->selectRaw('JSON_OBJECTAGG(store_id, `value`) as `value`')
-                ->groupBy('option_id')
-                ->get()
-                ->keyBy('option_id')
-                ->toArray();
-        })[$optionId]['value'];
+        if (!$optionValues = config('cache.app.optionvalues')) {
+            $optionValues = Cache::rememberForever('optionvalues', function () {
+                return self::select('option_id')
+                    ->selectRaw('JSON_OBJECTAGG(store_id, `value`) as `value`')
+                    ->groupBy('option_id')
+                    ->get()
+                    ->keyBy('option_id')
+                    ->toArray();
+            });
 
+            config(['cache.app.optionvalues' => $optionValues]);
+        }
+
+        $optionValue = $optionValues[$optionId]['value'];
         return html_entity_decode($optionValue[config('rapidez.store')] ?? $optionValue[0]);
     }
 }

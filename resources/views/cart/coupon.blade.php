@@ -5,28 +5,22 @@
         </h3>
         <coupon v-slot="{ cart, removeCoupon, couponCode, inputEvents, applyCoupon, submitError }">
             <div>
-                <form class="mt-5 sm:flex sm:items-center" @submit.prevent="applyCoupon">
-                    <div class="max-w-xs w-full">
-                        <div class="relative rounded-md">
-                            <input
-                                id="couponCode"
-                                class="form-input block w-full sm:text-sm sm:leading-5"
-                                placeholder="@lang('Apply coupon code')"
-                                v-on="inputEvents"
-                                :value="couponCode"
-                                :disabled="$root.loading"
-                            >
-                        </div>
-                    </div>
-                    <span class="mt-3 inline-flex rounded-md sm:mt-0 sm:ml-3 sm:w-auto">
-                        <button
-                            type="submit"
-                            class="btn btn-primary"
-                            :disabled="$root.loading"
-                        >
-                            @lang('Apply')
-                        </button>
-                    </span>
+                <form class="mt-5 flex" @submit.prevent="applyCoupon">
+                    <x-rapidez::input
+                        :label="false"
+                        name="couponCode"
+                        placeholder="Coupon code"
+                        v-on="inputEvents"
+                        v-bind:value="couponCode"
+                        v-bind:disabled="$root.loading"
+                    />
+                    <button
+                        type="submit"
+                        class="btn btn-primary ml-3"
+                        :disabled="$root.loading"
+                    >
+                        @lang('Apply')
+                    </button>
                 </form>
                 <p class="text-red-500 text-xs italic w-3/4 mt-3" v-if="submitError">@{{ submitError }}</p>
                 <div class="relative rounded-md" v-if="cart.discount_name">
