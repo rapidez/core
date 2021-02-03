@@ -27,6 +27,23 @@ export default {
             }
         },
 
+        async login(username, password, linkToCartCallback) {
+            magento.post('integration/customer/token', {
+                username: username,
+                password: password
+            })
+            .then(async(response) => {
+                localStorage.token = response.data
+                window.magentoUser.defaults.headers.common['Authorization'] = `Bearer ${localStorage.token}`;
+
+                linkToCartCallback()
+            })
+            .catch((error) => {
+                alert(error.response.data.message)
+                return false
+            })
+        },
+
         logout(redirect = '/') {
             localStorage.removeItem('token')
             localStorage.removeItem('user')
@@ -34,6 +51,45 @@ export default {
             localStorage.removeItem('cart')
             this.$root.user = null
             Turbolinks.visit(redirect)
+        },
+
+        async createCustomer(shippingAddress, billingAddress, password) {
+            try {
+                let response = await magentoUser['post']('customers', {
+                    customer: {
+                        email: this.$root.guestEmail,
+                        firstname: shippingAddress.firstname,
+                        lastname: shippingAddress.lastname,
+                        addresses: [
+                            {
+                                defaultShipping: true,
+                                firstname: shippingAddress.firstname,
+                                lastname: shippingAddress.lastname,
+                                postcode: shippingAddress.postcode,
+                                street: shippingAddress.street,
+                                city: shippingAddress.city,
+                                countryId: shippingAddress.country_id,
+                                telephone:  shippingAddress.telephone
+                            },
+                            {
+                                defaultBilling: true,
+                                firstname: billingAddress.firstname,
+                                lastname: billingAddress.lastname,
+                                postcode: billingAddress.postcode,
+                                street: billingAddress.street,
+                                city: billingAddress.city,
+                                countryId: billingAddress.country_id,
+                                telephone:  billingAddress.telephone
+                            }
+                        ]
+                    },
+                    password: password
+                })
+                return response.data
+            } catch (error) {
+                alert(error.response.data.message)
+                return false
+            }
         }
     },
 
