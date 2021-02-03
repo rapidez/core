@@ -4,6 +4,18 @@
 
     export default {
         mixins: [GetCart, InteractWithUser],
+        props: {
+            product: {
+                type: Object,
+                default: function () {
+                    if (config.product) {
+                        return config.product
+                    }
+
+                    return {}
+                }
+            }
+        },
 
         data: () => ({
             options: {},
@@ -13,6 +25,7 @@
 
         render() {
             return this.$scopedSlots.default({
+                getValuesByCode: this.getValuesByCode,
                 price: this.simpleProduct.price,
                 disabledOptions: this.disabledOptions,
                 changeQty: this.changeQty,
@@ -33,7 +46,7 @@
 
                 this.magentoCart('post', 'items', {
                     cartItem: {
-                        sku: config.product.sku,
+                        sku: this.product.sku,
                         quote_id: localStorage.getItem('mask'),
                         qty: this.qty,
                         product_option: this.productOptions
@@ -49,16 +62,51 @@
                     this.error = error.response.data.message
                 })
             },
+
+            getValuesByCode: function (code) {
+                if (!this.product[code].length) {
+                    // Result is already a value => label Object.
+                    return this.product[code]
+                }
+
+                // Get value label using the swatches.
+                if (this.getSwatches().hasOwnProperty(code)) {
+                    let swatchOptions = this.getSwatches()[code].options
+                    let values = {}
+
+                    Object.entries(this.product[code]).forEach(([key, val]) => {
+                        if (swatchOptions[val]) {
+                            values[val] = swatchOptions[val]['value']
+                        }
+                    })
+
+                    return values
+                }
+
+                return _.invert(this.product[code])
+            },
+
+            getSwatches: function() {
+                if (sessionStorage.swatches) {
+                    return JSON.parse(sessionStorage.swatches)
+                }
+
+                return {}
+            }
         },
 
         computed: {
             simpleProduct: function() {
-                var product = config.product
+                var product = this.product
 
-                var simpleProducts = Object.values(config.product.children).filter(childProduct => {
+                if (!product.super_attributes) {
+                    return product
+                }
+
+                var simpleProducts = Object.values(this.product.children).filter(childProduct => {
                     let isMatching = true
                     Object.entries(this.options).forEach(([attributeId, valueId]) => {
-                        var attributeCode = config.product.super_attributes[attributeId].code
+                        var attributeCode = product.super_attributes[attributeId].code
 
                         if (Number(childProduct[attributeCode]) !== Number(valueId)) {
                             isMatching = false
@@ -94,16 +142,16 @@
                 var disabledOptions = {};
                 var valuesPerAttribute = {};
 
-                if (!config.product.super_attributes) {
+                if (!this.product.super_attributes) {
                     return disabledOptions
                 }
 
-                Object.entries(config.product.super_attributes).forEach(([attributeId, attribute]) => {
+                Object.entries(this.product.super_attributes).forEach(([attributeId, attribute]) => {
                     disabledOptions[attribute.code] = []
                     valuesPerAttribute[attributeId] = []
 
                     // Fill list with products per attribute value
-                    Object.entries(config.product.children).forEach(([productId, option]) => {
+                    Object.entries(this.product.children).forEach(([productId, option]) => {
                         if (!valuesPerAttribute[attributeId][option[attribute.code]]) {
                             valuesPerAttribute[attributeId][option[attribute.code]] = []
                         }
@@ -121,11 +169,10 @@
                             var selectedValueId = this.options[attributeId]
                             if (selectedValueId) {
                                 Object.entries(productsPerValue2).forEach(([valueId, products]) => {
-                                    var intersects = productsPerValue[selectedValueId].filter(value => products.includes(value))
                                     // If there is no product that intersects for this attribute value
                                     // there will be no product available for this attribute value
-                                    if (intersects.length <= 0) {
-                                        var attributeCode = config.product.super_attributes[attributeId2].code
+                                    if (_.intersection(productsPerValue[selectedValueId], products).length <= 0) {
+                                        var attributeCode = this.product.super_attributes[attributeId2].code
                                         disabledOptions[attributeCode].push(valueId)
                                     }
                                 })
