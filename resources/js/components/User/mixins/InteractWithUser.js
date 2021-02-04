@@ -27,7 +27,7 @@ export default {
             }
         },
 
-        async login(username, password, linkToCartCallback) {
+        async login(username, password, loginCallback) {
             magento.post('integration/customer/token', {
                 username: username,
                 password: password
@@ -36,7 +36,7 @@ export default {
                 localStorage.token = response.data
                 window.magentoUser.defaults.headers.common['Authorization'] = `Bearer ${localStorage.token}`;
 
-                linkToCartCallback()
+                loginCallback()
             })
             .catch((error) => {
                 alert(error.response.data.message)

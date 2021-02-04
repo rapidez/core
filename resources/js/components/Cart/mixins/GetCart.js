@@ -41,9 +41,9 @@ export default {
             }
         },
 
-        async linkUserToCart(customerId = null) {
+        async linkUserToCart() {
             await magentoUser.put('guest-carts/'+localStorage.mask, {
-                customerId: customerId ? customerId : this.$root.user.id,
+                customerId: this.$root.user.id,
                 storeId: config.store
             }).catch((error) => {
                 alert(error.response.data.message)

@@ -31,7 +31,7 @@
         </x-rapidez::radio>
     </div>
 
-    <div v-if="!user" class="create-account-wrapper">
+    <div v-if="!user" id="create-account-wrapper">
         <p class="col-span-12 font-bold text-2xl">
             @lang('Create account')
         </p>

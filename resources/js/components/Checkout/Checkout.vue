@@ -11,8 +11,7 @@
                 cart: this.cart,
                 checkout: this.checkout,
                 save: this.save,
-                goToStep: this.goToStep,
-                customer: null
+                goToStep: this.goToStep
             })
         },
 
@@ -118,15 +117,15 @@
                     }
 
                     if (this.checkout.password) {
-                        this.customer = await this.createCustomer(this.shippingAddress, this.billingAddress, this.checkout.password)
-                        if (!this.customer) {
+                        this.$root.user = await this.createCustomer(this.shippingAddress, this.billingAddress, this.checkout.password)
+                        if (!this.$root.user) {
                             return false
                         }
                         let self = this
-                        this.login(this.customer.email, this.checkout.password, async () => {
+                        this.login(this.$root.user.email, this.checkout.password, async () => {
                             await self.refreshUser(false)
                             if (self.$root.cart) {
-                                await self.linkUserToCart(self.customer.id)
+                                await self.linkUserToCart()
                                 localStorage.mask = self.$root.cart.entity_id
                             }
                         });
