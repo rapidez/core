@@ -36,12 +36,11 @@ class IndexProductsCommand extends Command
     public function handle()
     {
         foreach (Store::all() as $store) {
-            $this->line('Store: ' . $store->name);
+            $this->line('Store: '.$store->name);
             config()->set('rapidez.store', $store->store_id);
             $this->index = config('rapidez.es_prefix') . '_products_' . $store->store_id;
 
-            $this->createIndexIfNeeded($this->index,
-                $this->option('fresh'));
+            $this->createIndexIfNeeded($this->index, $this->option('fresh'));
 
             $flat = (new Product)->getTable();
             $productQuery = Product::where($flat . '.visibility', 4)->selectOnlyIndexable();
