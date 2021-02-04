@@ -15,14 +15,16 @@ class IndexProductJob implements ShouldQueue
 
     protected array $data;
 
+    protected string $index;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(array $data)
+    public function __construct(array $data, string $index)
     {
         $this->data = $data;
+        $this->index = $index;
     }
 
     /**
@@ -33,7 +35,7 @@ class IndexProductJob implements ShouldQueue
     public function handle(Elasticsearch $elasticsearch)
     {
         $elasticsearch->index([
-            'index' => config('rapidez.es_prefix') . '_products_' . $this->data['store'],
+            'index' => $this->index,
             'id'    => $this->data['id'],
             'body'  => $this->data,
         ]);
