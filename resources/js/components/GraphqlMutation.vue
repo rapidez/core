@@ -20,6 +20,16 @@
             redirect: {
                 type: String,
                 default: '',
+            },
+            beforeParams: {
+              type: Object,
+              default: () => ({}),
+            },
+            before: {
+              type: String
+            },
+            after: {
+              type: Function
             }
         },
 
@@ -32,13 +42,20 @@
                 changes: this.changes,
                 mutate: this.mutate,
                 mutated: this.mutated,
+                beforeParams: this.beforeParams
             })
         },
-
         methods: {
+            beforeMutate() {
+                if(this.before) {
+                  if(this[this.before](this.beforeParams)) return false
+                }
+            },
             async mutate() {
+                if(!this.beforeMutate()) {
+                  return
+                }
                 delete this.changes.id
-
                 try {
                     let response = await axios.post(config.magento_url + '/graphql', {
                         query: this.query.replace('changes', this.queryfy(this.changes))
