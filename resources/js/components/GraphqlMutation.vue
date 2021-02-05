@@ -79,7 +79,7 @@ export default {
             }
             delete this.changes.id
             try {
-                let response = await this.doGraphqlMutation()
+                let response = await this.doGraphqlMutation(this.query)
 
                 if (response.data.errors) {
                     alert(response.data.errors[0].message)
