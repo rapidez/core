@@ -12,7 +12,7 @@
             :style="baseStyles"
         >
             <reactive-base
-                :app="config.es_prefix + '_products_' + config.store"
+                :app="config.es_prefix + '_products'"
                 :url="config.es_url"
                 v-if="loaded"
             >

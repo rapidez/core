@@ -38,7 +38,7 @@ class IndexProductsCommand extends Command
         foreach (Store::all() as $store) {
             $this->line('Store: '.$store->name);
             config()->set('rapidez.store', $store->store_id);
-            $this->index = config('rapidez.es_prefix') . '_products_v1_' . $store->store_id;
+            $this->index = config('rapidez.es_prefix') . '_products_' . $store->store_id;
 
             $this->createIndexIfNeeded($this->index, $this->option('fresh'));
 
@@ -75,7 +75,7 @@ class IndexProductsCommand extends Command
             }
 
             try {
-                $this->attachAlias($this->index, $store->store_id);
+                $this->attachAlias($this->index);
             } catch (\Exception $e) {
 
             }
@@ -98,12 +98,12 @@ class IndexProductsCommand extends Command
 
         if (!$this->elasticsearch->indices()->exists(['index' => $index])) {
             $this->createIndex($index);
-            $this->indexToDelete = str_replace('v1', 'v2', $index);
+            $this->indexToDelete = str_replace(1, 2, $index);
             $this->index = $index;
         } else {
-            $this->indexToDelete = $index;
-            $index = str_replace('v1', 'v2', $index);
+            $index++;
             $this->createIndex($index);
+            $this->indexToDelete = str_replace(2, 1, $index);
             $this->index = $index;
         }
     }
@@ -136,14 +136,14 @@ class IndexProductsCommand extends Command
         }
     }
 
-    public function attachAlias(string $index, int $storeId): void
+    public function attachAlias(string $index): void
     {
         $params['body'] = [
             'actions' => [
                 [
                     'add' => [
                         'index' => $index,
-                        'alias' => config('rapidez.es_prefix').'_products_'.$storeId
+                        'alias' => 'rapidez_products'
                     ],
                 ],
             ]
