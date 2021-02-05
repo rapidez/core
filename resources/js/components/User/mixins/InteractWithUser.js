@@ -15,8 +15,8 @@ export default {
         async refreshUser(redirect = true) {
             try {
                 let response = await magentoUser.get('customers/me')
+                console.log(response.data)
                 localStorage.user = JSON.stringify(response.data)
-                this.$root.user = response.data
             } catch (error) {
                 if (error.response.status == 401) {
                     localStorage.removeItem('token')
