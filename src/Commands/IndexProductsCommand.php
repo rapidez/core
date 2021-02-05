@@ -43,7 +43,7 @@ class IndexProductsCommand extends Command
             $this->createIndexIfNeeded($this->index, $this->option('fresh'));
 
             $flat = (new Product)->getTable();
-            $productQuery = Product::where($flat.'.visibility', 4)->selectOnlyIndexable();
+            $productQuery = Product::where($flat . '.visibility', 4)->selectOnlyIndexable();
 
             $scopes = Eventy::filter('index.product.scopes') ?: [];
             foreach ($scopes as $scope) {
@@ -90,7 +90,8 @@ class IndexProductsCommand extends Command
     {
         if ($recreate) {
             try {
-                $this->elasticsearch->indices()->delete(['index' => '*']);
+                $this->elasticsearch->indices()->delete(['index' => $index]);
+
             } catch (Missing404Exception $e) {
                 //
             }
