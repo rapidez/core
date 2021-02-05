@@ -1,8 +1,9 @@
 <script>
     import InteractWithUser from './User/mixins/InteractWithUser'
+    import CheckPassword from "./mixins/CheckPassword";
 
     export default {
-        mixins: [InteractWithUser],
+        mixins: [InteractWithUser, CheckPassword],
 
         props: {
             query: {
@@ -48,8 +49,10 @@
         methods: {
             beforeMutate() {
                 if(this.before) {
-                  if(this[this.before](this.beforeParams)) return false
+                  if(!this[this.before](this.beforeParams)) return false
                 }
+
+                return true
             },
             async mutate() {
                 if(!this.beforeMutate()) {

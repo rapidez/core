@@ -5,6 +5,8 @@ export default {
                 alert("Passwords Don't match")
                 return false
             }
+
+            return true
         }
     }
 }
