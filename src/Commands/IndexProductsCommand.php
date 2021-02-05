@@ -90,7 +90,7 @@ class IndexProductsCommand extends Command
     {
         if ($recreate) {
             try {
-                $this->elasticsearch->indices()->delete(['index' => config('rapidez.es_prefix') . '_products_*']);
+                $this->elasticsearch->indices()->delete(['index' => '*']);
             } catch (Missing404Exception $e) {
                 //
             }
