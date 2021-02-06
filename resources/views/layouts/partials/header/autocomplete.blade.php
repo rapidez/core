@@ -4,6 +4,7 @@
     v-cloak
 >
     <data-search
+        placeholder="@lang('Search')"
         v-on:value-selected="search"
         component-id="autocomplete"
         :inner-class="{ input: 'rounded' }"
