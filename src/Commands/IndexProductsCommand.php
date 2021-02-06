@@ -32,7 +32,7 @@ class IndexProductsCommand extends Command
 
     public function handle()
     {
-        $stores = $this->argument('store') ? Store::where('id', $this->argument('store'))->get() : Store::all();
+        $stores = $this->argument('store') ? Store::where('store_id', $this->argument('store'))->get() : Store::all();
 
         foreach ($stores as $store) {
             $this->line('Store: '.$store->name);
