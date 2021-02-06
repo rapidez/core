@@ -15,7 +15,7 @@ use TorMorten\Eventy\Facades\Eventy;
 
 class IndexProductsCommand extends Command
 {
-    protected $signature = 'rapidez:index {--fresh : Recreate the indexes}';
+    protected $signature = 'rapidez:index {store? : Store ID from Magento} {--fresh : Recreate the indexes}';
 
     protected $description = 'Index the products in Elasticsearch';
 
@@ -32,7 +32,9 @@ class IndexProductsCommand extends Command
 
     public function handle()
     {
-        foreach (Store::all() as $store) {
+        $stores = $this->argument('store') ? Store::where('id', $this->argument('store'))->get() : Store::all();
+
+        foreach ($stores as $store) {
             $this->line('Store: '.$store->name);
             config()->set('rapidez.store', $store->store_id);
 
