@@ -12,10 +12,10 @@ export default {
             return this.$root.user
         },
 
-        async refreshUser(redirect = true) {
+        async refreshUser(redirect = false) {
             try {
                 let response = await magentoUser.get('customers/me')
-                console.log(response.data)
+
                 localStorage.user = JSON.stringify(response.data)
             } catch (error) {
                 if (error.response.status == 401) {

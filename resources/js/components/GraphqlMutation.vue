@@ -66,10 +66,10 @@ export default {
             return true
         },
 
-        afterMutate(response)
+        afterMutate(afterParams)
         {
             if (this.after) {
-                this[this.after](response);
+                this[this.after](afterParams);
             }
         },
         async mutate()
@@ -91,17 +91,17 @@ export default {
                     this.refreshUser()
                 }
 
-                var $me = this
-                $me.mutated = true
-                $me.afterParams.changes = this.changes
+                this.mutated = true
+                this.afterParams.changes = this.changes
 
-                $me.afterMutate($me.afterParams);
-
+                this.afterMutate(this.afterParams)
 
                 if (this.redirect) {
-                    Turbolinks.visit(this.redirect)
+                    //Turbolinks.visit('/account')
                 }
+
             } catch (e) {
+                console.log(e)
                 alert('Something went wrong, please try again')
             }
         }

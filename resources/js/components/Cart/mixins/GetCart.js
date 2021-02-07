@@ -13,7 +13,7 @@ export default {
 
             if (localStorage.mask) {
                 try {
-                    let response = await axios.get('/api/cart/' + (localStorage.token ? localStorage.token : localStorage.mask))
+                    let response = await axios.get( '/api/cart/' + (localStorage.token ? localStorage.token : localStorage.mask))
                     localStorage.cart = JSON.stringify(response.data)
                     this.$root.cart = response.data
                 } catch (error) {
