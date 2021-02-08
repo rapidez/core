@@ -86,7 +86,7 @@ export default {
 
                 this.mutated = true
                 this.afterParams.changes = this.changes
-                
+
                 await this.afterMutate(this.afterParams)
 
 
@@ -95,7 +95,6 @@ export default {
                 }
 
             } catch (e) {
-                console.log(e)
                 alert('Something went wrong, please try again')
             }
         }
