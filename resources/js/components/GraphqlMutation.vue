@@ -91,7 +91,7 @@ export default {
 
 
                 if (this.redirect) {
-                    Turbolinks.visit('/account')
+                    Turbolinks.visit(this.redirect)
                 }
 
             } catch (e) {
