@@ -55,37 +55,30 @@ export default {
         })
     },
     methods: {
-        beforeMutate()
+        async beforeMutate()
         {
-            if (this.before) {
-                if (!this[this.before](this.beforeParams)) {
-                    return false
-                }
-            }
-
-            return true
+            return this.before ? await this[this.before](this.beforeParams) : true
         },
 
         async afterMutate(afterParams)
         {
-            if (this.after) {
-                await this[this.after](afterParams);
-            }
+            return this.after ? await this[this.after](afterParams) : ''
         },
         async mutate()
         {
-            if (!this.beforeMutate()) {
+            let before = await this.beforeMutate()
+            if (!before) {
                 return
             }
+
             delete this.changes.id
             try {
-                let response = await this.doGraphqlMutation(this.query)
+                let response = await this.doGraphqlRequest(this.query)
 
                 if (response.data.errors) {
                     alert(response.data.errors[0].message)
                     return
                 }
-
 
                 if (this.refreshUserInfo) {
                     await this.refreshUser()
@@ -93,8 +86,9 @@ export default {
 
                 this.mutated = true
                 this.afterParams.changes = this.changes
-
+                
                 await this.afterMutate(this.afterParams)
+
 
                 if (this.redirect) {
                     Turbolinks.visit('/account')

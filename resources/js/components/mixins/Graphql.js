@@ -1,6 +1,6 @@
 export default {
     methods: {
-        async doGraphqlMutation(query) {
+        async doGraphqlRequest(query) {
             return await axios.post(config.magento_url + '/graphql', {
                 query: query.replace('changes', this.queryfy(this.changes))
             }, this.$root.user ? { headers: { Authorization: `Bearer ${localStorage.token}` }} : null)
