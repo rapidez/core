@@ -6,15 +6,8 @@ export default {
 
             localStorage.token = response.data.data.generateCustomerToken.token
             window.magentoUser.defaults.headers.common['Authorization'] = `Bearer ${localStorage.token}`;
-            await this.refreshUser()
-
-            if (this.$root.cart) {
-                await this.linkUserToCart()
-                localStorage.mask = this.$root.cart.entity_id
-            } else {
-                await this.refreshCart()
-            }
-
-        }
+            let userResponse = await magentoUser.get('customers/me')
+            localStorage.user = JSON.stringify(userResponse.data)
+        },
     }
 }

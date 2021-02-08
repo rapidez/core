@@ -66,10 +66,10 @@ export default {
             return true
         },
 
-        afterMutate(afterParams)
+        async afterMutate(afterParams)
         {
             if (this.after) {
-                this[this.after](afterParams);
+                await this[this.after](afterParams);
             }
         },
         async mutate()
@@ -88,16 +88,16 @@ export default {
 
 
                 if (this.refreshUserInfo) {
-                    this.refreshUser()
+                    await this.refreshUser()
                 }
 
                 this.mutated = true
                 this.afterParams.changes = this.changes
 
-                this.afterMutate(this.afterParams)
+                await this.afterMutate(this.afterParams)
 
                 if (this.redirect) {
-                    //Turbolinks.visit('/account')
+                    Turbolinks.visit('/account')
                 }
 
             } catch (e) {
