@@ -7,5 +7,13 @@ export default {
             window.magentoUser.defaults.headers.common['Authorization'] = `Bearer ${localStorage.token}`;
             await this.refreshUser()
         },
+        async checkPassword(params) {
+            if(params.passwordConfirm !== this.changes.password) {
+                alert("Passwords Don't match")
+                return false
+            }
+
+            return true
+        }
     }
 }

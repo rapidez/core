@@ -1,12 +1,11 @@
 <script>
 import InteractWithUser from './User/mixins/InteractWithUser'
-import CheckPassword from "./mixins/CheckPassword"
 import Login from "./mixins/Login"
 import Graphql from "./mixins/Graphql"
 import GetCart from "./Cart/mixins/GetCart"
 
 export default {
-    mixins: [InteractWithUser, CheckPassword, Login, Graphql, GetCart],
+    mixins: [InteractWithUser, Login, Graphql, GetCart],
 
     props: {
         query: {
