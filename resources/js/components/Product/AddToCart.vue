@@ -54,6 +54,9 @@
                 }).then((response) => {
                     this.refreshCart()
                     this.error = null
+                    if (config.redirect_cart) {
+                        Turbolinks.visit('/cart');
+                    }
                 }).catch((error) => {
                     if (error.response.status == 401) {
                         alert('Your session expired, please login again')
