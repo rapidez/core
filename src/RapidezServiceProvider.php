@@ -91,7 +91,11 @@ class RapidezServiceProvider extends ServiceProvider
         });
 
         Blade::directive('block', function ($expression) {
-            return "<?php echo optional(Rapidez\Core\Models\Block::where('identifier', $expression)->first())->content ?>";
+            return "<?php echo Rapidez\Core\Models\Config::getCachedByIdentifier($expression) ?>";
+        });
+
+        Blade::directive('config', function ($expression) {
+            return "<?php echo Rapidez\Core\Models\Config::getCachedByPath($expression) ?>";
         });
 
         return $this;
