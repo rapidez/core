@@ -10,25 +10,10 @@ use Illuminate\Support\Facades\Cache;
 
 class Attribute extends Model
 {
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
     protected $table = 'eav_attribute';
 
-    /**
-     * The primary key for the model.
-     *
-     * @var string
-     */
     protected $primaryKey = 'attribute_id';
 
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
     protected static function boot()
     {
         parent::boot();
@@ -36,16 +21,21 @@ class Attribute extends Model
         static::addGlobalScope(new OnlyProductAttributesScope);
     }
 
-    public static function getCachedWhere(callable $callback): array
+    public static function allCached(): array
     {
         if (!$attributes = config('cache.app.attributes')) {
             $attributes = Cache::rememberForever('attributes', function () {
-                return self::all()->toArray();
+                return self::all()->keyBy('id')->toArray();
             });
             config(['cache.app.attributes' => $attributes]);
         }
 
-        return Arr::where($attributes, function ($attribute) use ($callback) {
+        return $attributes;
+    }
+
+    public static function getCachedWhere(callable $callback): array
+    {
+        return Arr::where(self::allCached(), function ($attribute) use ($callback) {
             return $callback($attribute);
         });
     }

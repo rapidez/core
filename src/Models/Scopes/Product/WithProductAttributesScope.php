@@ -34,6 +34,57 @@ class WithProductAttributesScope implements Scope
             ->select($builder->getQuery()->from.'.entity_id AS id')
             ->addSelect($builder->getQuery()->from.'.sku');
 
+        return;
+
+        foreach ($attributes as $attribute) {
+            $attribute = (object)$attribute;
+
+            $attributeIds[$attribute->type][] = $attribute->id;
+        }
+
+        foreach ($attributeIds as $attributeType => $attributeTypeIds) {
+            $typeTable = 'catalog_product_entity_'.$attributeType;
+            $attributeQueries[] = DB::table($typeTable)
+                ->select([
+                    $typeTable.'.entity_id',
+                    'attribute_id',
+                    'store_id',
+                    'value',
+                ])
+                ->whereIn('attribute_id', $attributeTypeIds)
+                ->whereIn('store_id', [config('rapidez.store'), 0])
+                ->whereColumn($typeTable.'.entity_id', $builder->getQuery()->from.'.entity_id');
+        }
+
+        foreach ($attributeQueries as $attributeQuery) {
+            if (!isset($attributeSubQuery)) {
+                $attributeSubQuery = $attributeQuery;
+            } else {
+                $attributeSubQuery->unionAll($attributeQuery);
+            }
+        }
+
+        $builder->addSelect(['attributes' => $attributeSubQuery]);
+
+
+        return;
+
+        foreach ($attributeIds as $attributeType => $attributeTypeIds) {
+            $typeTable = 'catalog_product_entity_'.$attributeType;
+            $builder->leftJoin($typeTable, function ($join) use ($typeTable, $builder, $attributeTypeIds) {
+                $join->on($typeTable.'.entity_id', '=', $builder->getQuery()->from.'.entity_id')
+                     ->whereIn($typeTable.'.attribute_id', $attributeTypeIds);
+            });
+
+            $storeIdCoalesce[] = $typeTable.'.store_id';
+            $attributeIdCoalesce[] = $typeTable.'.attribute_id';
+            $valueCoalesce[] = $typeTable.'.value';
+        }
+
+        $builder->selectRaw('JSON_OBJECTAGG(CONCAT(COALESCE('.implode(',', $storeIdCoalesce).'), "_", COALESCE('.implode(',', $attributeIdCoalesce).')), COALESCE('.implode(',', $valueCoalesce).')) AS attributes');
+
+        return;
+
         foreach ($attributes as $attribute) {
             $attribute = (object)$attribute;
 

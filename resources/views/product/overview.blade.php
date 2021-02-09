@@ -4,7 +4,7 @@
 @section('description', $product->meta_description)
 
 @section('content')
-    <h1 class="font-bold text-4xl mb-5">{{ $product->name }}</h1>
+    <h1 class="font-bold text-4xl mb-5">{{ $product->attributes->name }}</h1>
 
     <div class="flex flex-col sm:flex-row mb-5">
         <div class="sm:w-2/3 sm:mr-5">
@@ -22,11 +22,14 @@
         </div>
         <div class="sm:w-1/3">
             <div class="p-3 my-5 sm:mt-0 bg-gray-200 rounded">
-                {!! $product->description !!}
+                {!! $product->attributes->description !!}
             </div>
+            <div class="font-bold text-3xl mb-3">{{ $product->formattedPrice }}</div>
             @include('rapidez::product.partials.addtocart')
         </div>
     </div>
+
+    @dump($product->attributes)
 
     <dl class="flex flex-wrap w-full bg-gray-200 rounded p-3">
         <dt class="w-1/2 sm:w-1/4 font-bold">ID</dt>

@@ -4,8 +4,10 @@ namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use NumberFormatter;
 use Rapidez\Core\Casts\DecodeHtmlEntities;
+use Rapidez\Core\Casts\ProductAttributeCast;
 use Rapidez\Core\Models\Config;
 use Rapidez\Core\Models\Model;
 use Rapidez\Core\Models\Scopes\Product\WithProductAttributesScope;
@@ -19,27 +21,28 @@ use TorMorten\Eventy\Facades\Eventy;
 
 class Product extends Model
 {
-    use CastSuperAttributes, CastMultiselectAttributes, SelectAttributeScopes;
-
-    public array $attributesToSelect = [];
+    protected $table = 'catalog_product_entity';
 
     protected $primaryKey = 'entity_id';
 
-    protected $appends = ['formatted_price', 'url'];
+    protected $appends = ['formatted_price', 'url', 'attributes'];
+
+    protected $with = ['attrs'];
 
     protected static function boot(): void
     {
         parent::boot();
 
-        static::addGlobalScope(new WithProductAttributesScope);
-        static::addGlobalScope(new WithProductSuperAttributesScope);
-        static::addGlobalScope(new WithProductCategoryIdsScope);
-        static::addGlobalScope(new WithProductChildrenScope);
         static::addGlobalScope('defaults', function (Builder $builder) {
+            $from = $builder->getQuery()->from;
             $builder
-                ->whereNotIn($builder->getQuery()->from.'.type_id', ['grouped', 'bundle'])
-                ->groupBy($builder->getQuery()->from.'.entity_id');
+                ->select([$from.'.entity_id AS id', $from.'.sku'])
+                ->whereNotIn($from.'.type_id', ['grouped', 'bundle'])
+                ->groupBy($from.'.entity_id');
         });
+        static::addGlobalScope(new WithProductCategoryIdsScope);
+        // static::addGlobalScope(new WithProductSuperAttributesScope);
+        // static::addGlobalScope(new WithProductChildrenScope);
 
         $scopes = Eventy::filter('product.scopes') ?: [];
         foreach ($scopes as $scope) {
@@ -47,21 +50,16 @@ class Product extends Model
         }
     }
 
-    public function getTable(): string
-    {
-        return 'catalog_product_flat_' . config('rapidez.store');
-    }
-
     public function getCasts(): array
     {
         return array_merge(
-            parent::getCasts(),
             [
                 'name' => DecodeHtmlEntities::class,
+                // 'attrs' => ProductAttributeCast::class,
                 'children' => 'object',
             ],
-            $this->getSuperAttributeCasts(),
-            $this->getMultiselectAttributeCasts(),
+            // $this->getSuperAttributeCasts(),
+            // $this->getMultiselectAttributeCasts(),
             Eventy::filter('product.casts') ?: [],
         );
     }
@@ -77,9 +75,46 @@ class Product extends Model
         );
     }
 
+    public function attrs(): HasMany
+    {
+        return $this->hasMany(
+            ProductAttribute::class,
+            'entity_id',
+            'id'
+        );
+    }
+
     public function scopeByIds(Builder $query, array $productIds): Builder
     {
         return $query->whereIn($this->getTable().'.entity_id', $productIds);
+    }
+
+    public function getAttributesAttribute()
+    {
+        $attributes = Attribute::allCached();
+
+        $productAttributes = [];
+        foreach ($this->attrs as $attr) {
+            $attribute = $attributes[$attr->attribute_id];
+            if (isset($productAttributes[$attribute['code']]) && $attr->store_id == 0) {
+                continue;
+            }
+
+            if ($attribute['input'] == 'multiselect') {
+                foreach (explode(',', $attr->value) as $optionValueId) {
+                    $values[] = OptionValue::getCachedByOptionId($optionValueId);
+                }
+                $productAttributes[$attribute['code']]= $values;
+            } elseif ($attribute['input'] == 'select' && $attribute['type'] == 'int' && !$attribute['system']) {
+                $productAttributes[$attribute['code']]= OptionValue::getCachedByOptionId($attr->value);
+            } else {
+                $productAttributes[$attribute['code']] = $attr->value;
+            }
+        }
+
+        $productAttributes['url'] = '/' . $productAttributes['url_key'] . Config::getCachedByPath('catalog/seo/product_url_suffix', '.html');
+
+        return (object)$productAttributes;
     }
 
     public function getCategoryIdsAttribute(string $value): array
@@ -94,11 +129,6 @@ class Product extends Model
         $formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
 
         return $formatter->formatCurrency($this->price, $currency);
-    }
-
-    public function getUrlAttribute(): string
-    {
-        return '/' . $this->url_key . Config::getCachedByPath('catalog/seo/product_url_suffix', '.html');
     }
 
     public function getImageAttribute($image): ?string
