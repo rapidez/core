@@ -90,6 +90,10 @@ class RapidezServiceProvider extends ServiceProvider
             return "<?php echo app('widget-directive')->render($expression) ?>";
         });
 
+        Blade::directive('block', function ($expression) {
+            return "<?php echo optional(Rapidez\Core\Models\Block::where('identifier', $expression)->first())->content ?>";
+        });
+
         return $this;
     }
 
