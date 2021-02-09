@@ -9,6 +9,7 @@
                 type="email"
                 v-bind:value="email"
                 v-on:input="loginInputChange"
+                required
             />
             <x-rapidez::input
                 v-if="!emailAvailable"
@@ -18,6 +19,7 @@
                 type="password"
                 ref="password"
                 v-on:input="loginInputChange"
+                required
             />
             <button
                 type="submit"
