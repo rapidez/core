@@ -23,7 +23,7 @@ Route::middleware('web')->group(function () {
                 if ($product = Product::selectForProductPage()->find($rewrite->entity_id)) {
                     $attributes = ['sku', 'super_attributes', 'children', 'price'];
                     foreach ($product->super_attributes ?: [] as $superAttribute) {
-                        $attributes[] = $superAttribute->code;
+                        $attributes[] = 'super_'.$superAttribute->code;
                     }
                     config(['frontend.product' => $product->only($attributes)]);
                     return view('rapidez::product.overview', compact('product'));

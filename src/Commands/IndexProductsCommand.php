@@ -55,7 +55,7 @@ class IndexProductsCommand extends Command
                 foreach ($products as $product) {
                     $data = array_merge(['store' => $store->store_id], $product->toArray());
                     foreach ($product->super_attributes ?: [] as $superAttribute) {
-                        $data[$superAttribute->code] = array_keys((array)$product->{$superAttribute->code});
+                        $data['super_'.$superAttribute->code] = array_keys((array)$product->{'super_'.$superAttribute->code});
                     }
                     $data = Eventy::filter('index.product.data', $data, $product);
                     IndexProductJob::dispatch($data);
