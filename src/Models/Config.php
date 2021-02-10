@@ -33,8 +33,16 @@ class Config extends Model
 
         static::addGlobalScope('scope-fallback', function (Builder $builder) {
             $builder
-                ->whereIn('scope_id', [0, config('rapidez.store')])
-                ->orderByDesc('scope_id')
+                ->where(function ($query) {
+                    $query->where(function ($query) {
+                        $query->where('scope', 'stores')->where('scope_id', config('rapidez.store'));
+                    })->orWhere(function ($query) {
+                        $query->where('scope', 'websites')->where('scope_id', config('rapidez.website'));
+                    })->orWhere(function ($query) {
+                        $query->where('scope', 'default')->where('scope_id', 0);
+                    });
+                })
+                ->orderByRaw('FIELD(scope, "stores", "websites", "default") ASC')
                 ->limit(1);
         });
     }
