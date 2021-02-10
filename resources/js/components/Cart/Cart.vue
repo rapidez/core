@@ -14,19 +14,22 @@
         },
 
         methods: {
-            changeQty(item) {
-                this.magentoCart('put', 'items/' + item.item_id, {
+             changeQty(item) {
+                this.magentoCart('put', 'items/' + item.id, {
                     cartItem: {
                         quote_id: localStorage.mask,
-                        qty: item.qty
+                        qty: item.quantity
                     }
                 })
-                .then((response) => this.refreshCart())
+                .then((response) => {
+                  this.refreshCart()
+
+                })
                 .catch((error) => alert(error.response.data.message))
             },
 
             remove(item) {
-                this.magentoCart('delete', 'items/' + item.item_id)
+                this.magentoCart('delete', 'items/' + item.id)
                     .then((response) => this.refreshCart())
                     .catch((error) => alert(error.response.data.message))
             },
