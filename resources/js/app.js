@@ -100,5 +100,10 @@ document.addEventListener('turbolinks:load', () => {
                 Turbolinks.visit('/search?q=' + value)
             }
         },
+        watch: {
+            'checkout.step': function (step) {
+                history.replaceState(null, null, '#'+config.checkout_steps[step])
+            }
+        }
     })
 })
