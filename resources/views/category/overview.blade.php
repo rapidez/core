@@ -9,7 +9,7 @@
     @if($category->is_anchor)
         <category :translations="{ relevance: '@lang('Relevance')', asc: '@lang('asc')', desc: '@lang('desc')' }" v-cloak>
             <div
-                slot-scope="{ loaded, baseStyles, filters, reactiveFilters, sortOptions, categoryQuery, onChange }"
+                slot-scope="{ loaded, baseStyles, filters, reactiveFilters, sortOptions, categoryQuery }"
                 :style="baseStyles"
             >
                 <reactive-base

@@ -22,8 +22,6 @@
                 loaded: this.loaded,
                 baseStyles: this.baseStyles,
 
-                onChange: this.onChange,
-
                 filters: this.filters,
                 reactiveFilters: this.reactiveFilters,
                 sortOptions: this.sortOptions,
