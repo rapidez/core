@@ -13,6 +13,7 @@ use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
 use Rapidez\Core\Http\ViewComposers\ConfigComposer;
 use Rapidez\Core\Models\Attribute;
 use Rapidez\Core\Models\Config;
+use Rapidez\Core\Rapidez;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
 
@@ -117,6 +118,7 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function registerBindings(): self
     {
+        $this->app->bind('rapidez', Rapidez::class);
         $this->app->bind('widget-directive', WidgetDirective::class);
 
         return $this;
