@@ -1,8 +1,8 @@
 <script>
     import InteractWithUser from './User/mixins/InteractWithUser'
-
+    import GetCart from './Cart/mixins/GetCart'
     export default {
-        mixins: [InteractWithUser],
+        mixins: [InteractWithUser, GetCart],
 
         props: {
             query: {
@@ -20,6 +20,9 @@
             redirect: {
                 type: String,
                 default: '',
+            },
+            updatecart: {
+                type: Boolean,
             }
         },
 
@@ -28,7 +31,6 @@
         }),
 
         render() {
-            console.log(this.changes)
             return this.$scopedSlots.default({
                 changes: this.changes,
                 mutate: this.mutate,
@@ -53,7 +55,11 @@
                     if (this.refreshUserInfo) {
                         this.refreshUser()
                     }
-                    console.log(response)
+
+                    if(this.updatecart) {
+                        this.refreshCart()
+                    }
+
                     var me = this
                     me.mutated = true
                     setTimeout(function(){

@@ -5,7 +5,7 @@
 @section('content')
     <h1 class="font-bold text-4xl mb-5">@lang('Cart')</h1>
         <cart>
-        <graphql  slot-scope="{ changeQty, remove, refreshCart }" v-cloak query='@include("rapidez::cart.queries.cart")'>
+        <graphql  slot-scope="{ changeQty, remove }" v-cloak query='@include("rapidez::cart.queries.cart")'>
             <div v-if="data" slot-scope="{ data, runQuery }">
                 <div class="flex flex-wrap items-center border-b pb-2 mb-2" v-for="(item, index) in data.cart.items">
                     <div class="w-1/6 sm:w-1/12 pr-3">
@@ -26,7 +26,7 @@
                 <div class="w-2/6 sm:w-1/6 lg:w-1/12 text-right pr-5">
                     @{{ item.prices.price.value | price }}
                 </div>
-                <graphql-mutation :changes="{cart_id: data.cart.id, cart_items: {cart_item_id: Number(item.id), quantity: Number(item.quantity)}}" query='@include("rapidez::cart.queries.changeQty")'>
+                <graphql-mutation :updatecart="true" :changes="{cart_id: data.cart.id, cart_items: {cart_item_id: Number(item.id), quantity: Number(item.quantity)}}" query='@include("rapidez::cart.queries.changeQty")'>
                 <div class="w-2/6 sm:w-1/6 lg:w-1/12" slot-scope="{ changes, mutate, mutated }">
                     <div class="inline-flex">
                             <x-rapidez::input
@@ -39,7 +39,7 @@
                             v-bind:dusk="'qty-'+index"
                         />
                         <button
-                            v-on:click="mutate(); runQuery(); refreshCart()"
+                            v-on:click="mutate(); runQuery();"
                             class="btn btn-primary ml-1"
                             :disabled="$root.loading"
                             title="@lang('Update')"
