@@ -38,7 +38,7 @@ class IndexProductsCommand extends Command
             $this->line('Store: '.$store->name);
             config()->set('rapidez.store', $store->store_id);
 
-            $this->createIndexIfNeeded($this->index, $this->option('fresh'));
+            $this->createIndexIfNeeded(config('rapidez.es_prefix') . '_products_' . $store->store_id, $this->option('fresh'));
 
             $flat = (new Product)->getTable();
             $productQuery = Product::where($flat.'.visibility', 4)->selectOnlyIndexable();
@@ -74,7 +74,7 @@ class IndexProductsCommand extends Command
     {
         if ($recreate) {
             try {
-                $this->elasticsearch->indices()->delete(['index' => $index])
+                $this->elasticsearch->indices()->delete(['index' => $index]);
             } catch (Missing404Exception $e) {
                 //
             }
