@@ -1,10 +1,10 @@
 @extends('rapidez::layouts.app')
 
-@section('title', __('Search for: ').request()->q)
-@section('description', __('Search for: ').request()->q)
+@section('title', __('Search for').': '.request()->q)
+@section('description', __('Search for').': '.request()->q)
 
 @section('content')
-    <h1 class="font-bold text-3xl">@lang('Search for:') {{ request()->q }}</h1>
+    <h1 class="font-bold text-3xl">@lang('Search for'): {{ request()->q }}</h1>
 
     <category :translations="{ relevance: '@lang('Relevance')', asc: '@lang('asc')', desc: '@lang('desc')' }" v-cloak>
         <div
