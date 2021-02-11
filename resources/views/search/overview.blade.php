@@ -6,7 +6,7 @@
 @section('content')
     <h1 class="font-bold text-3xl">@lang('Search for:') {{ request()->q }}</h1>
 
-    <category v-cloak>
+    <category :translations="{ relevance: '@lang('Relevance')', asc: '@lang('asc')', desc: '@lang('desc')' }" v-cloak>
         <div
             slot-scope="{ loaded, baseStyles, filters, reactiveFilters, sortOptions, categoryQuery, onChange }"
             :style="baseStyles"
