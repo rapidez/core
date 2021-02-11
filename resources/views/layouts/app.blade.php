@@ -8,6 +8,7 @@
 
     <title>@yield('title', '')</title>
     <meta name="description" content="@yield('description', '')"/>
+    <meta name="robots" content="@config('design/search_engine_robots/default_robots', 'INDEX,FOLLOW')"/>
 
     <link href="{{ url(mix('css/app.css')) }}" rel="stylesheet" data-turbolinks-track="reload">
     <script src="{{ url(mix('js/app.js')) }}" defer data-turbolinks-track="reload"></script>

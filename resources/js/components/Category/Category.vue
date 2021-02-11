@@ -1,5 +1,16 @@
 <script>
     export default {
+        props: {
+            translations: {
+                type: Object,
+                default: () => ({
+                    relevance: 'Relevance',
+                    desc: 'desc',
+                    asc: 'asc',
+                })
+            }
+        },
+
         data: () => ({
             loaded: false,
             attributes: [],
@@ -66,14 +77,15 @@
                 }).concat(['category', 'searchterm']);
             },
             sortOptions: function () {
+                let self = this
                 return [
                     {
-                        label: 'Relevance',
+                        label: this.translations.relevance,
                         dataField: '_score',
                         sortBy: 'desc'
                     }
                 ].concat(_.flatMap(this.sortings, function (sorting) {
-                    return _.map(['asc', 'desc'], function (direction) {
+                    return _.map([self.translations.asc, self.translations.desc], function (direction) {
                         return {
                             label: sorting.name + ' ' + direction,
                             dataField: sorting.code + (sorting.code != 'price' ? '.keyword' : ''),

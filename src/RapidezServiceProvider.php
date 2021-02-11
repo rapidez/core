@@ -90,6 +90,14 @@ class RapidezServiceProvider extends ServiceProvider
             return "<?php echo app('widget-directive')->render($expression) ?>";
         });
 
+        Blade::directive('block', function ($expression) {
+            return "<?php echo Rapidez\Core\Models\Block::getCachedByIdentifier($expression) ?>";
+        });
+
+        Blade::directive('config', function ($expression) {
+            return "<?php echo Rapidez\Core\Models\Config::getCachedByPath($expression) ?>";
+        });
+
         return $this;
     }
 
