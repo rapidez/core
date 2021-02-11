@@ -1,5 +1,5 @@
 {
-    cart ( cart_id: "cartId") {
+    cart ( cart_id: "input") {
         id
         items
         {

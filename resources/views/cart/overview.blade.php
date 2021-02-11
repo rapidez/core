@@ -5,7 +5,7 @@
 @section('content')
     <h1 class="font-bold text-4xl mb-5">@lang('Cart')</h1>
         <cart>
-        <graphql slot-scope="{ changeQty, remove }" v-cloak query='@include('rapidez::cart.queries.cart')' >
+        <graphql  slot-scope="{ changeQty, remove }" v-cloak query='@include("rapidez::cart.queries.cart")' replace="localStorage.mask">
             <div v-if="data" slot-scope="{ data, runQuery }">
                 <div class="flex flex-wrap items-center border-b pb-2 mb-2" v-for="(item, index) in data.cart.items">
                     <div class="w-1/6 sm:w-1/12 pr-3">

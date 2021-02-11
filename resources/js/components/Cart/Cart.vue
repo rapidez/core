@@ -23,7 +23,6 @@
                 })
                 .then((response) => {
                   this.refreshCart()
-
                 })
                 .catch((error) => alert(error.response.data.message))
             },
