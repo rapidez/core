@@ -69,10 +69,19 @@ class IndexProductsCommand extends Command
             });
 
             if ($this->elasticsearch->indices()->exists(['index' => $this->indexToDelete])) {
-                $this->deleteIndex($this->indexToDelete);
+                try {
+                    $this->deleteIndex($this->indexToDelete);
+                } catch (\Exception $e) {
+                    //
+                }
             }
 
-            $this->attachAlias($this->index, $store->store_id);
+            try {
+                $this->attachAlias($this->index, $store->store_id);
+            } catch (\Exception $e) {
+
+            }
+
             $bar->finish();
             $this->line('');
         }
@@ -82,7 +91,11 @@ class IndexProductsCommand extends Command
     public function createIndexIfNeeded(string $index, $recreate = false): void
     {
         if ($recreate) {
-            $this->deleteIndex(config('rapidez.es_prefix') . '_products_*');
+            try {
+                $this->elasticsearch->indices()->delete(['index' => config('rapidez.es_prefix') . '_products_*']);
+            } catch (Missing404Exception $e) {
+                //
+            }
         }
 
         if (!$this->elasticsearch->indices()->exists(['index' => $index])) {
@@ -118,7 +131,11 @@ class IndexProductsCommand extends Command
 
     public function deleteIndex(string $oldIndex): void
     {
-        $this->elasticsearch->indices()->delete(['index' => $oldIndex]);
+        try {
+            $this->elasticsearch->indices()->delete(['index' => $oldIndex]);
+        } catch (Missing404Exception $e) {
+
+        }
     }
 
     public function attachAlias(string $index, int $storeId): void
