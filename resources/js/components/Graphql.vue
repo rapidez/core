@@ -7,25 +7,21 @@
         props: [
             'query',
             'check',
-            'redirect',
-            'replace'
+            'redirect'
         ],
 
         data: () => ({
-            data: null,
-            replaceData: null
+            data: null
         }),
 
         render() {
             return this.$scopedSlots.default({
                 data: this.data,
-                runQuery: this.runQuery,
-                replace: this.replace
+                runQuery: this.runQuery
             })
         },
 
         created() {
-            this.replaceData = this.replace.includes("localStorage.mask") ? window["localStorage"].mask : this.replace
             this.runQuery()
         },
 
@@ -35,7 +31,7 @@
 
                     let options = this.$root.user ? { headers: { Authorization: `Bearer ${localStorage.token}` }} : null
                     let response = await axios.post(config.magento_url + '/graphql', {
-                        query: this.query.replace('input', this.replaceData)
+                        query: this.query.replace('mask', localStorage.mask)
                     }, options)
                     if (response.data.errors) {
                         if (response.data.errors[0].extensions.category == 'graphql-authorization') {
