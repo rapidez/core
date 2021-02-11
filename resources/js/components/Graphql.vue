@@ -17,6 +17,7 @@
         render() {
             return this.$scopedSlots.default({
                 data: this.data,
+                runQuery: this.runQuery
             })
         },
 
