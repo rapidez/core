@@ -26,9 +26,10 @@
                 <div class="w-2/6 sm:w-1/6 lg:w-1/12 text-right pr-5">
                     @{{ item.prices.price.value | price }}
                 </div>
-                <div class="w-2/6 sm:w-1/6 lg:w-1/12">
+                <graphql-mutation query='@include("rapidez::cart.queries.changeQty")'>
+                <div class="w-2/6 sm:w-1/6 lg:w-1/12" slot-scope="{ changes, mutate, mutated }" changes="item">
                     <div class="inline-flex">
-                        <x-rapidez::input
+                            <x-rapidez::input
                             :label="false"
                             class="text-right"
                             type="number"
@@ -38,7 +39,7 @@
                             v-bind:dusk="'qty-'+index"
                         />
                         <button
-                            v-on:click="changeQty(item); runQuery()"
+                            v-on:click="mutate()"
                             class="btn btn-primary ml-1"
                             :disabled="$root.loading"
                             title="@lang('Update')"
@@ -48,6 +49,8 @@
                         </button>
                     </div>
                 </div>
+                                         </graphql-mutation>
+
                 <div class="w-2/6 sm:w-1/6 lg:w-1/12 flex justify-end text-right">
                     @{{ item.prices.price.value * item.quantity | price }}
                     <a href="#" @click.prevent="remove(item); runQuery()" class="ml-2" title="@lang('Remove')" :dusk="'item-delete-'+index">

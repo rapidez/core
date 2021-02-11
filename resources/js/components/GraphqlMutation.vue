@@ -37,6 +37,7 @@
 
         methods: {
             async mutate() {
+                console.log(this.changes)
                 delete this.changes.id
 
                 try {
