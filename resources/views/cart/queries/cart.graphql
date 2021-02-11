@@ -1,5 +1,5 @@
 {
-    cart ( cart_id: "input") {
+    cart ( cart_id: "mask") {
         id
         items
         {
