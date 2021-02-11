@@ -10,6 +10,7 @@
                 hasItems: this.hasItems,
                 changeQty: this.changeQty,
                 remove: this.remove,
+                refreshCart: this.refreshCart
             })
         },
 
@@ -23,6 +24,7 @@
                 })
                 .then((response) => {
                   this.refreshCart()
+
                 })
                 .catch((error) => alert(error.response.data.message))
             },

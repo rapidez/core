@@ -1,10 +1,10 @@
 mutation {
   updateCartItems(
-
+    input: changes
   ){
     cart {
       items {
-        uid
+        id
         product {
           name
         }

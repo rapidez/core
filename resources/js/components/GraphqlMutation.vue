@@ -28,6 +28,7 @@
         }),
 
         render() {
+            console.log(this.changes)
             return this.$scopedSlots.default({
                 changes: this.changes,
                 mutate: this.mutate,
@@ -37,7 +38,6 @@
 
         methods: {
             async mutate() {
-                console.log(this.changes)
                 delete this.changes.id
 
                 try {
@@ -53,7 +53,7 @@
                     if (this.refreshUserInfo) {
                         this.refreshUser()
                     }
-
+                    console.log(response)
                     var me = this
                     me.mutated = true
                     setTimeout(function(){

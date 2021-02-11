@@ -5,7 +5,7 @@
 @section('content')
     <h1 class="font-bold text-4xl mb-5">@lang('Cart')</h1>
         <cart>
-        <graphql  slot-scope="{ changeQty, remove }" v-cloak query='@include("rapidez::cart.queries.cart")' replace="localStorage.mask">
+        <graphql  slot-scope="{ changeQty, remove, refreshCart }" v-cloak query='@include("rapidez::cart.queries.cart")'>
             <div v-if="data" slot-scope="{ data, runQuery }">
                 <div class="flex flex-wrap items-center border-b pb-2 mb-2" v-for="(item, index) in data.cart.items">
                     <div class="w-1/6 sm:w-1/12 pr-3">
@@ -26,8 +26,8 @@
                 <div class="w-2/6 sm:w-1/6 lg:w-1/12 text-right pr-5">
                     @{{ item.prices.price.value | price }}
                 </div>
-                <graphql-mutation query='@include("rapidez::cart.queries.changeQty")'>
-                <div class="w-2/6 sm:w-1/6 lg:w-1/12" slot-scope="{ changes, mutate, mutated }" changes="item">
+                <graphql-mutation :changes="{cart_id: data.cart.id, cart_items: {cart_item_id: Number(item.id), quantity: Number(item.quantity)}}" query='@include("rapidez::cart.queries.changeQty")'>
+                <div class="w-2/6 sm:w-1/6 lg:w-1/12" slot-scope="{ changes, mutate, mutated }">
                     <div class="inline-flex">
                             <x-rapidez::input
                             :label="false"
@@ -39,7 +39,7 @@
                             v-bind:dusk="'qty-'+index"
                         />
                         <button
-                            v-on:click="mutate()"
+                            v-on:click="mutate(); runQuery(); refreshCart()"
                             class="btn btn-primary ml-1"
                             :disabled="$root.loading"
                             title="@lang('Update')"
@@ -53,7 +53,7 @@
 
                 <div class="w-2/6 sm:w-1/6 lg:w-1/12 flex justify-end text-right">
                     @{{ item.prices.price.value * item.quantity | price }}
-                    <a href="#" @click.prevent="remove(item); runQuery()" class="ml-2" title="@lang('Remove')" :dusk="'item-delete-'+index">
+                    <a href="#" @click.prevent="remove(item); runQuery();" class="ml-2" title="@lang('Remove')" :dusk="'item-delete-'+index">
                         <svg class="fill-current w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path class="heroicon-ui" d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2zm0 2v14h14V5H5zm8.41 7l1.42 1.41a1 1 0 1 1-1.42 1.42L12 13.4l-1.41 1.42a1 1 0 1 1-1.42-1.42L10.6 12l-1.42-1.41a1 1 0 1 1 1.42-1.42L12 10.6l1.41-1.42a1 1 0 1 1 1.42 1.42L13.4 12z"/></svg>
                     </a>
                 </div>
