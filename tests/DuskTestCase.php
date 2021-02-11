@@ -39,4 +39,11 @@ abstract class DuskTestCase extends BaseTestCase
             RapidezServiceProvider::class,
         ];
     }
+
+    protected function getPackageAliases($app)
+    {
+        return [
+            'Rapidez' => RapidezFacade::class,
+        ];
+    }
 }
