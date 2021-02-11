@@ -1,4 +1,4 @@
-<reactive-base v-cloak :app="config.es_prefix + '_products'" :url="config.es_url">
+<reactive-base v-cloak :app="config.es_prefix + '_products_' + config.store" :url="config.es_url">
     <reactive-list
         component-id="productlist"
         data-field="id"
