@@ -1,3 +1,4 @@
+<label for="autocomplete-input" class="sr-only">@lang('Search')</label>
 <reactive-base
     :app="config.es_prefix + '_products_' + config.store"
     :url="config.es_url"
