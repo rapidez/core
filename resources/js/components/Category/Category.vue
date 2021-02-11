@@ -31,12 +31,6 @@
         },
 
         mounted() {
-            if (sessionStorage.getItem('height')) {
-                this.baseStyles = {
-                    minHeight: sessionStorage.getItem('height') + 'px'
-                }
-            }
-
             if (sessionStorage.getItem('attributes')) {
                 this.attributes = JSON.parse(sessionStorage.getItem('attributes'))
                 this.loaded = true
@@ -52,12 +46,6 @@
                  .catch((error) => {
                     alert('Something went wrong')
                 })
-        },
-
-        methods: {
-            onChange() {
-                sessionStorage.setItem('height', this.$el.clientHeight)
-            },
         },
 
         computed: {
