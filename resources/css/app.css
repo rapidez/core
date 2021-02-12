@@ -1,8 +1,3 @@
-:root {
-    --color-primary: #27ae60;
-    --color-secondary: #cbd5e0; /* bg-gray-400 */
-}
-
 /**
  * This injects Tailwind's base styles, which is a combination of
  * Normalize.css and some additional base styles.

@@ -1,3 +1,5 @@
+const colors = require('tailwindcss/colors')
+
 module.exports = {
     purge: [
         './resources/views/**/*.blade.php',
@@ -15,8 +17,8 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                primary: 'var(--color-primary)',
-                secondary: 'var(--color-secondary)',
+                primary: colors.green[700],
+                secondary: colors.gray[400],
             },
             width: {
                 '400px': '400px',
