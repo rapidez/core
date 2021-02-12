@@ -19,8 +19,9 @@
             </x-rapidez::select>
         </div>
 
-        <div class="flex mt-5">
-            <x-rapidez::select v-bind:value="qty" v-on:input="changeQty" class="mr-3">
+        <div class="flex items-center mt-5">
+            <x-rapidez::label for="qty" class="mr-3 sr-only">@lang('Quantity')</x-rapidez::label>
+            <x-rapidez::select id="qty" v-bind:value="qty" v-on:input="changeQty" class="mr-3">
                 @for ($i = 1; $i <= 10; $i++)
                     <option value="{{ $i }}">{{ $i }}</option>
                 @endfor
