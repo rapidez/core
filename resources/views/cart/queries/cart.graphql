@@ -16,6 +16,27 @@
                 url_key
                 url_suffix
             }
+            ... on SimpleCartItem {
+          customizable_options {
+            id
+            is_required
+            values {
+              price {
+                type
+                units
+                value
+              }
+              value
+            }
+          }
+        }
+        ... on ConfigurableCartItem {
+          configurable_options {
+            id
+            option_label
+            value_label
+          }
+        }
             quantity
             prices
             {

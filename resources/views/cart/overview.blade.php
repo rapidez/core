@@ -18,8 +18,8 @@
                 </div>
                 <div class="w-5/6 sm:w-5/12 lg:w-8/12">
                 <a :href="item.url" class="font-bold">@{{ item.product.name }}</a>
-                <div v-for="(optionValue, option) in item.options">
-                    @{{ option }}: @{{ optionValue }}
+                <div v-for="(option) in item.configurable_options">
+                    @{{ option.option_label }}: @{{ option.value_label }}
                 </div>
             </div>
             <div class="w-2/6 sm:w-1/6 lg:w-1/12 text-right pr-5">
