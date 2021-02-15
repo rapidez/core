@@ -16,6 +16,7 @@ class CartTest extends DuskTestCase
                     ->click('@add-to-cart')
                     ->waitUntilAllAjaxCallsAreFinished()
                     ->visit('/cart')
+                    ->waitFor('@product-title-0')
                     ->assertSee($this->testProduct->name);
         });
     }
@@ -38,7 +39,7 @@ class CartTest extends DuskTestCase
             $browser->visit('/cart')
                     ->waitUntilAllAjaxCallsAreFinished()
                     ->click('@item-delete-0')
-                    ->waitUntilAllAjaxCallsAreFinished()
+                    ->waitUntilMissing('@item-delete-0')
                     ->assertDontSee($this->testProduct->name);
         });
     }
