@@ -8,7 +8,7 @@
         <div v-if="data && data.cart && data.cart.items && Object.keys(data.cart.items).length" slot-scope="{ data, runQuery, hasItems }">
             <div class="flex flex-wrap items-center border-b pb-2 mb-2" v-for="(item, index) in data.cart.items">
                 <div class="w-1/6 sm:w-1/12 pr-3">
-                    <a :href="item.url" class="block">
+                    <a :href="item.product.url_key + item.product.url_suffix" class="block">
                         <img
                             :alt="item.product.name"
                             :src="item.product.image.url"
@@ -17,7 +17,7 @@
                     </a>
                 </div>
                 <div class="w-5/6 sm:w-5/12 lg:w-8/12">
-                <a :dusk="'product-title-'+index" :href="item.url" class="font-bold">@{{ item.product.name }}</a>
+                <a :dusk="'product-title-'+index" :href="item.product.url_key + item.product.url_suffix" class="font-bold">@{{ item.product.name }}</a>
                 <div v-for="(option) in item.configurable_options">
                     @{{ option.option_label }}: @{{ option.value_label }}
                 </div>
