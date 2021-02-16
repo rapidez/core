@@ -12,6 +12,7 @@
         </a>
         @includeWhen(Rapidez::config('catalog/frontend/show_swatches_in_product_list', 1), 'rapidez::category.partials.listing.item.addtocart')
         <product-compare-checkbox
+            v-if="$root.config.compare"
             class="absolute right-0 top-0 p-1 mt-3 hidden group-hover:flex items-center flex-row-reverse bg-gray-100 text-gray-500 rounded-l lowercase"
             :key="item.id"
             class-checkbox="ml-1"
