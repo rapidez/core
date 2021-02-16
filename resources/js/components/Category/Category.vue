@@ -71,11 +71,14 @@
                         sortBy: 'desc'
                     }
                 ].concat(_.flatMap(this.sortings, function (sorting) {
-                    return _.map([self.translations.asc, self.translations.desc], function (direction) {
+                    return _.map({
+                        asc: self.translations.asc,
+                        desc: self.translations.desc
+                    }, function (directionLabel, directionKey) {
                         return {
-                            label: sorting.name + ' ' + direction,
+                            label: sorting.name + ' ' + directionLabel,
                             dataField: sorting.code + (sorting.code != 'price' ? '.keyword' : ''),
-                            sortBy: direction
+                            sortBy: directionKey
                         }
                     })
                 }))
