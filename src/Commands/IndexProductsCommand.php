@@ -42,7 +42,7 @@ class IndexProductsCommand extends Command
             config()->set('rapidez.store', $store->store_id);
             $this->index = config('rapidez.es_prefix') . '_products_v1_' . $store->store_id;
 
-            $this->createIndexIfNeeded($this->index, $this->option('fresh'));
+            $this->createIndexIfNeeded($this->option('fresh'));
 
             $flat = (new Product)->getTable();
             $productQuery = Product::where($flat.'.visibility', 4)->selectOnlyIndexable();
@@ -68,39 +68,39 @@ class IndexProductsCommand extends Command
                 $bar->advance($this->chunkSize);
             });
 
+            $this->attachAlias($store->store_id);
             if ($this->elasticsearch->indices()->exists(['index' => $this->indexToDelete])) {
                 $this->deleteIndex($this->indexToDelete);
             }
 
-            $this->attachAlias($this->index, $store->store_id);
             $bar->finish();
             $this->line('');
         }
         $this->info('Done!');
     }
 
-    public function createIndexIfNeeded(string $index, $recreate = false): void
+    public function createIndexIfNeeded($recreate = false): void
     {
         if ($recreate) {
-            $this->deleteIndex(config('rapidez.es_prefix') . '_products_*');
+            $this->indexToDelete = config('rapidez.es_prefix') . '_products_*';
+            $this->deleteIndex();
         }
 
-        if (!$this->elasticsearch->indices()->exists(['index' => $index])) {
-            $this->createIndex($index);
-            $this->indexToDelete = str_replace('v1', 'v2', $index);
-            $this->index = $index;
+        if (!$this->elasticsearch->indices()->exists(['index' => $this->index])) {
+            $this->createIndex($this->index);
+            $this->indexToDelete = str_replace('v1', 'v2', $this->index);
         } else {
-            $this->indexToDelete = $index;
-            $index = str_replace('v1', 'v2', $index);
-            $this->createIndex($index);
-            $this->index = $index;
+            $this->indexToDelete = $this->index;
+            $this->index = str_replace('v1', 'v2', $this->index);
+            $this->createIndex($this->index);
         }
     }
 
-    public function createIndex(string $index): void
+    public function createIndex(): void
     {
+        try {
         $this->elasticsearch->indices()->create([
-            'index' => $index,
+            'index' => $this->index,
             'body' => [
                 'mappings' => [
                     'properties' => [
@@ -114,26 +114,34 @@ class IndexProductsCommand extends Command
                 ]
             ]
         ]);
+        } catch(Missing404Exception $e) {
+            $this->line($e->error);
+        }
     }
 
-    public function deleteIndex(string $oldIndex): void
+    public function deleteIndex(): void
     {
-        $this->elasticsearch->indices()->delete(['index' => $oldIndex]);
+        try {
+            $this->elasticsearch->indices()->delete(['index' => $this->indexToDelete]);
+        } catch(Missing404Exception $e) {
+            $this->line($e->error);        }
     }
 
-    public function attachAlias(string $index, int $storeId): void
+    public function attachAlias(): void
     {
         $params['body'] = [
             'actions' => [
                 [
                     'add' => [
-                        'index' => $index,
-                        'alias' => config('rapidez.es_prefix').'_products_'.$storeId
+                        'index' => $this->index,
+                        'alias' => config('rapidez.es_prefix').'_products_'.config('rapidez.store')
                     ],
                 ],
             ]
         ];
-
-        $this->elasticsearch->indices()->updateAliases($params);
+        try {
+            $this->elasticsearch->indices()->updateAliases($params);
+        } catch(Missing404Exception $e) {
+            $this->line($e->error);        }
     }
 }
