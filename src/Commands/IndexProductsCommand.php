@@ -99,23 +99,23 @@ class IndexProductsCommand extends Command
     public function createIndex(): void
     {
         try {
-        $this->elasticsearch->indices()->create([
-            'index' => $this->index,
-            'body' => [
-                'mappings' => [
-                    'properties' => [
-                        'price' => [
-                            'type' => 'double',
-                        ],
-                        'children' => [
-                            'type' => 'flattened',
+            $this->elasticsearch->indices()->create([
+                'index' => $this->index,
+                'body' => [
+                    'mappings' => [
+                        'properties' => [
+                            'price' => [
+                                'type' => 'double',
+                            ],
+                            'children' => [
+                                'type' => 'flattened',
+                            ]
                         ]
                     ]
                 ]
-            ]
-        ]);
-        } catch(Missing404Exception $e) {
-            $this->line($e->error);
+            ]);
+        } catch (Missing404Exception $e) {
+            $this->line($e);
         }
     }
 
@@ -123,25 +123,31 @@ class IndexProductsCommand extends Command
     {
         try {
             $this->elasticsearch->indices()->delete(['index' => $this->indexToDelete]);
-        } catch(Missing404Exception $e) {
-            $this->line($e->error);        }
+        } catch (Missing404Exception $e) {
+            $this->line($e);
+        }
     }
 
     public function attachAlias(): void
     {
-        $params['body'] = [
+        $addParams['body'] = [
             'actions' => [
                 [
                     'add' => [
                         'index' => $this->index,
                         'alias' => config('rapidez.es_prefix').'_products_'.config('rapidez.store')
-                    ],
+                    ]
                 ],
             ]
         ];
+
         try {
-            $this->elasticsearch->indices()->updateAliases($params);
-        } catch(Missing404Exception $e) {
-            $this->line($e->error);        }
+            $this->elasticsearch->indices()->updateAliases($addParams);
+            if ($this->elasticsearch->indices()->exists(['index' => $this->indexToDelete])) {
+                $this->elasticsearch->indices()->updateAliases($removeParams);
+            }
+        } catch (Missing404Exception $e) {
+            $this->line($e);
+        }
     }
 }
