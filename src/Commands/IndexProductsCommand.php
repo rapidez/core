@@ -143,9 +143,6 @@ class IndexProductsCommand extends Command
 
         try {
             $this->elasticsearch->indices()->updateAliases($addParams);
-            if ($this->elasticsearch->indices()->exists(['index' => $this->indexToDelete])) {
-                $this->elasticsearch->indices()->updateAliases($removeParams);
-            }
         } catch (Missing404Exception $e) {
             $this->line($e);
         }
