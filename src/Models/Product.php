@@ -36,7 +36,7 @@ class Product extends Model
         static::addGlobalScope('defaults', function (Builder $builder) {
             $from = $builder->getQuery()->from;
             $builder
-                ->select([$from.'.entity_id AS id', $from.'.sku'])
+                ->select([$from.'.entity_id', $from.'.sku'])
                 ->whereNotIn($from.'.type_id', ['grouped', 'bundle'])
                 ->groupBy($from.'.entity_id');
         });
@@ -71,7 +71,7 @@ class Product extends Model
             'catalog_product_entity_media_gallery_value_to_entity',
             'entity_id',
             'value_id',
-            'id'
+            'entity_id',
         );
     }
 
@@ -80,7 +80,7 @@ class Product extends Model
         return $this->hasMany(
             ProductAttribute::class,
             'entity_id',
-            'id'
+            'entity_id',
         );
     }
 
@@ -89,6 +89,48 @@ class Product extends Model
         return $query->whereIn($this->getTable().'.entity_id', $productIds);
     }
 
+    public function getAttribute($key)
+    {
+        if ($value = parent::getAttribute($key)) {
+            return $value;
+        }
+
+        // TOOD: Not sure if this is very efficient, first we're
+        // searching for the attribute by code for the id and
+        // after that we're searching for the attribute id
+        // between the product attributes for the value.
+        $attribute = Attribute::getCachedWhereFirst(function ($attribute) use ($key) {
+            return $attribute['code'] == $key;
+        });
+
+        if (!$attribute) {
+            return null;
+        }
+
+        // TODO: Check for a custom value for a store. So if store 1 overwrites store 0.
+        if (!$value = optional($this->attrs->firstWhere('attribute_id', $attribute['id']))->value) {
+            return null;
+        }
+
+        if ($attribute['input'] == 'multiselect') {
+            foreach (explode(',', $value) as $optionValueId) {
+                $values[] = OptionValue::getCachedByOptionId($optionValueId);
+            }
+            return $values;
+        }
+
+        if ($attribute['input'] == 'select' && $attribute['type'] == 'int' && !$attribute['system']) {
+            return OptionValue::getCachedByOptionId($value);
+        }
+
+        if ($key == 'url_key') {
+            return '/' . $value . Config::getCachedByPath('catalog/seo/product_url_suffix', '.html');
+        }
+
+        return $value;
+    }
+
+    // Can be deleted, not used anymore.
     public function getAttributesAttribute()
     {
         $attributes = Attribute::allCached();

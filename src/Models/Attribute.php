@@ -39,4 +39,9 @@ class Attribute extends Model
             return $callback($attribute);
         });
     }
+
+    public static function getCachedWhereFirst(callable $callback): ?array
+    {
+        return array_values(self::getCachedWhere($callback))[0] ?? null;
+    }
 }
