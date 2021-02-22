@@ -30,13 +30,5 @@
             @{{ method.method_title }}
         </x-rapidez::radio>
     </div>
-
-    <button
-        type="submit"
-        class="btn btn-primary mt-3"
-        :disabled="$root.loading"
-        dusk="continue"
-    >
-        @lang('Continue')
-    </button>
+     @include('rapidez::checkout.partials.buttons')
 </form>

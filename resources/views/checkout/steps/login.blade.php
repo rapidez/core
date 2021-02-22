@@ -21,14 +21,7 @@
                 v-on:input="loginInputChange"
                 required
             />
-            <button
-                type="submit"
-                class="btn btn-primary w-full mt-5"
-                :disabled="$root.loading"
-                dusk="continue"
-            >
-                @lang('Continue')
-            </button>
+            @include('rapidez::checkout.partials.buttons')
         </form>
     </div>
 </login>

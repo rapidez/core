@@ -40,13 +40,5 @@
             </div>
         </div>
     </graphql>
-
-    <button
-        type="submit"
-        class="btn btn-primary mt-5"
-        :disabled="$root.loading"
-        dusk="continue"
-    >
-        @lang('Place order')
-    </button>
+    @include('rapidez::checkout.partials.buttons', ['buttonText' => 'Place order', 'class' => 'justify-start'])
 </form>
