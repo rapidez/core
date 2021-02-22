@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core\Models;
 
+use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Models\Model;
 use Rapidez\Core\Models\Scopes\ForCurrentStoreScope;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
@@ -36,5 +37,14 @@ class Block extends Model
 
         static::addGlobalScope(new IsActiveScope);
         static::addGlobalScope(new ForCurrentStoreScope);
+    }
+
+    public static function getCachedByIdentifier(string $identifier): ?string
+    {
+        $cacheKey = 'block.'.config('rapidez.store').'.'.$identifier;
+
+        return Cache::rememberForever($cacheKey, function () use ($identifier) {
+            return optional(self::where('identifier', $identifier)->first('content'))->content;
+        });
     }
 }

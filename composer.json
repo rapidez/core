@@ -47,7 +47,10 @@
         "laravel": {
             "providers": [
                 "Rapidez\\Core\\RapidezServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "Rapidez": "Rapidez\\Core\\RapidezFacade"
+            }
         }
     },
     "scripts": {

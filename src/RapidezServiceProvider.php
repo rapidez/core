@@ -13,6 +13,7 @@ use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
 use Rapidez\Core\Http\ViewComposers\ConfigComposer;
 use Rapidez\Core\Models\Attribute;
 use Rapidez\Core\Models\Config;
+use Rapidez\Core\Rapidez;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
 
@@ -90,6 +91,14 @@ class RapidezServiceProvider extends ServiceProvider
             return "<?php echo app('widget-directive')->render($expression) ?>";
         });
 
+        Blade::directive('block', function ($expression) {
+            return "<?php echo Rapidez\Core\Models\Block::getCachedByIdentifier($expression) ?>";
+        });
+
+        Blade::directive('config', function ($expression) {
+            return "<?php echo Rapidez\Core\Models\Config::getCachedByPath($expression) ?>";
+        });
+
         return $this;
     }
 
@@ -109,6 +118,7 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function registerBindings(): self
     {
+        $this->app->bind('rapidez', Rapidez::class);
         $this->app->bind('widget-directive', WidgetDirective::class);
 
         return $this;

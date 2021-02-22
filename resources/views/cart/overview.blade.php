@@ -13,7 +13,8 @@
                         <img
                             :alt="item.name"
                             :src="'/storage/resizes/100x100/catalog/product' + item.image"
-                            width="100"
+                            height="100"
+                            class="mx-auto"
                         />
                     </a>
                 </div>

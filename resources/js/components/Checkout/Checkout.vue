@@ -20,6 +20,8 @@
                 return
             }
 
+            history.replaceState(null, null, '#'+this.config.checkout_steps[this.checkout.step])
+
             this.getShippingMethods()
             this.getTotalsInformation()
         },

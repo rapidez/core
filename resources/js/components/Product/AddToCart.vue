@@ -51,9 +51,9 @@
                         qty: this.qty,
                         product_option: this.productOptions
                     }
-                }).then((response) => {
-                    this.refreshCart()
+                }).then(async (response) => {
                     this.error = null
+                    await this.refreshCart()
                     if (config.redirect_cart) {
                         Turbolinks.visit('/cart');
                     }

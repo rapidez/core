@@ -7,9 +7,9 @@
     <h1 class="font-bold text-3xl mb-5">{{ $category->name }}</h1>
 
     @if($category->is_anchor)
-        <category v-cloak>
+        <category :translations="{ relevance: '@lang('Relevance')', asc: '@lang('asc')', desc: '@lang('desc')' }" v-cloak>
             <div
-                slot-scope="{ loaded, baseStyles, filters, reactiveFilters, sortOptions, categoryQuery, onChange }"
+                slot-scope="{ loaded, baseStyles, filters, reactiveFilters, sortOptions, categoryQuery }"
                 :style="baseStyles"
             >
                 <reactive-base

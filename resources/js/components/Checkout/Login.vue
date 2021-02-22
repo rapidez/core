@@ -47,7 +47,7 @@
                 } else if (this.email) {
                     this.checkEmailAvailability()
                 } else {
-                    alert('A email address is required')
+                    alert('An email address is required')
                 }
             },
 

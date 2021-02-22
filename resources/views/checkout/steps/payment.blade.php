@@ -47,6 +47,6 @@
         :disabled="$root.loading"
         dusk="continue"
     >
-        @lang('Continue')
+        @lang('Place order')
     </button>
 </form>

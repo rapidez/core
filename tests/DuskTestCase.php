@@ -5,6 +5,7 @@ namespace Rapidez\Core\Tests;
 use Laravel\Dusk\Browser;
 use Orchestra\Testbench\Dusk\TestCase as BaseTestCase;
 use Rapidez\Core\Models\Product;
+use Rapidez\Core\RapidezFacade;
 use Rapidez\Core\RapidezServiceProvider;
 use TorMorten\Eventy\EventServiceProvider;
 
@@ -37,6 +38,13 @@ abstract class DuskTestCase extends BaseTestCase
         return [
             EventServiceProvider::class,
             RapidezServiceProvider::class,
+        ];
+    }
+
+    protected function getPackageAliases($app)
+    {
+        return [
+            'Rapidez' => RapidezFacade::class,
         ];
     }
 }
