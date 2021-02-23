@@ -82,9 +82,9 @@ class Product extends Model
         return $query->whereIn($this->getTable().'.entity_id', $productIds);
     }
 
-    public function getCategoryIdsAttribute(string $value): array
+    public function getCategoryIdsAttribute(?string $value): array
     {
-        return explode(',', $value);
+        return $value ? explode(',', $value) : [];
     }
 
     public function getFormattedPriceAttribute(): string
