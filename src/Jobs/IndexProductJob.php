@@ -34,7 +34,7 @@ class IndexProductJob implements ShouldQueue
     {
         $elasticsearch->index([
             'index' => config('rapidez.es_prefix') . '_products_' . $this->data['store'],
-            'id'    => $this->data['id'],
+            'id'    => $this->data['entity_id'],
             'body'  => $this->data,
         ]);
     }

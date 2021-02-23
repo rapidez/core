@@ -13,6 +13,7 @@ use Rapidez\Core\Models\Model;
 use Rapidez\Core\Models\Scopes\Product\WithProductAttributesScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductCategoryIdsScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductChildrenScope;
+use Rapidez\Core\Models\Scopes\Product\WithProductEssentialAttributesScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductSuperAttributesScope;
 use Rapidez\Core\Models\Traits\Product\CastMultiselectAttributes;
 use Rapidez\Core\Models\Traits\Product\CastSuperAttributes;
@@ -25,7 +26,7 @@ class Product extends Model
 
     protected $primaryKey = 'entity_id';
 
-    protected $appends = ['formatted_price', 'url', 'attributes'];
+    protected $appends = ['formatted_price'];
 
     protected $with = ['attrs'];
 
@@ -41,6 +42,9 @@ class Product extends Model
                 ->groupBy($from.'.entity_id');
         });
         static::addGlobalScope(new WithProductCategoryIdsScope);
+        static::addGlobalScope(new WithProductEssentialAttributesScope);
+
+        // TODO: Implement these 2:
         // static::addGlobalScope(new WithProductSuperAttributesScope);
         // static::addGlobalScope(new WithProductChildrenScope);
 
@@ -55,7 +59,6 @@ class Product extends Model
         return array_merge(
             [
                 'name' => DecodeHtmlEntities::class,
-                // 'attrs' => ProductAttributeCast::class,
                 'children' => 'object',
             ],
             // $this->getSuperAttributeCasts(),
@@ -128,35 +131,6 @@ class Product extends Model
         }
 
         return $value;
-    }
-
-    // Can be deleted, not used anymore.
-    public function getAttributesAttribute()
-    {
-        $attributes = Attribute::allCached();
-
-        $productAttributes = [];
-        foreach ($this->attrs as $attr) {
-            $attribute = $attributes[$attr->attribute_id];
-            if (isset($productAttributes[$attribute['code']]) && $attr->store_id == 0) {
-                continue;
-            }
-
-            if ($attribute['input'] == 'multiselect') {
-                foreach (explode(',', $attr->value) as $optionValueId) {
-                    $values[] = OptionValue::getCachedByOptionId($optionValueId);
-                }
-                $productAttributes[$attribute['code']]= $values;
-            } elseif ($attribute['input'] == 'select' && $attribute['type'] == 'int' && !$attribute['system']) {
-                $productAttributes[$attribute['code']]= OptionValue::getCachedByOptionId($attr->value);
-            } else {
-                $productAttributes[$attribute['code']] = $attr->value;
-            }
-        }
-
-        $productAttributes['url'] = '/' . $productAttributes['url_key'] . Config::getCachedByPath('catalog/seo/product_url_suffix', '.html');
-
-        return (object)$productAttributes;
     }
 
     public function getCategoryIdsAttribute(string $value): array

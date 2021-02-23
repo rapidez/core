@@ -40,19 +40,23 @@ class IndexProductsCommand extends Command
 
             $this->createIndexIfNeeded(config('rapidez.es_prefix') . '_products_' . $store->store_id, $this->option('fresh'));
 
-            $flat = (new Product)->getTable();
-            $productQuery = Product::where($flat.'.visibility', 4)->selectOnlyIndexable();
+            // $flat = (new Product)->getTable();
+            // TODO: Fix this?!
+            $productQuery = Product::where('visibility', 4);
+            // ->selectOnlyIndexable();
 
-            $scopes = Eventy::filter('index.product.scopes') ?: [];
-            foreach ($scopes as $scope) {
-                $productQuery->withGlobalScope($scope, new $scope);
-            }
+            // $scopes = Eventy::filter('index.product.scopes') ?: [];
+            // foreach ($scopes as $scope) {
+            //     $productQuery->withGlobalScope($scope, new $scope);
+            // }
 
-            $bar = $this->output->createProgressBar($productQuery->count());
+            $bar = $this->output->createProgressBar(Product::count());
             $bar->start();
 
             $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar) {
                 foreach ($products as $product) {
+                    dd($product->toArray());
+
                     $data = array_merge(['store' => $store->store_id], $product->toArray());
                     foreach ($product->super_attributes ?: [] as $superAttribute) {
                         $data[$superAttribute->code] = array_keys((array)$product->{$superAttribute->code});
