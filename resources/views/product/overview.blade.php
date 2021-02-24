@@ -41,6 +41,7 @@
             @include('rapidez::product.partials.addtocart')
         </div>
     </div>
+</div>
 
     <dl class="flex flex-wrap w-full bg-gray-200 rounded p-3">
         <dt class="w-1/2 sm:w-1/4 font-bold">ID</dt>
