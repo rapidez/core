@@ -1,29 +1,43 @@
 <script>
     export default {
-        props: ['product'],
         render() {
             return this.$scopedSlots.default({
                 changeAttribute: this.changeAttribute,
-                productImages: this.productImages
+                productImages: this.productImages,
+                attributeOptions: this.attributeOptions
             })
         },
         data() {
             return {
-                productImages: null
+                productImages: null,
+                attributeOptions: {},
+                currentChild: null,
             }
         },
+
         methods: {
             changeAttribute(superAttributeLabel, option) {
-                let children = JSON.parse(this.product).children;
-                if(superAttributeLabel.toLowerCase() === 'size') return
+                let children = window.config.product.children
+
 
                 Object.keys(children).forEach(key => {
                     Object.keys(children[key]).forEach(keyAttribute => {
                         if(keyAttribute === superAttributeLabel.toLowerCase() && children[key][keyAttribute] == option) {
-                            this.productImages = children[key].images;
+                            this.attributeOptions[keyAttribute] = option
                         }
                     })
                 })
+                let child;
+                Object.keys(this.attributeOptions).forEach(key => {
+                    let childArray = Object.values(children)
+                    if(child === undefined) {
+                        child = Object.values(children).filter(c => c.hasOwnProperty(key) && String(c[key]) === String(this.attributeOptions[key]));
+                    } else {
+                        child = child.filter(c => c.hasOwnProperty(key) && String(c[key]) === this.attributeOptions[key])
+                    }
+                })
+                this.currentChild = child.shift();
+                this.productImages = this.currentChild.images
             }
         }
     }
