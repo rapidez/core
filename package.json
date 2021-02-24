@@ -25,7 +25,7 @@
         "resolve-url-loader": "^2.3.1",
         "sass": "^1.20.1",
         "sass-loader": "^8.0.0",
-        "tailwindcss": "npm:@tailwindcss/postcss7-compat",
+        "tailwindcss": "^2.0.3",
         "turbolinks": "^5.2.0",
         "vue": "^2.6.12",
         "vue-async-computed": "^3.8.2",
