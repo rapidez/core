@@ -86,16 +86,16 @@ class IndexProductsCommand extends Command
             $this->elasticsearch->indices()->create([
                 'index' => $index,
                 'body'  => [
-                    'mappings' => [
+                    'mappings' => Eventy::filter('index.product.mapping', [
                         'properties' => [
                             'price' => [
                                 'type' => 'double',
                             ],
                             'children' => [
                                 'type' => 'flattened',
-                            ]
+                            ],
                         ]
-                    ]
+                    ])
                 ]
             ]);
         }
