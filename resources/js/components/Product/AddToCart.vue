@@ -178,6 +178,18 @@
                                         var attributeCode = this.product.super_attributes[attributeId2].code
                                         disabledOptions[attributeCode].push(valueId)
                                     }
+
+                                    //If there is a product that is out of stock, add the options that is not selected to the disabled options
+                                    products.forEach(product => {
+                                        var attributeCode2 = this.product.super_attributes[attributeId2].code
+                                        var attributeCode = this.product.super_attributes[attributeId].code
+
+                                        if(!this.product.children[product].stock_status
+                                            && String(this.product.children[product][attributeCode2]) === valueId
+                                            && String(this.product.children[product][attributeCode]) === selectedValueId) {
+                                            disabledOptions[attributeCode2].push(valueId)
+                                        }
+                                    })
                                 })
                             }
                         }
