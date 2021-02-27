@@ -22,6 +22,7 @@ return [
         'es_prefix',
         'media_url',
         'magento_url',
+        'checkout_steps',
     ],
 
     // Should the routes be registered?
@@ -29,4 +30,9 @@ return [
 
     // With this token you can run commands from an url.
     'admin_token' => env('RAPIDEZ_TOKEN', env('APP_KEY')),
+
+    // The checkout steps which are used to name the steps
+    // in the url and in the progressbar on steps. Keep
+    // them lowercase and do not include any spaces.
+    'checkout_steps' => ['cart', 'login', 'credentials', 'payment', 'success'],
 ];

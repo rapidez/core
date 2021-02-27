@@ -26,6 +26,8 @@ Route::middleware('api')->prefix('api')->group(function () {
 
     Route::prefix('admin')->middleware(VerifyAdminToken::class)->group(function () {
         Route::get('cache/clear', fn() => Artisan::call('cache:clear'));
-        Route::get('index/products', fn() => Artisan::call('rapidez:index'));
+        Route::get('index/products', fn(Request $request) => Artisan::call('rapidez:index', [
+            'store' => $request->store
+        ]));
     });
 });

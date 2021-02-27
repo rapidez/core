@@ -44,7 +44,7 @@ class Store extends Model
     {
         if (!$stores = config('cache.app.stores')) {
             $stores = Cache::rememberForever('stores', function () {
-                return self::select(['store_id', 'code'])->get()->keyBy('store_id')->toArray();
+                return self::select(['store_id', 'code', 'website_id'])->get()->keyBy('store_id')->toArray();
             });
             config(['cache.app.stores' => $stores]);
         }

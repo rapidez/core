@@ -23,6 +23,7 @@ class ConfigComposer
 
         config(['frontend.locale' => Config::getCachedByPath('general/locale/code', 'en_US')]);
         config(['frontend.currency' => Config::getCachedByPath('currency/options/default')]);
+        config(['frontend.redirect_cart' => (bool)Config::getCachedByPath('checkout/cart/redirect_to_cart')]);
 
         config(['frontend.searchable' => Arr::pluck(Attribute::getCachedWhere(function ($attribute) {
             return $attribute['search'];

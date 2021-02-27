@@ -53,7 +53,7 @@ trait HasContentAttributeWithVariables
             return $condition->type == 'Magento\CatalogWidget\Model\Rule\Condition\Product';
         });
 
-        return view('rapidez::widget.productlist', compact('options', 'condition'));
+        return view('rapidez::widget.productlist', compact('options', 'condition'))->render();
     }
 
     protected function fancyMagentoSyntaxDecoder(string $encodedString): object

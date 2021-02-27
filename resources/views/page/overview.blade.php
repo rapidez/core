@@ -5,10 +5,15 @@
 
 @section('content')
     <div class="container mx-auto">
-        <h1 class="font-bold text-4xl mb-5">{{ $page->content_heading }}</h1>
+        @if($page->identifier != 'home')
+            <h1 class="font-bold text-4xl mb-5">{{ $page->content_heading }}</h1>
+        @endif
+        @includeIf('pages.'.$page->identifier)
         @widget('content', 'pages', ($page->identifier == 'home' ? 'cms' : $page->identifier).'_index_index')
-        <div class="mb-5 prose prose-green">
-            {!! $page->content !!}
-        </div>
+        @if($page->content)
+            <div class="mb-5 prose prose-green">
+                {!! $page->content !!}
+            </div>
+        @endif
     </div>
 @endsection

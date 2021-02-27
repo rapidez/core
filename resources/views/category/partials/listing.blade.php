@@ -11,7 +11,6 @@
         button: 'btn btn-pagination',
         sortOptions: 'sort-options'
     }"
-    @query-change="onChange"
     u-r-l-params
 >
     @include('rapidez::category.partials.listing.stats')
