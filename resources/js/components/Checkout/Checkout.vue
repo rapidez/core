@@ -11,7 +11,7 @@
                 cart: this.cart,
                 checkout: this.checkout,
                 save: this.save,
-                goToStep: this.goToStep
+                goToStep: this.goToStep,
             })
         },
 
