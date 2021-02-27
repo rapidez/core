@@ -40,6 +40,15 @@ export default {
                 }
             }
         },
+
+        async linkUserToCart() {
+            await magentoUser.put('guest-carts/'+localStorage.mask, {
+                customerId: this.$root.user.id,
+                storeId: config.store
+            }).catch((error) => {
+                alert(error.response.data.message)
+            })
+        }
     },
 
     computed: {
@@ -50,5 +59,13 @@ export default {
         hasItems: function () {
             return this.cart && this.cart.items && Object.keys(this.cart.items).length
         },
+
+        hasVirtualItems: function () {
+            return Object.values(this.cart.items).filter((item) => item.type == 'downloadable').length
+        },
+
+        hasOnlyVirtualItems: function () {
+            return this.hasVirtualItems === this.hasItems
+        }
     },
 }

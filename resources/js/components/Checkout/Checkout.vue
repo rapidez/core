@@ -1,8 +1,9 @@
 <script>
     import GetCart from './../Cart/mixins/GetCart'
+    import InteractWithUser from './../User/mixins/InteractWithUser'
 
     export default {
-        mixins: [GetCart],
+        mixins: [GetCart, InteractWithUser],
 
         render() {
             return this.$scopedSlots.default({
@@ -20,17 +21,14 @@
                 return
             }
 
+            this.checkout.hasVirtualItems = this.hasVirtualItems
             history.replaceState(null, null, '#'+this.config.checkout_steps[this.checkout.step])
-
+            
             this.getShippingMethods()
             this.getTotalsInformation()
         },
 
         methods: {
-            hasOnlyVirtualItems() {
-                return Object.values(this.cart.items).filter((item) => item.type == 'downloadable').length === Object.values(this.cart.items).length
-            },
-
             async getShippingMethods() {
                 try {
                     let response = await this.magentoCart('post', 'estimate-shipping-methods', {
@@ -78,6 +76,7 @@
                             if (!await this.saveCredentials()) {
                                 validated = false
                             }
+
                             break
                         case 'payment_method':
                             if (!await this.savePaymentMethod()) {
@@ -114,9 +113,24 @@
                         billing_address: this.billingAddress
                     }
 
-                    if (!this.hasOnlyVirtualItems()) {
+                    if (!this.hasOnlyVirtualItems) {
                         addressInformation.shipping_carrier_code = this.checkout.shipping_method.split('_')[0]
                         addressInformation.shipping_method_code = this.checkout.shipping_method.split('_')[1]
+                    }
+
+                    if (this.checkout.password) {
+                        this.$root.user = await this.createCustomer(this.shippingAddress, this.billingAddress, this.checkout.password)
+                        if (!this.$root.user) {
+                            return false
+                        }
+                        let self = this
+                        this.login(this.$root.user.email, this.checkout.password, async () => {
+                            await self.refreshUser(false)
+                            if (self.$root.cart) {
+                                await self.linkUserToCart()
+                                localStorage.mask = self.$root.cart.entity_id
+                            }
+                        });
                     }
 
                     let response = await this.magentoCart('post', 'shipping-information', {
@@ -135,12 +149,17 @@
 
             validateCredentials() {
                 let validated = true
-                if (!this.checkout.shipping_method && !this.hasOnlyVirtualItems()) {
+                if (!this.checkout.shipping_method && !this.hasOnlyVirtualItems) {
                     alert('No shipping method selected')
                     validated = false
                 }
 
-                if (!this.checkout.shipping_method && this.hasOnlyVirtualItems()) {
+                if (validated && this.checkout.password != this.checkout.password_repeat) {
+                    alert('Please make sure your password match')
+                    validated = false
+                }
+
+                if (!this.checkout.shipping_method && this.hasOnlyVirtualItems && validated) {
                     return true
                 }
 
@@ -164,7 +183,7 @@
                     let response = await this.magentoCart('post', 'payment-information', {
                         billingAddress: this.billingAddress,
                         shippingAddress: this.shippingAddress,
-                        email: this.$root.guestEmail,
+                        email: this.user.email || this.$root.guestEmail,
                         paymentMethod: {
                             method: this.checkout.payment_method,
                             extension_attributes: {
