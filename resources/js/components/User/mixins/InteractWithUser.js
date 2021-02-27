@@ -55,7 +55,7 @@ export default {
 
         async createCustomer(shippingAddress, billingAddress, password) {
             try {
-                let response = await magentoUser['post']('customers', {
+                let response = await magentoUser.post('customers', {
                     customer: {
                         email: this.$root.guestEmail,
                         firstname: shippingAddress.firstname,
