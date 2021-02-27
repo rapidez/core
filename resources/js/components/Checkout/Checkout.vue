@@ -181,7 +181,7 @@
                     let response = await this.magentoCart('post', 'payment-information', {
                         billingAddress: this.billingAddress,
                         shippingAddress: this.shippingAddress,
-                        email: this.user.email ? this.user.email : this.$root.guestEmail,
+                        email: this.user.email || this.$root.guestEmail,
                         paymentMethod: {
                             method: this.checkout.payment_method,
                             extension_attributes: {
