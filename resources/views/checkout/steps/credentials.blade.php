@@ -12,7 +12,12 @@
         <x-rapidez::checkbox v-model="checkout.hide_billing">
             @lang('My billing and shipping address is the same')
         </x-rapidez::checkbox>
+
+        <div class="mt-2">
+            @include('rapidez::checkout.partials.create-account')
+        </div>
     </div>
+
     <div v-if="!checkout.hide_billing" class="grid grid-cols-12 gap-4 mb-3">
         <p class="col-span-12 font-bold text-2xl">
             @lang('Billing address')
@@ -29,25 +34,6 @@
         >
             @{{ method.method_title }}
         </x-rapidez::radio>
-    </div>
-
-    <div v-if="!user" id="create-account-wrapper">
-        <p class="col-span-12 font-bold text-2xl">
-            @lang('Create account')
-        </p>
-        <div class="grid grid-cols-12 gap-4 mb-3">
-            <div class="col-span-12" v-if="!checkout.hasVirtualItems">
-                <x-rapidez::checkbox v-model="checkout.create_account">
-                    @lang('Create an account')
-                </x-rapidez::checkbox>
-            </div>
-            <div class="col-span-12 sm:col-span-6" v-if="checkout.create_account || checkout.hasVirtualItems">
-                <x-rapidez::input name="password" type="password" v-model="checkout.password" required />
-            </div>
-            <div class="col-span-12 sm:col-span-6" v-if="checkout.create_account || checkout.hasVirtualItems">
-                <x-rapidez::input name="password_repeat" type="password" v-model="checkout.password_repeat" required />
-            </div>
-        </div>
     </div>
 
     <button

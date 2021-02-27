@@ -23,7 +23,7 @@
 
             this.checkout.hasVirtualItems = this.hasVirtualItems
             history.replaceState(null, null, '#'+this.config.checkout_steps[this.checkout.step])
-            
+
             this.getShippingMethods()
             this.getTotalsInformation()
         },
@@ -118,7 +118,7 @@
                         addressInformation.shipping_method_code = this.checkout.shipping_method.split('_')[1]
                     }
 
-                    if (this.checkout.password) {
+                    if (this.checkout.create_account && this.checkout.password) {
                         this.$root.user = await this.createCustomer(this.shippingAddress, this.billingAddress, this.checkout.password)
                         if (!this.$root.user) {
                             return false
@@ -154,7 +154,7 @@
                     validated = false
                 }
 
-                if (validated && this.checkout.password != this.checkout.password_repeat) {
+                if (validated && this.checkout.create_account && this.checkout.password != this.checkout.password_repeat) {
                     alert('Please make sure your password match')
                     validated = false
                 }
@@ -183,7 +183,7 @@
                     let response = await this.magentoCart('post', 'payment-information', {
                         billingAddress: this.billingAddress,
                         shippingAddress: this.shippingAddress,
-                        email: this.user.email || this.$root.guestEmail,
+                        email: this.user ? this.user.email : this.$root.guestEmail,
                         paymentMethod: {
                             method: this.checkout.payment_method,
                             extension_attributes: {
