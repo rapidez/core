@@ -1,5 +1,4 @@
 const mix = require('laravel-mix');
-const path = require('path');
 
 /*
  |--------------------------------------------------------------------------
@@ -14,12 +13,18 @@ const path = require('path');
 
 mix
     .setPublicPath('public')
-    .js('resources/js/app.js', 'public/js').vue()
+    .js('resources/js/app.js', 'public/js')
     .postCss('resources/css/app.css', 'public/css', [
         require('tailwindcss'),
-    ]).alias({
-        'Vendor': path.join(__dirname, 'vendor'),
-    }).options({
+    ])
+    .webpackConfig({
+        resolve: {
+            alias: {
+                'Vendor': path.resolve(__dirname, 'vendor'),
+            },
+        }
+    })
+    .options({
         terser: {
             extractComments: false,
         }

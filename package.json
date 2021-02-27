@@ -1,12 +1,13 @@
 {
     "private": true,
     "scripts": {
-        "development": "mix",
-        "dev": "mix",
-        "watch": "mix watch",
-        "watch-poll": "mix watch -- --watch-options-poll=1000",
-        "hot": "mix watch --hot",
-        "production": "mix --production"
+        "dev": "npm run development",
+        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch": "npm run development -- --watch",
+        "watch-poll": "npm run watch -- --watch-poll",
+        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "prod": "npm run production",
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
         "@appbaseio/reactivesearch-vue": "^1.8.3",
@@ -17,14 +18,15 @@
         "autoprefixer": "^9",
         "axios": "^0.19",
         "cross-env": "^7.0",
-        "laravel-mix": "^6.0.11",
+        "laravel-mix": "^5.0.1",
         "lodash": "^4.17.20",
-        "postcss": "^8.2.6",
+        "postcss": "^7",
         "postcss-import": "^13.0.0",
         "postcss-nested": "^5.0.1",
+        "resolve-url-loader": "^2.3.1",
         "sass": "^1.20.1",
         "sass-loader": "^8.0.0",
-        "tailwindcss": "^2.0.3",
+        "tailwindcss": "npm:@tailwindcss/postcss7-compat",
         "turbolinks": "^5.2.0",
         "vue": "^2.6.12",
         "vue-async-computed": "^3.8.2",

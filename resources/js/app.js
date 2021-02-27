@@ -1,8 +1,8 @@
-import Vue from 'vue'
 window._ = require('lodash')
 window.axios = require('axios')
+window.Vue = require('vue')
 window.debug = process.env.MIX_DEBUG == 'true'
-window.Vue = Vue
+
 window.Turbolinks = require('turbolinks')
 Turbolinks.start()
 import TurbolinksAdapter from 'vue-turbolinks'
