@@ -19,11 +19,12 @@
             changeAttribute(superAttributeCode, option) {
                 let children = window.config.product.children
                 this.attributeOptions[superAttributeCode] = Number(option)
+
                 Object.keys(this.attributeOptions).forEach(key => {
                     children = Object.values(children).filter(c => c[key] === this.attributeOptions[key])
                 })
 
-                this.currentChild = children.shift();
+                this.currentChild = children.shift()
                 this.productImages = this.currentChild.images
             }
         }
