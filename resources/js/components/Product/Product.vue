@@ -30,19 +30,12 @@
             getCurrentChild(children) {
                 let images = JSON.parse(this.images)
                 let child
-                if(children.length > 1) {
-                    Object.keys(children).forEach(key => {
-                        if(children[key].images.every((val, index) => val === images[index].value) === true) {
-                            this.currentChild = children[key]
-                            child = children[key]
-                       }
-                   })
-                } else {
-                    child = children.shift()
-                }
+                if(children.length === 1) return children.shift()
+                Object.keys(children).forEach(key => {
+                    if(children[key].images.every((val, index) => val === images[index].value)) child = children[key]
+               })
 
-                if(child === undefined) child = children.shift()
-
+                if(child === undefined) return children.shift()
                 return child
         }
     }
