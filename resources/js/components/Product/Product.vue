@@ -32,7 +32,7 @@
                     if(child === undefined) {
                         child = Object.values(children).filter(c => c.hasOwnProperty(key) && String(c[key]) === String(this.attributeOptions[key]));
                     } else {
-                        child = child.filter(c => c.hasOwnProperty(key) && String(c[key]) === this.attributeOptions[key])
+                        child = child.filter(c => c.hasOwnProperty(key) && String(c[key]) === String(this.attributeOptions[key]))
                     }
                 })
 
