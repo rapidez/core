@@ -6,7 +6,6 @@
                 changeAttribute: this.changeAttribute,
                 productImages: this.productImages,
                 attributeOptions: this.attributeOptions,
-                getCurrentChild: this.getCurrentChild
             })
         },
         data() {
@@ -33,7 +32,6 @@
                 let child
                 if(children.length > 1) {
                     Object.keys(children).forEach(key => {
-                        console.log(children[key].images.every((val, index) => val === images[index].value))
                         if(children[key].images.every((val, index) => val === images[index].value) === true) {
                             this.currentChild = children[key]
                             child = children[key]
