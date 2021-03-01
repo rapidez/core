@@ -10,13 +10,21 @@
         },
         data() {
             return {
-                productImages: null,
+                productImages: this.getImages(),
                 attributeOptions: {},
                 currentChild: null,
             }
         },
 
         methods: {
+            getImages() {
+                let images = JSON.parse(this.images)
+                let prodImages = []
+                Object.keys(images).forEach(key => {
+                    prodImages.push(images[key].value)
+                })
+                return prodImages
+            },
             changeAttribute(superAttributeCode, option) {
                 let children = window.config.product.children
                 this.attributeOptions[superAttributeCode] = Number(option)
