@@ -37,7 +37,7 @@
 
                 if(child === undefined) return children.shift()
                 return child
+            }
         }
     }
-}
 </script>
