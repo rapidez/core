@@ -12,7 +12,12 @@
         <x-rapidez::checkbox v-model="checkout.hide_billing">
             @lang('My billing and shipping address is the same')
         </x-rapidez::checkbox>
+
+        <div class="mt-2">
+            @include('rapidez::checkout.partials.create-account')
+        </div>
     </div>
+
     <div v-if="!checkout.hide_billing" class="grid grid-cols-12 gap-4 mb-3">
         <p class="col-span-12 font-bold text-2xl">
             @lang('Billing address')

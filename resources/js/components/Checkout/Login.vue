@@ -43,7 +43,18 @@
                 }
 
                 if (this.email && this.password) {
-                    this.login()
+                    let self = this
+                    this.login(this.email, this.password, async () => {
+                        await self.refreshUser(false)
+                        if (self.$root.cart) {
+                            await self.linkUserToCart()
+                            localStorage.mask = self.$root.cart.entity_id
+                        } else {
+                            await self.refreshCart()
+                        }
+
+                        this.successfulLogin()
+                    });
                 } else if (this.email) {
                     this.checkEmailAvailability()
                 } else {
@@ -68,31 +79,6 @@
                 .catch((error) => alert(error.response.data.message))
             },
 
-            login() {
-                magento.post('integration/customer/token', {
-                    username: this.email,
-                    password: this.password,
-                })
-                .then(async (response) => {
-                    localStorage.token = response.data
-                    window.magentoUser.defaults.headers.common['Authorization'] = `Bearer ${localStorage.token}`;
-                    await this.refreshUser()
-
-                    if (this.$root.cart) {
-                        await this.linkUserToCart()
-                        localStorage.mask = this.$root.cart.entity_id
-                    } else {
-                        await this.refreshCart()
-                    }
-
-                    this.successfulLogin()
-                })
-                .catch((error) => {
-                    alert(error.response.data.message)
-                    this.password = null
-                })
-            },
-
             loginInputChange(e) {
                 if (e.target.id == 'email') {
                     this.emailAvailable = true
@@ -106,15 +92,6 @@
                 } else {
                     Turbolinks.visit('/account')
                 }
-            },
-
-            async linkUserToCart() {
-                await magentoUser.put('guest-carts/'+localStorage.mask, {
-                    customerId: this.$root.user.id,
-                    storeId: config.store
-                }).catch((error) => {
-                    alert(error.response.data.message)
-                })
             }
         }
     }
