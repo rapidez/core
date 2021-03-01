@@ -33,7 +33,7 @@
                 if(children.length === 1) return children.shift()
                 Object.keys(children).forEach(key => {
                     if(children[key].images.every((val, index) => val === images[index].value)) child = children[key]
-               })
+                })
 
                 if(child === undefined) return children.shift()
                 return child
