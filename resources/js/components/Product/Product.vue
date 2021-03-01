@@ -16,17 +16,16 @@
         },
 
         methods: {
-            changeAttribute(superAttributeLabel, option) {
+            changeAttribute(superAttributeCode, option) {
                 let children = window.config.product.children
-
-
                 Object.keys(children).forEach(key => {
                     Object.keys(children[key]).forEach(keyAttribute => {
-                        if(keyAttribute === superAttributeLabel.toLowerCase() && children[key][keyAttribute] == option) {
+                        if(keyAttribute === superAttributeCode && children[key][keyAttribute] == option) {
                             this.attributeOptions[keyAttribute] = option
                         }
                     })
                 })
+
                 let child;
                 Object.keys(this.attributeOptions).forEach(key => {
                     let childArray = Object.values(children)
@@ -36,6 +35,7 @@
                         child = child.filter(c => c.hasOwnProperty(key) && String(c[key]) === this.attributeOptions[key])
                     }
                 })
+
                 this.currentChild = child.shift();
                 this.productImages = this.currentChild.images
             }

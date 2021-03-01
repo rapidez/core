@@ -7,7 +7,7 @@
                 v-bind:id="'super_attribute_'+superAttributeId"
                 v-bind:name="superAttributeId"
                 v-model="options[superAttributeId]"
-                v-on:change="changeAttribute(superAttribute.label, options[superAttributeId])"
+                v-on:change="changeAttribute(superAttribute.code, options[superAttributeId])"
                 class="block w-64 mb-3"
             >
                 <option disabled selected hidden :value="undefined">@lang('Select') @{{ superAttribute.label.toLowerCase() }}</option>
