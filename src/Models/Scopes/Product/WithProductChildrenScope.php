@@ -39,7 +39,7 @@ class WithProductChildrenScope implements Scope
                 "stock_qty",  stock.qty - stock.min_qty + (
                     SELECT IFNULL(SUM(quantity), 0)
                     FROM inventory_reservation
-                    WHERE sku = children.sku
+                    WHERE inventory_reservation.sku = children.sku
                 ),
                 "stock_status", stock.is_in_stock,
                 "images", (
