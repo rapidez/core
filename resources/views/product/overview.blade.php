@@ -16,8 +16,8 @@
                                 class="max-h-full max-w-full"
                                 loading="lazy"
                             />
-                        </div>
-                        <x-rapidez::no-image v-if="productImages.length === 0" class="rounded h-64"/>
+                    </div>
+                    <x-rapidez::no-image v-if="productImages.length === 0" class="rounded h-64"/>
                 </div>
             </div>
             <div class="sm:w-1/3">
