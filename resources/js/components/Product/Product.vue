@@ -36,11 +36,10 @@
                 this.productImages = this.currentChild.images
             },
             getCurrentChild(children) {
-                let images = JSON.parse(this.images)
                 let child
                 if(children.length === 1) return children.shift()
                 Object.keys(children).forEach(key => {
-                    if(children[key].images.every((val, index) => val === images[index].value)) child = children[key]
+                    if(children[key].images.every((val, index) => val === this.productImages[index])) child = children[key]
                 })
 
                 if(child === undefined) return children.shift()
