@@ -36,8 +36,11 @@ class WithProductChildrenScope implements Scope
             ->selectRaw('JSON_REMOVE(JSON_OBJECTAGG(IFNULL(children.entity_id, "null__"), JSON_OBJECT(
                 "price", children.price,
                 '.$superAttributesSelect.'
-                "stock_qty",  stock.qty - stock.min_qty,
-                "reservation_qty", reservation.quantity,
+                "stock_qty",  stock.qty - stock.min_qty + (
+                    SELECT IFNULL(SUM(quantity), 0)
+                    FROM inventory_reservation
+                    WHERE sku = children.sku
+                ),
                 "stock_status", stock.is_in_stock,
                 "images", (
                     SELECT JSON_ARRAYAGG(catalog_product_entity_media_gallery.value)
@@ -48,7 +51,6 @@ class WithProductChildrenScope implements Scope
             )), "$.null__") AS children')
             ->leftJoin('catalog_product_super_link', 'catalog_product_super_link.parent_id', '=', $flat.'.entity_id')
             ->leftJoin($flat.' AS children', 'children.entity_id', '=', 'catalog_product_super_link.product_id')
-            ->leftJoin('cataloginventory_stock_item AS stock', 'children.entity_id', '=', 'stock.product_id')
-            ->leftJoin('inventory_reservation AS reservation', 'children.sku', '=', 'reservation.sku');
+            ->leftJoin('cataloginventory_stock_item AS stock', 'children.entity_id', '=', 'stock.product_id');
     }
 }
