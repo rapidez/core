@@ -5,7 +5,7 @@
 
 @section('content')
     <h1 class="font-bold text-4xl mb-5">{{ $product->name }}</h1>
-    <product v-cloak images="{{ $product->images }}">
+    <product images="{{ $product->images }}">
         <div class="flex flex-col sm:flex-row mb-5" slot-scope="{ changeAttribute, productImages }">
             <div class="sm:w-2/3 sm:mr-5">
                 <div v-cloak v-if="productImages.length" :class="productImages.length === 1 ? '' : 'grid gap-3 grid-cols-2'">
