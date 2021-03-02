@@ -2,12 +2,12 @@
     "private": true,
     "scripts": {
         "development": "mix",
-        "dev": "mix",
+        "dev": "yarn run development",
         "watch": "mix watch",
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
         "production": "mix --production",
-        "prod": "mix --production"
+        "prod": "yarn run production"
     },
     "devDependencies": {
         "@appbaseio/reactivesearch-vue": "^1.8.3",
