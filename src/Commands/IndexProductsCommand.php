@@ -34,6 +34,8 @@ class IndexProductsCommand extends Command
 
     public function handle()
     {
+        $this->call('cache:clear');
+
         $stores = $this->argument('store') ? Store::where('store_id', $this->argument('store'))->get() : Store::all();
 
         foreach ($stores as $store) {
