@@ -3,6 +3,7 @@
     :component-id="filter.code"
     :data-field="filter.code"
     :title="filter.name.replace('_', ' ')"
+    :react="{and: ['category']}"
     :show-filter="false"
     :inner-class="{
         title: 'capitalize font-semibold',
