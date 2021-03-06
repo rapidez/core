@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Rapidez\Core\Commands\IndexProductsCommand;
 use Rapidez\Core\Commands\InstallCommand;
+use Rapidez\Core\Commands\ValidateCommand;
 use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
 use Rapidez\Core\Http\ViewComposers\ConfigComposer;
 use Rapidez\Core\Models\Attribute;
@@ -41,6 +42,7 @@ class RapidezServiceProvider extends ServiceProvider
     {
         $this->commands([
             IndexProductsCommand::class,
+            ValidateCommand::class,
             InstallCommand::class,
         ]);
 
