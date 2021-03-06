@@ -54,7 +54,7 @@ class IndexProductsCommand extends Command
                 $productQuery->withGlobalScope($scope, new $scope);
             }
 
-            $bar = $this->output->createProgressBar($productQuery->count());
+            $bar = $this->output->createProgressBar($productQuery->getQuery()->getCountForPagination());
             $bar->start();
 
             $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $index) {
@@ -67,7 +67,7 @@ class IndexProductsCommand extends Command
                     IndexProductJob::dispatch($index, $data);
                 }
 
-                $bar->advance($this->chunkSize);
+                $bar->advance($products->count());
             });
 
             $this->switchAlias($alias, $index);
