@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="sm:w-1/3">
-            <div class="p-3 my-5 sm:mt-0 bg-gray-200 rounded">
+            <div class="p-3 my-5 sm:mt-0 bg-gray-200 rounded prose prose-green max-w-none">
                 {!! $product->description !!}
             </div>
             @include('rapidez::product.partials.addtocart')
