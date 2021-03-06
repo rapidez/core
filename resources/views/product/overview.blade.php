@@ -39,7 +39,7 @@
         @foreach(Rapidez\Core\Models\Attribute::getCachedWhere(fn ($a) => $a['productpage']) as $attribute)
             @if(($value = $product->{$attribute['code']}) && !is_object($value))
                 <dt class="w-1/2 sm:w-1/4 font-bold">{{ $attribute['name'] }}</dt>
-                <dd class="w-1/2 sm:w-3/4">
+                <dd class="w-1/2 sm:w-3/4 prose prose-green max-w-none">
                     @php $output = is_array($value) ? implode(', ', $value) : $value @endphp
                     {!! $attribute['html'] ? $output : e($output) !!}
                 </dd>
