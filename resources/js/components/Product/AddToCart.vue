@@ -152,9 +152,11 @@
                 Object.entries(this.product.super_attributes).forEach(([attributeId, attribute]) => {
                     disabledOptions[attribute.code] = []
                     valuesPerAttribute[attributeId] = []
-
                     // Fill list with products per attribute value
                     Object.entries(this.product.children).forEach(([productId, option]) => {
+                        //check the stock of the product child, if not in stock skip child.
+                        if(!this.product.children[productId].stock_status) return
+                        if(this.product.children[productId].stock_qty <= 0) return
                         if (!valuesPerAttribute[attributeId][option[attribute.code]]) {
                             valuesPerAttribute[attributeId][option[attribute.code]] = []
                         }
@@ -178,17 +180,6 @@
                                         var attributeCode = this.product.super_attributes[attributeId2].code
                                         disabledOptions[attributeCode].push(valueId)
                                     }
-
-                                    //If there is a product that is out of stock, add the options that are not selected to the disabled options
-                                    products.forEach(product => {
-                                        var disableCode = this.product.super_attributes[attributeId2].code
-                                        var selectedCode = this.product.super_attributes[attributeId].code
-                                        if(!this.product.children[product].stock_status || this.product.children[product].stock_qty === 0
-                                            && String(this.product.children[product][disableCode]) === valueId
-                                            && String(this.product.children[product][selectedCode]) === selectedValueId) {
-                                            disabledOptions[disableCode].push(valueId)
-                                        }
-                                    })
                                 })
                             }
                         }
