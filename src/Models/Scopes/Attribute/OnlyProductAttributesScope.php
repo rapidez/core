@@ -31,6 +31,7 @@ class OnlyProductAttributesScope implements Scope
                     used_in_product_listing AS listing,
                     used_for_sort_by AS sorting,
                     is_visible_on_front AS productpage,
+                    is_html_allowed_on_front AS html,
                     GREATEST(
                         IF(backend_type = "static", 1, 0),
                         is_used_for_promo_rules,
