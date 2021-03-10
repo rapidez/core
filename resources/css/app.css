@@ -39,7 +39,6 @@
 @import "components/buttons.css";
 @import "components/sort-options.css";
 @import "components/vue-slider.css";
-@import "components/newsletter.css";
 /**
  * This injects all of Tailwind's utility classes, generated based on your
  * config file.
