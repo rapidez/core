@@ -10,7 +10,6 @@
         @endif
         @includeIf('pages.'.$page->identifier)
         @widget('content', 'pages', ($page->identifier == 'home' ? 'cms' : $page->identifier).'_index_index')
-        @include('rapidez::newsletter.newsletter')
         @if($page->content)
             <div class="mb-5 prose prose-green">
                 {!! $page->content !!}
