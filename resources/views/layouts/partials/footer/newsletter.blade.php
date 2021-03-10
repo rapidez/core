@@ -16,7 +16,6 @@
                         <button type="submit" class="btn btn-primary px-5 py-3 ml-5" :disabled="$root.loading">
                             @lang('Subscribe')
                         </button>
-                        {{-- mt-3 w-full flex items-center justify-center px-5 py-3 border border-transparent shadow text-base font-medium rounded-md text-white btn btn-primary hover:bg-primary-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-primary-700 focus:ring-white sm:mt-0 sm:ml-3 sm:w-auto sm:flex-shrink-0 --}}
                     </form>
                     <div v-if="mutated" class="ml-3 text-green-500">
                         @lang('Subscribed successfully!')

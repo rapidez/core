@@ -1,4 +1,4 @@
-<div class="{{ !isset($wrapperClass) ?: $wrapperClass}}">
+<div class="{{ !isset($wrapperClass) ?: $wrapperClass }}">
     @if(!isset($label) || (isset($label) && $label))
         <x-rapidez::label for="{{ $name }}">@lang($label ?? ucfirst($name))</x-rapidez::label>
     @endif
