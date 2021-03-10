@@ -13,10 +13,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - magento-version: 2.3.6
+          - magento-version: 2.3.6-p1
             magento-php-version: php73-fpm
             rapidez-php-version: 7.4
-          - magento-version: 2.4.1
+          - magento-version: 2.4.1-p1
+            magento-php-version: php74-fpm
+            rapidez-php-version: 7.4
+          - magento-version: 2.4.2
             magento-php-version: php74-fpm
             rapidez-php-version: 7.4
 
