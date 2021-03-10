@@ -1,0 +1,3 @@
+.newsletter div {
+    @apply flex-grow;
+}

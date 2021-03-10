@@ -11,8 +11,8 @@
                     </p>
                 </div>
                 <div class="mt-8 sm:w-full sm:max-w-md xl:mt-0 xl:ml-8">
-                    <form class="sm:flex" v-on:submit.prevent="mutate">
-                        <input id="email" name="emailAddress" type="email" v-model="changes.email" autocomplete="email" required class="w-full border-white px-5 py-3 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-700 focus:ring-white rounded-md" placeholder="@lang('Enter your email')" />
+                    <form class="sm:flex newsletter" v-on:submit.prevent="mutate">
+                        <x-rapidez::input label="" id="email" name="emailAddress" type="email" v-model="changes.email" autocomplete="email" required class="w-full border-white px-5 py-3 placeholder-gray-500  focus:ring-offset-indigo-700 focus:ring-white rounded-md" placeholder="Enter your email" />
                         <button type="submit" class="mt-3 w-full flex items-center justify-center px-5 py-3 border border-transparent shadow text-base font-medium rounded-md text-white btn btn-primary hover:bg-primary-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-primary-700 focus:ring-white sm:mt-0 sm:ml-3 sm:w-auto sm:flex-shrink-0" :disabled="$root.loading">
                             @lang('Subscribe')
                         </button>
