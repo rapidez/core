@@ -22,11 +22,17 @@
                             v-model="changes.email"
                             class="px-5 py-3"
                             wrapperClass="flex-grow"
+                            dusk="newsletter-email"
                             autocomplete="email"
                             placeholder="Enter your email"
                             required
                         />
-                        <button type="submit" class="btn btn-primary w-full mt-3 px-5 py-3 sm:ml-5 sm:w-auto sm:mt-0" :disabled="$root.loading">
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-full mt-3 px-5 py-3 sm:ml-5 sm:w-auto sm:mt-0"
+                            :disabled="$root.loading"
+                            dusk="newsletter-submit"
+                        >
                             @lang('Subscribe')
                         </button>
                     </form>
