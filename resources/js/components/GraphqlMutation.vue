@@ -85,6 +85,10 @@
                      `${key}:${this.queryfy(obj[key], key)}`
                 ).join(',')
 
+                if (Object.keys(this.changes).length === 1) {
+                   return `${props}`
+                }
+
                 return `{${props}}`
             }
         }
