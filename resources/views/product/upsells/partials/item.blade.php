@@ -1,5 +1,5 @@
     <div class="w-full bg-white rounded hover:border hover:shadow group relative">
-        <a :href="product.url_key" class="block"><img :src="product.thumbnail.url" alt="LifeLong Fitness IV" loading="lazy" class="object-contain rounded-t h-48 w-full mb-3">
+        <a :href="product.url_key + product.url_suffix" class="block"><img :src="product.thumbnail.url" alt="LifeLong Fitness IV" loading="lazy" class="object-contain rounded-t h-48 w-full mb-3">
             <div class="px-2">
                 <div class="hyphens">
                     @{{product.name}}

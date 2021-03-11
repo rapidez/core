@@ -6,10 +6,12 @@
       upsell_products {
         id
         name
+        canonical_url
         thumbnail {
           url
         }
         url_key
+        url_suffix
         price_range {
           maximum_price {
             regular_price{
