@@ -1,0 +1,24 @@
+{
+  products(filter: { sku: { eq: "{{ $sku }}" } }) {
+    items {
+      id
+      name
+      upsell_products {
+        id
+        name
+        thumbnail {
+          url
+        }
+        url_key
+        price_range {
+          maximum_price {
+            regular_price{
+              currency
+              value
+            }
+          }
+        }
+      }
+    }
+  }
+}

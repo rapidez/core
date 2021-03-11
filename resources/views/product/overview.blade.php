@@ -46,4 +46,5 @@
             @endif
         @endforeach
     </dl>
+    @include('rapidez::product.upsells.overview')
 @endsection
