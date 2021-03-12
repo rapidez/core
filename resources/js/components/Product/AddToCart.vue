@@ -156,7 +156,6 @@
                     Object.entries(this.product.children).forEach(([productId, option]) => {
                         //check the stock of the product child, if not in stock skip child.
                         if (!this.product.children[productId].stock_status) return
-                        if (this.product.children[productId].stock_qty <= 0) return
                         if (!valuesPerAttribute[attributeId][option[attribute.code]]) {
                             valuesPerAttribute[attributeId][option[attribute.code]] = []
                         }
