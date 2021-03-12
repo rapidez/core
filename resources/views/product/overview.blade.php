@@ -46,6 +46,6 @@
             @endif
         @endforeach
     </dl>
-    @include('rapidez::product.upsells.overview')
+    @include('rapidez::product.upsellProducts.overview')
     @include('rapidez::product.relatedProducts.overview')
 @endsection
