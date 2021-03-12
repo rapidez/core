@@ -11,6 +11,7 @@ use Rapidez\Core\Models\Model;
 use Rapidez\Core\Models\Scopes\Product\WithProductAttributesScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductCategoryIdsScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductChildrenScope;
+use Rapidez\Core\Models\Scopes\Product\WithProductStockScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductSuperAttributesScope;
 use Rapidez\Core\Models\Traits\Product\CastMultiselectAttributes;
 use Rapidez\Core\Models\Traits\Product\CastSuperAttributes;
@@ -33,6 +34,7 @@ class Product extends Model
 
         static::addGlobalScope(new WithProductAttributesScope);
         static::addGlobalScope(new WithProductSuperAttributesScope);
+        static::addGlobalScope(new WithProductStockScope);
         static::addGlobalScope(new WithProductCategoryIdsScope);
         static::addGlobalScope(new WithProductChildrenScope);
         static::addGlobalScope('defaults', function (Builder $builder) {
