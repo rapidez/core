@@ -53,36 +53,14 @@ export default {
             Turbolinks.visit(redirect)
         },
 
-        async createCustomer(shippingAddress, billingAddress, password) {
+        async createCustomer(firstname, lastname, email, password, customerData = {}) {
+            customerData['firstname'] = firstname;
+            customerData['lastname'] = lastname;
+            customerData['email'] = email;
+
             try {
                 let response = await magentoUser.post('customers', {
-                    customer: {
-                        email: this.$root.guestEmail,
-                        firstname: shippingAddress.firstname,
-                        lastname: shippingAddress.lastname,
-                        addresses: [
-                            {
-                                defaultShipping: true,
-                                firstname: shippingAddress.firstname,
-                                lastname: shippingAddress.lastname,
-                                postcode: shippingAddress.postcode,
-                                street: shippingAddress.street,
-                                city: shippingAddress.city,
-                                countryId: shippingAddress.country_id,
-                                telephone:  shippingAddress.telephone
-                            },
-                            {
-                                defaultBilling: true,
-                                firstname: billingAddress.firstname,
-                                lastname: billingAddress.lastname,
-                                postcode: billingAddress.postcode,
-                                street: billingAddress.street,
-                                city: billingAddress.city,
-                                countryId: billingAddress.country_id,
-                                telephone:  billingAddress.telephone
-                            }
-                        ]
-                    },
+                    customer: customerData,
                     password: password
                 })
                 return response.data

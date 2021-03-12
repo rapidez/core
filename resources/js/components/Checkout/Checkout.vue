@@ -119,7 +119,36 @@
                     }
 
                     if (this.checkout.create_account && this.checkout.password) {
-                        this.$root.user = await this.createCustomer(this.shippingAddress, this.billingAddress, this.checkout.password)
+                        this.$root.user = await this.createCustomer(
+                            this.shippingAddress.firstname,
+                            this.shippingAddress.lastname,
+                            this.$root.guestEmail,
+                            this.checkout.password,
+                            {
+                                addresses: [
+                                    {
+                                        defaultShipping: true,
+                                        firstname: this.shippingAddress.firstname,
+                                        lastname: this.shippingAddress.lastname,
+                                        postcode: this.shippingAddress.postcode,
+                                        street: this.shippingAddress.street,
+                                        city: this.shippingAddress.city,
+                                        countryId: this.shippingAddress.country_id,
+                                        telephone:  this.shippingAddress.telephone
+                                    },
+                                    {
+                                        defaultBilling: true,
+                                        firstname: this.billingAddress.firstname,
+                                        lastname: this.billingAddress.lastname,
+                                        postcode: this.billingAddress.postcode,
+                                        street: this.billingAddress.street,
+                                        city: this.billingAddress.city,
+                                        countryId: this.billingAddress.country_id,
+                                        telephone:  this.billingAddress.telephone
+                                    }
+                                ]
+                            }
+                        )
                         if (!this.$root.user) {
                             return false
                         }
