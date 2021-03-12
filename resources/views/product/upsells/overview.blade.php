@@ -1,4 +1,3 @@
-
 <graphql v-cloak query='@include('rapidez::product.queries.UpSells', ['sku' => $product->sku])'>
     <div class="mt-10" slot-scope="{ data }" v-if="data && data.products.items[0].upsell_products.length">
         <div class="pb-5 border-b border-gray-200 sm:flex sm:items-center sm:justify-between">
