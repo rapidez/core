@@ -152,9 +152,10 @@
                 Object.entries(this.product.super_attributes).forEach(([attributeId, attribute]) => {
                     disabledOptions[attribute.code] = []
                     valuesPerAttribute[attributeId] = []
-
                     // Fill list with products per attribute value
                     Object.entries(this.product.children).forEach(([productId, option]) => {
+                        //check the stock of the product child, if not in stock skip child.
+                        if (!this.product.children[productId].stock_status) return
                         if (!valuesPerAttribute[attributeId][option[attribute.code]]) {
                             valuesPerAttribute[attributeId][option[attribute.code]] = []
                         }
