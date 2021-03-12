@@ -19,7 +19,6 @@
         <div class="mx-5">
             @yield('content')
         </div>
-        @include('rapidez::layouts.partials.footer.newsletter')
         @include('rapidez::layouts.partials.footer')
         @stack('page_end')
     </div>
