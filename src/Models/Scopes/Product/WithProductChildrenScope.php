@@ -36,7 +36,7 @@ class WithProductChildrenScope implements Scope
             ->selectRaw('JSON_REMOVE(JSON_OBJECTAGG(IFNULL(children.entity_id, "null__"), JSON_OBJECT(
                 "price", children.price,
                 '.$superAttributesSelect.'
-                "stock_status", stock.is_in_stock,
+                "in_stock", stock.is_in_stock,
                 "images", (
                     SELECT JSON_ARRAYAGG(catalog_product_entity_media_gallery.value)
                     FROM catalog_product_entity_media_gallery_value_to_entity
