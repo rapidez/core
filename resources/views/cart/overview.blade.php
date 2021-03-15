@@ -74,6 +74,24 @@
                     <a href="/checkout" class="btn btn-primary" dusk="checkout">@lang('Checkout')</a>
                 </div>
             </div>
+            <div v-if="cart.items">
+                <cross-sells v-cloak :items="cart.items">
+                    <graphql v-cloak slot-scope="{skus}" query='@include('rapidez::cart.queries.CrossSells')' :replace="skus">
+                        <div class="mt-10" slot-scope="{ data }" v-if="data && data.products.items.length">
+                            <div class="pb-5 border-b border-gray-200 sm:flex sm:items-center sm:justify-between">
+                                <span class="text-2xl leading-6 font-medium text-gray-900">
+                                    @lang('More choices to go with your product')
+                                </span>
+                            </div>
+                            <div class="flex flex-wrap mt-5 -mx-1 overflow-hidden" v-for="item in data.products.items">
+                                <div class="flex w-1/2 sm:w-1/3 lg:w-1/4 px-1 my-1" v-for="product in item.crosssell_products">
+                                    @include('rapidez::product.partials.product-item')
+                                </div>
+                            </div>
+                        </div>
+                    </graphql>
+                </cross-sells>
+            </div>
         </div>
         <div v-else>
             @lang('You don\'t have anything in your cart.')

@@ -41,6 +41,7 @@ Vue.component('toggler', require('./components/Elements/Toggler.vue').default)
 Vue.component('add-to-cart', require('./components/Product/AddToCart.vue').default)
 Vue.component('user', require('./components/User/User.vue').default)
 Vue.component('graphql', require('./components/Graphql.vue').default)
+Vue.component('cross-sells', require('./components/Cart/CrossSell.vue').default)
 
 try {
     Vue.component('product-compare-widget', require('Vendor/rapidez/compare/src/components/Widget.vue').default)

@@ -8,6 +8,7 @@
             'query',
             'check',
             'redirect',
+            'replace'
         ],
 
         data: () => ({
@@ -29,9 +30,8 @@
                 try {
                     let options = this.$root.user ? { headers: { Authorization: `Bearer ${localStorage.token}` }} : null
                     let response = await axios.post(config.magento_url + '/graphql', {
-                        query: this.query
+                        query: this.query.replace('replace', this.replace)
                     }, options)
-
                     if (response.data.errors) {
                         if (response.data.errors[0].extensions.category == 'graphql-authorization') {
                             this.logout('/login')
