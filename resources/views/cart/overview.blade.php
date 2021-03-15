@@ -76,7 +76,7 @@
             </div>
             <div v-if="cart.items">
                 <cross-sells v-cloak :items="cart.items">
-                    <graphql v-cloak slot-scope="{skus}" query='@include('rapidez::cart.queries.CrossSells')' :replace="skus">
+                    <graphql v-cloak slot-scope="{ skus }" query='@include('rapidez::cart.queries.CrossSells')' :replace="skus">
                         <div class="mt-10" slot-scope="{ data }" v-if="data && data.products.items.length">
                             <div class="pb-5 border-b border-gray-200 sm:flex sm:items-center sm:justify-between">
                                 <span class="text-2xl leading-6 font-medium text-gray-900">
