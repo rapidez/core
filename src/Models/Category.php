@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core\Models;
 
+use Rapidez\Core\Models\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
 use TorMorten\Eventy\Facades\Eventy;
@@ -16,10 +17,25 @@ class Category extends Model
     {
         parent::boot();
 
-        static::addGlobalScope(new IsActiveScope());
-        static::addGlobalScope('defaults', function (Builder $builder) {
+        static::addGlobalScope(new IsActiveScope);
+        static::addGlobalScope('defaults', function (Builder $builder){
+            $defaultColumnsToSelect = [
+                'entity_id',
+                'meta_title',
+                'name',
+                'is_anchor',
+                'description',
+                'is_active',
+                'include_in_menu',
+                'path',
+                'parent_id',
+                'children',
+                'position',
+                'url_path'
+            ];
+
             $builder
-                ->select(parent::getQueryAttributes())
+                ->select(preg_filter('/^/', $builder->getQuery()->from.'.', $defaultColumnsToSelect))
                 ->groupBy($builder->getQuery()->from . '.entity_id');
         });
 
@@ -37,23 +53,5 @@ class Category extends Model
     public function getUrlAttribute(): string
     {
         return '/' . $this->url_path . Config::getCachedByPath('catalog/seo/category_url_suffix', '.html');
-    }
-
-    public function getQueryAttributes() : array
-    {
-        return [
-                $this->getTable() . '.entity_id',
-                $this->getTable() . '.meta_title',
-                $this->getTable() . '.name',
-                $this->getTable() . '.is_anchor',
-                $this->getTable() . '.description',
-                $this->getTable() . '.is_active',
-                $this->getTable() . '.include_in_menu',
-                $this->getTable() . '.path',
-                $this->getTable() . '.parent_id',
-                $this->getTable() . '.children',
-                $this->getTable() . '.position',
-                $this->getTable() . '.url_path'
-            ];
     }
 }
