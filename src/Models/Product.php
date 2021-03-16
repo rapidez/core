@@ -68,7 +68,7 @@ class Product extends Model
         );
     }
 
-    public function images(): BelongsToMany
+    public function gallery(): BelongsToMany
     {
         return $this->belongsToMany(
             ProductImage::class,
@@ -101,6 +101,11 @@ class Product extends Model
     public function getUrlAttribute(): string
     {
         return '/' . $this->url_key . Config::getCachedByPath('catalog/seo/product_url_suffix', '.html');
+    }
+
+    public function getImagesAttribute(): array
+    {
+        return $this->gallery->pluck('value')->toArray();
     }
 
     public function getImageAttribute($image): ?string
