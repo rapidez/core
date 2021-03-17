@@ -39,6 +39,7 @@ class OnlyProductAttributesScope implements Scope
                     ) AS super,
                     additional_data->>"$.swatch_input_type" = "text" AS text_swatch,
                     additional_data->>"$.swatch_input_type" = "visual" AS visual_swatch,
+                    additional_data->>"$.update_product_preview_image" = 1 AS update_image,
                     position
                 ')
                 ->join('catalog_eav_attribute', 'eav_attribute.attribute_id', '=', 'catalog_eav_attribute.attribute_id')

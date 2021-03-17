@@ -34,16 +34,18 @@ class WithProductSuperAttributesScope implements Scope
         $query = DB::table('catalog_product_super_attribute')
             ->selectRaw('JSON_OBJECTAGG(eav_attribute.attribute_id, JSON_OBJECT(
                 "code", attribute_code,
-                "label", COALESCE(NULLIF(value, ""), frontend_label)
+                "label", COALESCE(NULLIF(value, ""), frontend_label),
+                "update_image", additional_data->>"$.update_product_preview_image" = 1
             )) AS super_attributes')
             ->join('eav_attribute', 'eav_attribute.attribute_id', '=', 'catalog_product_super_attribute.attribute_id')
+            ->join('catalog_eav_attribute', 'catalog_eav_attribute.attribute_id', '=', 'catalog_product_super_attribute.attribute_id')
             ->leftJoin('catalog_product_super_attribute_label', function ($join) {
                 $join
                     ->on('catalog_product_super_attribute_label.product_super_attribute_id', '=', 'catalog_product_super_attribute.product_super_attribute_id')
                     ->where('catalog_product_super_attribute_label.store_id', config('rapidez.store'));
             })
             ->whereColumn('product_id', $model->getTable() . '.entity_id')
-            ->orderBy('position');
+            ->orderBy('catalog_product_super_attribute.position');
 
         $builder->selectSub($query, 'super_attributes');
     }
