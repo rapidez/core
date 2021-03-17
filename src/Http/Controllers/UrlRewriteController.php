@@ -16,14 +16,17 @@ class UrlRewriteController
     {
         if ($rewrite = Rewrite::firstWhere('request_path', $request->path())) {
             if ($rewrite->entity_type == 'category') {
-                return (new CategoryController)->show($rewrite->entity_id);
+                $categoryController = config('rapidez.controllers.category');
+                return (new $categoryController)->show($rewrite->entity_id);
             }
 
             if ($rewrite->entity_type == 'product') {
-                return (new ProductController)->show($rewrite->entity_id);
+                $productController = config('rapidez.controllers.product');
+                return (new $productController)->show($rewrite->entity_id);
             }
         }
 
-        return (new PageController)->show($request->path());
+        $pageController = config('rapidez.controllers.page');
+        return (new $pageController)->show($request->path());
     }
 }

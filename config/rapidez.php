@@ -25,9 +25,6 @@ return [
         'checkout_steps',
     ],
 
-    // Should the routes be registered?
-    'routes' => true,
-
     // With this token you can run commands from an url.
     'admin_token' => env('RAPIDEZ_TOKEN', env('APP_KEY')),
 
@@ -35,4 +32,15 @@ return [
     // in the url and in the progressbar on steps. Keep
     // them lowercase and do not include any spaces.
     'checkout_steps' => ['cart', 'login', 'credentials', 'payment', 'success'],
+
+    // Should the routes be registered? The controllers
+    // below will not be used anymore when disabled.
+    'routes' => true,
+
+    // The fully qualified class names of the controllers.
+    'controllers' => [
+        'page' => Rapidez\Core\Http\Controllers\PageController::class,
+        'product' => Rapidez\Core\Http\Controllers\ProductController::class,
+        'category' => Rapidez\Core\Http\Controllers\CategoryController::class,
+    ],
 ];
