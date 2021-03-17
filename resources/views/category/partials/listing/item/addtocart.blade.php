@@ -1,6 +1,6 @@
 <add-to-cart v-bind:product="item" v-cloak>
-    <div class="px-2 pb-2" slot-scope="{ options, error, add, disabledOptions, price, getValuesByCode }">
-        <div class="font-semibold mb-2">@{{ price | price}}</div>
+    <div class="px-2 pb-2" slot-scope="{ options, error, add, disabledOptions, simpleProduct, getValuesByCode }">
+        <div class="font-semibold mb-2">@{{ simpleProduct.price | price}}</div>
         <p v-if="!item.in_stock" class="text-red-600 text-xs">@lang('Sorry! This product is currently out of stock.')</p>
         <div v-else>
             <div v-for="(superAttribute, superAttributeId) in item.super_attributes">

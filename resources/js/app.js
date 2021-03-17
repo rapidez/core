@@ -39,6 +39,7 @@ Vue.component('login', require('./components/Checkout/Login.vue').default)
 Vue.component('coupon', require('./components/Coupon/Coupon.vue').default)
 Vue.component('toggler', require('./components/Elements/Toggler.vue').default)
 Vue.component('add-to-cart', require('./components/Product/AddToCart.vue').default)
+Vue.component('images', require('./components/Product/Images.vue').default)
 Vue.component('user', require('./components/User/User.vue').default)
 Vue.component('graphql', require('./components/Graphql.vue').default)
 

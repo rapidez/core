@@ -26,7 +26,7 @@
         render() {
             return this.$scopedSlots.default({
                 getValuesByCode: this.getValuesByCode,
-                price: this.simpleProduct.price,
+                simpleProduct: this.simpleProduct,
                 disabledOptions: this.disabledOptions,
                 changeQty: this.changeQty,
                 options: this.options,
@@ -106,7 +106,7 @@
                     return product
                 }
 
-                var simpleProducts = Object.values(this.product.children).filter(childProduct => {
+                var simpleProducts = Object.values(product.children).filter(childProduct => {
                     let isMatching = true
                     Object.entries(this.options).forEach(([attributeId, valueId]) => {
                         var attributeCode = product.super_attributes[attributeId].code
@@ -118,9 +118,15 @@
                     return isMatching
                 })
 
+                if (Object.keys(this.product.children).length == simpleProducts.length) {
+                    return product
+                }
+
                 if (simpleProducts.length) {
                     product = simpleProducts[0]
                 }
+
+                this.$root.$emit('productSuperAttributeChange', product)
 
                 return product
             },
