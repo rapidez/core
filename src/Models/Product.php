@@ -5,12 +5,14 @@ namespace Rapidez\Core\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use NumberFormatter;
+use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\DecodeHtmlEntities;
 use Rapidez\Core\Models\Config;
 use Rapidez\Core\Models\Model;
 use Rapidez\Core\Models\Scopes\Product\WithProductAttributesScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductCategoryIdsScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductChildrenScope;
+use Rapidez\Core\Models\Scopes\Product\WithProductRelationIdsScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductStockScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductSuperAttributesScope;
 use Rapidez\Core\Models\Traits\Product\CastMultiselectAttributes;
@@ -36,6 +38,7 @@ class Product extends Model
         static::addGlobalScope(new WithProductSuperAttributesScope);
         static::addGlobalScope(new WithProductStockScope);
         static::addGlobalScope(new WithProductCategoryIdsScope);
+        static::addGlobalScope(new WithProductRelationIdsScope);
         static::addGlobalScope(new WithProductChildrenScope);
         static::addGlobalScope('defaults', function (Builder $builder) {
             $builder
@@ -60,6 +63,9 @@ class Product extends Model
             parent::getCasts(),
             [
                 'name' => DecodeHtmlEntities::class,
+                'category_ids' => CommaSeparatedToArray::class,
+                'relation_ids' => CommaSeparatedToArray::class,
+                'upsell_ids' => CommaSeparatedToArray::class,
                 'children' => 'object',
             ],
             $this->getSuperAttributeCasts(),
@@ -82,11 +88,6 @@ class Product extends Model
     public function scopeByIds(Builder $query, array $productIds): Builder
     {
         return $query->whereIn($this->getTable().'.entity_id', $productIds);
-    }
-
-    public function getCategoryIdsAttribute(?string $value): array
-    {
-        return $value ? explode(',', $value) : [];
     }
 
     public function getFormattedPriceAttribute(): string

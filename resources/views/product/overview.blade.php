@@ -33,4 +33,15 @@
             @endif
         @endforeach
     </dl>
+
+    @include('rapidez::product.partials.product-list', [
+        'code' => 'related',
+        'productIds' => $product->relation_ids,
+        'title' => 'Related products'
+    ])
+    @include('rapidez::product.partials.product-list', [
+        'code' => 'upsells',
+        'productIds' => $product->upsell_ids,
+        'title' => 'We found other products you might like!'
+    ])
 @endsection
