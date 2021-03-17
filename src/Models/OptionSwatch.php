@@ -8,25 +8,10 @@ use Illuminate\Support\Facades\Cache;
 
 class OptionSwatch extends Model
 {
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
     protected $table = 'eav_attribute_option_swatch';
 
-    /**
-     * The primary key for the model.
-     *
-     * @var string
-     */
     protected $primaryKey = 'swatch_id';
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
     protected $casts = [
         'options' => 'array',
     ];

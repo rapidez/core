@@ -10,23 +10,11 @@ class ForCurrentStoreScope implements Scope
 {
     public ?string $joinTable;
 
-    /**
-     * Create a new scope instance.
-     *
-     * @return void
-     */
     public function __construct($joinTable = null)
     {
         $this->joinTable = $joinTable;
     }
 
-    /**
-     * Apply the scope to a given Eloquent query builder.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $builder
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @return void
-     */
     public function apply(Builder $builder, Model $model)
     {
         $currentTable = $builder->getQuery()->from;

@@ -8,13 +8,6 @@ use Illuminate\Support\Facades\Cache;
 
 class DetermineAndSetShop
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
-     */
     public function handle($request, Closure $next)
     {
         // Set the store based on MAGE_RUN_CODE.
