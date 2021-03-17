@@ -41,7 +41,7 @@
                     </p>
                     <p class="mt-3 text-sm text-gray-600">
                         @lang('We care about the protection of your data. Read our')
-                        <a href="/privacy-policy-cookie-restriction-mode" class="text-gray-400 font-medium underline">
+                        <a href="/privacy-policy-cookie-restriction-mode" class="underline">
                             @lang('Privacy Policy')
                         </a>
                     </p>
