@@ -17,7 +17,7 @@
         </reactive-list>
     </reactive-base>
 @else
-    <reactive-base v-cloak :app="config.es_prefix + '_products_' + config.store" :url="config.es_url">
+    <reactive-base v-if="crossSellProducts" v-cloak :app="config.es_prefix + '_products_' + config.store" :url="config.es_url">
         <reactive-list
             component-id="{{ $code }}"
             data-field="id"
