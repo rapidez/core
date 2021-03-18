@@ -75,7 +75,7 @@
                 </div>
             </div>
             @include('rapidez::product.partials.product-list', [
-                'code' => 'related',
+                'code' => 'cross_sell',
                 'title' => 'More choices to go with your product'
             ])
         </div>
