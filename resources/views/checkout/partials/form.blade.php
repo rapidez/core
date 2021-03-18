@@ -18,10 +18,10 @@
 </div>
 <div class="col-span-6 sm:col-span-3">
     <x-rapidez::input
-        name="{{ $type }}_zipcode"
+        name="{{ $type }}_postcode"
         label="Postcode"
         :placeholder="__('Postcode')"
-        v-model="checkout.{{ $type }}_address.zipcode"
+        v-model="checkout.{{ $type }}_address.postcode"
         required
     />
 </div>
@@ -30,7 +30,7 @@
         name="{{ $type }}_housenumber"
         label="Housenumber"
         :placeholder="__('Nr.')"
-        v-model="checkout.{{ $type }}_address.housenumber"
+        v-model="checkout.{{ $type }}_address.street[1]"
         required
     />
 </div>
@@ -39,7 +39,7 @@
         name="{{ $type }}_street"
         label="Street"
         :placeholder="__('Street')"
-        v-model="checkout.{{ $type }}_address.street"
+        v-model="checkout.{{ $type }}_address.street[0]"
         required
     />
 </div>
@@ -49,6 +49,15 @@
         label="City"
         :placeholder="__('City')"
         v-model="checkout.{{ $type }}_address.city"
+        required
+    />
+</div>
+<div class="col-span-12 sm:col-span-6">
+    <x-rapidez::input
+        name="{{ $type }}_country"
+        label="Country"
+        :placeholder="__('Country')"
+        v-model="checkout.{{ $type }}_address.country_id"
         required
     />
 </div>

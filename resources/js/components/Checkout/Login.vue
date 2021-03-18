@@ -13,7 +13,7 @@
         },
 
         data: () => ({
-            email: window.debug ? 'roy@justbetter.nl' : '',
+            email: window.debug ? 'wayne@enterprises.com' : '',
             password: '',
             emailAvailable: true,
         }),
