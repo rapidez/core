@@ -24,11 +24,26 @@
             this.checkout.hasVirtualItems = this.hasVirtualItems
             history.replaceState(null, null, '#'+this.config.checkout_steps[this.checkout.step])
 
+            this.setDefaultCredentialsWhenLoggedIn()
             this.getShippingMethods()
             this.getTotalsInformation()
         },
 
         methods: {
+            setDefaultCredentialsWhenLoggedIn() {
+                if (this.$root.user) {
+                    if (this.$root.user.default_shipping) {
+                        let address = this.$root.user.addresses.find((address) => address.id == this.$root.user.default_shipping)
+                        this.checkout.shipping_address = address
+                    }
+
+                    if (this.$root.user.default_billing) {
+                        let address = this.$root.user.addresses.find((address) => address.id == this.$root.user.default_billing)
+                        this.checkout.billing_address = address
+                    }
+                }
+            },
+
             async getShippingMethods() {
                 try {
                     let response = await this.magentoCart('post', 'estimate-shipping-methods', {
@@ -164,7 +179,7 @@
                 }
 
                 Object.entries(this.checkout.shipping_address).forEach(([key, val]) => {
-                    if (!val) {
+                    if (!val && key !== 'region_id') {
                         alert(key + ' cannot be empty')
                         validated = false
                     }
@@ -201,7 +216,12 @@
                     alert(error.response.data.message)
                     return false
                 }
-            }
+            },
+
+            removeUnusedAddressInfo(address) {
+                ['region', 'region_id', 'default_shipping', 'default_billing'].forEach((key) => delete address[key])
+                return address
+            },
         },
 
         computed: {
@@ -209,36 +229,14 @@
                 return this.$root.checkout
             },
             shippingAddress: function () {
-                return {
-                    firstname: this.checkout.shipping_address.firstname,
-                    lastname: this.checkout.shipping_address.lastname,
-                    postcode: this.checkout.shipping_address.zipcode,
-                    street: [
-                        this.checkout.shipping_address.street,
-                        this.checkout.shipping_address.housenumber
-                    ],
-                    city: this.checkout.shipping_address.city,
-                    country_id: 'NL',
-                    telephone: this.checkout.shipping_address.telephone,
-                }
+                return this.removeUnusedAddressInfo(this.$root.checkout.shipping_address)
             },
             billingAddress: function () {
                 if (this.checkout.hide_billing) {
                     return this.shippingAddress;
                 }
 
-                return {
-                    firstname: this.checkout.billing_address.firstname,
-                    lastname: this.checkout.billing_address.lastname,
-                    postcode: this.checkout.billing_address.zipcode,
-                    street: [
-                        this.checkout.billing_address.street,
-                        this.checkout.billing_address.housenumber,
-                    ],
-                    city: this.checkout.billing_address.city,
-                    country_id: 'NL',
-                    telephone: this.checkout.billing_address.telephone
-                }
+                return this.removeUnusedAddressInfo(this.$root.checkout.billing_address)
             }
         }
     }
