@@ -47,7 +47,13 @@ class Quote extends Model
                     "price", quote_item.price_incl_tax,
                     "total", quote_item.row_total_incl_tax,
                     "attributes", quote_item_option.value,
-                    "type", quote_item.product_type
+                    "type", quote_item.product_type,
+                    "cross_sell_ids", (
+                        SELECT GROUP_CONCAT(catalog_product_link.linked_product_id)
+                        FROM catalog_product_link
+                        WHERE catalog_product_link.product_id = quote_item.product_id
+                        AND link_type_id = 5
+                    )
                 )), "$.null__") AS items')
                 ->leftJoin('quote_id_mask', 'quote_id_mask.quote_id', '=', 'quote.entity_id')
                 ->leftJoin('oauth_token', 'oauth_token.customer_id', '=', 'quote.customer_id')
@@ -61,6 +67,7 @@ class Quote extends Model
                     $join->on('quote_item.item_id', '=', 'quote_item_option.item_id')->where('code', 'attributes');
                 })
                 ->leftJoin('catalog_product_flat_'.config('rapidez.store').' AS product', 'product.entity_id', '=', 'quote_item.product_id')
+                ->leftJoin('catalog_product_link AS cross_sell', 'cross_sell.product_id', '=', 'quote_item.product_id')
                 ->groupBy('quote.entity_id');
         });
     }
