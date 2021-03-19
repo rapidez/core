@@ -51,7 +51,8 @@ export default {
             localStorage.removeItem('mask')
             localStorage.removeItem('cart')
             this.$root.user = null
-            Turbolinks.visit(redirect)
+            Turbolinks.clearCache()
+            window.location.href = redirect
         },
 
         async createCustomer(shippingAddress, billingAddress, password) {
