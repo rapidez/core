@@ -30,16 +30,7 @@
                     .catch((error) => alert(error.response.data.message))
             },
             getCrossSellIds() {
-                let ids = '';
-                Object.entries(this.cart.items).forEach(([key, val]) => {
-                    Object.values(val.cross_sell_ids.split(',')).forEach(id => {
-                        if(!ids.includes(id)) {
-                            ids += id+ ","
-                        }
-                    })
-                })
-
-                return ids.slice(1,-2).split(',')
+                return this.cart.cross_sells.split(',')
             }
         },
         computed: {
