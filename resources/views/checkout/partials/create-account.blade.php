@@ -1,7 +1,7 @@
 <div v-if="!user" id="create-account-wrapper">
     <div class="grid grid-cols-12 gap-4 mb-3">
         <div class="col-span-12" v-if="!checkout.hasVirtualItems">
-            <x-rapidez::checkbox v-model="checkout.create_account">
+            <x-rapidez::checkbox v-model="checkout.create_account" dusk="create_account">
                 @lang('Create an account')
             </x-rapidez::checkbox>
         </div>
