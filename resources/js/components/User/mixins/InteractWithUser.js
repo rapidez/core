@@ -28,15 +28,16 @@ export default {
         },
 
         async login(username, password, loginCallback) {
-            magento.post('integration/customer/token', {
+            await magento.post('integration/customer/token', {
                 username: username,
                 password: password
             })
             .then(async(response) => {
                 localStorage.token = response.data
                 window.magentoUser.defaults.headers.common['Authorization'] = `Bearer ${localStorage.token}`;
-
-                loginCallback()
+                await this.refreshUser(false)
+                this.setCheckoutCredentialsFromDefaultUserAddresses()
+                await loginCallback()
             })
             .catch((error) => {
                 alert(error.response.data.message)
@@ -90,7 +91,21 @@ export default {
                 alert(error.response.data.message)
                 return false
             }
-        }
+        },
+
+        setCheckoutCredentialsFromDefaultUserAddresses() {
+            if (this.$root.user) {
+                if (this.$root.user.default_shipping) {
+                    let address = this.$root.user.addresses.find((address) => address.id == this.$root.user.default_shipping)
+                    this.$root.checkout.shipping_address = address
+                }
+
+                if (this.$root.user.default_billing) {
+                    let address = this.$root.user.addresses.find((address) => address.id == this.$root.user.default_billing)
+                    this.$root.checkout.billing_address = address
+                }
+            }
+        },
     },
 
     asyncComputed: {

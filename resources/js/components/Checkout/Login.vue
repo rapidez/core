@@ -36,7 +36,7 @@
         },
 
         methods: {
-            go() {
+            async go() {
                 if (!this.checkoutLogin && (!this.email || !this.password)) {
                     alert('You did not specify an email or password')
                     return
@@ -44,8 +44,7 @@
 
                 if (this.email && this.password) {
                     let self = this
-                    this.login(this.email, this.password, async () => {
-                        await self.refreshUser(false)
+                    await this.login(this.email, this.password, async () => {
                         if (self.$root.cart) {
                             await self.linkUserToCart()
                             localStorage.mask = self.$root.cart.entity_id

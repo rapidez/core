@@ -24,26 +24,11 @@
             this.checkout.hasVirtualItems = this.hasVirtualItems
             history.replaceState(null, null, '#'+this.config.checkout_steps[this.checkout.step])
 
-            this.setDefaultCredentialsWhenLoggedIn()
             this.getShippingMethods()
             this.getTotalsInformation()
         },
 
         methods: {
-            setDefaultCredentialsWhenLoggedIn() {
-                if (this.$root.user) {
-                    if (this.$root.user.default_shipping) {
-                        let address = this.$root.user.addresses.find((address) => address.id == this.$root.user.default_shipping)
-                        this.checkout.shipping_address = address
-                    }
-
-                    if (this.$root.user.default_billing) {
-                        let address = this.$root.user.addresses.find((address) => address.id == this.$root.user.default_billing)
-                        this.checkout.billing_address = address
-                    }
-                }
-            },
-
             async getShippingMethods() {
                 try {
                     let response = await this.magentoCart('post', 'estimate-shipping-methods', {
@@ -139,8 +124,7 @@
                             return false
                         }
                         let self = this
-                        this.login(this.$root.user.email, this.checkout.password, async () => {
-                            await self.refreshUser(false)
+                        await this.login(this.$root.user.email, this.checkout.password, async () => {
                             if (self.$root.cart) {
                                 await self.linkUserToCart()
                                 localStorage.mask = self.$root.cart.entity_id
@@ -219,7 +203,15 @@
             },
 
             removeUnusedAddressInfo(address) {
-                ['region', 'region_id', 'default_shipping', 'default_billing'].forEach((key) => delete address[key])
+                [
+                    'id',
+                    'region',
+                    'region_id',
+                    'customer_id',
+                    'default_shipping',
+                    'default_billing',
+                ].forEach((key) => delete address[key])
+
                 return address
             },
         },
