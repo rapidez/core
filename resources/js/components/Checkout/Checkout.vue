@@ -24,6 +24,7 @@
             this.checkout.hasVirtualItems = this.hasVirtualItems
             history.replaceState(null, null, '#'+this.config.checkout_steps[this.checkout.step])
 
+            this.setCheckoutCredentialsFromDefaultUserAddresses()
             this.getShippingMethods()
             this.getTotalsInformation()
         },
