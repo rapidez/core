@@ -1,10 +1,12 @@
-    <reactive-base v-if="crossSellProducts !== null || '{{ isset($productIds) && count($productIds) > 0 }}'" v-cloak :app="config.es_prefix + '_products_' + config.store" :url="config.es_url">
+@php $ids = isset($productIds) ? '[\'' .implode("','", $productIds).'\']' : 'crossSellProducts';  @endphp
+@if($ids != "['']")
+    <reactive-base  v-cloak :app="config.es_prefix + '_products_' + config.store" :url="config.es_url">
         <reactive-list
             component-id="{{ $code }}"
             data-field="id"
             list-class="flex flex-wrap mt-5 -mx-1 overflow-hidden"
             :size="6"
-            :default-query="function () { return { query: { terms: { 'id': crossSellProducts !== null ? crossSellProducts : ['{{ isset($productIds) ? implode("','", $productIds) : '' }}'] } } } }"
+            :default-query="function () { return { query: { terms: { 'id': {{ $ids }}  } } } }"
         >
             <strong class="font-bold text-2xl mt-5" slot="renderResultStats">
                 @lang($title)
@@ -15,4 +17,4 @@
             @include('rapidez::category.partials.listing.item', ['perLine' => 6])
         </reactive-list>
     </reactive-base>
-
+@endif
