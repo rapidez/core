@@ -29,9 +29,3 @@
         </div>
     </category>
 @endsection
-
-@push('page_end')
-    <product-compare-widget
-        class-product="py-2 border-b border-primary"
-    />
-@endpush

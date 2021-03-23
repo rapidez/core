@@ -43,12 +43,6 @@ Vue.component('images', require('./components/Product/Images.vue').default)
 Vue.component('user', require('./components/User/User.vue').default)
 Vue.component('graphql', require('./components/Graphql.vue').default)
 
-try {
-    Vue.component('product-compare-widget', require('Vendor/rapidez/compare/src/components/Widget.vue').default)
-    Vue.component('product-compare-checkbox', require('Vendor/rapidez/compare/src/components/Checkbox.vue').default)
-    Vue.component('product-compare-overview', require('Vendor/rapidez/compare/src/components/Overview.vue').default)
-} catch (e) {}
-
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

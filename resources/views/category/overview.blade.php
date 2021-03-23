@@ -42,9 +42,3 @@
 
     {!! str_replace('<h2>', '<h2 class="font-bold text-2xl">', $category->description) !!}
 @endsection
-
-@push('page_end')
-    <product-compare-widget
-        class-product="py-2 border-b border-primary"
-    />
-@endpush
