@@ -3,6 +3,9 @@
 
     export default {
         mixins: [GetCart],
+        data: () => ({
+            toggle: false
+        }),
 
         render() {
             return this.$scopedSlots.default({
@@ -10,6 +13,9 @@
                 hasItems: this.hasItems,
                 changeQty: this.changeQty,
                 remove: this.remove,
+                toggle: this.toggle,
+                toggleCart: this.toggleCart,
+                close: this.close
             })
         },
 
@@ -23,6 +29,14 @@
                 })
                 .then((response) => this.refreshCart())
                 .catch((error) => alert(error.response.data.message))
+            },
+
+            toggleCart() {
+                this.toggle = !this.toggle
+            },
+
+            close() {
+                this.toggle = false
             },
 
             remove(item) {

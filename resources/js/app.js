@@ -14,6 +14,9 @@ Vue.use(ReactiveSearch)
 import AsyncComputed from 'vue-async-computed'
 Vue.use(AsyncComputed)
 
+import vClickOutside from 'v-click-outside'
+Vue.use(vClickOutside)
+
 require('./axios')
 require('./filters')
 require('./mixins')
