@@ -17,10 +17,8 @@ class Quote extends Model
         'items' => QuoteItems::class,
     ];
 
-    protected static function boot()
+    protected static function booted()
     {
-        parent::boot();
-
         static::addGlobalScope(new IsActiveScope);
         static::addGlobalScope('with-all-information', function (Builder $builder) {
             $builder

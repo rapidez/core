@@ -30,10 +30,8 @@ class Product extends Model
 
     protected $appends = ['formatted_price', 'url'];
 
-    protected static function boot(): void
+    protected static function booted(): void
     {
-        parent::boot();
-
         static::addGlobalScope(new WithProductAttributesScope);
         static::addGlobalScope(new WithProductSuperAttributesScope);
         static::addGlobalScope(new WithProductStockScope);

@@ -16,10 +16,8 @@ class Block extends Model
 
     protected $primaryKey = 'block_id';
 
-    protected static function boot()
+    protected static function booted()
     {
-        parent::boot();
-
         static::addGlobalScope(new IsActiveScope);
         static::addGlobalScope(new ForCurrentStoreScope);
     }

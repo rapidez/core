@@ -12,10 +12,8 @@ class Config extends Model
 
     protected $primaryKey = 'config_id';
 
-    protected static function boot()
+    protected static function booted()
     {
-        parent::boot();
-
         static::addGlobalScope('scope-fallback', function (Builder $builder) {
             $builder
                 ->where(function ($query) {

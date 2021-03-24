@@ -15,10 +15,8 @@ class Store extends Model
 
     protected $primaryKey = 'store_id';
 
-    protected static function boot()
+    protected static function booted()
     {
-        parent::boot();
-
         static::addGlobalScope(new IsActiveScope);
         static::addGlobalScope('without-admin-store', function (Builder $builder) {
             $builder->where('code', '<>', 'admin');

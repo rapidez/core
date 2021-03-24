@@ -13,10 +13,8 @@ class Category extends Model
 
     protected $appends = ['url'];
 
-    protected static function boot()
+    protected static function booted()
     {
-        parent::boot();
-
         static::addGlobalScope(new IsActiveScope);
         static::addGlobalScope('defaults', function (Builder $builder){
             $defaultColumnsToSelect = [
