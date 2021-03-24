@@ -13,6 +13,3 @@
     max-height: none !important;
 }
 
-/* Used to not have a blue background on tapping a button on mobile. */
-* { -webkit-tap-highlight-color: rgba(0,0,0,0); }
-
