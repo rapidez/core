@@ -4,7 +4,7 @@
             return this.$scopedSlots.default({
                 isOpen: this.isOpen,
                 toggle: this.toggle,
-                away: this.away
+                close: this.close
             })
         },
 
@@ -17,7 +17,7 @@
                 this.isOpen = !this.isOpen
             },
 
-            away() {
+            close() {
                 this.isOpen = false
             }
         }

@@ -1,6 +1,6 @@
 @props(['mobileOnly' => false])
 
-<toggler v-slot="{ isOpen, toggle, away }">
+<toggler v-slot="{ isOpen, toggle, close }">
     <div>
         {{ $button }}
 
@@ -14,7 +14,7 @@
                     leave-class="opacity-100"
                     leave-to-class="opacity-0"
                 >
-                    <div v-show="isOpen"  v-on:click="toggle" class="absolute inset-0 pointer-events-auto bg-gray-500 bg-opacity-75 transition-opacity {{ $mobileOnly ? 'md:hidden-important' : '' }}"></div>
+                    <div v-show="isOpen" v-on:click="toggle" class="absolute inset-0 pointer-events-auto bg-gray-500 bg-opacity-75 transition-opacity {{ $mobileOnly ? 'md:hidden-important' : '' }}"></div>
                 </transition>
                 <section class="absolute inset-y-0 right-0 max-w-full flex pointer-events-auto {{ $mobileOnly ? 'md:static md:pl-0' : '' }}" :class="isOpen ? 'pl-10' : ''">
                     <transition
