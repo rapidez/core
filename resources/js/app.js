@@ -14,6 +14,9 @@ Vue.use(ReactiveSearch)
 import AsyncComputed from 'vue-async-computed'
 Vue.use(AsyncComputed)
 
+import { directive as onClickaway } from 'vue-clickaway';
+Vue.directive('on-click-away', onClickaway);
+
 require('./axios')
 require('./filters')
 require('./mixins')
