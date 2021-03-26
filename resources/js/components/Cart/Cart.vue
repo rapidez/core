@@ -3,16 +3,15 @@
 
     export default {
         mixins: [GetCart],
-
         render() {
             return this.$scopedSlots.default({
                 cart: this.cart,
                 hasItems: this.hasItems,
                 changeQty: this.changeQty,
                 remove: this.remove,
+                crossSellProducts: this.crossSellProducts
             })
         },
-
         methods: {
             changeQty(item) {
                 this.magentoCart('put', 'items/' + item.item_id, {
@@ -30,6 +29,14 @@
                     .then((response) => this.refreshCart())
                     .catch((error) => alert(error.response.data.message))
             },
+            getCrossSellIds() {
+                return this.cart.cross_sells.split(',')
+            }
+        },
+        computed: {
+            crossSellProducts: function () {
+                return this.getCrossSellIds()
+            }
         }
     }
 </script>

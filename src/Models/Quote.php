@@ -32,7 +32,8 @@ class Quote extends Model
                     MAX(quote_address.tax_amount) as tax,
                     MAX(quote_address.grand_total) as total,
                     MAX(quote_address.discount_amount) as discount_amount,
-                    MAX(quote_address.discount_description) as discount_name
+                    MAX(quote_address.discount_description) as discount_name,
+                    GROUP_CONCAT(DISTINCT cross_sell.linked_product_id) as cross_sells
                 ')
                 ->selectRaw('JSON_REMOVE(JSON_OBJECTAGG(IFNULL(quote_item.item_id, "null__"), JSON_OBJECT(
                     "item_id", quote_item.item_id,
@@ -59,6 +60,9 @@ class Quote extends Model
                     $join->on('quote_item.item_id', '=', 'quote_item_option.item_id')->where('code', 'attributes');
                 })
                 ->leftJoin('catalog_product_flat_'.config('rapidez.store').' AS product', 'product.entity_id', '=', 'quote_item.product_id')
+                ->leftJoin('catalog_product_link AS cross_sell', function ($join) {
+                    $join->on('cross_sell.product_id', '=', 'quote_item.product_id')->where('cross_sell.link_type_id', '=', 5);
+                })
                 ->groupBy('quote.entity_id');
         });
     }
