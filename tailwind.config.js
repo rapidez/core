@@ -6,11 +6,9 @@ module.exports = {
         './resources/css/**/*.css',
         './resources/js/**/*.vue',
 
-        './vendor/rapidez/core/resources/views/**/*.blade.php',
-        './vendor/rapidez/core/resources/css/**/*.css',
-        './vendor/rapidez/core/resources/js/**/*.vue',
-
-        './vendor/rapidez/account/resources/views/**/*.blade.php',
+        './vendor/rapidez/**/*.blade.php',
+        './vendor/rapidez/**/*.css',
+        './vendor/rapidez/**/*.vue',
 
         './vendor/rapidez/menu/src/config/menu.php',
     ],
