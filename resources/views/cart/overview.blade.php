@@ -6,7 +6,7 @@
     <h1 class="font-bold text-4xl mb-5">@lang('Cart')</h1>
 
     <cart v-cloak>
-        <div v-if="hasItems" slot-scope="{ cart, hasItems, changeQty, remove, crossSellProducts }">
+        <div v-if="hasItems" slot-scope="{ cart, hasItems, changeQty, remove }">
             <div class="flex flex-wrap items-center border-b pb-2 mb-2" v-for="(item, productId, index) in cart.items">
                 <div class="w-1/6 sm:w-1/12 pr-3">
                     <a :href="item.url" class="block">
@@ -76,6 +76,7 @@
             </div>
             @include('rapidez::product.partials.product-list', [
                 'code' => 'cross_sell',
+                'productIds' => 'cart.cross_sells',
                 'title' => 'More choices to go with your product'
             ])
         </div>

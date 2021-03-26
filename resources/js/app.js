@@ -61,7 +61,6 @@ document.addEventListener('turbolinks:load', () => {
             loading: false,
             guestEmail: null,
             user: null,
-            crossSellProducts: null,
             cart: null,
             checkout: {
                 step: 1,

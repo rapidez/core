@@ -9,7 +9,6 @@
                 hasItems: this.hasItems,
                 changeQty: this.changeQty,
                 remove: this.remove,
-                crossSellProducts: this.crossSellProducts
             })
         },
         methods: {
@@ -29,14 +28,6 @@
                     .then((response) => this.refreshCart())
                     .catch((error) => alert(error.response.data.message))
             },
-            getCrossSellIds() {
-                return this.cart.cross_sells.split(',')
-            }
-        },
-        computed: {
-            crossSellProducts: function () {
-                return this.getCrossSellIds()
-            }
         }
     }
 </script>
