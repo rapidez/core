@@ -74,11 +74,8 @@
                     <a href="/checkout" class="btn btn-primary" dusk="checkout">@lang('Checkout')</a>
                 </div>
             </div>
-            @include('rapidez::product.partials.product-list', [
-                'code' => 'cross_sell',
-                'productIds' => 'cart.cross_sells',
-                'title' => 'More choices to go with your product'
-            ])
+
+            <x-rapidez::productlist title="More choices to go with your product" field="id" value="cart.cross_sells"/>
         </div>
         <div v-else>
             @lang('You don\'t have anything in your cart.')

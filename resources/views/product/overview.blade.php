@@ -34,14 +34,6 @@
         @endforeach
     </dl>
 
-    @include('rapidez::product.partials.product-list', [
-        'code' => 'related',
-        'productIds' => $product->relation_ids,
-        'title' => 'Related products'
-    ])
-    @include('rapidez::product.partials.product-list', [
-        'code' => 'upsells',
-        'productIds' => $product->upsell_ids,
-        'title' => 'We found other products you might like!'
-    ])
+    <x-rapidez::productlist title="Related products" field="id" :value="$product->relation_ids"/>
+    <x-rapidez::productlist title="We found other products you might like!" field="id" :value="$product->upsell_ids"/>
 @endsection
