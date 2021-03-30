@@ -52,15 +52,15 @@ Vue.component('graphql', require('./components/Graphql.vue').default)
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-function tokenIsValid() {
-    return localStorage.storage_token === window.config.storage_token
-}
-
 document.addEventListener('turbolinks:load', () => {
     Vue.prototype.config = window.config
 
-    if (!tokenIsValid()) {
-        localStorage.clear()
+    // Check if the localstorage is still valid.
+    if (localStorage.storage_token !== window.config.storage_token) {
+        // Remove only the keys that are flushable
+        window.config.storage_flushable.forEach((key) => {
+            localStorage.removeItem(key)
+        })
         localStorage.storage_token = window.config.storage_token
     }
 
