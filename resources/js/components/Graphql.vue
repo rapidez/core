@@ -29,12 +29,13 @@
 
         methods: {
             getCache() {
-                let response
-                if (response = localStorage[this.cache] !== undefined) {
-                    this.data = JSON.parse(localStorage[this.cache])
+                let cache = false
+
+                if (cache = localStorage[this.cache]) {
+                    this.data = JSON.parse(cache)
                 }
 
-                return response
+                return cache
             },
 
             async runQuery() {
@@ -62,7 +63,7 @@
 
                     this.data = response.data.data
 
-                    if (this.cache !== undefined) {
+                    if (this.cache) {
                         localStorage[this.cache] = JSON.stringify(this.data)
                     }
                 } catch (e) {

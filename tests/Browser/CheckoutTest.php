@@ -27,6 +27,7 @@ class CheckoutTest extends DuskTestCase
                 ->type('@shipping_housenumber', '1007')
                 ->type('@shipping_street', 'Mountain Drive')
                 ->type('@shipping_city', 'Gotham')
+                ->waitFor('@shipping_country', 10)
                 ->select('@shipping_country', 'TR')
                 ->type('@shipping_telephone', '530-7972');
 
