@@ -53,7 +53,7 @@
     />
 </div>
 <div class="col-span-12 sm:col-span-6">
-    <graphql query="{ countries { two_letter_abbreviation full_name_locale } }">
+    <graphql query="{ countries { two_letter_abbreviation full_name_locale } }" cache="countries">
         <div v-if="data" slot-scope="{ data }">
             <x-rapidez::select
                 name="{{ $type }}_country"
