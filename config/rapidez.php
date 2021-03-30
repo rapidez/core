@@ -23,7 +23,7 @@ return [
         'media_url',
         'magento_url',
         'checkout_steps',
-        'storage_flushable'
+        'flushable_localstorage_keys',
     ],
 
     // With this token you can run commands from an url.
@@ -45,10 +45,10 @@ return [
         'category' => Rapidez\Core\Http\Controllers\CategoryController::class,
     ],
 
-    // Local storage keys that need to be flushed
-    'storage_flushable' => [
+    // Localstorage keys that need to be flushed when the cache is cleared.
+    'flushable_localstorage_keys' => [
+        'attributes',
         'countries',
         'swatches',
-        'attributes'
     ]
 ];

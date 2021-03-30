@@ -8,6 +8,7 @@
             <div v-for="(superAttribute, superAttributeId) in config.product.super_attributes">
                 <x-rapidez::label v-bind:for="'super_attribute_'+superAttributeId">@{{ superAttribute.label }}</x-rapidez::label>
                 <x-rapidez::select
+                    label=""
                     v-bind:id="'super_attribute_'+superAttributeId"
                     v-bind:name="superAttributeId"
                     v-model="options[superAttributeId]"
@@ -24,8 +25,14 @@
             </div>
 
             <div class="flex items-center mt-5">
-                <x-rapidez::label for="qty" class="mr-3 sr-only">@lang('Quantity')</x-rapidez::label>
-                <x-rapidez::select id="qty" v-bind:value="qty" v-on:input="changeQty" class="mr-3">
+                <x-rapidez::select
+                    name="qty"
+                    label="Quantity"
+                    v-bind:value="qty"
+                    v-on:input="changeQty"
+                    class="mr-3"
+                    labelClass="mr-3 sr-only"
+                >
                     @for ($i = 1; $i <= 10; $i++)
                         <option value="{{ $i }}">{{ $i }}</option>
                     @endfor

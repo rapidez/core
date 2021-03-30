@@ -6,6 +6,7 @@
             <div v-for="(superAttribute, superAttributeId) in item.super_attributes">
                 <x-rapidez::label v-bind:for="'super_attribute_'+superAttributeId">@{{ superAttribute.label }}</x-rapidez::label>
                 <x-rapidez::select
+                    label=""
                     v-bind:id="'super_attribute_'+superAttributeId"
                     v-bind:name="superAttributeId"
                     v-model="options[superAttributeId]"

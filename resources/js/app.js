@@ -55,13 +55,12 @@ Vue.component('graphql', require('./components/Graphql.vue').default)
 document.addEventListener('turbolinks:load', () => {
     Vue.prototype.config = window.config
 
-    // Check if the localstorage is still valid.
-    if (localStorage.storage_token !== window.config.storage_token) {
-        // Remove only the keys that are flushable
-        window.config.storage_flushable.forEach((key) => {
+    // Check if the localstorage needs a flush.
+    if (localStorage.cachekey !== window.config.cachekey) {
+        window.config.flushable_localstorage_keys.forEach((key) => {
             localStorage.removeItem(key)
         })
-        localStorage.storage_token = window.config.storage_token
+        localStorage.cachekey = window.config.cachekey
     }
 
     window.app = new Vue({

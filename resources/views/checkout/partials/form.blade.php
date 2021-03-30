@@ -59,11 +59,10 @@
                 name="{{ $type }}_country"
                 label="Country"
                 v-model="checkout.{{ $type }}_address.country_id"
-                class="w-full py-2 px-3 border-gray-300 rounded focus:ring-green-500 focus:border-green-500"
                 required
             >
                 <option v-for="country in data.countries" :value="country.two_letter_abbreviation.toUpperCase()">
-                        @{{country.full_name_locale}}
+                    @{{ country.full_name_locale }}
                 </option>
             </x-rapidez::select>
         </div>
