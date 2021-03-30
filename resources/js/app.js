@@ -52,8 +52,19 @@ Vue.component('graphql', require('./components/Graphql.vue').default)
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+function tokenIsValid() {
+    return localStorage.storage_token === window.config.storage_token
+}
+
 document.addEventListener('turbolinks:load', () => {
     Vue.prototype.config = window.config
+
+    if (!tokenIsValid()) {
+        localStorage.clear()
+        localStorage.storage_token = window.config.storage_token
+    }
+
+
     window.app = new Vue({
         el: '#app',
         data: {
