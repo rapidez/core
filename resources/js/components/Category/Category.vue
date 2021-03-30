@@ -29,8 +29,8 @@
         },
 
         mounted() {
-            if (sessionStorage.getItem('attributes')) {
-                this.attributes = JSON.parse(sessionStorage.getItem('attributes'))
+            if (localStorage.attributes) {
+                this.attributes = JSON.parse(localStorage.attributes)
                 this.loaded = true
                 return;
             }
@@ -38,7 +38,7 @@
             axios.get('/api/attributes')
                  .then((response) => {
                     this.attributes = response.data
-                    sessionStorage.setItem('attributes', JSON.stringify(this.attributes))
+                    localStorage.attributes = JSON.stringify(this.attributes)
                     this.loaded = true
                  })
                  .catch((error) => {

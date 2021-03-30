@@ -64,7 +64,6 @@ document.addEventListener('turbolinks:load', () => {
         localStorage.storage_token = window.config.storage_token
     }
 
-
     window.app = new Vue({
         el: '#app',
         data: {

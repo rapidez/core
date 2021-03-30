@@ -47,6 +47,8 @@ return [
 
     // Local storage keys that need to be flushed
     'storage_flushable' => [
-        'countries'
+        'countries',
+        'swatches',
+        'attributes'
     ]
 ];
