@@ -47,7 +47,7 @@
                 this.magentoCart('post', 'items', {
                     cartItem: {
                         sku: this.product.sku,
-                        quote_id: localStorage.getItem('mask'),
+                        quote_id: localStorage.mask,
                         qty: this.qty,
                         product_option: this.productOptions
                     }
@@ -90,8 +90,8 @@
             },
 
             getSwatches: function() {
-                if (sessionStorage.swatches) {
-                    return JSON.parse(sessionStorage.swatches)
+                if (localStorage.swatches) {
+                    return JSON.parse(localStorage.swatches)
                 }
 
                 return {}

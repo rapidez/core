@@ -27,7 +27,7 @@ class CheckoutTest extends DuskTestCase
                 ->type('@shipping_housenumber', '1007')
                 ->type('@shipping_street', 'Mountain Drive')
                 ->type('@shipping_city', 'Gotham')
-                ->type('@shipping_country', 'TR')
+                ->select('@shipping_country', 'TR')
                 ->type('@shipping_telephone', '530-7972');
 
             if ($createAccountWithEmail) {

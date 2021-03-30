@@ -8,6 +8,7 @@
             'query',
             'check',
             'redirect',
+            'cache',
         ],
 
         data: () => ({
@@ -21,10 +22,21 @@
         },
 
         created() {
-            this.runQuery()
+            if (!this.getCache()) {
+                this.runQuery()
+            }
         },
 
         methods: {
+            getCache() {
+                let response
+                if (response = localStorage[this.cache] !== undefined) {
+                    this.data = JSON.parse(localStorage[this.cache])
+                }
+
+                return response
+            },
+
             async runQuery() {
                 try {
                     let options = this.$root.user ? { headers: { Authorization: `Bearer ${localStorage.token}` }} : null
@@ -49,6 +61,10 @@
                     }
 
                     this.data = response.data.data
+
+                    if (this.cache !== undefined) {
+                        localStorage[this.cache] = JSON.stringify(this.data)
+                    }
                 } catch (e) {
                     alert('Something went wrong, please try again')
                 }

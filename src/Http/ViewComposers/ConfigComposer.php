@@ -3,6 +3,8 @@
 namespace Rapidez\Core\Http\ViewComposers;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Rapidez\Core\Models\Attribute;
 use Rapidez\Core\Models\Config;
@@ -20,6 +22,8 @@ class ConfigComposer
             config('frontend') ?: [],
             $exposedFrontendConfigValues
         )]);
+
+        config(['frontend.storage_token' => Cache::rememberForever('storage.token', fn () => md5(Str::random(20)))]);
 
         config(['frontend.locale' => Config::getCachedByPath('general/locale/code', 'en_US')]);
         config(['frontend.currency' => Config::getCachedByPath('currency/options/default')]);
