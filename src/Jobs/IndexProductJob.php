@@ -3,15 +3,11 @@
 namespace Rapidez\Core\Jobs;
 
 use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 
-class IndexProductJob implements ShouldQueue
+class IndexProductJob
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
 
     protected string $index;
 
