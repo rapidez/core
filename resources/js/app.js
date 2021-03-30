@@ -74,13 +74,13 @@ document.addEventListener('turbolinks:load', () => {
             checkout: {
                 step: 1,
                 shipping_address: {
-                    'firstname': window.debug ? 'Bruce' : null,
-                    'lastname': window.debug ? 'Wayne' : null,
-                    'postcode': window.debug ? '72000' : null,
-                    'street': window.debug ? ['Mountain Drive', 1007] : [],
-                    'city': window.debug ? 'Gotham' : null,
-                    'telephone': window.debug ? '530-7972' : null,
-                    'country_id': window.debug ? 'TR' : null,
+                    'firstname': window.debug ? 'Bruce' : localStorage.shipping_firstname ?? '',
+                    'lastname': window.debug ? 'Wayne' : localStorage.shipping_lastname ?? '',
+                    'postcode': window.debug ? '72000' : localStorage.shipping_postcode ?? '',
+                    'street': window.debug ? ['Mountain Drive', 1007] : localStorage.shipping_street?.split(',') ?? [],
+                    'city': window.debug ? 'Gotham' : localStorage.shipping_city ?? '',
+                    'telephone': window.debug ? '530-7972' : localStorage.shipping_telephone ?? '',
+                    'country_id': window.debug ? 'TR' : localStorage.shipping_country_id ?? '',
                 },
                 billing_address: {
                     'street': [],
