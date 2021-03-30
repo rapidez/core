@@ -19,12 +19,12 @@
             }
 
             axios.get('/api/swatches')
-                 .then((response) => {
-                     this.swatches = response.data
-                     localStorage.swatches = JSON.stringify(this.swatches)
-                     this.loaded = true
-                 })
-                 .catch((error) => {
+                .then((response) => {
+                    this.swatches = response.data
+                    localStorage.swatches = JSON.stringify(this.swatches)
+                    this.loaded = true
+                })
+                .catch((error) => {
                     alert('Something went wrong')
                 })
         }
