@@ -62,7 +62,7 @@
                 required
             >
                 <option v-for="country in data.countries" :value="country.two_letter_abbreviation.toUpperCase()">
-                    @{{  country.full_name_locale }}
+                    @{{ country.full_name_locale }}
                 </option>
             </x-rapidez::select>
         </div>
