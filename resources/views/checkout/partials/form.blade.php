@@ -56,7 +56,7 @@
     <x-rapidez::country-select
         name="{{ $type }}_country"
         label="Country"
-        vModel="checkout.{{ $type }}_address.country_id"
+        v-model="checkout.{{ $type }}_address.country_id"
         required
     />
 </div>
