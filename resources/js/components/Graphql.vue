@@ -13,6 +13,7 @@
 
         data: () => ({
             data: null,
+            cachePrefix: 'graphql_'
         }),
 
         render() {
@@ -31,7 +32,7 @@
             getCache() {
                 let cache = false
 
-                if (cache = localStorage[this.cache]) {
+                if (cache = localStorage[this.cachePrefix + this.cache]) {
                     this.data = JSON.parse(cache)
                 }
 
@@ -64,7 +65,7 @@
                     this.data = response.data.data
 
                     if (this.cache) {
-                        localStorage[this.cache] = JSON.stringify(this.data)
+                        localStorage[this.cachePrefix + this.cache] = JSON.stringify(this.data)
                     }
                 } catch (e) {
                     alert('Something went wrong, please try again')
