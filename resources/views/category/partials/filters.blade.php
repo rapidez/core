@@ -27,4 +27,6 @@
         @include('rapidez::category.partials.filter.boolean')
         @include('rapidez::category.partials.filter.select')
     </template>
+
+    <button type="button" class="md:hidden btn btn-primary w-full" v-on:click="toggle">@lang('Show results')</button>
 </x-rapidez::slideover>
