@@ -225,7 +225,13 @@
 
             storeShipping() {
                 this.getShippingKeys().forEach((key) => {
-                    localStorage['shipping_' + key] = this.checkout.shipping_address[key] ?? ''
+                    let value = this.checkout.shipping_address[key]
+                    let cacheKey = 'shipping_' + key
+                    if (value !== '') {
+                        localStorage[cacheKey] = value
+                    } else {
+                        localStorage.removeItem(cacheKey);
+                    }
                 })
             },
 
