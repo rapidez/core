@@ -13,7 +13,7 @@
         },
 
         data: () => ({
-            email: window.debug ? 'wayne@enterprises.com' : '',
+            email: localStorage.email ?? (window.debug ? 'wayne@enterprises.com' : ''),
             password: '',
             emailAvailable: true,
         }),
@@ -91,6 +91,11 @@
                 } else {
                     Turbolinks.visit('/account')
                 }
+            }
+        },
+        watch: {
+            email: function () {
+                localStorage.email = this.email
             }
         }
     }

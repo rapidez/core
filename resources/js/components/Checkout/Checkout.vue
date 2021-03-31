@@ -202,6 +202,13 @@
                     // response.data = orderId
                     localStorage.removeItem('mask')
                     localStorage.removeItem('cart')
+
+                    localStorage.removeItem('email')
+
+                    this.getShippingKeys().forEach((key) => {
+                        localStorage.removeItem('shipping_' + key)
+                    })
+
                     this.$root.cart = null
                     this.$root.$emit('CheckoutPaymentSaved')
                     return true
@@ -223,6 +230,22 @@
 
                 return address
             },
+
+            storeShipping() {
+                this.getShippingKeys().forEach((key) => {
+                    let value = this.checkout.shipping_address[key]
+                    let cacheKey = 'shipping_' + key
+                    if (value !== '') {
+                        localStorage[cacheKey] = value
+                    } else {
+                        localStorage.removeItem(cacheKey);
+                    }
+                })
+            },
+
+            getShippingKeys() {
+                return Object.keys(this.checkout.shipping_address)
+            }
         },
 
         computed: {
@@ -238,6 +261,14 @@
                 }
 
                 return this.removeUnusedAddressInfo(this.$root.checkout.billing_address)
+            }
+        },
+        watch: {
+            'checkout.shipping_address': {
+                deep: true,
+                handler: function() {
+                    this.storeShipping()
+                }
             }
         }
     }

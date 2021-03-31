@@ -3,7 +3,7 @@
         label="Firstname"
         name="{{ $type }}_firstname"
         :placeholder="__('Firstname')"
-        v-model="checkout.{{ $type }}_address.firstname"
+        v-model.lazy="checkout.{{ $type }}_address.firstname"
         required
     />
 </div>
@@ -12,7 +12,7 @@
         name="{{ $type }}_lastname"
         label="Lastname"
         :placeholder="__('Lastname')"
-        v-model="checkout.{{ $type }}_address.lastname"
+        v-model.lazy="checkout.{{ $type }}_address.lastname"
         required
     />
 </div>
@@ -21,7 +21,7 @@
         name="{{ $type }}_postcode"
         label="Postcode"
         :placeholder="__('Postcode')"
-        v-model="checkout.{{ $type }}_address.postcode"
+        v-model.lazy="checkout.{{ $type }}_address.postcode"
         required
     />
 </div>
@@ -30,7 +30,7 @@
         name="{{ $type }}_housenumber"
         label="Housenumber"
         :placeholder="__('Nr.')"
-        v-model="checkout.{{ $type }}_address.street[1]"
+        v-model.lazy="checkout.{{ $type }}_address.street[1]"
         required
     />
 </div>
@@ -39,7 +39,7 @@
         name="{{ $type }}_street"
         label="Street"
         :placeholder="__('Street')"
-        v-model="checkout.{{ $type }}_address.street[0]"
+        v-model.lazy="checkout.{{ $type }}_address.street[0]"
         required
     />
 </div>
@@ -48,7 +48,7 @@
         name="{{ $type }}_city"
         label="City"
         :placeholder="__('City')"
-        v-model="checkout.{{ $type }}_address.city"
+        v-model.lazy="checkout.{{ $type }}_address.city"
         required
     />
 </div>
@@ -65,7 +65,7 @@
         name="{{ $type }}_telephone"
         label="Telephone"
         :placeholder="__('Telephone')"
-        v-model="checkout.{{ $type }}_address.telephone"
+        v-model.lazy="checkout.{{ $type }}_address.telephone"
         required
     />
 </div>
