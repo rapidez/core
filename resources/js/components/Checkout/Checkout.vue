@@ -45,7 +45,7 @@
 
                     return true
                 } catch (error) {
-                    if (error.response.status == 404) {
+                    if ([401, 404].includes(error.response.status)) {
                         this.logout('/login')
                     } else {
                         alert(error.response.data.message)
@@ -68,7 +68,7 @@
 
                     return true
                 } catch (error) {
-                    if (error.response.status == 404) {
+                    if ([401, 404].includes(error.response.status)) {
                         this.logout('/login')
                     } else {
                         alert(error.response.data.message)
