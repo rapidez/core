@@ -45,7 +45,11 @@
 
                     return true
                 } catch (error) {
-                    alert(error.response.data.message)
+                    if (error.response.status == 404) {
+                        this.logout('/login')
+                    } else {
+                        alert(error.response.data.message)
+                    }
                     return false
                 }
             },
@@ -64,7 +68,11 @@
 
                     return true
                 } catch (error) {
-                    alert(error.response.data.message)
+                    if (error.response.status == 404) {
+                        this.logout('/login')
+                    } else {
+                        alert(error.response.data.message)
+                    }
                     return false
                 }
             },
