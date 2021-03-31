@@ -74,13 +74,13 @@ document.addEventListener('turbolinks:load', () => {
             checkout: {
                 step: 1,
                 shipping_address: {
-                    'firstname': window.debug ? 'Bruce' : localStorage.shipping_firstname ?? '',
-                    'lastname': window.debug ? 'Wayne' : localStorage.shipping_lastname ?? '',
-                    'postcode': window.debug ? '72000' : localStorage.shipping_postcode ?? '',
-                    'street': window.debug ? ['Mountain Drive', 1007] : localStorage.shipping_street?.split(',') ?? [],
-                    'city': window.debug ? 'Gotham' : localStorage.shipping_city ?? '',
-                    'telephone': window.debug ? '530-7972' : localStorage.shipping_telephone ?? '',
-                    'country_id': window.debug ? 'TR' : localStorage.shipping_country_id ?? '',
+                    'firstname': localStorage.shipping_firstname ?? (window.debug ? 'Bruce' : ''),
+                    'lastname': localStorage.shipping_lastname ?? (window.debug ? 'Wayne' : ''),
+                    'postcode': localStorage.shipping_postcode ?? (window.debug ? '72000' : ''),
+                    'street': localStorage.shipping_street?.split(',') ?? (window.debug ? ['Mountain Drive', 1007] : []),
+                    'city': localStorage.shipping_city ?? (window.debug ? 'Gotham' : ''),
+                    'telephone': localStorage.shipping_telephone ?? (window.debug ? '530-7972' : ''),
+                    'country_id': localStorage.shipping_country_id ?? (window.debug ? 'TR' : ''),
                 },
                 billing_address: {
                     'street': [],
