@@ -53,20 +53,12 @@
     />
 </div>
 <div class="col-span-12 sm:col-span-6">
-    <graphql query="{ countries { two_letter_abbreviation full_name_locale } }" cache="countries">
-        <div v-if="data" slot-scope="{ data }">
-            <x-rapidez::select
-                name="{{ $type }}_country"
-                label="Country"
-                v-model.lazy="checkout.{{ $type }}_address.country_id"
-                required
-            >
-                <option v-for="country in data.countries" :value="country.two_letter_abbreviation.toUpperCase()">
-                    @{{ country.full_name_locale }}
-                </option>
-            </x-rapidez::select>
-        </div>
-    </graphql>
+    <x-rapidez::country-select
+        name="{{ $type }}_country"
+        label="Country"
+        v-model="checkout.{{ $type }}_address.country_id"
+        required
+    />
 </div>
 <div class="col-span-12 sm:col-span-6 sm:col-start-1">
     <x-rapidez::input
