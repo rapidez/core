@@ -13,7 +13,7 @@
         },
 
         data: () => ({
-            email: window.debug ? 'wayne@enterprises.com' : localStorage.email ?? '',
+            email: localStorage.email ?? (window.debug ? 'wayne@enterprises.com' : ''),
             password: '',
             emailAvailable: true,
         }),
