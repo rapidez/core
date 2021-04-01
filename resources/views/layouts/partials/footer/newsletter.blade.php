@@ -20,7 +20,7 @@
                             name="email"
                             type="email"
                             v-model="changes.email"
-                            class="px-5 py-3"
+                            class="px-5 py-3 !text-base"
                             wrapperClass="flex-grow"
                             dusk="newsletter-email"
                             autocomplete="email"
@@ -31,7 +31,7 @@
                         <x-rapidez::button
                             type="submit"
                             dusk="newsletter-submit"
-                            class="w-full mt-3 px-5 py-3 sm:ml-5 sm:w-auto sm:mt-0 sm:text-sm"
+                            class="w-full mt-3 px-5 py-3 sm:ml-5 sm:w-auto sm:mt-0"
                         >
                             @lang('Subscribe')
                         </x-rapidez::button>
