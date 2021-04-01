@@ -20,14 +20,14 @@ class CheckoutTest extends DuskTestCase
                 ->type('@email', $createAccountWithEmail ?: 'wayne@enterprises.com')
                 ->click('@continue')
                 ->waitUntilAllAjaxCallsAreFinished()
-                ->pause(2000)
+                ->pause(1000)
+                ->waitFor('@shipping_country', 10)
                 ->type('@shipping_firstname', 'Bruce')
                 ->type('@shipping_lastname', 'Wayne')
                 ->type('@shipping_postcode', '72000')
                 ->type('@shipping_housenumber', '1007')
                 ->type('@shipping_street', 'Mountain Drive')
                 ->type('@shipping_city', 'Gotham')
-                ->waitFor('@shipping_country', 10)
                 ->select('@shipping_country', 'TR')
                 ->type('@shipping_telephone', '530-7972');
 
