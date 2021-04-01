@@ -20,7 +20,7 @@ class CheckoutTest extends DuskTestCase
                 ->type('@email', $createAccountWithEmail ?: 'wayne@enterprises.com')
                 ->click('@continue')
                 ->waitUntilAllAjaxCallsAreFinished()
-                ->pause(1000)
+                ->pause(2000)
                 ->type('@shipping_firstname', 'Bruce')
                 ->type('@shipping_lastname', 'Wayne')
                 ->type('@shipping_postcode', '72000')
