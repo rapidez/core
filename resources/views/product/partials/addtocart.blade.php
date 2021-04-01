@@ -30,7 +30,7 @@
                     label="Quantity"
                     v-bind:value="qty"
                     v-on:input="changeQty"
-                    class="mr-3"
+                    class="w-auto mr-3"
                     labelClass="mr-3 sr-only"
                 >
                     @for ($i = 1; $i <= 10; $i++)

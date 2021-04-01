@@ -10,7 +10,7 @@
                     v-bind:id="'super_attribute_'+superAttributeId"
                     v-bind:name="superAttributeId"
                     v-model="options[superAttributeId]"
-                    class="block w-full mb-3"
+                    class="block mb-3"
                 >
                     <option disabled selected hidden :value="undefined">@lang('Select') @{{ superAttribute.label.toLowerCase() }}</option>
                     <option
