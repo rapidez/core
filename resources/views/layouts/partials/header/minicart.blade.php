@@ -14,8 +14,12 @@
                     </tr>
                 </table>
                 <div class="flex justify-between items-center">
-                    <a href="/cart" class="btn btn-outline-primary mr-5">@lang('Show cart')</a>
-                    <a href="/checkout" class="btn btn-primary">@lang('Checkout')</a>
+                    <x-rapidez::button href="/cart" variant="outline" class="mr-5">
+                        @lang('Show cart')
+                    </x-rapidez::button>
+                    <x-rapidez::button href="/checkout">
+                        @lang('Checkout')
+                    </x-rapidez::button>
                 </div>
             </div>
         </div>

@@ -14,13 +14,10 @@
                         v-bind:value="couponCode"
                         v-bind:disabled="$root.loading"
                     />
-                    <button
-                        type="submit"
-                        class="btn btn-primary ml-3"
-                        :disabled="$root.loading"
-                    >
+
+                    <x-rapidez::button type="submit" class="ml-3 sm:text-sm">
                         @lang('Apply')
-                    </button>
+                    </x-rapidez::button>
                 </form>
                 <p class="text-red-500 text-xs italic w-3/4 mt-3" v-if="submitError">@{{ submitError }}</p>
                 <div class="relative rounded-md" v-if="cart.discount_name">

@@ -1,6 +1,8 @@
 <x-rapidez::slideover v-on-click-away="close" :mobile-only="true">
     <x-slot name="button">
-        <button type="button" class="md:hidden btn btn-primary w-full mb-3" v-on:click="toggle">@lang('Filters')</button>
+        <x-rapidez::button class="md:hidden w-full mb-3" v-on:click="toggle">
+            @lang('Filters')
+        </x-rapidez::button>
     </x-slot>
 
     <x-slot name="title">
@@ -28,5 +30,7 @@
         @include('rapidez::category.partials.filter.select')
     </template>
 
-    <button type="button" class="md:hidden btn btn-primary w-full" v-on:click="toggle">@lang('Show results')</button>
+    <x-rapidez::button class="md:hidden w-full" v-on:click="toggle">
+        @lang('Show results')
+    </x-rapidez::button>
 </x-rapidez::slideover>

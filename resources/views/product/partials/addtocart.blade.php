@@ -38,14 +38,9 @@
                     @endfor
                 </x-rapidez::select>
 
-                <button
-                    class="btn btn-primary"
-                    :disabled="$root.loading"
-                    v-on:click="add"
-                    dusk="add-to-cart"
-                >
+                <x-rapidez::button v-on:click="add" dusk="add-to-cart">
                     @lang('Add to cart')
-                </button>
+                </x-rapidez::button>
             </div>
 
             <p v-if="error" v-text="error" class="text-red-600"></p>

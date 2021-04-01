@@ -38,15 +38,14 @@
                             v-model="item.qty"
                             v-bind:dusk="'qty-'+index"
                         />
-                        <button
+                        <x-rapidez::button
+                            class="ml-1"
+                            :title="__('Update')"
                             v-on:click="changeQty(item)"
-                            class="btn btn-primary ml-1"
-                            :disabled="$root.loading"
-                            title="@lang('Update')"
-                            :dusk="'item-update-'+index"
+                            v-bind:dusk="'item-update-'+index"
                         >
                             <svg class="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 18.7V21a1 1 0 0 1-2 0v-5a1 1 0 0 1 1-1h5a1 1 0 1 1 0 2H7.1A7 7 0 0 0 19 12a1 1 0 1 1 2 0 9 9 0 0 1-15 6.7zM18 5.3V3a1 1 0 0 1 2 0v5a1 1 0 0 1-1 1h-5a1 1 0 0 1 0-2h2.9A7 7 0 0 0 5 12a1 1 0 1 1-2 0 9 9 0 0 1 15-6.7z"/></svg>
-                        </button>
+                        </x-rapidez::button>
                     </div>
                 </div>
                 <div class="w-2/6 sm:w-1/6 lg:w-1/12 flex justify-end text-right">
@@ -71,7 +70,10 @@
                         <div class="w-1/2 font-bold">@lang('Total')</div>
                         <div class="w-1/2 text-right font-bold">@{{ cart.total | price }}</div>
                     </div>
-                    <a href="/checkout" class="btn btn-primary" dusk="checkout">@lang('Checkout')</a>
+
+                    <x-rapidez::button href="/checkout" dusk="checkout">
+                        @lang('Checkout')
+                    </x-rapidez::button>
                 </div>
             </div>
 

@@ -27,14 +27,14 @@
                             placeholder="Enter your email"
                             required
                         />
-                        <button
+
+                        <x-rapidez::button
                             type="submit"
-                            class="btn btn-primary w-full mt-3 px-5 py-3 sm:ml-5 sm:w-auto sm:mt-0"
-                            :disabled="$root.loading"
                             dusk="newsletter-submit"
+                            class="w-full mt-3 px-5 py-3 sm:ml-5 sm:w-auto sm:mt-0 sm:text-sm"
                         >
                             @lang('Subscribe')
-                        </button>
+                        </x-rapidez::button>
                     </form>
                     <p v-if="error" class="mt-3 text-sm text-red-700">
                         @{{ error }}

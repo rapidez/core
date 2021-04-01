@@ -36,12 +36,7 @@
         </x-rapidez::radio>
     </div>
 
-    <button
-        type="submit"
-        class="btn btn-primary mt-3"
-        :disabled="$root.loading"
-        dusk="continue"
-    >
+    <x-rapidez::button type="submit" class="mt-3" dusk="continue">
         @lang('Continue')
-    </button>
+    </x-rapidez::button>
 </form>

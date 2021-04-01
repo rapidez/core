@@ -41,12 +41,7 @@
         </div>
     </graphql>
 
-    <button
-        type="submit"
-        class="btn btn-primary mt-5"
-        :disabled="$root.loading"
-        dusk="continue"
-    >
+    <x-rapidez::button type="submit" class="mt-5" dusk="continue">
         @lang('Place order')
-    </button>
+    </x-rapidez::button>
 </form>
