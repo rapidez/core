@@ -4,12 +4,21 @@
     export default {
         mixins: [InteractWithUser],
 
-        props: [
-            'query',
-            'check',
-            'redirect',
-            'cache',
-        ],
+        props: {
+            query: {
+                type: String,
+                required: true,
+            },
+            check: {
+                type: String,
+            },
+            redirect: {
+                type: String,
+            },
+            cache: {
+                type: String,
+            },
+        },
 
         data: () => ({
             data: null,
