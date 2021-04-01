@@ -5,7 +5,7 @@
     :inner-class="{
         title: 'capitalize font-semibold',
         count: 'text-gray-400',
-        list: 'max-h-none-important',
+        list: '!max-h-full',
         label: 'text-gray-600'
     }"
     :title="filter.name.replace('_', ' ')"

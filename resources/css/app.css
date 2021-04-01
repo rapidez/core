@@ -35,7 +35,6 @@
  * @import "components/buttons";
  * @import "components/forms";
  */
-@import "components/sort-options.css";
 @import "components/vue-slider.css";
 
 /**
@@ -65,5 +64,3 @@
 
 [v-cloak] { display: none; }
 * { -webkit-tap-highlight-color: transparant; }
-
-@import "utilities/importants.css";

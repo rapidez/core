@@ -1,4 +1,0 @@
-.sort-options {
-    border: 1px solid gray !important;
-    @apply block appearance-none outline-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 h-auto rounded shadow leading-tight capitalize focus:outline-none focus:ring focus:ring-green-500 focus:border-green-500 !important;
-}

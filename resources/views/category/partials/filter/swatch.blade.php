@@ -4,7 +4,7 @@
         :data-field="filter.code"
         :inner-class="{
             title: 'capitalize font-semibold',
-            list: 'max-h-none-important flex flex-wrap',
+            list: '!max-h-full flex flex-wrap',
         }"
         :title="filter.name.replace('_', ' ')"
         :react="{and: reactiveFilters}"

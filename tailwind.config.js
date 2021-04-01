@@ -17,18 +17,7 @@ module.exports = {
             colors: {
                 primary: colors.green[700],
                 secondary: colors.gray[400],
-            },
-            width: {
-                '400px': '400px',
-                '960px': '960px'
             }
-        }
-    },
-    variants: {
-        extend: {
-            cursor: ['disabled'],
-            display: ['group-hover'],
-            opacity: ['disabled'],
         }
     },
     plugins: [

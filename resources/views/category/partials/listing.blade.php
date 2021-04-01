@@ -8,8 +8,8 @@
     :react="{and: reactiveFilters}"
     :sort-options="sortOptions"
     :inner-class="{
-        button: 'btn btn-pagination',
-        sortOptions: 'sort-options'
+        button: '!bg-primary disabled:!bg-secondary',
+        sortOptions: '!outline-none !rounded shadow focus:ring focus:ring-green-500'
     }"
     u-r-l-params
 >

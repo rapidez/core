@@ -14,7 +14,7 @@
                     leave-class="opacity-100"
                     leave-to-class="opacity-0"
                 >
-                    <div v-show="isOpen" v-on:click="toggle" class="absolute inset-0 pointer-events-auto bg-gray-500 bg-opacity-75 transition-opacity {{ $mobileOnly ? 'md:hidden-important' : '' }}"></div>
+                    <div v-show="isOpen" v-on:click="toggle" class="absolute inset-0 pointer-events-auto bg-gray-500 bg-opacity-75 transition-opacity {{ $mobileOnly ? 'md:!hidden' : '' }}"></div>
                 </transition>
                 <section class="absolute inset-y-0 right-0 max-w-full flex pointer-events-auto {{ $mobileOnly ? 'md:static md:pl-0' : '' }}" :class="isOpen ? 'pl-10' : ''">
                     <transition
@@ -25,7 +25,7 @@
                         leave-class="translate-x-0"
                         leave-to-class="translate-x-full"
                     >
-                        <div v-show="isOpen" class="w-screen max-w-md {{ $mobileOnly ? 'md:block-important' : '' }}">
+                        <div v-show="isOpen" class="w-screen max-w-md {{ $mobileOnly ? 'md:!block' : '' }}">
                             <div class="h-full flex flex-col space-y-6 py-6 bg-white shadow-xl overflow-y-scroll {{ $mobileOnly ? 'md:py-0 md:space-y-0' : '' }}">
                                 <header class="px-4 {{ $mobileOnly ? 'md:hidden' : '' }}">
                                     <div class="flex items-start justify-between space-x-3">
