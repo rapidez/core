@@ -1,7 +1,6 @@
 <div class="text-red-light mb-2">@lang('Sign up for our newsletter to stay up to date.')</div>
 <div class="mt-4 flex">
     <graphql-mutation query="mutation { subscribeEmailToNewsletter(changes) { status } }" :alert="false" :clear="false">
-
         <div class="mt-4" slot-scope="{ mutate, changes, mutated, error }">
             <form class="flex flex-col justify-around" v-on:submit.prevent="mutate">
                 <x-rapidez::input
@@ -22,9 +21,8 @@
                 class="w-full text-sm sm:w-auto sm:mt-0 md:mt-4"
                 >
                 @lang('Subscribe')
-            </x-rapidez::button>
-        </form>
-    </div>
-</div>
-</graphql-mutation>
+                </x-rapidez::button>
+            </form>
+        </div>
+    </graphql-mutation>
 </div>
