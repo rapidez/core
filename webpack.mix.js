@@ -16,7 +16,7 @@ mix
     .setPublicPath('public')
     .js('resources/js/app.js', 'public/js').vue()
     .postCss('resources/css/app.css', 'public/css', [
-        require('@tailwindcss/jit'),
+        require('tailwindcss'),
     ]).alias({
         'Vendor': path.join(__dirname, 'vendor'),
     }).options({
