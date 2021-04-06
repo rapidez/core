@@ -12,7 +12,7 @@
                         <td class="text-right px-4">@{{ item.qty }}</td>
                         <td class="text-right">@{{ item.price | price }}</td>
                     </tr>
-                    <tr class="py-3" v-for="item in cart.items">
+                    <tr class="py-3">
                         <td colspan="2">@lang('Total')</td>
                         <td class="text-right">@{{ cart.total | price }}</td>
                     </tr>
