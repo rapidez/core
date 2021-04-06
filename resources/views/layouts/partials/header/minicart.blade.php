@@ -9,8 +9,12 @@
                 <table class="mb-3">
                     <tr class="py-3" v-for="item in cart.items">
                         <td>@{{ item.name }}</td>
-                        <td class="text-right font-mono text-xs px-4">@{{ item.qty }}</td>
-                        <td class="text-right font-mono text-xs">@{{ item.price | price }}</td>
+                        <td class="text-right px-4">@{{ item.qty }}</td>
+                        <td class="text-right">@{{ item.price | price }}</td>
+                    </tr>
+                    <tr class="py-3" v-for="item in cart.items">
+                        <td colspan="2">@lang('Total')</td>
+                        <td class="text-right">@{{ cart.total | price }}</td>
                     </tr>
                 </table>
                 <div class="flex justify-between items-center">
