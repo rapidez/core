@@ -18,8 +18,10 @@ class Store extends Model
     protected static function booted()
     {
         static::addGlobalScope(new IsActiveScope);
-        static::addGlobalScope('without-admin-store', function (Builder $builder) {
-            $builder->where('code', '<>', 'admin');
+        static::addGlobalScope('defaults', function (Builder $builder) {
+            $builder
+                ->where('store.code', '<>', 'admin')
+                ->join('store_group', 'store_group.group_id', '=', 'store.group_id');
         });
     }
 
@@ -27,7 +29,12 @@ class Store extends Model
     {
         if (!$stores = config('cache.app.stores')) {
             $stores = Cache::rememberForever('stores', function () {
-                return self::select(['store_id', 'code', 'website_id'])->get()->keyBy('store_id')->toArray();
+                return self::select([
+                    'store_id',
+                    'store.code',
+                    'store.website_id',
+                    'root_category_id',
+                ])->get()->keyBy('store_id')->toArray();
             });
             config(['cache.app.stores' => $stores]);
         }
