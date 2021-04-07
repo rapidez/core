@@ -24,13 +24,13 @@ class ValidateCommand extends Command
 
     public function validateElasticSearchVersion()
     {
-        $data = json_decode(file_get_contents(config('rapidez.es_url')));
+        $data = json_decode(@file_get_contents(config('rapidez.es_url')));
         if (is_object($data) && property_exists($data, 'version') && $data->version->build_flavor !== 'oss' && !version_compare($data->version->number, $this->esVersion, '>=')) {
-            $this->warn('Your Elasticsearch version is too low!');
-            $this->warn('Your version: '. $data->version->number);
-            $this->warn('You need at leas: '.$this->esVersion);
+            $this->error('Your Elasticsearch version is too low!');
+            $this->error('Your version: '. $data->version->number);
+            $this->error('You need at least: '.$this->esVersion);
         } elseif (!is_object($data) || !property_exists($data, 'version')) {
-            $this->warn('Elasticsearch could not be found.');
+            $this->error('Elasticsearch could not be found.');
         }
     }
 
