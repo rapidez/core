@@ -39,7 +39,7 @@ Vue.component('category-filter', require('./components/Category/Filters/Category
 Vue.component('swatch-filter', require('./components/Category/Filters/SwatchFilter.vue').default)
 Vue.component('checkout', require('./components/Checkout/Checkout.vue').default)
 Vue.component('login', require('./components/Checkout/Login.vue').default)
-Vue.component('checker', require('./components/User/Checker.vue').default)
+Vue.component('checker', require('./components/Checker.vue').default)
 Vue.component('coupon', require('./components/Coupon/Coupon.vue').default)
 Vue.component('toggler', require('./components/Elements/Toggler.vue').default)
 Vue.component('add-to-cart', require('./components/Product/AddToCart.vue').default)
