@@ -13,10 +13,29 @@ class ValidateCommand extends Command
 
     protected $description = 'Validates all settings';
 
+    protected $esVersion = '7.6';
+
     public function handle()
     {
         $this->call('cache:clear');
+        $this->validateMagentoSettings();
+        $this->validateElasticSearchVersion();
+    }
 
+    public function validateElasticSearchVersion()
+    {
+        $data = json_decode(@file_get_contents(config('rapidez.es_url')));
+        if (is_object($data) && property_exists($data, 'version') && $data->version->build_flavor !== 'oss' && !version_compare($data->version->number, $this->esVersion, '>=')) {
+            $this->error('Your Elasticsearch version is too low!');
+            $this->error('Your version: '. $data->version->number);
+            $this->error('You need at least: '.$this->esVersion);
+        } elseif (!is_object($data) || !property_exists($data, 'version')) {
+            $this->error('Elasticsearch could not be found.');
+        }
+    }
+
+    public function validateMagentoSettings()
+    {
         if (!Config::getCachedByPath('catalog/frontend/flat_catalog_category', 0) || !Config::getCachedByPath('catalog/frontend/flat_catalog_product', 0)) {
             $this->error('The flat tables are disabled!');
         }
