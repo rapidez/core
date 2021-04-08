@@ -39,6 +39,7 @@ Vue.component('category-filter', require('./components/Category/Filters/Category
 Vue.component('swatch-filter', require('./components/Category/Filters/SwatchFilter.vue').default)
 Vue.component('checkout', require('./components/Checkout/Checkout.vue').default)
 Vue.component('login', require('./components/Checkout/Login.vue').default)
+Vue.component('register', require('./components/User/Register.vue').default)
 Vue.component('coupon', require('./components/Coupon/Coupon.vue').default)
 Vue.component('toggler', require('./components/Elements/Toggler.vue').default)
 Vue.component('add-to-cart', require('./components/Product/AddToCart.vue').default)
@@ -54,7 +55,6 @@ Vue.component('graphql', require('./components/Graphql.vue').default)
 
 document.addEventListener('turbolinks:load', () => {
     Vue.prototype.config = window.config
-
     // Check if the localstorage needs a flush.
     if (localStorage.cachekey !== window.config.cachekey) {
         window.config.flushable_localstorage_keys.forEach((key) => {
@@ -116,3 +116,4 @@ document.addEventListener('turbolinks:load', () => {
         }
     })
 })
+
