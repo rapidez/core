@@ -20,7 +20,7 @@
                     }
                 })
                 .then((response) => this.refreshCart())
-                .catch((error) => alert(error.response.data.message))
+                .catch((error) => Notify(error.response.data.message, 'error'))
             },
 
             remove(item) {
@@ -29,7 +29,7 @@
                         this.refreshCart()
                         Notify(item.name + ' succesfully removed from cart.', 'success')
                     })
-                    .catch((error) => alert(error.response.data.message))
+                    .catch((error) => Notify(error.response.data.message, 'error'))
             },
         }
     }
