@@ -22,11 +22,11 @@
                             {{message.text}}
                         </p>
                     </div>
-                    <div class="ml-4 flex-shrink-0 flex">
-                        <button @click.prevent="message = null" class="rounded-md inline-flex focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <div class="ml-4 flex-shrink-0 flex self-start">
+                        <button @click.prevent="message = null" class="rounded-md inline-flex focus:outline-none focus:ring-none focus:ring-offset-none">
                             <span class="sr-only">Close</span>
                             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                              <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
                             </svg>
                         </button>
                     </div>
@@ -58,10 +58,10 @@
         computed: {
             classType() {
                 let types = {
-                    'success': 'text-green-800 bg-green-500',
-                    'error': 'text-red-900 bg-red-500',
-                    'info': 'text-blue-900 bg-blue-500',
-                    'warning': 'text-yellow-900 bg-yellow-500'
+                    'success': 'text-green-600 bg-green-100 border border-green-300',
+                    'error': 'text-red-600 bg-red-100 border border-red-300',
+                    'info': 'text-blue-600 bg-blue-100 border border-blue-300',
+                    'warning': 'text-yellow-600 bg-yellow-100 border border-yellow-300'
                 }
 
                 return types[this.message.type]
