@@ -25,7 +25,10 @@
 
             remove(item) {
                 this.magentoCart('delete', 'items/' + item.item_id)
-                    .then((response) => this.refreshCart())
+                    .then((response) => {
+                        this.refreshCart()
+                        Notify(item.name + ' succesfully removed from cart.', 'success')
+                    })
                     .catch((error) => alert(error.response.data.message))
             },
         }

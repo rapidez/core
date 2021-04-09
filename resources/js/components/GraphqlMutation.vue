@@ -29,6 +29,13 @@
                 type: Boolean,
                 default: false,
             },
+            notify: {
+                type: Object,
+                default: () => ({
+                    message: '',
+                    type: 'success'
+                })
+            }
         },
 
         data: () => ({
@@ -77,7 +84,17 @@
                         self.mutated = false
                     }, 2500);
 
+                    if(!this.redirect && this.notify) {
+                        Notify(this.notify.message, this.notify.type ?? 'success')
+                    }
+
                     if (this.redirect) {
+                        if(this.notify.message) {
+                            setTimeout(() => {
+                                Notify(this.notify.message, this.notify.type ?? 'success')
+                            }, 1500)
+                        }
+
                         Turbolinks.visit(this.redirect)
                     }
                 } catch (e) {

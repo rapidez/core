@@ -54,10 +54,12 @@
                 }).then(async (response) => {
                     this.error = null
                     await this.refreshCart()
+                    Notify(this.product.name + ' succesfully added to cart.', 'warning')
                     if (config.redirect_cart) {
                         Turbolinks.visit('/cart');
                     }
                 }).catch((error) => {
+                    Notify('Something went wrong', 'error')
                     if (error.response.status == 401) {
                         alert('Your session expired, please login again')
                         this.logout('/login')
