@@ -54,7 +54,7 @@
                 }).then(async (response) => {
                     this.error = null
                     await this.refreshCart()
-                    Notify(this.product.name + ' succesfully added to cart.', 'warning')
+                    Notify(this.product.name + ' succesfully added to cart.', 'success')
                     if (config.redirect_cart) {
                         Turbolinks.visit('/cart');
                     }
