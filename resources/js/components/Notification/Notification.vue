@@ -43,14 +43,14 @@
             })
         },
         data: () => ({
-            message: null
+            message: null,
+            timer: null
         }),
         mounted() {
-            let timer
             Bus.$on('notification-message', (message) => {
-                clearTimeout(timer)
+                clearTimeout(this.timer)
                 this.message = message
-                timer = setTimeout(() => {
+                this.timer = setTimeout(() => {
                     this.message = null
                 }, 5000)
             });
