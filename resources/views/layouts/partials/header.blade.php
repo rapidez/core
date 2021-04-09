@@ -20,9 +20,9 @@
             @include('rapidez::layouts.partials.header.minicart')
         @endif
     </div>
+    <notification></notification>
     @if(Route::currentRouteName() !== 'checkout')
         <div class="w-full">
-        <notification></notification>
             {{-- Because the lack of an @includeIf or @includeWhen equivalent for Blade components we're using a placeholder --}}
             <x-dynamic-component :component="App::providerIsLoaded('Rapidez\Menu\MenuServiceProvider') ? 'menu' : 'placeholder'" />
         </div>
