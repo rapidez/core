@@ -27,11 +27,6 @@
 </template>
 <script>
     export default {
-        render() {
-            return this.$scopedSlots.default({
-                message: this.message
-            })
-        },
         data: () => ({
             message: null,
             timer: null
