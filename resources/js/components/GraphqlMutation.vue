@@ -65,7 +65,7 @@
                     if (response.data.errors) {
                         this.error = response.data.errors[0].message
                         if (this.alert) {
-                            alert(response.data.errors[0].message)
+                            Notify(response.data.errors[0].message, 'error')
                         }
                         return
                     }
@@ -84,7 +84,7 @@
                         self.mutated = false
                     }, 2500);
 
-                    if(!this.redirect && this.notify) {
+                    if(!this.redirect && this.notify.message) {
                         Notify(this.notify.message, this.notify.type ?? 'success')
                     }
 
@@ -98,7 +98,7 @@
                         Turbolinks.visit(this.redirect)
                     }
                 } catch (e) {
-                    alert('Something went wrong, please try again')
+                    Notify('Something went wrong, please try again', 'warning')
                 }
             },
 
