@@ -53,7 +53,7 @@ class CheckoutTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($email) {
             $browser->visit('/')
-                ->mouseover('@account_menu')
+                ->click('@account_menu')
                 ->click('@logout')
                 ->visit($this->testProduct->url)
                 ->waitUntilAllAjaxCallsAreFinished()

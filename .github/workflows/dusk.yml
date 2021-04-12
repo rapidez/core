@@ -16,9 +16,15 @@ jobs:
           - magento-version: 2.4.1-p1
             magento-php-version: php74-fpm
             rapidez-php-version: 7.4
+          - magento-version: 2.4.1-p1
+            magento-php-version: php74-fpm
+            rapidez-php-version: 8.0
           - magento-version: 2.4.2
             magento-php-version: php74-fpm
             rapidez-php-version: 7.4
+          - magento-version: 2.4.2
+            magento-php-version: php74-fpm
+            rapidez-php-version: 8.0
 
     services:
       magento:

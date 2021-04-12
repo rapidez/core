@@ -22,12 +22,14 @@ class Block extends Model
         static::addGlobalScope(new ForCurrentStoreScope);
     }
 
-    public static function getCachedByIdentifier(string $identifier): ?string
+    public static function getCachedByIdentifier(string $identifier, array $replace = []): ?string
     {
         $cacheKey = 'block.'.config('rapidez.store').'.'.$identifier;
 
-        return Cache::rememberForever($cacheKey, function () use ($identifier) {
+        $block = Cache::rememberForever($cacheKey, function () use ($identifier) {
             return optional(self::where('identifier', $identifier)->first('content'))->content;
         });
+
+        return empty($replace) ? $block : strtr($block, $replace);
     }
 }
