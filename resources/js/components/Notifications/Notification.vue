@@ -44,7 +44,7 @@
             this.show = this.notification.show
 
             setTimeout(() => {
-                this.show = false
+                this.close()
             }, 5000)
         },
         data: () => ({
@@ -65,7 +65,7 @@
         }),
         methods: {
             close() {
-                this.$parent.notifications.splice(this.notification, 1)
+                this.show = false
             }
         },
         computed: {
