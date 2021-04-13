@@ -84,12 +84,12 @@
                         self.mutated = false
                     }, 2500);
 
-                    if(!this.redirect && this.notify.message) {
+                    if (!this.redirect && this.notify.message) {
                         Notify(this.notify.message, this.notify.type ?? 'success')
                     }
 
                     if (this.redirect) {
-                        if(this.notify.message) {
+                        if (this.notify.message) {
                             setTimeout(() => {
                                 Notify(this.notify.message, this.notify.type ?? 'success')
                             }, 1500)
