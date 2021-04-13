@@ -4,7 +4,7 @@ window.axios = require('axios')
 window.debug = process.env.MIX_DEBUG == 'true'
 window.Vue = Vue
 window.Turbolinks = require('turbolinks')
-window.Bus = new Vue();
+window.Bus = new Vue()
 window.Notify = (message, type) => {
     Bus.$emit('notification-message', { text: message, type: type});
 }
