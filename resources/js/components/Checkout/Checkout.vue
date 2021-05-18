@@ -5,6 +5,12 @@
     export default {
         mixins: [GetCart, InteractWithUser],
 
+        data() {
+            return {
+                backEvent: false
+            };
+        },
+
         render() {
             return this.$scopedSlots.default({
                 hasItems: this.hasItems,
@@ -22,8 +28,8 @@
             }
 
             this.checkout.hasVirtualItems = this.hasVirtualItems
-            history.replaceState(null, null, '#'+this.config.checkout_steps[this.checkout.step])
 
+            this.setupHistory();
             this.setCheckoutCredentialsFromDefaultUserAddresses()
             this.getShippingMethods()
             this.getTotalsInformation()
@@ -85,7 +91,6 @@
                             if (!await this.saveCredentials()) {
                                 validated = false
                             }
-
                             break
                         case 'payment_method':
                             if (!await this.savePaymentMethod()) {
@@ -245,6 +250,15 @@
 
             getShippingKeys() {
                 return Object.keys(this.checkout.shipping_address)
+            },
+
+            setupHistory() {
+                window.addEventListener('hashchange', () => {
+                    this.backEvent = true
+                    this.checkout.step = this.config.checkout_steps.indexOf(window.location.hash.substring(1))
+                }, false)
+
+                history.replaceState(null, null, '#'+this.config.checkout_steps[this.checkout.step])
             }
         },
 
@@ -269,7 +283,17 @@
                 handler: function() {
                     this.storeShipping()
                 }
+            },
+            'checkout.step': function () {
+                if (this.backEvent) {
+                    this.backEvent = false;
+                    history.replaceState(null, null, '#'+this.config.checkout_steps[this.checkout.step])
+                    return;
+                }
+
+                history.pushState(null, null, '#' + this.config.checkout_steps[this.checkout.step]);
             }
         }
     }
+
 </script>
