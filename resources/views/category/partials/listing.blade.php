@@ -11,6 +11,8 @@
         button: '!bg-primary disabled:!bg-secondary',
         sortOptions: '!outline-none !rounded shadow focus:ring focus:ring-green-500'
     }"
+    prev-label="@lang('Prev')"
+    next-label="@lang('Next')"
     u-r-l-params
 >
     @include('rapidez::category.partials.listing.stats')
