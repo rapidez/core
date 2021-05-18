@@ -252,21 +252,10 @@
                 return Object.keys(this.checkout.shipping_address)
             },
 
-            getStepByName(name) {
-                for (let i = 0; i < this.config.checkout_steps.length; i++) {
-                    if (this.config.checkout_steps[i] == name) {
-                        return i;
-                    }
-                }
-
-                return null;
-            },
-
             setupHistory() {
-                let self = this;
                 window.addEventListener('hashchange', () => {
-                    self.backEvent = true
-                    self.checkout.step = self.getStepByName(window.location.hash.substring(1))
+                    this.backEvent = true
+                    this.checkout.step = this.config.checkout_steps.indexOf(window.location.hash.substring(1))
                 }, false)
 
                 history.replaceState(null, null, '#'+this.config.checkout_steps[this.checkout.step])
