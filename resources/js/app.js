@@ -114,11 +114,6 @@ document.addEventListener('turbolinks:load', () => {
             search(value) {
                 Turbolinks.visit('/search?q=' + value)
             }
-        },
-        watch: {
-            'checkout.step': function (step) {
-                history.replaceState(null, null, '#'+config.checkout_steps[step])
-            }
         }
     })
 })
