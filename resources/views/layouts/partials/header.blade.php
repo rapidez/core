@@ -26,5 +26,5 @@
             <x-dynamic-component :component="App::providerIsLoaded('Rapidez\Menu\MenuServiceProvider') ? 'menu' : 'placeholder'" />
         </div>
     @endif
-    <notifications></notifications>
+    <x-rapidez::notifications />
 </div>
