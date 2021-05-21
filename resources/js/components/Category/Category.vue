@@ -42,7 +42,7 @@
                     this.loaded = true
                  })
                  .catch((error) => {
-                    alert('Something went wrong')
+                    Notify(window.config.frontend.errors.wrong, 'error')
                 })
         },
 

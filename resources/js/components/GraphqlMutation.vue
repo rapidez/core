@@ -98,7 +98,7 @@
                         Turbolinks.visit(this.redirect)
                     }
                 } catch (e) {
-                    Notify('Something went wrong, please try again', 'warning')
+                    Notify(window.config.translations.frontend.errors.wrong, 'warning')
                 }
             },
 

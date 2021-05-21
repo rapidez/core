@@ -59,7 +59,7 @@
                         if (response.data.errors[0].extensions.category == 'graphql-authorization') {
                             this.logout('/login')
                         } else {
-                            alert(response.data.errors[0].message)
+                            Notify(response.data.errors[0].message, 'error')
                         }
                         return
                     }
@@ -77,7 +77,7 @@
                         localStorage[this.cachePrefix + this.cache] = JSON.stringify(this.data)
                     }
                 } catch (e) {
-                    alert('Something went wrong, please try again')
+                    Notify(window.config.translations.frontend.errors.wrong, 'warning')
                 }
             }
         }
