@@ -20,7 +20,7 @@ export default {
                     if (error.response.status == 404) {
                         localStorage.removeItem('mask')
                     }
-                    alert('Something went wrong, please try again')
+                    Notify(window.config.translations.frontend.errors.wrong, 'warning')
                 }
             }
         },
@@ -32,7 +32,7 @@ export default {
                         ? await magentoUser.post('carts/mine')
                         : await magento.post('guest-carts')
                 } catch (error) {
-                    alert('Something went wrong, please try again')
+                    Notify(window.config.translations.frontend.errors.wrong, 'error')
                 }
 
                 if (response !== undefined && response.data) {
@@ -46,7 +46,7 @@ export default {
                 customerId: this.$root.user.id,
                 storeId: config.store
             }).catch((error) => {
-                alert(error.response.data.message)
+                Notify(error.response.data.message, 'warning')
             })
         }
     },

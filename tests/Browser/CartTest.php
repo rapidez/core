@@ -39,7 +39,7 @@ class CartTest extends DuskTestCase
                     ->waitUntilAllAjaxCallsAreFinished()
                     ->click('@item-delete-0')
                     ->waitUntilAllAjaxCallsAreFinished()
-                    ->assertDontSee($this->testProduct->name);
+                    ->assertDontSee('@cart-item-name');
         });
     }
 }

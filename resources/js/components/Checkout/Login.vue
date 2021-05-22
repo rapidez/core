@@ -38,7 +38,7 @@
         methods: {
             async go() {
                 if (!this.checkoutLogin && (!this.email || !this.password)) {
-                    alert('You did not specify an email or password')
+                    Notify(window.config.translations.frontend.account.email_password)
                     return
                 }
 
@@ -57,7 +57,7 @@
                 } else if (this.email) {
                     this.checkEmailAvailability()
                 } else {
-                    alert('An email address is required')
+                    Notify(window.config.translations.frontend.account.email, 'error')
                 }
             },
 

@@ -20,13 +20,16 @@
                     }
                 })
                 .then((response) => this.refreshCart())
-                .catch((error) => alert(error.response.data.message))
+                .catch((error) => Notify(error.response.data.message, 'error'))
             },
 
             remove(item) {
                 this.magentoCart('delete', 'items/' + item.item_id)
-                    .then((response) => this.refreshCart())
-                    .catch((error) => alert(error.response.data.message))
+                    .then((response) => {
+                        this.refreshCart()
+                        Notify(item.name + ' ' + window.config.translations.frontend.cart.remove, 'info')
+                    })
+                    .catch((error) => Notify(error.response.data.message, 'error'))
             },
         }
     }

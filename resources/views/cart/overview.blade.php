@@ -19,7 +19,7 @@
                     </a>
                 </div>
                 <div class="w-5/6 sm:w-5/12 lg:w-8/12">
-                    <a :href="item.url" class="font-bold">@{{ item.name }}</a>
+                    <a :href="item.url" dusk="cart-item-name" class="font-bold">@{{ item.name }}</a>
                     <div v-for="(optionValue, option) in item.options">
                         @{{ option }}: @{{ optionValue }}
                     </div>

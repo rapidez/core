@@ -4,6 +4,10 @@ window.axios = require('axios')
 window.debug = process.env.MIX_DEBUG == 'true'
 window.Vue = Vue
 window.Turbolinks = require('turbolinks')
+window.Bus = new Vue()
+window.Notify = (message, type) => {
+    Bus.$emit('notification-message', message, type);
+}
 Turbolinks.start()
 import TurbolinksAdapter from 'vue-turbolinks'
 Vue.use(TurbolinksAdapter)
@@ -45,6 +49,8 @@ Vue.component('add-to-cart', require('./components/Product/AddToCart.vue').defau
 Vue.component('images', require('./components/Product/Images.vue').default)
 Vue.component('user', require('./components/User/User.vue').default)
 Vue.component('graphql', require('./components/Graphql.vue').default)
+Vue.component('notifications', require('./components/Notifications/Notifications.vue').default)
+Vue.component('notification', require('./components/Notifications/Notification.vue').default)
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

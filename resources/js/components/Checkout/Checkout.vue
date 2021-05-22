@@ -54,7 +54,7 @@
                     if ([401, 404].includes(error.response.status)) {
                         this.logout('/login')
                     } else {
-                        alert(error.response.data.message)
+                        Notify(error.response.data.message, 'error')
                     }
                     return false
                 }
@@ -77,7 +77,7 @@
                     if ([401, 404].includes(error.response.status)) {
                         this.logout('/login')
                     } else {
-                        alert(error.response.data.message)
+                        Notify(error.response.data.message, 'error')
                     }
                     return false
                 }
@@ -155,7 +155,7 @@
                     this.$root.$emit('CheckoutCredentialsSaved')
                     return true
                 } catch (error) {
-                    alert(error.response.data.message)
+                    Notify(error.response.data.message, 'error')
                     return false
                 }
             },
@@ -163,12 +163,12 @@
             validateCredentials() {
                 let validated = true
                 if (!this.checkout.shipping_method && !this.hasOnlyVirtualItems) {
-                    alert('No shipping method selected')
+                    Notify(window.config.translations.frontend.checkout.no_shipping_method, 'warning')
                     validated = false
                 }
 
                 if (validated && this.checkout.create_account && this.checkout.password != this.checkout.password_repeat) {
-                    alert('Please make sure your password match')
+                    Notify(window.config.translations.frontend.account.password_mismatch, 'warning')
                     validated = false
                 }
 
@@ -188,7 +188,7 @@
 
             async savePaymentMethod() {
                 if (!this.checkout.payment_method) {
-                    alert('No payment method selected')
+                    Notify(window.config.translations.frontend.checkout.no_payment_method, 'error')
                     return false
                 }
 
@@ -218,7 +218,7 @@
                     this.$root.$emit('CheckoutPaymentSaved')
                     return true
                 } catch (error) {
-                    alert(error.response.data.message)
+                    Notify(error.response.data.message, 'error')
                     return false
                 }
             },

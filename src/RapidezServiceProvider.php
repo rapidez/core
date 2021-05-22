@@ -28,7 +28,13 @@ class RapidezServiceProvider extends ServiceProvider
             ->bootRoutes()
             ->bootViews()
             ->bootBladeComponents()
-            ->bootMiddleware();
+            ->bootMiddleware()
+            ->bootTranslations();
+    }
+
+    public function bootTranslations()
+    {
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'rapidez');
     }
 
     public function register()

@@ -29,6 +29,13 @@
                 type: Boolean,
                 default: false,
             },
+            notify: {
+                type: Object,
+                default: () => ({
+                    message: '',
+                    type: 'success'
+                })
+            }
         },
 
         data: () => ({
@@ -58,7 +65,7 @@
                     if (response.data.errors) {
                         this.error = response.data.errors[0].message
                         if (this.alert) {
-                            alert(response.data.errors[0].message)
+                            Notify(response.data.errors[0].message, 'error')
                         }
                         return
                     }
@@ -77,11 +84,21 @@
                         self.mutated = false
                     }, 2500);
 
+                    if (!this.redirect && this.notify.message) {
+                        Notify(this.notify.message, this.notify.type ?? 'success')
+                    }
+
                     if (this.redirect) {
+                        if (this.notify.message) {
+                            setTimeout(() => {
+                                Notify(this.notify.message, this.notify.type ?? 'success')
+                            }, 1500)
+                        }
+
                         Turbolinks.visit(this.redirect)
                     }
                 } catch (e) {
-                    alert('Something went wrong, please try again')
+                    Notify(window.config.translations.frontend.errors.wrong, 'warning')
                 }
             },
 
