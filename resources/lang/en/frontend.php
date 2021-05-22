@@ -1,8 +1,8 @@
 <?php
 return [
     'cart' => [
-        'add' => 'Succesfully added to cart.',
-        'remove' => 'Succesfully removed from cart.'
+        'add' => 'added to the cart.',
+        'remove' => 'removed from the cart.'
     ],
     'errors' => [
         'wrong' => 'Something went wrong, please try again.',
@@ -13,7 +13,7 @@ return [
         'no_payment_method' => 'No payment method selected.'
     ],
     'account' => [
-        'password_mismatch' => 'Please make sure your password match.',
+        'password_mismatch' => 'Please make sure your passwords match.',
         'email_password' => 'You did not specify an email or password.',
         'email' => 'An email address is required.'
     ]

@@ -10,7 +10,7 @@ class ProductController
     {
         $product = Product::selectForProductPage()->findOrFail($productId);
 
-        $attributes = ['sku', 'super_attributes', 'children', 'price', 'images'];
+        $attributes = ['name', 'sku', 'super_attributes', 'children', 'price', 'images'];
         foreach ($product->super_attributes ?: [] as $superAttribute) {
             $attributes[] = $superAttribute->code;
         }
