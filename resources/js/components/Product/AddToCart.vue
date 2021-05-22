@@ -54,13 +54,13 @@
                 }).then(async (response) => {
                     this.error = null
                     await this.refreshCart()
-                    Notify(this.product.name + ' ' + window.config.translations.frontend.cart.add, 'success')
+                    Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success')
                     if (config.redirect_cart) {
                         Turbolinks.visit('/cart');
                     }
                 }).catch((error) => {
                     if (error.response.status == 401) {
-                        Notify(window.config.translations.frontend.errors.session_expired, 'error')
+                        Notify(window.config.translations.errors.session_expired, 'error')
                         this.logout('/login')
                     }
                     this.error = error.response.data.message

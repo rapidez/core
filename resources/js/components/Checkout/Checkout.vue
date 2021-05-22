@@ -163,12 +163,12 @@
             validateCredentials() {
                 let validated = true
                 if (!this.checkout.shipping_method && !this.hasOnlyVirtualItems) {
-                    Notify(window.config.translations.frontend.checkout.no_shipping_method, 'warning')
+                    Notify(window.config.translations.checkout.no_shipping_method, 'warning')
                     validated = false
                 }
 
                 if (validated && this.checkout.create_account && this.checkout.password != this.checkout.password_repeat) {
-                    Notify(window.config.translations.frontend.account.password_mismatch, 'warning')
+                    Notify(window.config.translations.account.password_mismatch, 'warning')
                     validated = false
                 }
 
@@ -188,7 +188,7 @@
 
             async savePaymentMethod() {
                 if (!this.checkout.payment_method) {
-                    Notify(window.config.translations.frontend.checkout.no_payment_method, 'error')
+                    Notify(window.config.translations.checkout.no_payment_method, 'error')
                     return false
                 }
 

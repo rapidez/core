@@ -9,7 +9,7 @@
             })
         },
         mounted() {
-            Bus.$on('notification-message', (message, type) => {
+            this.$root.$on('notification-message', (message, type) => {
                 this.notifications.push({
                     message: message,
                     type: type,

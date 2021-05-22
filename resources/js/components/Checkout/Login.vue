@@ -38,7 +38,7 @@
         methods: {
             async go() {
                 if (!this.checkoutLogin && (!this.email || !this.password)) {
-                    Notify(window.config.translations.frontend.account.email_password)
+                    Notify(window.config.translations.account.email_password)
                     return
                 }
 
@@ -57,7 +57,7 @@
                 } else if (this.email) {
                     this.checkEmailAvailability()
                 } else {
-                    Notify(window.config.translations.frontend.account.email, 'error')
+                    Notify(window.config.translations.account.email, 'error')
                 }
             },
 

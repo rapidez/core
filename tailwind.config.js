@@ -11,6 +11,8 @@ module.exports = {
         './vendor/rapidez/**/*.css',
         './vendor/rapidez/**/*.vue',
 
+        './config/rapidez.php',
+        './vendor/rapidez/core/config/rapidez.php',
         './vendor/rapidez/menu/src/config/menu.php',
     ],
     theme: {

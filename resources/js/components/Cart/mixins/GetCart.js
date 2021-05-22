@@ -20,7 +20,7 @@ export default {
                     if (error.response.status == 404) {
                         localStorage.removeItem('mask')
                     }
-                    Notify(window.config.translations.frontend.errors.wrong, 'warning')
+                    Notify(window.config.translations.errors.wrong, 'warning')
                 }
             }
         },
@@ -32,7 +32,7 @@ export default {
                         ? await magentoUser.post('carts/mine')
                         : await magento.post('guest-carts')
                 } catch (error) {
-                    Notify(window.config.translations.frontend.errors.wrong, 'error')
+                    Notify(window.config.translations.errors.wrong, 'error')
                 }
 
                 if (response !== undefined && response.data) {

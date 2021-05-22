@@ -77,7 +77,7 @@
                         localStorage[this.cachePrefix + this.cache] = JSON.stringify(this.data)
                     }
                 } catch (e) {
-                    Notify(window.config.translations.frontend.errors.wrong, 'warning')
+                    Notify(window.config.translations.errors.wrong, 'warning')
                 }
             }
         }
