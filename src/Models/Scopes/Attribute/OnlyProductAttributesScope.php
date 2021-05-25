@@ -25,13 +25,13 @@ class OnlyProductAttributesScope implements Scope
                     used_for_sort_by AS sorting,
                     is_visible_on_front AS productpage,
                     is_html_allowed_on_front AS html,
-                    GREATEST(
+                    IF(source_model NOT LIKE "Magento%", 0, GREATEST(
                         IF(backend_type = "static", 1, 0),
                         is_used_for_promo_rules,
                         used_in_product_listing,
                         used_for_sort_by,
                         IF(attribute_code IN ("status", "required_options", "tax_class_id", "weight"), 1, 0)
-                    ) AS flat,
+                    )) AS flat,
                     EXISTS(
                         SELECT 1
                         FROM catalog_product_super_attribute
