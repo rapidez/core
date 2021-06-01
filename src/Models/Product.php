@@ -44,7 +44,7 @@ class Product extends Model
                 ->groupBy($builder->getQuery()->from.'.entity_id');
         });
 
-        $scopes = Eventy::filter('product.scopes') ?: [];
+        $scopes = Eventy::filter('product.scopes', []);
         foreach ($scopes as $scope) {
             static::addGlobalScope(new $scope);
         }
@@ -68,7 +68,7 @@ class Product extends Model
             ],
             $this->getSuperAttributeCasts(),
             $this->getMultiselectAttributeCasts(),
-            Eventy::filter('product.casts') ?: [],
+            Eventy::filter('product.casts', []),
         );
     }
 

@@ -37,7 +37,7 @@ class Category extends Model
                 ->groupBy($builder->getQuery()->from . '.entity_id');
         });
 
-        $scopes = Eventy::filter('category.scopes') ?: [];
+        $scopes = Eventy::filter('category.scopes', []);
         foreach ($scopes as $scope) {
             static::addGlobalScope(new $scope());
         }

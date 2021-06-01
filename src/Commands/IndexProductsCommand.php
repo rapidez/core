@@ -49,7 +49,7 @@ class IndexProductsCommand extends Command
             $flat = (new Product)->getTable();
             $productQuery = Product::where($flat.'.visibility', 4)->selectOnlyIndexable();
 
-            $scopes = Eventy::filter('index.product.scopes') ?: [];
+            $scopes = Eventy::filter('index.product.scopes', []);
             foreach ($scopes as $scope) {
                 $productQuery->withGlobalScope($scope, new $scope);
             }
