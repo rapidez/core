@@ -13,9 +13,11 @@
         created() {
             let self = this
             this.$root.$on('productSuperAttributeChange', function (simpleProduct) {
-                if (Object.values(window.config.product.super_attributes).filter((attribute) => attribute.update_image).length) {
-                    self.images = simpleProduct.images
-                }
+            Object.values(window.config.product.children).forEach((child) => {
+                    if (child === simpleProduct && Object.values(window.config.product.super_attributes).filter((attribute) => attribute.update_image).length) {
+                        self.images = simpleProduct.images
+                    }
+                })
             })
         },
     }
