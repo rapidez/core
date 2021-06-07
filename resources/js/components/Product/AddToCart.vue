@@ -22,7 +22,13 @@
             error: null,
             qty: 1,
         }),
-
+        mounted() {
+            let self = this
+            this.$root.$on('swatch-clicked', function(superAttributeId, value) {
+                self.options[superAttributeId] = value
+                //this.options[superAttributeId] = value
+            })
+        },
         render() {
             return this.$scopedSlots.default({
                 getValuesByCode: this.getValuesByCode,
@@ -33,6 +39,7 @@
                 error: this.error,
                 add: this.add,
                 qty: this.qty,
+                swatchClicked: this.swatchClicked
             })
         },
 
@@ -40,7 +47,6 @@
             changeQty(event) {
                 this.qty = event.target.value
             },
-
             async add() {
                 await this.getMask()
 
@@ -96,11 +102,25 @@
                 }
 
                 return {}
-            }
-        },
+            },
+            swatchClicked: function(value, superAttributeId) {
+                this.options[superAttributeId] = value
+                let product = this.getProduct()
+                this.toggleSelectedSwatch(value, superAttributeId)
+                this.$root.$emit('productSuperAttributeChange', product)
+            },
+            toggleSelectedSwatch(value, superAttributeId) {
+                for(const value in config.product[this.product.super_attributes[superAttributeId].code]) {
+                    let element = document.getElementById(superAttributeId + '-' + value)
+                    if(element) {
+                        element.classList.remove('border-gray-500')
+                    }
+                }
 
-        computed: {
-            simpleProduct: function() {
+                let element = document.getElementById(superAttributeId + '-' + value)
+                element.classList.add('border-gray-500')
+            },
+            getProduct: function() {
                 var product = this.product
 
                 if (!product.super_attributes) {
@@ -124,14 +144,21 @@
                 }
 
                 if (simpleProducts.length) {
-                    product = simpleProducts[0]
+                    return simpleProducts[0]
                 }
+
+                return product
+            }
+        },
+
+        computed: {
+            simpleProduct: function() {
+                let product = this.getProduct()
 
                 this.$root.$emit('productSuperAttributeChange', product)
 
                 return product
             },
-
 
             productOptions: function () {
                 let options = []
@@ -162,9 +189,9 @@
 
                     // Fill list with products per attribute value
                     Object.entries(this.product.children).forEach(([productId, option]) => {
-                        if (!option.in_stock) {
-                            return
-                        }
+                        // if (!option.in_stock) {
+                        //     return
+                        // }
 
                         if (!valuesPerAttribute[attributeId][option[attribute.code]]) {
                             valuesPerAttribute[attributeId][option[attribute.code]] = []
@@ -194,7 +221,7 @@
                         }
                     })
                 })
-
+                //console.log(disabledOptions)
                 return disabledOptions
             }
         }

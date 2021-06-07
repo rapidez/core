@@ -1,29 +1,51 @@
 <add-to-cart v-cloak>
-    <div slot-scope="{ qty, changeQty, options, error, add, disabledOptions, simpleProduct }">
-        <div class="font-bold text-3xl mb-3">@{{ simpleProduct.price | price}}</div>
-
+    <div slot-scope="{ qty, changeQty, options, error, add, disabledOptions, simpleProduct, swatchClicked, isSelected }">
+        <div class="font-bold text-3xl mb-3">@{{ simpleProduct.price | price }}</div>
         @if(!$product->in_stock)
             <p class="text-red-600">@lang('Sorry! This product is currently out of stock.')</p>
         @else
             <div v-for="(superAttribute, superAttributeId) in config.product.super_attributes">
-                <x-rapidez::label v-bind:for="'super_attribute_'+superAttributeId">@{{ superAttribute.label }}</x-rapidez::label>
-                <x-rapidez::select
-                    label=""
-                    v-bind:id="'super_attribute_'+superAttributeId"
-                    v-bind:name="superAttributeId"
-                    v-model="options[superAttributeId]"
-                    class="block w-64 mb-3"
-                >
-                    <option disabled selected hidden :value="undefined">@lang('Select') @{{ superAttribute.label.toLowerCase() }}</option>
-                    <option
-                        v-for="(label, value) in config.product[superAttribute.code]"
-                        v-text="label"
-                        :value="value"
-                        :disabled="disabledOptions[superAttribute.code].includes(value)"
-                    />
-                </x-rapidez::select>
-            </div>
+                <div v-if="superAttribute.swatch_type === 'visual'">
+                    <x-rapidez::label v-bind:for="'super_attribute_'+superAttributeId">@{{ superAttribute.label }}</x-rapidez::label>
 
+                    <div class="flex flex-row flex-wrap">
+                        <div v-for="(label, value) in config.product[superAttribute.code]" class="mr-1">
+                            <button :id="superAttributeId + '-' + value" class="w-9 h-9 cursor-pointer outline-none focus:outline-none rounded border-2 border-transparent" :style="'background-color:'+ label.visual_swatch" v-on:click="swatchClicked(value, superAttributeId)"></button>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="superAttribute.swatch_type == 'text'">
+                    <x-rapidez::label v-bind:for="'super_attribute_'+superAttributeId">@{{ superAttribute.label }}</x-rapidez::label>
+                    <div class="flex flex-row flex-wrap">
+                        <button
+                            class="flex justify-center items-center border-2 border-transparent bg-gray-100 outline-none focus:outline-none rounded w-10 h-10 mr-1"
+                            v-for="(label, value) in config.product[superAttribute.code]"
+                            :id="superAttributeId + '-' + value"
+                            v-on:click="swatchClicked(value, superAttributeId)"                             :disabled="disabledOptions[superAttribute.code].includes(value)"
+                        >
+                            @{{ label.text_swatch }}
+                        </button>
+                    </div>
+                </div>
+                <div v-if="superAttribute.swatch_type == null">
+                    <x-rapidez::label v-bind:for="'super_attribute_'+superAttributeId">@{{ superAttribute.label }}</x-rapidez::label>
+                    <x-rapidez::select
+                        label=""
+                        v-bind:id="'super_attribute_'+superAttributeId"
+                        v-bind:name="superAttributeId"
+                        v-model="options[superAttributeId]"
+                        class="block w-64 mb-3"
+                    >
+                        <option disabled selected hidden :value="undefined">@lang('Select') @{{ superAttribute.label.toLowerCase() }}</option>
+                        <option
+                            v-for="(label, value) in config.product[superAttribute.code]"
+                            v-text="label.text_swatch"
+                            :value="value"
+                            :disabled="disabledOptions[superAttribute.code].includes(value)"
+                        />
+                    </x-rapidez::select>
+                </div>
+            </div>
             <div class="flex items-center mt-5">
                 <x-rapidez::select
                     name="qty"
