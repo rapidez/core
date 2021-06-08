@@ -40,7 +40,8 @@
                             class="flex justify-center items-center border-2 border-transparent bg-gray-100 outline-none focus:outline-none rounded w-10 h-10 mr-1"
                             v-for="(label, value) in config.product[superAttribute.code]"
                             :id="superAttributeId + '-' + value"
-                            v-on:click="swatchClicked(value, superAttributeId)"                             :disabled="disabledOptions[superAttribute.code].includes(value)"
+                            v-on:click="swatchClicked(value, superAttributeId)"
+                            :disabled="disabledOptions[superAttribute.code].includes(value)"
                         >
                             @{{ label.text_swatch }}
                             <span v-if="disabledOptions[superAttribute.code].includes(value)" class="absolute h-px w-[inherit] bg-red-600 transform skew-y-45 -skew-x-30"></span>
