@@ -1,5 +1,5 @@
 <add-to-cart v-cloak>
-    <div slot-scope="{ qty, changeQty, options, error, add, disabledOptions, simpleProduct, swatchClicked, isSelected }">
+    <div slot-scope="{ qty, changeQty, options, error, add, disabledOptions, simpleProduct, swatchClicked }">
         <div class="font-bold text-3xl mb-3">@{{ simpleProduct.price | price }}</div>
         @if(!$product->in_stock)
             <p class="text-red-600">@lang('Sorry! This product is currently out of stock.')</p>
