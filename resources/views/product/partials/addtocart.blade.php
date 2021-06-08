@@ -14,7 +14,8 @@
                             <button
                                 v-if="label.visual_swatch.includes('#')"
                                 :id="superAttributeId + '-' + value"
-                                class="relative w-9 h-9 cursor-pointer outline-none focus:outline-none rounded border-2 border-transparent"
+                                class="relative w-9 h-9 outline-none focus:outline-none rounded border-2 border-transparent"
+                                :class="disabledOptions[superAttribute.code].includes(value) ? 'cursor-not-allowed' : 'cursor-pointer'"
                                 :style="'background:'+ label.visual_swatch"
                                 v-on:click="swatchClicked(value, superAttributeId)"
                                 :disabled="disabledOptions[superAttribute.code].includes(value)"
@@ -24,7 +25,8 @@
                             <button
                                 v-if="!label.visual_swatch.includes('#')"
                                 :id="superAttributeId + '-' + value"
-                                class="relative w-9 h-9 cursor-pointer outline-none focus:outline-none rounded border-2 border-transparent"
+                                class="relative w-9 h-9 outline-none focus:outline-none rounded border-2 border-transparent"
+                                :class="disabledOptions[superAttribute.code].includes(value) ? 'cursor-not-allowed' : 'cursor-pointer'"
                                 :style="'background:url('+config.magento_url + '/media/attribute/swatch/swatch_image/30x20' + label.visual_swatch +')'"
                                 v-on:click="swatchClicked(value, superAttributeId)"
                                 :disabled="disabledOptions[superAttribute.code].includes(value)"
