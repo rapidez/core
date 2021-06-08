@@ -5,17 +5,36 @@
             <p class="text-red-600">@lang('Sorry! This product is currently out of stock.')</p>
         @else
             <div v-for="(superAttribute, superAttributeId) in config.product.super_attributes">
+                <x-rapidez::label v-bind:for="'super_attribute_'+superAttributeId">
+                    @{{ superAttribute.label }}
+                </x-rapidez::label>
                 <div v-if="superAttribute.swatch_type === 'visual'">
-                    <x-rapidez::label v-bind:for="'super_attribute_'+superAttributeId">@{{ superAttribute.label }}</x-rapidez::label>
-
                     <div class="flex flex-row flex-wrap">
                         <div v-for="(label, value) in config.product[superAttribute.code]" class="mr-1">
-                            <button :id="superAttributeId + '-' + value" class="w-9 h-9 cursor-pointer outline-none focus:outline-none rounded border-2 border-transparent" :style="'background-color:'+ label.visual_swatch" v-on:click="swatchClicked(value, superAttributeId)"></button>
+                            <button
+                                v-if="label.visual_swatch.includes('#')"
+                                :id="superAttributeId + '-' + value"
+                                class="relative w-9 h-9 cursor-pointer outline-none focus:outline-none rounded border-2 border-transparent"
+                                :style="'background:'+ label.visual_swatch"
+                                v-on:click="swatchClicked(value, superAttributeId)"
+                                :disabled="disabledOptions[superAttribute.code].includes(value)"
+                            >
+                                <span v-if="disabledOptions[superAttribute.code].includes(value)" class="absolute h-px w-full left-0 bg-red-600 transform skew-y-45 -skew-x-30"></span>
+                            </button>
+                            <button
+                                v-if="!label.visual_swatch.includes('#')"
+                                :id="superAttributeId + '-' + value"
+                                class="relative w-9 h-9 cursor-pointer outline-none focus:outline-none rounded border-2 border-transparent"
+                                :style="'background:url('+config.magento_url + '/media/attribute/swatch/swatch_image/30x20' + label.visual_swatch +')'"
+                                v-on:click="swatchClicked(value, superAttributeId)"
+                                :disabled="disabledOptions[superAttribute.code].includes(value)"
+                            >
+                                <span v-if="disabledOptions[superAttribute.code].includes(value)" class="absolute h-px w-full left-0 bg-red-600 transform skew-y-45 -skew-x-30"></span>
+                            </button>
                         </div>
                     </div>
                 </div>
                 <div v-if="superAttribute.swatch_type == 'text'">
-                    <x-rapidez::label v-bind:for="'super_attribute_'+superAttributeId">@{{ superAttribute.label }}</x-rapidez::label>
                     <div class="flex flex-row flex-wrap">
                         <button
                             class="flex justify-center items-center border-2 border-transparent bg-gray-100 outline-none focus:outline-none rounded w-10 h-10 mr-1"
@@ -24,11 +43,11 @@
                             v-on:click="swatchClicked(value, superAttributeId)"                             :disabled="disabledOptions[superAttribute.code].includes(value)"
                         >
                             @{{ label.text_swatch }}
+                            <span v-if="disabledOptions[superAttribute.code].includes(value)" class="absolute h-px w-[inherit] bg-red-600 transform skew-y-45 -skew-x-30"></span>
                         </button>
                     </div>
                 </div>
                 <div v-if="superAttribute.swatch_type == null">
-                    <x-rapidez::label v-bind:for="'super_attribute_'+superAttributeId">@{{ superAttribute.label }}</x-rapidez::label>
                     <x-rapidez::select
                         label=""
                         v-bind:id="'super_attribute_'+superAttributeId"

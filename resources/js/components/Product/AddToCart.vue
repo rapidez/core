@@ -21,14 +21,8 @@
             options: {},
             error: null,
             qty: 1,
+            forceRecompute: 0
         }),
-        mounted() {
-            let self = this
-            this.$root.$on('swatch-clicked', function(superAttributeId, value) {
-                self.options[superAttributeId] = value
-                //this.options[superAttributeId] = value
-            })
-        },
         render() {
             return this.$scopedSlots.default({
                 getValuesByCode: this.getValuesByCode,
@@ -108,6 +102,7 @@
                 let product = this.getProduct()
                 this.toggleSelectedSwatch(value, superAttributeId)
                 this.$root.$emit('productSuperAttributeChange', product)
+                this.forceRecompute++
             },
             toggleSelectedSwatch(value, superAttributeId) {
                 for(const value in config.product[this.product.super_attributes[superAttributeId].code]) {
@@ -176,6 +171,7 @@
             },
 
             disabledOptions: function () {
+                this.forceRecompute
                 var disabledOptions = {};
                 var valuesPerAttribute = {};
 
@@ -189,9 +185,9 @@
 
                     // Fill list with products per attribute value
                     Object.entries(this.product.children).forEach(([productId, option]) => {
-                        // if (!option.in_stock) {
-                        //     return
-                        // }
+                        if (!option.in_stock) {
+                            return
+                        }
 
                         if (!valuesPerAttribute[attributeId][option[attribute.code]]) {
                             valuesPerAttribute[attributeId][option[attribute.code]] = []
@@ -221,7 +217,7 @@
                         }
                     })
                 })
-                //console.log(disabledOptions)
+
                 return disabledOptions
             }
         }
