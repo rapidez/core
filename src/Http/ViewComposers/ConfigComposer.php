@@ -31,6 +31,6 @@ class ConfigComposer
 
         config(['frontend.searchable' => Arr::pluck(Attribute::getCachedWhere(function ($attribute) {
             return $attribute['search'];
-        }), 'code')]);
+        }), 'search_weight', 'code')]);
     }
 }

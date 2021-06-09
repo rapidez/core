@@ -19,6 +19,7 @@ class OnlyProductAttributesScope implements Scope
                     backend_type AS type,
                     frontend_input AS input,
                     IF(attribute_code IN ("price", "tax_class_id"), 0, is_searchable) AS search,
+                    search_weight,
                     is_filterable AS filter,
                     is_comparable AS compare,
                     used_in_product_listing AS listing,
