@@ -12,7 +12,7 @@ export default {
                         {
                             multi_match: {
                                 query: this.term,
-                                fields: config.searchable,
+                                fields: Object.keys(config.searchable),
                                 type: 'best_fields',
                                 operator: 'or',
                                 fuzziness: 'AUTO',
@@ -21,7 +21,7 @@ export default {
                         {
                             multi_match: {
                                 query: this.term,
-                                fields: config.searchable,
+                                fields: Object.keys(config.searchable),
                                 type: 'phrase',
                                 operator: 'or',
                             }
