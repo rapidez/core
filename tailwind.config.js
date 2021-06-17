@@ -13,7 +13,7 @@ module.exports = {
 
         './config/rapidez.php',
         './vendor/rapidez/core/config/rapidez.php',
-        './vendor/rapidez/menu/src/config/menu.php',
+        './vendor/rapidez/menu/config/menu.php',
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/tailwind.blade.php',
     ],
     theme: {
