@@ -21,11 +21,9 @@
                 </form>
                 <p class="text-red-500 text-xs italic w-3/4 mt-3" v-if="submitError">@{{ submitError }}</p>
                 <div class="relative rounded-md" v-if="cart.discount_name">
-                    <div class="w-100">
-                        <button class="inline-block" @click="removeCoupon">
-                            <svg class="h-4 w-4 inline-block text-black-400" fill="none" viewBox="0 0 12 12">
-                                <path d="M4 8l2-2m0 0l2-2M6 6L4 4m2 2l2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
+                    <div class="flex items-center">
+                        <button v-on:click="removeCoupon">
+                            <x-heroicon-s-x class="h-4 w-4 text-black-400"/>
                         </button>
                         @lang('Discount'): @{{ cart.discount_name }}
                     </div>
