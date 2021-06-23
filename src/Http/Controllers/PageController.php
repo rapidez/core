@@ -8,10 +8,8 @@ use Rapidez\Core\Models\Rewrite;
 
 class PageController
 {
-    public function show(string $url)
+    public function show(Page $page)
     {
-        $page = Page::where('identifier', $url == '/' ? 'home' : $url)->firstOrFail();
-
         return view('rapidez::page.overview', compact('page'));
     }
 }

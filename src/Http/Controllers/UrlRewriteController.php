@@ -3,7 +3,9 @@
 namespace Rapidez\Core\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Rapidez\Core\Models\Page;
 use Rapidez\Core\Models\Rewrite;
+use TorMorten\Eventy\Facades\Eventy;
 
 class UrlRewriteController
 {
@@ -21,7 +23,17 @@ class UrlRewriteController
             }
         }
 
-        $pageController = config('rapidez.controllers.page');
-        return (new $pageController)->show($request->path());
+        if ($page = Page::where('identifier', $request->path() == '/' ? 'home' : $request->path())->first()) {
+            $pageController = config('rapidez.controllers.page');
+            return (new $pageController)->show($page);
+        }
+
+        foreach (Eventy::filter('routes', []) as $route) {
+            if ($output = require $route) {
+                return $output;
+            }
+        }
+
+        abort(404);
     }
 }
