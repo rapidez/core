@@ -29,7 +29,9 @@ class UrlRewriteController
         }
 
         foreach (Eventy::filter('routes', []) as $route) {
-            if ($output = require $route) {
+            ob_start();
+            require $route;
+            if ($output = ob_get_clean()) {
                 return $output;
             }
         }
