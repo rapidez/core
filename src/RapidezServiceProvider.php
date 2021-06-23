@@ -65,6 +65,10 @@ class RapidezServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__.'/../resources/views' => resource_path('views/vendor/rapidez'),
             ], 'views');
+
+            $this->publishes([
+                __DIR__.'/../resources/lang' => resource_path('lang/vendor/rapidez'),
+            ], 'translations');
         }
 
         return $this;
