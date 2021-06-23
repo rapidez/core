@@ -7,27 +7,7 @@
     <h1 class="font-bold text-3xl mb-5">{{ $category->name }}</h1>
 
     @if($category->is_anchor)
-        <category :translations="{ relevance: '@lang('Relevance')', asc: '@lang('asc')', desc: '@lang('desc')' }" v-cloak>
-            <div
-                slot-scope="{ loaded, baseStyles, filters, reactiveFilters, sortOptions, categoryQuery }"
-                :style="baseStyles"
-            >
-                <reactive-base
-                    :app="config.es_prefix + '_products_' + config.store"
-                    :url="config.es_url"
-                    v-if="loaded"
-                >
-                    <div class="flex flex-col md:flex-row">
-                        <div class="md:w-1/5">
-                            @include('rapidez::category.partials.filters')
-                        </div>
-                        <div class="md:w-4/5">
-                            @include('rapidez::category.partials.listing')
-                        </div>
-                    </div>
-                </reactive-base>
-            </div>
-        </category>
+        <x-rapidez::listing query="{ terms: { category_ids: [config.category.entity_id] } }"/>
     @else
         <div class="flex flex-col md:flex-row">
             <div class="md:w-1/5">
@@ -39,5 +19,7 @@
         </div>
     @endif
 
-    {!! str_replace('<h2>', '<h2 class="font-bold text-2xl">', $category->description) !!}
+    <div class="prose prose-green max-w-none">
+        {!! $category->description !!}
+    </div>
 @endsection

@@ -1,30 +1,23 @@
 <script>
     export default {
         props: {
-            translations: {
-                type: Object,
-                default: () => ({
-                    relevance: 'Relevance',
-                    desc: 'desc',
-                    asc: 'asc',
-                })
+            additionalFilters: {
+                type: Array,
+                default: () => []
             }
         },
 
         data: () => ({
             loaded: false,
             attributes: [],
-            baseStyles: {},
         }),
 
         render() {
             return this.$scopedSlots.default({
                 loaded: this.loaded,
-                baseStyles: this.baseStyles,
-
                 filters: this.filters,
-                reactiveFilters: this.reactiveFilters,
                 sortOptions: this.sortOptions,
+                reactiveFilters: this.reactiveFilters,
             })
         },
 
@@ -60,20 +53,19 @@
             reactiveFilters: function () {
                 return _.map(this.filters, function (filter) {
                     return filter.code;
-                }).concat(['category', 'searchterm']);
+                }).concat(this.additionalFilters);
             },
             sortOptions: function () {
-                let self = this
                 return [
                     {
-                        label: this.translations.relevance,
+                        label: window.config.translations.relevance,
                         dataField: '_score',
                         sortBy: 'desc'
                     }
                 ].concat(_.flatMap(this.sortings, function (sorting) {
                     return _.map({
-                        asc: self.translations.asc,
-                        desc: self.translations.desc
+                        asc: window.config.translations.asc,
+                        desc: window.config.translations.desc
                     }, function (directionLabel, directionKey) {
                         return {
                             label: sorting.name + ' ' + directionLabel,

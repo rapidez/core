@@ -15,7 +15,7 @@
     next-label="@lang('Next')"
     u-r-l-params
 >
-    @include('rapidez::category.partials.listing.stats')
-    @include('rapidez::category.partials.listing.item')
-    @include('rapidez::category.partials.listing.no-results')
+    @include('rapidez::listing.partials.stats')
+    @include('rapidez::listing.partials.item')
+    @include('rapidez::listing.partials.no-results')
 </reactive-list>

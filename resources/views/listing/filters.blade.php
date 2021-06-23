@@ -9,16 +9,13 @@
         @lang('Filters')
     </x-slot>
 
-    @include('rapidez::category.partials.filter.selected')
-
-    @include('rapidez::category.partials.filter.category')
-    @includeWhen(Route::currentRouteName() == 'search', 'rapidez::category.partials.filter.searchterm')
+    @include('rapidez::listing.partials.filter.selected')
 
     <template v-for="filter in filters">
-        @include('rapidez::category.partials.filter.price')
-        @include('rapidez::category.partials.filter.swatch')
-        @include('rapidez::category.partials.filter.boolean')
-        @include('rapidez::category.partials.filter.select')
+        @include('rapidez::listing.partials.filter.price')
+        @include('rapidez::listing.partials.filter.swatch')
+        @include('rapidez::listing.partials.filter.boolean')
+        @include('rapidez::listing.partials.filter.select')
     </template>
 
     <x-rapidez::button class="md:hidden w-full text-sm" v-on:click="toggle">

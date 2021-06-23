@@ -10,6 +10,6 @@
                 @endif
             </div>
         </a>
-        @includeWhen(Rapidez::config('catalog/frontend/show_swatches_in_product_list', 1), 'rapidez::category.partials.listing.item.addtocart')
+        @includeWhen(Rapidez::config('catalog/frontend/show_swatches_in_product_list', 1), 'rapidez::listing.partials.item.addtocart')
     </div>
 </div>

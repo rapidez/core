@@ -23,7 +23,7 @@
 
             <div slot="renderNoResults"></div>
 
-            @include('rapidez::category.partials.listing.item', ['perLine' => $size])
+            @include('rapidez::listing.partials.item', ['perLine' => $size])
         </reactive-list>
     </reactive-base>
 @endif
