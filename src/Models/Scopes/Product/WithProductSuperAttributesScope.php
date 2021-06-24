@@ -19,12 +19,14 @@ class WithProductSuperAttributesScope implements Scope
 
         foreach ($superAttributes as $superAttributeId => $superAttribute) {
             $query = DB::table('catalog_product_super_link')
-                ->selectRaw('JSON_OBJECTAGG('.$superAttribute.', '.$superAttribute.'_value) AS '.$superAttribute)
+                ->selectRaw('JSON_OBJECTAGG('.$superAttribute.', JSON_OBJECT("text_swatch", '.$superAttribute.'_value, "visual_swatch", eav_attribute_option_swatch.value)) AS '.$superAttribute)
                 ->join('catalog_product_flat_1 AS children', 'children.entity_id', '=', 'catalog_product_super_link.product_id')
                 ->join('catalog_product_super_attribute', function ($join) use ($superAttributeId) {
                     $join->on('catalog_product_super_attribute.product_id', '=', 'catalog_product_super_link.parent_id')
                          ->where('attribute_id', $superAttributeId);
                 })
+                ->leftJoin('eav_attribute_option', 'eav_attribute_option.attribute_id', '=', 'catalog_product_super_attribute.attribute_id')
+                ->leftJoin('eav_attribute_option_swatch', 'eav_attribute_option_swatch.option_id' , '=', 'children.'.$superAttribute)
                 ->whereColumn('parent_id', $model->getTable() . '.entity_id')
                 ->whereNotNull($superAttribute);
 
@@ -34,8 +36,9 @@ class WithProductSuperAttributesScope implements Scope
         $query = DB::table('catalog_product_super_attribute')
             ->selectRaw('JSON_OBJECTAGG(eav_attribute.attribute_id, JSON_OBJECT(
                 "code", attribute_code,
-                "label", COALESCE(NULLIF(value, ""), frontend_label),
-                "update_image", additional_data->>"$.update_product_preview_image" = 1
+                "label", COALESCE(NULLIF(catalog_product_super_attribute_label.value, ""), frontend_label),
+                "update_image", additional_data->>"$.update_product_preview_image" = 1,
+                "swatch_type", additional_data->>"$.swatch_input_type"
             )) AS super_attributes')
             ->join('eav_attribute', 'eav_attribute.attribute_id', '=', 'catalog_product_super_attribute.attribute_id')
             ->join('catalog_eav_attribute', 'catalog_eav_attribute.attribute_id', '=', 'catalog_product_super_attribute.attribute_id')
