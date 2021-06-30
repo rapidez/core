@@ -18,6 +18,7 @@ class InstallCommand extends Command
         copy(__DIR__.'/../../tailwind.config.js', base_path('tailwind.config.js'));
         copy(__DIR__.'/../../docker-compose.yml', base_path('docker-compose.yml'));
         copy(__DIR__.'/../../elasticsearch.yml', base_path('elasticsearch.yml'));
+        copy(__DIR__.'/../../kibana.yml', base_path('kibana.yml'));
 
         $this->info('Done 🚀');
     }
