@@ -2,6 +2,8 @@
 
 namespace Rapidez\Core\Tests;
 
+use BladeUI\Heroicons\BladeHeroiconsServiceProvider;
+use BladeUI\Icons\BladeIconsServiceProvider;
 use Laravel\Dusk\Browser;
 use Orchestra\Testbench\Dusk\TestCase as BaseTestCase;
 use Rapidez\Core\Models\Product;
@@ -38,6 +40,8 @@ abstract class DuskTestCase extends BaseTestCase
         return [
             EventServiceProvider::class,
             RapidezServiceProvider::class,
+            BladeIconsServiceProvider::class,
+            BladeHeroiconsServiceProvider::class,
         ];
     }
 
