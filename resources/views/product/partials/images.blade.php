@@ -8,12 +8,15 @@
                     :class="{ 'fixed inset-0 bg-white !h-full z-10 cursor-[zoom-out]': opened === {{ $loop->index }} }"
                     v-on:click.prevent="toggle({{ $loop->index }}, $event)"
                 >
-                    <img
-                        src="/storage/resizes/450/catalog/product{{ $image }}"
-                        alt="{{ $product->name }}"
-                        class="max-h-full max-w-full"
-                        loading="lazy"
-                    />
+                    <picture>
+                        <source srcset="/storage/resizes/450/catalog/product{{ $image }}.webp" type="image/webp">
+                        <img
+                            src="/storage/resizes/450/catalog/product{{ $image }}"
+                            alt="{{ $product->name }}"
+                            class="max-h-full max-w-full"
+                            loading="lazy"
+                        />
+                    </picture>
                 </a>
             @empty
                 <x-rapidez::no-image class="rounded h-96"/>
@@ -37,12 +40,15 @@
                 }"
                 v-on:click.prevent="toggle(index, $event)"
             >
-                <img
-                    :src="'/storage/resizes/450/catalog/product' + image"
-                    alt="{{ $product->name }}"
-                    class="max-h-full max-w-full"
-                    loading="lazy"
-                />
+                <picture>
+                    <source :srcset="'/storage/resizes/450/catalog/product' + image + '.webp'" type="image/webp">
+                    <img
+                        :src="'/storage/resizes/450/catalog/product' + image"
+                        alt="{{ $product->name }}"
+                        class="max-h-full max-w-full"
+                        loading="lazy"
+                    />
+                </picture>
             </a>
             <x-rapidez::no-image v-if="images.length == 0" class="rounded h-96"/>
         </div>
