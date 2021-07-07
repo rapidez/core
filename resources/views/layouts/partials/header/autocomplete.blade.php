@@ -27,7 +27,10 @@
                     :key="suggestion._id"
                 >
                     <a :href="suggestion.source.url" class="flex flex-wrap w-full h-full" key="suggestion._id">
-                        <img :src="'/storage/resizes/100x100/catalog/product' + suggestion.source.thumbnail" class="object-contain lg:w-3/12 self-center" />
+                        <picture>
+                            <source :srcset="'/storage/resizes/100x100/catalog/product' + suggestion.source.thumbnail + '.webp'" type="image/webp">
+                            <img :src="'/storage/resizes/100x100/catalog/product' + suggestion.source.thumbnail" class="object-contain lg:w-3/12 self-center" />
+                        </picture>
                         <div class="px-2 flex flex-wrap flex-grow lg:w-1/2">
                             <strong class="block hyphens w-full">@{{ suggestion.source.name }}</strong>
                             <div class="self-end">@{{ suggestion.source.price | price }}</div>
