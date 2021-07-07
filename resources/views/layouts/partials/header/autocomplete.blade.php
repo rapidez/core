@@ -27,7 +27,7 @@
                     :key="suggestion._id"
                 >
                     <a :href="suggestion.source.url" class="flex flex-wrap w-full h-full" key="suggestion._id">
-                        <picture>
+                        <picture class="contents">
                             <source :srcset="'/storage/resizes/100x100/catalog/product' + suggestion.source.thumbnail + '.webp'" type="image/webp">
                             <img :src="'/storage/resizes/100x100/catalog/product' + suggestion.source.thumbnail" class="object-contain lg:w-3/12 self-center" />
                         </picture>
