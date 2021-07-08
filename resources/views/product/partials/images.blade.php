@@ -8,7 +8,7 @@
                     :class="{ 'fixed inset-0 bg-white !h-full z-10 cursor-[zoom-out]': opened === {{ $loop->index }} }"
                     v-on:click.prevent="toggle({{ $loop->index }}, $event)"
                 >
-                    <picture>
+                    <picture class="contents">
                         <source srcset="/storage/resizes/450/catalog/product{{ $image }}.webp" type="image/webp">
                         <img
                             src="/storage/resizes/450/catalog/product{{ $image }}"
@@ -40,7 +40,7 @@
                 }"
                 v-on:click.prevent="toggle(index, $event)"
             >
-                <picture>
+                <picture class="contents">
                     <source :srcset="'/storage/resizes/450/catalog/product' + image + '.webp'" type="image/webp">
                     <img
                         :src="'/storage/resizes/450/catalog/product' + image"
