@@ -1,9 +1,5 @@
 <script>
-    import InteractWithUser from './User/mixins/InteractWithUser'
-
     export default {
-        mixins: [InteractWithUser],
-
         props: {
             query: {
                 type: String,
@@ -12,10 +8,6 @@
             changes: {
                 type: Object,
                 default: () => ({}),
-            },
-            refreshUserInfo: {
-                type: Boolean,
-                default: false,
             },
             redirect: {
                 type: String,
@@ -35,6 +27,9 @@
                     message: '',
                     type: 'success'
                 })
+            },
+            callback: {
+                type: Function,
             }
         },
 
@@ -74,8 +69,8 @@
                         this.changes = {}
                     }
 
-                    if (this.refreshUserInfo) {
-                        this.refreshUser()
+                    if (this.callback) {
+                        await this.callback(this.changes)
                     }
 
                     var self = this
