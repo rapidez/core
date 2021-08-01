@@ -36,7 +36,10 @@ class IndexProductsCommand extends Command
     {
         $this->call('cache:clear');
 
-        $stores = $this->argument('store') ? Store::where('store_id', $this->argument('store'))->get() : Store::all();
+        $productModel = config('rapidez.models.product');
+        $storeModel = config('rapidez.models.store');
+        $stores = $this->argument('store') ? $storeModel::where('store_id', $this->argument('store'))->get() : $storeModel::all();
+
 
         foreach ($stores as $store) {
             $this->line('Store: '.$store->name);
@@ -46,8 +49,8 @@ class IndexProductsCommand extends Command
             $index = $alias . '_' . Carbon::now()->format('YmdHis');
             $this->createIndex($index);
 
-            $flat = (new Product)->getTable();
-            $productQuery = Product::where($flat.'.visibility', 4)->selectOnlyIndexable();
+            $flat = (new $productModel)->getTable();
+            $productQuery = $productModel::where($flat.'.visibility', 4)->selectOnlyIndexable();
 
             $scopes = Eventy::filter('index.product.scopes', []);
             foreach ($scopes as $scope) {

@@ -15,19 +15,21 @@ class QuoteItems implements CastsAttributes
         // TODO: We're using the super attribute name but this can be overwritten
         // on product level. We're using that in WithProductSuperAttributesScope
         // which joins the catalog_product_super_attribute_label table.
-        $superAttributes = Arr::pluck(Attribute::getCachedWhere(function ($attribute) {
+        $attributeModel = config('rapidez.models.attribute');
+        $superAttributes = Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {
             return $attribute['super'];
         }), 'name', 'id');
 
         $items = json_decode($value);
-
+        $optionvalueModel = config('rapidez.models.optionvalue');
         foreach ($items as $item) {
             $options = null;
             foreach (json_decode($item->attributes) ?: [] as $attributeId => $attributeValue) {
-                $options[$superAttributes[$attributeId]] = OptionValue::getCachedByOptionId($attributeValue);
+                $options[$superAttributes[$attributeId]] = $optionvalueModel::getCachedByOptionId($attributeValue);
             }
             $item->options = $options;
-            $item->url = '/' . $item->url_key . Config::getCachedByPath('catalog/seo/product_url_suffix', '.html');
+            $configModel = config('rapidez.models.config');
+            $item->url = '/' . $item->url_key . $configModel::getCachedByPath('catalog/seo/product_url_suffix', '.html');
             unset($item->attributes);
         }
 

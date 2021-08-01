@@ -9,9 +9,10 @@ class Multiselect implements CastsAttributes
 {
     public function get($model, $key, $value, $attributes)
     {
+        $optionvalueModel = config('rapidez.models.optionvalue');
         if ($value) {
             foreach (explode(',', $value) as $optionValueId) {
-                $values[] = OptionValue::getCachedByOptionId($optionValueId);
+                $values[] = $optionvalueModel::getCachedByOptionId($optionValueId);
             }
             return $values;
         }

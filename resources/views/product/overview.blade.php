@@ -23,7 +23,7 @@
         <dd class="w-1/2 sm:w-3/4">{{ $product->id }}</dd>
         <dt class="w-1/2 sm:w-1/4 font-bold">SKU</dt>
         <dd class="w-1/2 sm:w-3/4">{{ $product->sku }}</dd>
-        @foreach(Rapidez\Core\Models\Attribute::getCachedWhere(fn ($a) => $a['productpage']) as $attribute)
+        @foreach(config('rapidez.models.attribute')::getCachedWhere(fn ($a) => $a['productpage']) as $attribute)
             @if(($value = $product->{$attribute['code']}) && !is_object($value))
                 <dt class="w-1/2 sm:w-1/4 font-bold">{{ $attribute['name'] }}</dt>
                 <dd class="w-1/2 sm:w-3/4">

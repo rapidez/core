@@ -1,6 +1,6 @@
 @extends('rapidez::layouts.app')
 @php
-$page = \Rapidez\Core\Models\Page::firstWhere('identifier', 'no-route')
+$page = config('rapidez.models.page')::firstWhere('identifier', 'no-route')
 @endphp
 
 @section('title', $page->meta_title ?: $page->title)

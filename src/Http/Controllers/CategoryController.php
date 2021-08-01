@@ -8,7 +8,8 @@ class CategoryController
 {
     public function show(int $categoryId)
     {
-        $category = Category::findOrFail($categoryId);
+        $categoryModel = config('rapidez.models.category');
+        $category = $categoryModel::findOrFail($categoryId);
 
         config(['frontend.category' => $category->only('entity_id')]);
 

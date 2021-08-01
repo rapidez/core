@@ -13,7 +13,8 @@ class WithProductSuperAttributesScope implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
-        $superAttributes = Arr::pluck(Attribute::getCachedWhere(function ($attribute) {
+        $attributeModel = config('rapidez.models.attribute');
+        $superAttributes = Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {
             return $attribute['super'];
         }), 'code', 'id');
 

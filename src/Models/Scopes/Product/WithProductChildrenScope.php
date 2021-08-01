@@ -14,8 +14,9 @@ class WithProductChildrenScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         $flat = $builder->getQuery()->from;
+        $attributeModel = config('rapidez.models.attribute');
 
-        $superAttributes = Arr::pluck(Attribute::getCachedWhere(function ($attribute) {
+        $superAttributes = Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {
             return $attribute['super'];
         }), 'code');
 
