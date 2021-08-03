@@ -9,7 +9,8 @@ trait CastSuperAttributes
 {
     protected function getSuperAttributeCasts(): array
     {
-        $superAttributes = Arr::pluck(Attribute::getCachedWhere(function ($attribute) {
+        $attributeModel = config('rapidez.models.attribute');
+        $superAttributes = Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {
             return $attribute['super'];
         }), 'code');
 

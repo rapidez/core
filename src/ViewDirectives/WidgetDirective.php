@@ -18,7 +18,8 @@ class WidgetDirective
                     $type = ['pages', 'all_pages'];
                 }
 
-                $widgets = Widget::where('layout_handle', $handle)
+                $widgetModel = config('rapidez.models.widget');
+                $widgets = $widgetModel::where('layout_handle', $handle)
                     ->{is_array($type) ? 'whereIn' : 'where'}('page_group', $type)
                     ->where('block_reference', $location);
 

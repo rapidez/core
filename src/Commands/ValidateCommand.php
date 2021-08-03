@@ -40,11 +40,13 @@ class ValidateCommand extends Command
 
     public function validateMagentoSettings()
     {
-        if (!Config::getCachedByPath('catalog/frontend/flat_catalog_category', 0) || !Config::getCachedByPath('catalog/frontend/flat_catalog_product', 0)) {
+        $configModel = config('rapidez.models.config');
+        $attributeModel = config('rapidez.models.attribute');
+        if (!$configModel::getCachedByPath('catalog/frontend/flat_catalog_category', 0) || !$configModel::getCachedByPath('catalog/frontend/flat_catalog_product', 0)) {
             $this->error('The flat tables are disabled!');
         }
 
-        $nonFlatAttributes = Arr::pluck(Attribute::getCachedWhere(function ($attribute) {
+        $nonFlatAttributes = Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {
             return !$attribute['flat'] && ($attribute['listing'] || $attribute['filter'] || $attribute['productpage']);
         }), 'code');
 
@@ -52,7 +54,7 @@ class ValidateCommand extends Command
             $this->warn('Not all attributes are in the flat table: '.PHP_EOL.'- '.implode(PHP_EOL.'- ', $nonFlatAttributes));
         }
 
-        $superAttributesCount = count(Attribute::getCachedWhere(fn ($attribute) => $attribute['super']));
+        $superAttributesCount = count($attributeModel::getCachedWhere(fn ($attribute) => $attribute['super']));
         $joinCount = ($superAttributesCount * 2) + (count($nonFlatAttributes) * 3) + 4;
 
         if ($joinCount > 61) {

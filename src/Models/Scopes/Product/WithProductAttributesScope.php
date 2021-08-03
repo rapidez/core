@@ -16,7 +16,8 @@ class WithProductAttributesScope implements Scope
             throw NoAttributesToSelectSpecifiedException::create();
         }
 
-        $attributes = Attribute::getCachedWhere(function ($attribute) use ($model) {
+        $attributeModel = config('rapidez.models.attribute');
+        $attributes = $attributeModel::getCachedWhere(function ($attribute) use ($model) {
             return in_array($attribute['code'], $model->attributesToSelect);
         });
 

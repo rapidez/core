@@ -9,16 +9,17 @@ class DetermineAndSetShop
 {
     public function handle($request, Closure $next)
     {
+        $storeModel = config('rapidez.models.store');
         // Set the store based on MAGE_RUN_CODE.
         if ($storeCode = $request->server('MAGE_RUN_CODE')) {
-            $store = Store::getCachedWhere(function ($store) use ($storeCode) {
+            $store = $storeModel::getCachedWhere(function ($store) use ($storeCode) {
                 return $store['code'] == $storeCode;
             });
         }
 
         // Find the store code and website by the default store id.
         if (!isset($store)) {
-            $store = Store::getCachedWhere(function ($store) {
+            $store = $storeModel::getCachedWhere(function ($store) {
                 return $store['store_id'] == config('rapidez.store');
             });
         }

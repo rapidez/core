@@ -18,7 +18,8 @@ class OptionSwatch extends Model
 
     public static function getCachedSwatchValues(): array
     {
-        $swatchAttributes = Arr::pluck(Attribute::getCachedWhere(function ($attribute) {
+        $attributeModel = config('rapidez.models.attribute');
+        $swatchAttributes = Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {
             return $attribute['text_swatch'] || $attribute['visual_swatch'];
         }), 'id', 'code');
 

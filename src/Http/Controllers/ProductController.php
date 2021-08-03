@@ -2,15 +2,14 @@
 
 namespace Rapidez\Core\Http\Controllers;
 
-use Rapidez\Core\Models\Product;
-
 class ProductController
 {
     public function show(int $productId)
     {
-        $product = Product::selectForProductPage()->findOrFail($productId);
-
+        $productModel = config('rapidez.models.product');
+        $product = $productModel::selectForProductPage()->findOrFail($productId);
         $attributes = ['name', 'sku', 'super_attributes', 'children', 'price', 'images'];
+
         foreach ($product->super_attributes ?: [] as $superAttribute) {
             $attributes[] = $superAttribute->code;
         }

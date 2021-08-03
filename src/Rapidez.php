@@ -8,6 +8,7 @@ class Rapidez
 {
     public function config(string $path, $default = null): ?string
     {
-        return Config::getCachedByPath($path, $default);
+        $configModel = config('rapidez.models.config');
+        return $configModel::getCachedByPath($path, $default);
     }
 }

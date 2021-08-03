@@ -47,6 +47,22 @@ return [
         'category' => Rapidez\Core\Http\Controllers\CategoryController::class,
     ],
 
+    'models' => [
+        'page' => Rapidez\Core\Models\Page::class,
+        'attribute' => Rapidez\Core\Models\Attribute::class,
+        'product' => Rapidez\Core\Models\Product::class,
+        'category' => Rapidez\Core\Models\Category::class,
+        'config' => Rapidez\Core\Models\Config::class,
+        'optionswatch' => Rapidez\Core\Models\OptionSwatch::class,
+        'optionvalue' => Rapidez\Core\Models\OptionValue::class,
+        'productimage' => Rapidez\Core\Models\ProductImage::class,
+        'quote' => Rapidez\Core\Models\Quote::class,
+        'rewrite' => Rapidez\Core\Models\Rewrite::class,
+        'store' => Rapidez\Core\Models\Store::class,
+        'widget' => Rapidez\Core\Models\Widget::class,
+        'block' => Rapidez\Core\Models\Block::class,
+    ],
+
     // Localstorage keys that need to be flushed when the cache is cleared.
     'flushable_localstorage_keys' => [
         'attributes',

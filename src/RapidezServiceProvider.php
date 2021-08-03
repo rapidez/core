@@ -100,11 +100,13 @@ class RapidezServiceProvider extends ServiceProvider
         });
 
         Blade::directive('block', function ($expression) {
-            return "<?php echo Rapidez\Core\Models\Block::getCachedByIdentifier($expression) ?>";
+            $blockModel = config('rapidez.models.block');
+            return "<?php echo $blockModel::getCachedByIdentifier($expression) ?>";
         });
 
         Blade::directive('config', function ($expression) {
-            return "<?php echo Rapidez\Core\Models\Config::getCachedByPath($expression) ?>";
+            $configModel = config('rapidez.models.config');
+            return "<?php echo $configModel::getCachedByPath($expression) ?>";
         });
 
         return $this;

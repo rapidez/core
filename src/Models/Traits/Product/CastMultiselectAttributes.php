@@ -10,7 +10,8 @@ trait CastMultiselectAttributes
 {
     protected function getMultiselectAttributeCasts(): array
     {
-        $multiselectAttributes = Arr::pluck(Attribute::getCachedWhere(function ($attribute) {
+        $attributeModel = config('rapidez.models.attribute');
+        $multiselectAttributes = Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {
             return $attribute['input'] == 'multiselect';
         }), 'code');
 

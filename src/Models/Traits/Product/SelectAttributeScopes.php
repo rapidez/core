@@ -18,7 +18,8 @@ trait SelectAttributeScopes
 
     public function scopeSelectForProductPage(Builder $query): Builder
     {
-        $this->attributesToSelect = Arr::pluck(Attribute::getCachedWhere(function ($attribute) {
+        $attributeModel = config('rapidez.models.attribute');
+        $this->attributesToSelect = Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {
             return $attribute['productpage'] || in_array($attribute['code'], [
                 'name',
                 'meta_title',
@@ -33,7 +34,8 @@ trait SelectAttributeScopes
 
     public function scopeSelectOnlyComparable(Builder $query): Builder
     {
-        $this->attributesToSelect = Arr::pluck(Attribute::getCachedWhere(function ($attribute) {
+        $attributeModel = config('rapidez.models.attribute');
+        $this->attributesToSelect = Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {
             return $attribute['compare'] || in_array($attribute['code'], ['name']);
         }), 'code');
 
@@ -42,7 +44,8 @@ trait SelectAttributeScopes
 
     public function scopeSelectOnlyIndexable(Builder $query): Builder
     {
-        $this->attributesToSelect = Arr::pluck(Attribute::getCachedWhere(function ($attribute) {
+        $attributeModel = config('rapidez.models.attribute');
+        $this->attributesToSelect = Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {
             if (in_array($attribute['code'], ['msrp_display_actual_price_type', 'price_view', 'shipment_type', 'status'])) {
                 return false;
             }

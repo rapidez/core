@@ -11,7 +11,9 @@ class UrlRewriteController
 {
     public function __invoke(Request $request)
     {
-        if ($rewrite = Rewrite::firstWhere('request_path', $request->path())) {
+        $rewriteModel = config('rapidez.models.rewrite');
+        $pageModel = config('rapidez.models.page');
+        if ($rewrite = $rewriteModel::firstWhere('request_path', $request->path())) {
             if ($rewrite->entity_type == 'category') {
                 $categoryController = config('rapidez.controllers.category');
 
@@ -25,7 +27,7 @@ class UrlRewriteController
             }
         }
 
-        if ($page = Page::where('identifier', $request->path() == '/' ? 'home' : $request->path())->first()) {
+        if ($page = $pageModel::where('identifier', $request->path() == '/' ? 'home' : $request->path())->first()) {
             $pageController = config('rapidez.controllers.page');
 
             return (new $pageController())->show($page);

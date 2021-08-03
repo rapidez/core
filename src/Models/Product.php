@@ -75,7 +75,7 @@ class Product extends Model
     public function gallery(): BelongsToMany
     {
         return $this->belongsToMany(
-            ProductImage::class,
+            config('rapidez.models.productimage'),
             'catalog_product_entity_media_gallery_value_to_entity',
             'entity_id',
             'value_id',
@@ -90,8 +90,9 @@ class Product extends Model
 
     public function getFormattedPriceAttribute(): string
     {
-        $currency = Config::getCachedByPath('currency/options/default');
-        $locale = Config::getCachedByPath('general/locale/code', 'en_US');
+        $configModel = config('rapidez.models.config');
+        $currency  = $configModel::getCachedByPath('currency/options/default');
+        $locale    = $configModel::getCachedByPath('general/locale/code', 'en_US');
         $formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
 
         return $formatter->formatCurrency($this->price, $currency);
@@ -99,7 +100,8 @@ class Product extends Model
 
     public function getUrlAttribute(): string
     {
-        return '/'.$this->url_key.Config::getCachedByPath('catalog/seo/product_url_suffix', '.html');
+        $configModel = config('rapidez.models.config');
+        return '/' . $this->url_key . $configModel::getCachedByPath('catalog/seo/product_url_suffix', '.html');
     }
 
     public function getImagesAttribute(): array
