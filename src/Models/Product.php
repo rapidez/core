@@ -75,7 +75,7 @@ class Product extends Model
     public function gallery(): BelongsToMany
     {
         return $this->belongsToMany(
-            ProductImage::class,
+            config('rapidez.models.productimage'),
             'catalog_product_entity_media_gallery_value_to_entity',
             'entity_id',
             'value_id',
