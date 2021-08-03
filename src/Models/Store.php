@@ -2,12 +2,11 @@
 
 namespace Rapidez\Core\Models;
 
-use Rapidez\Core\Exceptions\StoreNotFoundException;
-use Rapidez\Core\Models\Model;
-use Rapidez\Core\Models\Scopes\IsActiveScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
+use Rapidez\Core\Exceptions\StoreNotFoundException;
+use Rapidez\Core\Models\Scopes\IsActiveScope;
 
 class Store extends Model
 {
@@ -17,7 +16,7 @@ class Store extends Model
 
     protected static function booted()
     {
-        static::addGlobalScope(new IsActiveScope);
+        static::addGlobalScope(new IsActiveScope());
         static::addGlobalScope('defaults', function (Builder $builder) {
             $builder
                 ->where('store.code', '<>', 'admin')

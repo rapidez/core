@@ -2,7 +2,6 @@
 
 namespace Rapidez\Core\Tests\Browser;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Dusk\Browser;
 use Rapidez\Core\Tests\DuskTestCase;

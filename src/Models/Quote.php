@@ -5,7 +5,6 @@ namespace Rapidez\Core\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\QuoteItems;
-use Rapidez\Core\Models\Model;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
 
 class Quote extends Model
@@ -15,13 +14,13 @@ class Quote extends Model
     protected $primaryKey = 'entity_id';
 
     protected $casts = [
-        'items' => QuoteItems::class,
+        'items'       => QuoteItems::class,
         'cross_sells' => CommaSeparatedToArray::class,
     ];
 
     protected static function booted()
     {
-        static::addGlobalScope(new IsActiveScope);
+        static::addGlobalScope(new IsActiveScope());
         static::addGlobalScope('with-all-information', function (Builder $builder) {
             $builder
                 ->select([

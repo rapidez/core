@@ -2,12 +2,11 @@
 
 namespace Rapidez\Core\Models\Scopes\Product;
 
-use Rapidez\Core\Models\Attribute;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
+use Rapidez\Core\Models\Attribute;
 
 class WithProductChildrenScope implements Scope
 {

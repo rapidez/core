@@ -2,12 +2,11 @@
 
 namespace Rapidez\Core\Models\Scopes\Product;
 
-use Rapidez\Core\Exceptions\NoAttributesToSelectSpecifiedException;
-use Rapidez\Core\Models\Attribute;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
-use Illuminate\Support\Facades\DB;
+use Rapidez\Core\Exceptions\NoAttributesToSelectSpecifiedException;
+use Rapidez\Core\Models\Attribute;
 
 class WithProductAttributesScope implements Scope
 {
@@ -28,7 +27,7 @@ class WithProductAttributesScope implements Scope
             ->addSelect($builder->getQuery()->from.'.sku');
 
         foreach ($attributes as $attribute) {
-            $attribute = (object)$attribute;
+            $attribute = (object) $attribute;
 
             if ($attribute->flat) {
                 if ($attribute->input == 'select' && !in_array($attribute->code, ['tax_class_id'])) {

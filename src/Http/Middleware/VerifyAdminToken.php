@@ -3,9 +3,7 @@
 namespace Rapidez\Core\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
-use Rapidez\Core\Models\Store;
 
 class VerifyAdminToken
 {

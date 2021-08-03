@@ -2,9 +2,9 @@
 
 namespace Rapidez\Core\Models\Traits\Product;
 
+use Illuminate\Support\Arr;
 use Rapidez\Core\Casts\Multiselect;
 use Rapidez\Core\Models\Attribute;
-use Illuminate\Support\Arr;
 
 trait CastMultiselectAttributes
 {

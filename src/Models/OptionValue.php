@@ -2,7 +2,6 @@
 
 namespace Rapidez\Core\Models;
 
-use Rapidez\Core\Models\Model;
 use Illuminate\Support\Facades\Cache;
 
 class OptionValue extends Model

@@ -18,8 +18,8 @@ class ForCurrentStoreScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         $currentTable = $builder->getQuery()->from;
-        $joinTable    = $this->joinTable ?: $currentTable.'_store';
-        $type         = explode('_', $currentTable)[1];
+        $joinTable = $this->joinTable ?: $currentTable.'_store';
+        $type = explode('_', $currentTable)[1];
 
         $builder
             ->leftJoin($joinTable, function ($join) use ($currentTable, $type, $joinTable) {
