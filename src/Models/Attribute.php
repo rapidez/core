@@ -2,11 +2,9 @@
 
 namespace Rapidez\Core\Models;
 
-use Rapidez\Core\Models\Model;
-use Rapidez\Core\Models\Scopes\Attribute\OnlyProductAttributesScope;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
+use Rapidez\Core\Models\Scopes\Attribute\OnlyProductAttributesScope;
 
 class Attribute extends Model
 {
@@ -16,7 +14,7 @@ class Attribute extends Model
 
     protected static function booted()
     {
-        static::addGlobalScope(new OnlyProductAttributesScope);
+        static::addGlobalScope(new OnlyProductAttributesScope());
     }
 
     public static function getCachedWhere(callable $callback): array

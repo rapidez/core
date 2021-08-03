@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Rapidez\Core\Http\Middleware\VerifyAdminToken;
 use Rapidez\Core\Models\Attribute;
 use Rapidez\Core\Models\OptionSwatch;
@@ -25,11 +24,11 @@ Route::middleware('api')->prefix('api')->group(function () {
     });
 
     Route::prefix('admin')->middleware(VerifyAdminToken::class)->group(function () {
-        Route::get('cache/clear', fn() => Artisan::call('cache:clear'));
+        Route::get('cache/clear', fn () => Artisan::call('cache:clear'));
         Route::get('index/products', function () {
             fastcgi_finish_request();
             Artisan::call('rapidez:index', [
-                'store' => $request->store
+                'store' => $request->store,
             ]);
         });
     });

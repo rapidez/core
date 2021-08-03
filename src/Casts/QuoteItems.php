@@ -2,11 +2,11 @@
 
 namespace Rapidez\Core\Casts;
 
+use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Illuminate\Support\Arr;
 use Rapidez\Core\Models\Attribute;
 use Rapidez\Core\Models\Config;
 use Rapidez\Core\Models\OptionValue;
-use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
-use Illuminate\Support\Arr;
 
 class QuoteItems implements CastsAttributes
 {
@@ -27,7 +27,7 @@ class QuoteItems implements CastsAttributes
                 $options[$superAttributes[$attributeId]] = OptionValue::getCachedByOptionId($attributeValue);
             }
             $item->options = $options;
-            $item->url = '/' . $item->url_key . Config::getCachedByPath('catalog/seo/product_url_suffix', '.html');
+            $item->url = '/'.$item->url_key.Config::getCachedByPath('catalog/seo/product_url_suffix', '.html');
             unset($item->attributes);
         }
 

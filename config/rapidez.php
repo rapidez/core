@@ -1,4 +1,5 @@
 <?php
+
 return [
     // Default store, see middleware: DetermineAndSetShop
     'store' => env('STORE', 1),
@@ -10,7 +11,7 @@ return [
     'es_prefix' => env('ELASTICSEARCH_PREFIX', 'rapidez'),
 
     // Media url.
-    'media_url' => env('MEDIA_URL', env('MAGENTO_URL') . '/media'),
+    'media_url' => env('MEDIA_URL', env('MAGENTO_URL').'/media'),
 
     // Magento url.
     'magento_url' => env('MAGENTO_URL'),
@@ -41,8 +42,8 @@ return [
 
     // The fully qualified class names of the controllers.
     'controllers' => [
-        'page' => Rapidez\Core\Http\Controllers\PageController::class,
-        'product' => Rapidez\Core\Http\Controllers\ProductController::class,
+        'page'     => Rapidez\Core\Http\Controllers\PageController::class,
+        'product'  => Rapidez\Core\Http\Controllers\ProductController::class,
         'category' => Rapidez\Core\Http\Controllers\CategoryController::class,
     ],
 
@@ -58,8 +59,8 @@ return [
         'classes' => [
             'warning' => 'text-yellow-600 bg-yellow-100 border-yellow-300',
             'success' => 'text-green-600 bg-green-100 border-green-300',
-            'info' => 'text-blue-600 bg-blue-100 border-blue-300',
-            'error' => 'text-red-600 bg-red-100 border-red-300',
-        ]
-    ]
+            'info'    => 'text-blue-600 bg-blue-100 border-blue-300',
+            'error'   => 'text-red-600 bg-red-100 border-red-300',
+        ],
+    ],
 ];

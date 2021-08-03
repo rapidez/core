@@ -26,7 +26,7 @@ class ConfigComposer
         config(['frontend.locale' => Config::getCachedByPath('general/locale/code', 'en_US')]);
         config(['frontend.currency' => Config::getCachedByPath('currency/options/default')]);
         config(['frontend.cachekey' => Cache::rememberForever('cachekey', fn () => md5(Str::random()))]);
-        config(['frontend.redirect_cart' => (bool)Config::getCachedByPath('checkout/cart/redirect_to_cart')]);
+        config(['frontend.redirect_cart' => (bool) Config::getCachedByPath('checkout/cart/redirect_to_cart')]);
         config(['frontend.translations' => __('rapidez::frontend')]);
 
         config(['frontend.searchable' => Arr::pluck(Attribute::getCachedWhere(function ($attribute) {

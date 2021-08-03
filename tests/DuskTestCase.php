@@ -23,10 +23,11 @@ abstract class DuskTestCase extends BaseTestCase
 
         Browser::macro('waitUntilAllAjaxCallsAreFinished', function () {
             $this->waitUntil('!window.app.$data.loading', 10);
+
             return $this;
         });
 
-        $this->flat = (new Product)->getTable();
+        $this->flat = (new Product())->getTable();
 
         $this->testProduct = Product::selectAttributes([
             'name',

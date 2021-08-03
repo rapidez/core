@@ -3,7 +3,6 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Support\Facades\Cache;
-use Rapidez\Core\Models\Model;
 use Rapidez\Core\Models\Scopes\ForCurrentStoreScope;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
 use Rapidez\Core\Models\Traits\HasContentAttributeWithVariables;
@@ -18,8 +17,8 @@ class Block extends Model
 
     protected static function booted()
     {
-        static::addGlobalScope(new IsActiveScope);
-        static::addGlobalScope(new ForCurrentStoreScope);
+        static::addGlobalScope(new IsActiveScope());
+        static::addGlobalScope(new ForCurrentStoreScope());
     }
 
     public static function getCachedByIdentifier(string $identifier, array $replace = []): ?string

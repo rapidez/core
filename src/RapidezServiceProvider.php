@@ -3,7 +3,6 @@
 namespace Rapidez\Core;
 
 use Illuminate\Contracts\Http\Kernel;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -12,9 +11,6 @@ use Rapidez\Core\Commands\InstallCommand;
 use Rapidez\Core\Commands\ValidateCommand;
 use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
 use Rapidez\Core\Http\ViewComposers\ConfigComposer;
-use Rapidez\Core\Models\Attribute;
-use Rapidez\Core\Models\Config;
-use Rapidez\Core\Rapidez;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
 
@@ -59,7 +55,7 @@ class RapidezServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/rapidez.php' => config_path('rapidez.php'),
+                __DIR__.'/../config/rapidez.php' => config_path('rapidez.php'),
             ], 'config');
 
             $this->publishes([
@@ -123,7 +119,7 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function registerConfigs(): self
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/rapidez.php', 'rapidez');
+        $this->mergeConfigFrom(__DIR__.'/../config/rapidez.php', 'rapidez');
 
         return $this;
     }
