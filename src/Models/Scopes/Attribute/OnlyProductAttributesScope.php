@@ -5,7 +5,6 @@ namespace Rapidez\Core\Models\Scopes\Attribute;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
-use Illuminate\Support\Facades\DB;
 
 class OnlyProductAttributesScope implements Scope
 {

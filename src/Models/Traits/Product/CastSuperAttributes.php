@@ -2,8 +2,8 @@
 
 namespace Rapidez\Core\Models\Traits\Product;
 
-use Rapidez\Core\Models\Attribute;
 use Illuminate\Support\Arr;
+use Rapidez\Core\Models\Attribute;
 
 trait CastSuperAttributes
 {

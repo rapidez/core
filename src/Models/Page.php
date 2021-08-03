@@ -2,7 +2,6 @@
 
 namespace Rapidez\Core\Models;
 
-use Rapidez\Core\Models\Model;
 use Rapidez\Core\Models\Scopes\ForCurrentStoreScope;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
 use Rapidez\Core\Models\Traits\HasContentAttributeWithVariables;
@@ -17,7 +16,7 @@ class Page extends Model
 
     protected static function booted()
     {
-        static::addGlobalScope(new IsActiveScope);
-        static::addGlobalScope(new ForCurrentStoreScope);
+        static::addGlobalScope(new IsActiveScope());
+        static::addGlobalScope(new ForCurrentStoreScope());
     }
 }

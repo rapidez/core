@@ -2,7 +2,6 @@
 
 namespace Rapidez\Core\Models;
 
-use Rapidez\Core\Models\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
 use TorMorten\Eventy\Facades\Eventy;
@@ -15,8 +14,8 @@ class Category extends Model
 
     protected static function booted()
     {
-        static::addGlobalScope(new IsActiveScope);
-        static::addGlobalScope('defaults', function (Builder $builder){
+        static::addGlobalScope(new IsActiveScope());
+        static::addGlobalScope('defaults', function (Builder $builder) {
             $defaultColumnsToSelect = [
                 'entity_id',
                 'meta_title',
@@ -29,12 +28,12 @@ class Category extends Model
                 'parent_id',
                 'children',
                 'position',
-                'url_path'
+                'url_path',
             ];
 
             $builder
                 ->select(preg_filter('/^/', $builder->getQuery()->from.'.', $defaultColumnsToSelect))
-                ->groupBy($builder->getQuery()->from . '.entity_id');
+                ->groupBy($builder->getQuery()->from.'.entity_id');
         });
 
         $scopes = Eventy::filter('category.scopes', []);
@@ -45,7 +44,7 @@ class Category extends Model
 
     public function getTable()
     {
-        return 'catalog_category_flat_store_' . config('rapidez.store');
+        return 'catalog_category_flat_store_'.config('rapidez.store');
     }
 
     public function getUrlAttribute(): string

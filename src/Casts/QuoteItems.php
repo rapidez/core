@@ -2,11 +2,11 @@
 
 namespace Rapidez\Core\Casts;
 
+use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Illuminate\Support\Arr;
 use Rapidez\Core\Models\Attribute;
 use Rapidez\Core\Models\Config;
 use Rapidez\Core\Models\OptionValue;
-use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
-use Illuminate\Support\Arr;
 
 class QuoteItems implements CastsAttributes
 {

@@ -3,7 +3,6 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Rapidez\Core\Models\Model;
 
 class Widget extends Model
 {

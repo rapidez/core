@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use NumberFormatter;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\DecodeHtmlEntities;
-use Rapidez\Core\Models\Config;
-use Rapidez\Core\Models\Model;
 use Rapidez\Core\Models\Scopes\Product\WithProductAttributesScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductCategoryIdsScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductChildrenScope;
@@ -22,7 +20,9 @@ use TorMorten\Eventy\Facades\Eventy;
 
 class Product extends Model
 {
-    use CastSuperAttributes, CastMultiselectAttributes, SelectAttributeScopes;
+    use CastSuperAttributes;
+    use CastMultiselectAttributes;
+    use SelectAttributeScopes;
 
     public array $attributesToSelect = [];
 
@@ -32,12 +32,12 @@ class Product extends Model
 
     protected static function booted(): void
     {
-        static::addGlobalScope(new WithProductAttributesScope);
-        static::addGlobalScope(new WithProductSuperAttributesScope);
-        static::addGlobalScope(new WithProductStockScope);
-        static::addGlobalScope(new WithProductCategoryIdsScope);
-        static::addGlobalScope(new WithProductRelationIdsScope);
-        static::addGlobalScope(new WithProductChildrenScope);
+        static::addGlobalScope(new WithProductAttributesScope());
+        static::addGlobalScope(new WithProductSuperAttributesScope());
+        static::addGlobalScope(new WithProductStockScope());
+        static::addGlobalScope(new WithProductCategoryIdsScope());
+        static::addGlobalScope(new WithProductRelationIdsScope());
+        static::addGlobalScope(new WithProductChildrenScope());
         static::addGlobalScope('defaults', function (Builder $builder) {
             $builder
                 ->whereNotIn($builder->getQuery()->from.'.type_id', ['grouped', 'bundle'])
@@ -46,13 +46,13 @@ class Product extends Model
 
         $scopes = Eventy::filter('product.scopes', []);
         foreach ($scopes as $scope) {
-            static::addGlobalScope(new $scope);
+            static::addGlobalScope(new $scope());
         }
     }
 
     public function getTable(): string
     {
-        return 'catalog_product_flat_' . config('rapidez.store');
+        return 'catalog_product_flat_'.config('rapidez.store');
     }
 
     public function getCasts(): array
@@ -60,11 +60,11 @@ class Product extends Model
         return array_merge(
             parent::getCasts(),
             [
-                'name' => DecodeHtmlEntities::class,
+                'name'         => DecodeHtmlEntities::class,
                 'category_ids' => CommaSeparatedToArray::class,
                 'relation_ids' => CommaSeparatedToArray::class,
-                'upsell_ids' => CommaSeparatedToArray::class,
-                'children' => 'object',
+                'upsell_ids'   => CommaSeparatedToArray::class,
+                'children'     => 'object',
             ],
             $this->getSuperAttributeCasts(),
             $this->getMultiselectAttributeCasts(),

@@ -2,9 +2,9 @@
 
 namespace Rapidez\Core\Models\Traits\Product;
 
-use Rapidez\Core\Models\Attribute;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
+use Rapidez\Core\Models\Attribute;
 use TorMorten\Eventy\Facades\Eventy;
 
 trait SelectAttributeScopes

@@ -4,15 +4,10 @@ namespace Rapidez\Core\Commands;
 
 use Carbon\Carbon;
 use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
-use Elasticsearch\Common\Exceptions\BadRequest400Exception;
-use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Illuminate\Console\Command;
-use Illuminate\Support\Arr;
 use Rapidez\Core\Jobs\IndexProductJob;
-use Rapidez\Core\Models\Attribute;
 use Rapidez\Core\Models\Product;
 use Rapidez\Core\Models\Store;
-use Rapidez\Core\Scopes\WithProductSwatchesScope;
 use TorMorten\Eventy\Facades\Eventy;
 
 class IndexProductsCommand extends Command
@@ -45,16 +40,16 @@ class IndexProductsCommand extends Command
             $this->line('Store: '.$store->name);
             config()->set('rapidez.store', $store->store_id);
 
-            $alias = config('rapidez.es_prefix') . '_products_' . $store->store_id;
-            $index = $alias . '_' . Carbon::now()->format('YmdHis');
+            $alias = config('rapidez.es_prefix').'_products_'.$store->store_id;
+            $index = $alias.'_'.Carbon::now()->format('YmdHis');
             $this->createIndex($index);
 
             $flat = (new $productModel)->getTable();
             $productQuery = $productModel::where($flat.'.visibility', 4)->selectOnlyIndexable();
-
             $scopes = Eventy::filter('index.product.scopes', []);
+
             foreach ($scopes as $scope) {
-                $productQuery->withGlobalScope($scope, new $scope);
+                $productQuery->withGlobalScope($scope, new $scope());
             }
 
             $bar = $this->output->createProgressBar($productQuery->getQuery()->getCountForPagination());
@@ -64,7 +59,7 @@ class IndexProductsCommand extends Command
                 foreach ($products as $product) {
                     $data = array_merge(['store' => $store->store_id], $product->toArray());
                     foreach ($product->super_attributes ?: [] as $superAttribute) {
-                        $data[$superAttribute->code] = array_keys((array)$product->{$superAttribute->code});
+                        $data[$superAttribute->code] = array_keys((array) $product->{$superAttribute->code});
                     }
                     $data = Eventy::filter('index.product.data', $data, $product);
                     IndexProductJob::dispatch($index, $data);
@@ -85,7 +80,7 @@ class IndexProductsCommand extends Command
     {
         $this->elasticsearch->indices()->putAlias([
             'index' => $index,
-            'name' => $alias,
+            'name'  => $alias,
         ]);
 
         $aliases = $this->elasticsearch->indices()->getAlias(['name' => $alias]);
@@ -93,7 +88,7 @@ class IndexProductsCommand extends Command
             if ($indexLinkedToAlias != $index) {
                 $this->elasticsearch->indices()->deleteAlias([
                     'index' => $indexLinkedToAlias,
-                    'name' => $alias,
+                    'name'  => $alias,
                 ]);
                 $this->elasticsearch->indices()->delete(['index' => $indexLinkedToAlias]);
             }
@@ -113,9 +108,9 @@ class IndexProductsCommand extends Command
                         'children' => [
                             'type' => 'flattened',
                         ],
-                    ]
-                ])
-            ]
+                    ],
+                ]),
+            ],
         ]);
     }
 }

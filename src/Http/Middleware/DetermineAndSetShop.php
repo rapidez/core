@@ -2,9 +2,8 @@
 
 namespace Rapidez\Core\Http\Middleware;
 
-use Rapidez\Core\Models\Store;
 use Closure;
-use Illuminate\Support\Facades\Cache;
+use Rapidez\Core\Models\Store;
 
 class DetermineAndSetShop
 {

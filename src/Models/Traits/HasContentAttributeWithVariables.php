@@ -19,7 +19,7 @@ trait HasContentAttributeWithVariables
 
     protected function processMediaeUrl(string $content): string
     {
-        return preg_replace('/{{media url=("|&quot;|\')(.*?)("|&quot;|\')}}/m', config('rapidez.media_url') . '/${2}', $content);
+        return preg_replace('/{{media url=("|&quot;|\')(.*?)("|&quot;|\')}}/m', config('rapidez.media_url').'/${2}', $content);
     }
 
     protected function processStoreUrl(string $content): string
@@ -59,12 +59,12 @@ trait HasContentAttributeWithVariables
     protected function fancyMagentoSyntaxDecoder(string $encodedString): object
     {
         $mapping = [
-            '{' => '^[',
-            '}' => '^]',
-            '"' => '`',
+            '{'  => '^[',
+            '}'  => '^]',
+            '"'  => '`',
             '\\' => '|',
-            '<' => '^(',
-            '>' => '^)'
+            '<'  => '^(',
+            '>'  => '^)',
         ];
 
         return json_decode(str_replace(array_values($mapping), array_keys($mapping), $encodedString));

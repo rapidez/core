@@ -2,8 +2,8 @@
 
 namespace Rapidez\Core\Casts;
 
-use Rapidez\Core\Models\OptionValue;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Rapidez\Core\Models\OptionValue;
 
 class Multiselect implements CastsAttributes
 {
@@ -14,6 +14,7 @@ class Multiselect implements CastsAttributes
             foreach (explode(',', $value) as $optionValueId) {
                 $values[] = $optionvalueModel::getCachedByOptionId($optionValueId);
             }
+
             return $values;
         }
 
