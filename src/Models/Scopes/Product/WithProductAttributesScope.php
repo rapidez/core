@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 use Rapidez\Core\Exceptions\NoAttributesToSelectSpecifiedException;
-use Rapidez\Core\Models\Attribute;
 
 class WithProductAttributesScope implements Scope
 {

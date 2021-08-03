@@ -3,7 +3,6 @@
 namespace Rapidez\Core\Models\Traits\Product;
 
 use Illuminate\Support\Arr;
-use Rapidez\Core\Models\Attribute;
 
 trait CastSuperAttributes
 {

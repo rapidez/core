@@ -3,8 +3,6 @@
 namespace Rapidez\Core\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Rapidez\Core\Models\Page;
-use Rapidez\Core\Models\Rewrite;
 use TorMorten\Eventy\Facades\Eventy;
 
 class UrlRewriteController

@@ -4,8 +4,6 @@ namespace Rapidez\Core\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
-use Rapidez\Core\Models\Attribute;
-use Rapidez\Core\Models\Config;
 
 class ValidateCommand extends Command
 {

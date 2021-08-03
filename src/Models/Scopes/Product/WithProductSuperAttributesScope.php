@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Rapidez\Core\Models\Attribute;
 
 class WithProductSuperAttributesScope implements Scope
 {

@@ -2,8 +2,6 @@
 
 namespace Rapidez\Core\Http\Controllers;
 
-use Rapidez\Core\Models\Category;
-
 class CategoryController
 {
     public function show(int $categoryId)

@@ -6,8 +6,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
-use Rapidez\Core\Models\Attribute;
-use Rapidez\Core\Models\Config;
 
 class ConfigComposer
 {
@@ -29,7 +27,7 @@ class ConfigComposer
         config(['frontend.locale' => $configModel::getCachedByPath('general/locale/code', 'en_US')]);
         config(['frontend.currency' => $configModel::getCachedByPath('currency/options/default')]);
         config(['frontend.cachekey' => Cache::rememberForever('cachekey', fn () => md5(Str::random()))]);
-        config(['frontend.redirect_cart' => (bool)$configModel::getCachedByPath('checkout/cart/redirect_to_cart')]);
+        config(['frontend.redirect_cart' => (bool) $configModel::getCachedByPath('checkout/cart/redirect_to_cart')]);
         config(['frontend.translations' => __('rapidez::frontend')]);
 
         config(['frontend.searchable' => Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {

@@ -50,6 +50,7 @@ class Category extends Model
     public function getUrlAttribute(): string
     {
         $configModel = config('rapidez.models.config');
-        return '/' . $this->url_path . $configModel::getCachedByPath('catalog/seo/category_url_suffix', '.html');
+
+        return '/'.$this->url_path.$configModel::getCachedByPath('catalog/seo/category_url_suffix', '.html');
     }
 }

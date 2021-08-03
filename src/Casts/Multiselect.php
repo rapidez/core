@@ -3,7 +3,6 @@
 namespace Rapidez\Core\Casts;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
-use Rapidez\Core\Models\OptionValue;
 
 class Multiselect implements CastsAttributes
 {

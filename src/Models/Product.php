@@ -91,8 +91,8 @@ class Product extends Model
     public function getFormattedPriceAttribute(): string
     {
         $configModel = config('rapidez.models.config');
-        $currency  = $configModel::getCachedByPath('currency/options/default');
-        $locale    = $configModel::getCachedByPath('general/locale/code', 'en_US');
+        $currency = $configModel::getCachedByPath('currency/options/default');
+        $locale = $configModel::getCachedByPath('general/locale/code', 'en_US');
         $formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
 
         return $formatter->formatCurrency($this->price, $currency);
@@ -101,7 +101,8 @@ class Product extends Model
     public function getUrlAttribute(): string
     {
         $configModel = config('rapidez.models.config');
-        return '/' . $this->url_key . $configModel::getCachedByPath('catalog/seo/product_url_suffix', '.html');
+
+        return '/'.$this->url_key.$configModel::getCachedByPath('catalog/seo/product_url_suffix', '.html');
     }
 
     public function getImagesAttribute(): array

@@ -6,8 +6,6 @@ use Carbon\Carbon;
 use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
 use Illuminate\Console\Command;
 use Rapidez\Core\Jobs\IndexProductJob;
-use Rapidez\Core\Models\Product;
-use Rapidez\Core\Models\Store;
 use TorMorten\Eventy\Facades\Eventy;
 
 class IndexProductsCommand extends Command
@@ -35,7 +33,6 @@ class IndexProductsCommand extends Command
         $storeModel = config('rapidez.models.store');
         $stores = $this->argument('store') ? $storeModel::where('store_id', $this->argument('store'))->get() : $storeModel::all();
 
-
         foreach ($stores as $store) {
             $this->line('Store: '.$store->name);
             config()->set('rapidez.store', $store->store_id);
@@ -44,7 +41,7 @@ class IndexProductsCommand extends Command
             $index = $alias.'_'.Carbon::now()->format('YmdHis');
             $this->createIndex($index);
 
-            $flat = (new $productModel)->getTable();
+            $flat = (new $productModel())->getTable();
             $productQuery = $productModel::where($flat.'.visibility', 4)->selectOnlyIndexable();
             $scopes = Eventy::filter('index.product.scopes', []);
 
