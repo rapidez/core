@@ -63,6 +63,10 @@ return [
         'block'        => Rapidez\Core\Models\Block::class,
     ],
 
+    'widgets' => [
+
+    ],
+
     // Localstorage keys that need to be flushed when the cache is cleared.
     'flushable_localstorage_keys' => [
         'attributes',
