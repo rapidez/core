@@ -259,6 +259,15 @@
                 }, false)
 
                 history.replaceState(null, null, '#'+this.config.checkout_steps[this.checkout.step])
+            },
+             async selectPaymentMethod() {
+                let response = await this.magentoCart('post', 'set-payment-information', {
+                    email: this.user == null ? this.$root.guestEmail : this.user.email,
+                    paymentMethod: {
+                        method:  this.checkout.payment_method
+                    }
+                })
+                this.getTotalsInformation()
             }
         },
 
@@ -292,6 +301,9 @@
                 }
 
                 history.pushState(null, null, '#' + this.config.checkout_steps[this.checkout.step]);
+            },
+            'checkout.payment_method': function () {
+                this.selectPaymentMethod()
             }
         }
     }
