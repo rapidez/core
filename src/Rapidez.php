@@ -17,6 +17,11 @@ class Rapidez
         }
 
         $parseClass = config('rapidez.widgets.'.$vars['type']);
+
+        if (!class_exists($parseClass) && !app()->environment('production')) {
+            return 'Widget not implemented.';
+        }
+
         $content = (new $parseClass($vars))->render();
         return $content;
     }
@@ -26,10 +31,8 @@ class Rapidez
         $content = trim(strip_tags($content), '{{widget,}}');
         parse_str(implode('"&', explode('" ', $content)), $vars);
         $vars = collect($vars);
-        $flattened = $vars->map(function($values) {
+        return $vars->map(function($values) {
             return str_replace('"', '', $values);
         });
-
-        return $flattened;
     }
 }

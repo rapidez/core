@@ -64,7 +64,7 @@ return [
     ],
 
     'widgets' => [
-
+        'Magento\Cms\Block\Widget\Block' => Rapidez\Core\Widgets\Block::class
     ],
 
     // Localstorage keys that need to be flushed when the cache is cleared.
