@@ -67,7 +67,7 @@
                         <div class="w-1/2 text-right">@{{ cart.subtotal | price }}</div>
                         <div class="w-1/2">@lang('Tax')</div>
                         <div class="w-1/2 text-right">@{{ cart.tax | price }}</div>
-                        <div class="w-1/2" v-if="cart.discount_name && && cart.discount_amount > 0">@lang('Discount'): @{{ cart.discount_name }}</div>
+                        <div class="w-1/2" v-if="cart.discount_name && cart.discount_amount > 0">@lang('Discount'): @{{ cart.discount_name }}</div>
                         <div class="w-1/2" v-if="!cart.discount_name && cart.discount_amount > 0">@lang('Discount')</div>
                         <div class="w-1/2 text-right" v-if="cart.discount_amount > 0">@{{ cart.discount_amount | price }}</div>
                         <div class="w-1/2 font-bold">@lang('Total')</div>
