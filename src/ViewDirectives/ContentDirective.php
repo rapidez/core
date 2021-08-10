@@ -7,8 +7,6 @@ use Rapidez\Core\Rapidez;
 
 class ContentDirective
 {
-    use HasContentAttributeWithVariables;
-
     public function render($content)
     {
         return (new Rapidez())->getContent($content);
