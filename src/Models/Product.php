@@ -60,11 +60,12 @@ class Product extends Model
         return array_merge(
             parent::getCasts(),
             [
-                'name'         => DecodeHtmlEntities::class,
-                'category_ids' => CommaSeparatedToArray::class,
-                'relation_ids' => CommaSeparatedToArray::class,
-                'upsell_ids'   => CommaSeparatedToArray::class,
-                'children'     => 'object',
+                'name'           => DecodeHtmlEntities::class,
+                'category_ids'   => CommaSeparatedToArray::class,
+                'relation_ids'   => CommaSeparatedToArray::class,
+                'upsell_ids'     => CommaSeparatedToArray::class,
+                'children'       => 'object',
+                'qty_increments' => 'int',
             ],
             $this->getSuperAttributeCasts(),
             $this->getMultiselectAttributeCasts(),

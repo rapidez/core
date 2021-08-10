@@ -33,7 +33,7 @@
                     class="w-auto mr-3"
                     labelClass="mr-3 sr-only"
                 >
-                    @for ($i = 1; $i <= 10; $i++)
+                    @for ($i = $product->qty_increments; $i <= $product->qty_increments * 10; $i += $product->qty_increments)
                         <option value="{{ $i }}">{{ $i }}</option>
                     @endfor
                 </x-rapidez::select>
