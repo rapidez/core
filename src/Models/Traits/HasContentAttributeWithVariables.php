@@ -30,6 +30,7 @@ trait HasContentAttributeWithVariables
     protected function processWidgets(string $content): string
     {
         return preg_replace_callback('/{{widget type="(.*?)" (.*?)}}/m', function ($matches) {
+            $content = '';
             [$full, $type, $parameters] = $matches;
             preg_match_all('/(.*?)="(.*?)"/m', $parameters, $parameters, PREG_SET_ORDER);
             foreach ($parameters as $parameter) {
@@ -37,36 +38,18 @@ trait HasContentAttributeWithVariables
                 $options[trim($parameter)] = trim($value);
             }
 
-            switch ($type) {
-                case 'Magento\CatalogWidget\Block\Product\ProductsList':
-                    return $this->productListWidget($options);
-                default:
-                    return '<hr>'.__('The ":type" widget type is not supported.', ['type' => $type]).'<hr>';
+            if (!isset($type)) {
+                return '';
             }
-        }, $content);
-    }
 
-    protected function productListWidget(array $options): string
-    {
-        $conditions = collect($this->fancyMagentoSyntaxDecoder($options['conditions_encoded']));
-        $condition = $conditions->first(function ($condition) {
-            return $condition->type == 'Magento\CatalogWidget\Model\Rule\Condition\Product';
-        });
+            $parseClass = config('rapidez.widgets.'.$type);
 
-        return view('rapidez::widget.productlist', compact('options', 'condition'))->render();
-    }
+            if (!class_exists($parseClass) && !app()->environment('production')) {
+                return 'Widget not implemented.';
+            }
+            $content .= (new $parseClass($options))->render();
 
-    protected function fancyMagentoSyntaxDecoder(string $encodedString): object
-    {
-        $mapping = [
-            '{'  => '^[',
-            '}'  => '^]',
-            '"'  => '`',
-            '\\' => '|',
-            '<'  => '^(',
-            '>'  => '^)',
-        ];
-
-        return json_decode(str_replace(array_values($mapping), array_keys($mapping), $encodedString));
+            return $content;
+    }, $content);
     }
 }

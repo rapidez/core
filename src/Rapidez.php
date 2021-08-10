@@ -2,28 +2,20 @@
 
 namespace Rapidez\Core;
 
+use Rapidez\Core\Models\Traits\HasContentAttributeWithVariables;
+
 class Rapidez
 {
+    use HasContentAttributeWithVariables;
+
     public function config(string $path, $default = null): ?string
     {
         return config('rapidez.models.config')::getCachedByPath($path, $default);
     }
 
-    public function parseWidgetContent($content)
+    public function getContent($content)
     {
-        $vars = $this->getWidgetVars($content);
-        if (!isset($vars['type'])) {
-            return '';
-        }
-
-        $parseClass = config('rapidez.widgets.'.$vars['type']);
-
-        if (!class_exists($parseClass) && !app()->environment('production')) {
-            return 'Widget not implemented.';
-        }
-
-        $content = (new $parseClass($vars))->render();
-        return $content;
+        return $this->getContentAttribute($content);
     }
 
     private function getWidgetVars($content)
@@ -31,8 +23,22 @@ class Rapidez
         $content = trim(strip_tags($content), '{{widget,}}');
         parse_str(implode('"&', explode('" ', $content)), $vars);
         $vars = collect($vars);
-        return $vars->map(function($values) {
+        return $vars->map(function ($values) {
             return str_replace('"', '', $values);
         });
+    }
+
+    public static function fancyMagentoSyntaxDecoder(string $encodedString): object
+    {
+        $mapping = [
+            '{'  => '^[',
+            '}'  => '^]',
+            '"'  => '`',
+            '\\' => '|',
+            '<'  => '^(',
+            '>'  => '^)',
+        ];
+
+        return json_decode(str_replace(array_values($mapping), array_keys($mapping), $encodedString));
     }
 }
