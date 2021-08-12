@@ -15,7 +15,7 @@ export default {
                 try {
                     let response = await axios.get('/api/cart/' + (localStorage.token ? localStorage.token : localStorage.mask))
                     localStorage.cart = JSON.stringify(response.data)
-                    this.$root.cart = response.data
+                    window.app.cart = response.data
                 } catch (error) {
                     if (error.response.status == 404) {
                         localStorage.removeItem('mask')
