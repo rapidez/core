@@ -14,13 +14,16 @@
 
                     return {}
                 }
+            },
+            qty: {
+                type: Number,
+                default: 1
             }
         },
 
         data: () => ({
             options: {},
             error: null,
-            qty: 1,
         }),
 
         render() {

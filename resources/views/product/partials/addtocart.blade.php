@@ -1,4 +1,4 @@
-<add-to-cart v-cloak>
+<add-to-cart qty="{{ $product->qty_increments }}" v-cloak>
     <div slot-scope="{ qty, changeQty, options, error, add, disabledOptions, simpleProduct }">
         <div class="font-bold text-3xl mb-3">@{{ simpleProduct.price | price}}</div>
 
