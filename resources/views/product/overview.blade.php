@@ -4,6 +4,8 @@
 @section('description', $product->meta_description)
 
 @section('content')
+    @include('rapidez::product.partials.breadcrumbs')
+
     <h1 class="font-bold text-4xl mb-5">{{ $product->name }}</h1>
 
     <div class="flex flex-col sm:flex-row mb-5">

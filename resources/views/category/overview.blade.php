@@ -4,6 +4,8 @@
 @section('description', $category->meta_description)
 
 @section('content')
+    @include('rapidez::category.partials.breadcrumbs')
+
     <h1 class="font-bold text-3xl mb-5">{{ $category->name }}</h1>
 
     @if($category->is_anchor)

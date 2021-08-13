@@ -53,4 +53,14 @@ class Category extends Model
 
         return '/'.$this->url_path.$configModel::getCachedByPath('catalog/seo/category_url_suffix', '.html');
     }
+
+    public function getSubcategoriesAttribute()
+    {
+        $categoryIds = explode('/', $this->path);
+        $categoryIds = array_slice($categoryIds, array_search(config('rapidez.root_category_id'), $categoryIds) + 1);
+
+        return Category::whereIn('entity_id', $categoryIds)
+            ->orderByRaw('FIELD(entity_id,'.implode(',', $categoryIds).')')
+            ->get();
+    }
 }
