@@ -106,6 +106,24 @@ class Product extends Model
         return '/'.$this->url_key.$configModel::getCachedByPath('catalog/seo/product_url_suffix', '.html');
     }
 
+    public function getBreadcrumbCategoriesAttribute()
+    {
+        if (!$path = session('latest_category_path')) {
+            return [];
+        }
+
+        $categoryIds = explode('/', $path);
+        $categoryIds = array_slice($categoryIds, array_search(config('rapidez.root_category_id'), $categoryIds) + 1);
+
+        if (!in_array(end($categoryIds), $this->category_ids)) {
+            return [];
+        }
+
+        return Category::whereIn('entity_id', $categoryIds)
+            ->orderByRaw('FIELD(entity_id,'.implode(',', $categoryIds).')')
+            ->get();
+    }
+
     public function getImagesAttribute(): array
     {
         return $this->gallery->pluck('value')->toArray();
