@@ -9,10 +9,10 @@
     <h1 class="font-bold text-4xl mb-5">{{ $product->name }}</h1>
 
     <div class="flex flex-col sm:flex-row mb-5">
-        <div class="sm:w-2/3 sm:mr-5">
+        <div class="sm:w-1/2 sm:mr-5">
             @include('rapidez::product.partials.images')
         </div>
-        <div class="sm:w-1/3">
+        <div class="sm:w-1/2">
             <div class="p-3 my-5 sm:mt-0 bg-gray-200 rounded prose prose-green max-w-none">
                 {!! $product->description !!}
             </div>

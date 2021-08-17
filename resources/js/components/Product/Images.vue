@@ -1,15 +1,18 @@
 <script>
     export default {
         data: () => ({
-            images: false,
-            opened: false,
+            images: config.product.images,
+            active: 0,
+            zoomed: false,
         }),
 
         render() {
             return this.$scopedSlots.default({
                 images: this.images,
-                opened: this.opened,
-                toggle: this.toggle,
+                active: this.active,
+                zoomed: this.zoomed,
+                toggleZoom: this.toggleZoom,
+                change: this.change,
             })
         },
 
@@ -25,9 +28,28 @@
         },
 
         methods: {
-            toggle(index, event) {
-                this.opened = this.opened === false ? index : false
-                event.currentTarget.firstChild.src = event.currentTarget.href
+            toggleZoom() {
+                this.zoomed = !this.zoomed
+
+                if (this.zoomed) {
+                    document.addEventListener('keyup', this.keyPressed)
+                } else {
+                    document.removeEventListener('keyup', this.keyPressed)
+                }
+            },
+
+            keyPressed() {
+                if (event.keyCode == 37 && this.active) { // left
+                    this.active--
+                } else if (event.keyCode == 39 && this.active != this.images.length-1) { // right
+                    this.active++
+                } else if (event.keyCode == 27) { // esc
+                    this.toggleZoom()
+                }
+            },
+
+            change(index) {
+                this.active = index
             },
         }
     }
