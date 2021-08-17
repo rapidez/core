@@ -35,11 +35,11 @@
         </div>
         <x-rapidez::no-image v-else class="rounded h-96"/>
 
-        <div v-if="images.length > 1" class="flex" :class="zoomed ? 'fixed z-10 bottom-0' : ' flex-wrap mt-3'">
+        <div v-if="images.length > 1" class="flex" :class="zoomed ? 'fixed z-10 bottom-0 left-3' : ' flex-wrap mt-3'">
             <a
                 href="#"
                 v-for="(image, imageId) in images"
-                class="flex items-center justify-center border rounded p-2 mr-3 mb-3 h-[100px] w-[100px]"
+                class="flex items-center justify-center bg-white border rounded p-2 mr-3 mb-3 h-[100px] w-[100px]"
                 :class="active == imageId ? 'border-primary' : ''"
                 @click.prevent="change(imageId)"
             >
