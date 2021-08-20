@@ -2,9 +2,6 @@
 
 namespace Rapidez\Core;
 
-use Rapidez\Core\Models\Traits\HasContentAttributeWithVariables;
-use Illuminate\Support\Str;
-
 class Rapidez
 {
     public function config(string $path, $default = null): ?string

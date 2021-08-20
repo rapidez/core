@@ -2,8 +2,8 @@
 
 namespace Rapidez\Core\Widgets;
 
-use Rapidez\Core\Rapidez;
 use Illuminate\Support\Collection;
+use Rapidez\Core\Rapidez;
 
 class ProductList
 {
@@ -22,10 +22,9 @@ class ProductList
 
     public function render()
     {
-
         return view('rapidez::widget.productlist', [
-            'options' => $this->options,
-            'condition' => $this->condition
-        ] )->render();
+            'options'   => $this->options,
+            'condition' => $this->condition,
+        ])->render();
     }
 }

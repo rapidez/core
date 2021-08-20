@@ -50,6 +50,6 @@ trait HasContentAttributeWithVariables
             $content .= (new $parseClass($options))->render();
 
             return $content;
-    }, $content);
+        }, $content);
     }
 }

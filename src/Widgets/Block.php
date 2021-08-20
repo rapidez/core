@@ -14,7 +14,7 @@ class Block
     public function render()
     {
         $blockModel = config('rapidez.models.block');
-        
+
         return $blockModel::find($this->blockId)->content;
     }
 }
