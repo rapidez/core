@@ -1,10 +1,8 @@
 <?php
 
-namespace Rapidez\Core\Models\Traits;
+namespace Rapidez\Core;
 
-use Illuminate\Support\Str;
-
-trait HasContentAttributeWithVariables
+class VariableParsers
 {
     public function getContentAttribute(string $content): string
     {
@@ -50,6 +48,20 @@ trait HasContentAttributeWithVariables
             $content .= (new $parseClass($options))->render();
 
             return $content;
-    }, $content);
+        }, $content);
+    }
+
+    public static function fancyMagentoSyntaxDecoder(string $encodedString): object
+    {
+        $mapping = [
+            '{'  => '^[',
+            '}'  => '^]',
+            '"'  => '`',
+            '\\' => '|',
+            '<'  => '^(',
+            '>'  => '^)',
+        ];
+
+        return json_decode(str_replace(array_values($mapping), array_keys($mapping), $encodedString));
     }
 }

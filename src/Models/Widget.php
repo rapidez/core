@@ -23,11 +23,11 @@ class Widget extends Model
 
     public function getContentAttribute(): string
     {
-        switch ($this->instance_type) {
-            case 'Magento\Cms\Block\Widget\Block':
-                return Block::find($this->widget_parameters->block_id)->content;
+        $widget = config('rapidez.widgets.'.$this->instance_type);
+        if (!class_exists($widget) && !app()->environment('production')) {
+            return '<hr>'.__('The ":type" widget type is not supported.', ['type' => $this->instance_type]).'<hr>';
         }
 
-        return '<hr>'.__('The ":type" widget type is not supported.', ['type' => $this->instance_type]).'<hr>';
+        return (new $widget($this->widget_parameters->block_id))->render();
     }
 }

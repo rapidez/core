@@ -2,12 +2,18 @@
 
 namespace Rapidez\Core;
 
+use Rapidez\Core\Models\Traits\HasContentAttributeWithVariables;
+use Illuminate\Support\Str;
+
 class Rapidez
 {
     public function config(string $path, $default = null): ?string
     {
-        $configModel = config('rapidez.models.config');
+        return config('rapidez.models.config')::getCachedByPath($path, $default);
+    }
 
-        return $configModel::getCachedByPath($path, $default);
+    public function getContent($content)
+    {
+        return $this->getContentAttribute($content);
     }
 }

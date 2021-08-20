@@ -63,6 +63,11 @@ return [
         'block'        => Rapidez\Core\Models\Block::class,
     ],
 
+    'widgets' => [
+        'Magento\Cms\Block\Widget\Block' => Rapidez\Core\Widgets\Block::class,
+        'Magento\CatalogWidget\Block\Product\ProductsList' => Rapidez\Core\Widgets\ProductList::class
+    ],
+
     // Localstorage keys that need to be flushed when the cache is cleared.
     'flushable_localstorage_keys' => [
         'attributes',

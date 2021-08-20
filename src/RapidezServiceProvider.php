@@ -12,6 +12,7 @@ use Rapidez\Core\Commands\ValidateCommand;
 use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
 use Rapidez\Core\Http\ViewComposers\ConfigComposer;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
+use Rapidez\Core\ViewDirectives\ContentDirective;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
 
 class RapidezServiceProvider extends ServiceProvider
@@ -95,6 +96,10 @@ class RapidezServiceProvider extends ServiceProvider
     {
         Blade::component('placeholder', PlaceholderComponent::class);
 
+        Blade::directive('content', function ($expression) {
+            return "<?php echo app('content-directive')->render($expression) ?>";
+        });
+
         Blade::directive('widget', function ($expression) {
             return "<?php echo app('widget-directive')->render($expression) ?>";
         });
@@ -132,6 +137,7 @@ class RapidezServiceProvider extends ServiceProvider
     {
         $this->app->bind('rapidez', Rapidez::class);
         $this->app->bind('widget-directive', WidgetDirective::class);
+        $this->app->bind('content-directive', ContentDirective::class);
 
         return $this;
     }
