@@ -12,7 +12,7 @@
         @widget('content', 'pages', ($page->identifier == 'home' ? 'cms' : $page->identifier).'_index_index')
         @if($page->content)
             <div class="mb-5 prose prose-green">
-                {!! $page->content !!}
+                @content($page->content)
             </div>
         @endif
     </div>

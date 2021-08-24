@@ -20,14 +20,4 @@ class Widget extends Model
             $builder->join('widget_instance_page', 'widget_instance_page.instance_id', '=', 'widget_instance.instance_id');
         });
     }
-
-    public function getContentAttribute(): string
-    {
-        $widget = config('rapidez.widgets.'.$this->instance_type);
-        if (!class_exists($widget) && !app()->environment('production')) {
-            return '<hr>'.__('The ":type" widget type is not supported.', ['type' => $this->instance_type]).'<hr>';
-        }
-
-        return (new $widget($this->widget_parameters->block_id))->render();
-    }
 }

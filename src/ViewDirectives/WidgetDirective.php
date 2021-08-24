@@ -3,6 +3,7 @@
 namespace Rapidez\Core\ViewDirectives;
 
 use Illuminate\Support\Facades\Cache;
+use Rapidez\Core\RapidezFacade as Rapidez;
 
 class WidgetDirective
 {
@@ -27,7 +28,15 @@ class WidgetDirective
                 }
 
                 foreach ($widgets->get() as $widget) {
-                    $html .= $widget->content;
+                    $widgetClass = config('rapidez.widgets.'.$widget->instance_type);
+
+                    if (!class_exists($widgetClass)) {
+                        if (!app()->environment('production')) {
+                            $html .= '<hr>'.__('Widget not implemented (:type).', ['type' => $widget->instance_type]).'<hr>';
+                        }
+                    } else {
+                        $html .= (new $widgetClass($widget->widget_parameters))->render();
+                    }
                 }
 
                 return $html;

@@ -97,7 +97,7 @@ class RapidezServiceProvider extends ServiceProvider
         Blade::component('placeholder', PlaceholderComponent::class);
 
         Blade::directive('content', function ($expression) {
-            return "<?php echo app('content-directive')->render($expression) ?>";
+            return "<?php echo Rapidez::content($expression) ?>";
         });
 
         Blade::directive('widget', function ($expression) {
@@ -107,7 +107,7 @@ class RapidezServiceProvider extends ServiceProvider
         Blade::directive('block', function ($expression) {
             $blockModel = config('rapidez.models.block');
 
-            return "<?php echo $blockModel::getCachedByIdentifier($expression) ?>";
+            return "<?php echo Rapidez::content($blockModel::getCachedByIdentifier($expression)) ?>";
         });
 
         Blade::directive('config', function ($expression) {
@@ -137,7 +137,6 @@ class RapidezServiceProvider extends ServiceProvider
     {
         $this->app->bind('rapidez', Rapidez::class);
         $this->app->bind('widget-directive', WidgetDirective::class);
-        $this->app->bind('content-directive', ContentDirective::class);
 
         return $this;
     }

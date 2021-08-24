@@ -3,18 +3,17 @@
 namespace Rapidez\Core\Widgets;
 
 use Illuminate\Support\Collection;
-use Rapidez\Core\Rapidez;
+use Rapidez\Core\RapidezFacade as Rapidez;
 
 class ProductList
 {
-    protected Collection $conditions;
     protected $condition;
-    protected Collection $options;
+    protected object $options;
 
     public function __construct($options)
     {
-        $this->conditions = collect(Rapidez::fancyMagentoSyntaxDecoder($options['conditions_encoded']));
-        $this->condition = $this->conditions->first(function ($condition) {
+        $conditions = collect(Rapidez::fancyMagentoSyntaxDecoder($options->conditions_encoded));
+        $this->condition = $conditions->first(function ($condition) {
             return $condition->type == 'Magento\CatalogWidget\Model\Rule\Condition\Product';
         });
         $this->options = $options;

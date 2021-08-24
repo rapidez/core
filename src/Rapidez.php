@@ -9,8 +9,26 @@ class Rapidez
         return config('rapidez.models.config')::getCachedByPath($path, $default);
     }
 
-    public function getContent($content)
+    public function content($content)
     {
-        return $this->getContentAttribute($content);
+        foreach (config('rapidez.content-variables') as $parser) {
+            $content = (new $parser)($content);
+        }
+
+        return $content;
+    }
+
+    public function fancyMagentoSyntaxDecoder(string $encodedString): object
+    {
+        $mapping = [
+            '{'  => '^[',
+            '}'  => '^]',
+            '"'  => '`',
+            '\\' => '|',
+            '<'  => '^(',
+            '>'  => '^)',
+        ];
+
+        return json_decode(str_replace(array_values($mapping), array_keys($mapping), $encodedString));
     }
 }

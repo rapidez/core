@@ -47,6 +47,7 @@ return [
         'category' => Rapidez\Core\Http\Controllers\CategoryController::class,
     ],
 
+    // The fully qualified class names of the models.
     'models' => [
         'page'         => Rapidez\Core\Models\Page::class,
         'attribute'    => Rapidez\Core\Models\Attribute::class,
@@ -63,9 +64,17 @@ return [
         'block'        => Rapidez\Core\Models\Block::class,
     ],
 
+    // The fully qualified class names of the widgets.
     'widgets' => [
         'Magento\Cms\Block\Widget\Block'                   => Rapidez\Core\Widgets\Block::class,
         'Magento\CatalogWidget\Block\Product\ProductsList' => Rapidez\Core\Widgets\ProductList::class,
+    ],
+
+    // The fully qualified class names of the content variables.
+    'content-variables' => [
+        Rapidez\Core\ContentVariables\Media::class,
+        Rapidez\Core\ContentVariables\Store::class,
+        Rapidez\Core\ContentVariables\Widget::class,
     ],
 
     // Localstorage keys that need to be flushed when the cache is cleared.
