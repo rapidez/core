@@ -2,7 +2,6 @@
 
 namespace Rapidez\Core\Widgets;
 
-use Illuminate\Support\Collection;
 use Rapidez\Core\RapidezFacade as Rapidez;
 
 class ProductList

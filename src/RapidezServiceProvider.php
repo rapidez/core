@@ -12,7 +12,6 @@ use Rapidez\Core\Commands\ValidateCommand;
 use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
 use Rapidez\Core\Http\ViewComposers\ConfigComposer;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
-use Rapidez\Core\ViewDirectives\ContentDirective;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
 
 class RapidezServiceProvider extends ServiceProvider

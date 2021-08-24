@@ -24,7 +24,7 @@ class Widget
                 return '<hr>'.__('Widget not implemented (:type).', compact('type')).'<hr>';
             }
 
-            return (new $widgetClass((object)$options))->render();
+            return (new $widgetClass((object) $options))->render();
         }, $content);
     }
 }

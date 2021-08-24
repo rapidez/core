@@ -3,7 +3,6 @@
 namespace Rapidez\Core\ViewDirectives;
 
 use Illuminate\Support\Facades\Cache;
-use Rapidez\Core\RapidezFacade as Rapidez;
 
 class WidgetDirective
 {
