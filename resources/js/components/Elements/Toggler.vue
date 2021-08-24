@@ -7,11 +7,13 @@
                 close: this.close
             })
         },
-
+        props: ['openDefault'],
         data: () => ({
             isOpen: false,
         }),
-
+        mounted() {
+            this.isOpen = this.openDefault ?? false;
+        },
         methods: {
             toggle() {
                 this.isOpen = !this.isOpen
