@@ -5,6 +5,7 @@ namespace Rapidez\Core\Models;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Models\Scopes\Attribute\OnlyProductAttributesScope;
+use TorMorten\Eventy\Facades\Eventy;
 
 class Attribute extends Model
 {
