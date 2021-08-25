@@ -15,6 +15,10 @@ class Attribute extends Model
     protected static function booted()
     {
         static::addGlobalScope(new OnlyProductAttributesScope());
+        $scopes = Eventy::filter('attribute.scopes', []);
+        foreach ($scopes as $scope) {
+            static::addGlobalScope(new $scope());
+        }
     }
 
     public static function getCachedWhere(callable $callback): array
