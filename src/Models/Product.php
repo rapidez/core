@@ -31,7 +31,6 @@ class Product extends Model
 
     protected static function booted(): void
     {
-        parent::booted();
         static::addGlobalScope(new WithProductAttributesScope());
         static::addGlobalScope(new WithProductSuperAttributesScope());
         static::addGlobalScope(new WithProductStockScope());

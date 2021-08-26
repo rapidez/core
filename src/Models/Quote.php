@@ -20,7 +20,6 @@ class Quote extends Model
 
     protected static function booted()
     {
-        parent::booted();
         static::addGlobalScope(new IsActiveScope());
         static::addGlobalScope('with-all-information', function (Builder $builder) {
             $builder

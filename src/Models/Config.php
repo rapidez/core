@@ -13,7 +13,6 @@ class Config extends Model
 
     protected static function booted()
     {
-        parent::booted();
         static::addGlobalScope('scope-fallback', function (Builder $builder) {
             $builder
                 ->where(function ($query) {

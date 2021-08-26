@@ -10,11 +10,6 @@ class OptionValue extends Model
 
     protected $primaryKey = 'value_id';
 
-    protected static function booted()
-    {
-        parent::booted();
-    }
-
     public static function getCachedByOptionId(int $optionId): string
     {
         $cacheKey = 'optionvalue.'.config('rapidez.store').'.'.$optionId;

@@ -14,7 +14,6 @@ class Attribute extends Model
 
     protected static function booted()
     {
-        parent::booted();
         static::addGlobalScope(new OnlyProductAttributesScope());
     }
 

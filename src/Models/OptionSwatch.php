@@ -16,12 +16,6 @@ class OptionSwatch extends Model
         'options' => 'array',
     ];
 
-    protected static function booted()
-    {
-        parent::booted();
-    }
-
-
     public static function getCachedSwatchValues(): array
     {
         $attributeModel = config('rapidez.models.attribute');
