@@ -12,6 +12,7 @@ class Rewrite extends Model
 
     protected static function booted()
     {
+        parent::booted();
         static::addGlobalScope('store', function (Builder $builder) {
             $builder->where('store_id', config('rapidez.store'));
         });

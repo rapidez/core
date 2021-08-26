@@ -16,6 +16,7 @@ class Store extends Model
 
     protected static function booted()
     {
+        parent::booted();
         static::addGlobalScope(new IsActiveScope());
         static::addGlobalScope('defaults', function (Builder $builder) {
             $builder

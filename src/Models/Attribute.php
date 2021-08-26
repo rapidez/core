@@ -5,7 +5,6 @@ namespace Rapidez\Core\Models;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Models\Scopes\Attribute\OnlyProductAttributesScope;
-use TorMorten\Eventy\Facades\Eventy;
 
 class Attribute extends Model
 {
@@ -15,11 +14,8 @@ class Attribute extends Model
 
     protected static function booted()
     {
+        parent::booted();
         static::addGlobalScope(new OnlyProductAttributesScope());
-        $scopes = Eventy::filter('attribute.scopes', []);
-        foreach ($scopes as $scope) {
-            static::addGlobalScope(new $scope());
-        }
     }
 
     public static function getCachedWhere(callable $callback): array
@@ -31,7 +27,7 @@ class Attribute extends Model
             config(['cache.app.attributes' => $attributes]);
         }
 
-        return Arr::where($attributes, function ($attribute) use ($callback) {
+        return Arr::where(self::all()->toArray(), function ($attribute) use ($callback) {
             return $callback($attribute);
         });
     }

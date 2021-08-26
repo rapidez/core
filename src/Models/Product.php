@@ -16,7 +16,6 @@ use Rapidez\Core\Models\Scopes\Product\WithProductSuperAttributesScope;
 use Rapidez\Core\Models\Traits\Product\CastMultiselectAttributes;
 use Rapidez\Core\Models\Traits\Product\CastSuperAttributes;
 use Rapidez\Core\Models\Traits\Product\SelectAttributeScopes;
-use TorMorten\Eventy\Facades\Eventy;
 
 class Product extends Model
 {
@@ -32,6 +31,7 @@ class Product extends Model
 
     protected static function booted(): void
     {
+        parent::booted();
         static::addGlobalScope(new WithProductAttributesScope());
         static::addGlobalScope(new WithProductSuperAttributesScope());
         static::addGlobalScope(new WithProductStockScope());
@@ -43,11 +43,6 @@ class Product extends Model
                 ->whereNotIn($builder->getQuery()->from.'.type_id', ['grouped', 'bundle'])
                 ->groupBy($builder->getQuery()->from.'.entity_id');
         });
-
-        $scopes = Eventy::filter('product.scopes', []);
-        foreach ($scopes as $scope) {
-            static::addGlobalScope(new $scope());
-        }
     }
 
     public function getTable(): string
