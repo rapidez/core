@@ -43,11 +43,6 @@ class Product extends Model
                 ->whereNotIn($builder->getQuery()->from.'.type_id', ['grouped', 'bundle'])
                 ->groupBy($builder->getQuery()->from.'.entity_id');
         });
-
-        $scopes = Eventy::filter('product.scopes', []);
-        foreach ($scopes as $scope) {
-            static::addGlobalScope(new $scope());
-        }
     }
 
     public function getTable(): string
