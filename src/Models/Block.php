@@ -5,7 +5,6 @@ namespace Rapidez\Core\Models;
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Models\Scopes\ForCurrentStoreScope;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
-use TorMorten\Eventy\Facades\Eventy;
 
 class Block extends Model
 {

@@ -4,7 +4,6 @@ namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
-use TorMorten\Eventy\Facades\Eventy;
 
 class Category extends Model
 {

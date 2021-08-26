@@ -4,7 +4,6 @@ namespace Rapidez\Core\Models;
 
 use Rapidez\Core\Models\Scopes\ForCurrentStoreScope;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
-use TorMorten\Eventy\Facades\Eventy;
 
 class Page extends Model
 {

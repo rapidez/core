@@ -3,7 +3,6 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use TorMorten\Eventy\Facades\Eventy;
 
 class Rewrite extends Model
 {

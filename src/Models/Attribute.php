@@ -5,7 +5,6 @@ namespace Rapidez\Core\Models;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Models\Scopes\Attribute\OnlyProductAttributesScope;
-use TorMorten\Eventy\Facades\Eventy;
 
 class Attribute extends Model
 {
@@ -27,7 +26,7 @@ class Attribute extends Model
             config(['cache.app.attributes' => $attributes]);
         }
 
-        return Arr::where(self::all()->toArray(), function ($attribute) use ($callback) {
+        return Arr::where($attributes, function ($attribute) use ($callback) {
             return $callback($attribute);
         });
     }

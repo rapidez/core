@@ -4,7 +4,7 @@ namespace Rapidez\Core\Models\Traits;
 
 use TorMorten\Eventy\Facades\Eventy;
 
-trait BaseEventyTrait
+trait HasEventyGlobalScopeFilter
 {
     public static function bootBaseEventyTrait()
     {

@@ -3,7 +3,6 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Support\Facades\Cache;
-use TorMorten\Eventy\Facades\Eventy;
 
 class OptionValue extends Model
 {
