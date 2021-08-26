@@ -5,6 +5,7 @@ namespace Rapidez\Core\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
+use TorMorten\Eventy\Facades\Eventy;
 
 class OptionSwatch extends Model
 {

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\QuoteItems;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
+use TorMorten\Eventy\Facades\Eventy;
 
 class Quote extends Model
 {

@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Exceptions\StoreNotFoundException;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
+use TorMorten\Eventy\Facades\Eventy;
 
 class Store extends Model
 {
