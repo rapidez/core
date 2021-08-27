@@ -35,7 +35,7 @@
  * @import "components/buttons";
  * @import "components/forms";
  */
-@import "components/vue-slider.css";
+@import "components/vue-slider";
 
 /**
  * This injects all of Tailwind's utility classes, generated based on your
@@ -61,6 +61,8 @@
  * @import "utilities/background-patterns";
  * @import "utilities/skew-transforms";
  */
+
+@import "utilities/snap";
 
 [v-cloak] { display: none; }
 * { -webkit-tap-highlight-color: transparant; }
