@@ -11,7 +11,7 @@ class ProductList
 
     public function __construct($options)
     {
-        $conditions = collect(Rapidez::fancyMagentoSyntaxDecoder($options->conditions_encoded));
+        $conditions = collect($options->conditions ?? Rapidez::fancyMagentoSyntaxDecoder($options->conditions_encoded));
         $this->condition = $conditions->first(function ($condition) {
             return $condition->type == 'Magento\CatalogWidget\Model\Rule\Condition\Product';
         });
