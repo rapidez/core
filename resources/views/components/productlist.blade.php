@@ -30,10 +30,10 @@
                                 @include('rapidez::listing.partials.item', ['slider' => true])
                             </template>
                         </div>
-                        <button class="absolute left-0 top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full w-12 h-12 bg-white border hover:bg-primary hover:text-white" v-if="showLeft" v-on:click="navigate(-1)">
+                        <button class="absolute left-0 top-1/2 transform -translate-y-1/2 flex items-center justify-center rounded-full w-12 h-12 bg-white border hover:bg-primary hover:text-white" v-if="showLeft" v-on:click="navigate(-1)">
                             <x-heroicon-o-chevron-left class="w-6 h-6"/>
                         </button>
-                        <button class="absolute right-0 top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full w-12 h-12 bg-white border hover:bg-primary hover:text-white" v-if="showRight"  v-on:click="navigate(1)">
+                        <button class="absolute right-0 top-1/2 transform -translate-y-1/2 flex items-center justify-center rounded-full w-12 h-12 bg-white border hover:bg-primary hover:text-white" v-if="showRight"  v-on:click="navigate(1)">
                             <x-heroicon-o-chevron-right class="w-6 h-6"/>
                         </button>
                     </div>
