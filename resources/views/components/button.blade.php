@@ -9,6 +9,9 @@ if ($variant == 'primary') {
 if ($variant == 'outline') {
     $classes[] = 'bg-transparent hover:bg-primary text-primary hover:text-white border-primary hover:border-transparent';
 }
+if ($variant == 'slider') {
+    $classes = ['flex items-center justify-center rounded-full w-12 h-12 bg-white border hover:bg-primary hover:text-white'];
+}
 @endphp
 
 <{{ $tag }} {{ $attributes->merge([
