@@ -1,4 +1,4 @@
-@props(['value', 'title', 'field' => 'sku.keyword'])
+@props(['value', 'title' => false, 'field' => 'sku.keyword'])
 
 @if($value)
     <reactive-base v-cloak :app="config.es_prefix + '_products_' + config.store" :url="config.es_url">
@@ -12,7 +12,7 @@
                     : $value
             !!} } } } }"
         >
-            @isset($title)
+            @if($title)
                 <strong class="font-bold text-2xl mt-5" slot="renderResultStats">
                     @lang($title)
                 </strong>
