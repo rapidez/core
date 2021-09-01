@@ -6,11 +6,11 @@ use Illuminate\Support\Facades\Cache;
 
 class WidgetDirective
 {
-    public function render($location, $type, $handle = 'default', $entities = null)
+    public function render($location, $type, $handle = 'default', $entities = null, $replace = [])
     {
         return Cache::rememberForever(
             'widget.'.md5(serialize(func_get_args())),
-            function () use ($location, $type, $handle, $entities) {
+            function () use ($location, $type, $handle, $entities, $replace) {
                 $html = '';
 
                 if ($type == 'pages') {
@@ -38,7 +38,7 @@ class WidgetDirective
                     }
                 }
 
-                return $html;
+                return empty($replace) ? $html : strtr($html, $replace);
             }
         );
     }
