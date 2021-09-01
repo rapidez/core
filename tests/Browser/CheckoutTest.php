@@ -39,6 +39,7 @@ class CheckoutTest extends DuskTestCase
             $browser->click('@continue')
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->click('@method-0')
+                ->waitUntilAllAjaxCallsAreFinished()
                 ->click('@continue')
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->assertSee('Partytime!');
@@ -70,6 +71,7 @@ class CheckoutTest extends DuskTestCase
                 ->click('@continue')
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->click('@method-0')
+                ->waitUntilAllAjaxCallsAreFinished()
                 ->click('@continue')
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->assertSee('Partytime!');
