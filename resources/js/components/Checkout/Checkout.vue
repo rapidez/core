@@ -186,6 +186,16 @@
                 return validated
             },
 
+            async selectPaymentMethod() {
+                let response = await this.magentoCart('post', 'set-payment-information', {
+                    email: this.user == null ? this.$root.guestEmail : this.user.email,
+                    paymentMethod: {
+                        method:  this.checkout.payment_method
+                    }
+                })
+                this.getTotalsInformation()
+            },
+
             async savePaymentMethod() {
                 if (!this.checkout.payment_method) {
                     Notify(window.config.translations.checkout.no_payment_method, 'error')
@@ -283,6 +293,9 @@
                 handler: function() {
                     this.storeShipping()
                 }
+            },
+            'checkout.payment_method': function () {
+                this.selectPaymentMethod()
             },
             'checkout.step': function () {
                 if (this.backEvent) {
