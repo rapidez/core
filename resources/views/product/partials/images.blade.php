@@ -4,16 +4,18 @@
             <a
                 :href="config.media_url + '/catalog/product' + images[active]"
                 class="flex items-center justify-center"
-                :class="zoomed ? 'fixed inset-0 bg-white !h-full z-10 cursor-[zoom-out]' : 'border rounded p-5 h-[450px]'"
+                :class="zoomed ? 'fixed inset-0 bg-white !h-full z-10 cursor-[zoom-out]' : 'border rounded p-5 h-[440px]'"
                 v-on:click.prevent="toggleZoom"
             >
                 <picture v-if="!zoomed" class="contents">
-                    <source :srcset="'/storage/resizes/450/catalog/product' + images[active] + '.webp'" type="image/webp">
+                    <source :srcset="'/storage/resizes/400/catalog/product' + images[active] + '.webp'" type="image/webp">
                     <img
-                        :src="'/storage/resizes/450/catalog/product' + images[active]"
+                        :src="'/storage/resizes/400/catalog/product' + images[active]"
                         alt="{{ $product->name }}"
-                        class="max-h-full max-w-full"
+                        class="object-contain w-full m-auto max-h-[400px]"
                         loading="lazy"
+                        width="400"
+                        height="400"
                     />
                 </picture>
                 <img
@@ -44,12 +46,14 @@
                 @click.prevent="change(imageId)"
             >
                 <picture class="contents">
-                    <source :srcset="'/storage/resizes/100x100/catalog/product' + image + '.webp'" type="image/webp">
+                    <source :srcset="'/storage/resizes/80x80/catalog/product' + image + '.webp'" type="image/webp">
                     <img
-                        :src="'/storage/resizes/100x100/catalog/product' + image"
+                        :src="'/storage/resizes/80x80/catalog/product' + image"
                         alt="{{ $product->name }}"
-                        class="max-h-full max-w-full"
+                        class="object-contain w-full m-auto max-h-[80px]"
                         loading="lazy"
+                        width="80"
+                        height="80"
                     />
                 </picture>
             </a>
