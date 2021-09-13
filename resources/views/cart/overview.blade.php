@@ -10,10 +10,10 @@
                 <div class="w-1/6 sm:w-1/12 pr-3">
                     <a :href="item.product.url_key + item.product.url_suffix" class="block">
                         <picture>
-                            <source :srcset="'/storage/resizes/100x100/catalog/product' + item.product.image.url.replace(config.media_url + '/catalog/product', '') + '.webp'" type="image/webp">
+                            <source :srcset="'/storage/resizes/80x80/catalog/product' + item.product.image.url.replace(config.media_url + '/catalog/product', '') + '.webp'" type="image/webp">
                             <img
                                 :alt="item.product.name"
-                                :src="'/storage/resizes/100x100/catalog/product' + item.product.image.url.replace(config.media_url + '/catalog/product', '')"
+                                :src="'/storage/resizes/80x80/catalog/product' + item.product.image.url.replace(config.media_url + '/catalog/product', '')"
                                 height="100"
                                 class="mx-auto"
                             />

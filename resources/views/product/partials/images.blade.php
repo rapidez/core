@@ -4,16 +4,18 @@
             <a
                 :href="config.media_url + '/catalog/product' + images[active]"
                 class="flex items-center justify-center"
-                :class="zoomed ? 'fixed inset-0 bg-white !h-full z-10 cursor-[zoom-out]' : 'border rounded p-5 h-[450px]'"
+                :class="zoomed ? 'fixed inset-0 bg-white !h-full z-10 cursor-[zoom-out]' : 'border rounded p-5 h-[440px]'"
                 v-on:click.prevent="toggleZoom"
             >
                 <picture v-if="!zoomed" class="contents">
-                    <source :srcset="'/storage/resizes/450/catalog/product' + images[active] + '.webp'" type="image/webp">
+                    <source :srcset="'/storage/resizes/400/catalog/product' + images[active] + '.webp'" type="image/webp">
                     <img
-                        :src="'/storage/resizes/450/catalog/product' + images[active]"
+                        :src="'/storage/resizes/400/catalog/product' + images[active]"
                         alt="{{ $product->name }}"
-                        class="max-h-full max-w-full"
+                        class="object-contain w-full m-auto max-h-[400px]"
                         loading="lazy"
+                        width="400"
+                        height="400"
                     />
                 </picture>
                 <img
@@ -25,12 +27,12 @@
                 />
             </a>
 
-            <button class="top-1/2 z-10 -translate-y-1/2 left-3" :class="zoomed ? 'fixed' : 'absolute'" v-if="active" v-on:click="change(active-1)">
-                <x-heroicon-s-chevron-left class="h-8 w-8"/>
+            <button class="top-1/2 z-10 -translate-y-1/2 left-3" :class="zoomed ? 'fixed' : 'absolute'" v-if="active" v-on:click="change(active-1)" aria-label="@lang('Prev')">
+                <x-heroicon-s-chevron-left class="h-12 w-12"/>
             </button>
 
-            <button class="top-1/2 z-10 -translate-y-1/2 right-3" :class="zoomed ? 'fixed' : 'absolute'" v-if="active != images.length-1" v-on:click="change(active+1)">
-                <x-heroicon-s-chevron-right class="h-8 w-8"/>
+            <button class="top-1/2 z-10 -translate-y-1/2 right-3" :class="zoomed ? 'fixed' : 'absolute'" v-if="active != images.length-1" v-on:click="change(active+1)" aria-label="@lang('Next')">
+                <x-heroicon-s-chevron-right class="h-12 w-12"/>
             </button>
         </div>
         <x-rapidez::no-image v-else class="rounded h-96"/>
@@ -44,12 +46,14 @@
                 @click.prevent="change(imageId)"
             >
                 <picture class="contents">
-                    <source :srcset="'/storage/resizes/100x100/catalog/product' + image + '.webp'" type="image/webp">
+                    <source :srcset="'/storage/resizes/80x80/catalog/product' + image + '.webp'" type="image/webp">
                     <img
-                        :src="'/storage/resizes/100x100/catalog/product' + image"
+                        :src="'/storage/resizes/80x80/catalog/product' + image"
                         alt="{{ $product->name }}"
-                        class="max-h-full max-w-full"
+                        class="object-contain w-full m-auto max-h-[80px]"
                         loading="lazy"
+                        width="80"
+                        height="80"
                     />
                 </picture>
             </a>
