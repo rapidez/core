@@ -17,15 +17,6 @@ Route::middleware('api')->prefix('api')->group(function () {
         return $optionswatchModel::getCachedSwatchValues();
     });
 
-    Route::get('cart/{quoteIdMaskOrCustomerToken}', function ($quoteIdMaskOrCustomerToken) {
-        $quoteModel = config('rapidez.models.quote');
-
-        return $quoteModel::where(function ($query) use ($quoteIdMaskOrCustomerToken) {
-            $query->where('masked_id', $quoteIdMaskOrCustomerToken)
-                  ->orWhere('token', $quoteIdMaskOrCustomerToken);
-        })->firstOrFail();
-    });
-
     Route::prefix('admin')->middleware(VerifyAdminToken::class)->group(function () {
         Route::get('cache/clear', fn () => Artisan::call('cache:clear'));
         Route::get('index/products', function () {

@@ -1,0 +1,22 @@
+mutation {
+  updateCartItems(
+    input: changes
+  )
+  {
+    cart {
+      items {
+        id
+        product {
+          name
+        }
+        quantity
+      }
+      prices {
+        grand_total{
+          value
+          currency
+        }
+      }
+    }
+  }
+}

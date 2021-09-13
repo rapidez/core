@@ -9,6 +9,10 @@
                 type: String,
                 required: true,
             },
+            variables: {
+                type: Object,
+                default: () => {},
+            },
             check: {
                 type: String,
             },
@@ -18,6 +22,9 @@
             cache: {
                 type: String,
             },
+            afterResolvedData: {
+                type: Function,
+            }
         },
 
         data: () => ({
@@ -28,16 +35,26 @@
         render() {
             return this.$scopedSlots.default({
                 data: this.data,
+                resolveData: this.resolveData,
             })
         },
 
         created() {
-            if (!this.getCache()) {
-                this.runQuery()
-            }
+            this.resolveData()
         },
 
         methods: {
+            async resolveData (options = {skip_cache: false})
+            {
+                if (options.skip_cache || !this.getCache()) {
+                    await this.runQuery()
+                }
+
+                if (this.afterResolvedData) {
+                    this.afterResolvedData(this.data)
+                }
+            },
+
             getCache() {
                 let cache = false
 
@@ -52,7 +69,8 @@
                 try {
                     let options = this.$root.user ? { headers: { Authorization: `Bearer ${localStorage.token}` }} : null
                     let response = await axios.post(config.magento_url + '/graphql', {
-                        query: this.query
+                        query: this.query,
+                        variables: this.variables
                     }, options)
 
                     if (response.data.errors) {

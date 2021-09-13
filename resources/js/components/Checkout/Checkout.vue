@@ -141,7 +141,7 @@
                         await this.login(this.$root.user.email, this.checkout.password, async () => {
                             if (self.$root.cart) {
                                 await self.linkUserToCart()
-                                localStorage.mask = self.$root.cart.entity_id
+                                this.$root.mask = self.$root.cart.id
                             }
                         });
                     }

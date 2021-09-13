@@ -20,12 +20,12 @@
                     </x-rapidez::button>
                 </form>
                 <p class="text-red-500 text-xs italic w-3/4 mt-3" v-if="submitError">@{{ submitError }}</p>
-                <div class="relative rounded-md" v-if="cart.discount_name && cart.discount_amount > 0">
+                <div class="relative rounded-md" v-if="cart.applied_coupons">
                     <div class="flex items-center">
                         <button v-on:click="removeCoupon">
                             <x-heroicon-s-x class="h-4 w-4 text-black-400"/>
                         </button>
-                        @lang('Discount'): @{{ cart.discount_name }}
+                        @lang('Discount'): @{{ cart.applied_coupons[0].code }}
                     </div>
                 </div>
             </div>

@@ -24,6 +24,7 @@ require('./axios')
 require('./filters')
 require('./mixins')
 require('./turbolinks')
+require('./callbacks')
 
 /**
  * The following block of code may be used to automatically register your
@@ -77,6 +78,12 @@ document.addEventListener('turbolinks:load', () => {
             guestEmail: null,
             user: null,
             cart: null,
+            get mask() {
+                return localStorage.getItem('mask')
+            },
+            set mask(value) {
+                return localStorage.setItem('mask', value)
+            },
             checkout: {
                 step: 1,
                 shipping_address: {

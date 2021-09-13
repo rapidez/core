@@ -50,7 +50,7 @@
                 this.magentoCart('post', 'items', {
                     cartItem: {
                         sku: this.product.sku,
-                        quote_id: localStorage.mask,
+                        quote_id: this.$root.mask,
                         qty: this.qty,
                         product_option: this.productOptions
                     }

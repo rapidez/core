@@ -10,7 +10,7 @@ Vue.mixin({
             if (this.$root.user) {
                 return await magentoUser[method]('carts/mine/' + endpoint, data)
             } else {
-                return await magento[method]('guest-carts/' + localStorage.mask + '/' + endpoint, data)
+                return await magento[method]('guest-carts/' + this.$root.mask + '/' + endpoint, data)
             }
         }
     }

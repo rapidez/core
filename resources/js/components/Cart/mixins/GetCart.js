@@ -1,28 +1,15 @@
 export default {
     methods: {
         getCart() {
-            if (this.$root.cart === null && localStorage.cart) {
-                this.$root.cart = JSON.parse(localStorage.cart)
+            if (this.$root.cart === null && localStorage.graphql_cart) {
+                this.$root.cart = JSON.parse(localStorage.graphql_cart).cart
             }
 
             return this.$root.cart
         },
 
         async refreshCart() {
-            await this.getMask()
-
-            if (localStorage.mask) {
-                try {
-                    let response = await axios.get('/api/cart/' + (localStorage.token ? localStorage.token : localStorage.mask))
-                    localStorage.cart = JSON.stringify(response.data)
-                    window.app.cart = response.data
-                } catch (error) {
-                    if (error.response.status == 404) {
-                        localStorage.removeItem('mask')
-                    }
-                    Notify(window.config.translations.errors.wrong, 'warning')
-                }
-            }
+            this.$root.$emit('refresh-cart')
         },
 
         async getMask() {
@@ -36,13 +23,13 @@ export default {
                 }
 
                 if (response !== undefined && response.data) {
-                    localStorage.mask = response.data
+                    this.$root.mask = response.data
                 }
             }
         },
 
         async linkUserToCart() {
-            await magentoUser.put('guest-carts/'+localStorage.mask, {
+            await magentoUser.put('guest-carts/'+this.$root.mask, {
                 customerId: this.$root.user.id,
                 storeId: config.store
             }).catch((error) => {
@@ -61,11 +48,23 @@ export default {
         },
 
         hasVirtualItems: function () {
-            return Object.values(this.cart.items).filter((item) => item.type == 'downloadable').length
+            return Object.values(this.cart.items).filter((item) => item.__typename == 'DownloadableCartItem').length
         },
 
         hasOnlyVirtualItems: function () {
             return this.hasVirtualItems === this.hasItems
+        },
+
+        cartCrossells: function () {
+            let crossellSet = new Set()
+
+            for (let item of Object.values(this.cart.items)) {
+                for (let crossell_product of item.product.crosssell_products) {
+                    crossellSet.add(crossell_product.id)
+                }
+            }
+
+            return [...crossellSet]
         }
     },
 }
