@@ -58,7 +58,7 @@ export default {
         cartCrossells: function () {
             let crossellSet = new Set()
 
-            for (let item of Object.values(this.cart.items)) {
+            for (let item of Object.values(this.cart.items ? this.cart.items : [])) {
                 for (let crossell_product of item.product.crosssell_products) {
                     crossellSet.add(crossell_product.id)
                 }

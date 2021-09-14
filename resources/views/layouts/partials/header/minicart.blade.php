@@ -3,7 +3,7 @@
         <div v-if="data && data.cart && data.cart.items && Object.keys(data.cart.items).length" v-on-click-away="close" slot-scope="{toggle, close, isOpen}">
             <button class="flex my-1 focus:outline-none" v-on:click="toggle">
                 <x-heroicon-o-shopping-cart class="h-6 w-6"/>
-                <span class="bg-primary rounded-full w-6 h-6 text-white text-center">@{{ Math.round(data.cart.total_quantity) }}</span>
+                <span class="bg-primary rounded-full w-6 h-6 text-white text-center" dusk="minicart-qty">@{{ Math.round(data.cart.total_quantity) }}</span>
             </button>
             <div v-if="isOpen" class="absolute right-0 bg-white border shadow rounded p-3 mr-1 z-10">
                 <table class="mb-3">

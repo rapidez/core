@@ -30,7 +30,7 @@
                     @{{ item.prices.price.value | price }}
                 </div>
                 <graphql-mutation :callback="refreshCart" :changes="{cart_id: cart.id, cart_items: {cart_item_id: Number(item.id), quantity: Number(item.quantity)}}" query='@include("rapidez::cart.queries.changeQty")'>
-                    <div class="w-2/6 sm:w-1/6 lg:w-1/12" slot-scope="{ changes, mutate, mutated }">
+                    <div class="w-2/6 sm:w-1/6 lg:w-1/12" slot-scope="{ mutate }">
                         <div class="inline-flex">
                             <x-rapidez::input
                                 :label="false"
@@ -55,7 +55,7 @@
                 <div class="w-2/6 sm:w-1/6 lg:w-1/12 flex justify-end items-center text-right">
                     @{{ item.prices.price.value * item.quantity | price }}
                     <graphql-mutation :callback="refreshCart" :changes="{ cart_id: cart.id, cart_item_id: Number(item.id) }" query="@include('rapidez::cart.queries.removeItemFromCart')">
-                        <a :disabled="$root.loading" slot-scope="{changes, mutate}" href="#" v-on:click.prevent="mutate()" class="ml-2" title="@lang('Remove')" :dusk="'item-delete-'+index">
+                        <a :disabled="$root.loading" slot-scope="{ mutate }" href="#" v-on:click.prevent="mutate()" class="ml-2" title="@lang('Remove')" :dusk="'item-delete-'+index">
                             <x-heroicon-s-x class="w-4 h-4"/>
                         </a>
                     </graphql-mutation>
