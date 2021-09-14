@@ -13,7 +13,7 @@ class CartTest extends DuskTestCase
             $browser->visit($this->testProduct->url)
                     ->waitUntilAllAjaxCallsAreFinished()
                     ->click('@add-to-cart')
-                    ->waitFor('@minicart-qty')
+                    ->waitFor('@minicart-qty', 10)
                     ->waitUntilAllAjaxCallsAreFinished()
                     ->visit('/cart')
                     ->waitFor('@cart-item-name')
