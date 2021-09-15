@@ -10,7 +10,6 @@
     }"
     :title="filter.name.replace('_', ' ')"
     :react="{and: reactiveFilters}"
-    :query-format="filter.input == 'multiselect' ? 'and' : 'or'"
     :show-search="false"
     u-r-l-params
 >
