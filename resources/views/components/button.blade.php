@@ -1,4 +1,4 @@
-@props(['variant' => 'primary'])
+@props(['variant' => 'primary', 'disableWhenLoading' => true])
 
 @php
 $tag = $attributes->has('href') || $attributes->has(':href') ? 'a' : 'button';
@@ -17,6 +17,6 @@ if ($variant == 'slider') {
 <{{ $tag }} {{ $attributes->merge([
     'type' => $attributes->has('href') || $attributes->has(':href') ? null : 'button',
     'class' => implode(' ', $classes),
-    ':disabled' => $attributes->has('href') || $attributes->has(':href') ? null : '$root.loading']) }}>
+    ':disabled' => $attributes->has('href') || $attributes->has(':href') || !$disableWhenLoading ? null : '$root.loading']) }}>
     {{ $slot }}
 </{{ $tag }}>
