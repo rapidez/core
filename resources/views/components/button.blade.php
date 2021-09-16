@@ -1,7 +1,7 @@
 @props(['variant' => 'primary'])
 
 @php
-$tag = $attributes->has('href') ? 'a' : 'button';
+$tag = $attributes->has('href') || $attributes->has(':href') ? 'a' : 'button';
 $classes[] = 'inline-block font-semibold py-2 px-4 border rounded disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-75';
 if ($variant == 'primary') {
     $classes[] = 'bg-primary border-primary text-white';
@@ -15,8 +15,8 @@ if ($variant == 'slider') {
 @endphp
 
 <{{ $tag }} {{ $attributes->merge([
-    'type' => $attributes->has('href') ? null : 'button',
+    'type' => $attributes->has('href') || $attributes->has(':href') ? null : 'button',
     'class' => implode(' ', $classes),
-    ':disabled' => $attributes->has('href') ? null : '$root.loading']) }}>
+    ':disabled' => $attributes->has('href') || $attributes->has(':href') ? null : '$root.loading']) }}>
     {{ $slot }}
 </{{ $tag }}>
