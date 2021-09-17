@@ -40,6 +40,7 @@
                             name="qty"
                             v-model="item.qty"
                             v-bind:dusk="'qty-'+index"
+                            ::step="item.qty_increments"
                         />
                         <x-rapidez::button
                             class="ml-1"
