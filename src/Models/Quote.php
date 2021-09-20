@@ -44,6 +44,7 @@ class Quote extends Model
                     "image", product.thumbnail,
                     "url_key", product.url_key,
                     "qty", quote_item.qty,
+                    "qty_increments", stock.qty_increments,
                     "price", quote_item.price_incl_tax,
                     "total", quote_item.row_total_incl_tax,
                     "attributes", quote_item_option.value,
@@ -61,6 +62,7 @@ class Quote extends Model
                     $join->on('quote_item.item_id', '=', 'quote_item_option.item_id')->where('code', 'attributes');
                 })
                 ->leftJoin('catalog_product_flat_'.config('rapidez.store').' AS product', 'product.entity_id', '=', 'quote_item.product_id')
+                ->leftJoin('cataloginventory_stock_item AS stock', 'stock.product_id', '=', 'quote_item.product_id')
                 ->leftJoin('catalog_product_link AS cross_sell', function ($join) {
                     $join->on('cross_sell.product_id', '=', 'quote_item.product_id')->where('cross_sell.link_type_id', '=', 5);
                 })

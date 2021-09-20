@@ -36,10 +36,11 @@
                             :label="false"
                             class="text-right"
                             type="number"
-                            min="1"
                             name="qty"
                             v-model="item.qty"
                             v-bind:dusk="'qty-'+index"
+                            ::min="item.qty_increments"
+                            ::step="item.qty_increments"
                         />
                         <x-rapidez::button
                             class="ml-1"
