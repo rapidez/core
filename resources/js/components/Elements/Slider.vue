@@ -3,8 +3,10 @@
         render() {
             return this.$scopedSlots.default({
                 navigate: this.navigate,
+                navigateTo: this.navigateTo,
                 showLeft: this.showLeft,
                 showRight: this.showRight,
+                currentSlide: this.currentSlide
             })
         },
         data: () => {
@@ -12,11 +14,13 @@
                 position: 0,
                 showLeft: false,
                 showRight: false,
+                mounted: false
             }
         },
         mounted() {
             this.slider.addEventListener('scroll', this.scroll)
             this.slider.dispatchEvent(new CustomEvent('scroll'))
+            this.mounted = true
         },
         beforeDestroy() {
             this.slider.removeEventListener('scroll', this.scroll)
@@ -31,12 +35,21 @@
 
             navigate(direction) {
                 this.slider.scrollTo(this.position + this.slider.childNodes[0]?.offsetWidth * direction, 0)
+            },
+
+            navigateTo(index) {
+                this.slider.scrollTo(this.slider.childNodes[0]?.offsetWidth * index, 0)
             }
         },
         computed: {
             slider() {
                 return this.$scopedSlots.default()[0].context.$refs.slider
             },
+            currentSlide() {
+                if (this.mounted) {
+                    return Math.round(this.position / this.slider.childNodes[0]?.offsetWidth)
+                }
+            }
         }
     }
 </script>
