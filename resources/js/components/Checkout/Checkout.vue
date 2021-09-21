@@ -225,7 +225,12 @@
                     })
 
                     this.$root.cart = null
-                    this.$root.$emit('CheckoutPaymentSaved')
+                    this.$root.$emit('CheckoutPaymentSaved', {
+                        order: {
+                            id: response.data,
+                            payment_method_code: this.checkout.payment_method
+                        }
+                    })
                     return true
                 } catch (error) {
                     Notify(error.response.data.message, 'error')
