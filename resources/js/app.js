@@ -70,22 +70,6 @@ document.addEventListener('turbolinks:load', () => {
 
     window.app = new Vue({
         el: '#app',
-        asyncComputed: {
-            swatches () {
-                if (localStorage.swatches) {
-                    return JSON.parse(localStorage.swatches);
-                }
-
-                return axios.get('/api/swatches')
-                    .then((response) => {
-                        localStorage.swatches = JSON.stringify(response.data)
-                        return response.data
-                    })
-                    .catch((error) => {
-                        Notify(window.config.errors.wrong, 'error')
-                    })
-            }
-        },
         data: {
             config: window.config,
             loading: false,
@@ -128,6 +112,22 @@ document.addEventListener('turbolinks:load', () => {
         methods: {
             search(value) {
                 Turbolinks.visit('/search?q=' + value)
+            }
+        },
+        asyncComputed: {
+            swatches () {
+                if (localStorage.swatches) {
+                    return JSON.parse(localStorage.swatches);
+                }
+
+                return axios.get('/api/swatches')
+                    .then((response) => {
+                        localStorage.swatches = JSON.stringify(response.data)
+                        return response.data
+                    })
+                    .catch((error) => {
+                        Notify(window.config.errors.wrong, 'error')
+                    })
             }
         }
     })
