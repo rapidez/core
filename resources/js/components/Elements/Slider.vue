@@ -5,7 +5,8 @@
                 navigate: this.navigate,
                 showLeft: this.showLeft,
                 showRight: this.showRight,
-                currentSlide: this.currentSlide
+                currentSlide: this.currentSlide,
+                slidesTotal: this.slidesTotal
             })
         },
         data: () => {
@@ -29,7 +30,7 @@
                 this.position = event.currentTarget.scrollLeft
 
                 this.showLeft = this.position
-                this.showRight = this.slider.offsetWidth + this.position != this.slider.scrollWidth
+                this.showRight = (this.slider.offsetWidth + this.position) < this.slider.scrollWidth - 1
             },
 
             navigate(index) {
@@ -43,6 +44,11 @@
             currentSlide() {
                 if (this.mounted) {
                     return Math.round(this.position / this.slider.childNodes[0]?.offsetWidth)
+                }
+            },
+            slidesTotal() {
+                if (this.mounted) {
+                    return Math.ceil(this.slider.scrollWidth / this.slider.offsetWidth)
                 }
             }
         }

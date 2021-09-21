@@ -24,7 +24,7 @@
 
             <div class="relative" slot="render" slot-scope="{ data, loading }" v-if="!loading">
                 <slider>
-                    <div slot-scope="{ navigate, showLeft, showRight, currentSlide }">
+                    <div slot-scope="{ navigate, showLeft, showRight, currentSlide, slidesTotal }">
                         <div class="flex mt-5 overflow-x-auto snap" ref="slider">
                             <template v-for="item in data">
                                 @include('rapidez::listing.partials.item', ['slider' => true])
@@ -38,7 +38,7 @@
                         </x-rapidez::button>
                         <div class="flex flex-row justify-center w-full mt-[35px]">
                             <div
-                                v-for="item, index in data"
+                                v-for="slide, index in slidesTotal"
                                 v-on:click="navigate(index)"
                                 class="relative bg-white rounded-full border border-gray-300 w-[15px] h-[15px] mx-1 z-20 cursor-pointer"
                                 :class="{ 'bg-primary border-0': index === currentSlide }">
