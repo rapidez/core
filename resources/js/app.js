@@ -39,7 +39,6 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
 Vue.component('cart', require('./components/Cart/Cart.vue').default)
 Vue.component('listing', require('./components/Listing/Listing.vue').default)
 Vue.component('query-filter', require('./components/Listing/Filters/QueryFilter.vue').default)
-Vue.component('swatch-filter', require('./components/Listing/Filters/SwatchFilter.vue').default)
 Vue.component('checkout', require('./components/Checkout/Checkout.vue').default)
 Vue.component('login', require('./components/Checkout/Login.vue').default)
 Vue.component('coupon', require('./components/Coupon/Coupon.vue').default)
@@ -113,6 +112,22 @@ document.addEventListener('turbolinks:load', () => {
         methods: {
             search(value) {
                 Turbolinks.visit('/search?q=' + value)
+            }
+        },
+        asyncComputed: {
+            swatches () {
+                if (localStorage.swatches) {
+                    return JSON.parse(localStorage.swatches);
+                }
+
+                return axios.get('/api/swatches')
+                    .then((response) => {
+                        localStorage.swatches = JSON.stringify(response.data)
+                        return response.data
+                    })
+                    .catch((error) => {
+                        Notify(window.config.errors.wrong, 'error')
+                    })
             }
         }
     })
