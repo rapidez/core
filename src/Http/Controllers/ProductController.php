@@ -8,7 +8,7 @@ class ProductController
     {
         $productModel = config('rapidez.models.product');
         $product = $productModel::selectForProductPage()->findOrFail($productId);
-        $attributes = ['name', 'sku', 'super_attributes', 'children', 'price', 'images'];
+        $attributes = ['id', 'name', 'sku', 'super_attributes', 'children', 'price', 'images'];
 
         foreach ($product->super_attributes ?: [] as $superAttribute) {
             $attributes[] = $superAttribute->code;
