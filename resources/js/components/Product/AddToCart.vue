@@ -77,8 +77,8 @@
                 }
 
                 // Get value label using the swatches.
-                if (this.getSwatches().hasOwnProperty(code)) {
-                    let swatchOptions = this.getSwatches()[code].options
+                if (this.$root.swatches.hasOwnProperty(code)) {
+                    let swatchOptions = this.$root.swatches[code].options
                     let values = {}
 
                     Object.entries(this.product[code]).forEach(([key, val]) => {
@@ -92,14 +92,6 @@
 
                 return _.invert(this.product[code])
             },
-
-            getSwatches: function() {
-                if (localStorage.swatches) {
-                    return JSON.parse(localStorage.swatches)
-                }
-
-                return {}
-            }
         },
 
         computed: {
