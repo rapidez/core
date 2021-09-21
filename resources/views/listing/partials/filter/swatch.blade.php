@@ -7,7 +7,7 @@
         list: '!max-h-full flex flex-wrap',
     }"
     :title="filter.name.replace('_', ' ')"
-    :react="{and: reactiveFilters}"
+    :react="{and: filter.input == 'multiselect' ? reactiveFilters : reactiveFilters.filter(item => item != filter.code) }"
     :query-format="filter.input == 'multiselect' ? 'and' : 'or'"
     :show-search="false"
     :show-checkbox="false"
