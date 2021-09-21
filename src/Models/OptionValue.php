@@ -28,21 +28,4 @@ class OptionValue extends Model
 
         return $optionValue;
     }
-
-    public static function getCachedOptionValues()
-    {
-        $cacheKey = 'optionvalues.'.config('rapidez.store');
-
-        if (!$optionValues = config('cache.app.'.$cacheKey)) {
-            $optionValues = Cache::rememberForever($cacheKey, function () {
-                return html_entity_decode(self::select(['option_id', 'value'])->whereIn('store_id', [config('rapidez.store'), 0])
-                    ->orderByDesc('store_id')
-                    ->get()->pluck('value', 'option_id'));
-            });
-
-            config(['cache.app.'.$cacheKey => $optionValues]);
-        }
-
-        return $optionValues;
-    }
 }

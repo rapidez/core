@@ -11,12 +11,6 @@ Route::middleware('api')->prefix('api')->group(function () {
         });
     });
 
-    Route::get('option_values', function () {
-        $attributeModel = config('rapidez.models.optionvalue');
-
-        return $attributeModel::getCachedOptionValues();
-    });
-
     Route::get('swatches', function () {
         $optionswatchModel = config('rapidez.models.optionswatch');
 

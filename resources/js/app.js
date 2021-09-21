@@ -71,20 +71,6 @@ document.addEventListener('turbolinks:load', () => {
     window.app = new Vue({
         el: '#app',
         asyncComputed: {
-            optionValues () {
-                if (localStorage.optionValues) {
-                    return JSON.parse(localStorage.optionValues);
-                }
-
-                return axios.get('/api/option_values')
-                .then((response) => {
-                    localStorage.optionValues = JSON.stringify(response.data)
-                    return response.data
-                })
-                .catch((error) => {
-                    Notify(window.config.errors.wrong, 'error')
-                })
-            },
             swatches () {
                 if (localStorage.swatches) {
                     return JSON.parse(localStorage.swatches);

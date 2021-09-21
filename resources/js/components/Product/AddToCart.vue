@@ -90,17 +90,6 @@
                     return values
                 }
 
-                if (this.$root.optionValues) {
-                    let values = {}
-
-                    Object.entries(this.product[code]).forEach(([key, val]) => {
-                        if (this.$root.optionValues[val]) {
-                            values[val] = this.$root.optionValues[val]
-                        }
-                    })
-                    return values
-                }
-
                 return _.invert(this.product[code])
             },
         },
