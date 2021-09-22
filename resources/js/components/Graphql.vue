@@ -9,6 +9,10 @@
                 type: String,
                 required: true,
             },
+            variables: {
+                type: Object,
+                default: () => ({}),
+            },
             check: {
                 type: String,
             },
@@ -52,7 +56,8 @@
                 try {
                     let options = this.$root.user ? { headers: { Authorization: `Bearer ${localStorage.token}` }} : null
                     let response = await axios.post(config.magento_url + '/graphql', {
-                        query: this.query
+                        query: this.query,
+                        variables: this.variables,
                     }, options)
 
                     if (response.data.errors) {

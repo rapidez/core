@@ -5,6 +5,10 @@
                 type: String,
                 required: true,
             },
+            variables: {
+                type: Object,
+                default: () => ({}),
+            },
             changes: {
                 type: Object,
                 default: () => ({}),
@@ -54,7 +58,8 @@
 
                 try {
                     let response = await axios.post(config.magento_url + '/graphql', {
-                        query: this.query.replace('changes', this.queryfy(this.changes))
+                        query: this.query.replace('changes', this.queryfy(this.changes)),
+                        variables: this.variables,
                     }, this.$root.user ? { headers: { Authorization: `Bearer ${localStorage.token}` }} : null)
 
                     if (response.data.errors) {
