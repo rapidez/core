@@ -36,11 +36,11 @@
                         <x-rapidez::button variant="slider" class="absolute right-0 top-1/2 transform -translate-y-1/2" v-if="showRight" v-on:click="navigate(currentSlide + 1)" aria-label="@lang('Next')">
                             <x-heroicon-o-chevron-right class="w-6 h-6"/>
                         </x-rapidez::button>
-                        <div class="flex flex-row justify-center w-full mt-[35px]">
+                        <div v-show="slidesTotal > 1" class="flex flex-row justify-center w-full mt-[35px]">
                             <div
                                 v-for="slide, index in slidesTotal"
                                 v-on:click="navigate(index)"
-                                class="relative bg-white rounded-full border border-gray-300 w-[15px] h-[15px] mx-1 z-20 cursor-pointer"
+                                class="relative bg-white rounded-full border border-gray-300 w-[15px] h-[15px] mx-1 cursor-pointer"
                                 :class="{ 'bg-primary border-0': index === currentSlide }">
                             </div>
                         </div>
