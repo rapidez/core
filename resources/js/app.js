@@ -74,7 +74,7 @@ document.addEventListener('turbolinks:load', () => {
         data: {
             config: window.config,
             loading: false,
-            guestEmail: null,
+            guestEmail: localStorage.email ?? null,
             user: null,
             cart: null,
             checkout: {
