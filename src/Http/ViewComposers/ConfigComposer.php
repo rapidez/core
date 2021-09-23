@@ -4,6 +4,7 @@ namespace Rapidez\Core\Http\ViewComposers;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
+use TorMorten\Eventy\Facades\Eventy;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -15,6 +16,9 @@ class ConfigComposer
             config('rapidez'),
             array_merge(config('rapidez.exposed'), ['store_code'])
         );
+
+        $config = Eventy::filter('config.exposed', []);
+        $exposedFrontendConfigValues = array_merge($exposedFrontendConfigValues, $config);
 
         config(['frontend' => array_merge(
             config('frontend') ?: [],
