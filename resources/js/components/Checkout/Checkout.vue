@@ -215,22 +215,14 @@
                         }
                     })
                     // response.data = orderId
-                    localStorage.removeItem('mask')
-                    localStorage.removeItem('cart')
 
-                    localStorage.removeItem('email')
-
-                    this.getShippingKeys().forEach((key) => {
-                        localStorage.removeItem('shipping_' + key)
-                    })
-
-                    this.$root.cart = null
                     this.$root.$emit('CheckoutPaymentSaved', {
                         order: {
                             id: response.data,
                             payment_method_code: this.checkout.payment_method
                         }
                     })
+
                     return true
                 } catch (error) {
                     Notify(error.response.data.message, 'error')
