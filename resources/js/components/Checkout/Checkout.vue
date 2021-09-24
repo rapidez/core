@@ -223,13 +223,6 @@
                         }
                     })
 
-                    if (!window.app.checkout.doNotGoToTheNextStep) {
-                        // If a payment method prevents us from going to the next step
-                        // it will be responsible for checking the payment status and
-                        // finishing the order if payment was successful.
-                        this.clearCart()
-                    }
-
                     return true
                 } catch (error) {
                     Notify(error.response.data.message, 'error')
