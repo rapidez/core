@@ -48,6 +48,7 @@
                 mutate: this.mutate,
                 mutated: this.mutated,
                 error: this.error,
+                variables: this.variables
             })
         },
 
