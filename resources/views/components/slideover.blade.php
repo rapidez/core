@@ -4,7 +4,7 @@
     <div>
         {{ $button }}
 
-        <div class="fixed inset-0 overflow-hidden z-30 {{ $mobileOnly ? 'md:static md:block' : '' }}" :class="isOpen ? 'pointer-events-auto' : 'pointer-events-none'">
+        <div class="fixed inset-0 overflow-hidden {{ config('rapidez.z-indexes.slideover') }} {{ $mobileOnly ? 'md:static md:block' : '' }}" :class="isOpen ? 'pointer-events-auto' : 'pointer-events-none'">
             <div class="absolute inset-0 overflow-hidden {{ $mobileOnly ? 'md:static' : '' }}">
                 <transition
                     enter-active-class="ease-in-out duration-500"

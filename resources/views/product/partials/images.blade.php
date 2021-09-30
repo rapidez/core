@@ -4,7 +4,7 @@
             <a
                 :href="config.media_url + '/catalog/product' + images[active]"
                 class="flex items-center justify-center"
-                :class="zoomed ? 'fixed inset-0 bg-white !h-full z-10 cursor-[zoom-out]' : 'border rounded p-5 h-[440px]'"
+                :class="zoomed ? 'fixed inset-0 bg-white !h-full {{ config('rapidez.z-indexes.lightbox')}} cursor-[zoom-out]' : 'border rounded p-5 h-[440px]'"
                 v-on:click.prevent="toggleZoom"
             >
                 <picture v-if="!zoomed" class="contents">
@@ -27,17 +27,17 @@
                 />
             </a>
 
-            <button class="top-1/2 z-10 -translate-y-1/2 left-3" :class="zoomed ? 'fixed' : 'absolute'" v-if="active" v-on:click="change(active-1)" aria-label="@lang('Prev')">
+            <button class="top-1/2 -translate-y-1/2 left-3 {{ config('rapidez.z-indexes.lightbox')}}" :class="zoomed ? 'fixed' : 'absolute'" v-if="active" v-on:click="change(active-1)" aria-label="@lang('Prev')">
                 <x-heroicon-s-chevron-left class="h-12 w-12"/>
             </button>
 
-            <button class="top-1/2 z-10 -translate-y-1/2 right-3" :class="zoomed ? 'fixed' : 'absolute'" v-if="active != images.length-1" v-on:click="change(active+1)" aria-label="@lang('Next')">
+            <button class="top-1/2 -translate-y-1/2 right-3 {{ config('rapidez.z-indexes.lightbox')}}" :class="zoomed ? 'fixed' : 'absolute'" v-if="active != images.length-1" v-on:click="change(active+1)" aria-label="@lang('Next')">
                 <x-heroicon-s-chevron-right class="h-12 w-12"/>
             </button>
         </div>
         <x-rapidez::no-image v-else class="rounded h-96"/>
 
-        <div v-if="images.length > 1" class="flex" :class="zoomed ? 'fixed z-10 bottom-0 left-3' : ' flex-wrap mt-3'">
+        <div v-if="images.length > 1" class="flex" :class="zoomed ? 'fixed bottom-0 left-3 {{ config('rapidez.z-indexes.lightbox')}}' : ' flex-wrap mt-3'">
             <a
                 href="#"
                 v-for="(image, imageId) in images"
@@ -59,7 +59,7 @@
             </a>
         </div>
 
-        <div v-if="zoomed" class="fixed top-3 right-3 z-10 pointer-events-none">
+        <div v-if="zoomed" class="fixed top-3 right-3 pointer-events-none {{ config('rapidez.z-indexes.lightbox')}}">
             <x-heroicon-o-x class="h-6 w-6"/>
         </div>
     </div>
