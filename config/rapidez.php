@@ -96,9 +96,7 @@ return [
 
     // Z-Index per element
     'z-indexes' => [
-        'autocomplete' => 'z-20',
-        'minicart' => 'z-10',
-        'account' => 'z-10',
+        'header-dropdowns' => 'z-20',
         'lightbox' => 'z-30',
         'notification' => 'z-20',
         'slideover' => 'z-50',
