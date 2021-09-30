@@ -93,4 +93,13 @@ return [
             'error'   => 'text-red-600 bg-red-100 border-red-300',
         ],
     ],
+
+    'z-indexes' => [
+        'autocomplete' => 'z-20',
+        'minicart' => 'z-10',
+        'lightbox' => 'z-30',
+        'notification' => 'z-20',
+        'slideover' => 'z-50',
+    ],
+
 ];
