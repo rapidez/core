@@ -94,12 +94,14 @@ return [
         ],
     ],
 
+    //z-indexes of elements in the webshop
     'z-indexes' => [
         'autocomplete' => 'z-20',
         'minicart' => 'z-10',
         'lightbox' => 'z-30',
         'notification' => 'z-20',
         'slideover' => 'z-50',
+        'checkoutcart' => 'z-50'
     ],
 
 ];
