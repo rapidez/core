@@ -12,8 +12,6 @@ export default {
             localStorage.removeItem('mask')
             localStorage.removeItem('cart')
 
-            localStorage.removeItem('email')
-
             Object.keys(localStorage).forEach((key) => {
                 if (!key.startsWith('shipping')) {
                     return;
