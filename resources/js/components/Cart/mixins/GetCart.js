@@ -8,9 +8,13 @@ export default {
             return this.$root.cart
         },
 
-        clearCart() {
-            localStorage.removeItem('mask')
-            localStorage.removeItem('cart')
+        clearCart(keys = []) {
+            keys.push('cart')
+            keys.push('mask')
+
+            Object.entries(keys).forEach((key) => {
+                localStorage.removeItem(key)
+            })
 
             Object.keys(localStorage).forEach((key) => {
                 if (!key.startsWith('shipping')) {
