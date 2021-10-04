@@ -8,7 +8,7 @@ export default {
             return this.$root.cart
         },
 
-        clearCart(keys = []) {
+        async clearCart(keys = []) {
             keys.push('cart')
             keys.push('mask')
 
