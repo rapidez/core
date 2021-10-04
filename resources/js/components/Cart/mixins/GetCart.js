@@ -12,7 +12,7 @@ export default {
             keys.push('cart')
             keys.push('mask')
 
-            Object.entries(keys).forEach((key) => {
+            Object.values(keys).forEach((key) => {
                 localStorage.removeItem(key)
             })
 
