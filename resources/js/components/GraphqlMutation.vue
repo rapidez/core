@@ -76,7 +76,7 @@
                     }
 
                     if (this.callback) {
-                        await this.callback(this.changes, response)
+                        await this.callback(this.changes, this.variables, response)
                     }
 
                     var self = this
