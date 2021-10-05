@@ -23,7 +23,7 @@ export default {
                 localStorage.removeItem(key)
             })
 
-            this.$root.cart = null
+            window.app.cart = null
         },
 
         async refreshCart() {
