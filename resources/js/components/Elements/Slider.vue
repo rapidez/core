@@ -48,7 +48,7 @@
             },
             slidesTotal() {
                 if (this.mounted) {
-                    return Math.ceil(this.slider.scrollWidth / this.slider.offsetWidth)
+                    return Math.round(this.slider.scrollWidth / this.slider.offsetWidth)
                 }
             }
         }
