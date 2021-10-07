@@ -40,6 +40,7 @@
         data: () => ({
             error: false,
             mutated: false,
+            data: {},
         }),
 
         render() {
@@ -48,7 +49,12 @@
                 mutate: this.mutate,
                 mutated: this.mutated,
                 error: this.error,
+                variables: this.data,
             })
+        },
+
+        created() {
+            this.data = this.variables
         },
 
         methods: {
@@ -59,7 +65,7 @@
                 try {
                     let response = await axios.post(config.magento_url + '/graphql', {
                         query: this.query.replace('changes', this.queryfy(this.changes)),
-                        variables: this.variables,
+                        variables: this.data,
                     }, this.$root.user ? { headers: { Authorization: `Bearer ${localStorage.token}` }} : null)
 
                     if (response.data.errors) {
@@ -75,7 +81,7 @@
                     }
 
                     if (this.callback) {
-                        await this.callback(this.changes, response)
+                        await this.callback(this.changes, this.data, response)
                     }
 
                     var self = this
