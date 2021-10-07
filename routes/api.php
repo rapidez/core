@@ -27,8 +27,8 @@ Route::middleware('api')->prefix('api')->group(function () {
     });
 
     Route::prefix('admin')->middleware(VerifyAdminToken::class)->group(function () {
-        Route::get('cache/clear', fn () => Artisan::call('cache:clear'));
-        Route::get('index/products', function () {
+        Route::match(['get', 'post'], 'cache/clear', fn () => Artisan::call('cache:clear'));
+        Route::match(['get', 'post'], 'index/products', function () {
             fastcgi_finish_request();
             Artisan::call('rapidez:index', [
                 'store' => $request->store,
