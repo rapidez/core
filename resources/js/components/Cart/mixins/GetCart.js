@@ -8,6 +8,24 @@ export default {
             return this.$root.cart
         },
 
+        clearCart(keys = []) {
+            keys.push('cart')
+            keys.push('mask')
+
+            Object.values(keys).forEach((key) => {
+                localStorage.removeItem(key)
+            })
+
+            Object.keys(localStorage).forEach((key) => {
+                if (!key.startsWith('shipping')) {
+                    return;
+                }
+                localStorage.removeItem(key)
+            })
+
+            window.app.cart = null
+        },
+
         async refreshCart() {
             await this.getMask()
 

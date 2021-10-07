@@ -5,7 +5,7 @@
                 <x-heroicon-o-user class="h-6 w-6"/>
                 @{{ $root.user.firstname }}
             </button>
-            <div v-if="isOpen" class="absolute bg-white border shadow rounded mr-1 z-10 {{ Route::currentRouteName() == 'checkout' ? 'right-0' : '' }}">
+            <div v-if="isOpen" class="absolute bg-white border shadow rounded mr-1 {{ config('rapidez.z-indexes.header-dropdowns')}} {{ Route::currentRouteName() == 'checkout' ? 'right-0' : '' }}">
                 @if(App::providerIsLoaded('Rapidez\Account\AccountServiceProvider'))
                     <a class="block hover:bg-secondary px-3 py-2" href="/account">@lang('Account')</a>
                     <a class="block hover:bg-secondary px-3 py-2" href="/account/orders">@lang('Orders')</a>
