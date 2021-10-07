@@ -10,7 +10,7 @@
 
     <div class="col-span-12 my-5">
         <x-rapidez::checkbox v-model="checkout.hide_billing">
-            @lang('My billing and shipping address is the same')
+            @lang('My billing and shipping address are the same')
         </x-rapidez::checkbox>
 
         <div class="mt-2">
