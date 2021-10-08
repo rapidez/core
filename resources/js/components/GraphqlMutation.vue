@@ -34,6 +34,10 @@
             },
             callback: {
                 type: Function,
+            },
+            mutateEvent: {
+                type: String,
+                required: false
             }
         },
 
@@ -55,6 +59,14 @@
 
         created() {
             this.data = this.variables
+        },
+
+        mounted() {
+            if (this.mutateEvent) {
+                window.app.$on(this.mutateEvent, () => {
+                    this.mutate()
+                })
+            }
         },
 
         methods: {
