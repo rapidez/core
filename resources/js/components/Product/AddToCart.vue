@@ -122,7 +122,7 @@
                     product = simpleProducts[0]
                 }
 
-                this.$root.$emit('productSuperAttributeChange', product)
+                this.$root.$emit('product-super-attribute-change', product)
 
                 return product
             },

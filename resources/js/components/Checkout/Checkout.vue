@@ -152,7 +152,7 @@
 
                     this.checkout.payment_methods = response.data.payment_methods
                     this.checkout.totals = response.data.totals
-                    this.$root.$emit('CheckoutCredentialsSaved')
+                    this.$root.$emit('checkout-credentials-saved')
                     return true
                 } catch (error) {
                     Notify(error.response.data.message, 'error')
@@ -216,7 +216,7 @@
                     })
                     // response.data = orderId
 
-                    this.$root.$emit('CheckoutPaymentSaved', {
+                    this.$root.$emit('checkout-payment-saved', {
                         order: {
                             id: response.data,
                             payment_method_code: this.checkout.payment_method
