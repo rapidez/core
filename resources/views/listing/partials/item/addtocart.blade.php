@@ -1,5 +1,5 @@
 <add-to-cart v-bind:product="item" v-cloak>
-    <div class="px-2 pb-2" slot-scope="{ options, error, add, disabledOptions, simpleProduct, getValuesByCode }">
+    <div class="px-2 pb-2" slot-scope="{ options, error, add, disabledOptions, simpleProduct, getValuesByCode, adding, added }">
         <div class="font-semibold mb-2">@{{ simpleProduct.price | price}}</div>
         <p v-if="!item.in_stock" class="text-red-600 text-xs">@lang('Sorry! This product is currently out of stock.')</p>
         <div v-else>
@@ -22,11 +22,14 @@
                 </x-rapidez::select>
             </div>
 
-            <x-rapidez::button v-on:click="add" dusk="add-to-cart">
-                @lang('Add to cart')
+            <x-rapidez::button class="flex items-center" v-on:click="add" dusk="add-to-cart">
+                <x-heroicon-o-shopping-cart class="h-5 w-5 mr-2" v-if="!adding && !added" />
+                <x-heroicon-o-refresh class="h-5 w-5 mr-2 animate-spin" v-if="adding" />
+                <x-heroicon-o-check class="h-5 w-5 mr-2" v-if="added" />
+                <span v-if="!adding && !added">@lang('Add to cart')</span>
+                <span v-if="adding">@lang('Adding')...</span>
+                <span v-if="added">@lang('Added')</span>
             </x-rapidez::button>
-
-            <div v-if="error" v-text="error" class="text-red-600"></div>
         </div>
     </div>
 </add-to-cart>
