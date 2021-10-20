@@ -18,12 +18,27 @@
             qty: {
                 type: Number,
                 default: 1
+            },
+            addedDuration: {
+                type: Number,
+                default: 3000,
+            },
+            notifySuccess: {
+                type: Boolean,
+                default: false,
+            },
+            notifyError: {
+                type: Boolean,
+                default: true,
             }
         },
 
         data: () => ({
             options: {},
             error: null,
+
+            adding: false,
+            added: false,
         }),
 
         render() {
@@ -36,6 +51,9 @@
                 error: this.error,
                 add: this.add,
                 qty: this.qty,
+
+                adding: this.adding,
+                added: this.added,
             })
         },
 
@@ -45,6 +63,8 @@
             },
 
             async add() {
+                this.added = false
+                this.adding = true
                 await this.getMask()
 
                 this.magentoCart('post', 'items', {
@@ -57,16 +77,25 @@
                 }).then(async (response) => {
                     this.error = null
                     await this.refreshCart()
-                    Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success')
+                    this.added = true
+                    setTimeout(() => { this.added = false }, this.addedDuration)
+                    if (this.notifySuccess) {
+                        Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success')
+                    }
                     if (config.redirect_cart) {
-                        Turbolinks.visit('/cart');
+                        Turbolinks.visit('/cart')
                     }
                 }).catch((error) => {
                     if (error.response.status == 401) {
                         Notify(window.config.translations.errors.session_expired, 'error')
                         this.logout('/login')
                     }
+                    if (this.notifyError) {
+                        Notify(error.response.data.message, 'error')
+                    }
                     this.error = error.response.data.message
+                }).then(() => {
+                    this.adding = false
                 })
             },
 
