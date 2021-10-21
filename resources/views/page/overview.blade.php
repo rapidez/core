@@ -5,7 +5,7 @@
 
 @section('content')
     <div class="container mx-auto">
-        @if($page->identifier != 'home')
+        @if($page->identifier != 'home' && $page->content_heading)
             <h1 class="font-bold text-4xl mb-5">{{ $page->content_heading }}</h1>
         @endif
         @includeIf('pages.'.$page->identifier)
