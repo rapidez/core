@@ -16,6 +16,7 @@
 
     <link href="{{ url(mix('css/app.css')) }}" rel="stylesheet" data-turbolinks-track="reload">
     <script src="{{ url(mix('js/app.js')) }}" defer data-turbolinks-track="reload"></script>
+    @stack('head')
 </head>
 <body class="bg-white antialiased">
     <div id="app">
