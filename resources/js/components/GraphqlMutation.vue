@@ -38,7 +38,11 @@
             mutateEvent: {
                 type: String,
                 required: false
-            }
+            },
+            recaptcha: {
+                type: Boolean,
+                default: false,
+            },
         },
 
         data: () => ({
@@ -75,10 +79,20 @@
                 this.error = false
 
                 try {
+                    let options = { headers: {} }
+
+                    if (this.$root.user) {
+                        options['headers']['Authorization'] = `Bearer ${localStorage.token}`
+                    }
+
+                    if (this.recaptcha) {
+                        options['headers']['X-ReCaptcha'] = await this.getReCaptchaToken()
+                    }
+
                     let response = await axios.post(config.magento_url + '/graphql', {
                         query: this.query.replace('changes', this.queryfy(this.changes)),
                         variables: this.data,
-                    }, this.$root.user ? { headers: { Authorization: `Bearer ${localStorage.token}` }} : null)
+                    }, options)
 
                     if (response.data.errors) {
                         this.error = response.data.errors[0].message
@@ -118,6 +132,16 @@
                 } catch (e) {
                     Notify(window.config.translations.errors.wrong, 'warning')
                 }
+            },
+
+            getReCaptchaToken() {
+                return new Promise((res, rej) => {
+                    grecaptcha.ready(function() {
+                        grecaptcha.execute(window.config.recaptcha, { action: 'submit' }).then(function(token) {
+                            return res(token)
+                        })
+                    })
+                })
             },
 
             // Credits: https://stackoverflow.com/a/54262737/622945
