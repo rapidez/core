@@ -4,9 +4,9 @@ namespace Rapidez\Core;
 
 class Rapidez
 {
-    public function config(string $path, $default = null): ?string
+    public function config(string $path, $default = null, bool $sensitive = false): ?string
     {
-        return config('rapidez.models.config')::getCachedByPath($path, $default);
+        return config('rapidez.models.config')::getCachedByPath($path, $default, $sensitive);
     }
 
     public function content($content)

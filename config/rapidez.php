@@ -16,6 +16,9 @@ return [
     // Magento url.
     'magento_url' => env('MAGENTO_URL'),
 
+    // Magento crypt key.
+    'crypt_key' => env('CRYPT_KEY'),
+
     // The variables which should be exposed to the frontend.
     'exposed' => [
         'store',
