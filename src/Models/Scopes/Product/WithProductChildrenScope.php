@@ -29,6 +29,7 @@ class WithProductChildrenScope implements Scope
                 "price", children.price,
                 '.$superAttributesSelect.'
                 "in_stock", stock.is_in_stock,
+                "stock_qty", stock.qty,
                 "images", (
                     SELECT JSON_ARRAYAGG(catalog_product_entity_media_gallery.value)
                     FROM catalog_product_entity_media_gallery_value_to_entity
