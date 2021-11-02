@@ -1,6 +1,14 @@
 <script>
     export default {
-        props: ['notification'],
+        props: {
+            notification: {
+                type: Object
+            },
+            timeout: {
+                type: Number,
+                default: 5000
+            }
+        },
         render() {
             return this.$scopedSlots.default({
                 classes: this.classes,
@@ -18,7 +26,7 @@
         mounted() {
             setTimeout(() => {
                 this.close()
-            }, 5000)
+            }, this.timeout)
         },
         data: () => ({
             message: null,
