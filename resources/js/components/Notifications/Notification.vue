@@ -4,7 +4,7 @@
             notification: {
                 type: Object
             },
-            timeout: {
+            duration: {
                 type: Number,
                 default: 5000
             }
@@ -26,7 +26,7 @@
         mounted() {
             setTimeout(() => {
                 this.close()
-            }, this.timeout)
+            }, this.duration)
         },
         data: () => ({
             message: null,
