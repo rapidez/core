@@ -19,6 +19,10 @@
                 type: Number,
                 default: 1
             },
+            showSwatches: {
+                type: Number,
+                default: 0
+            },
             addedDuration: {
                 type: Number,
                 default: 3000,
@@ -63,7 +67,7 @@
             },
 
             async add() {
-                if (Object.values(this.product.children).length && window.location.pathname !== this.product.url) {
+                if (Object.values(this.product.children).length && window.location.pathname !== this.product.url && !this.showSwatches) {
                     Turbolinks.visit(this.product.url)
                     return;
                 }
