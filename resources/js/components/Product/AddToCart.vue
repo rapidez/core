@@ -95,7 +95,7 @@
                         Notify(window.config.translations.errors.session_expired, 'error')
                         this.logout('/login')
                     }
-                    if (this.notifyError && window.location.pathname !== this.product.url) {
+                    if (this.notifyError) {
                         Notify(error.response.data.message, 'error')
                     }
                     this.error = error.response.data.message
