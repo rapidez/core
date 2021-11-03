@@ -9,12 +9,6 @@
                 slidesTotal: this.slidesTotal
             })
         },
-        props: {
-            reference: {
-                type: String,
-                default: 'slider'
-            },
-        },
         data: () => {
             return {
                 position: 0,
@@ -45,7 +39,7 @@
         },
         computed: {
             slider() {
-                return this.$scopedSlots.default()[0].context.$refs[this.reference]
+                return this.$scopedSlots.default()[0].context.$refs.slider
             },
             currentSlide() {
                 if (this.mounted) {
