@@ -29,6 +29,7 @@ class ConfigComposer
         config(['frontend.currency' => $configModel::getCachedByPath('currency/options/default')]);
         config(['frontend.cachekey' => Cache::rememberForever('cachekey', fn () => md5(Str::random()))]);
         config(['frontend.redirect_cart' => (bool) $configModel::getCachedByPath('checkout/cart/redirect_to_cart')]);
+        config(['frontend.show_swatches' => (bool) $configModel::getCachedByPath('catalog/frontend/show_swatches_in_product_list')]);
         config(['frontend.translations' => __('rapidez::frontend')]);
         config(['frontend.recaptcha' => Config::getCachedByPath('recaptcha_frontend/type_recaptcha_v3/public_key', null, true)]);
 
