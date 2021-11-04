@@ -63,7 +63,7 @@
             },
 
             async add() {
-                if (Object.values(this.product.children).length && window.location.pathname !== '/'+this.product.url_key && !config.show_swatches) {
+                if (Object.values(this.product.children).length && window.location.pathname !== this.product.url && !config.show_swatches) {
                     Turbolinks.visit(this.product.url)
                     return;
                 }
