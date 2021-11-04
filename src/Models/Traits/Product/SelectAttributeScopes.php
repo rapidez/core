@@ -25,7 +25,7 @@ trait SelectAttributeScopes
                 'meta_description',
                 'price',
                 'description',
-                'url_key'
+                'url_key',
             ]);
         }), 'code');
 
