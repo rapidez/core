@@ -22,6 +22,9 @@
             cache: {
                 type: String,
             },
+            callback: {
+                type: Function,
+            },
         },
 
         data: () => ({
@@ -74,6 +77,10 @@
                             Turbolinks.visit(this.redirect)
                             return
                         }
+                    }
+
+                    if (this.callback) {
+                        await this.callback(response)
                     }
 
                     this.data = response.data.data
