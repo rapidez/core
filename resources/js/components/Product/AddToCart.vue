@@ -63,7 +63,7 @@
             },
 
             async add() {
-                if (Object.values(this.product.children).length && window.location.pathname !== this.product.url && !config.show_swatches) {
+                if (Object.values(this.product.children).length && this.product.hasOwnProperty('url') && window.location.pathname !== this.product.url && !config.show_swatches) {
                     Turbolinks.visit(this.product.url)
                     return;
                 }
@@ -95,7 +95,7 @@
                         Notify(window.config.translations.errors.session_expired, 'error')
                         this.logout('/login')
                     }
-                    if (this.notifyError && window.location.pathname !== this.product.url) {
+                    if (this.notifyError) {
                         Notify(error.response.data.message, 'error')
                     }
                     this.error = error.response.data.message
