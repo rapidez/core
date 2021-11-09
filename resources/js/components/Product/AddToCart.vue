@@ -7,13 +7,7 @@
         props: {
             product: {
                 type: Object,
-                default: function () {
-                    if (config.product) {
-                        return config.product
-                    }
-
-                    return {}
-                }
+                default: () => config.product || {}
             },
             qty: {
                 type: Number,
@@ -43,7 +37,7 @@
 
         render() {
             return this.$scopedSlots.default({
-                getValuesByCode: this.getValuesByCode,
+                getOptions: this.getOptions,
                 simpleProduct: this.simpleProduct,
                 disabledOptions: this.disabledOptions,
                 changeQty: this.changeQty,
@@ -104,27 +98,21 @@
                 })
             },
 
-            getValuesByCode: function (code) {
-                if (!this.product[code].length) {
-                    // Result is already a value => label Object.
-                    return this.product[code]
-                }
-
-                // Get value label using the swatches.
-                if (this.$root.swatches.hasOwnProperty(code)) {
-                    let swatchOptions = this.$root.swatches[code].options
+            getOptions: function (superAttributeCode) {
+                if (this.$root.swatches.hasOwnProperty(superAttributeCode)) {
+                    let swatchOptions = this.$root.swatches[superAttributeCode].options
                     let values = {}
 
-                    Object.entries(this.product[code]).forEach(([key, val]) => {
+                    Object.entries(this.product[superAttributeCode]).forEach(([key, val]) => {
                         if (swatchOptions[val]) {
-                            values[val] = swatchOptions[val]['value']
+                            values[val] = swatchOptions[val]
                         }
                     })
 
                     return values
                 }
 
-                return _.invert(this.product[code])
+                return {}
             },
         },
 

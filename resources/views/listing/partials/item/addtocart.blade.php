@@ -1,5 +1,5 @@
 <add-to-cart v-bind:product="item" v-cloak>
-    <div class="px-2 pb-2" slot-scope="{ options, error, add, disabledOptions, simpleProduct, getValuesByCode, adding, added }">
+    <div class="px-2 pb-2" slot-scope="{ options, error, add, disabledOptions, simpleProduct, getOptions, adding, added }">
         <div class="font-semibold mb-2">@{{ simpleProduct.price | price}}</div>
         <p v-if="!item.in_stock" class="text-red-600 text-xs">@lang('Sorry! This product is currently out of stock.')</p>
         <div v-else>
@@ -14,10 +14,10 @@
                 >
                     <option disabled selected hidden :value="undefined">@lang('Select') @{{ superAttribute.label.toLowerCase() }}</option>
                     <option
-                        v-for="(label, value) in getValuesByCode(superAttribute.code)"
-                        v-text="label"
-                        :value="value"
-                        :disabled="disabledOptions[superAttribute.code].includes(value)"
+                        v-for="(option, optionId) in getOptions(superAttribute.code)"
+                        v-text="option.value"
+                        :value="optionId"
+                        :disabled="disabledOptions[superAttribute.code].includes(optionId)"
                     />
                 </x-rapidez::select>
             </div>
