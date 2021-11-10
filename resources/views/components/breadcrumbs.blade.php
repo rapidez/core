@@ -1,4 +1,4 @@
-<div class="flex items-center mb-3">
-    <x-rapidez::breadcrumb url="/">@lang('Home')</x-rapidez::breadcrumb>
+<ol class="flex mb-3" itemscope itemtype="https://schema.org/BreadcrumbList">
+    <x-rapidez::breadcrumb url="/" position="1">@lang('Home')</x-rapidez::breadcrumb>
     {{ $slot }}
-</div>
+</ol>
