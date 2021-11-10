@@ -24,6 +24,10 @@ class ConfigComposer
 
         $configModel = config('rapidez.models.config');
         $attributeModel = config('rapidez.models.attribute');
+        $additionalSearchable = config('rapidez.searchable');
+        $searchable = Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {
+            return $attribute['search'];
+        }), 'search_weight', 'code');
 
         config(['frontend.locale' => $configModel::getCachedByPath('general/locale/code', 'en_US')]);
         config(['frontend.currency' => $configModel::getCachedByPath('currency/options/default')]);
@@ -32,9 +36,6 @@ class ConfigComposer
         config(['frontend.show_swatches' => (bool) $configModel::getCachedByPath('catalog/frontend/show_swatches_in_product_list')]);
         config(['frontend.translations' => __('rapidez::frontend')]);
         config(['frontend.recaptcha' => Config::getCachedByPath('recaptcha_frontend/type_recaptcha_v3/public_key', null, true)]);
-
-        config(['frontend.searchable' => Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {
-            return $attribute['search'];
-        }), 'search_weight', 'code')]);
+        config(['frontend.searchable' => array_merge($searchable, $additionalSearchable)]);
     }
 }

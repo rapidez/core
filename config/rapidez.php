@@ -31,6 +31,11 @@ return [
         'flushable_localstorage_keys',
     ],
 
+    //searchable resources in the autocomplete
+    'searchable' => [
+
+    ],
+
     // With this token you can run commands from an url.
     'admin_token' => env('RAPIDEZ_TOKEN', env('APP_KEY')),
 
