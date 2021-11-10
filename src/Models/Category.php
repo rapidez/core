@@ -31,7 +31,7 @@ class Category extends Model
             ];
 
             $builder
-                ->select(preg_filter('/^/', $builder->getQuery()->from.'.', $defaultColumnsToSelect))
+                ->addSelect(preg_filter('/^/', $builder->getQuery()->from.'.', $defaultColumnsToSelect))
                 ->groupBy($builder->getQuery()->from.'.entity_id');
         });
     }
