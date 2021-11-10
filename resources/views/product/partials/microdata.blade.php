@@ -1,4 +1,5 @@
 <meta itemprop="mpn" content="{{ $product->id }}" />
+<meta itemprop="sku" content="{{ $product->sku }}" />
 
 @foreach($product->images as $image)
     <link itemprop="image" href="{{ config('rapidez.media_url').'/catalog/product'.$image }}" />
