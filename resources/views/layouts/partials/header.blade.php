@@ -1,4 +1,4 @@
-<div class="flex flex-wrap items-center mb-5 border-b shadow {{ Route::currentRouteName() == 'checkout' ? 'justify-between' : '' }}">
+<header class="flex flex-wrap items-center mb-5 border-b shadow {{ Route::currentRouteName() == 'checkout' ? 'justify-between' : '' }}">
     <div class="w-1/6 sm:w-3/12">
         <div class="text-xl sm:text-3xl ml-3">
             <a href="/" aria-label="@lang('Go to home')">
@@ -21,9 +21,9 @@
         @endif
     </div>
     @if(Route::currentRouteName() !== 'checkout')
-        <div class="w-full">
+        <nav class="w-full">
             {{-- Because the lack of an @includeIf or @includeWhen equivalent for Blade components we're using a placeholder --}}
             <x-dynamic-component :component="App::providerIsLoaded('Rapidez\Menu\MenuServiceProvider') ? 'menu' : 'placeholder'" />
-        </div>
+        </nav>
     @endif
-</div>
+</header>

@@ -21,9 +21,9 @@
 <body class="bg-white antialiased">
     <div id="app">
         @include('rapidez::layouts.partials.header')
-        <div class="mx-5">
+        <main class="mx-5">
             @yield('content')
-        </div>
+        </main>
         @include('rapidez::layouts.partials.footer')
         @stack('page_end')
     </div>

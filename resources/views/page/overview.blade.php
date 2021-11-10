@@ -4,7 +4,7 @@
 @section('description', $page->meta_description)
 
 @section('content')
-    <div class="container mx-auto">
+    <article class="container mx-auto">
         @if($page->identifier != 'home' && $page->content_heading)
             <h1 class="font-bold text-4xl mb-5">{{ $page->content_heading }}</h1>
         @endif
@@ -15,5 +15,5 @@
                 @content($page->content)
             </div>
         @endif
-    </div>
+    </article>
 @endsection
