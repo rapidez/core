@@ -31,7 +31,7 @@ class Quote extends Model
                 ->selectRaw('
                     MAX(quote_address.subtotal_incl_tax) as subtotal,
                     MAX(quote_address.tax_amount) as tax,
-                    MAX(quote_address.shipping_amount) as shipping_amount,
+                    MAX(quote_address.shipping_incl_tax) as shipping_amount,
                     MAX(quote_address.shipping_method) as shipping_method,
                     MAX(quote_address.shipping_description) as shipping_description,
                     MAX(quote_address.grand_total) as total,
