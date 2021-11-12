@@ -12,7 +12,7 @@ class ProductController
         $product = $productModel::selectForProductPage()->findOrFail($productId);
         $attributes = ['id', 'name', 'sku', 'super_attributes', 'children', 'price', 'images', 'url'];
 
-        $attributes = array_merge($attributes, Eventy::filter('frontend.product.attributes', $attributes));
+        $attributes = Eventy::filter('frontend.product.attributes', $attributes);
 
         foreach ($product->super_attributes ?: [] as $superAttribute) {
             $attributes[] = $superAttribute->code;
