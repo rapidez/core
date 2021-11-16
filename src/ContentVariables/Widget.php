@@ -20,8 +20,10 @@ class Widget
 
             $widgetClass = config('rapidez.widgets.'.$type);
 
-            if (!class_exists($widgetClass) && !app()->environment('production')) {
-                return '<hr>'.__('Widget not implemented (:type).', compact('type')).'<hr>';
+            if (!class_exists($widgetClass)) {
+                return !app()->environment('production')
+                    ? '<hr>'.__('Widget not implemented (:type).', compact('type')).'<hr>'
+                    : '';
             }
 
             return (new $widgetClass((object) $options))->render();
