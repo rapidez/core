@@ -87,7 +87,7 @@ class Product extends Model
 
     public function getPriceAttribute($price)
     {
-        if (!(array)$this->children) {
+        if (!(array) $this->children) {
             return $price;
         }
 
@@ -96,7 +96,7 @@ class Product extends Model
 
     public function getSpecialPriceAttribute($specialPrice)
     {
-        if (!(array)$this->children) {
+        if (!(array) $this->children) {
             if ($this->special_from_date && $this->special_from_date > now()->toDateString()) {
                 return null;
             }
