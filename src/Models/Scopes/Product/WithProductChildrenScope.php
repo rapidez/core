@@ -24,9 +24,11 @@ class WithProductChildrenScope implements Scope
         }
 
         $builder
-            ->selectRaw('IFNULL(MIN(children.price), '.$flat.'.price) as price')
             ->selectRaw('JSON_REMOVE(JSON_OBJECTAGG(IFNULL(children.entity_id, "null__"), JSON_OBJECT(
                 "price", children.price,
+                "special_price", children.special_price,
+                "special_from_date", DATE(children.special_from_date),
+                "special_to_date", DATE(children.special_to_date),
                 '.$superAttributesSelect.'
                 "in_stock", stock.is_in_stock,
                 "images", (

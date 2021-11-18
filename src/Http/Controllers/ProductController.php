@@ -10,7 +10,7 @@ class ProductController
     {
         $productModel = config('rapidez.models.product');
         $product = $productModel::selectForProductPage()->findOrFail($productId);
-        $attributes = ['id', 'name', 'sku', 'super_attributes', 'children', 'price', 'images', 'url'];
+        $attributes = ['id', 'name', 'sku', 'super_attributes', 'children', 'price', 'special_price', 'images', 'url'];
 
         $attributes = Eventy::filter('frontend.product.attributes', $attributes);
 

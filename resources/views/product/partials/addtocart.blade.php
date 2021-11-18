@@ -1,6 +1,9 @@
 <add-to-cart :qty="{{ $product->qty_increments }}" v-cloak>
     <div slot-scope="{ qty, changeQty, options, error, add, disabledOptions, simpleProduct, adding, added }">
-        <div class="font-bold text-3xl mb-3">@{{ simpleProduct.price | price}}</div>
+        <div class="flex items-center space-x-3 font-bold mb-3">
+            <div class="text-3xl">@{{ (simpleProduct.special_price || simpleProduct.price) | price }}</div>
+            <div class="line-through" v-if="simpleProduct.special_price">@{{ simpleProduct.price | price }}</div>
+        </div>
 
         @if(!$product->in_stock)
             <p class="text-red-600">@lang('Sorry! This product is currently out of stock.')</p>

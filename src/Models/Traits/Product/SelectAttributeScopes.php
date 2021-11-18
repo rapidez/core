@@ -24,6 +24,9 @@ trait SelectAttributeScopes
                 'meta_title',
                 'meta_description',
                 'price',
+                'special_price',
+                'special_from_date',
+                'special_to_date',
                 'description',
                 'url_key',
             ]);

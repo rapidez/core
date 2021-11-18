@@ -5,6 +5,7 @@ namespace Rapidez\Core\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use NumberFormatter;
+use Rapidez\Core\Casts\Children;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\DecodeHtmlEntities;
 use Rapidez\Core\Models\Scopes\Product\WithProductAttributesScope;
@@ -59,7 +60,7 @@ class Product extends Model
                 'category_ids'   => CommaSeparatedToArray::class,
                 'relation_ids'   => CommaSeparatedToArray::class,
                 'upsell_ids'     => CommaSeparatedToArray::class,
-                'children'       => 'object',
+                'children'       => Children::class,
                 'qty_increments' => 'int',
             ],
             $this->getSuperAttributeCasts(),
@@ -82,6 +83,46 @@ class Product extends Model
     public function scopeByIds(Builder $query, array $productIds): Builder
     {
         return $query->whereIn($this->getTable().'.entity_id', $productIds);
+    }
+
+    public function getPriceAttribute($price)
+    {
+        if (!(array)$this->children) {
+            return $price;
+        }
+
+        return collect($this->children)->min->price;
+    }
+
+    public function getSpecialPriceAttribute($specialPrice)
+    {
+        if (!(array)$this->children) {
+            if ($this->special_from_date && $this->special_from_date > now()->toDateString()) {
+                return null;
+            }
+
+            if ($this->special_to_date && $this->special_to_date < now()->toDateString()) {
+                return null;
+            }
+
+            return $specialPrice !== $this->price ? $specialPrice : null;
+        }
+
+        return collect($this->children)->filter(function ($child) {
+            if (!$child->special_price) {
+                return false;
+            }
+
+            if ($child->special_from_date && $child->special_from_date > now()->toDateString()) {
+                return false;
+            }
+
+            if ($child->special_to_date && $child->special_to_date < now()->toDateString()) {
+                return false;
+            }
+
+            return true;
+        })->min->special_price;
     }
 
     public function getFormattedPriceAttribute(): string
