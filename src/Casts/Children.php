@@ -8,6 +8,10 @@ class Children implements CastsAttributes
 {
     public function get($model, $key, $value, $attributes)
     {
+        if (is_object($value)) {
+            return $value;
+        }
+
         $children = json_decode($value);
 
         foreach ($children as $child) {
