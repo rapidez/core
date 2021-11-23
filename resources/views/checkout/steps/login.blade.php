@@ -25,6 +25,12 @@
             <x-rapidez::button type="submit" class="w-full mt-5" dusk="continue">
                 @lang('Continue')
             </x-rapidez::button>
+
+            @if(App::providerIsLoaded('Rapidez\Account\AccountServiceProvider'))
+                <a href="/forgotpassword" class="inline-block text-sm hover:underline mt-5" v-if="!emailAvailable">
+                    @lang('Forgot your password?')
+                </a>
+            @endif
         </form>
     </div>
 </login>
