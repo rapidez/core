@@ -102,12 +102,13 @@
                         return
                     }
 
-                    if (this.clear) {
-                        this.changes = {}
-                    }
-
                     if (this.callback) {
                         await this.callback(this.changes, this.data, response)
+                    }
+
+                    if (this.clear) {
+                        this.changes = {}
+                        this.data = {}
                     }
 
                     var self = this
