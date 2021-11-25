@@ -11,7 +11,10 @@
             open: {
                 type: Boolean,
                 default: false
-            }
+            },
+            callback: {
+                type: Function,
+            },
         },
         data: () => ({
             isOpen: false,
@@ -22,6 +25,10 @@
         methods: {
             toggle() {
                 this.isOpen = !this.isOpen
+
+                if (this.callback) {
+                    this.callback(this.isOpen)
+                }
             },
 
             close() {
