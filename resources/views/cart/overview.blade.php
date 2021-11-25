@@ -70,9 +70,9 @@
                         <div class="w-1/2 text-right" v-if="cart.tax > 0">@{{ cart.tax | price }}</div>
                         <div class="w-1/2" v-if="cart.shipping_amount > 0">@lang('Shipping')<br><small>@{{ cart.shipping_description }}</small></div>
                         <div class="w-1/2 text-right" v-if="cart.shipping_amount > 0">@{{ cart.shipping_amount | price }}</div>
-                        <div class="w-1/2" v-if="cart.discount_name && cart.discount_amount > 0">@lang('Discount'): @{{ cart.discount_name }}</div>
-                        <div class="w-1/2" v-if="!cart.discount_name && cart.discount_amount > 0">@lang('Discount')</div>
-                        <div class="w-1/2 text-right" v-if="cart.discount_amount > 0">@{{ cart.discount_amount | price }}</div>
+                        <div class="w-1/2" v-if="cart.discount_name && cart.discount_amount < 0">@lang('Discount'): @{{ cart.discount_name }}</div>
+                        <div class="w-1/2" v-if="!cart.discount_name && cart.discount_amount < 0">@lang('Discount')</div>
+                        <div class="w-1/2 text-right" v-if="cart.discount_amount < 0">@{{ cart.discount_amount | price }}</div>
                         <div class="w-1/2 font-bold">@lang('Total')</div>
                         <div class="w-1/2 text-right font-bold">@{{ cart.total | price }}</div>
                     </div>

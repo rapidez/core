@@ -35,7 +35,7 @@ class Quote extends Model
                     MAX(quote_address.shipping_method) as shipping_method,
                     MAX(quote_address.shipping_description) as shipping_description,
                     MAX(quote_address.grand_total) as total,
-                    MAX(quote_address.discount_amount) as discount_amount,
+                    MIN(quote_address.discount_amount) as discount_amount,
                     MAX(quote_address.discount_description) as discount_name,
                     GROUP_CONCAT(DISTINCT cross_sell.linked_product_id) as cross_sells
                 ')
