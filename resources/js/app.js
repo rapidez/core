@@ -113,7 +113,9 @@ document.addEventListener('turbolinks:load', () => {
         },
         methods: {
             search(value) {
-                Turbolinks.visit('/search?q=' + value)
+                if (value.length) {
+                    Turbolinks.visit('/search?q=' + value)
+                }
             }
         },
         asyncComputed: {
