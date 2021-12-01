@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Support\Arr;
+use TorMorten\Eventy\Facades\Eventy;
 
 class WithProductChildrenScope implements Scope
 {
