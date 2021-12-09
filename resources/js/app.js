@@ -72,6 +72,7 @@ document.addEventListener('turbolinks:load', () => {
     window.app = new Vue({
         el: '#app',
         data: {
+            custom: {},
             config: window.config,
             loading: false,
             guestEmail: localStorage.email ?? null,

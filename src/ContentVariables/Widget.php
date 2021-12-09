@@ -6,9 +6,9 @@ class Widget
 {
     public function __invoke($content)
     {
-        return preg_replace_callback('/{{widget type="(.*?)" (.*?)}}/m', function ($matches) {
+        return preg_replace_callback('/{{widget type="(.*?)" (.*?)}}/ms', function ($matches) {
             [$full, $type, $parameters] = $matches;
-            preg_match_all('/(.*?)="(.*?)"/m', $parameters, $parameters, PREG_SET_ORDER);
+            preg_match_all('/(.*?)="(.*?)"/ms', $parameters, $parameters, PREG_SET_ORDER);
             foreach ($parameters as $parameter) {
                 [$full, $parameter, $value] = $parameter;
                 $options[trim($parameter)] = trim($value);

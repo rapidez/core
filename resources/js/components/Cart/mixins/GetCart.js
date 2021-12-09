@@ -34,7 +34,7 @@ export default {
                     let response = await axios.get('/api/cart/' + (localStorage.token ? localStorage.token : localStorage.mask))
                     localStorage.cart = JSON.stringify(response.data)
                     window.app.cart = response.data
-                    this.$root.$emit('cart-refreshed')
+                    window.app.$emit('cart-refreshed')
                 } catch (error) {
                     if (error.response.status == 404) {
                         localStorage.removeItem('mask')
