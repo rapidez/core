@@ -44,6 +44,7 @@
 
             toggle() {
                 this.isOpen = !this.isOpen
+
                 if (this.callback) {
                     this.callback(this.isOpen)
                 }
