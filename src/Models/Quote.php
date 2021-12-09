@@ -47,7 +47,7 @@ class Quote extends Model
                     "image", product.thumbnail,
                     "url_key", product.url_key,
                     "qty", quote_item.qty,
-                    "qty_increments", stock.qty_increments,
+                    "qty_increments", IF(enable_qty_increments, stock.qty_increments, 1),
                     "price", quote_item.price_incl_tax,
                     "total", quote_item.row_total_incl_tax,
                     "attributes", quote_item_option.value,
