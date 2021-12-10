@@ -9,7 +9,7 @@
                 type: Object,
                 default: () => config.product || {}
             },
-            qty: {
+            defaultQty: {
                 type: Number,
                 default: 1
             },
@@ -28,12 +28,17 @@
         },
 
         data: () => ({
+            qty: 1,
             options: {},
             error: null,
 
             adding: false,
             added: false,
         }),
+
+        mounted() {
+            this.qty = this.defaultQty
+        },
 
         render() {
             return this.$scopedSlots.default({
