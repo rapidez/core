@@ -23,7 +23,7 @@ class Block extends Model
         $cacheKey = 'block.'.config('rapidez.store').'.'.$identifier;
 
         $block = Cache::rememberForever($cacheKey, function () use ($identifier) {
-            return optional(self::where('identifier', $identifier)->first('content'))->content;
+            return optional(self::where('identifier', $identifier)->first('content'))->content ?: false;
         });
 
         return empty($replace) ? $block : strtr($block, $replace);
