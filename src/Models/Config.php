@@ -36,6 +36,7 @@ class Config extends Model
 
         $value = Cache::rememberForever($cacheKey, function () use ($path, $default) {
             $value = ($config = self::where('path', $path)->first('value')) ? $config->value : $default;
+
             return !is_null($value) ? $value : false;
         });
 
