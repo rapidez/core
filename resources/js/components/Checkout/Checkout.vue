@@ -243,20 +243,16 @@
                 return address
             },
 
-            storeShipping() {
-                this.getShippingKeys().forEach((key) => {
-                    let value = this.checkout.shipping_address[key]
-                    let cacheKey = 'shipping_' + key
+            storeCredentials(type) {
+                Object.keys(this.checkout[type + '_address']).forEach((key) => {
+                    let value = this.checkout.[type + '_address'][key]
+                    let storageKey = type + '_' + key
                     if (value !== '') {
-                        localStorage[cacheKey] = value
+                        localStorage[storageKey] = value
                     } else {
-                        localStorage.removeItem(cacheKey);
+                        localStorage.removeItem(storageKey);
                     }
                 })
-            },
-
-            getShippingKeys() {
-                return Object.keys(this.checkout.shipping_address)
             },
 
             setupHistory() {
@@ -288,8 +284,17 @@
             'checkout.shipping_address': {
                 deep: true,
                 handler: function() {
-                    this.storeShipping()
+                    this.storeCredentials('shipping')
                 }
+            },
+            'checkout.billing_address': {
+                deep: true,
+                handler: function() {
+                    this.storeCredentials('billing')
+                }
+            },
+            'checkout.hide_billing': function (value) {
+                localStorage.hide_billing = value
             },
             'checkout.payment_method': function () {
                 this.selectPaymentMethod()
