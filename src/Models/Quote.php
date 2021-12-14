@@ -23,7 +23,7 @@ class Quote extends Model
         static::addGlobalScope(new IsActiveScope());
         static::addGlobalScope('with-all-information', function (Builder $builder) {
             $builder
-                ->select([
+                ->addSelect([
                     'quote.entity_id',
                     'items_count',
                     'items_qty',
