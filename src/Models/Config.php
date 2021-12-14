@@ -12,7 +12,7 @@ class Config extends Model
 
     protected $primaryKey = 'config_id';
 
-    protected static function booted()
+    protected static function booting()
     {
         static::addGlobalScope('scope-fallback', function (Builder $builder) {
             $builder

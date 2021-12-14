@@ -14,7 +14,7 @@ class Widget extends Model
         'widget_parameters' => 'object',
     ];
 
-    protected static function booted()
+    protected static function booting()
     {
         static::addGlobalScope('with-all-info', function (Builder $builder) {
             $builder->join('widget_instance_page', 'widget_instance_page.instance_id', '=', 'widget_instance.instance_id');

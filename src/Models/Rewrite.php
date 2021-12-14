@@ -10,7 +10,7 @@ class Rewrite extends Model
 
     protected $primaryKey = 'url_rewrite_id';
 
-    protected static function booted()
+    protected static function booting()
     {
         static::addGlobalScope('store', function (Builder $builder) {
             $builder->where('store_id', config('rapidez.store'));

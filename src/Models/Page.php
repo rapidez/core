@@ -11,7 +11,7 @@ class Page extends Model
 
     protected $primaryKey = 'page_id';
 
-    protected static function booted()
+    protected static function booting()
     {
         static::addGlobalScope(new IsActiveScope());
         static::addGlobalScope(new ForCurrentStoreScope());

@@ -18,7 +18,7 @@ class Quote extends Model
         'cross_sells' => CommaSeparatedToArray::class,
     ];
 
-    protected static function booted()
+    protected static function booting()
     {
         static::addGlobalScope(new IsActiveScope());
         static::addGlobalScope('with-all-information', function (Builder $builder) {

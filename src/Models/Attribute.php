@@ -12,7 +12,7 @@ class Attribute extends Model
 
     protected $primaryKey = 'attribute_id';
 
-    protected static function booted()
+    protected static function booting()
     {
         static::addGlobalScope(new OnlyProductAttributesScope());
     }

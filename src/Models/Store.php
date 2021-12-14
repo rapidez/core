@@ -14,7 +14,7 @@ class Store extends Model
 
     protected $primaryKey = 'store_id';
 
-    protected static function booted()
+    protected static function booting()
     {
         static::addGlobalScope(new IsActiveScope());
         static::addGlobalScope('defaults', function (Builder $builder) {

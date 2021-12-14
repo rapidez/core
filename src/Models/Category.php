@@ -11,7 +11,7 @@ class Category extends Model
 
     protected $appends = ['url'];
 
-    protected static function booted()
+    protected static function booting()
     {
         static::addGlobalScope(new IsActiveScope());
         static::addGlobalScope('defaults', function (Builder $builder) {
