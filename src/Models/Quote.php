@@ -23,7 +23,7 @@ class Quote extends Model
         static::addGlobalScope(new IsActiveScope());
         static::addGlobalScope('with-all-information', function (Builder $builder) {
             $builder
-                ->select([
+                ->addSelect([
                     'quote.entity_id',
                     'items_count',
                     'items_qty',
@@ -59,7 +59,7 @@ class Quote extends Model
                     $join->on('quote_address.quote_id', '=', 'quote.entity_id');
                 })
                 ->leftJoin('quote_item', function ($join) {
-                    $join->on('quote_item.quote_id', '=', 'quote.entity_id')->whereNull('parent_item_id');
+                    $join->on('quote_item.quote_id', '=', 'quote.entity_id')->whereNull('quote_item.parent_item_id');
                 })
                 ->leftJoin('quote_item_option', function ($join) {
                     $join->on('quote_item.item_id', '=', 'quote_item_option.item_id')->where('code', 'attributes');
