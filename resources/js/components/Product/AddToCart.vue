@@ -24,7 +24,10 @@
             notifyError: {
                 type: Boolean,
                 default: true,
-            }
+            },
+            callback: {
+                type: Function,
+            },
         },
 
         data: () => ({
@@ -83,6 +86,9 @@
                     await this.refreshCart()
                     this.added = true
                     setTimeout(() => { this.added = false }, this.addedDuration)
+                    if (this.callback) {
+                        await this.callback(this.product, this.qty)
+                    }
                     if (this.notifySuccess) {
                         Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success')
                     }
