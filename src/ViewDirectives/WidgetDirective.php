@@ -9,7 +9,7 @@ class WidgetDirective
     public function render($location, $type, $handle = 'default', $entities = null, $replace = [])
     {
         return Cache::rememberForever(
-            'widget.'.md5(serialize(func_get_args())),
+            'widget.' . md5(serialize(func_get_args())) . '_' . config('rapidez.store'),
             function () use ($location, $type, $handle, $entities, $replace) {
                 $html = '';
 

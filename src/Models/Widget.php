@@ -19,5 +19,8 @@ class Widget extends Model
         static::addGlobalScope('with-all-info', function (Builder $builder) {
             $builder->join('widget_instance_page', 'widget_instance_page.instance_id', '=', 'widget_instance.instance_id');
         });
+        static::addGlobalScope('for-current-store', function (Builder $builder) {
+            $builder->whereRaw('? IN (store_ids)', [0])->orWhereRaw('? IN (store_ids)', [config('rapidez.store')]);
+        });
     }
 }
