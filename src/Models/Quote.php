@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\QuoteItems;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
+use TorMorten\Eventy\Facades\Eventy;
 
 class Quote extends Model
 {
@@ -40,18 +41,20 @@ class Quote extends Model
                     GROUP_CONCAT(DISTINCT cross_sell.linked_product_id) as cross_sells
                 ')
                 ->selectRaw('JSON_REMOVE(JSON_OBJECTAGG(IFNULL(quote_item.item_id, "null__"), JSON_OBJECT(
-                    "item_id", quote_item.item_id,
-                    "product_id", quote_item.product_id,
-                    "sku", quote_item.sku,
-                    "name", quote_item.name,
-                    "image", product.thumbnail,
-                    "url_key", product.url_key,
-                    "qty", quote_item.qty,
-                    "qty_increments", IF(enable_qty_increments, stock.qty_increments, 1),
-                    "price", quote_item.price_incl_tax,
-                    "total", quote_item.row_total_incl_tax,
-                    "attributes", quote_item_option.value,
-                    "type", quote_item.product_type
+                    '.Eventy::filter('quote.items.select', <<<QUERY
+                        "item_id", quote_item.item_id,
+                        "product_id", quote_item.product_id,
+                        "sku", quote_item.sku,
+                        "name", quote_item.name,
+                        "image", product.thumbnail,
+                        "url_key", product.url_key,
+                        "qty", quote_item.qty,
+                        "qty_increments", IF(enable_qty_increments, stock.qty_increments, 1),
+                        "price", quote_item.price_incl_tax,
+                        "total", quote_item.row_total_incl_tax,
+                        "attributes", quote_item_option.value,
+                        "type", quote_item.product_type
+                    QUERY).'
                 )), "$.null__") AS items')
                 ->leftJoin('quote_id_mask', 'quote_id_mask.quote_id', '=', 'quote.entity_id')
                 ->leftJoin('oauth_token', 'oauth_token.customer_id', '=', 'quote.customer_id')
