@@ -41,7 +41,7 @@ class Quote extends Model
                     GROUP_CONCAT(DISTINCT cross_sell.linked_product_id) as cross_sells
                 ')
                 ->selectRaw('JSON_REMOVE(JSON_OBJECTAGG(IFNULL(quote_item.item_id, "null__"), JSON_OBJECT(
-                    '.Eventy::filter('quote.items.select', <<<QUERY
+                    '.Eventy::filter('quote.items.select', <<<'QUERY'
                         "item_id", quote_item.item_id,
                         "product_id", quote_item.product_id,
                         "sku", quote_item.sku,
