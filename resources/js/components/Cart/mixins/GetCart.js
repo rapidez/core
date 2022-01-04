@@ -67,6 +67,15 @@ export default {
             }).catch((error) => {
                 Notify(error.response.data.message, 'warning')
             })
+        },
+
+        expiredCartCheck(error) {
+            if (error.response.data?.parameters?.fieldName == 'quoteId') {
+                localStorage.removeItem('mask')
+                localStorage.removeItem('cart')
+                Notify(window.config.translations.errors.cart_expired, 'error')
+                return true
+            }
         }
     },
 

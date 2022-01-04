@@ -8,6 +8,7 @@ return [
     'errors' => [
         'wrong'           => 'Something went wrong, please try again.',
         'session_expired' => 'Your session expired, please login again.',
+        'cart_expired'    => 'Your cart expired, please re-add the products.',
     ],
     'checkout' => [
         'no_shipping_method' => 'No shipping method selected.',

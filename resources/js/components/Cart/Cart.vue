@@ -19,7 +19,7 @@
                         qty: item.qty
                     }
                 })
-                .catch((error) => Notify(error.response.data.message, 'error'))
+                .catch(this.errorHandler)
                 .then(() => this.refreshCart())
             },
 
@@ -28,9 +28,15 @@
                     .then((response) => {
                         Notify(item.name + ' ' + window.config.translations.cart.remove, 'info')
                     })
-                    .catch((error) => Notify(error.response.data.message, 'error'))
+                    .catch(this.errorHandler)
                     .then(() => this.refreshCart())
             },
+
+            errorHandler(error) {
+                if (!this.expiredCartCheck(error)) {
+                    Notify(error.response.data.message, 'error')
+                }
+            }
         }
     }
 </script>
