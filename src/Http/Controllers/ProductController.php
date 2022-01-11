@@ -9,10 +9,12 @@ class ProductController
     public function show(int $productId)
     {
         $productModel = config('rapidez.models.product');
-        $product = $productModel::selectForProductPage()->findOrFail($productId);
-        $attributes = ['id', 'name', 'sku', 'super_attributes', 'children', 'price', 'special_price', 'images', 'url'];
+        $product = $productModel::selectForProductPage()
+            ->withEventyGlobalScopes('productpage.scopes')
+            ->findOrFail($productId);
 
-        $attributes = Eventy::filter('frontend.product.attributes', $attributes);
+        $attributes = ['id', 'name', 'sku', 'super_attributes', 'children', 'price', 'special_price', 'images', 'url'];
+        $attributes = Eventy::filter('productpage.frontend.attributes', $attributes);
 
         foreach ($product->super_attributes ?: [] as $superAttribute) {
             $attributes[] = $superAttribute->code;

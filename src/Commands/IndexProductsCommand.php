@@ -42,12 +42,9 @@ class IndexProductsCommand extends Command
             $this->createIndex($index);
 
             $flat = (new $productModel())->getTable();
-            $productQuery = $productModel::where($flat.'.visibility', 4)->selectOnlyIndexable();
-            $scopes = Eventy::filter('index.product.scopes', []);
-
-            foreach ($scopes as $scope) {
-                $productQuery->withGlobalScope($scope, new $scope());
-            }
+            $productQuery = $productModel::where($flat.'.visibility', 4)
+                ->selectOnlyIndexable()
+                ->withEventyGlobalScopes('index.product.scopes');
 
             $bar = $this->output->createProgressBar($productQuery->getQuery()->getCountForPagination());
             $bar->start();
