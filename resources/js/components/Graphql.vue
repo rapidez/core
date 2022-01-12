@@ -79,11 +79,9 @@
                         }
                     }
 
-                    if (this.callback) {
-                        await this.callback(response)
-                    }
-
-                    this.data = response.data.data
+                    this.data = this.callback
+                        ? await this.callback(response)
+                        : response.data.data
 
                     if (this.cache) {
                         localStorage[this.cachePrefix + this.cache] = JSON.stringify(this.data)
