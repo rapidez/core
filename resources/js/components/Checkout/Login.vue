@@ -9,6 +9,10 @@
             checkoutLogin: {
                 type: Boolean,
                 default: true,
+            },
+            redirect: {
+                type: String,
+                default: '/account'
             }
         },
 
@@ -88,8 +92,8 @@
             successfulLogin() {
                 if (this.checkoutLogin) {
                     this.$root.checkout.step = 2
-                } else {
-                    Turbolinks.visit('/account')
+                } else if (this.redirect) {
+                    Turbolinks.visit(this.redirect)
                 }
             }
         },
