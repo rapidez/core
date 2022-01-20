@@ -39,6 +39,7 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
 Vue.component('cart', require('./components/Cart/Cart.vue').default)
 Vue.component('listing', require('./components/Listing/Listing.vue').default)
 Vue.component('query-filter', require('./components/Listing/Filters/QueryFilter.vue').default)
+Vue.component('category-filter', require('./components/Listing/Filters/CategoryFilter.vue').default)
 Vue.component('checkout', require('./components/Checkout/Checkout.vue').default)
 Vue.component('checkout-success', require('./components/Checkout/CheckoutSuccess.vue').default)
 Vue.component('login', require('./components/Checkout/Login.vue').default)

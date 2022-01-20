@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
 use Illuminate\Console\Command;
 use Rapidez\Core\Jobs\IndexProductJob;
+use Rapidez\Core\Models\Category;
+use Rapidez\Core\Rapidez;
 use TorMorten\Eventy\Facades\Eventy;
 
 class IndexProductsCommand extends Command
@@ -49,12 +51,30 @@ class IndexProductsCommand extends Command
             $bar = $this->output->createProgressBar($productQuery->getQuery()->getCountForPagination());
             $bar->start();
 
-            $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $index) {
+            $categories = Category::query()
+                ->where('entity_id', '<>', Rapidez::config('catalog/category/root_id', 2))
+                ->pluck('name', 'entity_id');
+
+            $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $index, $categories) {
                 foreach ($products as $product) {
                     $data = array_merge(['store' => $store->store_id], $product->toArray());
                     foreach ($product->super_attributes ?: [] as $superAttribute) {
                         $data[$superAttribute->code] = array_keys((array) $product->{$superAttribute->code});
                     }
+
+                    // TODO: Extract this to somewhere else?
+                    foreach (explode(',', $product->category_paths) as $categoryPath) {
+                        $category = [];
+                        foreach (explode('/', $categoryPath) as $categoryId) {
+                            if (isset($categories[$categoryId])) {
+                                $category[] = $categories[$categoryId];
+                            }
+                        }
+                        if (!empty($category)) {
+                            $data['categories'][] = implode(' /// ', $category);
+                        }
+                    }
+
                     $data = Eventy::filter('index.product.data', $data, $product);
                     IndexProductJob::dispatch($index, $data);
                 }
