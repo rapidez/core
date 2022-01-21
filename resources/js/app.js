@@ -1,62 +1,32 @@
-import Vue from 'vue'
-window._ = require('lodash')
 window.axios = require('axios')
 window.debug = process.env.MIX_DEBUG == 'true'
-window.Vue = Vue
-window.Turbolinks = require('turbolinks')
-window.Notify = (message, type) => {
-    window.app.$emit('notification-message', message, type);
-}
-Turbolinks.start()
-import TurbolinksAdapter from 'vue-turbolinks'
-Vue.use(TurbolinksAdapter)
+window.Notify = (message, type) => window.app.$emit('notification-message', message, type);
 
-import ReactiveSearch from '@appbaseio/reactivesearch-vue'
-Vue.use(ReactiveSearch)
-
-import AsyncComputed from 'vue-async-computed'
-Vue.use(AsyncComputed)
-
-import { directive as onClickaway } from 'vue-clickaway';
-Vue.directive('on-click-away', onClickaway);
-
+require('./lodash')
+require('./vue')
 require('./axios')
 require('./filters')
 require('./mixins')
 require('./turbolinks')
-
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
-
-const files = require.context('./', true, /\.vue$/i)
-files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+require('./reactivesearch')
 
 Vue.component('cart', require('./components/Cart/Cart.vue').default)
-Vue.component('listing', require('./components/Listing/Listing.vue').default)
-Vue.component('query-filter', require('./components/Listing/Filters/QueryFilter.vue').default)
-Vue.component('checkout', require('./components/Checkout/Checkout.vue').default)
-Vue.component('checkout-success', require('./components/Checkout/CheckoutSuccess.vue').default)
-Vue.component('login', require('./components/Checkout/Login.vue').default)
-Vue.component('coupon', require('./components/Coupon/Coupon.vue').default)
 Vue.component('toggler', require('./components/Elements/Toggler.vue').default)
 Vue.component('slider', require('./components/Elements/Slider.vue').default)
 Vue.component('add-to-cart', require('./components/Product/AddToCart.vue').default)
-Vue.component('images', require('./components/Product/Images.vue').default)
 Vue.component('user', require('./components/User/User.vue').default)
 Vue.component('graphql', require('./components/Graphql.vue').default)
+Vue.component('graphql-mutation', require('./components/GraphqlMutation.vue').default)
 Vue.component('notifications', require('./components/Notifications/Notifications.vue').default)
 Vue.component('notification', require('./components/Notifications/Notification.vue').default)
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+Vue.component('login', () => import(/* webpackChunkName: "account" */ './components/Checkout/Login.vue'))
+Vue.component('images', () => import(/* webpackChunkName: "product" */ './components/Product/Images.vue'))
+Vue.component('listing', () => import(/* webpackChunkName: "listing" */ './components/Listing/Listing.vue'))
+Vue.component('query-filter', () => import(/* webpackChunkName: "listing" */ './components/Listing/Filters/QueryFilter.vue'))
+Vue.component('coupon', () => import(/* webpackChunkName: "cart" */ './components/Coupon/Coupon.vue'))
+Vue.component('checkout', () => import(/* webpackChunkName: "checkout" */ './components/Checkout/Checkout.vue'))
+Vue.component('checkout-success', () => import(/* webpackChunkName: "checkout" */ './components/Checkout/CheckoutSuccess.vue'))
 
 document.addEventListener('turbolinks:load', () => {
     Vue.prototype.config = window.config

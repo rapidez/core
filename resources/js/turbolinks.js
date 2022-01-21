@@ -1,3 +1,9 @@
+window.Turbolinks = require('turbolinks')
+Turbolinks.start()
+
+import TurbolinksAdapter from 'vue-turbolinks'
+Vue.use(TurbolinksAdapter)
+
 // Monkey patch Turbolinks to render 404 normally
 // See: https://github.com/turbolinks/turbolinks/issues/179
 window.Turbolinks.HttpRequest.prototype.requestLoaded = function() {

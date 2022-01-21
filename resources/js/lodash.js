@@ -1,0 +1,5 @@
+window.sortBy = require('lodash/sortBy')
+window.filter = require('lodash/filter')
+window.map = require('lodash/map')
+window.flatMap = require('lodash/flatMap')
+window.intersection = require('lodash/intersection')

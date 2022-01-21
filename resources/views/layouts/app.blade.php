@@ -15,6 +15,8 @@
     @endif
 
     <link href="{{ url(mix('css/app.css')) }}" rel="stylesheet" data-turbolinks-track="reload">
+    <script src="{{ url(mix('js/manifest.js')) }}" defer data-turbolinks-track="reload"></script>
+    <script src="{{ url(mix('js/vendor.js')) }}" defer data-turbolinks-track="reload"></script>
     <script src="{{ url(mix('js/app.js')) }}" defer data-turbolinks-track="reload"></script>
     @stack('head')
 </head>

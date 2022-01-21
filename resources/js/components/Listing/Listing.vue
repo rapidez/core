@@ -41,17 +41,17 @@
 
         computed: {
             filters: function () {
-                return _.sortBy(_.filter(this.attributes, function (attribute) {
+                return window.sortBy(window.filter(this.attributes, function (attribute) {
                     return attribute.filter;
                 }), 'position')
             },
             sortings: function () {
-                return _.filter(this.attributes, function (attribute) {
+                return window.filter(this.attributes, function (attribute) {
                     return attribute.sorting;
                 })
             },
             reactiveFilters: function () {
-                return _.map(this.filters, function (filter) {
+                return window.map(this.filters, function (filter) {
                     return filter.code;
                 }).concat(this.additionalFilters);
             },
@@ -62,8 +62,8 @@
                         dataField: '_score',
                         sortBy: 'desc'
                     }
-                ].concat(_.flatMap(this.sortings, function (sorting) {
-                    return _.map({
+                ].concat(window.flatMap(this.sortings, function (sorting) {
+                    return window.map({
                         asc: window.config.translations.asc,
                         desc: window.config.translations.desc
                     }, function (directionLabel, directionKey) {
