@@ -6,6 +6,11 @@
                 terms: {
                     field: 'categories.keyword'
                 }
+            },
+            category_paths: {
+                terms: {
+                    field: 'category_paths.keyword'
+                }
             }
         }
     })"
@@ -13,20 +18,21 @@
     u-r-l-params
 >
     <div slot-scope="{ aggregations, setQuery, value }">
-        <category-filter :aggregations="aggregations">
-            <div slot-scope="{ hasResults }">
+        <category-filter :aggregations="aggregations" :current-category="config.category" :value="value" :set-query="setQuery">
+            <div slot-scope="{ hasResults, results }">
                 <strong v-if="hasResults">@lang('Category')</strong>
-                <a href="#" class="flex justify-between" v-for="category in aggregations.categories.buckets" v-on:click.prevent="setQuery({
-                    query: { term: { 'categories.keyword': category.key } },
-                    value: category.key
-                })" v-if="(config.category && category.key.startsWith(config.category.pathWithNames)) || !config.category">
+                <input class="hidden" type="radio" name="category" value="" :checked="!value" v-on:change="setQuery({})"/>
+                <label class="block" v-for="category in results" v-bind:key="category.key">
+                    <input type="radio" name="category" :value="category.key" v-on:change="setQuery({
+                        query: { term: { 'categories.keyword': category.key } },
+                        value: category.key
+                    })"/>
                     {{-- TODO: We need some kind of tree here --}}
-                    <span v-if="config.category">
-                        @{{ category.key.replace(config.category.pathWithNames+' /// ', '').replace('///', '/') }}
+                    <span>
+                        @{{ category.label }}
                     </span>
-                    <span v-else>@{{ category.key.replace('///', '/') }}</span>
                     <small>(@{{ category.doc_count }})</small>
-                </a>
+                </label>
             </div>
         </category-filter>
     </div>

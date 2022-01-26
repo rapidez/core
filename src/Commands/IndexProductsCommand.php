@@ -63,7 +63,8 @@ class IndexProductsCommand extends Command
                     }
 
                     // TODO: Extract this to somewhere else?
-                    foreach (explode(',', $product->category_paths) as $categoryPath) {
+                    $data['category_paths'] = explode(',', $data['category_paths']);
+                    foreach ($data['category_paths'] as $categoryPath) {
                         $category = [];
                         foreach (explode('/', $categoryPath) as $categoryId) {
                             if (isset($categories[$categoryId])) {
@@ -71,10 +72,9 @@ class IndexProductsCommand extends Command
                             }
                         }
                         if (!empty($category)) {
-                            $data['categories'][] = implode(' /// ', $category);
+                            $data['categories'][] = $categoryId . '::' . implode(' /// ', $category);
                         }
                     }
-
                     $data = Eventy::filter('index.product.data', $data, $product);
                     IndexProductJob::dispatch($index, $data);
                 }
