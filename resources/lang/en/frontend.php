@@ -22,8 +22,9 @@ return [
 
     'asc'       => 'asc',
     'desc'      => 'desc',
+    'relevance' => 'Relevance',
 
     'sorting' => [
-        'relevance' => 'Relevance',
+
     ],
 ];

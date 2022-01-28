@@ -58,7 +58,7 @@
             sortOptions: function () {
                 return [
                     {
-                        label: window.config.translations.sorting.relevance,
+                        label: window.config.translations.relevance,
                         dataField: '_score',
                         sortBy: 'desc'
                     }
