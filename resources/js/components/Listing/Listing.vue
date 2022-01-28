@@ -68,7 +68,7 @@
                         desc: window.config.translations.desc
                     }, function (directionLabel, directionKey) {
                         return {
-                            label: sorting.name + ' ' + directionLabel,
+                            label: window.config.translations.sorting?.[sorting.code]?.[directionKey] ?? sorting.name + ' ' + directionLabel,
                             dataField: sorting.code + (sorting.code != 'price' ? '.keyword' : ''),
                             sortBy: directionKey
                         }
