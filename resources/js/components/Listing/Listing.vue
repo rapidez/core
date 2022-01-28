@@ -58,17 +58,17 @@
             sortOptions: function () {
                 return [
                     {
-                        label: window.config.translations.relevance,
+                        label: window.config.translations.sorting.relevance,
                         dataField: '_score',
                         sortBy: 'desc'
                     }
                 ].concat(_.flatMap(this.sortings, function (sorting) {
                     return _.map({
-                        asc: window.config.translations.asc[sorting.name] ?? window.config.translations.asc.default,
-                        desc: window.config.translations.desc[sorting.name] ?? window.config.translations.asc.default
+                        asc: window.config.translations.asc,
+                        desc: window.config.translations.desc
                     }, function (directionLabel, directionKey) {
                         return {
-                            label: window.config.translations[sorting.name] ?? sorting.name + ' ' + directionLabel,
+                            label: window.config.translations.sorting?.[sorting.code]?.[directionKey] ?? sorting.name + ' ' + directionLabel,
                             dataField: sorting.code + (sorting.code != 'price' ? '.keyword' : ''),
                             sortBy: directionKey
                         }
