@@ -24,7 +24,10 @@ return [
     'desc'      => 'desc',
     'relevance' => 'Relevance',
 
-    'sorting' => [
-
-    ],
+    // 'sorting' => [
+    //     'attribute' => [
+    //         'asc' => 'Attribute asc',
+    //         'desc' => 'Attrribute desc',
+    //     ],
+    // ],
 ];
