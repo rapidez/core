@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Rapidez\Core\Http\Middleware\VerifyAdminToken;
 
 Route::middleware('api')->prefix('api')->group(function () {
@@ -28,7 +30,7 @@ Route::middleware('api')->prefix('api')->group(function () {
 
     Route::prefix('admin')->middleware(VerifyAdminToken::class)->group(function () {
         Route::match(['get', 'post'], 'cache/clear', fn () => Artisan::call('cache:clear'));
-        Route::match(['get', 'post'], 'index/products', function () {
+        Route::match(['get', 'post'], 'index/products', function (Request $request) {
             fastcgi_finish_request();
             Artisan::call('rapidez:index', [
                 'store' => $request->store,
