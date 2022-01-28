@@ -64,11 +64,11 @@
                     }
                 ].concat(_.flatMap(this.sortings, function (sorting) {
                     return _.map({
-                        asc: window.config.translations.asc,
-                        desc: window.config.translations.desc
+                        asc: window.config.translations.asc[sorting.name] ?? window.config.translations.asc.default,
+                        desc: window.config.translations.desc[sorting.name] ?? window.config.translations.asc.default
                     }, function (directionLabel, directionKey) {
                         return {
-                            label: sorting.name + ' ' + directionLabel,
+                            label: window.config.translations[sorting.name] ?? sorting.name + ' ' + directionLabel,
                             dataField: sorting.code + (sorting.code != 'price' ? '.keyword' : ''),
                             sortBy: directionKey
                         }
