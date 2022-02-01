@@ -37,6 +37,15 @@
                     Notify(error.response.data.message, 'error')
                 }
             }
+        },
+        created() {
+            this.$root.$once('refresh-cart', () => {
+                this.refreshCart()
+            });
+
+            this.$root.$once('clear-cart', () => {
+                this.clearCart()
+            });
         }
     }
 </script>
