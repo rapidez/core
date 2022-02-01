@@ -245,7 +245,7 @@
 
             storeCredentials(type) {
                 Object.keys(this.checkout[type + '_address']).forEach((key) => {
-                    let value = this.checkout.[type + '_address'][key]
+                    let value = this.checkout[type + '_address'][key]
                     let storageKey = type + '_' + key
                     if (value !== '') {
                         localStorage[storageKey] = value
