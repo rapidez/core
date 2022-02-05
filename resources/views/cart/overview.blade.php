@@ -2,6 +2,8 @@
 
 @section('title', 'Cart')
 
+@section('robots', 'NOINDEX,NOFOLLOW')
+
 @section('content')
     <h1 class="font-bold text-4xl mb-5">@lang('Cart')</h1>
 
