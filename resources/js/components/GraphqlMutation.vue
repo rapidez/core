@@ -106,6 +106,8 @@
                         await this.callback(this.changes, this.data, response)
                     }
 
+                    this.data = this.variables
+
                     if (this.clear) {
                         this.changes = {}
                         this.data = {}
