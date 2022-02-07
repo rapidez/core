@@ -50,9 +50,11 @@ export default {
         logout(redirect = '/') {
             localStorage.removeItem('token')
             localStorage.removeItem('user')
+            localStorage.removeItem('email')
             localStorage.removeItem('mask')
             localStorage.removeItem('cart')
             this.$root.user = null
+            this.$root.$emit('logged-out')
             Turbolinks.clearCache()
             window.location.href = redirect
         },
