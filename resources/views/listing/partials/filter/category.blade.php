@@ -22,17 +22,9 @@
             <div slot-scope="{ hasResults, results }">
                 <strong v-if="hasResults">@lang('Category')</strong>
                 <input class="hidden" type="radio" name="category" value="" :checked="!value" v-on:change="setQuery({})"/>
-                <label class="block" v-for="category in results" v-bind:key="category.key">
-                    <input type="radio" name="category" :value="category.key" v-on:change="setQuery({
-                        query: { term: { 'categories.keyword': category.key } },
-                        value: category.key
-                    })"/>
-                    {{-- TODO: We need some kind of tree here --}}
-                    <span>
-                        @{{ category.label }}
-                    </span>
-                    <small>(@{{ category.doc_count }})</small>
-                </label>
+                <ul>
+                    <category-filter-category v-for="category in results" v-bind:key="category.key" :category="category" :value="(value || config.category?.entity_id) + ''" :set-query="setQuery"></category-filter-category>
+                </ul>
             </div>
         </category-filter>
     </div>
