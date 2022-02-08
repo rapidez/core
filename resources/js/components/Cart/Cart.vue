@@ -37,6 +37,13 @@
                     Notify(error.response.data.message, 'error')
                 }
             }
+        },
+        created() {
+            this.$root.$on('refresh-cart', this.refreshCart);
+
+            this.$root.$on('clear-cart', (keys) => {
+                this.clearCart(keys)
+            });
         }
     }
 </script>
