@@ -69,7 +69,7 @@ class IndexProductsCommand extends Command
                         $category = [];
                         foreach (explode('/', $categoryPath) as $categoryId) {
                             if (isset($categories[$categoryId])) {
-                                $category[] = $categoryId . '::' . $categories[$categoryId];
+                                $category[] = $categoryId.'::'.$categories[$categoryId];
                             }
                         }
                         if (!empty($category)) {
