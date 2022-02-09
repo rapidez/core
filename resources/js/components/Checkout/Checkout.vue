@@ -133,12 +133,17 @@
                     }
 
                     if (this.checkout.create_account && this.checkout.password) {
-                        this.$root.user = await this.createCustomer(this.shippingAddress, this.billingAddress, this.checkout.password)
-                        if (!this.$root.user) {
+                        let customer = await this.createCustomer({
+                            email: this.$root.guestEmail,
+                            password: this.checkout.password,
+                            firstname: this.shippingAddress.firstname,
+                            lastname: this.shippingAddress.lastname,
+                        })
+                        if (!customer) {
                             return false
                         }
                         let self = this
-                        await this.login(this.$root.user.email, this.checkout.password, async () => {
+                        await this.login(customer.email, this.checkout.password, async () => {
                             if (self.$root.cart) {
                                 await self.linkUserToCart()
                                 localStorage.mask = self.$root.cart.entity_id
@@ -177,7 +182,7 @@
                 }
 
                 Object.entries(this.checkout.shipping_address).forEach(([key, val]) => {
-                    if (!val && key !== 'region_id') {
+                    if (!val && !['region_id', 'customer_address_id'].includes(key)) {
                         alert(key + ' cannot be empty')
                         validated = false
                     }
@@ -240,6 +245,10 @@
                     'default_billing',
                 ].forEach((key) => delete address[key])
 
+                if (!address.customer_address_id) {
+                    address.save_in_address_book = 1
+                }
+
                 return address
             },
 
@@ -270,7 +279,13 @@
                 return this.$root.checkout
             },
             shippingAddress: function () {
-                return this.removeUnusedAddressInfo(this.$root.checkout.shipping_address)
+                let address = this.removeUnusedAddressInfo(this.$root.checkout.shipping_address)
+
+                if (this.checkout.hide_billing) {
+                    address.same_as_billing = 1
+                }
+
+                return address
             },
             billingAddress: function () {
                 if (this.checkout.hide_billing) {

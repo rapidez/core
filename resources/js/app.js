@@ -51,6 +51,7 @@ document.addEventListener('turbolinks:load', () => {
             checkout: {
                 step: 1,
                 shipping_address: {
+                    'customer_address_id': null,
                     'firstname': localStorage.shipping_firstname ?? (window.debug ? 'Bruce' : ''),
                     'lastname': localStorage.shipping_lastname ?? (window.debug ? 'Wayne' : ''),
                     'postcode': localStorage.shipping_postcode ?? (window.debug ? '72000' : ''),
@@ -60,6 +61,7 @@ document.addEventListener('turbolinks:load', () => {
                     'country_id': localStorage.shipping_country_id ?? (window.debug ? 'NL' : window.config.default_country),
                 },
                 billing_address: {
+                    'customer_address_id': null,
                     'firstname': localStorage.billing_firstname ?? (window.debug ? 'Bruce' : ''),
                     'lastname': localStorage.billing_lastname ?? (window.debug ? 'Wayne' : ''),
                     'postcode': localStorage.billing_postcode ?? (window.debug ? '72000' : ''),
