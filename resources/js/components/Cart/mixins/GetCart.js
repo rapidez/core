@@ -16,14 +16,18 @@ export default {
                 localStorage.removeItem(key)
             })
 
+            this.clearAdresses()
+
+            window.app.cart = null
+        },
+
+        clearAdresses() {
             Object.keys(localStorage).forEach((key) => {
-                if (!key.startsWith('shipping')) {
+                if (!key.startsWith('shipping_') && !key.startsWith('billing_')) {
                     return;
                 }
                 localStorage.removeItem(key)
             })
-
-            window.app.cart = null
         },
 
         async refreshCart() {
@@ -77,6 +81,10 @@ export default {
                 return true
             }
         }
+    },
+
+    created() {
+        this.$root.$on('logout', () => this.clearCart());
     },
 
     computed: {
