@@ -40,7 +40,7 @@ class CheckoutTest extends DuskTestCase
                 ->click('@method-0') // select shipping method
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->click('@continue') // go to payment step
-                ->waitUntilAllAjaxCallsAreFinished()
+                ->waitUntilAllAjaxCallsAreFinished(1000)
                 ->click('@method-0') // select payment method
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->click('@continue') // place order

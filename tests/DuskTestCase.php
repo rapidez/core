@@ -21,8 +21,12 @@ abstract class DuskTestCase extends BaseTestCase
     {
         parent::setUp();
 
-        Browser::macro('waitUntilAllAjaxCallsAreFinished', function () {
+        Browser::macro('waitUntilAllAjaxCallsAreFinished', function ($pause = false) {
             $this->waitUntil('!window.app.$data.loading', 10);
+
+            if ($pause) {
+                $this->pause($pause);
+            }
 
             return $this;
         });
