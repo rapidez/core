@@ -31,6 +31,7 @@ class ConfigComposer
         );
 
         config(['frontend.locale' => $configModel::getCachedByPath('general/locale/code', 'en_US')]);
+        config(['frontend.default_country' => $configModel::getCachedByPath('general/country/default', 'NL')]);
         config(['frontend.currency' => $configModel::getCachedByPath('currency/options/default')]);
         config(['frontend.cachekey' => Cache::rememberForever('cachekey', fn () => md5(Str::random()))]);
         config(['frontend.redirect_cart' => (bool) $configModel::getCachedByPath('checkout/cart/redirect_to_cart')]);

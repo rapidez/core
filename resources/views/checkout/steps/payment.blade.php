@@ -23,6 +23,7 @@
                                 name="agreement_ids[]"
                                 v-bind:value="agreement.agreement_id"
                                 v-model="checkout.agreement_ids"
+                                dusk="agreements"
                                 required
                             >
                                 <a href="#" v-on:click.prevent="toggle">@{{ agreement.checkbox_text }}</a>
