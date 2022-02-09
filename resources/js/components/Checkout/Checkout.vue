@@ -40,7 +40,7 @@
                 try {
                     let response = await this.magentoCart('post', 'estimate-shipping-methods', {
                         address: {
-                            country_id: 'NL',
+                            country_id: this.checkout.shipping_address.country_id
                         }
                     })
                     this.checkout.shipping_methods = response.data
@@ -65,7 +65,7 @@
                     let response = await this.magentoCart('post', 'totals-information', {
                         addressInformation: {
                             address: {
-                                countryId: 'NL',
+                                countryId: this.checkout.shipping_address.country_id
                             }
                         }
                     })

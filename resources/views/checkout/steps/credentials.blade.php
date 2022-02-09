@@ -27,9 +27,10 @@
 
     <h1 v-if="checkout.shipping_methods.length" class="font-bold text-4xl mt-5 mb-3">@lang('Shipping method')</h1>
 
-    <div class="my-2" v-for="method in checkout.shipping_methods">
+    <div class="my-2" v-for="(method, index in checkout.shipping_methods">
         <x-rapidez::radio
             v-bind:value="method.carrier_code+'_'+method.method_code"
+            v-bind:dusk="'method-'+index"
             v-model="checkout.shipping_method"
         >
             @{{ method.method_title }}

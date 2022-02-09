@@ -50,13 +50,16 @@ export default {
         },
 
         logout(redirect = '/') {
+            this.$root.$emit('logout', {'redirect': redirect})
+        },
+
+        onLogout(data = {}) {
             localStorage.removeItem('token')
             localStorage.removeItem('user')
-            localStorage.removeItem('mask')
-            localStorage.removeItem('cart')
+            localStorage.removeItem('email')
             this.$root.user = null
             Turbolinks.clearCache()
-            window.location.href = redirect
+            window.location.href = data?.redirect ?? '/'
         },
 
         async createCustomer(customer) {
@@ -93,6 +96,10 @@ export default {
                 }
             }
         },
+    },
+
+    created() {
+        this.$root.$on('logout', this.onLogout);
     },
 
     asyncComputed: {

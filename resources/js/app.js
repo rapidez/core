@@ -88,7 +88,7 @@ document.addEventListener('turbolinks:load', () => {
                     'street': localStorage.shipping_street?.split(',') ?? (window.debug ? ['Mountain Drive', 1007, ''] : ['', '', '']),
                     'city': localStorage.shipping_city ?? (window.debug ? 'Gotham' : ''),
                     'telephone': localStorage.shipping_telephone ?? (window.debug ? '530-7972' : ''),
-                    'country_id': localStorage.shipping_country_id ?? (window.debug ? 'TR' : ''),
+                    'country_id': localStorage.shipping_country_id ?? (window.debug ? 'NL' : window.config.default_country),
                 },
                 billing_address: {
                     'customer_address_id': null,
@@ -98,7 +98,7 @@ document.addEventListener('turbolinks:load', () => {
                     'street': localStorage.billing_street?.split(',') ?? (window.debug ? ['Mountain Drive', 1007, ''] : ['', '', '']),
                     'city': localStorage.billing_city ?? (window.debug ? 'Gotham' : ''),
                     'telephone': localStorage.billing_telephone ?? (window.debug ? '530-7972' : ''),
-                    'country_id': localStorage.billing_country_id ?? (window.debug ? 'TR' : ''),
+                    'country_id': localStorage.billing_country_id ?? (window.debug ? 'NL' : window.config.default_country),
                 },
                 hide_billing: localStorage.hide_billing === 'false' ? false : true,
 
