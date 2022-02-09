@@ -2,6 +2,8 @@
 
 @section('title', 'Checkout')
 
+@section('robots', 'NOINDEX,NOFOLLOW')
+
 @section('content')
     <div class="container mx-auto">
         <checkout v-cloak v-slot="{ checkout, cart, hasItems, save, goToStep }">

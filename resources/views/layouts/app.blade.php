@@ -8,7 +8,7 @@
 
     <title>@yield('title', '')</title>
     <meta name="description" content="@yield('description', '')"/>
-    <meta name="robots" content="@config('design/search_engine_robots/default_robots', 'INDEX,FOLLOW')"/>
+    <meta name="robots" content="@yield('robots', Rapidez::config('design/search_engine_robots/default_robots', 'INDEX,FOLLOW'))"/>
 
     @hasSection('canonical')
         <link rel="canonical" href="@yield('canonical')" />
