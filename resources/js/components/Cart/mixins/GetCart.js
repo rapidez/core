@@ -84,7 +84,7 @@ export default {
     },
 
     created() {
-        this.$root.$once('logged-out', this.clearCart);
+        this.$root.$on('logout', () => this.clearCart());
     },
 
     computed: {
