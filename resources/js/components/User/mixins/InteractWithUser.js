@@ -42,6 +42,7 @@ export default {
                 if (loginCallback) {
                     await loginCallback()
                 }
+                this.$root.$emit('logged-in')
             })
             .catch((error) => {
                 alert(error.response.data.message)
