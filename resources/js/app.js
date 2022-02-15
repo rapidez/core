@@ -59,6 +59,7 @@ Vue.component('notification', require('./components/Notifications/Notification.v
  */
 
 document.addEventListener('turbolinks:load', () => {
+    Vue.prototype.window = window
     Vue.prototype.config = window.config
 
     // Check if the localstorage needs a flush.
