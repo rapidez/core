@@ -1,5 +1,9 @@
 <script>
+    import InteractWithUser from './User/mixins/InteractWithUser'
+
     export default {
+        mixins: [InteractWithUser],
+
         props: {
             query: {
                 type: String,
@@ -95,6 +99,11 @@
                     }, options)
 
                     if (response.data.errors) {
+                        if (response.data.errors[0]?.extensions?.category == 'graphql-authorization') {
+                            this.logout('/login')
+                            return
+                        }
+
                         this.error = response.data.errors[0].message
                         if (this.alert) {
                             Notify(response.data.errors[0].message, 'error')
