@@ -69,6 +69,12 @@
             this.data = this.variables
         },
 
+        watch: {
+            variables: function (variables) {
+                this.data = variables
+            }
+        },
+
         mounted() {
             if (this.mutateEvent) {
                 window.app.$on(this.mutateEvent, () => {
