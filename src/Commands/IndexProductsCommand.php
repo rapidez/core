@@ -67,6 +67,7 @@ class IndexProductsCommand extends Command
                 $this->switchAlias($alias, $index);
             } catch (Exception $e) {
                 $this->elasticsearch->indices()->delete(['index' => $index]);
+
                 throw $e;
             }
 
