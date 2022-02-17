@@ -25,7 +25,11 @@
         },
         mounted() {
             this.slider.addEventListener('scroll', this.scroll)
-            this.slider.dispatchEvent(new CustomEvent('scroll'))
+            document.onreadystatechange = () => {
+                if (document.readyState == "complete") {
+                    this.slider.dispatchEvent(new CustomEvent('scroll'))
+                }
+            }
             this.mounted = true
         },
         beforeDestroy() {
