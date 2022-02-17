@@ -4,6 +4,7 @@ namespace Rapidez\Core\Commands;
 
 use Carbon\Carbon;
 use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
+use Exception;
 use Illuminate\Console\Command;
 use Rapidez\Core\Jobs\IndexProductJob;
 use TorMorten\Eventy\Facades\Eventy;
@@ -41,28 +42,33 @@ class IndexProductsCommand extends Command
             $index = $alias.'_'.Carbon::now()->format('YmdHis');
             $this->createIndex($index);
 
-            $flat = (new $productModel())->getTable();
-            $productQuery = $productModel::where($flat.'.visibility', 4)
-                ->selectOnlyIndexable()
-                ->withEventyGlobalScopes('index.product.scopes');
+            try {
+                $flat = (new $productModel())->getTable();
+                $productQuery = $productModel::where($flat.'.visibility', 4)
+                    ->selectOnlyIndexable()
+                    ->withEventyGlobalScopes('index.product.scopes');
 
-            $bar = $this->output->createProgressBar($productQuery->getQuery()->getCountForPagination());
-            $bar->start();
+                $bar = $this->output->createProgressBar($productQuery->getQuery()->getCountForPagination());
+                $bar->start();
 
-            $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $index) {
-                foreach ($products as $product) {
-                    $data = array_merge(['store' => $store->store_id], $product->toArray());
-                    foreach ($product->super_attributes ?: [] as $superAttribute) {
-                        $data[$superAttribute->code] = array_keys((array) $product->{$superAttribute->code});
+                $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $index) {
+                    foreach ($products as $product) {
+                        $data = array_merge(['store' => $store->store_id], $product->toArray());
+                        foreach ($product->super_attributes ?: [] as $superAttribute) {
+                            $data[$superAttribute->code] = array_keys((array) $product->{$superAttribute->code});
+                        }
+                        $data = Eventy::filter('index.product.data', $data, $product);
+                        IndexProductJob::dispatch($index, $data);
                     }
-                    $data = Eventy::filter('index.product.data', $data, $product);
-                    IndexProductJob::dispatch($index, $data);
-                }
 
-                $bar->advance($products->count());
-            });
+                    $bar->advance($products->count());
+                });
 
-            $this->switchAlias($alias, $index);
+                $this->switchAlias($alias, $index);
+            } catch (Exception $e) {
+                $this->elasticsearch->indices()->delete(['index' => $index]);
+                throw $e;
+            }
 
             $bar->finish();
             $this->line('');
