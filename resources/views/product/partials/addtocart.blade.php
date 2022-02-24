@@ -19,8 +19,8 @@
                 >
                     <option disabled selected hidden :value="undefined">@lang('Select') @{{ superAttribute.label.toLowerCase() }}</option>
                     <option
-                        v-for="(label, value) in config.product[superAttribute.code]"
-                        v-text="label.value"
+                        v-for="(option, value) in config.product[superAttribute.code]"
+                        v-text="option.label"
                         :value="value"
                         :disabled="disabledOptions[superAttribute.code].includes(value)"
                     />

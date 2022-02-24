@@ -20,7 +20,7 @@ class WithProductSuperAttributesScope implements Scope
         foreach ($superAttributes as $superAttributeId => $superAttribute) {
             $query = DB::table('catalog_product_super_link')
                 ->selectRaw('JSON_OBJECTAGG('.$superAttribute.', JSON_OBJECT(
-                    "value", '.$superAttribute.'_value,
+                    "label", '.$superAttribute.'_value,
                     "sort_order", option.sort_order
                 )) AS '.$superAttribute)
                 ->join('catalog_product_flat_1 AS children', 'children.entity_id', '=', 'catalog_product_super_link.product_id')
