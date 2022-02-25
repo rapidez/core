@@ -71,7 +71,7 @@
                 })
                 .then((response) => {
                     if (this.emailAvailable = response.data) {
-                        this.$root.guestEmail = this.email
+                        this.$root.guest_email = this.email
                         this.$root.checkout.step = 2
                     } else {
                         this.$nextTick(function() {

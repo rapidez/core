@@ -76,7 +76,7 @@ document.addEventListener('turbolinks:load', () => {
             custom: {},
             config: window.config,
             loading: false,
-            guestEmail: localStorage.email ?? null,
+            guest_email: localStorage.email ?? null,
             user: null,
             cart: null,
             checkout: {
@@ -117,7 +117,7 @@ document.addEventListener('turbolinks:load', () => {
                 // to the next step which is useful in combination
                 // with the "CheckoutPaymentSaved" event to
                 // implement payment providers.
-                doNotGoToTheNextStep: false,
+                do_not_go_to_the_next_step: false,
             },
         },
         methods: {
