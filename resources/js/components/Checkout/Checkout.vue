@@ -102,7 +102,7 @@
                     }
                 })
 
-                if (validated && !this.$root.checkout.doNotGoToTheNextStep) {
+                if (validated && !this.$root.checkout.do_not_go_to_the_next_step) {
                     this.goToStep(targetStep);
                 }
             },
@@ -134,7 +134,7 @@
 
                     if (this.checkout.create_account && this.checkout.password) {
                         let customer = await this.createCustomer({
-                            email: this.$root.guestEmail,
+                            email: this.$root.guest_email,
                             password: this.checkout.password,
                             firstname: this.shippingAddress.firstname,
                             lastname: this.shippingAddress.lastname,
@@ -193,7 +193,7 @@
 
             async selectPaymentMethod() {
                 let response = await this.magentoCart('post', 'set-payment-information', {
-                    email: this.user == null ? this.$root.guestEmail : this.user.email,
+                    email: this.user == null ? this.$root.guest_email : this.user.email,
                     paymentMethod: {
                         method:  this.checkout.payment_method
                     }
@@ -211,7 +211,7 @@
                     let response = await this.magentoCart('post', 'payment-information', {
                         billingAddress: this.billingAddress,
                         shippingAddress: this.shippingAddress,
-                        email: this.user ? this.user.email : this.$root.guestEmail,
+                        email: this.user ? this.user.email : this.$root.guest_email,
                         paymentMethod: {
                             method: this.checkout.payment_method,
                             extension_attributes: {
