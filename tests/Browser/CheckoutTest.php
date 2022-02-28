@@ -67,7 +67,7 @@ class CheckoutTest extends DuskTestCase
                 ->type('@email', $email)
                 ->click('@continue')
                 ->waitUntilAllAjaxCallsAreFinished()
-                ->pause(1000)
+                ->pause(2000)
                 ->type('@password', 'IronManSucks.91939')
                 ->click('@continue') // login
                 ->waitUntilAllAjaxCallsAreFinished()
