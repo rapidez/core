@@ -191,6 +191,18 @@
                 return validated
             },
 
+            async selectShippingMethod() {
+                let response = await this.magentoCart('post', 'shipping-information', {
+                    addressInformation: {
+                        shipping_address: this.shippingAddress,
+                        billing_address: this.billingAddress,
+                        shipping_carrier_code: this.checkout.shipping_method.split('_')[0],
+                        shipping_method_code: this.checkout.shipping_method.split('_')[1],
+                    }
+                })
+                this.checkout.totals = response.data.totals
+            },
+
             async selectPaymentMethod() {
                 let response = await this.magentoCart('post', 'set-payment-information', {
                     email: this.user == null ? this.$root.guestEmail : this.user.email,
@@ -310,6 +322,9 @@
             },
             'checkout.hide_billing': function (value) {
                 localStorage.hide_billing = value
+            },
+            'checkout.shipping_method': function () {
+                this.selectShippingMethod()
             },
             'checkout.payment_method': function () {
                 this.selectPaymentMethod()
