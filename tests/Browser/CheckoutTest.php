@@ -40,7 +40,7 @@ class CheckoutTest extends DuskTestCase
                 ->click('@method-0') // select shipping method
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->click('@continue') // go to payment step
-                ->waitUntilAllAjaxCallsAreFinished(1000)
+                ->waitUntilAllAjaxCallsAreFinished(2000)
                 ->click('@method-0') // select payment method
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->click('@continue') // place order
@@ -67,7 +67,7 @@ class CheckoutTest extends DuskTestCase
                 ->type('@email', $email)
                 ->click('@continue')
                 ->waitUntilAllAjaxCallsAreFinished()
-                ->pause(500)
+                ->pause(1000)
                 ->type('@password', 'IronManSucks.91939')
                 ->click('@continue') // login
                 ->waitUntilAllAjaxCallsAreFinished()
