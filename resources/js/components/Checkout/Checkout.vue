@@ -18,6 +18,7 @@
                 checkout: this.checkout,
                 save: this.save,
                 goToStep: this.goToStep,
+                getTotalsInformation: this.getTotalsInformation,
             })
         },
 
