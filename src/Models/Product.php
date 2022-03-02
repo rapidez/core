@@ -53,20 +53,24 @@ class Product extends Model
 
     public function getCasts(): array
     {
-        return array_merge(
-            parent::getCasts(),
-            [
-                'name'           => DecodeHtmlEntities::class,
-                'category_ids'   => CommaSeparatedToArray::class,
-                'relation_ids'   => CommaSeparatedToArray::class,
-                'upsell_ids'     => CommaSeparatedToArray::class,
-                'children'       => Children::class,
-                'qty_increments' => 'int',
-            ],
-            $this->getSuperAttributeCasts(),
-            $this->getMultiselectAttributeCasts(),
-            Eventy::filter('product.casts', []),
-        );
+        if (!$this->casts) {
+            $this->casts = array_merge(
+                parent::getCasts(),
+                [
+                    'name'           => DecodeHtmlEntities::class,
+                    'category_ids'   => CommaSeparatedToArray::class,
+                    'relation_ids'   => CommaSeparatedToArray::class,
+                    'upsell_ids'     => CommaSeparatedToArray::class,
+                    'children'       => Children::class,
+                    'qty_increments' => 'int',
+                ],
+                $this->getSuperAttributeCasts(),
+                $this->getMultiselectAttributeCasts(),
+                Eventy::filter('product.casts', []),
+            );
+        }
+
+        return $this->casts;
     }
 
     public function gallery(): BelongsToMany
