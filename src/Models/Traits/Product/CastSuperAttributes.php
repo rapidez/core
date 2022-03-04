@@ -3,7 +3,6 @@
 namespace Rapidez\Core\Models\Traits\Product;
 
 use Illuminate\Support\Arr;
-use Rapidez\Core\Casts\SortedSuperAttributes;
 
 trait CastSuperAttributes
 {
@@ -15,7 +14,7 @@ trait CastSuperAttributes
         }), 'code');
 
         foreach ($superAttributes as $superAttribute) {
-            $casts[$superAttribute] = SortedSuperAttributes::class;
+            $casts[$superAttribute] = 'object';
         }
 
         $casts['super_attributes'] = 'object';
