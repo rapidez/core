@@ -130,15 +130,6 @@
                 }
 
                 return {}
-            },
-            
-            sortedOptions(superAttributeCode) {
-                return Object.entries(config.product[superAttributeCode])
-                    .sort((first, second) => first[1].sort_order - second[1].sort_order)
-                    .map((item) => [
-                        item[0],
-                        item[1].label
-                    ])
             }
         },
 
