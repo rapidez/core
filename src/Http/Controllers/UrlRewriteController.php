@@ -23,6 +23,10 @@ class UrlRewriteController
 
                 return (new $productController())->show($rewrite->entity_id);
             }
+
+            if ($rewrite->entity_type == 'custom') {
+                return redirect($rewrite->target_path, $rewrite->redirect_type);
+            }
         }
 
         if ($page = $pageModel::where('identifier', $request->path() == '/' ? 'home' : $request->path())->first()) {
