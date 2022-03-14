@@ -22,7 +22,7 @@
                         v-for="option in config.product[superAttribute.code]"
                         v-text="option.label"
                         :value="option.value"
-                        :disabled="disabledOptions[superAttribute.code].includes(value)"
+                        :disabled="disabledOptions[superAttribute.code].includes(option.value)"
                     />
                 </x-rapidez::select>
             </div>
