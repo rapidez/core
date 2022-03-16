@@ -30,7 +30,7 @@ class WithProductAttributesScope implements Scope
             $attribute = (object) $attribute;
 
             if ($attribute->flat) {
-                if ($attribute->input == 'select' && !in_array($attribute->code, ['tax_class_id'])) {
+                if ($attribute->input == 'select' && $attribute->type != 'int') {
                     $builder->addSelect($builder->getQuery()->from.'.'.$attribute->code.'_value AS '.$attribute->code);
                 } else {
                     $builder->addSelect($builder->getQuery()->from.'.'.$attribute->code.' AS '.$attribute->code);
