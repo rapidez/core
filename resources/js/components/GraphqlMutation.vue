@@ -48,6 +48,7 @@
         data: () => ({
             error: false,
             mutated: false,
+            initialVariables: {},
             data: {},
         }),
 
@@ -61,6 +62,7 @@
         },
 
         created() {
+            this.initialVariables = JSON.parse(JSON.stringify(this.variables))
             this.data = this.variables
         },
 
@@ -116,7 +118,7 @@
                     }
 
                     if (this.clear) {
-                        this.data = {}
+                        this.data = this.initialVariables
                     }
 
                     var self = this
