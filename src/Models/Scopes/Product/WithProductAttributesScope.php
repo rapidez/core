@@ -30,7 +30,10 @@ class WithProductAttributesScope implements Scope
             $attribute = (object) $attribute;
 
             if ($attribute->flat) {
-                if ($attribute->input == 'select' && $attribute->type != 'int') {
+                if ($attribute->input == 'select' && !in_array($attribute->source_model, [
+                    'Magento\Tax\Model\TaxClass\Source\Product',
+                    'Magento\Eav\Model\Entity\Attribute\Source\Boolean',
+                ])) {
                     $builder->addSelect($builder->getQuery()->from.'.'.$attribute->code.'_value AS '.$attribute->code);
                 } else {
                     $builder->addSelect($builder->getQuery()->from.'.'.$attribute->code.' AS '.$attribute->code);
