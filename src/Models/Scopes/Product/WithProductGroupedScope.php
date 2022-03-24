@@ -5,7 +5,6 @@ namespace Rapidez\Core\Models\Scopes\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
-use Illuminate\Support\Facades\DB;
 use TorMorten\Eventy\Facades\Eventy;
 
 class WithProductGroupedScope implements Scope
@@ -14,7 +13,7 @@ class WithProductGroupedScope implements Scope
     {
         $builder
             ->selectRaw('JSON_REMOVE(JSON_OBJECTAGG(IFNULL(grouped.entity_id, "null__"), JSON_OBJECT(
-                '.Eventy::filter('product.grouped.select', <<<QUERY
+                '.Eventy::filter('product.grouped.select', <<<'QUERY'
                     "id", grouped.entity_id,
                     "sku", grouped.sku,
                     "name", grouped.name,
