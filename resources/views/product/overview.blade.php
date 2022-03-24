@@ -19,7 +19,8 @@
                 <div class="p-3 my-5 sm:mt-0 bg-gray-200 rounded prose prose-green max-w-none" itemprop="description">
                     {!! $product->description !!}
                 </div>
-                @include('rapidez::product.partials.addtocart')
+                @includeWhen($product->type == 'grouped', 'rapidez::product.partials.grouped')
+                @includeWhen($product->type !== 'grouped', 'rapidez::product.partials.addtocart')
             </div>
         </div>
 
