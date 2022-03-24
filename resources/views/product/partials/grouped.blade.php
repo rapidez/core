@@ -1,7 +1,7 @@
 <div class="grid grid-cols-3 gap-3 grid-cols-[auto_max-content_max-content]">
-    <div class="contents" v-for="product in config.product.grouped">
-        <add-to-cart :product="config.product.grouped[product.id]" :default-qty="{{ $product->qty_increments }}" v-cloak>
-            <div class="contents" slot-scope="{ qty, changeQty, options, error, add, disabledOptions, simpleProduct, adding, added }">
+    <template v-for="product in config.product.grouped">
+        <add-to-cart :product="product" v-cloak>
+            <div class="contents" slot-scope="{ qty, changeQty, add, simpleProduct, adding, added }">
                 <div>
                     @{{ simpleProduct.name }}
                     <div class="flex items-center space-x-3 font-bold">
@@ -10,9 +10,11 @@
                     </div>
                 </div>
 
-                @if(!$product->in_stock)
-                    <p class="text-red-600">@lang('Sorry! This product is currently out of stock.')</p>
-                @else
+                <p class="col-span-2 self-center text-red-600" v-if="!simpleProduct.in_stock">
+                    @lang('Sorry! This product is currently out of stock.')
+                </p>
+
+                <template v-else>
                     <x-rapidez::select
                         name="qty"
                         label="Quantity"
@@ -35,8 +37,8 @@
                         <span v-if="adding">@lang('Adding')...</span>
                         <span v-if="added">@lang('Added')</span>
                     </x-rapidez::button>
-                @endif
+                </template>
             </div>
         </add-to-cart>
-    </div>
+    </template>
 </div>
