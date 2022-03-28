@@ -24,13 +24,17 @@ class WithProductAttributesScope implements Scope
 
         $builder
             ->addSelect($builder->getQuery()->from.'.entity_id AS id')
-            ->addSelect($builder->getQuery()->from.'.sku');
+            ->addSelect($builder->getQuery()->from.'.sku')
+            ->addSelect($builder->getQuery()->from.'.type_id AS type');
 
         foreach ($attributes as $attribute) {
             $attribute = (object) $attribute;
 
             if ($attribute->flat) {
-                if ($attribute->input == 'select' && $attribute->type != 'int') {
+                if ($attribute->input == 'select' && !in_array($attribute->source_model, [
+                    'Magento\Tax\Model\TaxClass\Source\Product',
+                    'Magento\Eav\Model\Entity\Attribute\Source\Boolean',
+                ])) {
                     $builder->addSelect($builder->getQuery()->from.'.'.$attribute->code.'_value AS '.$attribute->code);
                 } else {
                     $builder->addSelect($builder->getQuery()->from.'.'.$attribute->code.' AS '.$attribute->code);

@@ -55,8 +55,8 @@ class ValidateCommand extends Command
         $superAttributesCount = count($attributeModel::getCachedWhere(fn ($attribute) => $attribute['super']));
         $joinCount = ($superAttributesCount * 2) + (count($nonFlatAttributes) * 3) + 4;
 
-        if ($joinCount > 61) {
-            $this->error('Most likely the queries needed for Rapidez will exceed 61 joins when indexing or viewing products so you have to reduce them by adding more attributes to the flat tables');
+        if ($joinCount > 58) {
+            $this->error('Most likely the queries needed for Rapidez will exceed 58 joins when indexing or viewing products so you have to reduce them by adding more attributes to the flat tables');
         }
 
         $this->info('The validation finished, if there where any errors; fix them before you continue. See: https://rapidez.io/docs/0.x/installation#flat-tables');
