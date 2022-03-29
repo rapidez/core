@@ -2,7 +2,6 @@
 
 namespace Rapidez\Core\Widgets;
 
-
 class ViewOnly
 {
     protected $options;

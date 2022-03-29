@@ -21,11 +21,11 @@ class Widget
             $widgetClass = config('rapidez.widgets.'.$type);
 
             if (class_exists($widgetClass)) {
-                return (new $widgetClass((object)$options))->render();
+                return (new $widgetClass((object) $options))->render();
             }
 
             if (is_null($widgetClass)) {
-                return ! app()->environment('production')
+                return !app()->environment('production')
                     ? '<hr>'.__('Widget not implemented (:type).', compact('type')).'<hr>'
                     : '';
             }
@@ -34,8 +34,7 @@ class Widget
             $viewName = $widgetClass;
             $widgetClass = config('rapidez.view_only_widget');
 
-            return (new $widgetClass((object)$options))->render($viewName);
-
+            return (new $widgetClass((object) $options))->render($viewName);
         }, $content);
     }
 }
