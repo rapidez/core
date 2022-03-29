@@ -40,8 +40,8 @@ class Store extends Model
             config(['cache.app.stores' => $stores]);
         }
 
-        $store = Arr::first($stores, function ($attribute) use ($callback) {
-            return $callback($attribute);
+        $store = Arr::first($stores, function ($store) use ($callback) {
+            return $callback($store);
         });
 
         throw_if(
