@@ -11,9 +11,11 @@ class WithProductGroupedScope implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
+        $stockQty = config('rapidez.expose_stock') ? '"qty", grouped_stock.qty,' : '';
+
         $builder
             ->selectRaw('JSON_REMOVE(JSON_OBJECTAGG(IFNULL(grouped.entity_id, "null__"), JSON_OBJECT(
-                '.Eventy::filter('product.grouped.select', <<<'QUERY'
+                '.Eventy::filter('product.grouped.select', <<<QUERY
                     "id", grouped.entity_id,
                     "sku", grouped.sku,
                     "name", grouped.name,
@@ -22,6 +24,7 @@ class WithProductGroupedScope implements Scope
                     "special_from_date", DATE(grouped.special_from_date),
                     "special_to_date", DATE(grouped.special_to_date),
                     "in_stock", grouped_stock.is_in_stock,
+                    $stockQty
                     "qty_increments", IFNULL(NULLIF(grouped_stock.qty_increments, 0), 1)
                 QUERY).'
             )), "$.null__") AS grouped')

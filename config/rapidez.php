@@ -36,6 +36,9 @@ return [
         // 'attribute' => 4.0,
     ],
 
+    // Should the stock qty be exposed and indexed within Elasticsearch?
+    'expose_stock' => false,
+
     // With this token you can run commands from an url.
     'admin_token' => env('RAPIDEZ_TOKEN', env('APP_KEY')),
 
