@@ -24,6 +24,8 @@ class WithProductChildrenScope implements Scope
             $superAttributesSelect .= '"'.$superAttribute.'", children.'.$superAttribute.',';
         }
 
+        $stockQty = config('rapidez.expose_stock') ? '"qty", children_stock.qty,' : '';
+
         $builder
             ->selectRaw('JSON_REMOVE(JSON_OBJECTAGG(IFNULL(children.entity_id, "null__"), JSON_OBJECT(
                 '.Eventy::filter('product.children.select', <<<QUERY
@@ -32,7 +34,8 @@ class WithProductChildrenScope implements Scope
                     "special_from_date", DATE(children.special_from_date),
                     "special_to_date", DATE(children.special_to_date),
                     $superAttributesSelect
-                    "in_stock", stock.is_in_stock,
+                    "in_stock", children_stock.is_in_stock,
+                    $stockQty
                     "images", (
                         SELECT JSON_ARRAYAGG(catalog_product_entity_media_gallery.value)
                         FROM catalog_product_entity_media_gallery_value_to_entity
@@ -43,6 +46,6 @@ class WithProductChildrenScope implements Scope
             )), "$.null__") AS children')
             ->leftJoin('catalog_product_super_link', 'catalog_product_super_link.parent_id', '=', $flat.'.entity_id')
             ->leftJoin($flat.' AS children', 'children.entity_id', '=', 'catalog_product_super_link.product_id')
-            ->leftJoin('cataloginventory_stock_item AS stock', 'children.entity_id', '=', 'stock.product_id');
+            ->leftJoin('cataloginventory_stock_item AS children_stock', 'children.entity_id', '=', 'children_stock.product_id');
     }
 }
