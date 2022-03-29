@@ -81,6 +81,8 @@ return [
         'Magento\CatalogWidget\Block\Product\ProductsList' => Rapidez\Core\Widgets\ProductList::class,
     ],
 
+    'view_only_widget' => \Rapidez\Core\Widgets\ViewOnly::class,
+
     // The fully qualified class names of the content variables.
     'content-variables' => [
         Rapidez\Core\ContentVariables\Media::class,

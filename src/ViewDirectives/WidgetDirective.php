@@ -30,8 +30,16 @@ class WidgetDirective
                     $widgetClass = config('rapidez.widgets.'.$widget->instance_type);
 
                     if (!class_exists($widgetClass)) {
-                        if (!app()->environment('production')) {
-                            $html .= '<hr>'.__('Widget not implemented (:type).', ['type' => $widget->instance_type]).'<hr>';
+                        if (is_null($widgetClass)) {
+                            if (!app()->environment('production')) {
+                                $html .= '<hr>'.__('Widget not implemented (:type).', ['type' => $widget->instance_type]).'<hr>';
+                            }
+                        } else {
+                            // When the widgetClass is not a class instance we handle it as a view name
+                            $viewName = $widgetClass;
+                            $widgetClass = config('rapidez.view_only_widget');
+
+                            $html .= (new $widgetClass($widget->widget_parameters))->render($viewName);
                         }
                     } else {
                         $html .= (new $widgetClass($widget->widget_parameters))->render();
