@@ -27,6 +27,7 @@ class DetermineAndSetShop
         config()->set('rapidez.store', $store['store_id']);
         config()->set('rapidez.store_code', $store['code']);
         config()->set('rapidez.website', $store['website_id']);
+        config()->set('rapidez.website_code', $store['website_code']);
         config()->set('rapidez.root_category_id', $store['root_category_id']);
 
         return $next($request);
