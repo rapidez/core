@@ -22,6 +22,7 @@ class RapidezServiceProvider extends ServiceProvider
             ->bootCommands()
             ->bootPublishables()
             ->bootRoutes()
+            ->bootThemes()
             ->bootViews()
             ->bootBladeComponents()
             ->bootMiddleware()
@@ -76,6 +77,24 @@ class RapidezServiceProvider extends ServiceProvider
             $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
             $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
         }
+
+        return $this;
+    }
+
+    protected function bootThemes(): self
+    {
+        $path = config('rapidez.themes.' . env('MAGE_RUN_CODE', 'default'), false);
+
+        if (!$path) {
+            return $this;
+        }
+
+        config([
+            'view.paths' => [
+                $path,
+                ...config('view.paths')
+            ]
+        ]);
 
         return $this;
     }
