@@ -93,7 +93,7 @@ class RapidezServiceProvider extends ServiceProvider
             'view.paths' => [
                 $path,
                 ...config('view.paths'),
-            ]
+            ],
         ]);
 
         return $this;
