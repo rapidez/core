@@ -83,7 +83,7 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function bootThemes(): self
     {
-        $path = config('rapidez.themes.' . env('MAGE_RUN_CODE', 'default'), false);
+        $path = config('rapidez.themes.'.request()->server('MAGE_RUN_CODE', 'default'), false);
 
         if (!$path) {
             return $this;
@@ -92,7 +92,7 @@ class RapidezServiceProvider extends ServiceProvider
         config([
             'view.paths' => [
                 $path,
-                ...config('view.paths')
+                ...config('view.paths'),
             ]
         ]);
 
