@@ -24,7 +24,7 @@ class WithProductSuperAttributesScope implements Scope
                     "label", '.$superAttribute.'_value,
                     "value", '.$superAttribute.'
                 )) AS '.$superAttribute)
-                ->join('catalog_product_flat_1 AS children', 'children.entity_id', '=', 'catalog_product_super_link.product_id')
+                ->join($model->getTable().' AS children', 'children.entity_id', '=', 'catalog_product_super_link.product_id')
                 ->join('catalog_product_super_attribute', function ($join) use ($superAttributeId) {
                     $join->on('catalog_product_super_attribute.product_id', '=', 'catalog_product_super_link.parent_id')
                         ->where('attribute_id', $superAttributeId);
