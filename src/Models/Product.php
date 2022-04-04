@@ -120,7 +120,7 @@ class Product extends Model
         }
 
         return collect($this->type == 'configurable' ? $this->children : $this->grouped)->filter(function ($child) {
-            if (!$child->special_price) {
+            if (!$child->special_price || !isset($child->special_from_date) || !isset($child->special_to_date)) {
                 return false;
             }
 
