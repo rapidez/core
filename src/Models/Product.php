@@ -124,11 +124,11 @@ class Product extends Model
                 return false;
             }
 
-            if ($child->special_from_date && $child->special_from_date > now()->toDateString()) {
+            if (isset($child->special_from_date) && $child->special_from_date > now()->toDateString()) {
                 return false;
             }
 
-            if ($child->special_to_date && $child->special_to_date < now()->toDateString()) {
+            if (isset($child->special_to_date) && $child->special_to_date < now()->toDateString()) {
                 return false;
             }
 
