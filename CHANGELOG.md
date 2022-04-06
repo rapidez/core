@@ -1,6 +1,20 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.52.1...master)
+## [Unreleased](https://github.com/org/repo/compare/0.53.0...master)
+
+## [0.53.0](https://github.com/org/repo/compare/0.52.1...0.53.0) - 2022-04-06
+
+### Added
+
+- Theme support (#122)
+
+### Changed
+
+- Product images Lighthouse improvements and dropped the jpg fallback (5fa6aef)
+
+### Fixed
+
+- Cache busting for Webpack chunks (88f79aa)
 
 ## [0.52.1](https://github.com/org/repo/compare/0.52.0...0.52.1) - 2022-04-04
 
