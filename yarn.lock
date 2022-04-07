@@ -6412,6 +6412,11 @@ uuid@^8.3.0, uuid@^8.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
+v-lazy-component@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/v-lazy-component/-/v-lazy-component-2.1.0.tgz#7355129078aadca0bc429230c860af65d6573ed5"
+  integrity sha512-qnX6eK6n2m6WgY0udMNVZD4Cq9oToqtHUoDvBXTRAZr/FBZoKFnxySaN/C/35ewVsUn0sw66fMs2vfWmAQLooQ==
+
 vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
