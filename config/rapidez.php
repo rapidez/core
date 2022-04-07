@@ -51,6 +51,12 @@ return [
     // below will not be used anymore when disabled.
     'routes' => true,
 
+    // Link store codes to theme folders
+    // The structure is `'store_code' => 'folder_path'`
+    'themes' => [
+        'default' => resource_path('themes/default'),
+    ],
+
     // The fully qualified class names of the controllers.
     'controllers' => [
         'page'     => Rapidez\Core\Http\Controllers\PageController::class,
