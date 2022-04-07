@@ -8,7 +8,7 @@
                 @lang('Sign up for our newsletter to stay up to date.')
             </p>
         </div>
-        <div class="sm:w-full sm:max-w-md xl:mt-0 xl:ml-8">
+        <div class="sm:w-full sm:max-w-md xl:mt-0 xl:ml-8" dusk="newsletter">
             <lazy-component>
                 <graphql-mutation v-cloak query="mutation visitor ($email: String!) { subscribeEmailToNewsletter(email: $email) { status } }" :alert="false" :clear="true">
                     <div slot-scope="{ mutate, variables, mutated, error }">
