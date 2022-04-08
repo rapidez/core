@@ -13,6 +13,10 @@ mix
         terser: {
             extractComments: false,
         }
+    }).webpackConfig({
+        output: {
+            chunkFilename: '[name].js?id=[chunkhash]',
+        }
     });
 
 if (mix.inProduction()) {
