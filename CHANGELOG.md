@@ -1,6 +1,17 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.53.0...master)
+## [Unreleased](https://github.com/org/repo/compare/0.54.0...master)
+
+## [0.54.0](https://github.com/org/repo/compare/0.53.0...0.54.0) - 2022-04-11
+
+### Changed
+
+- Laravel 9 upgrade (ba35831, 0075076)
+- Productlist and newsletter component lazy loading (db59387, 7830ee9)
+
+### Fixed
+
+- Save grouped products as flattened in ES (#126)
 
 ## [0.53.0](https://github.com/org/repo/compare/0.52.1...0.53.0) - 2022-04-06
 
@@ -367,8 +378,6 @@
 
 - GraphQL mutation clear with variables (c872150)
 
-
-
 ## [0.25.1](https://github.com/org/repo/compare/0.25.0...0.25.1) - 2021-11-16
 
 ### Fixed
@@ -723,10 +732,9 @@
 ## [0.1.1](https://github.com/org/repo/compare/0.1.0...0.1.1) - 2021-07-07
 
 ### Added
+
 - WebP images from rapidez/image-resizer with fallback (#51)
 
 ## [0.1.0](https://github.com/org/repo/compare/a25327b8600496e5d5e060609fa787379639252e...0.1.0) - 2021-06-23
 
 Public beta release!
-
-
