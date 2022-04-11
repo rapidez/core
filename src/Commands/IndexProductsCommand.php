@@ -109,6 +109,9 @@ class IndexProductsCommand extends Command
                         'children' => [
                             'type' => 'flattened',
                         ],
+                        'grouped' => [
+                            'type' => 'flattened',
+                        ],
                     ],
                 ]),
             ],
