@@ -5,7 +5,7 @@ namespace Rapidez\Core\Tests;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Rapidez\Core\Models\Product;
-use Rapidez\Core\RapidezFacade;
+use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\RapidezServiceProvider;
 use TorMorten\Eventy\EventServiceProvider;
 
@@ -33,7 +33,7 @@ class TestCase extends BaseTestCase
     protected function getPackageAliases($app)
     {
         return [
-            'Rapidez' => RapidezFacade::class,
+            'Rapidez' => Rapidez::class,
         ];
     }
 

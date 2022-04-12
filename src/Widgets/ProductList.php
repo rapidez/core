@@ -2,7 +2,7 @@
 
 namespace Rapidez\Core\Widgets;
 
-use Rapidez\Core\RapidezFacade as Rapidez;
+use Rapidez\Core\Facades\Rapidez;
 
 class ProductList
 {

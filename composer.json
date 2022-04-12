@@ -50,7 +50,7 @@
                 "Rapidez\\Core\\RapidezServiceProvider"
             ],
             "aliases": {
-                "Rapidez": "Rapidez\\Core\\RapidezFacade"
+                "Rapidez": "Rapidez\\Core\\Facades\\Rapidez"
             }
         }
     },
