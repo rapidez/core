@@ -39,5 +39,24 @@ class ConfigComposer
         config(['frontend.translations' => __('rapidez::frontend')]);
         config(['frontend.recaptcha' => Config::getCachedByPath('recaptcha_frontend/type_recaptcha_v3/public_key', null, true)]);
         config(['frontend.searchable' => array_merge($searchableAttributes, config('rapidez.searchable'))]);
+        config(['frontend.customer_fields_show' => $this->getCustomerFields()]);
+    }
+
+
+    public function getCustomerFields()
+    {
+        return [
+            'firstname' => 'req',
+            'middlename' => Rapidez::config('customer/address/middlename_show', 1) ? 'opt' : false,
+            'lastname' => 'req',
+            'postcode' => 'req',
+            'housenumber' => Rapidez::config('customer/address/street_lines', 3) >= 2 ? 'req' : false,
+            'addition' => Rapidez::config('customer/address/street_lines', 3) >= 3 ? 'opt' : false,
+            'street' => 'req',
+            'city' => 'req',
+            'country_id' => 'req',
+            'telephone' => Rapidez::config('customer/address/telephone_show', 'opt'),
+            'company' => Rapidez::config('customer/address/company_show', 'opt')
+        ];
     }
 }

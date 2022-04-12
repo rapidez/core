@@ -92,14 +92,14 @@
             required
         />
     </div>
-        <div class="col-span-12 sm:col-span-6">
-            <x-rapidez::country-select
-                name="{{ $type }}_country"
-                label="Country"
-                v-model="checkout.{{ $type }}_address.country_id"
-                required
-            />
-        </div>
+    <div class="col-span-12 sm:col-span-6">
+        <x-rapidez::country-select
+            name="{{ $type }}_country"
+            label="Country"
+            v-model="checkout.{{ $type }}_address.country_id"
+            required
+        />
+    </div>
     @if(Rapidez::config('customer/address/telephone_show', 1))
         <div class="col-span-12 sm:col-span-6 sm:col-start-1">
             <x-rapidez::input
