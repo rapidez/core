@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.54.0...master)
+## [Unreleased](https://github.com/org/repo/compare/0.55.0...master)
+
+## [0.55.0](https://github.com/org/repo/compare/0.54.0...0.55.0) - 2022-04-12
+
+### Changed
+
+- Moved the facade (7373ab2)
 
 ## [0.54.0](https://github.com/org/repo/compare/0.53.0...0.54.0) - 2022-04-11
 
