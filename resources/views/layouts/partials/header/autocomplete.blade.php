@@ -1,14 +1,25 @@
+@php $inputClasses = 'border !border-gray-200 !text-sm !min-h-0 outline-none !h-auto rounded !p-2 !bg-white w-full' @endphp
+
 <label for="autocomplete-input" class="sr-only">@lang('Search')</label>
+<input
+    id="autocomplete-input"
+    placeholder="@lang('Search')"
+    class="{{ $inputClasses }}"
+    v-on:focus="$root.loadAutocomplete = true; window.setTimeout(() => window.document.getElementById('autocomplete-input').focus(), 100)"
+    v-if="!$root.loadAutocomplete"
+>
+
 <reactive-base
     :app="config.es_prefix + '_products_' + config.store"
     :url="config.es_url"
+    v-if="$root.loadAutocomplete"
     v-cloak
 >
     <data-search
         placeholder="@lang('Search')"
         v-on:value-selected="search"
         component-id="autocomplete"
-        :inner-class="{ input: 'rounded' }"
+        :inner-class="{ input: '{{ $inputClasses }}' }"
         :data-field="Object.keys(config.searchable)"
         :field-weights="Object.values(config.searchable)"
         :show-icon="false"

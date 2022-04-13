@@ -50,6 +50,7 @@ document.addEventListener('turbolinks:load', () => {
             guestEmail: localStorage.email ?? null,
             user: null,
             cart: null,
+            loadAutocomplete: false,
             checkout: {
                 step: 1,
                 shipping_address: {
