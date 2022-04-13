@@ -6,8 +6,8 @@ use BladeUI\Heroicons\BladeHeroiconsServiceProvider;
 use BladeUI\Icons\BladeIconsServiceProvider;
 use Laravel\Dusk\Browser;
 use Orchestra\Testbench\Dusk\TestCase as BaseTestCase;
-use Rapidez\Core\Models\Product;
 use Rapidez\Core\Facades\Rapidez;
+use Rapidez\Core\Models\Product;
 use Rapidez\Core\RapidezServiceProvider;
 use TorMorten\Eventy\EventServiceProvider;
 
