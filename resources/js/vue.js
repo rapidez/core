@@ -6,6 +6,3 @@ Vue.use(AsyncComputed)
 
 import { directive as onClickaway } from 'vue-clickaway'
 Vue.directive('on-click-away', onClickaway)
-
-import LazyComponent from 'v-lazy-component'
-Vue.use(LazyComponent)

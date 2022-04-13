@@ -1,7 +1,7 @@
 @props(['value', 'title' => false, 'field' => 'sku.keyword'])
 
 @if($value)
-    <lazy-component>
+    <lazy>
         <reactive-base v-cloak :app="config.es_prefix + '_products_' + config.store" :url="config.es_url">
             <reactive-list
                 component-id="{{ md5(serialize($value)) }}"
@@ -50,5 +50,5 @@
                 </div>
             </reactive-list>
         </reactive-base>
-    </lazy-component>
+    </lazy>
 @endif

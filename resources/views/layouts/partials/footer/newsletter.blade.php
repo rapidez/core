@@ -9,7 +9,7 @@
             </p>
         </div>
         <div class="sm:w-full sm:max-w-md xl:mt-0 xl:ml-8" dusk="newsletter">
-            <lazy-component>
+            <lazy>
                 <graphql-mutation v-cloak query="mutation visitor ($email: String!) { subscribeEmailToNewsletter(email: $email) { status } }" :alert="false" :clear="true">
                     <div slot-scope="{ mutate, variables, mutated, error }">
                         <p v-if="mutated" class="text-primary text-xl font-bold">
@@ -50,7 +50,7 @@
                         </div>
                     </div>
                 </graphql-mutation>
-            </lazy-component>
+            </lazy>
         </div>
     </div>
 </div>
