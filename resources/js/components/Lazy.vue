@@ -101,13 +101,9 @@ export default {
     },
     methods: {
         onIdle(callback) {
-            if ('requestIdleCallback' in window) {
-                window.requestIdleCallback(callback)
-            } else {
-                setTimeout(() => {
-                    this.$nextTick(callback)
-                }, 300)
-            }
+            setTimeout(() => {
+                this.$nextTick(callback)
+            }, 3000)
         },
         observe() {
             const { rootMargin, threshold } = this.state;
