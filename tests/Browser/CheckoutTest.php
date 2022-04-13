@@ -17,6 +17,7 @@ class CheckoutTest extends DuskTestCase
                 ->visit('/checkout')
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->type('@email', $createAccountWithEmail ?: 'wayne@enterprises.com')
+                ->pause(1000)
                 ->click('@continue')
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->pause(1000)
@@ -56,6 +57,7 @@ class CheckoutTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($email) {
             $browser->visit('/')
+                ->pause(4000)
                 ->click('@account_menu')
                 ->click('@logout')
                 ->visit($this->testProduct->url)
