@@ -95,7 +95,7 @@ document.addEventListener('turbolinks:load', () => {
         methods: {
             search(value) {
                 if (value.length) {
-                    Turbolinks.visit('/search?q=' + value)
+                    Turbolinks.visit('/search?q=' + encodeURIComponent(value))
                 }
             }
         },
