@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.56.0...master)
+## [Unreleased](https://github.com/org/repo/compare/0.56.1...master)
+
+## [0.56.1](https://github.com/org/repo/compare/0.56.0...0.56.1) - 2022-04-14
+
+### Fixed
+
+- Encode search term in the url (0e44230)
 
 ## [0.56.0](https://github.com/org/repo/compare/0.55.0...0.56.0) - 2022-04-13
 
