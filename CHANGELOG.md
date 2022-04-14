@@ -1,6 +1,16 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.55.0...master)
+## [Unreleased](https://github.com/org/repo/compare/0.56.0...master)
+
+## [0.56.0](https://github.com/org/repo/compare/0.55.0...0.56.0) - 2022-04-13
+
+### Changed
+
+- Copied and renamed the lazy component and use requestIdleCallback (11cd9be)
+- Load lazy component automatically after 3 seconds instead of requestIdleCallback (3231f20)
+- Only load the user component when toggled (d7d6969, 380a23f)
+- Do not chunk the product image component (850ee34)
+- Only load the search autocomplete on focus (8067825)
 
 ## [0.55.0](https://github.com/org/repo/compare/0.54.0...0.55.0) - 2022-04-12
 
