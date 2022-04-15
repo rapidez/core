@@ -39,7 +39,7 @@ export default {
                 await this.refreshUser(false)
 
                 this.setCheckoutCredentialsFromDefaultUserAddresses()
-                await this.$root.$emit('logged-in')
+                await window.app.$emit('logged-in')
                 if (loginCallback) {
                     await loginCallback()
                 }
