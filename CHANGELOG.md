@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.56.1...master)
+## [Unreleased](https://github.com/org/repo/compare/0.56.2...master)
+
+## [0.56.2](https://github.com/org/repo/compare/0.56.1...0.56.2) - 2022-04-15
+
+### Fixed
+
+- Emit event fix (1bfb884)
 
 ## [0.56.1](https://github.com/org/repo/compare/0.56.0...0.56.1) - 2022-04-14
 
