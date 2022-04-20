@@ -48,7 +48,6 @@ class Category extends Model
         return '/'.$this->url_path.$configModel::getCachedByPath('catalog/seo/category_url_suffix', '.html');
     }
 
-    // TODO: Rename? This doesn't return the subcategories but just all categories from the path.
     public function getSubcategoriesAttribute()
     {
         $categoryIds = explode('/', $this->path);
@@ -57,11 +56,5 @@ class Category extends Model
         return !$categoryIds ? [] : Category::whereIn('entity_id', $categoryIds)
             ->orderByRaw('FIELD(entity_id,'.implode(',', $categoryIds).')')
             ->get();
-    }
-
-    // TODO: Pretty useless to have an accessor for this?
-    public function getPathWithNamesAttribute()
-    {
-        return $this->subcategories->implode('name', ' /// ');
     }
 }

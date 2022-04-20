@@ -1,4 +1,3 @@
-<!-- This could be removed as it's possible to set the query in the template -->
 <script>
 export default {
     props: {
