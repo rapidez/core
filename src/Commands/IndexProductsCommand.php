@@ -4,10 +4,11 @@ namespace Rapidez\Core\Commands;
 
 use Carbon\Carbon;
 use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
+use Exception;
 use Illuminate\Console\Command;
 use Rapidez\Core\Jobs\IndexProductJob;
 use Rapidez\Core\Models\Category;
-use Rapidez\Core\RapidezFacade;
+use Rapidez\Core\Facades\Rapidez;
 use TorMorten\Eventy\Facades\Eventy;
 
 class IndexProductsCommand extends Command
@@ -43,47 +44,53 @@ class IndexProductsCommand extends Command
             $index = $alias.'_'.Carbon::now()->format('YmdHis');
             $this->createIndex($index);
 
-            $flat = (new $productModel())->getTable();
-            $productQuery = $productModel::where($flat.'.visibility', 4)
-                ->selectOnlyIndexable()
-                ->withEventyGlobalScopes('index.product.scopes');
+            try {
+                $flat = (new $productModel())->getTable();
+                $productQuery = $productModel::where($flat.'.visibility', 4)
+                    ->selectOnlyIndexable()
+                    ->withEventyGlobalScopes('index.product.scopes');
 
-            $bar = $this->output->createProgressBar($productQuery->getQuery()->getCountForPagination());
-            $bar->start();
+                $bar = $this->output->createProgressBar($productQuery->getQuery()->getCountForPagination());
+                $bar->start();
 
-            $categories = Category::query()
-                ->where(fn ($q) => $q->whereNull('display_mode')->orWhere('display_mode', '<>', 'PAGE'))
-                ->where('entity_id', '<>', RapidezFacade::config('catalog/category/root_id', 2))
-                ->pluck('name', 'entity_id');
+                $categories = Category::query()
+                    ->where(fn ($q) => $q->whereNull('display_mode')->orWhere('display_mode', '<>', 'PAGE'))
+                    ->where('entity_id', '<>', Rapidez::config('catalog/category/root_id', 2))
+                    ->pluck('name', 'entity_id');
 
-            $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $index, $categories) {
-                foreach ($products as $product) {
-                    $data = array_merge(['store' => $store->store_id], $product->toArray());
-                    foreach ($product->super_attributes ?: [] as $superAttribute) {
-                        $data[$superAttribute->code] = array_keys((array) $product->{$superAttribute->code});
-                    }
+                $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $index, $categories) {
+                    foreach ($products as $product) {
+                        $data = array_merge(['store' => $store->store_id], $product->toArray());
+                        foreach ($product->super_attributes ?: [] as $superAttribute) {
+                            $data[$superAttribute->code] = array_keys((array) $product->{$superAttribute->code});
+                        }
 
-                    // TODO: Extract this to somewhere else?
-                    $data['category_paths'] = explode(',', $data['category_paths']);
-                    foreach ($data['category_paths'] as $categoryPath) {
-                        $category = [];
-                        foreach (explode('/', $categoryPath) as $categoryId) {
-                            if (isset($categories[$categoryId])) {
-                                $category[] = $categoryId.'::'.$categories[$categoryId];
+                        // TODO: Extract this to somewhere else?
+                        $data['category_paths'] = explode(',', $data['category_paths']);
+                        foreach ($data['category_paths'] as $categoryPath) {
+                            $category = [];
+                            foreach (explode('/', $categoryPath) as $categoryId) {
+                                if (isset($categories[$categoryId])) {
+                                    $category[] = $categoryId.'::'.$categories[$categoryId];
+                                }
+                            }
+                            if (!empty($category)) {
+                                $data['categories'][] = implode(' /// ', $category);
                             }
                         }
-                        if (!empty($category)) {
-                            $data['categories'][] = implode(' /// ', $category);
-                        }
+                        $data = Eventy::filter('index.product.data', $data, $product);
+                        IndexProductJob::dispatch($index, $data);
                     }
-                    $data = Eventy::filter('index.product.data', $data, $product);
-                    IndexProductJob::dispatch($index, $data);
-                }
 
-                $bar->advance($products->count());
-            });
+                    $bar->advance($products->count());
+                });
 
-            $this->switchAlias($alias, $index);
+                $this->switchAlias($alias, $index);
+            } catch (Exception $e) {
+                $this->elasticsearch->indices()->delete(['index' => $index]);
+
+                throw $e;
+            }
 
             $bar->finish();
             $this->line('');
@@ -121,6 +128,9 @@ class IndexProductsCommand extends Command
                             'type' => 'double',
                         ],
                         'children' => [
+                            'type' => 'flattened',
+                        ],
+                        'grouped' => [
                             'type' => 'flattened',
                         ],
                     ],

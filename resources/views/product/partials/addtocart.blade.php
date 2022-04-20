@@ -19,10 +19,10 @@
                 >
                     <option disabled selected hidden :value="undefined">@lang('Select') @{{ superAttribute.label.toLowerCase() }}</option>
                     <option
-                        v-for="(label, value) in config.product[superAttribute.code]"
-                        v-text="label"
-                        :value="value"
-                        :disabled="disabledOptions[superAttribute.code].includes(value)"
+                        v-for="option in config.product[superAttribute.code]"
+                        v-text="option.label"
+                        :value="option.value"
+                        :disabled="disabledOptions[superAttribute.code].includes(option.value)"
                     />
                 </x-rapidez::select>
             </div>

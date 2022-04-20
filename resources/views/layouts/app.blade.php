@@ -8,13 +8,15 @@
 
     <title>@yield('title', '')</title>
     <meta name="description" content="@yield('description', '')"/>
-    <meta name="robots" content="@config('design/search_engine_robots/default_robots', 'INDEX,FOLLOW')"/>
+    <meta name="robots" content="@yield('robots', Rapidez::config('design/search_engine_robots/default_robots', 'INDEX,FOLLOW'))"/>
 
     @hasSection('canonical')
         <link rel="canonical" href="@yield('canonical')" />
     @endif
 
     <link href="{{ url(mix('css/app.css')) }}" rel="stylesheet" data-turbolinks-track="reload">
+    <script src="{{ url(mix('js/manifest.js')) }}" defer data-turbolinks-track="reload"></script>
+    <script src="{{ url(mix('js/vendor.js')) }}" defer data-turbolinks-track="reload"></script>
     <script src="{{ url(mix('js/app.js')) }}" defer data-turbolinks-track="reload"></script>
     @stack('head')
 </head>

@@ -36,6 +36,9 @@ return [
         // 'attribute' => 4.0,
     ],
 
+    // Should the stock qty be exposed and indexed within Elasticsearch?
+    'expose_stock' => false,
+
     // With this token you can run commands from an url.
     'admin_token' => env('RAPIDEZ_TOKEN', env('APP_KEY')),
 
@@ -47,6 +50,12 @@ return [
     // Should the routes be registered? The controllers
     // below will not be used anymore when disabled.
     'routes' => true,
+
+    // Link store codes to theme folders
+    // The structure is `'store_code' => 'folder_path'`
+    'themes' => [
+        'default' => resource_path('themes/default'),
+    ],
 
     // The fully qualified class names of the controllers.
     'controllers' => [
@@ -77,6 +86,8 @@ return [
         'Magento\Cms\Block\Widget\Block'                   => Rapidez\Core\Widgets\Block::class,
         'Magento\CatalogWidget\Block\Product\ProductsList' => Rapidez\Core\Widgets\ProductList::class,
     ],
+
+    'view_only_widget' => \Rapidez\Core\Widgets\ViewOnly::class,
 
     // The fully qualified class names of the content variables.
     'content-variables' => [

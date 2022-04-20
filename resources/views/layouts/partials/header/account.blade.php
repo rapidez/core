@@ -1,5 +1,5 @@
-<user class="mr-3" v-cloak>
-    <toggler v-if="$root.user" slot-scope="{ logout }">
+<div class="mr-3">
+    <toggler v-if="$root.user" v-cloak>
         <div slot-scope="{ toggle, close, isOpen }" v-on-click-away="close">
             <button dusk="account_menu" class="flex my-1" v-on:click="toggle">
                 <x-heroicon-o-user class="h-6 w-6"/>
@@ -10,14 +10,17 @@
                     <a class="block hover:bg-secondary px-3 py-2" href="/account">@lang('Account')</a>
                     <a class="block hover:bg-secondary px-3 py-2" href="/account/orders">@lang('Orders')</a>
                 @endif
-                <a
-                    href="#"
-                    class="block hover:bg-secondary px-3 py-2"
-                    dusk="logout"
-                    @click.prevent="logout()"
-                >
-                    @lang('Logout')
-                </a>
+                <user>
+                    <a
+                        href="#"
+                        class="block hover:bg-secondary px-3 py-2"
+                        dusk="logout"
+                        slot-scope="{ logout }"
+                        @click.prevent="logout()"
+                    >
+                        @lang('Logout')
+                    </a>
+                </user>
             </div>
         </div>
     </toggler>
@@ -28,4 +31,4 @@
             </a>
         </div>
     @endif
-</user>
+</div>

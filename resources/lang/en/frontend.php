@@ -19,7 +19,15 @@ return [
         'email_password'    => 'You did not specify an email or password.',
         'email'             => 'An email address is required.',
     ],
-    'relevance' => 'Relevance',
+
     'asc'       => 'asc',
     'desc'      => 'desc',
+    'relevance' => 'Relevance',
+
+    // 'sorting' => [
+    //     'attribute' => [
+    //         'asc' => 'Attribute asc',
+    //         'desc' => 'Attrribute desc',
+    //     ],
+    // ],
 ];

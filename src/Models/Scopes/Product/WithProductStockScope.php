@@ -10,6 +10,10 @@ class WithProductStockScope implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
+        if (config('rapidez.expose_stock')) {
+            $builder->selectRaw('ANY_VALUE(cataloginventory_stock_item.qty) AS qty');
+        }
+
         $builder
             ->selectRaw('ANY_VALUE(cataloginventory_stock_item.is_in_stock) AS in_stock')
             ->selectRaw('IF(ANY_VALUE(cataloginventory_stock_item.enable_qty_increments), ANY_VALUE(cataloginventory_stock_item.qty_increments), 1) AS qty_increments')

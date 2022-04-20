@@ -54,7 +54,7 @@ class Category extends Model
         $categoryIds = explode('/', $this->path);
         $categoryIds = array_slice($categoryIds, array_search(config('rapidez.root_category_id'), $categoryIds) + 1);
 
-        return Category::whereIn('entity_id', $categoryIds)
+        return !$categoryIds ? [] : Category::whereIn('entity_id', $categoryIds)
             ->orderByRaw('FIELD(entity_id,'.implode(',', $categoryIds).')')
             ->get();
     }

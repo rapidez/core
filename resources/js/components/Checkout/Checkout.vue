@@ -18,6 +18,7 @@
                 checkout: this.checkout,
                 save: this.save,
                 goToStep: this.goToStep,
+                getTotalsInformation: this.getTotalsInformation,
             })
         },
 
@@ -40,7 +41,7 @@
                 try {
                     let response = await this.magentoCart('post', 'estimate-shipping-methods', {
                         address: {
-                            country_id: 'NL',
+                            country_id: this.checkout.shipping_address.country_id
                         }
                     })
                     this.checkout.shipping_methods = response.data
@@ -65,7 +66,7 @@
                     let response = await this.magentoCart('post', 'totals-information', {
                         addressInformation: {
                             address: {
-                                countryId: 'NL',
+                                countryId: this.checkout.shipping_address.country_id
                             }
                         }
                     })
@@ -133,12 +134,17 @@
                     }
 
                     if (this.checkout.create_account && this.checkout.password) {
-                        this.$root.user = await this.createCustomer(this.shippingAddress, this.billingAddress, this.checkout.password)
-                        if (!this.$root.user) {
+                        let customer = await this.createCustomer({
+                            email: this.$root.guestEmail,
+                            password: this.checkout.password,
+                            firstname: this.shippingAddress.firstname,
+                            lastname: this.shippingAddress.lastname,
+                        })
+                        if (!customer) {
                             return false
                         }
                         let self = this
-                        await this.login(this.$root.user.email, this.checkout.password, async () => {
+                        await this.login(customer.email, this.checkout.password, async () => {
                             if (self.$root.cart) {
                                 await self.linkUserToCart()
                                 localStorage.mask = self.$root.cart.entity_id
@@ -177,13 +183,25 @@
                 }
 
                 Object.entries(this.checkout.shipping_address).forEach(([key, val]) => {
-                    if (!val && key !== 'region_id') {
+                    if (!val && !['region_id', 'customer_address_id'].includes(key)) {
                         alert(key + ' cannot be empty')
                         validated = false
                     }
                 });
 
                 return validated
+            },
+
+            async selectShippingMethod() {
+                let response = await this.magentoCart('post', 'shipping-information', {
+                    addressInformation: {
+                        shipping_address: this.shippingAddress,
+                        billing_address: this.billingAddress,
+                        shipping_carrier_code: this.checkout.shipping_method.split('_')[0],
+                        shipping_method_code: this.checkout.shipping_method.split('_')[1],
+                    }
+                })
+                this.checkout.totals = response.data.totals
             },
 
             async selectPaymentMethod() {
@@ -240,12 +258,16 @@
                     'default_billing',
                 ].forEach((key) => delete address[key])
 
+                if (!address.customer_address_id) {
+                    address.save_in_address_book = 1
+                }
+
                 return address
             },
 
             storeCredentials(type) {
                 Object.keys(this.checkout[type + '_address']).forEach((key) => {
-                    let value = this.checkout.[type + '_address'][key]
+                    let value = this.checkout[type + '_address'][key]
                     let storageKey = type + '_' + key
                     if (value !== '') {
                         localStorage[storageKey] = value
@@ -270,7 +292,13 @@
                 return this.$root.checkout
             },
             shippingAddress: function () {
-                return this.removeUnusedAddressInfo(this.$root.checkout.shipping_address)
+                let address = this.removeUnusedAddressInfo(this.$root.checkout.shipping_address)
+
+                if (this.checkout.hide_billing) {
+                    address.same_as_billing = 1
+                }
+
+                return address
             },
             billingAddress: function () {
                 if (this.checkout.hide_billing) {
@@ -295,6 +323,9 @@
             },
             'checkout.hide_billing': function (value) {
                 localStorage.hide_billing = value
+            },
+            'checkout.shipping_method': function () {
+                this.selectShippingMethod()
             },
             'checkout.payment_method': function () {
                 this.selectPaymentMethod()

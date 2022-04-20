@@ -31,8 +31,10 @@ class Quote extends Model
                 ])
                 ->selectRaw('
                     MAX(quote_address.subtotal_incl_tax) as subtotal,
+                    MAX(quote_address.subtotal) as subtotal_excl_tax,
                     MAX(quote_address.tax_amount) as tax,
                     MAX(quote_address.shipping_incl_tax) as shipping_amount,
+                    MAX(quote_address.shipping_amount) as shipping_amount_excl_tax,
                     MAX(quote_address.shipping_method) as shipping_method,
                     MAX(quote_address.shipping_description) as shipping_description,
                     MAX(quote_address.grand_total) as total,
@@ -51,7 +53,9 @@ class Quote extends Model
                         "qty", quote_item.qty,
                         "qty_increments", IF(enable_qty_increments, stock.qty_increments, 1),
                         "price", quote_item.price_incl_tax,
+                        "price_excl_tax", quote_item.price,
                         "total", quote_item.row_total_incl_tax,
+                        "total_excl_tax", quote_item.row_total,
                         "attributes", quote_item_option.value,
                         "type", quote_item.product_type
                     QUERY).'

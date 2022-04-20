@@ -1,10 +1,10 @@
 <?php
 
-namespace Rapidez\Core;
+namespace Rapidez\Core\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class RapidezFacade extends Facade
+class Rapidez extends Facade
 {
     protected static function getFacadeAccessor()
     {

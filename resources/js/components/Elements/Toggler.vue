@@ -33,6 +33,9 @@
 
             close() {
                 this.isOpen = false
+                if (this.callback) {
+                    this.callback(this.isOpen)
+                }
             }
         }
     }

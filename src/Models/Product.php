@@ -11,6 +11,7 @@ use Rapidez\Core\Casts\DecodeHtmlEntities;
 use Rapidez\Core\Models\Scopes\Product\WithProductAttributesScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductCategoryInfoScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductChildrenScope;
+use Rapidez\Core\Models\Scopes\Product\WithProductGroupedScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductRelationIdsScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductStockScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductSuperAttributesScope;
@@ -39,9 +40,10 @@ class Product extends Model
         static::addGlobalScope(new WithProductCategoryInfoScope());
         static::addGlobalScope(new WithProductRelationIdsScope());
         static::addGlobalScope(new WithProductChildrenScope());
+        static::addGlobalScope(new WithProductGroupedScope());
         static::addGlobalScope('defaults', function (Builder $builder) {
             $builder
-                ->whereNotIn($builder->getQuery()->from.'.type_id', ['grouped', 'bundle'])
+                ->whereNotIn($builder->getQuery()->from.'.type_id', ['bundle'])
                 ->groupBy($builder->getQuery()->from.'.entity_id');
         });
     }
@@ -53,20 +55,25 @@ class Product extends Model
 
     public function getCasts(): array
     {
-        return array_merge(
-            parent::getCasts(),
-            [
-                'name'           => DecodeHtmlEntities::class,
-                'category_ids'   => CommaSeparatedToArray::class,
-                'relation_ids'   => CommaSeparatedToArray::class,
-                'upsell_ids'     => CommaSeparatedToArray::class,
-                'children'       => Children::class,
-                'qty_increments' => 'int',
-            ],
-            $this->getSuperAttributeCasts(),
-            $this->getMultiselectAttributeCasts(),
-            Eventy::filter('product.casts', []),
-        );
+        if (!$this->casts) {
+            $this->casts = array_merge(
+                parent::getCasts(),
+                [
+                    'name'           => DecodeHtmlEntities::class,
+                    'category_ids'   => CommaSeparatedToArray::class,
+                    'relation_ids'   => CommaSeparatedToArray::class,
+                    'upsell_ids'     => CommaSeparatedToArray::class,
+                    'children'       => Children::class,
+                    'grouped'        => Children::class,
+                    'qty_increments' => 'int',
+                ],
+                $this->getSuperAttributeCasts(),
+                $this->getMultiselectAttributeCasts(),
+                Eventy::filter('product.casts', []),
+            );
+        }
+
+        return $this->casts;
     }
 
     public function gallery(): BelongsToMany
@@ -87,16 +94,20 @@ class Product extends Model
 
     public function getPriceAttribute($price)
     {
-        if (!(array) $this->children) {
-            return $price;
+        if ($this->type == 'configurable') {
+            return collect($this->children)->min->price;
         }
 
-        return collect($this->children)->min->price;
+        if ($this->type == 'grouped') {
+            return collect($this->grouped)->min->price;
+        }
+
+        return $price;
     }
 
     public function getSpecialPriceAttribute($specialPrice)
     {
-        if (!(array) $this->children) {
+        if (!in_array($this->type, ['configurable', 'grouped'])) {
             if ($this->special_from_date && $this->special_from_date > now()->toDateString()) {
                 return null;
             }
@@ -108,16 +119,16 @@ class Product extends Model
             return $specialPrice !== $this->price ? $specialPrice : null;
         }
 
-        return collect($this->children)->filter(function ($child) {
+        return collect($this->type == 'configurable' ? $this->children : $this->grouped)->filter(function ($child) {
             if (!$child->special_price) {
                 return false;
             }
 
-            if ($child->special_from_date && $child->special_from_date > now()->toDateString()) {
+            if (isset($child->special_from_date) && $child->special_from_date > now()->toDateString()) {
                 return false;
             }
 
-            if ($child->special_to_date && $child->special_to_date < now()->toDateString()) {
+            if (isset($child->special_to_date) && $child->special_to_date < now()->toDateString()) {
                 return false;
             }
 

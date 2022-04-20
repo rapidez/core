@@ -65,7 +65,10 @@
             },
 
             async add() {
-                if (Object.values(this.product.children).length && window.location.pathname !== this.product.url && !config.show_swatches) {
+                if ('children' in this.product
+                    && Object.values(this.product.children).length
+                    && window.location.pathname !== this.product.url
+                    && !config.show_swatches) {
                     Turbolinks.visit(this.product.url)
                     return;
                 }
@@ -219,7 +222,7 @@
                                 Object.entries(productsPerValue2).forEach(([valueId, products]) => {
                                     // If there is no product that intersects for this attribute value
                                     // there will be no product available for this attribute value
-                                    if (_.intersection(productsPerValue[selectedValueId], products).length <= 0) {
+                                    if (window.intersection(productsPerValue[selectedValueId], products).length <= 0) {
                                         var attributeCode = this.product.super_attributes[attributeId2].code
                                         disabledOptions[attributeCode].push(valueId)
                                     }

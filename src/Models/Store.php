@@ -20,7 +20,8 @@ class Store extends Model
         static::addGlobalScope('defaults', function (Builder $builder) {
             $builder
                 ->where('store.code', '<>', 'admin')
-                ->join('store_group', 'store_group.group_id', '=', 'store.group_id');
+                ->join('store_group', 'store_group.group_id', '=', 'store.group_id')
+                ->join('store_website', 'store_website.website_id', '=', 'store_group.website_id');
         });
     }
 
@@ -32,14 +33,15 @@ class Store extends Model
                     'store_id',
                     'store.code',
                     'store.website_id',
-                    'root_category_id',
+                    'store_group.root_category_id',
+                    'store_website.code AS website_code',
                 ])->get()->keyBy('store_id')->toArray();
             });
             config(['cache.app.stores' => $stores]);
         }
 
-        $store = Arr::first($stores, function ($attribute) use ($callback) {
-            return $callback($attribute);
+        $store = Arr::first($stores, function ($store) use ($callback) {
+            return $callback($store);
         });
 
         throw_if(

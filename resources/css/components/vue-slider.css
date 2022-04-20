@@ -1,4 +1,8 @@
-.vue-slider-component .vue-slider-tooltip {
+.vue-slider {
+    @apply mx-2;
+}
+
+.vue-slider-dot-tooltip-inner {
     @apply bg-primary border-primary !important;
 }
 

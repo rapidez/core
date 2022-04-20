@@ -35,8 +35,11 @@ export default {
             .then(async(response) => {
                 localStorage.token = response.data
                 window.magentoUser.defaults.headers.common['Authorization'] = `Bearer ${localStorage.token}`;
+
                 await this.refreshUser(false)
+
                 this.setCheckoutCredentialsFromDefaultUserAddresses()
+                await window.app.$emit('logged-in')
                 if (loginCallback) {
                     await loginCallback()
                 }
@@ -48,46 +51,27 @@ export default {
         },
 
         logout(redirect = '/') {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-            localStorage.removeItem('mask')
-            localStorage.removeItem('cart')
-            this.$root.user = null
-            Turbolinks.clearCache()
-            window.location.href = redirect
+            this.$root.$emit('logout', {'redirect': redirect})
         },
 
-        async createCustomer(shippingAddress, billingAddress, password) {
+        onLogout(data = {}) {
+            localStorage.removeItem('token')
+            localStorage.removeItem('user')
+            localStorage.removeItem('email')
+            this.$root.user = null
+            Turbolinks.clearCache()
+            window.location.href = data?.redirect ?? '/'
+        },
+
+        async createCustomer(customer) {
             try {
                 let response = await magentoUser.post('customers', {
                     customer: {
-                        email: this.$root.guestEmail,
-                        firstname: shippingAddress.firstname,
-                        lastname: shippingAddress.lastname,
-                        addresses: [
-                            {
-                                defaultShipping: true,
-                                firstname: shippingAddress.firstname,
-                                lastname: shippingAddress.lastname,
-                                postcode: shippingAddress.postcode,
-                                street: shippingAddress.street,
-                                city: shippingAddress.city,
-                                countryId: shippingAddress.country_id,
-                                telephone:  shippingAddress.telephone
-                            },
-                            {
-                                defaultBilling: true,
-                                firstname: billingAddress.firstname,
-                                lastname: billingAddress.lastname,
-                                postcode: billingAddress.postcode,
-                                street: billingAddress.street,
-                                city: billingAddress.city,
-                                countryId: billingAddress.country_id,
-                                telephone:  billingAddress.telephone
-                            }
-                        ]
+                        email: customer.email,
+                        firstname: customer.firstname,
+                        lastname: customer.lastname,
                     },
-                    password: password
+                    password: customer.password
                 })
                 return response.data
             } catch (error) {
@@ -100,15 +84,23 @@ export default {
             if (this.$root && this.$root.user) {
                 if (this.$root.user.default_shipping) {
                     let address = this.$root.user.addresses.find((address) => address.id == this.$root.user.default_shipping)
-                    this.$root.checkout.shipping_address = address
+                    this.$root.checkout.shipping_address = Object.assign({
+                        customer_address_id: address.id
+                    }, address)
                 }
 
                 if (this.$root.user.default_billing) {
                     let address = this.$root.user.addresses.find((address) => address.id == this.$root.user.default_billing)
-                    this.$root.checkout.billing_address = address
+                    this.$root.checkout.billing_address = Object.assign({
+                        customer_address_id: address.id
+                    }, address)
                 }
             }
         },
+    },
+
+    created() {
+        this.$root.$on('logout', this.onLogout);
     },
 
     asyncComputed: {

@@ -6,8 +6,8 @@ use BladeUI\Heroicons\BladeHeroiconsServiceProvider;
 use BladeUI\Icons\BladeIconsServiceProvider;
 use Laravel\Dusk\Browser;
 use Orchestra\Testbench\Dusk\TestCase as BaseTestCase;
+use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Product;
-use Rapidez\Core\RapidezFacade;
 use Rapidez\Core\RapidezServiceProvider;
 use TorMorten\Eventy\EventServiceProvider;
 
@@ -21,8 +21,12 @@ abstract class DuskTestCase extends BaseTestCase
     {
         parent::setUp();
 
-        Browser::macro('waitUntilAllAjaxCallsAreFinished', function () {
+        Browser::macro('waitUntilAllAjaxCallsAreFinished', function ($pause = false) {
             $this->waitUntil('!window.app.$data.loading', 10);
+
+            if ($pause) {
+                $this->pause($pause);
+            }
 
             return $this;
         });
@@ -49,7 +53,7 @@ abstract class DuskTestCase extends BaseTestCase
     protected function getPackageAliases($app)
     {
         return [
-            'Rapidez' => RapidezFacade::class,
+            'Rapidez' => Rapidez::class,
         ];
     }
 }

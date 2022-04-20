@@ -17,6 +17,7 @@ class CheckoutTest extends DuskTestCase
                 ->visit('/checkout')
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->type('@email', $createAccountWithEmail ?: 'wayne@enterprises.com')
+                ->pause(1000)
                 ->click('@continue')
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->pause(1000)
@@ -27,7 +28,7 @@ class CheckoutTest extends DuskTestCase
                 ->type('@shipping_housenumber', '1007')
                 ->type('@shipping_street', 'Mountain Drive')
                 ->type('@shipping_city', 'Gotham')
-                ->select('@shipping_country', 'TR')
+                ->select('@shipping_country', 'NL')
                 ->type('@shipping_telephone', '530-7972');
 
             if ($createAccountWithEmail) {
@@ -36,11 +37,14 @@ class CheckoutTest extends DuskTestCase
                     ->type('@password_repeat', 'IronManSucks.91939');
             }
 
-            $browser->click('@continue')
+            $browser
+                ->click('@method-0') // select shipping method
                 ->waitUntilAllAjaxCallsAreFinished()
-                ->click('@method-0')
+                ->click('@continue') // go to payment step
+                ->waitUntilAllAjaxCallsAreFinished(2000)
+                ->click('@method-0') // select payment method
                 ->waitUntilAllAjaxCallsAreFinished()
-                ->click('@continue')
+                ->click('@continue') // place order
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->assertSee('Partytime!');
         });
@@ -53,6 +57,7 @@ class CheckoutTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($email) {
             $browser->visit('/')
+                ->pause(4000)
                 ->click('@account_menu')
                 ->click('@logout')
                 ->visit($this->testProduct->url)
@@ -64,15 +69,17 @@ class CheckoutTest extends DuskTestCase
                 ->type('@email', $email)
                 ->click('@continue')
                 ->waitUntilAllAjaxCallsAreFinished()
-                ->pause(500)
+                ->pause(2000)
                 ->type('@password', 'IronManSucks.91939')
-                ->click('@continue')
+                ->click('@continue') // login
                 ->waitUntilAllAjaxCallsAreFinished()
-                ->click('@continue')
+                ->click('@method-0') // select shipping method
                 ->waitUntilAllAjaxCallsAreFinished()
-                ->click('@method-0')
+                ->click('@continue') // go to payment step
                 ->waitUntilAllAjaxCallsAreFinished()
-                ->click('@continue')
+                ->click('@method-0') // select payment method
+                ->waitUntilAllAjaxCallsAreFinished()
+                ->click('@continue') // place order
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->assertSee('Partytime!');
         });

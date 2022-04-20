@@ -25,8 +25,10 @@ class OptionSwatch extends Model
 
         return Cache::rememberForever('swatchvalues', function () use ($swatchAttributes) {
             return self::select('eav_attribute.attribute_code')
-                ->selectRaw('JSON_OBJECTAGG(eav_attribute_option_value.option_id, JSON_OBJECT(
-                    "value", COALESCE(eav_attribute_option_value_store.value, eav_attribute_option_value.value),
+                ->selectRaw('JSON_OBJECTAGG(eav_attribute_option.sort_order, JSON_OBJECT(
+                    "label", COALESCE(eav_attribute_option_value_store.value, eav_attribute_option_value.value),
+                    "sort_order", eav_attribute_option.sort_order,
+                    "value", eav_attribute_option_value.option_id,
                     "swatch", eav_attribute_option_swatch.value
                 )) as options')
                 ->join('eav_attribute_option', function ($query) use ($swatchAttributes) {
