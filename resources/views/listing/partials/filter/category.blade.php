@@ -6,6 +6,11 @@
                 terms: {
                     field: 'categories.keyword'
                 }
+            },
+            category_paths: {
+                terms: {
+                    field: 'category_paths.keyword'
+                }
             }
         }
     })"
@@ -13,20 +18,13 @@
     u-r-l-params
 >
     <div slot-scope="{ aggregations, setQuery, value }">
-        <category-filter :aggregations="aggregations">
-            <div slot-scope="{ hasResults }">
+        <category-filter :aggregations="aggregations" :current-category="config.category" :value="value" :set-query="setQuery">
+            <div slot-scope="{ hasResults, results }">
                 <strong v-if="hasResults">@lang('Category')</strong>
-                <a href="#" class="flex justify-between" v-for="category in aggregations.categories.buckets" v-on:click.prevent="setQuery({
-                    query: { term: { 'categories.keyword': category.key } },
-                    value: category.key
-                })" v-if="(config.category && category.key.startsWith(config.category.pathWithNames)) || !config.category">
-                    {{-- TODO: We need some kind of tree here --}}
-                    <span v-if="config.category">
-                        @{{ category.key.replace(config.category.pathWithNames+' /// ', '').replace('///', '/') }}
-                    </span>
-                    <span v-else>@{{ category.key.replace('///', '/') }}</span>
-                    <small>(@{{ category.doc_count }})</small>
-                </a>
+                <input class="hidden" type="radio" name="category" value="" :checked="!value" v-on:change="setQuery({})"/>
+                <ul>
+                    <category-filter-category v-for="category in results" v-bind:key="category.key" :category="category" :value="(value || config.category?.entity_id) + ''" :set-query="setQuery"></category-filter-category>
+                </ul>
             </div>
         </category-filter>
     </div>
