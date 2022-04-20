@@ -66,6 +66,3 @@
 
 [v-cloak] { display: none; }
 * { -webkit-tap-highlight-color: transparant; }
-li ul, li ol {
-    padding-left: 10px;
-}

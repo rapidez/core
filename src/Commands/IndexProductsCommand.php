@@ -6,9 +6,10 @@ use Carbon\Carbon;
 use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
 use Exception;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
+use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Jobs\IndexProductJob;
 use Rapidez\Core\Models\Category;
-use Rapidez\Core\Facades\Rapidez;
 use TorMorten\Eventy\Facades\Eventy;
 
 class IndexProductsCommand extends Command
@@ -54,7 +55,6 @@ class IndexProductsCommand extends Command
                 $bar->start();
 
                 $categories = Category::query()
-                    ->where(fn ($q) => $q->whereNull('display_mode')->orWhere('display_mode', '<>', 'PAGE'))
                     ->where('entity_id', '<>', Rapidez::config('catalog/category/root_id', 2))
                     ->pluck('name', 'entity_id');
 
@@ -65,19 +65,7 @@ class IndexProductsCommand extends Command
                             $data[$superAttribute->code] = array_keys((array) $product->{$superAttribute->code});
                         }
 
-                        // TODO: Extract this to somewhere else?
-                        $data['category_paths'] = explode(',', $data['category_paths']);
-                        foreach ($data['category_paths'] as $categoryPath) {
-                            $category = [];
-                            foreach (explode('/', $categoryPath) as $categoryId) {
-                                if (isset($categories[$categoryId])) {
-                                    $category[] = $categoryId.'::'.$categories[$categoryId];
-                                }
-                            }
-                            if (!empty($category)) {
-                                $data['categories'][] = implode(' /// ', $category);
-                            }
-                        }
+                        $data = $this->withCategories($data, $categories);
                         $data = Eventy::filter('index.product.data', $data, $product);
                         IndexProductJob::dispatch($index, $data);
                     }
@@ -96,6 +84,23 @@ class IndexProductsCommand extends Command
             $this->line('');
         }
         $this->info('Done!');
+    }
+
+    public function withCategories(array $data, Collection $categories): array
+    {
+        foreach ($data['category_paths'] as $categoryPath) {
+            $category = [];
+            foreach (explode('/', $categoryPath) as $categoryId) {
+                if (isset($categories[$categoryId])) {
+                    $category[] = $categoryId.'::'.$categories[$categoryId];
+                }
+            }
+            if (!empty($category)) {
+                $data['categories'][] = implode(' /// ', $category);
+            }
+        }
+
+        return $data;
     }
 
     public function switchAlias(string $alias, string $index): void

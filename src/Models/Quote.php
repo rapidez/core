@@ -3,7 +3,7 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Rapidez\Core\Casts\CommaSeparatedToArray;
+use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
 use Rapidez\Core\Casts\QuoteItems;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
 use TorMorten\Eventy\Facades\Eventy;
@@ -16,7 +16,7 @@ class Quote extends Model
 
     protected $casts = [
         'items'       => QuoteItems::class,
-        'cross_sells' => CommaSeparatedToArray::class,
+        'cross_sells' => CommaSeparatedToIntegerArray::class,
     ];
 
     protected static function booting()

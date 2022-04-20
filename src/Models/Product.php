@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use NumberFormatter;
 use Rapidez\Core\Casts\Children;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
+use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
 use Rapidez\Core\Casts\DecodeHtmlEntities;
 use Rapidez\Core\Models\Scopes\Product\WithProductAttributesScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductCategoryInfoScope;
@@ -60,9 +61,10 @@ class Product extends Model
                 parent::getCasts(),
                 [
                     'name'           => DecodeHtmlEntities::class,
-                    'category_ids'   => CommaSeparatedToArray::class,
-                    'relation_ids'   => CommaSeparatedToArray::class,
-                    'upsell_ids'     => CommaSeparatedToArray::class,
+                    'category_ids'   => CommaSeparatedToIntegerArray::class,
+                    'category_paths' => CommaSeparatedToArray::class,
+                    'relation_ids'   => CommaSeparatedToIntegerArray::class,
+                    'upsell_ids'     => CommaSeparatedToIntegerArray::class,
                     'children'       => Children::class,
                     'grouped'        => Children::class,
                     'qty_increments' => 'int',

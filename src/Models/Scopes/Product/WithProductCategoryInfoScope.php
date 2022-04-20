@@ -13,7 +13,8 @@ class WithProductCategoryInfoScope implements Scope
         // We're joining this on everything, also the simple product so we
         // remove the duplicates with the distinct, maybe it's a better
         // idea to create a relation and eager load this? Previously
-        // with the subselect this wasn't an issue.
+        // with the subselect this wasn't an issue:
+        // https://github.com/rapidez/core/blob/c30c620694fc77713364160a4bc329a8a29f844a/src/Models/Scopes/Product/WithProductCategoryIdsScope.php
         $builder
             ->selectRaw('GROUP_CONCAT(DISTINCT(category_id)) as category_ids')
             ->selectRaw('GROUP_CONCAT(DISTINCT(catalog_category_flat_store_'.config('rapidez.store').'.path)) as category_paths')
