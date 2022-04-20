@@ -22,6 +22,9 @@ Vue.component('notifications', require('./components/Notifications/Notifications
 Vue.component('notification', require('./components/Notifications/Notification.vue').default)
 Vue.component('images', require('./components/Product/Images.vue').default)
 
+Vue.component('category-filter', require('./components/Listing/Filters/CategoryFilter.vue').default)
+Vue.component('category-filter-category', require('./components/Listing/Filters/CategoryFilterCategory.vue').default)
+
 Vue.component('login', () => import(/* webpackChunkName: "account" */ './components/Checkout/Login.vue'))
 Vue.component('listing', () => import(/* webpackChunkName: "listing" */ './components/Listing/Listing.vue'))
 Vue.component('query-filter', () => import(/* webpackChunkName: "listing" */ './components/Listing/Filters/QueryFilter.vue'))

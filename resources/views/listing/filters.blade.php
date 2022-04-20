@@ -10,6 +10,7 @@
     </x-slot>
 
     @include('rapidez::listing.partials.filter.selected')
+    @include('rapidez::listing.partials.filter.category')
 
     <template v-for="filter in filters">
         @include('rapidez::listing.partials.filter.price')

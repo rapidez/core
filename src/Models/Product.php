@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use NumberFormatter;
 use Rapidez\Core\Casts\Children;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
+use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
 use Rapidez\Core\Casts\DecodeHtmlEntities;
 use Rapidez\Core\Models\Scopes\Product\WithProductAttributesScope;
-use Rapidez\Core\Models\Scopes\Product\WithProductCategoryIdsScope;
+use Rapidez\Core\Models\Scopes\Product\WithProductCategoryInfoScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductChildrenScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductGroupedScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductRelationIdsScope;
@@ -37,7 +38,7 @@ class Product extends Model
         static::addGlobalScope(new WithProductAttributesScope());
         static::addGlobalScope(new WithProductSuperAttributesScope());
         static::addGlobalScope(new WithProductStockScope());
-        static::addGlobalScope(new WithProductCategoryIdsScope());
+        static::addGlobalScope(new WithProductCategoryInfoScope());
         static::addGlobalScope(new WithProductRelationIdsScope());
         static::addGlobalScope(new WithProductChildrenScope());
         static::addGlobalScope(new WithProductGroupedScope());
@@ -60,9 +61,10 @@ class Product extends Model
                 parent::getCasts(),
                 [
                     'name'           => DecodeHtmlEntities::class,
-                    'category_ids'   => CommaSeparatedToArray::class,
-                    'relation_ids'   => CommaSeparatedToArray::class,
-                    'upsell_ids'     => CommaSeparatedToArray::class,
+                    'category_ids'   => CommaSeparatedToIntegerArray::class,
+                    'category_paths' => CommaSeparatedToArray::class,
+                    'relation_ids'   => CommaSeparatedToIntegerArray::class,
+                    'upsell_ids'     => CommaSeparatedToIntegerArray::class,
                     'children'       => Children::class,
                     'grouped'        => Children::class,
                     'qty_increments' => 'int',

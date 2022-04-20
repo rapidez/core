@@ -1,6 +1,6 @@
 @props(['query'])
 
-<listing :additional-filters="{!! isset($query) ? "['query-filter']" : '[]' !!}" v-cloak>
+<listing :additional-filters="{!! isset($query) ? "['query-filter', 'category']" : "['category']" !!}" v-cloak>
     <div slot-scope="{ loaded, filters, sortOptions, reactiveFilters }">
         <reactive-base
             :app="config.es_prefix + '_products_' + config.store"

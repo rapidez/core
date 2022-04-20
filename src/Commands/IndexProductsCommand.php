@@ -6,7 +6,10 @@ use Carbon\Carbon;
 use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
 use Exception;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
+use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Jobs\IndexProductJob;
+use Rapidez\Core\Models\Category;
 use TorMorten\Eventy\Facades\Eventy;
 
 class IndexProductsCommand extends Command
@@ -51,12 +54,18 @@ class IndexProductsCommand extends Command
                 $bar = $this->output->createProgressBar($productQuery->getQuery()->getCountForPagination());
                 $bar->start();
 
-                $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $index) {
+                $categories = Category::query()
+                    ->where('entity_id', '<>', Rapidez::config('catalog/category/root_id', 2))
+                    ->pluck('name', 'entity_id');
+
+                $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $index, $categories) {
                     foreach ($products as $product) {
                         $data = array_merge(['store' => $store->store_id], $product->toArray());
                         foreach ($product->super_attributes ?: [] as $superAttribute) {
                             $data[$superAttribute->code] = array_keys((array) $product->{$superAttribute->code});
                         }
+
+                        $data = $this->withCategories($data, $categories);
                         $data = Eventy::filter('index.product.data', $data, $product);
                         IndexProductJob::dispatch($index, $data);
                     }
@@ -75,6 +84,23 @@ class IndexProductsCommand extends Command
             $this->line('');
         }
         $this->info('Done!');
+    }
+
+    public function withCategories(array $data, Collection $categories): array
+    {
+        foreach ($data['category_paths'] as $categoryPath) {
+            $category = [];
+            foreach (explode('/', $categoryPath) as $categoryId) {
+                if (isset($categories[$categoryId])) {
+                    $category[] = $categoryId.'::'.$categories[$categoryId];
+                }
+            }
+            if (!empty($category)) {
+                $data['categories'][] = implode(' /// ', $category);
+            }
+        }
+
+        return $data;
     }
 
     public function switchAlias(string $alias, string $index): void
