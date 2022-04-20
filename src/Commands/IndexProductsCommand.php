@@ -6,9 +6,9 @@ use Carbon\Carbon;
 use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
 use Exception;
 use Illuminate\Console\Command;
+use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Jobs\IndexProductJob;
 use Rapidez\Core\Models\Category;
-use Rapidez\Core\Facades\Rapidez;
 use TorMorten\Eventy\Facades\Eventy;
 
 class IndexProductsCommand extends Command
