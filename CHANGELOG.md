@@ -1,6 +1,16 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.56.2...master)
+## [Unreleased](https://github.com/org/repo/compare/0.57.0...master)
+
+## [0.57.0](https://github.com/org/repo/compare/0.56.2...0.57.0) - 2022-04-20
+
+### Added
+
+- Category filter (#128)
+
+### Changed
+
+- Added an additional wrapper div (a7fea71)
 
 ## [0.56.2](https://github.com/org/repo/compare/0.56.1...0.56.2) - 2022-04-15
 
