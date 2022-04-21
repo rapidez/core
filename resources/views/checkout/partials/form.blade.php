@@ -16,7 +16,7 @@
 </div>
 
 <div class="contents" v-if="!$root.user || !checkout.{{ $type }}_address.customer_address_id">
-    <div class="col-span-12 sm:col-span-6">
+    <div class="col-span-12 {{ Rapidez::config('customer/address/middlename_show', 0) ? 'sm:col-span-4' : 'sm:col-span-6'}}">
         <x-rapidez::input
             label="Firstname"
             name="{{ $type }}_firstname"
@@ -25,7 +25,17 @@
             required
         />
     </div>
-    <div class="col-span-12 sm:col-span-6">
+    @if(Rapidez::config('customer/address/middlename_show', 0))
+        <div class="col-span-12 sm:col-span-4">
+            <x-rapidez::input
+                name="{{ $type }}_middlename"
+                label="Middlename"
+                :placeholder="__('Middlename')"
+                v-model.lazy="checkout.{{ $type }}_address.middlename"
+            />
+        </div>
+    @endif
+    <div class="col-span-12 {{ Rapidez::config('customer/address/middlename_show', 0) ? 'sm:col-span-4' : 'sm:col-span-6'}}">
         <x-rapidez::input
             name="{{ $type }}_lastname"
             label="Lastname"
@@ -43,15 +53,27 @@
             required
         />
     </div>
-    <div class="col-span-6 sm:col-span-3">
-        <x-rapidez::input
-            name="{{ $type }}_housenumber"
-            label="Housenumber"
-            :placeholder="__('Nr.')"
-            v-model.lazy="checkout.{{ $type }}_address.street[1]"
-            required
-        />
-    </div>
+    @if(Rapidez::config('customer/address/street_lines', 3) >= 2)
+        <div class="col-span-6 sm:col-span-3">
+            <x-rapidez::input
+                name="{{ $type }}_housenumber"
+                label="Housenumber"
+                :placeholder="__('Nr.')"
+                v-model.lazy="checkout.{{ $type }}_address.street[1]"
+                required
+            />
+        </div>
+    @endif
+    @if(Rapidez::config('customer/address/street_lines', 3) >= 3)
+        <div class="col-span-6 sm:col-span-3">
+            <x-rapidez::input
+                name="{{ $type }}_addition"
+                label="Addition"
+                :placeholder="__('Nr.')"
+                v-model.lazy="checkout.{{ $type }}_address.street[2]"
+            />
+        </div>
+    @endif
     <div class="col-span-12 sm:col-span-6 sm:col-start-1">
         <x-rapidez::input
             name="{{ $type }}_street"
@@ -78,13 +100,26 @@
             required
         />
     </div>
-    <div class="col-span-12 sm:col-span-6 sm:col-start-1">
-        <x-rapidez::input
-            name="{{ $type }}_telephone"
-            label="Telephone"
-            :placeholder="__('Telephone')"
-            v-model.lazy="checkout.{{ $type }}_address.telephone"
-            required
-        />
-    </div>
+    @if(Rapidez::config('customer/address/telephone_show', 'req'))
+        <div class="col-span-12 sm:col-span-6 sm:col-start-1">
+            <x-rapidez::input
+                name="{{ $type }}_telephone"
+                label="Telephone"
+                :placeholder="__('Telephone')"
+                v-model.lazy="checkout.{{ $type }}_address.telephone"
+                :required="Rapidez::config('customer/address/telephone_show', 'req') == 'req'"
+            />
+        </div>
+    @endif
+    @if(Rapidez::config('customer/address/company_show', 'opt'))
+        <div class="col-span-12 sm:col-span-6">
+            <x-rapidez::input
+                name="{{ $type }}_company"
+                label="Company"
+                placeholder=""
+                v-model.lazy="checkout.{{ $type }}_address.company"
+                :required="Rapidez::config('customer/address/company_show', 'opt') == 'req'"
+            />
+        </div>
+    @endif
 </div>

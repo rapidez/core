@@ -29,6 +29,7 @@ return [
         'notifications',
         'checkout_steps',
         'flushable_localstorage_keys',
+        'customer_fields_show'
     ],
 
     // Additional searchable attributes with the search weight.
