@@ -47,7 +47,7 @@ class ConfigComposer
     {
         return [
             'firstname' => 'req',
-            'middlename' => Rapidez::config('customer/address/middlename_show', 1) ? 'opt' : false,
+            'middlename' => Rapidez::config('customer/address/middlename_show', 0) ? 'opt' : false,
             'lastname' => 'req',
             'postcode' => 'req',
             'housenumber' => Rapidez::config('customer/address/street_lines', 3) >= 2 ? 'req' : false,
@@ -55,7 +55,7 @@ class ConfigComposer
             'street' => 'req',
             'city' => 'req',
             'country_id' => 'req',
-            'telephone' => Rapidez::config('customer/address/telephone_show', 'opt'),
+            'telephone' => Rapidez::config('customer/address/telephone_show', 'req'),
             'company' => Rapidez::config('customer/address/company_show', 'opt')
         ];
     }
