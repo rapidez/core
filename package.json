@@ -24,6 +24,7 @@
         "postcss-nested": "^5.0.6",
         "sass": "^1.49.9",
         "sass-loader": "^12.6.0",
+        "simple-web-worker": "^1.2.0",
         "tailwindcss": "^3.0.23",
         "turbolinks": "^5.2.0",
         "vue": "^2.6.14",
