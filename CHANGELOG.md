@@ -1,6 +1,17 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.57.0...master)
+## [Unreleased](https://github.com/org/repo/compare/0.58.0...master)
+
+## [0.58.0](https://github.com/org/repo/compare/0.57.0...0.58.0) - 2022-04-24
+
+### Changed
+
+- Use the Magento customer configuration (#127)
+- Category page Lighthouse improvements (#129)
+
+### Fixed
+
+- Slider scroll fix (5728dea)
 
 ## [0.57.0](https://github.com/org/repo/compare/0.56.2...0.57.0) - 2022-04-20
 

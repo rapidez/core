@@ -9,6 +9,7 @@ require('./filters')
 require('./mixins')
 require('./turbolinks')
 require('./reactivesearch')
+require('./webworker')
 
 Vue.component('cart', require('./components/Cart/Cart.vue').default)
 Vue.component('toggler', require('./components/Elements/Toggler.vue').default)
@@ -32,7 +33,7 @@ Vue.component('coupon', () => import(/* webpackChunkName: "cart" */ './component
 Vue.component('checkout', () => import(/* webpackChunkName: "checkout" */ './components/Checkout/Checkout.vue'))
 Vue.component('checkout-success', () => import(/* webpackChunkName: "checkout" */ './components/Checkout/CheckoutSuccess.vue'))
 
-document.addEventListener('turbolinks:load', () => {
+function init() {
     Vue.prototype.window = window
     Vue.prototype.config = window.config
 
@@ -119,4 +120,9 @@ document.addEventListener('turbolinks:load', () => {
             }
         }
     })
-})
+}
+
+// Run init immedately on first pageload
+init()
+// On subsequent navigation run it after turbolinks:load
+window.addEventListener('load', () => document.addEventListener('turbolinks:load', init), {once: true})
