@@ -35,6 +35,9 @@
             callback: {
                 type: Function,
             },
+            beforeRequest: {
+                type: Function,
+            },
             mutateEvent: {
                 type: String,
                 required: false
@@ -95,9 +98,16 @@
                         options['headers']['X-ReCaptcha'] = await this.getReCaptchaToken()
                     }
 
+                    let variables = this.data,
+                        query = this.query;
+
+                    if (this.beforeRequest) {
+                        [query, variables, options] = await this.beforeRequest(this.query, this.variables, options);
+                    }
+
                     let response = await axios.post(config.magento_url + '/graphql', {
-                        query: this.query,
-                        variables: this.data,
+                        query: query,
+                        variables: variables,
                     }, options)
 
                     if (response.data.errors) {
