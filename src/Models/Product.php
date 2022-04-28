@@ -4,7 +4,6 @@ namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use NumberFormatter;
 use Rapidez\Core\Casts\Children;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
@@ -31,7 +30,7 @@ class Product extends Model
 
     protected $primaryKey = 'entity_id';
 
-    protected $appends = ['formatted_price', 'url'];
+    protected $appends = ['url'];
 
     protected static function booting(): void
     {
@@ -136,16 +135,6 @@ class Product extends Model
 
             return true;
         })->min->special_price;
-    }
-
-    public function getFormattedPriceAttribute(): string
-    {
-        $configModel = config('rapidez.models.config');
-        $currency = $configModel::getCachedByPath('currency/options/default');
-        $locale = $configModel::getCachedByPath('general/locale/code', 'en_US');
-        $formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
-
-        return $formatter->formatCurrency($this->price, $currency);
     }
 
     public function getUrlAttribute(): string

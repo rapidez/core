@@ -34,7 +34,10 @@
     "autoload": {
         "psr-4": {
             "Rapidez\\Core\\": "src"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
