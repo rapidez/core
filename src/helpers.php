@@ -1,7 +1,5 @@
 <?php
 
-use NumberFormatter;
-
 if (! function_exists('price')) {
     function price($price)
     {
