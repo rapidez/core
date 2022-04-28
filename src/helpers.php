@@ -1,6 +1,6 @@
 <?php
 
-if (! function_exists('price')) {
+if (!function_exists('price')) {
     function price($price)
     {
         $configModel = config('rapidez.models.config');
