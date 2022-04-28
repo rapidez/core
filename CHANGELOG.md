@@ -1,6 +1,17 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.58.0...master)
+## [Unreleased](https://github.com/org/repo/compare/0.59.0...master)
+
+## [0.59.0](https://github.com/org/repo/compare/0.58.0...0.59.0) - 2022-04-28
+
+### Added
+
+- GraphQL mutation beforeRequest prop (#130)
+- Price helper (0946924)
+
+### Changed
+
+- Do not lazy load the first 4 images on categories (0bf6762)
 
 ## [0.58.0](https://github.com/org/repo/compare/0.57.0...0.58.0) - 2022-04-24
 
