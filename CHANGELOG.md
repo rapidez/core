@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.59.0...master)
+## [Unreleased](https://github.com/org/repo/compare/0.59.1...master)
+
+## [0.59.1](https://github.com/org/repo/compare/0.59.0...0.59.1) - 2022-04-28
+
+### Fixed
+
+- Removed unneeded use (2d07b35)
 
 ## [0.59.0](https://github.com/org/repo/compare/0.58.0...0.59.0) - 2022-04-28
 
