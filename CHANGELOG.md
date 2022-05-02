@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.59.1...master)
+## [Unreleased](https://github.com/org/repo/compare/0.59.2...master)
+
+## [0.59.2](https://github.com/org/repo/compare/0.59.1...0.59.2) - 2022-05-02
+
+### Fixed
+
+- Revert calling init immediately (db86662)
 
 ## [0.59.1](https://github.com/org/repo/compare/0.59.0...0.59.1) - 2022-04-28
 
