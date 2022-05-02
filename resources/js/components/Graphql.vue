@@ -58,7 +58,16 @@
 
             async runQuery() {
                 try {
-                    let options = this.$root.user ? { headers: { Authorization: `Bearer ${localStorage.token}` }} : null
+                    let options = { headers: {} }
+
+                    if (this.$root.user) {
+                        options['headers']['Authorization'] = `Bearer ${localStorage.token}`
+                    }
+
+                    if (window.config.store_code) {
+                        options['headers']['Store'] = window.config.store_code
+                    }
+
                     let response = await axios.post(config.magento_url + '/graphql', {
                         query: this.query,
                         variables: this.variables,

@@ -98,6 +98,10 @@
                         options['headers']['X-ReCaptcha'] = await this.getReCaptchaToken()
                     }
 
+                    if (window.config.store_code) {
+                        options['headers']['Store'] = window.config.store_code
+                    }
+
                     let variables = this.data,
                         query = this.query;
 
