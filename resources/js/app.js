@@ -122,7 +122,4 @@ function init() {
     })
 }
 
-// Run init immedately on first pageload
-init()
-// On subsequent navigation run it after turbolinks:load
-window.addEventListener('load', () => document.addEventListener('turbolinks:load', init), {once: true})
+document.addEventListener('turbolinks:load', init)
