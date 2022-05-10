@@ -2,8 +2,8 @@
 
 namespace Rapidez\Core\Commands;
 
-use Illuminate\Console\Command;
 use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
+use Illuminate\Console\Command;
 
 abstract class InteractsWithElasticsearchCommand extends Command
 {
