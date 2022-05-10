@@ -5,10 +5,11 @@ namespace Rapidez\Core\Commands;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Collection;
+use TorMorten\Eventy\Facades\Eventy;
+use Rapidez\Core\Commands\InteractsWithElasticsearchCommand;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Jobs\IndexProductJob;
 use Rapidez\Core\Models\Category;
-use TorMorten\Eventy\Facades\Eventy;
 
 class IndexProductsCommand extends InteractsWithElasticsearchCommand
 {

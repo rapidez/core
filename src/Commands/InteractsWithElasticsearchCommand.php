@@ -2,8 +2,8 @@
 
 namespace Rapidez\Core\Commands;
 
-use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
 use Illuminate\Console\Command;
+use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
 
 abstract class InteractsWithElasticsearchCommand extends Command
 {
@@ -20,9 +20,9 @@ abstract class InteractsWithElasticsearchCommand extends Command
     {
         $this->elasticsearch->indices()->create([
             'index' => $index,
-            'body'  => [
+            'body'  => $mapping ? [
                 'mappings' => $mapping,
-            ],
+            ] : [],
         ]);
     }
 
