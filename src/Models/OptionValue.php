@@ -20,7 +20,7 @@ class OptionValue extends Model
                     ->whereIn('store_id', [config('rapidez.store'), 0])
                     ->orderByDesc('store_id')
                     ->first('value')
-                    ->value);
+                    ->value ?? false);
             });
 
             config(['cache.app.'.$cacheKey => $optionValue]);
