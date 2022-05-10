@@ -1,9 +1,21 @@
 <?php
 
-namespace Rapidez\Core\Commands\Traits;
+namespace Rapidez\Core\Commands;
 
-trait SwapIndexes
+use Illuminate\Console\Command;
+use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
+
+class InteractsWithElasticsearchCommand extends Command
 {
+    protected Elasticsearch $elasticsearch;
+
+    public function __construct(Elasticsearch $elasticsearch)
+    {
+        parent::__construct();
+
+        $this->elasticsearch = $elasticsearch;
+    }
+
     /**
      * Creating index based on name and optional mappings.
      * @param  string $index

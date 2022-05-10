@@ -3,39 +3,26 @@
 namespace Rapidez\Core\Commands;
 
 use Carbon\Carbon;
-use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
 use Exception;
-use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
+use TorMorten\Eventy\Facades\Eventy;
+use Rapidez\Core\Commands\Traits\SwapIndexes;
+use Rapidez\Core\Commands\InteractsWithElasticsearchCommand;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Jobs\IndexProductJob;
 use Rapidez\Core\Models\Category;
-use TorMorten\Eventy\Facades\Eventy;
-use Rapidez\Core\Commands\Traits\SwapIndexes;
 
-class IndexProductsCommand extends Command
+class IndexProductsCommand extends InteractsWithElasticsearchCommand
 {
-    use SwapIndexes;
-
     protected $signature = 'rapidez:index {store? : Store ID from Magento}';
 
     protected $description = 'Index the products in Elasticsearch';
 
     protected int $chunkSize = 500;
 
-    protected Elasticsearch $elasticsearch;
-
-    public function __construct(Elasticsearch $elasticsearch)
-    {
-        parent::__construct();
-
-        $this->elasticsearch = $elasticsearch;
-    }
-
     public function handle()
     {
         $this->call('cache:clear');
-
         $productModel = config('rapidez.models.product');
         $storeModel = config('rapidez.models.store');
         $stores = $this->argument('store') ? $storeModel::where('store_id', $this->argument('store'))->get() : $storeModel::all();
