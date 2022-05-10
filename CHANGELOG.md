@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.59.3...master)
+## [Unreleased](https://github.com/org/repo/compare/0.60.0...master)
+
+## [0.60.0](https://github.com/org/repo/compare/0.59.3...0.60.0) - 2022-05-10
+
+### Changed
+
+- Index command abstraction (#132)
 
 ## [0.59.3](https://github.com/org/repo/compare/0.59.2...0.59.3) - 2022-05-10
 
