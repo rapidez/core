@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.60.0...master)
+## [Unreleased](https://github.com/org/repo/compare/0.60.1...master)
+
+## [0.60.1](https://github.com/org/repo/compare/0.60.0...0.60.1) - 2022-05-10
+
+### Fixed
+
+- Swapping indexes without a mapping fix (#133)
 
 ## [0.60.0](https://github.com/org/repo/compare/0.59.3...0.60.0) - 2022-05-10
 
