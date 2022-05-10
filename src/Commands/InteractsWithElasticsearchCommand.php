@@ -16,12 +16,6 @@ abstract class InteractsWithElasticsearchCommand extends Command
         $this->elasticsearch = $elasticsearch;
     }
 
-    /**
-     * Creating index based on name and optional mappings.
-     * @param  string $index
-     * @param  array $mapping = []
-     * @return void
-     */
     public function createIndex(string $index, array $mapping = []): void
     {
         $this->elasticsearch->indices()->create([
@@ -32,12 +26,6 @@ abstract class InteractsWithElasticsearchCommand extends Command
         ]);
     }
 
-    /**
-     * Switch alias to new index and delete old index.
-     * @param  string $alias
-     * @param  string $index
-     * @return void
-     */
     public function switchAlias(string $alias, string $index): void
     {
         $this->elasticsearch->indices()->putAlias([
