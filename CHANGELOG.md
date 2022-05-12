@@ -1,6 +1,25 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.59.2...master)
+## [Unreleased](https://github.com/org/repo/compare/0.60.1...master)
+
+## [0.60.1](https://github.com/org/repo/compare/0.60.0...0.60.1) - 2022-05-10
+
+### Fixed
+
+- Swapping indexes without a mapping fix (#133)
+
+## [0.60.0](https://github.com/org/repo/compare/0.59.3...0.60.0) - 2022-05-10
+
+### Changed
+
+- Index command abstraction (#132)
+
+## [0.59.3](https://github.com/org/repo/compare/0.59.2...0.59.3) - 2022-05-10
+
+### Fixed
+
+- Send Store header with GraphQL requests (#131)
+- Return false on non existing option values (7de6633)
 
 ## [0.59.2](https://github.com/org/repo/compare/0.59.1...0.59.2) - 2022-05-02
 

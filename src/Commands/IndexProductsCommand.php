@@ -3,16 +3,14 @@
 namespace Rapidez\Core\Commands;
 
 use Carbon\Carbon;
-use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
 use Exception;
-use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Jobs\IndexProductJob;
 use Rapidez\Core\Models\Category;
 use TorMorten\Eventy\Facades\Eventy;
 
-class IndexProductsCommand extends Command
+class IndexProductsCommand extends InteractsWithElasticsearchCommand
 {
     protected $signature = 'rapidez:index {store? : Store ID from Magento}';
 
@@ -20,19 +18,9 @@ class IndexProductsCommand extends Command
 
     protected int $chunkSize = 500;
 
-    protected Elasticsearch $elasticsearch;
-
-    public function __construct(Elasticsearch $elasticsearch)
-    {
-        parent::__construct();
-
-        $this->elasticsearch = $elasticsearch;
-    }
-
     public function handle()
     {
         $this->call('cache:clear');
-
         $productModel = config('rapidez.models.product');
         $storeModel = config('rapidez.models.store');
         $stores = $this->argument('store') ? $storeModel::where('store_id', $this->argument('store'))->get() : $storeModel::all();
@@ -43,7 +31,19 @@ class IndexProductsCommand extends Command
 
             $alias = config('rapidez.es_prefix').'_products_'.$store->store_id;
             $index = $alias.'_'.Carbon::now()->format('YmdHis');
-            $this->createIndex($index);
+            $this->createIndex($index, Eventy::filter('index.product.mapping', [
+                'properties' => [
+                    'price' => [
+                        'type' => 'double',
+                    ],
+                    'children' => [
+                        'type' => 'flattened',
+                    ],
+                    'grouped' => [
+                        'type' => 'flattened',
+                    ],
+                ],
+            ]));
 
             try {
                 $flat = (new $productModel())->getTable();
@@ -101,46 +101,5 @@ class IndexProductsCommand extends Command
         }
 
         return $data;
-    }
-
-    public function switchAlias(string $alias, string $index): void
-    {
-        $this->elasticsearch->indices()->putAlias([
-            'index' => $index,
-            'name'  => $alias,
-        ]);
-
-        $aliases = $this->elasticsearch->indices()->getAlias(['name' => $alias]);
-        foreach ($aliases as $indexLinkedToAlias => $aliasData) {
-            if ($indexLinkedToAlias != $index) {
-                $this->elasticsearch->indices()->deleteAlias([
-                    'index' => $indexLinkedToAlias,
-                    'name'  => $alias,
-                ]);
-                $this->elasticsearch->indices()->delete(['index' => $indexLinkedToAlias]);
-            }
-        }
-    }
-
-    public function createIndex(string $index): void
-    {
-        $this->elasticsearch->indices()->create([
-            'index' => $index,
-            'body'  => [
-                'mappings' => Eventy::filter('index.product.mapping', [
-                    'properties' => [
-                        'price' => [
-                            'type' => 'double',
-                        ],
-                        'children' => [
-                            'type' => 'flattened',
-                        ],
-                        'grouped' => [
-                            'type' => 'flattened',
-                        ],
-                    ],
-                ]),
-            ],
-        ]);
     }
 }
