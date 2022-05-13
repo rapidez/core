@@ -12,7 +12,7 @@
                 {
                     multi_match: {
                         query: '{{ request()->q }}',
-                        fields: Object.keys(config.searchable),
+                        fields: Object.entries(config.searchable).map((value) => value[0]+'^'+value[1]),
                         type: 'best_fields',
                         operator: 'or',
                         fuzziness: 'AUTO',
@@ -21,11 +21,19 @@
                 {
                     multi_match: {
                         query: '{{ request()->q }}',
-                        fields: Object.keys(config.searchable),
+                        fields: Object.entries(config.searchable).map((value) => value[0]+'^'+value[1]),
                         type: 'phrase',
                         operator: 'or',
                     }
-                }
+                },
+                {
+                    multi_match: {
+                        query: '{{ request()->q }}',
+                        fields: Object.entries(config.searchable).map((value) => value[0]+'^'+value[1]),
+                        type: 'phrase_prefix',
+                        operator: 'or',
+                    }
+                },
             ]
         }
     }"/>
