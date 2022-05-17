@@ -26,7 +26,7 @@ mix
             chunkFilename: 'js/[name].js?id=[chunkhash]',
         },
         plugins: [
-            new BundleTracker({filename: './webpack-stats.json'})
+            new BundleTracker({filename: './public/webpack-stats.json'})
         ]
     });
 
