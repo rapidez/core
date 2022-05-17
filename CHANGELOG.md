@@ -1,6 +1,18 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.60.1...master)
+## [Unreleased](https://github.com/org/repo/compare/0.61.0...master)
+
+## [0.61.0](https://github.com/org/repo/compare/0.60.1...0.61.0) - 2022-05-17
+
+### Added
+
+- Better search results and field weight support (41bbc68)
+- Reactive Search lazy loading (5b6da60, af6e467, c75c217)
+- Preload listing.js on listings (9fd8a39, 032ef34)
+
+### Fixed
+
+- Extract JS chunks to the correct directory (6f4b967)
 
 ## [0.60.1](https://github.com/org/repo/compare/0.60.0...0.60.1) - 2022-05-10
 
