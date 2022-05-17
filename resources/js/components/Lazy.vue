@@ -14,7 +14,7 @@
             minHeight: '1px',
         }"
     >
-        <slot v-if="state.isIntersected" />
+        <slot v-if="state.isIntersected" :intersected="state.isIntersected" />
         <!-- Content that is loaded as a placeholder until it comes into view -->
         <slot v-if="!state.isIntersected" name="placeholder" />
     </component>

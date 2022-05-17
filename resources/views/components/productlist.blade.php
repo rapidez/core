@@ -1,8 +1,8 @@
 @props(['value', 'title' => false, 'field' => 'sku.keyword'])
 
 @if($value)
-    <lazy>
-        <listing>
+    <lazy v-slot="{ intersected }">
+        <listing v-if="intersected">
             <reactive-base v-cloak :app="config.es_prefix + '_products_' + config.store" :url="config.es_url">
                 <reactive-list
                     component-id="{{ md5(serialize($value)) }}"
