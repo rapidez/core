@@ -1,4 +1,20 @@
 <script>
+    import {
+        ReactiveBase,
+        ReactiveList,
+        ReactiveComponent,
+        SelectedFilters,
+        MultiList,
+        DynamicRangeSlider
+    } from '@appbaseio/reactivesearch-vue'
+
+    Vue.use(ReactiveBase)
+    Vue.use(ReactiveList)
+    Vue.use(ReactiveComponent)
+    Vue.use(SelectedFilters)
+    Vue.use(MultiList)
+    Vue.use(DynamicRangeSlider)
+
     export default {
         props: {
             additionalFilters: {
