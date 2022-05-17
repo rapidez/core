@@ -1,5 +1,6 @@
 const mix = require('laravel-mix');
 const path = require('path');
+const BundleTracker = require('webpack-bundle-tracker');
 
 mix
     .setPublicPath('public')
@@ -23,7 +24,10 @@ mix
     }).webpackConfig({
         output: {
             chunkFilename: 'js/[name].js?id=[chunkhash]',
-        }
+        },
+        plugins: [
+            new BundleTracker({filename: './webpack-stats.json'})
+        ]
     });
 
 if (mix.inProduction()) {

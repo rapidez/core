@@ -2,6 +2,9 @@
 
 @pushOnce('head', 'es_url-preconnect')
     <link rel="preconnect" href="{{ config('rapidez.es_url') }}">
+    @if($file = webpack_filename_with_chunkhash('js/listing.js'))
+        <link rel="preload" href="/{{ $file }}" as="script">
+    @endif
 @endPushOnce
 
 <div class="min-h-screen">
