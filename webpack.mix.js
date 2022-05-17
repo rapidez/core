@@ -4,7 +4,14 @@ const path = require('path');
 mix
     .setPublicPath('public')
     .js('resources/js/app.js', 'public/js').vue()
-    .extract()
+    .extract({
+        test(module) {
+            let moduleName = module.nameForCondition()
+            return !moduleName.includes('@appbaseio/reactivesearch-vue')
+                && !moduleName.includes('vue-slider-component')
+                && moduleName.includes('node_modules')
+        }
+    })
     .postCss('resources/css/app.css', 'public/css', [
         require('tailwindcss'),
     ]).alias({
