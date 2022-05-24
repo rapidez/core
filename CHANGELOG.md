@@ -1,6 +1,13 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.61.0...master)
+## [Unreleased](https://github.com/org/repo/compare/0.61.1...master)
+
+## [0.61.1](https://github.com/org/repo/compare/0.61.0...0.61.1) - 2022-05-24
+
+### Fixed
+
+- Test against Magento 2.4.4 (934d84b)
+- Attribute cache per store (774101a)
 
 ## [0.61.0](https://github.com/org/repo/compare/0.60.1...0.61.0) - 2022-05-17
 
