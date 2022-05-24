@@ -19,11 +19,11 @@ class Attribute extends Model
 
     public static function getCachedWhere(callable $callback): array
     {
-        if (!$attributes = config('cache.app.attributes')) {
-            $attributes = Cache::rememberForever('attributes', function () {
+        if (!$attributes = config('cache.app.attributes.'.config('rapidez.store'))) {
+            $attributes = Cache::rememberForever('attributes.'.config('rapidez.store'), function () {
                 return self::all()->toArray();
             });
-            config(['cache.app.attributes' => $attributes]);
+            config(['cache.app.attributes.'.config('rapidez.store') => $attributes]);
         }
 
         return Arr::where($attributes, function ($attribute) use ($callback) {
