@@ -77,7 +77,17 @@
                         label: window.config.translations.relevance,
                         dataField: '_score',
                         sortBy: 'desc'
-                    }
+                    },
+                    {
+                        label: window.config.translations.newest,
+                        dataField: 'created_at',
+                        sortBy: 'desc'
+                    },
+                    {
+                        label: window.config.translations.oldest,
+                        dataField: 'created_at',
+                        sortBy: 'asc'
+                    },
                 ].concat(window.flatMap(this.sortings, function (sorting) {
                     return window.map({
                         asc: window.config.translations.asc,
