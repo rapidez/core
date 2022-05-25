@@ -4,7 +4,7 @@
     list-class="flex flex-wrap mt-5 -mx-1 overflow-hidden"
     :pagination="true"
     :from="0"
-    :size="32"
+    :size="isNaN(parseInt($root.listingResultsPerPage)) ? 10000 : $root.listingResultsPerPage"
     :react="{and: reactiveFilters}"
     :sort-options="sortOptions"
     :inner-class="{

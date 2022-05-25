@@ -20,6 +20,10 @@ return [
         'email'             => 'An email address is required.',
     ],
 
+    'results' => [
+        'all' => 'All'
+    ],
+
     'asc'       => 'asc',
     'desc'      => 'desc',
     'relevance' => 'Relevance',
