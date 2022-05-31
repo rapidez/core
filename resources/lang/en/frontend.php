@@ -23,6 +23,7 @@ return [
     'asc'       => 'asc',
     'desc'      => 'desc',
     'relevance' => 'Relevance',
+    'newest' => 'Newest',
 
     // 'sorting' => [
     //     'attribute' => [

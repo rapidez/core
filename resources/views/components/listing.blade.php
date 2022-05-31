@@ -8,7 +8,15 @@
 @endPushOnce
 
 <div class="min-h-screen">
-    <listing :additional-filters="{!! isset($query) ? "['query-filter', 'category']" : "['category']" !!}" v-cloak>
+    <listing
+        :additional-filters="{!! isset($query) ? "['query-filter', 'category']" : "['category']" !!}"
+        :additional-sorting="[{
+            label: window.config.translations.newest,
+            dataField: 'created_at',
+            sortBy: 'desc'
+        }]"
+        v-cloak
+    >
         <div slot-scope="{ loaded, filters, sortOptions, reactiveFilters }">
             <reactive-base
                 :app="config.es_prefix + '_products_' + config.store"

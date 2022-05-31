@@ -20,6 +20,10 @@
             additionalFilters: {
                 type: Array,
                 default: () => []
+            },
+            additionalSorting: {
+                type: Array,
+                default: () => []
             }
         },
 
@@ -89,7 +93,7 @@
                             sortBy: directionKey
                         }
                     })
-                }))
+                })).concat(this.additionalSorting)
             }
         }
     }
