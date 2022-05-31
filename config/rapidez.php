@@ -114,8 +114,6 @@ return [
         ],
     ],
 
-    'sortOptions' => '!outline-none !rounded shadow focus:ring focus:ring-green-500 h-[32px] pr-[25px] pl-[10px] pb-0 pt-0 text-[0.82rem]',
-
     // Z-Index per element
     'z-indexes' => [
         'header-dropdowns' => 'z-20',
