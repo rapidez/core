@@ -30,7 +30,7 @@ class Config extends Model
         });
     }
 
-    public static function getCachedByPath(string $path, $default = false, bool $sensitive = false): ?string
+    public static function getCachedByPath(string $path, $default = false, bool $sensitive = false): string|boolean
     {
         $cacheKey = 'config.'.config('rapidez.store').'.'.str_replace('/', '.', $path);
 

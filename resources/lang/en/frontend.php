@@ -24,6 +24,7 @@ return [
     'desc'      => 'desc',
     'relevance' => 'Relevance',
     'newest'    => 'Newest',
+    'all'    => 'All',
 
     // 'sorting' => [
     //     'attribute' => [
