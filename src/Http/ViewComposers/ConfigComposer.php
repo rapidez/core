@@ -40,6 +40,8 @@ class ConfigComposer
         config(['frontend.recaptcha' => Config::getCachedByPath('recaptcha_frontend/type_recaptcha_v3/public_key', null, true)]);
         config(['frontend.searchable' => array_merge($searchableAttributes, config('rapidez.searchable'))]);
         config(['frontend.customer_fields_show' => $this->getCustomerFields()]);
+        config(['frontend.grid_per_page' => Rapidez::config('catalog/frontend/grid_per_page', 12)]);
+        config(['frontend.grid_per_page_values' => Rapidez::config('catalog/frontend/grid_per_page_values', "[12, 24]")]);
     }
 
     public function getCustomerFields()

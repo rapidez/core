@@ -53,7 +53,6 @@ function init() {
             loading: false,
             guestEmail: localStorage.email ?? null,
             user: null,
-            listingResultsPerPage: 12,
             cart: null,
             loadAutocomplete: false,
             checkout: {
