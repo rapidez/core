@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.62.0...master)
+## [Unreleased](https://github.com/org/repo/compare/0.62.1...master)
+
+## [0.62.1](https://github.com/org/repo/compare/0.62.0...0.62.1) - 2022-06-01
+
+### Fixed
+
+- Per page config parse fix (#136)
 
 ## [0.62.0](https://github.com/org/repo/compare/0.61.1...0.62.0) - 2022-05-31
 
