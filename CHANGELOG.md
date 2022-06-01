@@ -1,6 +1,13 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.61.1...master)
+## [Unreleased](https://github.com/org/repo/compare/0.62.0...master)
+
+## [0.62.0](https://github.com/org/repo/compare/0.61.1...0.62.0) - 2022-05-31
+
+### Added
+
+- Results per page filter (#134)
+- Newest sort option and additionalSorting prop (#135)
 
 ## [0.61.1](https://github.com/org/repo/compare/0.61.0...0.61.1) - 2022-05-24
 
