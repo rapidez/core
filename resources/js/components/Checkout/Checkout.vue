@@ -99,7 +99,7 @@
                             }
                             break
                         default:
-                            alert('Unknown item to save')
+                            Notify('Unknown item to save', 'error')
                     }
                 })
 
@@ -185,7 +185,7 @@
                 const optionalFields = Object.keys(Object.fromEntries(Object.entries(window.config.customer_fields_show).filter(([key, value]) => !value || value === 'opt')));
                 Object.entries(this.checkout.shipping_address).forEach(([key, val]) => {
                     if (!val && !['region_id', 'customer_address_id'].concat(optionalFields).includes(key)) {
-                        alert(key + ' cannot be empty')
+                        Notify(key + ' cannot be empty', 'warning')
                         validated = false
                     }
                 });

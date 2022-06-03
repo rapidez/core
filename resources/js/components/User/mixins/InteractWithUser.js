@@ -45,7 +45,7 @@ export default {
                 }
             })
             .catch((error) => {
-                alert(error.response.data.message)
+                Notify(error.response.data.message, 'error')
                 return false
             })
         },
@@ -75,7 +75,7 @@ export default {
                 })
                 return response.data
             } catch (error) {
-                alert(error.response.data.message)
+                Notify(error.response.data.message, 'error')
                 return false
             }
         },
