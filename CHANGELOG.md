@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.62.2...master)
+## [Unreleased](https://github.com/org/repo/compare/0.62.3...master)
+
+## [0.62.3](https://github.com/org/repo/compare/0.62.2...0.62.3) - 2022-06-03
+
+### Fixed
+
+- Coupon notifications (d1f745c)
 
 ## [0.62.2](https://github.com/org/repo/compare/0.62.1...0.62.2) - 2022-06-03
 
