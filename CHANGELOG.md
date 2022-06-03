@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.62.1...master)
+## [Unreleased](https://github.com/org/repo/compare/0.62.2...master)
+
+## [0.62.2](https://github.com/org/repo/compare/0.62.1...0.62.2) - 2022-06-03
+
+### Fixed
+
+- Notifications instead of alerts (4057543)
 
 ## [0.62.1](https://github.com/org/repo/compare/0.62.0...0.62.1) - 2022-06-01
 
