@@ -5,7 +5,7 @@ return [
         'add'    => 'added to the cart.',
         'remove' => 'removed from the cart.',
         'coupon' => [
-            'applied' => 'Coupon applied succesfully!'
+            'applied' => 'Coupon applied succesfully!',
         ],
     ],
     'errors' => [
