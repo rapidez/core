@@ -7,7 +7,6 @@
         data: () => {
             return {
                 couponCode: '',
-                submitError: ''
             }
         },
 
@@ -17,7 +16,6 @@
                 removeCoupon: this.removeCoupon,
                 applyCoupon: this.applyCoupon,
                 couponCode: this.couponCode,
-                submitError: this.submitError,
                 inputEvents: {
                     input: (e) => { this.couponCode = e.target.value }
                 }
@@ -32,9 +30,9 @@
                         .then(function () {
                             self.refreshCart()
                             self.couponCode = ''
-                            self.submitError = ''
+                            Notify(window.config.translations.cart.coupon.applied, 'success')
                         })
-                        .catch((error) => self.submitError = error.response.data.message)
+                        .catch((error) => Notify(error.response.data.message, 'error'))
                 }
             },
 
@@ -43,9 +41,8 @@
                 this.magentoCart('delete', 'coupons')
                     .then(function() {
                         self.refreshCart()
-                        self.submitError = ''
                     })
-                    .catch((error) => self.submitError = error.response.data.message)
+                    .catch((error) => Notify(error.response.data.message, 'error'))
             }
         }
     }

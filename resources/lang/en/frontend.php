@@ -4,6 +4,9 @@ return [
     'cart' => [
         'add'    => 'added to the cart.',
         'remove' => 'removed from the cart.',
+        'coupon' => [
+            'applied' => 'Coupon applied succesfully!'
+        ],
     ],
     'errors' => [
         'wrong'           => 'Something went wrong, please try again.',

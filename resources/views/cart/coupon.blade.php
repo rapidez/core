@@ -3,7 +3,7 @@
         <h3 class="text-lg leading-6 font-medium text-gray-900">
             @lang('Apply coupon code')
         </h3>
-        <coupon v-slot="{ cart, removeCoupon, couponCode, inputEvents, applyCoupon, submitError }">
+        <coupon v-slot="{ cart, removeCoupon, couponCode, inputEvents, applyCoupon }">
             <div>
                 <form class="mt-5 flex" @submit.prevent="applyCoupon">
                     <x-rapidez::input
@@ -19,7 +19,7 @@
                         @lang('Apply')
                     </x-rapidez::button>
                 </form>
-                <p class="text-red-500 text-xs italic w-3/4 mt-3" v-if="submitError">@{{ submitError }}</p>
+
                 <div class="relative rounded-md" v-if="cart.discount_name && cart.discount_amount < 0">
                     <div class="flex items-center">
                         <button v-on:click="removeCoupon">
