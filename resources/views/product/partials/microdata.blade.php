@@ -2,7 +2,7 @@
 <meta itemprop="sku" content="{{ $product->sku }}" />
 
 @foreach($product->images as $image)
-    <link itemprop="image" href="{{ config('rapidez.media_url').'/catalog/product'.$image }}" />
+    <meta itemprop="image" content="{{ config('rapidez.media_url').'/catalog/product'.$image }}" />
 @endforeach
 
 <div itemprop="offers" itemtype="https://schema.org/Offer" itemscope>
