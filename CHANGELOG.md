@@ -1,6 +1,13 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.62.3...master)
+## [Unreleased](https://github.com/org/repo/compare/0.62.4...master)
+
+## [0.62.4](https://github.com/org/repo/compare/0.62.3...0.62.4) - 2022-06-07
+
+### Fixed
+
+- Fix return type (#137)
+- Use meta instead of link in microdata to prevent loading (8d0f572)
 
 ## [0.62.3](https://github.com/org/repo/compare/0.62.2...0.62.3) - 2022-06-03
 
