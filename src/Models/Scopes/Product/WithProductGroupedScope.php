@@ -28,11 +28,11 @@ class WithProductGroupedScope implements Scope
                     "qty_increments", IFNULL(NULLIF(grouped_stock.qty_increments, 0), 1)
                 QUERY).'
             )), "$.null__") AS grouped')
-            ->leftJoin('catalog_product_link', function ($join) use ($model) {
-                $join->on('catalog_product_link.product_id', '=', $model->getTable().'.entity_id')
-                     ->where('link_type_id', 3);
+            ->leftJoin('catalog_product_link AS grouped_link', function ($join) use ($model) {
+                $join->on('grouped_link.product_id', '=', $model->getTable().'.entity_id')
+                     ->where('grouped_link.link_type_id', 3);
             })
-            ->leftJoin($model->getTable().' as grouped', 'linked_product_id', '=', 'grouped.entity_id')
+            ->leftJoin($model->getTable().' as grouped', 'grouped_link.linked_product_id', '=', 'grouped.entity_id')
             ->leftJoin('cataloginventory_stock_item AS grouped_stock', 'grouped.entity_id', '=', 'grouped_stock.product_id');
     }
 }
