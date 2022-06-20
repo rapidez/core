@@ -9,9 +9,10 @@
             })
         },
         mounted() {
-            this.$root.$on('notification-message', (message, type) => {
+            this.$root.$on('notification-message', (message, type, params) => {
                 this.notifications.push({
                     message: message,
+                    params: params,
                     type: type,
                     show: true
                 })

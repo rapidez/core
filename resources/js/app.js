@@ -1,6 +1,6 @@
 window.axios = require('axios')
 window.debug = process.env.MIX_DEBUG == 'true'
-window.Notify = (message, type) => window.app.$emit('notification-message', message, type);
+window.Notify = (message, type, params = []) => window.app.$emit('notification-message', message, type, params);
 
 require('./lodash')
 require('./vue')
