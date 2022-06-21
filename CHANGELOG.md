@@ -1,6 +1,16 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.62.4...master)
+## [Unreleased](https://github.com/org/repo/compare/0.63.0...master)
+
+## [0.63.0](https://github.com/org/repo/compare/0.62.4...0.63.0) - 2022-06-21
+
+### Added
+
+- Magento error params in error notifications (#138)
+
+### Fixed
+
+- Table alias for on grouped scope (97d1a05)
 
 ## [0.62.4](https://github.com/org/repo/compare/0.62.3...0.62.4) - 2022-06-07
 
