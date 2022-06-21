@@ -19,7 +19,7 @@
             })
         },
         created() {
-            this.message = this.notification.message
+            this.message = this.notification.message.includes('%') ? this.format(this.notification.message, this.notification.params) : this.notification.message
             this.show = this.notification.show
             this.type = this.notification.type
         },
@@ -31,12 +31,18 @@
         data: () => ({
             message: null,
             type: null,
-            show: null,
+            show: null
         }),
         methods: {
             close() {
                 this.show = false
+            },
+            format(str, arr) {
+                return str.replace(/%(\d+)/g, function(_,m) {
+                    return arr[--m];
+                });
             }
+
         },
         computed: {
             classes() {
