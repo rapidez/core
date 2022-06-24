@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.63.0...master)
+## [Unreleased](https://github.com/org/repo/compare/0.64.0...master)
+
+## [0.64.0](https://github.com/org/repo/compare/0.63.0...0.64.0) - 2022-06-24
+
+### Added
+
+- GraphQL Mutation component mutating prop (#139)
 
 ## [0.63.0](https://github.com/org/repo/compare/0.62.4...0.63.0) - 2022-06-21
 
