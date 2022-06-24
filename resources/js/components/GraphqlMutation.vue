@@ -51,6 +51,7 @@
         data: () => ({
             error: false,
             mutated: false,
+            mutating: false,
             initialVariables: {},
             data: {},
         }),
@@ -59,6 +60,7 @@
             return this.$scopedSlots.default({
                 mutate: this.mutate,
                 mutated: this.mutated,
+                mutating: this.mutating,
                 error: this.error,
                 variables: this.data,
             })
@@ -85,6 +87,7 @@
 
         methods: {
             async mutate() {
+                this.mutating = true
                 this.error = false
 
                 try {
@@ -142,6 +145,7 @@
                     }, 2500);
 
                     if (!this.redirect && this.notify.message) {
+                        this.mutating = false
                         Notify(this.notify.message, this.notify.type ?? 'success')
                     }
 
@@ -151,10 +155,11 @@
                                 Notify(this.notify.message, this.notify.type ?? 'success')
                             }, 1500)
                         }
-
+                        this.mutating = false
                         Turbolinks.visit(this.redirect)
                     }
                 } catch (e) {
+                    this.mutating = false
                     Notify(window.config.translations.errors.wrong, 'warning')
                 }
             },
