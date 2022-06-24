@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.64.0...master)
+## [Unreleased](https://github.com/org/repo/compare/0.64.1...master)
+
+## [0.64.1](https://github.com/org/repo/compare/0.64.0...0.64.1) - 2022-06-24
+
+### Fixed
+
+- Added fail safe if redirect type is not set (#140)
 
 ## [0.64.0](https://github.com/org/repo/compare/0.63.0...0.64.0) - 2022-06-24
 
