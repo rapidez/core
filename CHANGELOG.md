@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.64.1...master)
+## [Unreleased](https://github.com/org/repo/compare/0.64.2...master)
+
+## [0.64.2](https://github.com/org/repo/compare/0.64.1...0.64.2) - 2022-06-28
+
+### Fixed
+
+- Fallback fix when there are no children (53ece8b)
 
 ## [0.64.1](https://github.com/org/repo/compare/0.64.0...0.64.1) - 2022-06-24
 
