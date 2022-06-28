@@ -14,7 +14,7 @@ class Children implements CastsAttributes
 
         $children = json_decode($value);
 
-        foreach ($children as $child) {
+        foreach ($children ?: [] as $child) {
             if ($child->special_price) {
                 if ($child->special_from_date && $child->special_from_date > now()->toDateString()) {
                     $child->special_price = null;
