@@ -5,6 +5,13 @@
     export default {
         mixins: [GetCart, InteractWithUser],
 
+        props: {
+            currentStep: {
+                type: Number,
+                default: 1
+            }
+        },
+
         data() {
             return {
                 backEvent: false
@@ -23,6 +30,9 @@
         },
 
         created() {
+            if(this.currentStep !== 1) {
+                this.$root.checkout.step = this.currentStep
+            }
             if (!this.hasItems) {
                 window.location.replace('/')
                 return
