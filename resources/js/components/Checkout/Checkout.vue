@@ -30,7 +30,7 @@
         },
 
         created() {
-            if(this.currentStep !== 1) {
+            if (this.currentStep !== 1) {
                 this.$root.checkout.step = this.currentStep
             }
             if (!this.hasItems) {
