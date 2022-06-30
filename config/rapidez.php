@@ -44,9 +44,12 @@ return [
     'admin_token' => env('RAPIDEZ_TOKEN', env('APP_KEY')),
 
     // The checkout steps which are used to name the steps
-    // in the url and in the progressbar on steps. Keep
+    // in the url and in the progressbar on steps. You can
+    // add different steps for different stores. Keep
     // them lowercase and do not include any spaces.
-    'checkout_steps' => ['cart', 'login', 'credentials', 'payment', 'success'],
+    'checkout_steps' => [
+        'default' => ['cart', 'login', 'credentials', 'payment', 'success']
+    ],
 
     // Should the routes be registered? The controllers
     // below will not be used anymore when disabled.
