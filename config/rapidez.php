@@ -48,7 +48,7 @@ return [
     // add different steps for different stores. Keep
     // them lowercase and do not include any spaces.
     'checkout_steps' => [
-        'default' => ['cart', 'login', 'credentials', 'payment', 'success']
+        'default' => ['cart', 'login', 'credentials', 'payment', 'success'],
     ],
 
     // Should the routes be registered? The controllers
