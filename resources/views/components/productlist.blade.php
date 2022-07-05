@@ -32,10 +32,10 @@
                                         @include('rapidez::listing.partials.item', ['slider' => true])
                                     </template>
                                 </div>
-                                <x-rapidez::button variant="slider" class="absolute left-0 top-1/2 transform -translate-y-1/2" v-if="showLeft" v-on:click="navigate(currentSlide - 1)" aria-label="@lang('Prev')">
+                                <x-rapidez::button variant="slider" class="absolute left-0 top-1/2 transform -translate-y-1/2" v-if="showLeft" v-on:click="navigate(currentSlide - 1)" :aria-label="__('Prev')">
                                     <x-heroicon-o-chevron-left class="w-6 h-6"/>
                                 </x-rapidez::button>
-                                <x-rapidez::button variant="slider" class="absolute right-0 top-1/2 transform -translate-y-1/2" v-if="showRight" v-on:click="navigate(currentSlide + 1)" aria-label="@lang('Next')">
+                                <x-rapidez::button variant="slider" class="absolute right-0 top-1/2 transform -translate-y-1/2" v-if="showRight" v-on:click="navigate(currentSlide + 1)" :aria-label="__('Next')">
                                     <x-heroicon-o-chevron-right class="w-6 h-6"/>
                                 </x-rapidez::button>
                                 <div v-show="slidesTotal > 1" class="flex flex-row justify-center w-full mt-[35px]">
