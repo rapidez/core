@@ -37,7 +37,7 @@
                 loaded: this.loaded,
                 filters: this.filters,
                 sortOptions: this.sortOptions,
-                reactiveFilters: this.reactiveFilters
+                reactiveFilters: this.reactiveFilters,
             })
         },
 

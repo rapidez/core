@@ -16,12 +16,12 @@
             sortBy: 'desc'
         }]"
         v-cloak
-        >
+    >
         <div slot-scope="{ loaded, filters, sortOptions, reactiveFilters }">
             <reactive-base
-            :app="config.es_prefix + '_products_' + config.store"
-            :url="config.es_url"
-            v-if="loaded"
+                :app="config.es_prefix + '_products_' + config.store"
+                :url="config.es_url"
+                v-if="loaded"
             >
                 @isset($query)
                     <reactive-component
