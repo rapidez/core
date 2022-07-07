@@ -52,24 +52,8 @@
                 }
 
                 return {
-                    "query": {
-                        "bool":
-                        {
-                            "must":
-                            [
-                                {
-                                    "bool":
-                                    {
-                                        "must":
-                                        [
-                                            this.query
-                                        ]
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
+                    "query": this.query
+                };
             },
         },
 
