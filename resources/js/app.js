@@ -28,7 +28,6 @@ Vue.component('category-filter-category', require('./components/Listing/Filters/
 Vue.component('autocomplete', () => import(/* webpackChunkName: "autocomplete" */ './components/Search/Autocomplete.vue'))
 Vue.component('login', () => import(/* webpackChunkName: "account" */ './components/Checkout/Login.vue'))
 Vue.component('listing', () => import(/* webpackChunkName: "listing" */ './components/Listing/Listing.vue'))
-Vue.component('query-filter', () => import(/* webpackChunkName: "listing" */ './components/Listing/Filters/QueryFilter.vue'))
 Vue.component('coupon', () => import(/* webpackChunkName: "cart" */ './components/Coupon/Coupon.vue'))
 Vue.component('checkout', () => import(/* webpackChunkName: "checkout" */ './components/Checkout/Checkout.vue'))
 Vue.component('checkout-success', () => import(/* webpackChunkName: "checkout" */ './components/Checkout/CheckoutSuccess.vue'))
