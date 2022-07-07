@@ -24,6 +24,9 @@
             additionalSorting: {
                 type: Array,
                 default: () => []
+            },
+            query: {
+                type: Object
             }
         },
 
@@ -38,7 +41,36 @@
                 filters: this.filters,
                 sortOptions: this.sortOptions,
                 reactiveFilters: this.reactiveFilters,
+                getQuery: this.getQuery,
             })
+        },
+
+       methods: {
+            getQuery() {
+                if(!this.query) {
+                    return {};
+                }
+
+                return {
+                    "query": {
+                        "bool":
+                        {
+                            "must":
+                            [
+                                {
+                                    "bool":
+                                    {
+                                        "must":
+                                        [
+                                            this.query
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
         },
 
         mounted() {

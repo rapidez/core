@@ -9,27 +9,24 @@
 
 <div class="min-h-screen">
     <listing
-        :additional-filters="{!! isset($query) ? "['query-filter', 'category']" : "['category']" !!}"
+        :additional-filters="['query-filter', 'category']"
         :additional-sorting="[{
             label: window.config.translations.newest,
             dataField: 'created_at',
             sortBy: 'desc'
         }]"
+        @isset($query)
+            :query="{{ $query }}"
+        @endisset
         v-cloak
     >
-        <div slot-scope="{ loaded, filters, sortOptions, reactiveFilters }">
+        <div slot-scope="{ loaded, filters, sortOptions, reactiveFilters, getQuery }">
             <reactive-base
                 :app="config.es_prefix + '_products_' + config.store"
                 :url="config.es_url"
                 v-if="loaded"
             >
-                @isset($query)
-                    <reactive-component component-id="query-filter" :show-filter="false">
-                        <div slot-scope="{ setQuery }">
-                            <query-filter :set-query="setQuery" :query="{{ $query }}"></query-filter>
-                        </div>
-                    </reactive-component>
-                @endisset
+                <reactive-component component-id="query-filter" :custom-query="getQuery" :show-filter="false"></reactive-component>
 
                 {{ $before ?? '' }}
                 @if ($slot->isEmpty())
