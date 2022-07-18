@@ -74,7 +74,7 @@ export default {
         },
 
         expiredCartCheck(error) {
-            if (error.response.data?.parameters?.fieldName == 'quoteId') {
+            if (error.response.data?.parameters?.fieldName == 'quoteId' || error.response.status === 404) {
                 localStorage.removeItem('mask')
                 localStorage.removeItem('cart')
                 Notify(window.config.translations.errors.cart_expired, 'error')
