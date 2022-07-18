@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.65.0...master)
+## [Unreleased](https://github.com/org/repo/compare/0.65.1...master)
+
+## [0.65.1](https://github.com/org/repo/compare/0.65.0...0.65.1) - 2022-07-18
+
+### Fixed
+
+- Expire cart for 404 addToCart response (https://github.com/rapidez/core/pull/145)
 
 ## [0.65.0](https://github.com/org/repo/compare/0.64.2...0.65.0) - 2022-07-08
 
