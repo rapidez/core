@@ -7,8 +7,6 @@ use Rapidez\Core\Models\Scopes\IsActiveScope;
 
 class Category extends Model
 {
-    protected $primaryKey = 'entity_id';
-
     protected $appends = ['url'];
 
     protected static function booting()
@@ -27,13 +25,23 @@ class Category extends Model
                 'parent_id',
                 'children',
                 'position',
-                'url_path',
             ];
 
             $builder
                 ->addSelect(preg_filter('/^/', $builder->getQuery()->from.'.', $defaultColumnsToSelect))
+                ->selectRaw('ANY_VALUE(request_path) AS url_path')
+                ->leftJoin('url_rewrite', function ($join) use ($builder) {
+                    $join->on($builder->getQuery()->from.'.entity_id', '=', 'url_rewrite.entity_id')
+                        ->where('entity_type', 'category')
+                        ->where('url_rewrite.store_id', config('rapidez.store'));
+                })
                 ->groupBy($builder->getQuery()->from.'.entity_id');
         });
+    }
+
+    public function getKeyName()
+    {
+        return $this->getTable() . '.entity_id';
     }
 
     public function getTable()
@@ -43,9 +51,7 @@ class Category extends Model
 
     public function getUrlAttribute(): string
     {
-        $configModel = config('rapidez.models.config');
-
-        return '/'.$this->url_path.$configModel::getCachedByPath('catalog/seo/category_url_suffix', '.html');
+        return '/'.$this->url_path;
     }
 
     public function getSubcategoriesAttribute()
@@ -53,8 +59,8 @@ class Category extends Model
         $categoryIds = explode('/', $this->path);
         $categoryIds = array_slice($categoryIds, array_search(config('rapidez.root_category_id'), $categoryIds) + 1);
 
-        return !$categoryIds ? [] : Category::whereIn('entity_id', $categoryIds)
-            ->orderByRaw('FIELD(entity_id,'.implode(',', $categoryIds).')')
+        return !$categoryIds ? [] : Category::whereIn($this->getTable().'.entity_id', $categoryIds)
+            ->orderByRaw('FIELD('.$this->getTable().'.entity_id,'.implode(',', $categoryIds).')')
             ->get();
     }
 }
