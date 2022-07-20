@@ -1,6 +1,13 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.65.2...master)
+## [Unreleased](https://github.com/org/repo/compare/0.65.3...master)
+
+## [0.65.3](https://github.com/org/repo/compare/0.65.2...0.65.3) - 2022-07-20
+
+### Fixed
+
+- Category table prefix fix (9870520)
+- Console error fix (bab1ec2)
 
 ## [0.65.2](https://github.com/org/repo/compare/0.65.1...0.65.2) - 2022-07-20
 
