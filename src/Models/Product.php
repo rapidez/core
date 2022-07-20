@@ -157,8 +157,11 @@ class Product extends Model
             return [];
         }
 
-        return Category::whereIn('entity_id', $categoryIds)
-            ->orderByRaw('FIELD(entity_id,'.implode(',', $categoryIds).')')
+        $categoryModel = config('rapidez.models.category');
+        $categoryTable = (new $categoryModel)->getTable();
+
+        return Category::whereIn($categoryTable.'.entity_id', $categoryIds)
+            ->orderByRaw('FIELD('.$categoryTable.'.entity_id,'.implode(',', $categoryIds).')')
             ->get();
     }
 
