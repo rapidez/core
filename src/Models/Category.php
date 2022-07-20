@@ -41,7 +41,7 @@ class Category extends Model
 
     public function getKeyName()
     {
-        return $this->getTable() . '.entity_id';
+        return $this->getTable().'.entity_id';
     }
 
     public function getTable()
