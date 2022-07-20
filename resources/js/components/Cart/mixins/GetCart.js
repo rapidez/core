@@ -51,7 +51,7 @@ export default {
         async getMask() {
             if (!localStorage.mask) {
                 try {
-                    var response = this.$root.user
+                    var response = window.app.user
                         ? await magentoUser.post('carts/mine')
                         : await magento.post('guest-carts')
                 } catch (error) {
