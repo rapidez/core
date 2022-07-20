@@ -24,11 +24,11 @@
                 v-if="loaded"
             >
                 @isset($query)
-                    <reactive-component component-id="query-filter" :show-filter="false">
-                        <div slot-scope="{ setQuery }">
-                            <query-filter :set-query="setQuery" :query="{{ $query }}"></query-filter>
-                        </div>
-                    </reactive-component>
+                    <reactive-component
+                        component-id="query-filter"
+                        :custom-query="function () {return {query: {{ $query }}};}"
+                        :show-filter="false"
+                    ></reactive-component>
                 @endisset
 
                 {{ $before ?? '' }}

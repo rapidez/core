@@ -1,6 +1,24 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.64.2...master)
+## [Unreleased](https://github.com/org/repo/compare/0.65.1...master)
+
+## [0.65.1](https://github.com/org/repo/compare/0.65.0...0.65.1) - 2022-07-18
+
+### Fixed
+
+- Expire cart for 404 addToCart response (https://github.com/rapidez/core/pull/145)
+
+## [0.65.0](https://github.com/org/repo/compare/0.64.2...0.65.0) - 2022-07-08
+
+### Changed
+
+- Checkout steps per store (#142)
+
+### Fixed
+
+- Dusk tests fix (1133c93)
+- Fixed aria labels (#143)
+- Fix multiple reactive search requests (#144)
 
 ## [0.64.2](https://github.com/org/repo/compare/0.64.1...0.64.2) - 2022-06-28
 
