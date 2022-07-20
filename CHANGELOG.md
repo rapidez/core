@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.65.1...master)
+## [Unreleased](https://github.com/org/repo/compare/0.65.2...master)
+
+## [0.65.2](https://github.com/org/repo/compare/0.65.1...0.65.2) - 2022-07-20
+
+### Fixed
+
+- Category url from url rewrite table (5e0648e)
 
 ## [0.65.1](https://github.com/org/repo/compare/0.65.0...0.65.1) - 2022-07-18
 
