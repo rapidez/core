@@ -55,7 +55,7 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
                 $bar->start();
 
                 $categories = Category::query()
-                    ->where('entity_id', '<>', Rapidez::config('catalog/category/root_id', 2))
+                    ->where('catalog_category_flat_store_'.config('rapidez.store').'.entity_id', '<>', Rapidez::config('catalog/category/root_id', 2))
                     ->pluck('name', 'entity_id');
 
                 $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $index, $categories) {
