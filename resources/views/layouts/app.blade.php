@@ -32,5 +32,6 @@
     </div>
 
     <script>window.config = @json(config('frontend'));</script>
+    @stack('foot')
 </body>
 </html>
