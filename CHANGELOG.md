@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.66.0...master)
+## [Unreleased](https://github.com/org/repo/compare/0.66.1...master)
+
+## [0.66.1](https://github.com/org/repo/compare/0.66.0...0.66.1) - 2022-07-22
+
+### Fixed
+
+- Honor the visibility attribute (#147)
 
 ## [0.66.0](https://github.com/org/repo/compare/0.65.3...0.66.0) - 2022-07-22
 
