@@ -8,6 +8,9 @@
 
     <x-rapidez::listing query="{
         bool: {
+            must: [{
+                terms: { visibility: [3, 4] }
+            }],
             should: [
                 {
                     multi_match: {
