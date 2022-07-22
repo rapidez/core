@@ -92,6 +92,10 @@
                     if (this.callback) {
                         await this.callback(this.product, this.qty)
                     }
+                    this.$root.$emit('cart-add', {
+                        product: this.product,
+                        qty: this.qty,
+                    })
                     if (this.notifySuccess) {
                         Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success')
                     }

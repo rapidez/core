@@ -34,6 +34,7 @@
             this.setCheckoutCredentialsFromDefaultUserAddresses()
             this.getShippingMethods()
             this.getTotalsInformation()
+            this.$root.$emit('checkout-step', 1)
         },
 
         methods: {
@@ -113,6 +114,8 @@
                     Turbolinks.visit("/cart");
                     return
                 }
+
+                this.$root.$emit('checkout-step', step)
 
                 this.checkout.step = step;
             },

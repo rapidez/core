@@ -26,6 +26,7 @@
             remove(item) {
                 this.magentoCart('delete', 'items/' + item.item_id)
                     .then((response) => {
+                        this.$root.$emit('cart-remove', item)
                         Notify(item.name + ' ' + window.config.translations.cart.remove, 'info')
                     })
                     .catch(this.errorHandler)
