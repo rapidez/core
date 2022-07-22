@@ -9,6 +9,7 @@ require('./filters')
 require('./mixins')
 require('./turbolinks')
 require('./webworker')
+require('./cookies')
 
 Vue.component('cart', require('./components/Cart/Cart.vue').default)
 Vue.component('toggler', require('./components/Elements/Toggler.vue').default)
