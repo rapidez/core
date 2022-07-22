@@ -1,6 +1,18 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.65.3...master)
+## [Unreleased](https://github.com/org/repo/compare/0.66.0...master)
+
+## [0.66.0](https://github.com/org/repo/compare/0.65.3...0.66.0) - 2022-07-22
+
+### Added
+
+- Added Vue cookies by default for the GTM package (264555d)
+- Foot stack (aa0bfb4)
+- Cart and checkout events (c6cc9a5)
+
+### Fixed
+
+- Index error fix (#146)
 
 ## [0.65.3](https://github.com/org/repo/compare/0.65.2...0.65.3) - 2022-07-20
 
