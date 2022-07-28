@@ -52,6 +52,7 @@ class Quote extends Model
                         "url_key", product.url_key,
                         "qty", quote_item.qty,
                         "qty_increments", IF(enable_qty_increments, stock.qty_increments, 1),
+                        "min_sale_qty", stock.min_sale_qty,
                         "price", quote_item.price_incl_tax,
                         "price_excl_tax", quote_item.price,
                         "total", quote_item.row_total_incl_tax,
