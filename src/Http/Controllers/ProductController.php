@@ -13,7 +13,7 @@ class ProductController
             ->withEventyGlobalScopes('productpage.scopes')
             ->findOrFail($productId);
 
-        $attributes = ['id', 'name', 'sku', 'super_attributes', 'children', 'grouped', 'price', 'special_price', 'images', 'url'];
+        $attributes = ['id', 'name', 'sku', 'super_attributes', 'children', 'grouped', 'price', 'special_price', 'images', 'url', 'min_sale_qty'];
         $attributes = Eventy::filter('productpage.frontend.attributes', $attributes);
 
         foreach ($product->super_attributes ?: [] as $superAttribute) {

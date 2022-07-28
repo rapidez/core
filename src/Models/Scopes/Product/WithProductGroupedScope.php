@@ -24,6 +24,7 @@ class WithProductGroupedScope implements Scope
                     "special_from_date", DATE(grouped.special_from_date),
                     "special_to_date", DATE(grouped.special_to_date),
                     "in_stock", grouped_stock.is_in_stock,
+                    "min_sale_qty", grouped_stock.min_sale_qty,
                     $stockQty
                     "qty_increments", IFNULL(NULLIF(grouped_stock.qty_increments, 0), 1)
                 QUERY).'

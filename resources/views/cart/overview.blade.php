@@ -41,7 +41,7 @@
                             name="qty"
                             v-model="item.qty"
                             v-bind:dusk="'qty-'+index"
-                            ::min="item.qty_increments"
+                            ::min="item.min_sale_qty"
                             ::step="item.qty_increments"
                         />
                         <x-rapidez::button

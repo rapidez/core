@@ -1,4 +1,4 @@
-<add-to-cart :default-qty="{{ $product->qty_increments }}" v-cloak>
+<add-to-cart :default-qty="{{ $product->min_sale_qty }}" v-cloak>
     <div slot-scope="{ qty, changeQty, options, error, add, disabledOptions, simpleProduct, adding, added }">
         <div class="flex items-center space-x-3 font-bold mb-3">
             <div class="text-3xl">@{{ (simpleProduct.special_price || simpleProduct.price) | price }}</div>
