@@ -7,8 +7,7 @@
 
         data() {
             return {
-                backEvent: false,
-                steps: []
+                backEvent: false
             };
         },
 
@@ -30,7 +29,7 @@
             }
 
             this.checkout.hasVirtualItems = this.hasVirtualItems
-            this.steps = this.config.checkout_steps[window.config.store_code] ?? this.config.checkout_steps['default'];
+
             this.setupHistory();
             this.setCheckoutCredentialsFromDefaultUserAddresses()
             this.getShippingMethods()
@@ -285,10 +284,10 @@
             setupHistory() {
                 window.addEventListener('hashchange', () => {
                     this.backEvent = true
-                    this.checkout.step = this.steps.indexOf(window.location.hash.substring(1))
+                    this.checkout.step = this.config.checkout_steps[window.config.store_code].indexOf(window.location.hash.substring(1))
                 }, false)
 
-                history.replaceState(null, null, '#'+ this.steps[this.checkout.step])
+                history.replaceState(null, null, '#'+this.config.checkout_steps[window.config.store_code][this.checkout.step])
             }
         },
 
@@ -338,11 +337,11 @@
             'checkout.step': function () {
                 if (this.backEvent) {
                     this.backEvent = false;
-                    history.replaceState(null, null, '#'+this.steps[this.checkout.step])
+                    history.replaceState(null, null, '#'+this.config.checkout_steps[window.config.store_code][this.checkout.step])
                     return;
                 }
 
-                history.pushState(null, null, '#' + this.steps[this.checkout.step]);
+                history.pushState(null, null, '#' + this.config.checkout_steps[window.config.store_code][this.checkout.step]);
             }
         }
     }
