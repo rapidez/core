@@ -26,7 +26,7 @@
                 @isset($query)
                     <reactive-component
                         component-id="query-filter"
-                        :custom-query="function () {return {query: {{ $query }}};}"
+                        :custom-query="function () {return {query: {{ $query }} } }"
                         :show-filter="false"
                     ></reactive-component>
                 @endisset
