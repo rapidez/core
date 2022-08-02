@@ -82,7 +82,7 @@ export default {
                     }
 
                     function getCategoryPaths(allCategoryPaths, currentCategory) {
-                        if (!currentCategory?.entity_id) {
+                        if (!currentCategory?.entity_id || !categoryPaths) {
                             return allCategoryPaths
                         }
 

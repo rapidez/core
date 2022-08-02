@@ -33,7 +33,7 @@
                                             {{ $title }}
                                         </h2>
                                         <div class="h-7 flex items-center">
-                                            <button :aria-label="__('Close filters')" class="text-gray-400 hover:text-gray-500 transition ease-in-out duration-150" v-on:click="toggle">
+                                            <button aria-label="{{ __('Close filters') }}" class="text-gray-400 hover:text-gray-500 transition ease-in-out duration-150" v-on:click="toggle">
                                                 <x-heroicon-o-x class="h-6 w-6"/>
                                             </button>
                                         </div>
