@@ -56,7 +56,7 @@
                     if ([401, 404].includes(error.response.status)) {
                         this.logout('/login')
                     } else {
-                        Notify(error.response.data.message, 'error')
+                        Notify(error.response.data.message, 'error', error.response.data?.parameters)
                     }
                     return false
                 }
@@ -79,7 +79,7 @@
                     if ([401, 404].includes(error.response.status)) {
                         this.logout('/login')
                     } else {
-                        Notify(error.response.data.message, 'error')
+                        Notify(error.response.data.message, 'error', error.response.data?.parameters)
                     }
                     return false
                 }
@@ -164,7 +164,7 @@
                     this.$root.$emit('checkout-credentials-saved')
                     return true
                 } catch (error) {
-                    Notify(error.response.data.message, 'error')
+                    Notify(error.response.data.message, 'error', error.response.data?.parameters)
                     return false
                 }
             },
@@ -247,7 +247,7 @@
 
                     return true
                 } catch (error) {
-                    Notify(error.response.data.message, 'error')
+                    Notify(error.response.data.message, 'error', error.response.data?.parameters)
                     return false
                 }
             },

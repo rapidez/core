@@ -32,7 +32,7 @@
                             self.couponCode = ''
                             Notify(window.config.translations.cart.coupon.applied, 'success')
                         })
-                        .catch((error) => Notify(error.response.data.message, 'error'))
+                        .catch((error) => Notify(error.response.data.message, 'error', error.response.data?.parameters))
                 }
             },
 
@@ -42,7 +42,7 @@
                     .then(function() {
                         self.refreshCart()
                     })
-                    .catch((error) => Notify(error.response.data.message, 'error'))
+                    .catch((error) => Notify(error.response.data.message, 'error', error.response.data?.parameters))
             }
         }
     }

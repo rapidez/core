@@ -97,14 +97,14 @@
                         qty: this.qty,
                     })
                     if (this.notifySuccess) {
-                        Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success')
+                        Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success', error.response.data?.parameters)
                     }
                     if (config.redirect_cart) {
                         Turbolinks.visit('/cart')
                     }
                 }).catch((error) => {
                     if (error.response.status == 401) {
-                        Notify(window.config.translations.errors.session_expired, 'error')
+                        Notify(window.config.translations.errors.session_expired, 'error', error.response.data?.parameters)
                         this.logout('/login')
                     }
 
@@ -113,7 +113,7 @@
                     }
 
                     if (this.notifyError) {
-                        Notify(error.response.data.message, 'error')
+                        Notify(error.response.data.message, 'error', error.response.data?.parameters)
                     }
 
                     this.error = error.response.data.message

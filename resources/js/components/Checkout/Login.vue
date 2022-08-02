@@ -79,7 +79,7 @@
                         })
                     }
                 })
-                .catch((error) => Notify(error.response.data.message, 'error'))
+                .catch((error) => Notify(error.response.data.message, 'error', error.response.data?.parameters))
             },
 
             loginInputChange(e) {
