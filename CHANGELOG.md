@@ -1,6 +1,19 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.66.1...master)
+## [Unreleased](https://github.com/org/repo/compare/0.67.0...master)
+
+## [0.67.0](https://github.com/org/repo/compare/0.66.1...0.67.0) - 2022-08-09
+
+### Added
+
+- Min sale qty support (#148, #149)
+- Added params from errors to the notify function (#151)
+
+### Fixed
+
+- Checkout steps fallback (#150)
+- Fixed console errors on category page (#152)
+- Change this. to window.app (#153)
 
 ## [0.66.1](https://github.com/org/repo/compare/0.66.0...0.66.1) - 2022-07-22
 
