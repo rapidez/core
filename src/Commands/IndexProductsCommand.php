@@ -47,8 +47,7 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
 
             try {
                 $flat = (new $productModel())->getTable();
-                $productQuery = $productModel::where($flat.'.visibility', 4)
-                    ->selectOnlyIndexable()
+                $productQuery = $productModel::selectOnlyIndexable()
                     ->withEventyGlobalScopes('index.product.scopes');
 
                 $bar = $this->output->createProgressBar($productQuery->getQuery()->getCountForPagination());

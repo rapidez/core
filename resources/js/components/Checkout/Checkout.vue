@@ -7,7 +7,8 @@
 
         data() {
             return {
-                backEvent: false
+                backEvent: false,
+                steps: []
             };
         },
 
@@ -29,7 +30,7 @@
             }
 
             this.checkout.hasVirtualItems = this.hasVirtualItems
-
+            this.steps = this.config.checkout_steps[window.config.store_code] ?? this.config.checkout_steps['default'];
             this.setupHistory();
             this.setCheckoutCredentialsFromDefaultUserAddresses()
             this.getShippingMethods()
@@ -56,7 +57,7 @@
                     if ([401, 404].includes(error.response.status)) {
                         this.logout('/login')
                     } else {
-                        Notify(error.response.data.message, 'error')
+                        Notify(error.response.data.message, 'error', error.response.data?.parameters)
                     }
                     return false
                 }
@@ -79,7 +80,7 @@
                     if ([401, 404].includes(error.response.status)) {
                         this.logout('/login')
                     } else {
-                        Notify(error.response.data.message, 'error')
+                        Notify(error.response.data.message, 'error', error.response.data?.parameters)
                     }
                     return false
                 }
@@ -164,7 +165,7 @@
                     this.$root.$emit('checkout-credentials-saved')
                     return true
                 } catch (error) {
-                    Notify(error.response.data.message, 'error')
+                    Notify(error.response.data.message, 'error', error.response.data?.parameters)
                     return false
                 }
             },
@@ -247,7 +248,7 @@
 
                     return true
                 } catch (error) {
-                    Notify(error.response.data.message, 'error')
+                    Notify(error.response.data.message, 'error', error.response.data?.parameters)
                     return false
                 }
             },
@@ -284,10 +285,10 @@
             setupHistory() {
                 window.addEventListener('hashchange', () => {
                     this.backEvent = true
-                    this.checkout.step = this.config.checkout_steps[window.config.store_code].indexOf(window.location.hash.substring(1))
+                    this.checkout.step = this.steps.indexOf(window.location.hash.substring(1))
                 }, false)
 
-                history.replaceState(null, null, '#'+this.config.checkout_steps[window.config.store_code][this.checkout.step])
+                history.replaceState(null, null, '#'+ this.steps[this.checkout.step])
             }
         },
 
@@ -337,11 +338,11 @@
             'checkout.step': function () {
                 if (this.backEvent) {
                     this.backEvent = false;
-                    history.replaceState(null, null, '#'+this.config.checkout_steps[window.config.store_code][this.checkout.step])
+                    history.replaceState(null, null, '#'+this.steps[this.checkout.step])
                     return;
                 }
 
-                history.pushState(null, null, '#' + this.config.checkout_steps[window.config.store_code][this.checkout.step]);
+                history.pushState(null, null, '#' + this.steps[this.checkout.step]);
             }
         }
     }

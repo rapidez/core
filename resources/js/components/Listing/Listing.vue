@@ -55,7 +55,7 @@
                     this.loaded = true
                  })
                  .catch((error) => {
-                    Notify(window.config.errors.wrong, 'error')
+                    Notify(window.config.errors.wrong, 'error', error.response.data?.parameters)
                 })
         },
 
