@@ -1,6 +1,18 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.67.0...master)
+## [Unreleased](https://github.com/org/repo/compare/0.68.0...master)
+
+## [0.68.0](https://github.com/org/repo/compare/0.67.0...0.68.0) - 2022-08-16
+
+### Added
+
+- Scroll to top when paginating (22257c8)
+- Open Graph product data (3e2cdb1)
+
+### Fixed
+
+- Added the peer dependencies (1c21335)
+- Removed old prop (8b57d7a)
 
 ## [0.67.0](https://github.com/org/repo/compare/0.66.1...0.67.0) - 2022-08-09
 
