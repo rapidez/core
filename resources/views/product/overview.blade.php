@@ -10,6 +10,7 @@
         <h1 class="font-bold text-4xl mb-5" itemprop="name">{{ $product->name }}</h1>
 
         @include('rapidez::product.partials.microdata')
+        @include('rapidez::product.partials.opengraph')
 
         <div class="flex flex-col sm:flex-row mb-5">
             <div class="sm:w-1/2 sm:mr-5">
