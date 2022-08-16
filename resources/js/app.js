@@ -10,6 +10,7 @@ require('./mixins')
 require('./turbolinks')
 require('./webworker')
 require('./cookies')
+require('./callbacks')
 
 Vue.component('cart', require('./components/Cart/Cart.vue').default)
 Vue.component('toggler', require('./components/Elements/Toggler.vue').default)
