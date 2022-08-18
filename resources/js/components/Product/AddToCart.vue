@@ -97,7 +97,7 @@
                         qty: this.qty,
                     })
                     if (this.notifySuccess) {
-                        Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success', error.response.data?.parameters)
+                        Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success')
                     }
                     if (config.redirect_cart) {
                         Turbolinks.visit('/cart')
