@@ -13,6 +13,10 @@
                 type: Object,
                 default: () => ({}),
             },
+            watch: {
+                type: Boolean,
+                default: true,
+            },
             redirect: {
                 type: String,
                 default: '',
@@ -73,7 +77,9 @@
 
         watch: {
             variables: function (variables) {
-                this.data = variables
+                if (this.watch) {
+                    this.data = variables
+                }
             }
         },
 
