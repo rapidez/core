@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.69.0...master)
+## [Unreleased](https://github.com/org/repo/compare/0.70.0...master)
+
+## [0.70.0](https://github.com/org/repo/compare/0.69.0...0.70.0) - 2022-08-23
+
+### Added
+
+- Save the website id in the config when indexing (c37d9ca)
 
 ## [0.69.0](https://github.com/org/repo/compare/0.68.0...0.69.0) - 2022-08-18
 
