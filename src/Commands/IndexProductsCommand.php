@@ -28,6 +28,7 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
         foreach ($stores as $store) {
             $this->line('Store: '.$store->name);
             config()->set('rapidez.store', $store->store_id);
+            config()->set('rapidez.website', $store->website_id);
 
             $alias = config('rapidez.es_prefix').'_products_'.$store->store_id;
             $index = $alias.'_'.Carbon::now()->format('YmdHis');
