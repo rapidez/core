@@ -70,6 +70,7 @@ export default {
                         email: customer.email,
                         firstname: customer.firstname,
                         lastname: customer.lastname,
+                        store_id: window.config.store,
                     },
                     password: customer.password
                 })
