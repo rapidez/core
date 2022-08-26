@@ -5,6 +5,7 @@ namespace Rapidez\Core;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Rapidez\Core\Commands\IndexProductsCommand;
 use Rapidez\Core\Commands\InstallCommand;
@@ -106,6 +107,15 @@ class RapidezServiceProvider extends ServiceProvider
         View::composer('rapidez::layouts.app', ConfigComposer::class);
 
         View::addExtension('graphql', 'blade');
+
+        Vite::useScriptTagAttributes([
+            'data-turbolinks-track' => 'reload',
+            'defer' => true,
+        ]);
+
+        Vite::useStyleTagAttributes([
+            'data-turbolinks-track' => 'reload',
+        ]);
 
         return $this;
     }

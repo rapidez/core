@@ -2,8 +2,8 @@
 
 @pushOnce('head', 'es_url-preconnect')
     <link rel="preconnect" href="{{ config('rapidez.es_url') }}">
-    @if($file = webpack_filename_with_chunkhash('js/listing.js'))
-        <link rel="preload" href="/{{ $file }}" as="script">
+    @if($file = vite_filename_with_chunkhash('Listing.vue'))
+        <link rel="preload" href="/build/{{ $file }}" as="script">
     @endif
 @endPushOnce
 
