@@ -14,7 +14,6 @@ jobs:
       matrix:
         php: [8.0, 8.1]
         laravel: [9.*]
-        stability: [prefer-lowest, prefer-stable]
         include:
           - laravel: 9.*
             testbench: 7.*
@@ -30,7 +29,7 @@ jobs:
         ports:
           - 3307:3306
 
-    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }}
+    name: P${{ matrix.php }} - L${{ matrix.laravel }}
 
     steps:
       - name: Checkout code
@@ -46,7 +45,7 @@ jobs:
       - name: Install dependencies
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-          composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-suggest
+          composer update --prefer-dist --no-interaction --no-suggest
 
       - name: Execute tests
         run: vendor/bin/phpunit
