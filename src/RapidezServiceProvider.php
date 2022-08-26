@@ -110,7 +110,7 @@ class RapidezServiceProvider extends ServiceProvider
 
         Vite::useScriptTagAttributes([
             'data-turbolinks-track' => 'reload',
-            'defer' => true,
+            'defer'                 => true,
         ]);
 
         Vite::useStyleTagAttributes([
