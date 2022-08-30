@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.70.1...master)
+## [Unreleased](https://github.com/org/repo/compare/0.70.2...master)
+
+## [0.70.2](https://github.com/org/repo/compare/0.70.1...0.70.2) - 2022-08-30
+
+### Fixed
+
+- Search results page query fix (785daf4)
 
 ## [0.70.1](https://github.com/org/repo/compare/0.70.0...0.70.1) - 2022-08-24
 
