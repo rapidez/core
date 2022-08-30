@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.70.0...master)
+## [Unreleased](https://github.com/org/repo/compare/0.70.1...master)
+
+## [0.70.1](https://github.com/org/repo/compare/0.70.0...0.70.1) - 2022-08-24
+
+### Fixed
+
+- Send the store id when creating a customer (7c174e3)
 
 ## [0.70.0](https://github.com/org/repo/compare/0.69.0...0.70.0) - 2022-08-23
 
