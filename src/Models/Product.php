@@ -110,11 +110,11 @@ class Product extends Model
     public function getSpecialPriceAttribute($specialPrice)
     {
         if (!in_array($this->type, ['configurable', 'grouped'])) {
-            if ($this->special_from_date && $this->special_from_date > now()->toDateString()) {
+            if ($this->special_from_date && $this->special_from_date > now()->toDateTimeString()) {
                 return null;
             }
 
-            if ($this->special_to_date && $this->special_to_date < now()->toDateString()) {
+            if ($this->special_to_date && $this->special_to_date < now()->toDateTimeString()) {
                 return null;
             }
 
@@ -126,11 +126,11 @@ class Product extends Model
                 return false;
             }
 
-            if (isset($child->special_from_date) && $child->special_from_date > now()->toDateString()) {
+            if (isset($child->special_from_date) && $child->special_from_date > now()->toDateTimeString()) {
                 return false;
             }
 
-            if (isset($child->special_to_date) && $child->special_to_date < now()->toDateString()) {
+            if (isset($child->special_to_date) && $child->special_to_date < now()->toDateTimeString()) {
                 return false;
             }
 
