@@ -13,12 +13,12 @@ class OnlyProductAttributesScope implements Scope
         $builder
                 ->selectRaw('
                     eav_attribute.attribute_id AS id,
-                    COALESCE(value, frontend_label, attribute_code) AS name,
-                    attribute_code AS code,
+                    COALESCE(value, frontend_label, eav_attribute.attribute_code) AS name,
+                    eav_attribute.attribute_code AS code,
                     backend_type AS type,
                     frontend_input AS input,
                     source_model,
-                    IF(attribute_code IN ("price", "tax_class_id"), 0, is_searchable) AS search,
+                    IF(eav_attribute.attribute_code IN ("price", "tax_class_id"), 0, is_searchable) AS search,
                     search_weight,
                     is_filterable AS filter,
                     is_comparable AS compare,
@@ -31,7 +31,7 @@ class OnlyProductAttributesScope implements Scope
                         is_used_for_promo_rules,
                         used_in_product_listing,
                         used_for_sort_by,
-                        IF(attribute_code IN ("status", "required_options", "tax_class_id", "weight"), 1, 0)
+                        IF(eav_attribute.attribute_code IN ("status", "required_options", "tax_class_id", "weight"), 1, 0)
                     )) AS flat,
                     EXISTS(
                         SELECT 1
