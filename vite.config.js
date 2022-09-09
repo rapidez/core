@@ -22,7 +22,7 @@ export default defineConfig({
         alias: {
             '@': '/resources/js',
             'Vendor': '/vendor',
-            'vue': 'node_modules/vue/dist/vue.esm.js',
+            'vue': 'vue/dist/vue.esm.js',
         }
     }
 });
