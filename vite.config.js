@@ -23,6 +23,7 @@ export default defineConfig({
             '@': '/resources/js',
             'Vendor': '/vendor',
             'vue': 'vue/dist/vue.esm.js',
+            '@vueuse/core': '/node_modules/@vueuse/core',
         }
     }
 });
