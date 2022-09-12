@@ -1,6 +1,19 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.70.1...master)
+## [Unreleased](https://github.com/org/repo/compare/0.70.3...master)
+
+## [0.70.3](https://github.com/org/repo/compare/0.70.2...0.70.3) - 2022-09-01
+
+### Fixed
+
+- Make attribute_code more explicit (#155)
+- Fix for from/to dates special prices (#156)
+
+## [0.70.2](https://github.com/org/repo/compare/0.70.1...0.70.2) - 2022-08-30
+
+### Fixed
+
+- Search results page query fix (785daf4)
 
 ## [0.70.1](https://github.com/org/repo/compare/0.70.0...0.70.1) - 2022-08-24
 
