@@ -62,7 +62,13 @@
  * @import "utilities/skew-transforms";
  */
 
-@import "utilities/snap";
+ .no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    scrollbar-width: none;
+}
 
 [v-cloak] { display: none; }
 * { -webkit-tap-highlight-color: transparant; }
