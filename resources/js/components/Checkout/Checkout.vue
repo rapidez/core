@@ -335,6 +335,9 @@
             'checkout.payment_method': function () {
                 this.selectPaymentMethod()
             },
+            'checkout.shipping_address.country_id': function () {
+                this.getShippingMethods()
+            },
             'checkout.step': function () {
                 if (this.backEvent) {
                     this.backEvent = false;
