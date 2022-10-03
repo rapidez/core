@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.70.3...master)
+## [Unreleased](https://github.com/org/repo/compare/0.70.4...master)
+
+## [0.70.4](https://github.com/org/repo/compare/0.70.3...0.70.4) - 2022-10-03
+
+### Fixed
+
+- Get new shipping price on country change (#161)
 
 ## [0.70.3](https://github.com/org/repo/compare/0.70.2...0.70.3) - 2022-09-01
 
