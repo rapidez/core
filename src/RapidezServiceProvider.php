@@ -83,7 +83,7 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function bootThemes(): self
     {
-        $path = config('rapidez.themes.'.request()->server('MAGE_RUN_CODE', 'default'), false);
+        $path = config('rapidez.themes.'.request()->server('MAGE_RUN_CODE', request()->has('_store') && !app()->isProduction() ? request()->get('_store') : 'default'), false);
 
         if (!$path) {
             return $this;
