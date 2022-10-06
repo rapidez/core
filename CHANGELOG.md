@@ -1,6 +1,18 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.70.3...master)
+## [Unreleased](https://github.com/org/repo/compare/0.70.5...master)
+
+## [0.70.5](https://github.com/org/repo/compare/0.70.4...0.70.5) - 2022-10-03
+
+### Added
+
+- Added option to change store based on get param (#162)
+
+## [0.70.4](https://github.com/org/repo/compare/0.70.3...0.70.4) - 2022-10-03
+
+### Fixed
+
+- Get new shipping price on country change (#161)
 
 ## [0.70.3](https://github.com/org/repo/compare/0.70.2...0.70.3) - 2022-09-01
 
