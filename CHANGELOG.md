@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.70.5...master)
+## [Unreleased](https://github.com/org/repo/compare/0.71.0...master)
+
+## [0.71.0](https://github.com/org/repo/compare/0.70.5...0.71.0) - 2022-10-06
+
+### Added
+
+- Install tests command (72da9c1)
 
 ## [0.70.5](https://github.com/org/repo/compare/0.70.4...0.70.5) - 2022-10-03
 
