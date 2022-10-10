@@ -15,7 +15,6 @@ class InstallTestsCommand extends Command
     {
         File::copyDirectory(base_path('vendor/rapidez/core/tests/Browser'), base_path('tests/Browser'));
         File::copyDirectory(base_path('vendor/rapidez/core/tests/Feature'), base_path('tests/Feature'));
-        File::copy(base_path('vendor/rapidez/core/phpunit.dusk.xml'), base_path('phpunit.dusk.xml'));
 
         foreach (File::files(base_path('tests/Feature')) as $file) {
             file_put_contents($file->getPathname(), str_replace(
@@ -30,7 +29,7 @@ class InstallTestsCommand extends Command
         $duskTestCaseFile = base_path('tests/DuskTestCase.php');
         file_put_contents($duskTestCaseFile, str(file_get_contents($duskTestCaseFile))
             ->replace('use CreatesApplication;', 'use CreatesApplication, DuskTestCaseSetup;')
-            ->replace('use Laravel\Dusk\TestCase as BaseTestCase;\n', 'use Laravel\Dusk\TestCase as BaseTestCase;\nuse Rapidez\Core\Tests\DuskTestCaseSetup;\n'));
+            ->replace("use Laravel\Dusk\TestCase as BaseTestCase;\n", "use Laravel\Dusk\TestCase as BaseTestCase;\nuse Rapidez\Core\Tests\DuskTestCaseSetup;\n"));
 
         foreach (File::files(base_path('tests/Browser')) as $file) {
             file_put_contents($file->getPathname(), str_replace(
@@ -40,6 +39,6 @@ class InstallTestsCommand extends Command
             ));
         }
 
-        $this->info('Done 🚀');
+        $this->info('Done 🚀 you can now run the browser tests with: php artisan dusk');
     }
 }
