@@ -30,9 +30,10 @@ class Config extends Model
         });
     }
 
-    public static function getCachedByPath(string $path, $default = false, bool $sensitive = false): string|bool
+    public static function getCachedByPath(string $path, $default = false, bool $sensitive = false, ?int $storeId = null): string|bool
     {
-        $cacheKey = 'config.'.config('rapidez.store').'.'.str_replace('/', '.', $path);
+        $storeId = $storeId ?? config('rapidez.store');
+        $cacheKey = 'config.'.$storeId.'.'.str_replace('/', '.', $path);
 
         $value = Cache::rememberForever($cacheKey, function () use ($path, $default) {
             $value = ($config = self::where('path', $path)->first('value')) ? $config->value : $default;
