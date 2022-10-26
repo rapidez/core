@@ -5,7 +5,7 @@
     data-field="name.keyword"
     list-class="flex flex-wrap mt-5 -mx-1 overflow-hidden"
     :pagination="true"
-    v-on:page-click="scrollToId('products')"
+    v-on:page-click="scrollToElement('#products')"
     :size="isNaN(parseInt($root.config.grid_per_page)) ? 10000 : parseInt($root.config.grid_per_page)"
     :react="{and: reactiveFilters}"
     :sort-options="sortOptions"
