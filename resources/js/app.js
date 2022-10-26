@@ -7,7 +7,6 @@ import './axios'
 import './filters'
 import './mixins'
 import './turbolinks'
-import './webworker'
 import './cookies'
 import './callbacks'
 

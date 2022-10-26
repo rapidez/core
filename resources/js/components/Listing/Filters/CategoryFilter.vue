@@ -1,4 +1,6 @@
 <script>
+import { useWebWorkerFn } from '@vueuse/core'
+
 export default {
     props: {
         aggregations: Object,
@@ -25,7 +27,7 @@ export default {
         value: function (value) {
             this.processValue(value)
         },
-        hasResults: function (value) {
+        hasResults: async function (value) {
             if (!value) {
                 return;
             }
@@ -47,7 +49,7 @@ export default {
             })
         },
 
-        createCategoryPaths() {
+        async createCategoryPaths() {
             if (
                 !this.aggregations?.category_paths?.buckets?.length ||
                 !this.aggregations?.categories?.buckets?.length
@@ -58,16 +60,12 @@ export default {
 
             // Calculating and unpacking the category structure is a heavy task.
             // Hand this down to a webworker thread to free the main thread.
-            WebWorker.run(
-                function (categories, allCategoryPaths, currentCategory) {
+            const { workerFn: getCategoryStructureWorker } = useWebWorkerFn(
+                (categories, allCategoryPaths, currentCategory) => {
                     function getCategoryStructure(categories, allCategoryPaths, currentCategory) {
                         const lowestCategories = categories.map((bucket => {
                             const key = bucket.key.split(' /// ').pop()
-                            let idAndLabel = key.split('::')
-                            // Usually you'd use the Destructuring Assignment, in this case we dont want to.
-                            // Since this will let the webpack polyfill kick in which is not available in the web worker.
-                            let id = idAndLabel[0],
-                                label = idAndLabel[1];
+                            const [id, label] = key.split('::')
 
                             return {
                                 id: id,
@@ -82,7 +80,7 @@ export default {
                     }
 
                     function getCategoryPaths(allCategoryPaths, currentCategory) {
-                        if (!currentCategory?.entity_id || !categoryPaths) {
+                        if (!currentCategory?.entity_id || !allCategoryPaths) {
                             return allCategoryPaths
                         }
 
@@ -104,10 +102,8 @@ export default {
                                 return
                             }
 
-                            let key = category.structure.shift()
-                            let idAndLabel = key.split('::')
-                            let id = idAndLabel[0],
-                                label = idAndLabel[1];
+                            const key = category.structure.shift()
+                            const [id, label] = key.split('::')
 
                             if(!results.children) {
                                 results.children = {}
@@ -132,15 +128,13 @@ export default {
 
                     return getCategoryStructure(categories, allCategoryPaths, currentCategory);
                 },
-                [
-                    this.aggregations.categories.buckets,
-                    this.aggregations.category_paths.buckets,
-                    this.currentCategory
-                ]
+            );
+
+            this.results = await getCategoryStructureWorker(
+                this.aggregations.categories.buckets,
+                this.aggregations.category_paths.buckets,
+                this.currentCategory
             )
-            .then(categoryStructure => {
-                this.results = categoryStructure
-            });
         }
     },
 
