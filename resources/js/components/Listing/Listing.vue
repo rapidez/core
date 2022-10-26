@@ -7,12 +7,14 @@
         MultiList,
         DynamicRangeSlider
     } from '@appbaseio/reactivesearch-vue'
+    import VueSlider from 'vue-slider-component'
 
     Vue.use(ReactiveBase)
     Vue.use(ReactiveList)
     Vue.use(ReactiveComponent)
     Vue.use(SelectedFilters)
     Vue.use(MultiList)
+    Vue.component('vue-slider-component', VueSlider)
     Vue.use(DynamicRangeSlider)
 
     export default {
