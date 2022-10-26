@@ -11,7 +11,9 @@ class Multiselect implements CastsAttributes
         $optionvalueModel = config('rapidez.models.optionvalue');
         if ($value) {
             foreach (explode(',', $value) as $optionValueId) {
-                $values[] = $optionvalueModel::getCachedByOptionId($optionValueId);
+                $values[] = is_numeric($optionValueId)
+                    ? $optionvalueModel::getCachedByOptionId($optionValueId)
+                    : $optionValueId;
             }
 
             return $values;
