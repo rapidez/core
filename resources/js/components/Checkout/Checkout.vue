@@ -314,11 +314,17 @@
             }
         },
         watch: {
+            'checkout.shipping_address.customer_address_id': function (customerAddressId) {
+                this.setCustomerAddressByAddressId('shipping', customerAddressId)
+            },
             'checkout.shipping_address': {
                 deep: true,
                 handler: function() {
                     this.storeCredentials('shipping')
                 }
+            },
+            'checkout.billing_address.customer_address_id': function (customerAddressId) {
+                this.setCustomerAddressByAddressId('billing', customerAddressId)
             },
             'checkout.billing_address': {
                 deep: true,
