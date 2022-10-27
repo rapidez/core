@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.72.0...master)
+## [Unreleased](https://github.com/org/repo/compare/0.73.0...master)
+
+## [0.73.0](https://github.com/org/repo/compare/0.72.0...0.73.0) - 2022-10-27
+
+### Changed
+
+- Always add a canonical with the current url without query strings (c03d794)
 
 ## [0.72.0](https://github.com/org/repo/compare/0.71.1...0.72.0) - 2022-10-27
 
