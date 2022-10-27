@@ -1,6 +1,18 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.71.1...master)
+## [Unreleased](https://github.com/org/repo/compare/0.72.0...master)
+
+## [0.72.0](https://github.com/org/repo/compare/0.71.1...0.72.0) - 2022-10-27
+
+### Changed
+
+- Generalise scroll to, to allow arbitrary selectors (#159)
+- Improve code readability (#164)
+
+### Fixed
+
+- Fallback to using option code if its not an id (#163)
+- Fixed empty customer address error in the checkout (8322cc0)
 
 ## [0.71.1](https://github.com/org/repo/compare/0.71.0...0.71.1) - 2022-10-10
 
