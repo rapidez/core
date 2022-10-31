@@ -10,6 +10,9 @@ use Rapidez\Core\Commands\IndexProductsCommand;
 use Rapidez\Core\Commands\InstallCommand;
 use Rapidez\Core\Commands\InstallTestsCommand;
 use Rapidez\Core\Commands\ValidateCommand;
+use Rapidez\Core\Facades\FallbackRoutes;
+use Rapidez\Core\Http\Controllers\Fallback\CmsPageController;
+use Rapidez\Core\Http\Controllers\Fallback\UrlRewriteController;
 use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
 use Rapidez\Core\Http\ViewComposers\ConfigComposer;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
@@ -79,6 +82,10 @@ class RapidezServiceProvider extends ServiceProvider
             $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
             $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
         }
+
+        FallbackRoutes::add(UrlRewriteController::class, 5);
+        FallbackRoutes::add(CmsPageController::class, 10);
+        FallbackRoutes::add(LegacyFallbackController::class, 10000000);
 
         return $this;
     }
@@ -157,6 +164,9 @@ class RapidezServiceProvider extends ServiceProvider
     {
         $this->app->bind('rapidez', Rapidez::class);
         $this->app->bind('widget-directive', WidgetDirective::class);
+        $this->app->singleton(FallbackRoutesRepository::class, function () {
+            return new FallbackRoutesRepository;
+        });
 
         return $this;
     }
