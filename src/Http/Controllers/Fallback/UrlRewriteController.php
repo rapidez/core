@@ -3,11 +3,10 @@
 namespace Rapidez\Core\Http\Controllers\Fallback;
 
 use Illuminate\Http\Request;
-use Rapidez\Core\FallbackRoutesRepository;
 
 class UrlRewriteController
 {
-    public function __invoke(Request $request, FallbackRoutesRepository $routeRepository)
+    public function __invoke(Request $request)
     {
         $rewriteModel = config('rapidez.models.rewrite');
         if (!$rewrite = $rewriteModel::firstWhere('request_path', $request->path())) {

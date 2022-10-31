@@ -17,7 +17,7 @@ class FallbackRoutesRepository
     {
         $this->routes->push([
             'action'   => RouteAction::parse('', $action),
-            'position' => $position
+            'position' => $position,
         ]);
 
         return $this;

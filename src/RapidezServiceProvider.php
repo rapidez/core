@@ -12,6 +12,7 @@ use Rapidez\Core\Commands\InstallTestsCommand;
 use Rapidez\Core\Commands\ValidateCommand;
 use Rapidez\Core\Facades\FallbackRoutes;
 use Rapidez\Core\Http\Controllers\Fallback\CmsPageController;
+use Rapidez\Core\Http\Controllers\Fallback\LegacyFallbackController;
 use Rapidez\Core\Http\Controllers\Fallback\UrlRewriteController;
 use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
 use Rapidez\Core\Http\ViewComposers\ConfigComposer;
@@ -165,7 +166,7 @@ class RapidezServiceProvider extends ServiceProvider
         $this->app->bind('rapidez', Rapidez::class);
         $this->app->bind('widget-directive', WidgetDirective::class);
         $this->app->singleton(FallbackRoutesRepository::class, function () {
-            return new FallbackRoutesRepository;
+            return new FallbackRoutesRepository();
         });
 
         return $this;
