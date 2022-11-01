@@ -3,14 +3,12 @@
 namespace Rapidez\Core;
 
 use Illuminate\Routing\RouteAction;
+use Illuminate\Support\Collection;
 
 class FallbackRoutesRepository
 {
-    protected $routes;
-
-    public function __construct()
+    public function __construct(protected Collection $routes)
     {
-        $this->routes = collect([]);
     }
 
     public function add($action, $position = 99999)

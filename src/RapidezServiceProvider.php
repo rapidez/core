@@ -165,9 +165,7 @@ class RapidezServiceProvider extends ServiceProvider
     {
         $this->app->bind('rapidez', Rapidez::class);
         $this->app->bind('widget-directive', WidgetDirective::class);
-        $this->app->singleton(FallbackRoutesRepository::class, function () {
-            return new FallbackRoutesRepository();
-        });
+        $this->app->singleton(FallbackRoutesRepository::class);
 
         return $this;
     }
