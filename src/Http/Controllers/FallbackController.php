@@ -3,15 +3,15 @@
 namespace Rapidez\Core\Http\Controllers;
 
 use Illuminate\Support\Facades\App;
-use Rapidez\Core\FallbackRoutesRepository;
+use Rapidez\Core\Facades\Rapidez;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class FallbackController
 {
-    public function __invoke(FallbackRoutesRepository $routeRepository)
+    public function __invoke()
     {
-        foreach ($routeRepository->all() as $route) {
+        foreach (Rapidez::getAllFallbackRoutes() as $route) {
             try {
                 $response = App::call($route['action']['uses']);
 
