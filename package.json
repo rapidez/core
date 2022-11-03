@@ -31,7 +31,8 @@
         "sass": "^1.49.9",
         "sass-loader": "^12.6.0",
         "simple-web-worker": "^1.2.0",
-        "tailwindcss": "^3.0.23",
+        "tailwind-scrollbar-hide": "^1.1.7",
+        "tailwindcss": "^3.2.1",
         "turbolinks": "^5.2.0",
         "vue": "^2.6.14",
         "vue-async-computed": "^3.9.0",
@@ -40,8 +41,8 @@
         "vue-loader": "^15.9.8",
         "vue-template-compiler": "^2.6.14",
         "vue-turbolinks": "^2.2.2",
-        "webpack-bundle-tracker": "^1.5.0",
         "webpack": "^5.60.0",
+        "webpack-bundle-tracker": "^1.5.0",
         "webpack-cli": "^4.10.0"
     }
 }
