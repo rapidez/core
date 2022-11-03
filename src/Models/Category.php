@@ -23,7 +23,7 @@ class Category extends Model
                 'include_in_menu',
                 'path',
                 'parent_id',
-                'children',
+                'children_count',
                 'position',
             ];
 
