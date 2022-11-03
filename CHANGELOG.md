@@ -1,6 +1,48 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.70.3...master)
+## [Unreleased](https://github.com/org/repo/compare/0.73.0...master)
+
+## [0.73.0](https://github.com/org/repo/compare/0.72.0...0.73.0) - 2022-10-27
+
+### Changed
+
+- Always add a canonical with the current url without query strings (c03d794)
+
+## [0.72.0](https://github.com/org/repo/compare/0.71.1...0.72.0) - 2022-10-27
+
+### Changed
+
+- Generalise scroll to, to allow arbitrary selectors (#159)
+- Improve code readability (#164)
+
+### Fixed
+
+- Fallback to using option code if its not an id (#163)
+- Fixed empty customer address error in the checkout (8322cc0)
+
+## [0.71.1](https://github.com/org/repo/compare/0.71.0...0.71.1) - 2022-10-10
+
+### Fixed
+
+- Install tests command fixes (b95b0aa)
+
+## [0.71.0](https://github.com/org/repo/compare/0.70.5...0.71.0) - 2022-10-06
+
+### Added
+
+- Install tests command (72da9c1)
+
+## [0.70.5](https://github.com/org/repo/compare/0.70.4...0.70.5) - 2022-10-03
+
+### Added
+
+- Added option to change store based on get param (#162)
+
+## [0.70.4](https://github.com/org/repo/compare/0.70.3...0.70.4) - 2022-10-03
+
+### Fixed
+
+- Get new shipping price on country change (#161)
 
 ## [0.70.3](https://github.com/org/repo/compare/0.70.2...0.70.3) - 2022-09-01
 

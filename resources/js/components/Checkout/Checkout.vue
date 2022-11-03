@@ -314,11 +314,17 @@
             }
         },
         watch: {
+            'checkout.shipping_address.customer_address_id': function (customerAddressId) {
+                this.setCustomerAddressByAddressId('shipping', customerAddressId)
+            },
             'checkout.shipping_address': {
                 deep: true,
                 handler: function() {
                     this.storeCredentials('shipping')
                 }
+            },
+            'checkout.billing_address.customer_address_id': function (customerAddressId) {
+                this.setCustomerAddressByAddressId('billing', customerAddressId)
             },
             'checkout.billing_address': {
                 deep: true,
@@ -334,6 +340,9 @@
             },
             'checkout.payment_method': function () {
                 this.selectPaymentMethod()
+            },
+            'checkout.shipping_address.country_id': function () {
+                this.getShippingMethods()
             },
             'checkout.step': function () {
                 if (this.backEvent) {
