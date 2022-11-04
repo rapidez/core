@@ -8,9 +8,9 @@
                 leave-active-class="ease-in-out duration-500"
                 leave-class="opacity-100"
                 leave-to-class="opacity-0"
-                slot-scope="{ message, type, show, close, classes}"
+                slot-scope="{ message, type, show, close, classes, link }"
             >
-                <div v-if="show" class="relative flex items-end justify-center pointer-events-none mb-3 sm:items-start sm:justify-end {{ config('rapidez.z-indexes.notification') }}">
+                <component :is="link ? 'a' : 'div'" v-if="show" class="relative flex items-end justify-center pointer-events-none mb-3 sm:items-start sm:justify-end {{ config('rapidez.z-indexes.notification') }}" :class="{ 'pointer-events-none': !link }">
                     <div class="max-w-sm w-full shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden border" :class="classes">
                         <div class="p-4">
                             <div class="flex items-start">
@@ -34,7 +34,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </component>
             </transition>
         </notification>
     </div>
