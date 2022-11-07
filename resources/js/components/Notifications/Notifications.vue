@@ -9,11 +9,12 @@
             })
         },
         mounted() {
-            this.$root.$on('notification-message', (message, type, params) => {
+            this.$root.$on('notification-message', (message, type, params, link) => {
                 this.notifications.push({
                     message: message,
-                    params: params,
                     type: type,
+                    params: params,
+                    link: link,
                     show: true
                 })
             });

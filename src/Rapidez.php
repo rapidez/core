@@ -2,8 +2,30 @@
 
 namespace Rapidez\Core;
 
+use Illuminate\Routing\RouteAction;
+use Illuminate\Support\Collection;
+
 class Rapidez
 {
+    public function __construct(protected Collection $routes)
+    {
+    }
+
+    public function addFallbackRoute($action, $position = 9999)
+    {
+        $this->routes->push([
+            'action'   => RouteAction::parse('', $action),
+            'position' => $position,
+        ]);
+
+        return $this;
+    }
+
+    public function getAllFallbackRoutes()
+    {
+        return $this->routes->sortBy('position');
+    }
+
     public function config(string $path, $default = null, bool $sensitive = false): ?string
     {
         return config('rapidez.models.config')::getCachedByPath($path, $default, $sensitive);

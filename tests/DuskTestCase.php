@@ -4,41 +4,14 @@ namespace Rapidez\Core\Tests;
 
 use BladeUI\Heroicons\BladeHeroiconsServiceProvider;
 use BladeUI\Icons\BladeIconsServiceProvider;
-use Laravel\Dusk\Browser;
 use Orchestra\Testbench\Dusk\TestCase as BaseTestCase;
 use Rapidez\Core\Facades\Rapidez;
-use Rapidez\Core\Models\Product;
 use Rapidez\Core\RapidezServiceProvider;
 use TorMorten\Eventy\EventServiceProvider;
 
 abstract class DuskTestCase extends BaseTestCase
 {
-    public string $flat;
-
-    public Product $testProduct;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Browser::macro('waitUntilAllAjaxCallsAreFinished', function ($pause = false) {
-            $this->waitUntil('!window.app.$data.loading', 10);
-
-            if ($pause) {
-                $this->pause($pause);
-            }
-
-            return $this;
-        });
-
-        $this->flat = (new Product())->getTable();
-
-        $this->testProduct = Product::selectAttributes([
-            'name',
-            'price',
-            'url_key',
-        ])->firstWhere($this->flat.'.sku', '24-WB02');
-    }
+    use DuskTestCaseSetup;
 
     protected function getPackageProviders($app)
     {

@@ -1,5 +1,5 @@
 window.debug = import.meta.env.VITE_DEBUG == 'true'
-window.Notify = (message, type, params = []) => window.app.$emit('notification-message', message, type, params);
+window.Notify = (message, type, params = [], link = null) => window.app.$emit('notification-message', message, type, params, link);
 
 import './lodash'
 import './vue'

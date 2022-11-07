@@ -1,5 +1,4 @@
 @import "components/vue-slider";
-@import "utilities/snap";
 
 @tailwind base;
 @tailwind components;

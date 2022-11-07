@@ -14,6 +14,10 @@
                 type: String,
                 default: 'slider'
             },
+            vertical: {
+                type: Boolean,
+                default: false
+            }
         },
         data: () => {
             return {
@@ -33,14 +37,15 @@
         },
         methods: {
             scroll(event) {
-                this.position = event.currentTarget.scrollLeft
-
+                this.position  = this.vertical ? event.currentTarget.scrollTop : event.currentTarget.scrollLeft
                 this.showLeft = this.position
                 this.showRight = (this.slider.offsetWidth + this.position) < this.slider.scrollWidth - 1
             },
 
             navigate(index) {
-                this.slider.scrollTo(this.slider.childNodes[0]?.offsetWidth * index, 0)
+                this.vertical
+                    ? this.slider.scrollTo(0, this.slider.children[index]?.offsetTop)
+                    : this.slider.scrollTo(this.slider.children[0]?.offsetWidth * index, 0)
             }
         },
         computed: {
@@ -49,12 +54,16 @@
             },
             currentSlide() {
                 if (this.mounted) {
-                    return Math.round(this.position / this.slider.childNodes[0]?.offsetWidth)
+                    return this.vertical
+                        ? Math.round(this.position / this.slider.children[0]?.offsetHeight)
+                        : Math.round(this.position / this.slider.children[0]?.offsetWidth)
                 }
             },
             slidesTotal() {
                 if (this.mounted) {
-                    return Math.round(this.slider.scrollWidth / this.slider.offsetWidth)
+                    return this.vertical
+                        ? Math.round(this.slider.scrollHeight / this.slider.offsetHeight)
+                        : Math.round(this.slider.scrollWidth / this.slider.offsetWidth)
                 }
             }
         }

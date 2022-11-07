@@ -22,8 +22,8 @@ export default defineConfig({
         alias: {
             '@': '/resources/js',
             'Vendor': '/vendor',
-            'vue': 'vue/dist/vue.esm.js',
-            '@vueuse/core': '/node_modules/@vueuse/core'
+            'vue': 'vue/dist/vue.js',
+            '@vueuse/core': '@vueuse/core'
         }
     }
 });

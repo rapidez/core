@@ -12,7 +12,7 @@ class ProductTest extends TestCase
         foreach (['simple', 'configurable', 'downloadable', 'grouped'] as $supportedType) {
             $this->assertInstanceOf(
                 Product::class,
-                Product::selectAttributes(['sku'])->where($this->flat.'.type_id', $supportedType)->first()
+                Product::selectAttributes(['sku'])->where((new Product())->getTable().'.type_id', $supportedType)->first()
             );
         }
     }
@@ -20,7 +20,7 @@ class ProductTest extends TestCase
     public function test_unsupported_product_types_can_not_be_received()
     {
         foreach (['bundle'] as $unsupportedType) {
-            $this->assertNull(Product::selectAttributes(['sku'])->where($this->flat.'.type_id', $unsupportedType)->first());
+            $this->assertNull(Product::selectAttributes(['sku'])->where((new Product())->getTable().'.type_id', $unsupportedType)->first());
         }
     }
 }

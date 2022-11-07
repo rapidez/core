@@ -97,7 +97,7 @@
                         qty: this.qty,
                     })
                     if (this.notifySuccess) {
-                        Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success')
+                        Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success', [], '/cart')
                     }
                     if (config.redirect_cart) {
                         Turbolinks.visit('/cart')
@@ -123,7 +123,7 @@
             },
 
             getOptions: function (superAttributeCode) {
-                if (this.$root.swatches.hasOwnProperty(superAttributeCode)) {
+                if (this.$root.swatches?.hasOwnProperty(superAttributeCode)) {
                     let swatchOptions = this.$root.swatches[superAttributeCode].options
                     let values = {}
 
