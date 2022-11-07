@@ -13,7 +13,7 @@ class OnlyProductAttributesScope implements Scope
         $builder
                 ->selectRaw('
                     eav_attribute.attribute_id AS id,
-                    COALESCE(value, frontend_label, eav_attribute.attribute_code) AS name,
+                    COALESCE(eav_attribute_label.value, frontend_label, eav_attribute.attribute_code) AS name,
                     eav_attribute.attribute_code AS code,
                     backend_type AS type,
                     frontend_input AS input,
@@ -46,7 +46,7 @@ class OnlyProductAttributesScope implements Scope
                 ->join('catalog_eav_attribute', 'eav_attribute.attribute_id', '=', 'catalog_eav_attribute.attribute_id')
                 ->leftJoin('eav_attribute_label', function ($join) {
                     $join->on('eav_attribute.attribute_id', '=', 'eav_attribute_label.attribute_id')
-                         ->where('store_id', config('rapidez.store'));
+                         ->where('eav_attribute_label.store_id', config('rapidez.store'));
                 })
                 ->where('entity_type_id', 4); // catalog_product
     }
