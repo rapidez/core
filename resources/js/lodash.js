@@ -1,10 +1,10 @@
-import sortBy from 'lodash/sortBy'
+import sortBy from 'node_modules/lodash/sortBy'
 window.sortBy = sortBy
-import filter from 'lodash/filter'
+import filter from 'node_modules/lodash/filter'
 window.filter = filter
-import map from 'lodash/map'
+import map from 'node_modules/lodash/map'
 window.map = map
-import flatMap from 'lodash/flatMap'
+import flatMap from 'node_modules/lodash/flatMap'
 window.flatMap = flatMap
-import intersection from 'lodash/intersection'
+import intersection from 'node_modules/lodash/intersection'
 window.intersection = intersection

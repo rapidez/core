@@ -20,10 +20,10 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            '@': '/resources/js',
-            'Vendor': '/vendor',
-            'vue': 'vue/dist/vue.js',
-            '@vueuse/core': '@vueuse/core'
+            '@': path.resolve(__dirname, './resources/js'),
+            'node_modules': path.resolve(__dirname, './node_modules'),
+            'Vendor': path.resolve(__dirname, './vendor'),
+            'vue': path.resolve(__dirname, './node_modules/vue/dist/vue.js')
         }
     }
 });

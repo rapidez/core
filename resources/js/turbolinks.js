@@ -1,8 +1,8 @@
-import Turbolinks from 'turbolinks'
+import Turbolinks from 'node_modules/turbolinks'
 window.Turbolinks = Turbolinks
 Turbolinks.start()
 
-import TurbolinksAdapter from 'vue-turbolinks'
+import TurbolinksAdapter from 'node_modules/vue-turbolinks'
 Vue.use(TurbolinksAdapter)
 
 // Monkey patch Turbolinks to render 404 normally
