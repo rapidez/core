@@ -6,8 +6,8 @@
         SelectedFilters,
         MultiList,
         DynamicRangeSlider
-    } from 'node_modules/@appbaseio/reactivesearch-vue'
-    import VueSlider from 'node_modules/vue-slider-component'
+    } from '@appbaseio/reactivesearch-vue'
+    import VueSlider from 'vue-slider-component'
 
     Vue.use(ReactiveBase)
     Vue.use(ReactiveList)

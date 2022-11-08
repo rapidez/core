@@ -1,5 +1,5 @@
 <script>
-import { useWebWorkerFn } from 'node_modules/@vueuse/core'
+import { useWebWorkerFn } from '@vueuse/core'
 
 export default {
     props: {

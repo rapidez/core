@@ -1,2 +1,2 @@
-import VueCookies from 'node_modules/vue-cookies'
+import VueCookies from 'vue-cookies'
 Vue.use(VueCookies)

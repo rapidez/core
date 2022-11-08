@@ -20,9 +20,9 @@ export default defineConfig({
         'process.env': process.env,
     },
     resolve: {
+        preserveSymlinks: true,
         alias: {
             '@': path.resolve(__dirname, './resources/js'),
-            'node_modules': path.resolve(__dirname, './node_modules'),
             'Vendor': path.resolve(__dirname, './vendor'),
             'vue': path.resolve(__dirname, './node_modules/vue/dist/vue.js')
         }
