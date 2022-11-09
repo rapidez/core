@@ -1,5 +1,10 @@
 window.debug = import.meta.env.VITE_DEBUG == 'true'
 window.Notify = (message, type, params = [], link = null) => window.app.$emit('notification-message', message, type, params, link);
+if (!window.process) {
+    // Workaround for process missing, if data is actually needed from here you should apply the following polyfill.
+    // https://stackoverflow.com/questions/72221740/how-do-i-polyfill-the-process-node-module-in-the-vite-dev-server
+    window.process = {};
+}
 
 import './lodash'
 import './vue'

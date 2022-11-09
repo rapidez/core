@@ -16,9 +16,6 @@ export default defineConfig({
         createVuePlugin(),
         visualizer(),
     ],
-    define: {
-        'process.env': process.env,
-    },
     resolve: {
         preserveSymlinks: true,
         alias: {
