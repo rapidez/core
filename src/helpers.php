@@ -25,3 +25,17 @@ if (!function_exists('vite_filename_with_chunkhash')) {
         }
     }
 }
+
+if (!function_exists('vite_filename_path')) {
+    function vite_filename_path($file)
+    {
+        $manifest = @json_decode(@file_get_contents(public_path('build/manifest.json')));
+        if ($manifest) {
+            foreach ($manifest as $path => $asset) {
+                if (Str::endsWith($path, $file)) {
+                    return $path;
+                }
+            }
+        }
+    }
+}
