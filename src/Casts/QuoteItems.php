@@ -23,7 +23,9 @@ class QuoteItems implements CastsAttributes
         foreach ($items as $item) {
             $options = null;
             foreach (json_decode($item->attributes) ?: [] as $attributeId => $attributeValue) {
-                $options[$superAttributes[$attributeId]] = $optionvalueModel::getCachedByOptionId($attributeValue);
+                $options[$superAttributes[$attributeId]] = is_numeric($attributeValue)
+                    ? $optionvalueModel::getCachedByOptionId($attributeValue)
+                    : $attributeValue;
             }
             $item->options = $options;
             $configModel = config('rapidez.models.config');

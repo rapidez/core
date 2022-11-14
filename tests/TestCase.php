@@ -5,19 +5,14 @@ namespace Rapidez\Core\Tests;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Rapidez\Core\Facades\Rapidez;
-use Rapidez\Core\Models\Product;
 use Rapidez\Core\RapidezServiceProvider;
 use TorMorten\Eventy\EventServiceProvider;
 
 class TestCase extends BaseTestCase
 {
-    public string $flat;
-
     public function setUp(): void
     {
         parent::setUp();
-
-        $this->flat = (new Product())->getTable();
 
         $this->setUpDatabase($this->app);
     }

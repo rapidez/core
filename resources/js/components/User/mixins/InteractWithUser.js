@@ -83,20 +83,21 @@ export default {
 
         setCheckoutCredentialsFromDefaultUserAddresses() {
             if (this.$root && this.$root.user) {
-                if (this.$root.user.default_shipping) {
-                    let address = this.$root.user.addresses.find((address) => address.id == this.$root.user.default_shipping)
-                    this.$root.checkout.shipping_address = Object.assign({
-                        customer_address_id: address.id
-                    }, address)
-                }
-
-                if (this.$root.user.default_billing) {
-                    let address = this.$root.user.addresses.find((address) => address.id == this.$root.user.default_billing)
-                    this.$root.checkout.billing_address = Object.assign({
-                        customer_address_id: address.id
-                    }, address)
-                }
+                this.setCustomerAddressByAddressId('shipping', this.$root.user.default_shipping)
+                this.setCustomerAddressByAddressId('billing', this.$root.user.default_billing)
             }
+        },
+
+        setCustomerAddressByAddressId(type, id) {
+            if (!id) {
+                return
+            }
+
+            let address = this.$root.user.addresses.find((address) => address.id == id)
+
+            this.$root.checkout[type + '_address'] = Object.assign({
+                customer_address_id: address.id
+            }, address)
         },
     },
 

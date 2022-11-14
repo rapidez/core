@@ -16,12 +16,14 @@
                 message: this.message,
                 show: this.show,
                 type: this.type,
+                link: this.link
             })
         },
         created() {
             this.message = this.notification.message.includes('%') ? this.format(this.notification.message, this.notification.params) : this.notification.message
             this.show = this.notification.show
             this.type = this.notification.type
+            this.link = this.notification.link
         },
         mounted() {
             setTimeout(() => {
@@ -31,7 +33,8 @@
         data: () => ({
             message: null,
             type: null,
-            show: null
+            show: null,
+            link: null
         }),
         methods: {
             close() {

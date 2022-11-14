@@ -10,8 +10,9 @@ class DetermineAndSetShop
     public function handle($request, Closure $next)
     {
         $storeModel = config('rapidez.models.store');
+
         // Set the store based on MAGE_RUN_CODE.
-        if ($storeCode = $request->server('MAGE_RUN_CODE')) {
+        if ($storeCode = $request->has('_store') && !app()->isProduction() ? $request->get('_store') : $request->server('MAGE_RUN_CODE')) {
             $store = $storeModel::getCachedWhere(function ($store) use ($storeCode) {
                 return $store['code'] == $storeCode;
             });
