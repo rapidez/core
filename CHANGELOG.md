@@ -1,6 +1,23 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.73.0...master)
+## [Unreleased](https://github.com/org/repo/compare/0.74.0...master)
+
+## [0.74.0](https://github.com/org/repo/compare/0.73.0...0.74.0) - 2022-11-17
+
+### Added
+
+- Add option to allow vertical slides (#168)
+- Add option to add a link to notifications (#169)
+
+### Changed
+
+- Better fallback routing (#166)
+- Replace old snap class with tailwind (#160)
+
+### Fixed
+
+- Fix ambiguous column (#170)
+- Reindex url error fix (fbe1f32)
 
 ## [0.73.0](https://github.com/org/repo/compare/0.72.0...0.73.0) - 2022-10-27
 
