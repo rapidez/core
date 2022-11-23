@@ -1,6 +1,5 @@
 import Vue from 'vue'
 window.Vue = Vue
-
 import AsyncComputed from 'vue-async-computed'
 Vue.use(AsyncComputed)
 

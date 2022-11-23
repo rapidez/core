@@ -123,7 +123,7 @@
             },
 
             getOptions: function (superAttributeCode) {
-                if (this.$root.swatches.hasOwnProperty(superAttributeCode)) {
+                if (this.$root.swatches?.hasOwnProperty(superAttributeCode)) {
                     let swatchOptions = this.$root.swatches[superAttributeCode].options
                     let values = {}
 

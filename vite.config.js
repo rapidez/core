@@ -1,3 +1,4 @@
+import path from 'path'
 import { defineConfig } from 'vite'
 import laravel from 'laravel-vite-plugin'
 import { createVuePlugin } from 'vite-plugin-vue2'
@@ -15,15 +16,12 @@ export default defineConfig({
         createVuePlugin(),
         visualizer(),
     ],
-    define: {
-        'process.env': process.env,
-    },
     resolve: {
+        preserveSymlinks: true,
         alias: {
-            '@': '/resources/js',
-            'Vendor': '/vendor',
-            'vue': 'vue/dist/vue.esm.js',
-            '@vueuse/core': '/node_modules/@vueuse/core'
+            '@': path.resolve(__dirname, './resources/js'),
+            'Vendor': path.resolve(__dirname, './vendor'),
+            'vue': path.resolve(__dirname, './node_modules/vue/dist/vue.js')
         }
     }
 });
