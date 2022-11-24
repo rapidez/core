@@ -58,6 +58,9 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction
 
+      - name: Validate install
+        run: php artisan rapidez:validate
+
       - name: Prepare Laravel Dusk
         run: composer run dusk:prepare
 
