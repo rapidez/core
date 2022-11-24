@@ -71,7 +71,7 @@ jobs:
         run: composer run dusk:assets
 
       - name: Wait for index to finish
-        run: for i in {1..60}; do [[ $(mysql -h 127.0.0.1 -u magento -pmagento -ss -r -e "CALL sys.table_exists('magento', 'catalog_product_flat_1', @exists); SELECT @exists;") == *"BASE TABLE"* ]] && break || sleep 5; done
+        run: for i in {1..60}; do [[ $(mysql -h 127.0.0.1 -P 3307 -u magento -pmagento -ss -r -e "CALL sys.table_exists('magento', 'catalog_product_flat_1', @exists); SELECT @exists;") == *"BASE TABLE"* ]] && break || sleep 5; done
 
       - name: Execute tests
         run: composer run dusk:test
