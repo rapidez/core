@@ -70,6 +70,9 @@ jobs:
       - name: Compile assets
         run: composer run dusk:assets
 
+      - name: Wait for index to finish
+        run: sleep 60
+
       - name: Execute tests
         run: composer run dusk:test
 
