@@ -16,8 +16,8 @@ jobs:
         laravel: [9.*]
         stability: [prefer-lowest, prefer-stable]
         include:
-          - laravel: "^9.2"
-            testbench: "^7.1"
+          - laravel: ^9.2
+            testbench: ^7.1
 
     services:
       mysql:
