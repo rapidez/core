@@ -13,18 +13,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - magento-version: 2.4.2-p2
-            magento-php-version: php74-fpm
-            rapidez-php-version: 8.0
-          - magento-version: 2.4.2-p2
-            magento-php-version: php74-fpm
-            rapidez-php-version: 8.1
-          - magento-version: 2.4.3-p2
-            magento-php-version: php74-fpm
-            rapidez-php-version: 8.0
-          - magento-version: 2.4.3-p2
-            magento-php-version: php74-fpm
-            rapidez-php-version: 8.1
           - magento-version: 2.4.4-p2
             magento-php-version: php81-fpm
             rapidez-php-version: 8.0
