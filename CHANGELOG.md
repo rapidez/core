@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.74.0...master)
+## [Unreleased](https://github.com/org/repo/compare/0.75.0...master)
+
+## [0.75.0](https://github.com/org/repo/compare/0.74.0...0.75.0) - 2022-12-02
+
+### Changed
+
+- Migrated from Laravel Mix to Vite (#172)
 
 ## [0.74.0](https://github.com/org/repo/compare/0.73.0...0.74.0) - 2022-11-17
 
