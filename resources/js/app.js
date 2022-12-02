@@ -1,38 +1,54 @@
-window.axios = require('axios')
-window.debug = process.env.MIX_DEBUG == 'true'
+window.debug = import.meta.env.VITE_DEBUG == 'true'
 window.Notify = (message, type, params = [], link = null) => window.app.$emit('notification-message', message, type, params, link);
+if (!window.process) {
+    // Workaround for process missing, if data is actually needed from here you should apply the following polyfill.
+    // https://stackoverflow.com/questions/72221740/how-do-i-polyfill-the-process-node-module-in-the-vite-dev-server
+    window.process = {};
+}
 
-require('./lodash')
-require('./vue')
-require('./axios')
-require('./filters')
-require('./mixins')
-require('./turbolinks')
-require('./webworker')
-require('./cookies')
-require('./callbacks')
+import './lodash'
+import './vue'
+import './axios'
+import './filters'
+import './mixins'
+import './turbolinks'
+import './cookies'
+import './callbacks'
 
-Vue.component('cart', require('./components/Cart/Cart.vue').default)
-Vue.component('toggler', require('./components/Elements/Toggler.vue').default)
-Vue.component('slider', require('./components/Elements/Slider.vue').default)
-Vue.component('add-to-cart', require('./components/Product/AddToCart.vue').default)
-Vue.component('user', require('./components/User/User.vue').default)
-Vue.component('lazy', require('./components/Lazy.vue').default)
-Vue.component('graphql', require('./components/Graphql.vue').default)
-Vue.component('graphql-mutation', require('./components/GraphqlMutation.vue').default)
-Vue.component('notifications', require('./components/Notifications/Notifications.vue').default)
-Vue.component('notification', require('./components/Notifications/Notification.vue').default)
-Vue.component('images', require('./components/Product/Images.vue').default)
+import cart from './components/Cart/Cart.vue'
+Vue.component('cart', cart)
+import toggler from './components/Elements/Toggler.vue'
+Vue.component('toggler', toggler)
+import slider from './components/Elements/Slider.vue'
+Vue.component('slider', slider)
+import addToCart from './components/Product/AddToCart.vue'
+Vue.component('add-to-cart', addToCart)
+import user from './components/User/User.vue'
+Vue.component('user', user)
+import lazy from './components/Lazy.vue'
+Vue.component('lazy', lazy)
+import graphql from './components/Graphql.vue'
+Vue.component('graphql', graphql)
+import graphqlMutation from './components/GraphqlMutation.vue'
+Vue.component('graphql-mutation', graphqlMutation)
+import notifications from './components/Notifications/Notifications.vue'
+Vue.component('notifications', notifications)
+import notification from './components/Notifications/Notification.vue'
+Vue.component('notification', notification)
+import images from './components/Product/Images.vue'
+Vue.component('images', images)
 
-Vue.component('category-filter', require('./components/Listing/Filters/CategoryFilter.vue').default)
-Vue.component('category-filter-category', require('./components/Listing/Filters/CategoryFilterCategory.vue').default)
+import categoryFilter from './components/Listing/Filters/CategoryFilter.vue'
+Vue.component('category-filter', categoryFilter)
+import categoryFilterCategory from './components/Listing/Filters/CategoryFilterCategory.vue'
+Vue.component('category-filter-category', categoryFilterCategory)
 
-Vue.component('autocomplete', () => import(/* webpackChunkName: "autocomplete" */ './components/Search/Autocomplete.vue'))
-Vue.component('login', () => import(/* webpackChunkName: "account" */ './components/Checkout/Login.vue'))
-Vue.component('listing', () => import(/* webpackChunkName: "listing" */ './components/Listing/Listing.vue'))
-Vue.component('coupon', () => import(/* webpackChunkName: "cart" */ './components/Coupon/Coupon.vue'))
-Vue.component('checkout', () => import(/* webpackChunkName: "checkout" */ './components/Checkout/Checkout.vue'))
-Vue.component('checkout-success', () => import(/* webpackChunkName: "checkout" */ './components/Checkout/CheckoutSuccess.vue'))
+Vue.component('autocomplete', () => import('./components/Search/Autocomplete.vue'))
+Vue.component('login', () => import('./components/Checkout/Login.vue'))
+Vue.component('listing', () => import('./components/Listing/Listing.vue'))
+Vue.component('coupon', () => import('./components/Coupon/Coupon.vue'))
+Vue.component('checkout', () => import('./components/Checkout/Checkout.vue'))
+Vue.component('checkout-success', () => import('./components/Checkout/CheckoutSuccess.vue'))
 
 function init() {
     Vue.prototype.window = window

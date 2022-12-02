@@ -1,4 +1,5 @@
-window.Turbolinks = require('turbolinks')
+import Turbolinks from 'turbolinks'
+window.Turbolinks = Turbolinks
 Turbolinks.start()
 
 import TurbolinksAdapter from 'vue-turbolinks'
@@ -22,7 +23,7 @@ window.Turbolinks.HttpRequest.prototype.requestLoaded = function() {
 // Fix turbolinks to remember page state after pushstate has been used.
 // See: https://github.com/turbolinks/turbolinks/issues/219
 document.addEventListener('turbolinks:before-visit', function(e){
-    if (typeof history.state.turbolinks === 'undefined'){
+    if (typeof history.state?.turbolinks === 'undefined'){
         history.replaceState({ turbolinks: {} }, '');
     }
 });

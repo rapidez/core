@@ -25,10 +25,16 @@ jobs:
           - magento-version: 2.4.3-p2
             magento-php-version: php74-fpm
             rapidez-php-version: 8.1
-          - magento-version: 2.4.4
+          - magento-version: 2.4.4-p2
             magento-php-version: php81-fpm
             rapidez-php-version: 8.0
-          - magento-version: 2.4.4
+          - magento-version: 2.4.4-p2
+            magento-php-version: php81-fpm
+            rapidez-php-version: 8.1
+          - magento-version: 2.4.5-p1
+            magento-php-version: php81-fpm
+            rapidez-php-version: 8.0
+          - magento-version: 2.4.5-p1
             magento-php-version: php81-fpm
             rapidez-php-version: 8.1
 
@@ -63,6 +69,9 @@ jobs:
 
       - name: Compile assets
         run: composer run dusk:assets
+
+      - name: Wait for index to finish
+        run: for i in {1..60}; do [[ $(mysql -h 127.0.0.1 -P 3307 -u magento -ppassword -ss -r -e "CALL sys.table_exists('magento', 'catalog_product_flat_1', @exists); SELECT @exists;") == *"BASE TABLE"* ]] && break || sleep 5; done
 
       - name: Execute tests
         run: composer run dusk:test

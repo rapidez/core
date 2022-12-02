@@ -11,11 +11,8 @@
     <meta name="robots" content="@yield('robots', Rapidez::config('design/search_engine_robots/default_robots', 'INDEX,FOLLOW'))"/>
     <link rel="canonical" href="@yield('canonical', url()->current())" />
 
-    <link href="{{ url(mix('css/app.css')) }}" rel="preload" as="style">
-    <link href="{{ url(mix('css/app.css')) }}" rel="stylesheet" data-turbolinks-track="reload">
-    <script src="{{ url(mix('js/manifest.js')) }}" defer data-turbolinks-track="reload"></script>
-    <script src="{{ url(mix('js/vendor.js')) }}" defer data-turbolinks-track="reload"></script>
-    <script src="{{ url(mix('js/app.js')) }}" defer data-turbolinks-track="reload"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     @stack('head')
 </head>
 <body class="bg-white antialiased">
