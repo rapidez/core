@@ -3,7 +3,7 @@
     id="products"
     component-id="products"
     data-field="name.keyword"
-    list-class="flex flex-wrap mt-5 -mx-1 overflow-hidden"
+    list-class="flex flex-wrap mt-5 -mx-4 sm:-mx-1 overflow-hidden"
     :pagination="true"
     v-on:page-click="scrollToElement('#products')"
     :size="isNaN(parseInt($root.config.grid_per_page)) ? 10000 : parseInt($root.config.grid_per_page)"
