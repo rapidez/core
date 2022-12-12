@@ -16,13 +16,11 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                primary: {
-                    DEFAULT: 'var(--primary)', // Text color
-                    100: 'var(--primary-100)' // Light color
-                },
-                secondary: 'var(--secondary)', // Inactive text color
+                primary: 'var(--primary)', // Text color
+                secondary: 'var(--secondary)', // Text inactive color
                 accent: 'var(--accent)', // Theme color
                 enhanced: 'var(--enhanced)', // Checkout conversion color
+                highlight: 'var(--highlight)' // Background highlight color
             }
         },
         borderColor: {
