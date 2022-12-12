@@ -1,5 +1,3 @@
-const colors = require('tailwindcss/colors')
-
 module.exports = {
     content: [
         './resources/views/**/*.blade.php',
@@ -18,8 +16,8 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                primary: colors.green[700],
-                secondary: colors.gray[400],
+                primary: 'var(--primary)',
+                secondary: 'var(--secondary)',
             }
         }
     },
