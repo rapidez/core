@@ -26,7 +26,10 @@
                     <img :src="'/storage/resizes/80x80/catalog/product' + image + '.webp'" alt="{{ $product->name }}" class="m-auto max-h-[80px] w-full object-contain" loading="lazy" width="80" height="80" />
                 </a>
             </div>
-            <div v-if="zoomed" class="{{ config('rapidez.z-indexes.lightbox') }} pointer-events-none fixed top-3 right-3">
+            <div v-if="zoomed" @class([
+            	config('rapidez.z-indexes.lightbox'), 
+            	'pointer-events-none fixed top-3 right-3'
+            ])>
                 <x-heroicon-o-x class="h-6 w-6" />
             </div>
         </div>
