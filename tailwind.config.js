@@ -16,9 +16,22 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                primary: 'var(--primary)',
-                secondary: 'var(--secondary)',
-            }
+                primary: 'var(--primary)', // Text color
+                secondary: 'var(--secondary)', // Text inactive color
+                accent: 'var(--accent)', // Theme color
+                enhanced: 'var(--enhanced)', // Checkout conversion color
+                highlight: 'var(--highlight)' // Background highlight color
+            },
+            borderColor: {
+                DEFAULT: 'var(--border)'
+            },
+        },
+        fontFamily: {
+            sans: ['Arial', 'sans-serif']
+        },
+        container: {
+            center: true,
+            padding: '1.25rem',
         }
     },
     plugins: [
