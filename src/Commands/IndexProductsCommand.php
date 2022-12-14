@@ -44,7 +44,7 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
                         'type' => 'flattened',
                     ],
                 ],
-            ]));
+            ]), Eventy::filter('index.product.settings', []));
 
             try {
                 $flat = (new $productModel())->getTable();

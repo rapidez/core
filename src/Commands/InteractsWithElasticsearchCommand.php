@@ -16,13 +16,14 @@ abstract class InteractsWithElasticsearchCommand extends Command
         $this->elasticsearch = $elasticsearch;
     }
 
-    public function createIndex(string $index, array $mapping = []): void
+    public function createIndex(string $index, array $mapping = [], array $settings = []): void
     {
         $this->elasticsearch->indices()->create([
             'index' => $index,
-            'body'  => $mapping ? [
+            'body'  => [
                 'mappings' => $mapping,
-            ] : [],
+                'settings' => $settings,
+            ],
         ]);
     }
 
