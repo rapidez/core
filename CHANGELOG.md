@@ -1,6 +1,16 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.75.0...master)
+## [Unreleased](https://github.com/org/repo/compare/0.76.0...master)
+
+## [0.76.0](https://github.com/org/repo/compare/0.75.0...0.76.0) - 2022-12-14
+
+### Added
+
+- Eventy product index settings filter (a172022)
+
+### Changed
+
+- Removed Magento 2.4.2 and 2.4.3 support (6994db0)
 
 ## [0.75.0](https://github.com/org/repo/compare/0.74.0...0.75.0) - 2022-12-02
 
