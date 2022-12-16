@@ -10,7 +10,7 @@
     :react="{and: reactiveFilters}"
     :sort-options="sortOptions"
     :inner-class="{
-        button: '!bg-primary disabled:!bg-secondary',
+        button: '!bg-primary disabled:!bg-secondary !text-white',
         sortOptions: '{{ $dropdownClasses }}'
     }"
     prev-label="@lang('Prev')"
