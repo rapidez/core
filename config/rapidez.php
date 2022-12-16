@@ -125,4 +125,91 @@ return [
         'slideover'        => 'z-50',
     ],
 
+    'footer_navigation' => [
+        [
+            'title' => 'Catalog',
+            'children' => [
+                [
+                    'title' => 'What\'s New',
+                    'url' => '/what-is-new.html',
+                    'target_blank' => false
+                ],
+                [
+                    'title' => 'Women',
+                    'url' => '/women',
+                    'target_blank' => false
+                ],
+                [
+                    'title' => 'Men',
+                    'url' => '/men',
+                    'target_blank' => false
+                ],
+                [
+                    'title' => 'Gear',
+                    'url' => '/gear.html',
+                    'target_blank' => false
+                ],
+                [
+                    'title' => 'Training',
+                    'url' => '/training.html',
+                    'target_blank' => false
+                ],
+                [
+                    'title' => 'Sale',
+                    'url' => '/sale.html',
+                    'target_blank' => false
+                ]
+            ]
+        ],
+        [
+            'title' => 'Support',
+            'children' => [
+                [
+                    'title' => 'Customer service',
+                    'url' => '/customer-service',
+                    'target_blank' => false
+                ],
+                [
+                    'title' => 'Documentation',
+                    'url' => 'https://docs.rapidez.io/',
+                    'target_blank' => true
+                ],
+                [
+                    'title' => 'FAQ',
+                    'url' => 'https://rapidez.io/#faq',
+                    'target_blank' => true
+                ]
+            ]
+        ],
+        [
+            'title' => 'Legal',
+            'children' => [
+                [
+                    'title' => 'Privacy',
+                    'url' => '/privacy-policy-cookie-restriction-mode',
+                    'target_blank' => false
+                ],
+                [
+                    'title' => 'Cookies',
+                    'url' => '/enable-cookies',
+                    'target_blank' => false
+                ]
+            ]
+        ],
+        [
+            'title' => 'Rapidez',
+            'children' => [
+                [
+                    'title' => 'Website',
+                    'url' => 'https://rapidez.io/',
+                    'target_blank' => true
+                ],
+                [
+                    'title' => 'GitHub',
+                    'url' => 'https://github.com/rapidez',
+                    'target_blank' => true
+                ]
+            ]
+        ]
+    ]
 ];
