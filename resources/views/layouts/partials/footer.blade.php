@@ -1,5 +1,5 @@
 <x-rapidez::notifications />
-<footer class="bg-white" aria-labelledby="footer-heading">
+<footer class="bg-white">
     <div class="container mx-auto">
         <div class="py-12 lg:py-16">
             @if(Route::currentRouteName() !== 'checkout')
@@ -9,9 +9,7 @@
                 </div>
             @endif
             <div class="mt-8 border-t border-gray-200 pt-8 md:flex md:items-center md:justify-between">
-                @if(Route::currentRouteName() !== 'checkout')
-                    @include('rapidez::layouts.partials.footer.social')
-                @endif
+                @includeWhen(Route::currentRouteName() !== 'checkout', 'rapidez::layouts.partials.footer.social')
                 <div class="mt-8 md:mt-0">
                     @include('rapidez::layouts.partials.footer.copyrights')
                 </div>

@@ -1,7 +1,7 @@
 <nav class="grid grid-cols-2 gap-8 xl:col-span-2">
     <div class="md:grid md:grid-cols-2 md:gap-8">
         <div>
-            <h3 class="text-base font-medium text-gray-900">@lang('Catalog')</h3>
+            <p class="text-base font-medium text-gray-900">@lang('Catalog')</p>
             <ul role="list" class="mt-4 space-y-4">
                 <li>
                     <a href="/what-is-new.html" class="text-base text-gray-500 hover:text-gray-900">
@@ -36,7 +36,7 @@
             </ul>
         </div>
         <div class="mt-12 md:mt-0">
-            <h3 class="text-base font-medium text-gray-900">@lang('Support')</h3>
+            <p class="text-base font-medium text-gray-900">@lang('Support')</p>
             <ul role="list" class="mt-4 space-y-4">
                 <li>
                     <a href="/customer-service" class="text-base text-gray-500 hover:text-gray-900">@lang('Customer service')</a>
@@ -56,7 +56,7 @@
     </div>
     <div class="md:grid md:grid-cols-2 md:gap-8">
         <div class="mt-12 md:mt-0">
-            <h3 class="text-base font-medium text-gray-900">@lang('Legal')</h3>
+            <p class="text-base font-medium text-gray-900">@lang('Legal')</p>
             <ul role="list" class="mt-4 space-y-4">
                 <li>
                     <a href="/privacy-policy-cookie-restriction-mode" class="text-base text-gray-500 hover:text-gray-900">
@@ -69,7 +69,7 @@
             </ul>
         </div>
         <div>
-            <h3 class="text-base font-medium text-gray-900">Rapidez</h3>
+            <p class="text-base font-medium text-gray-900">Rapidez</p>
             <ul role="list" class="mt-4 space-y-4">
                 <li>
                     <a href="https://rapidez.io/" target="_blank" class="text-base text-gray-500 hover:text-gray-900">Website</a>
