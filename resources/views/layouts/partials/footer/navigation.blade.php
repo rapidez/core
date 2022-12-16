@@ -1,83 +1,103 @@
-<nav class="grid grid-cols-2 gap-8 xl:col-span-2">
-    <div class="md:grid md:grid-cols-2 md:gap-8">
-        <div>
-            <p class="text-base font-medium text-gray-900">@lang('Catalog')</p>
-            <ul role="list" class="mt-4 space-y-4">
+@php
+    $items = [
+        [
+            'title' => 'Catalog',
+            'children' => [
+                [
+                    'title' => 'What\'s New',
+                    'url' => '/what-is-new.html',
+                    'target_blank' => false
+                ],
+                [
+                    'title' => 'Women',
+                    'url' => '/women',
+                    'target_blank' => false
+                ],
+                [
+                    'title' => 'Men',
+                    'url' => '/men',
+                    'target_blank' => false
+                ],
+                [
+                    'title' => 'Gear',
+                    'url' => '/gear.html',
+                    'target_blank' => false
+                ],
+                [
+                    'title' => 'Training',
+                    'url' => '/training.html',
+                    'target_blank' => false
+                ],
+                [
+                    'title' => 'Sale',
+                    'url' => '/sale.html',
+                    'target_blank' => false
+                ]
+            ]
+        ],
+        [
+            'title' => 'Support',
+            'children' => [
+                [
+                    'title' => 'Customer service',
+                    'url' => '/customer-service',
+                    'target_blank' => false
+                ],
+                [
+                    'title' => 'Documentation',
+                    'url' => 'https://docs.rapidez.io/',
+                    'target_blank' => true
+                ],
+                [
+                    'title' => 'FAQ',
+                    'url' => 'https://rapidez.io/#faq',
+                    'target_blank' => true
+                ]
+            ]
+        ],
+        [
+            'title' => 'Legal',
+            'children' => [
+                [
+                    'title' => 'Privacy',
+                    'url' => '/privacy-policy-cookie-restriction-mode',
+                    'target_blank' => false
+                ],
+                [
+                    'title' => 'Cookies',
+                    'url' => '/enable-cookies',
+                    'target_blank' => false
+                ]
+            ]
+        ],
+        [
+            'title' => 'Rapidez',
+            'children' => [
+                [
+                    'title' => 'Website',
+                    'url' => 'https://rapidez.io/',
+                    'target_blank' => true
+                ],
+                [
+                    'title' => 'GitHub',
+                    'url' => 'https://github.com/rapidez',
+                    'target_blank' => true
+                ]
+            ]
+        ]
+    ];
+@endphp
+<nav class="flex flex-wrap md:flex-nowrap justify-between w-full md:gap-8">
+    @foreach($items as $item)
+        <ul role="list" class="w-1/2 md:w-1/4 mt-4 md:mt-0 space-y-4">
+            <p class="text-base font-medium text-gray-900">{{ $item['title'] }}</p>
+            @foreach($item['children'] as $child)
                 <li>
-                    <a href="/what-is-new.html" class="text-base text-gray-500 hover:text-gray-900">
-                        What's New
+                    <a href="{{ $child['url'] }}" {{ $child['target_blank'] ? 'target="_blank"' : '' }} class="text-base text-gray-500 hover:text-gray-900">
+                        {{ $child['title'] }}
                     </a>
                 </li>
-                <li>
-                    <a href="/women.html" class="text-base text-gray-500 hover:text-gray-900">
-                        Women
-                    </a>
-                </li>
-                <li>
-                    <a href="/men.html" class="text-base text-gray-500 hover:text-gray-900">
-                        Men
-                    </a>
-                </li>
-                <li>
-                    <a href="/gear.html" class="text-base text-gray-500 hover:text-gray-900">
-                        Gear
-                    </a>
-                </li>
-                <li>
-                    <a href="/training.html" class="text-base text-gray-500 hover:text-gray-900">
-                        Training
-                    </a>
-                </li>
-                <li>
-                    <a href="/sale.html" class="text-base text-gray-500 hover:text-gray-900">
-                        Sale
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div class="mt-12 md:mt-0">
-            <p class="text-base font-medium text-gray-900">@lang('Support')</p>
-            <ul role="list" class="mt-4 space-y-4">
-                <li>
-                    <a href="/customer-service" class="text-base text-gray-500 hover:text-gray-900">@lang('Customer service')</a>
-                </li>
-                <li>
-                    <a href="https://docs.rapidez.io/" target="__blank" class="text-base text-gray-500 hover:text-gray-900">
-                        @lang('Documentation')
-                    </a>
-                </li>
-                <li>
-                    <a href="https://rapidez.io/#faq" target="__blank" class="text-base text-gray-500 hover:text-gray-900">
-                        @lang('FAQ')
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="md:grid md:grid-cols-2 md:gap-8">
-        <div class="mt-12 md:mt-0">
-            <p class="text-base font-medium text-gray-900">@lang('Legal')</p>
-            <ul role="list" class="mt-4 space-y-4">
-                <li>
-                    <a href="/privacy-policy-cookie-restriction-mode" class="text-base text-gray-500 hover:text-gray-900">
-                        @lang('Privacy')
-                    </a>
-                </li>
-                <li>
-                    <a href="/enable-cookies" class="text-base text-gray-500 hover:text-gray-900">@lang('Cookies')</a>
-                </li>
-            </ul>
-        </div>
-        <div>
-            <p class="text-base font-medium text-gray-900">Rapidez</p>
-            <ul role="list" class="mt-4 space-y-4">
-                <li>
-                    <a href="https://rapidez.io/" target="_blank" class="text-base text-gray-500 hover:text-gray-900">Website</a>
-                </li>
-                <li>
-                    <a href="https://github.com/rapidez" target="_blank" class="text-base text-gray-500 hover:text-gray-900">GitHub</a>
-                </li>
-            </ul>
-        </div>
-    </div>
+            @endforeach
+        </ul>
+    @endforeach
 </nav>
