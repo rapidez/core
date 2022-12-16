@@ -34,7 +34,7 @@
 
                 {{ $before ?? '' }}
                 @if ($slot->isEmpty())
-                    <div class="container mx-auto flex flex-col md:flex-row">
+                    <div class="flex flex-col md:flex-row">
                         <div class="md:w-1/5">
                             @include('rapidez::listing.filters')
                         </div>
