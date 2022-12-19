@@ -123,6 +123,5 @@ return [
         'lightbox'         => 'z-30',
         'notification'     => 'z-20',
         'slideover'        => 'z-50',
-    ],
-
+    ]
 ];
