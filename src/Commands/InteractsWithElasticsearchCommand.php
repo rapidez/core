@@ -20,10 +20,10 @@ abstract class InteractsWithElasticsearchCommand extends Command
     {
         $this->elasticsearch->indices()->create([
             'index' => $index,
-            'body'  => [
+            'body'  => array_filter([
                 'mappings' => $mapping,
                 'settings' => $settings,
-            ],
+            ]),
         ]);
     }
 
