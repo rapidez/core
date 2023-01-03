@@ -1,6 +1,13 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.76.0...master)
+## [Unreleased](https://github.com/org/repo/compare/0.76.1...master)
+
+## [0.76.1](https://github.com/org/repo/compare/0.76.0...0.76.1) - 2023-01-03
+
+### Fixed
+
+- `custom_attributes` in address data (#177)
+- Fix key must be object if mappings or settings are empty (#180)
 
 ## [0.76.0](https://github.com/org/repo/compare/0.75.0...0.76.0) - 2022-12-14
 
