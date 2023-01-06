@@ -16,6 +16,7 @@ class Category extends Model
             $defaultColumnsToSelect = [
                 'entity_id',
                 'meta_title',
+                'meta_description',
                 'name',
                 'is_anchor',
                 'description',
