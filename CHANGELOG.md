@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.76.1...master)
+## [Unreleased](https://github.com/org/repo/compare/0.76.2...master)
+
+## [0.76.2](https://github.com/org/repo/compare/0.76.1...0.76.2) - 2023-01-06
+
+### Fixed
+
+- Select meta description with categories (1a11268)
 
 ## [0.76.1](https://github.com/org/repo/compare/0.76.0...0.76.1) - 2023-01-03
 
