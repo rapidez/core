@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.76.2...master)
+## [Unreleased](https://github.com/org/repo/compare/0.76.3...master)
+
+## [0.76.3](https://github.com/org/repo/compare/0.76.2...0.76.3) - 2023-01-10
+
+### Fixed
+
+- Get the attributes values for non-swatch super attributes (6c406a2, 8ed98ad)
 
 ## [0.76.2](https://github.com/org/repo/compare/0.76.1...0.76.2) - 2023-01-06
 
