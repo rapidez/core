@@ -62,11 +62,9 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
                     foreach ($products as $product) {
                         $data = array_merge(['store' => $store->store_id], $product->toArray());
                         foreach ($product->super_attributes ?: [] as $superAttribute) {
-                            if ($superAttribute->text_swatch || $superAttribute->visual_swatch) {
-                                $data[$superAttribute->code] = array_keys((array) $product->{$superAttribute->code});
-                            } else {
-                                $data[$superAttribute->code] = array_pluck($product->{$superAttribute->code}, 'label');
-                            }
+                            $data[$superAttribute->code] = $superAttribute->text_swatch || $superAttribute->visual_swatch
+                                ? array_keys((array) $product->{$superAttribute->code})
+                                : array_pluck($product->{$superAttribute->code}, 'label');
                         }
 
                         $data = $this->withCategories($data, $categories);
