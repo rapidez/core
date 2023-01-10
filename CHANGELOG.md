@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/org/repo/compare/0.76.3...master)
+## [Unreleased](https://github.com/org/repo/compare/0.76.4...master)
+
+## [0.76.4](https://github.com/org/repo/compare/0.76.3...0.76.4) - 2023-01-10
+
+### Fixed
+
+- Bugfix (d947dd9)
 
 ## [0.76.3](https://github.com/org/repo/compare/0.76.2...0.76.3) - 2023-01-10
 
