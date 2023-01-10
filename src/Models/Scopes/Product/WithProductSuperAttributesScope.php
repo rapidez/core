@@ -40,6 +40,8 @@ class WithProductSuperAttributesScope implements Scope
             ->selectRaw('JSON_OBJECTAGG(eav_attribute.attribute_id, JSON_OBJECT(
                 "code", attribute_code,
                 "label", COALESCE(NULLIF(value, ""), frontend_label),
+                "text_swatch", additional_data->>"$.swatch_input_type" = "text",
+                "visual_swatch", additional_data->>"$.swatch_input_type" = "visual",
                 "update_image", additional_data->>"$.update_product_preview_image" = 1
             )) AS super_attributes')
             ->join('eav_attribute', 'eav_attribute.attribute_id', '=', 'catalog_product_super_attribute.attribute_id')
