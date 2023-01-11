@@ -14,41 +14,7 @@ import './mixins'
 import './turbolinks'
 import './cookies'
 import './callbacks'
-
-import cart from './components/Cart/Cart.vue'
-Vue.component('cart', cart)
-import toggler from './components/Elements/Toggler.vue'
-Vue.component('toggler', toggler)
-import slider from './components/Elements/Slider.vue'
-Vue.component('slider', slider)
-import addToCart from './components/Product/AddToCart.vue'
-Vue.component('add-to-cart', addToCart)
-import user from './components/User/User.vue'
-Vue.component('user', user)
-import lazy from './components/Lazy.vue'
-Vue.component('lazy', lazy)
-import graphql from './components/Graphql.vue'
-Vue.component('graphql', graphql)
-import graphqlMutation from './components/GraphqlMutation.vue'
-Vue.component('graphql-mutation', graphqlMutation)
-import notifications from './components/Notifications/Notifications.vue'
-Vue.component('notifications', notifications)
-import notification from './components/Notifications/Notification.vue'
-Vue.component('notification', notification)
-import images from './components/Product/Images.vue'
-Vue.component('images', images)
-
-import categoryFilter from './components/Listing/Filters/CategoryFilter.vue'
-Vue.component('category-filter', categoryFilter)
-import categoryFilterCategory from './components/Listing/Filters/CategoryFilterCategory.vue'
-Vue.component('category-filter-category', categoryFilterCategory)
-
-Vue.component('autocomplete', () => import('./components/Search/Autocomplete.vue'))
-Vue.component('login', () => import('./components/Checkout/Login.vue'))
-Vue.component('listing', () => import('./components/Listing/Listing.vue'))
-Vue.component('coupon', () => import('./components/Coupon/Coupon.vue'))
-Vue.component('checkout', () => import('./components/Checkout/Checkout.vue'))
-Vue.component('checkout-success', () => import('./components/Checkout/CheckoutSuccess.vue'))
+import './vue-components'
 
 function init() {
     Vue.prototype.window = window
