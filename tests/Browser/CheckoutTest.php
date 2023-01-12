@@ -81,7 +81,7 @@ class CheckoutTest extends DuskTestCase
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->click('@continue') // place order
                 ->waitUntilAllAjaxCallsAreFinished()
-                ->assertSee('Partytime!');
+                ->assertSee('Order placed succesfully');
         });
     }
 }
