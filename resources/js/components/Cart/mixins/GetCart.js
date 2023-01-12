@@ -1,47 +1,45 @@
+import { useLocalStorage, useSessionStorage } from "@vueuse/core"
+
+let mask = useLocalStorage('mask', null)
+
 export default {
     methods: {
         getCart() {
-            if (this.$root.cart === null && localStorage.cart) {
-                this.$root.cart = JSON.parse(localStorage.cart)
+            if (mask.value && !this.$root.cart?.entity_id) {
+                this.refreshCart()
             }
-
             return this.$root.cart
         },
 
         clearCart(keys = []) {
-            keys.push('cart')
-            keys.push('mask')
+            this.$root.cart = {};
+            mask.value = null;
 
             Object.values(keys).forEach((key) => {
-                localStorage.removeItem(key)
+                useLocalStorage(key).value = null;
             })
 
             this.clearAdresses()
 
-            window.app.cart = null
+            this.$root.cart = null
         },
 
         clearAdresses() {
-            Object.keys(localStorage).forEach((key) => {
-                if (!key.startsWith('shipping_') && !key.startsWith('billing_')) {
-                    return;
-                }
-                localStorage.removeItem(key)
-            })
+            this.$root.checkout.shipping_address.forEach(() => null);
+            this.$root.checkout.billing_address.forEach(() => null);
         },
 
         async refreshCart() {
             await this.getMask()
 
-            if (localStorage.mask) {
+            if (mask.value) {
                 try {
-                    let response = await axios.get('/api/cart/' + (localStorage.token ? localStorage.token : localStorage.mask))
-                    localStorage.cart = JSON.stringify(response.data)
-                    window.app.cart = response.data
+                    let response = await axios.get('/api/cart/' + (localStorage.token ? localStorage.token : mask.value))
+                    this.$root.cart = response.data
                     window.app.$emit('cart-refreshed')
                 } catch (error) {
                     if (error.response.status == 404) {
-                        localStorage.removeItem('mask')
+                        mask.value = null
                     }
                     Notify(window.config.translations.errors.wrong, 'warning')
                 }
@@ -49,7 +47,7 @@ export default {
         },
 
         async getMask() {
-            if (!localStorage.mask) {
+            if (!mask.value) {
                 try {
                     var response = window.app.user
                         ? await magentoUser.post('carts/mine')
@@ -59,13 +57,13 @@ export default {
                 }
 
                 if (response !== undefined && response.data) {
-                    localStorage.mask = response.data
+                    mask.value = response.data
                 }
             }
         },
 
         async linkUserToCart() {
-            await magentoUser.put('guest-carts/'+localStorage.mask, {
+            await magentoUser.put('guest-carts/'+mask.value, {
                 customerId: window.app.user.id,
                 storeId: config.store
             }).catch((error) => {
@@ -75,8 +73,8 @@ export default {
 
         expiredCartCheck(error) {
             if (error.response.data?.parameters?.fieldName == 'quoteId' || error.response.status === 404) {
-                localStorage.removeItem('mask')
-                localStorage.removeItem('cart')
+                mask.value = null;
+                this.$root.cart = null
                 Notify(window.config.translations.errors.cart_expired, 'error')
                 return true
             }

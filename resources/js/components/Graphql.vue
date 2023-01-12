@@ -1,5 +1,6 @@
 <script>
     import InteractWithUser from './User/mixins/InteractWithUser'
+    import { useLocalStorage, StorageSerializers } from '@vueuse/core'
 
     export default {
         mixins: [InteractWithUser],
@@ -47,20 +48,19 @@
 
         methods: {
             getCache() {
-                let cache = false
-
-                if (cache = localStorage[this.cachePrefix + this.cache]) {
-                    this.data = JSON.parse(cache)
+                if (this.cache === undefined) {
+                    return false;
                 }
+                this.data = useLocalStorage(this.cachePrefix + this.cache, null, {serializer: StorageSerializers.object}).value
 
-                return cache
+                return this.data;
             },
 
             async runQuery() {
                 try {
                     let options = { headers: {} }
 
-                    if (this.$root.user) {
+                    if (this.$root.user?.id) {
                         options['headers']['Authorization'] = `Bearer ${localStorage.token}`
                     }
 

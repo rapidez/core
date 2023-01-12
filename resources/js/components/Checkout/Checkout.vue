@@ -149,9 +149,9 @@
                         }
                         let self = this
                         await this.login(customer.email, this.checkout.password, async () => {
-                            if (self.$root.cart) {
+                            if (self.$root.cart?.entity_id) {
                                 await self.linkUserToCart()
-                                localStorage.mask = self.$root.cart.entity_id
+                                useLocalStorage('mask', self.$root.cart.entity_id).value = self.$root.cart.entity_id
                             }
                         });
                     }
@@ -211,7 +211,7 @@
 
             async selectPaymentMethod() {
                 let response = await this.magentoCart('post', 'set-payment-information', {
-                    email: this.user == null ? this.$root.guestEmail : this.user.email,
+                    email: this.user?.email === null ? this.$root.guestEmail : this.user.email,
                     paymentMethod: {
                         method:  this.checkout.payment_method
                     }
@@ -229,7 +229,7 @@
                     let response = await this.magentoCart('post', 'payment-information', {
                         billingAddress: this.billingAddress,
                         shippingAddress: this.shippingAddress,
-                        email: this.user ? this.user.email : this.$root.guestEmail,
+                        email: this.user?.email ? this.user.email : this.$root.guestEmail,
                         paymentMethod: {
                             method: this.checkout.payment_method,
                             extension_attributes: {
@@ -270,18 +270,6 @@
                 return address
             },
 
-            storeCredentials(type) {
-                Object.keys(this.checkout[type + '_address']).forEach((key) => {
-                    let value = this.checkout[type + '_address'][key]
-                    let storageKey = type + '_' + key
-                    if (value !== '') {
-                        localStorage[storageKey] = value
-                    } else {
-                        localStorage.removeItem(storageKey);
-                    }
-                })
-            },
-
             setupHistory() {
                 window.addEventListener('hashchange', () => {
                     this.backEvent = true
@@ -317,23 +305,9 @@
             'checkout.shipping_address.customer_address_id': function (customerAddressId) {
                 this.setCustomerAddressByAddressId('shipping', customerAddressId)
             },
-            'checkout.shipping_address': {
-                deep: true,
-                handler: function() {
-                    this.storeCredentials('shipping')
-                }
-            },
+
             'checkout.billing_address.customer_address_id': function (customerAddressId) {
                 this.setCustomerAddressByAddressId('billing', customerAddressId)
-            },
-            'checkout.billing_address': {
-                deep: true,
-                handler: function() {
-                    this.storeCredentials('billing')
-                }
-            },
-            'checkout.hide_billing': function (value) {
-                localStorage.hide_billing = value
             },
             'checkout.shipping_method': function () {
                 this.selectShippingMethod()

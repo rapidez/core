@@ -19,7 +19,7 @@
         slot-scope="{ label, isChecked }"
         class="w-6 h-6 border-black mr-1 mb-1 rounded-full hover:opacity-75"
         :class="isChecked ? 'border-2' : 'border'"
-        :style="{ background: $root.swatches[filter.code].options[label].swatch }"
+        :style="{ background: $root.swatches.value[filter.code].options[label].swatch }"
     >
         <x-heroicon-o-check v-if="isChecked"/>
     </div>
@@ -30,8 +30,8 @@
         slot-scope="{ label, isChecked }"
         class="border-black mr-1 mb-1 px-3 hover:opacity-75"
         :class="isChecked ? 'border-2' : 'border'"
-        :style="{ background: $root.swatches[filter.code].options[label].swatch }"
+        :style="{ background: $root.swatches.value[filter.code].options[label].swatch }"
     >
-        @{{ $root.swatches[filter.code].options[label].swatch }}
+        @{{ $root.swatches.value[filter.code].options[label].swatch }}
     </div>
 </multi-list>

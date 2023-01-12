@@ -6,6 +6,7 @@ if (!window.process) {
     window.process = {};
 }
 
+import { useLocalStorage, useSessionStorage, StorageSerializers, toReactive } from '@vueuse/core'
 import './lodash'
 import './vue'
 import './axios'
@@ -19,13 +20,28 @@ import './vue-components'
 function init() {
     Vue.prototype.window = window
     Vue.prototype.config = window.config
+    let swatches = useLocalStorage('swatches', {});
 
     // Check if the localstorage needs a flush.
-    if (localStorage.cachekey !== window.config.cachekey) {
+    let cachekey = useLocalStorage('cachekey');
+    if (cachekey.value !== window.config.cachekey) {
         window.config.flushable_localstorage_keys.forEach((key) => {
-            localStorage.removeItem(key)
+            useLocalStorage(key).value = null;
         })
-        localStorage.cachekey = window.config.cachekey
+
+        cachekey.value = window.config.cachekey
+    }
+
+    let address_defaults = {
+        'customer_address_id': null,
+        'firstname': (window.debug ? 'Bruce' : ''),
+        'lastname': (window.debug ? 'Wayne' : ''),
+        'postcode': (window.debug ? '72000' : ''),
+        'street': (window.debug ? ['Mountain Drive', 1007, ''] : ['', '', '']),
+        'city': (window.debug ? 'Gotham' : ''),
+        'telephone': (window.debug ? '530-7972' : ''),
+        'country_id': (window.debug ? 'NL' : window.config.default_country),
+        'custom_attributes': [],
     }
 
     window.app = new Vue({
@@ -34,37 +50,14 @@ function init() {
             custom: {},
             config: window.config,
             loading: false,
-            guestEmail: localStorage.email ?? null,
-            user: null,
-            cart: null,
             loadAutocomplete: false,
             checkout: {
                 step: 1,
-                shipping_address: {
-                    'customer_address_id': null,
-                    'firstname': localStorage.shipping_firstname ?? (window.debug ? 'Bruce' : ''),
-                    'lastname': localStorage.shipping_lastname ?? (window.debug ? 'Wayne' : ''),
-                    'postcode': localStorage.shipping_postcode ?? (window.debug ? '72000' : ''),
-                    'street': localStorage.shipping_street?.split(',') ?? (window.debug ? ['Mountain Drive', 1007, ''] : ['', '', '']),
-                    'city': localStorage.shipping_city ?? (window.debug ? 'Gotham' : ''),
-                    'telephone': localStorage.shipping_telephone ?? (window.debug ? '530-7972' : ''),
-                    'country_id': localStorage.shipping_country_id ?? (window.debug ? 'NL' : window.config.default_country),
-                    'custom_attributes': [],
-                },
-                billing_address: {
-                    'customer_address_id': null,
-                    'firstname': localStorage.billing_firstname ?? (window.debug ? 'Bruce' : ''),
-                    'lastname': localStorage.billing_lastname ?? (window.debug ? 'Wayne' : ''),
-                    'postcode': localStorage.billing_postcode ?? (window.debug ? '72000' : ''),
-                    'street': localStorage.billing_street?.split(',') ?? (window.debug ? ['Mountain Drive', 1007, ''] : ['', '', '']),
-                    'city': localStorage.billing_city ?? (window.debug ? 'Gotham' : ''),
-                    'telephone': localStorage.billing_telephone ?? (window.debug ? '530-7972' : ''),
-                    'country_id': localStorage.billing_country_id ?? (window.debug ? 'NL' : window.config.default_country),
-                    'custom_attributes': [],
-                },
-                hide_billing: localStorage.hide_billing === 'false' ? false : true,
-
                 totals: {},
+
+                shipping_address: toReactive(useLocalStorage('shipping_address', address_defaults, {mergeDefaults: true, serializer: StorageSerializers.object})),
+                billing_address: toReactive(useLocalStorage('billing_address', address_defaults, {mergeDefaults: true, serializer: StorageSerializers.object})),
+                hide_billing: toReactive(useLocalStorage('billing_address', address_defaults, {mergeDefaults: true, serializer: StorageSerializers.object})),
 
                 shipping_method: null,
                 shipping_methods: [],
@@ -88,20 +81,28 @@ function init() {
                 }
             }
         },
+        computed: {
+            // Wrap the local storage in getter and setter functions so you do not have to interact using .value
+            guestEmail: wrapValue(useLocalStorage('email', (window.debug ? 'wayne@enterprises.com' : ''), {serializer: StorageSerializers.string})),
+            cart: wrapValue(useSessionStorage('cart', null, {serializer: StorageSerializers.object})),
+            user: wrapValue(useSessionStorage('user', null, {serializer: StorageSerializers.object})),
+        },
         asyncComputed: {
             swatches () {
-                if (localStorage.swatches) {
-                    return JSON.parse(localStorage.swatches);
+                if (Object.keys(swatches.value).length !== 0) {
+                    return swatches;
                 }
 
                 return axios.get('/api/swatches')
                     .then((response) => {
-                        localStorage.swatches = JSON.stringify(response.data)
-                        return response.data
+                        swatches.value = response.data
+
+                        return swatches
                     })
                     .catch((error) => {
+                        console.error(error)
                         Notify(window.config.errors.wrong, 'error')
-                    })
+                    });
             }
         }
     })

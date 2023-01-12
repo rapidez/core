@@ -9,6 +9,7 @@
     } from '@appbaseio/reactivesearch-vue'
     import VueSlider from 'vue-slider-component'
     import categoryFilter from './Filters/CategoryFilter.vue'
+    import { useLocalStorage } from '@vueuse/core'
 
     Vue.use(ReactiveBase)
     Vue.use(ReactiveList)
@@ -33,7 +34,7 @@
 
         data: () => ({
             loaded: false,
-            attributes: [],
+            attributes: useLocalStorage('attributes', {}),
         }),
 
         render() {
@@ -46,16 +47,14 @@
         },
 
         mounted() {
-            if (localStorage.attributes) {
-                this.attributes = JSON.parse(localStorage.attributes)
+            if (Object.keys(this.attributes.value).length) {
                 this.loaded = true
                 return;
             }
 
             axios.get('/api/attributes')
                  .then((response) => {
-                    this.attributes = response.data
-                    localStorage.attributes = JSON.stringify(this.attributes)
+                    this.attributes.value = response.data
                     this.loaded = true
                  })
                  .catch((error) => {
@@ -65,12 +64,12 @@
 
         computed: {
             filters: function () {
-                return window.sortBy(window.filter(this.attributes, function (attribute) {
+                return window.sortBy(window.filter(this.attributes.value, function (attribute) {
                     return attribute.filter;
                 }), 'position')
             },
             sortings: function () {
-                return window.filter(this.attributes, function (attribute) {
+                return window.filter(this.attributes.value, function (attribute) {
                     return attribute.sorting;
                 })
             },

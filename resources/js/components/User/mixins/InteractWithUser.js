@@ -1,13 +1,12 @@
+import { useLocalStorage, StorageSerializers, set } from "@vueuse/core"
+
+let token = useLocalStorage('token', '', {serializer: StorageSerializers.string});
+
 export default {
     methods: {
         async getUser() {
-            if (this.$root.user === null) {
-                if (localStorage.token) {
-                    if (!localStorage.user) {
-                        await this.refreshUser()
-                    }
-                    this.$root.user = JSON.parse(localStorage.user)
-                }
+            if (token.value && !this.$root.user?.id) {
+                await this.refreshUser()
             }
             return this.$root.user
         },
@@ -15,11 +14,10 @@ export default {
         async refreshUser(redirect = true) {
             try {
                 let response = await magentoUser.get('customers/me')
-                localStorage.user = JSON.stringify(response.data)
-                window.app.user = response.data
+                this.$root.user = response.data
             } catch (error) {
                 if (error.response.status == 401) {
-                    localStorage.removeItem('token')
+                    token.value = null;
                 }
                 if (redirect) {
                     Turbolinks.visit('/login')
@@ -33,8 +31,9 @@ export default {
                 password: password
             })
             .then(async(response) => {
-                localStorage.token = response.data
-                window.magentoUser.defaults.headers.common['Authorization'] = `Bearer ${localStorage.token}`;
+                token.value = response.data
+
+                window.magentoUser.defaults.headers.common['Authorization'] = `Bearer ${token.value}`;
 
                 await this.refreshUser(false)
 
@@ -55,10 +54,9 @@ export default {
         },
 
         onLogout(data = {}) {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-            localStorage.removeItem('email')
             this.$root.user = null
+            this.$root.guestEmail = null
+            token.value = null
             Turbolinks.clearCache()
             window.location.href = data?.redirect ?? '/'
         },
@@ -82,7 +80,7 @@ export default {
         },
 
         setCheckoutCredentialsFromDefaultUserAddresses() {
-            if (this.$root && this.$root.user) {
+            if (this.$root && this.$root.user?.id) {
                 this.setCustomerAddressByAddressId('shipping', this.$root.user.default_shipping)
                 this.setCustomerAddressByAddressId('billing', this.$root.user.default_billing)
             }
@@ -90,14 +88,17 @@ export default {
 
         setCustomerAddressByAddressId(type, id) {
             if (!id) {
+                this.$root.checkout[type + '_address'].customer_address_id = null;
                 return
             }
 
             let address = this.$root.user.addresses.find((address) => address.id == id)
 
-            this.$root.checkout[type + '_address'] = Object.assign({
-                customer_address_id: address.id
-            }, address)
+            this.$root.checkout[type + '_address'] = Object.assign(
+                this.$root.checkout[type + '_address'],
+                Object.assign({
+                    customer_address_id: address.id
+                }, address))
         },
     },
 
