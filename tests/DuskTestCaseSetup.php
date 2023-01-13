@@ -25,8 +25,8 @@ trait DuskTestCaseSetup
             return $this;
         });
 
-        Browser::macro('waitUntilIdle', function ($timeout = -1, $seconds = null, $message = null) {
-            $this->waitUntil('await new Promise((resolve, reject) => window.requestIdleCallback(() => resolve(true), {timeout: ' . $timeout . '}));', $seconds, $message);
+        Browser::macro('waitUntilIdle', function ($seconds = null) {
+            $this->waitUntil('await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: '.(($seconds ?? 0) * 1000).'}));', $seconds);
 
             return $this;
         });
