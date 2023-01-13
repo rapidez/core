@@ -17,10 +17,10 @@ class CheckoutTest extends DuskTestCase
                 ->visit('/checkout')
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->type('@email', $createAccountWithEmail ?: 'wayne@enterprises.com')
-                ->pause(1000)
+                ->waitUntilIdle()
                 ->click('@continue')
                 ->waitUntilAllAjaxCallsAreFinished()
-                ->pause(1000)
+                ->waitUntilIdle()
                 ->waitFor('@shipping_country', 10)
                 ->type('@shipping_firstname', 'Bruce')
                 ->type('@shipping_lastname', 'Wayne')
@@ -58,7 +58,7 @@ class CheckoutTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($email) {
             $browser->visit('/')
-                ->pause(4000)
+                ->waitUntilIdle()
                 ->click('@account_menu')
                 ->click('@logout')
                 ->visit($this->testProduct->url)
@@ -70,7 +70,7 @@ class CheckoutTest extends DuskTestCase
                 ->type('@email', $email)
                 ->click('@continue')
                 ->waitUntilAllAjaxCallsAreFinished()
-                ->pause(2000)
+                ->waitUntilIdle()
                 ->type('@password', 'IronManSucks.91939')
                 ->click('@continue') // login
                 ->waitUntilAllAjaxCallsAreFinished()
