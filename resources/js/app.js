@@ -7,7 +7,6 @@ if (!window.process) {
 }
 
 import { useLocalStorage, useSessionStorage, StorageSerializers, toReactive } from '@vueuse/core'
-import './lodash'
 import './vue'
 import './axios'
 import './filters'

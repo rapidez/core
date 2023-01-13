@@ -64,19 +64,18 @@
 
         computed: {
             filters: function () {
-                return window.sortBy(window.filter(this.attributes.value, function (attribute) {
-                    return attribute.filter;
-                }), 'position')
+                return Object.values(this.attributes.value)
+                    .filter((attribute) => attribute.filter)
+                    .sort((a, b) => a.position - b.position);
             },
             sortings: function () {
-                return window.filter(this.attributes.value, function (attribute) {
-                    return attribute.sorting;
-                })
+                return Object.values(this.attributes.value)
+                    .filter((attribute) => attribute.sorting)
             },
             reactiveFilters: function () {
-                return window.map(this.filters, function (filter) {
-                    return filter.code;
-                }).concat(this.additionalFilters);
+                return this.filters
+                    .map((filter) => filter.code)
+                    .concat(this.additionalFilters);
             },
             sortOptions: function () {
                 return [
@@ -85,11 +84,13 @@
                         dataField: '_score',
                         sortBy: 'desc'
                     }
-                ].concat(window.flatMap(this.sortings, function (sorting) {
-                    return window.map({
-                        asc: window.config.translations.asc,
-                        desc: window.config.translations.desc
-                    }, function (directionLabel, directionKey) {
+                ].concat(this.sortings.flatMap(function (sorting) {
+                    return [
+                        ['asc', window.config.translations.asc],
+                        ['desc', window.config.translations.desc]
+                    ].map(function (value) {
+                        let directionLabel, directionKey
+                        [directionLabel, directionKey] = value
                         return {
                             label: window.config.translations.sorting?.[sorting.code]?.[directionKey] ?? sorting.name + ' ' + directionLabel,
                             dataField: sorting.code + (sorting.code != 'price' ? '.keyword' : ''),

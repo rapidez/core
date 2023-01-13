@@ -226,7 +226,7 @@
                                 Object.entries(productsPerValue2).forEach(([valueId, products]) => {
                                     // If there is no product that intersects for this attribute value
                                     // there will be no product available for this attribute value
-                                    if (window.intersection(productsPerValue[selectedValueId], products).length <= 0) {
+                                    if (!productsPerValue[selectedValueId].some((val) => products.includes(val))) {
                                         var attributeCode = this.product.super_attributes[attributeId2].code
                                         disabledOptions[attributeCode].push(valueId)
                                     }
