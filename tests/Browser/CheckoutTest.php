@@ -17,10 +17,9 @@ class CheckoutTest extends DuskTestCase
                 ->visit('/checkout')
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->type('@email', $createAccountWithEmail ?: 'wayne@enterprises.com')
-                ->waitUntilIdle()
+                ->waitUntilAllAjaxCallsAreFinished()
                 ->click('@continue')
                 ->waitUntilAllAjaxCallsAreFinished()
-                ->waitUntilIdle()
                 ->waitFor('@shipping_country', 10)
                 ->type('@shipping_firstname', 'Bruce')
                 ->type('@shipping_lastname', 'Wayne')
@@ -38,6 +37,7 @@ class CheckoutTest extends DuskTestCase
             }
 
             $browser
+                ->waitUntilAllAjaxCallsAreFinished()
                 ->click('@method-0') // select shipping method
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->click('@continue') // go to payment step
@@ -46,7 +46,6 @@ class CheckoutTest extends DuskTestCase
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->click('@continue') // place order
                 ->waitUntilAllAjaxCallsAreFinished()
-                ->waitUntilIdle()
                 ->assertPresent('@checkout-success');
         });
     }
@@ -58,8 +57,9 @@ class CheckoutTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($email) {
             $browser->waitForReload(fn ($browser) => $browser->visit('/'), 4000)
-                ->waitUntilAllAjaxCallsAreFinished()
+                ->pause(2000)
                 ->waitUntilIdle()
+                ->waitUntilAllAjaxCallsAreFinished()
                 ->click('@account_menu')
                 ->click('@logout')
                 ->visit($this->testProduct->url)
@@ -71,7 +71,6 @@ class CheckoutTest extends DuskTestCase
                 ->type('@email', $email)
                 ->click('@continue')
                 ->waitUntilAllAjaxCallsAreFinished()
-                ->waitUntilIdle()
                 ->type('@password', 'IronManSucks.91939')
                 ->click('@continue') // login
                 ->waitUntilAllAjaxCallsAreFinished()
@@ -83,7 +82,6 @@ class CheckoutTest extends DuskTestCase
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->click('@continue') // place order
                 ->waitUntilAllAjaxCallsAreFinished()
-                ->waitUntilIdle()
                 ->assertPresent('@checkout-success');
         });
     }
