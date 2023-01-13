@@ -58,6 +58,7 @@ class CheckoutTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($email) {
             $browser->waitForReload(fn ($browser) => $browser->visit('/'), 4)
                 ->waitUntilAllAjaxCallsAreFinished()
+                ->waitFor('@account_menu')
                 ->click('@account_menu')
                 ->click('@logout')
                 ->visit($this->testProduct->url)
