@@ -46,6 +46,7 @@ class CheckoutTest extends DuskTestCase
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->click('@continue') // place order
                 ->waitUntilAllAjaxCallsAreFinished()
+                ->pause(1000)
                 ->assertPresent('@checkout-success');
         });
     }
@@ -81,6 +82,7 @@ class CheckoutTest extends DuskTestCase
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->click('@continue') // place order
                 ->waitUntilAllAjaxCallsAreFinished()
+                ->pause(1000)
                 ->assertPresent('@checkout-success');
         });
     }
