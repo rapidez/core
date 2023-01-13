@@ -16,7 +16,7 @@ trait DuskTestCaseSetup
         parent::setUp();
 
         Browser::macro('waitUntilAllAjaxCallsAreFinished', function ($pause = false) {
-            $this->waitUntilVue('loading', false, '#app', 10);
+            $this->waitUntil('!window.app.$data.loading', 10);
 
             if ($pause) {
                 $this->pause($pause);
