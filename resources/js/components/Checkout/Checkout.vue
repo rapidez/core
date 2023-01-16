@@ -1,6 +1,7 @@
 <script>
     import GetCart from './../Cart/mixins/GetCart'
     import InteractWithUser from './../User/mixins/InteractWithUser'
+    import { useEventListener } from '@vueuse/core';
 
     export default {
         mixins: [GetCart, InteractWithUser],
@@ -271,10 +272,10 @@
             },
 
             setupHistory() {
-                window.addEventListener('hashchange', () => {
+                useEventListener('hashchange', () => {
                     this.backEvent = true
                     this.checkout.step = this.steps.indexOf(window.location.hash.substring(1))
-                }, false)
+                })
 
                 history.replaceState(null, null, '#'+ this.steps[this.checkout.step])
             }

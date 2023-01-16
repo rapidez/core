@@ -1,27 +1,17 @@
-import { useLocalStorage, StorageSerializers, set } from "@vueuse/core"
-
-let token = useLocalStorage('token', '', {serializer: StorageSerializers.string});
+import { useLocalStorage } from "@vueuse/core"
+import { user, token, refresh as refreshUser, clear as clearUser } from "../../../stores/useUser"
 
 export default {
     methods: {
         async getUser() {
-            if (token.value && !this.$root.user?.id) {
-                await this.refreshUser()
-            }
-            return this.$root.user
+            return user
         },
 
         async refreshUser(redirect = true) {
-            try {
-                let response = await magentoUser.get('customers/me')
-                this.$root.user = response.data
-            } catch (error) {
-                if (error.response.status == 401) {
-                    token.value = null;
-                }
-                if (redirect) {
-                    Turbolinks.visit('/login')
-                }
+            const success = await refreshUser()
+
+            if (!success && redirect) {
+                Turbolinks.visit('/login')
             }
         },
 
@@ -33,8 +23,6 @@ export default {
             .then(async(response) => {
                 token.value = response.data
 
-                window.magentoUser.defaults.headers.common['Authorization'] = `Bearer ${token.value}`;
-
                 await this.refreshUser(false)
 
                 this.setCheckoutCredentialsFromDefaultUserAddresses()
@@ -45,6 +33,8 @@ export default {
             })
             .catch((error) => {
                 Notify(error.response.data.message, 'error', error.response.data?.parameters)
+                console.error(error)
+
                 return false
             })
         },
@@ -54,9 +44,8 @@ export default {
         },
 
         onLogout(data = {}) {
-            this.$root.user = null
-            this.$root.guestEmail = null
-            token.value = null
+            clearUser()
+            useLocalStorage('email', '').value = ''
             Turbolinks.clearCache()
             window.location.href = data?.redirect ?? '/'
         },
@@ -75,6 +64,8 @@ export default {
                 return response.data
             } catch (error) {
                 Notify(error.response.data.message, 'error', error.response.data?.parameters)
+                console.error(error)
+
                 return false
             }
         },

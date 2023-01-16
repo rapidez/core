@@ -1,4 +1,5 @@
 <script>
+    import { useEventListener } from '@vueuse/core'
     export default {
         render() {
             return this.$scopedSlots.default({
@@ -28,12 +29,9 @@
             }
         },
         mounted() {
-            this.slider.addEventListener('scroll', this.scroll)
+            useEventListener(this.slider, 'scroll', this.scroll)
             this.slider.dispatchEvent(new CustomEvent('scroll'))
             this.mounted = true
-        },
-        beforeDestroy() {
-            this.slider.removeEventListener('scroll', this.scroll)
         },
         methods: {
             scroll(event) {

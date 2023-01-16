@@ -1,4 +1,5 @@
 window.debug = import.meta.env.VITE_DEBUG == 'true'
+console.deprecated = window.debug ? console.warn : () => {}
 window.Notify = (message, type, params = [], link = null) => window.app.$emit('notification-message', message, type, params, link);
 if (!window.process) {
     // Workaround for process missing, if data is actually needed from here you should apply the following polyfill.
@@ -7,6 +8,8 @@ if (!window.process) {
 }
 
 import { useLocalStorage, useSessionStorage, StorageSerializers, toReactive } from '@vueuse/core'
+import useCart from './stores/useCart';
+import useUser from './stores/useUser';
 import './vue'
 import './axios'
 import './filters'
@@ -19,6 +22,7 @@ import './vue-components'
 function init() {
     Vue.prototype.window = window
     Vue.prototype.config = window.config
+
     let swatches = useLocalStorage('swatches', {});
 
     // Check if the localstorage needs a flush.
@@ -31,7 +35,7 @@ function init() {
         cachekey.value = window.config.cachekey
     }
 
-    let address_defaults = {
+    window.address_defaults = {
         'customer_address_id': null,
         'firstname': (window.debug ? 'Bruce' : ''),
         'lastname': (window.debug ? 'Wayne' : ''),
@@ -50,6 +54,8 @@ function init() {
             config: window.config,
             loading: false,
             loadAutocomplete: false,
+            cart: toReactive(useCart()),
+            user: toReactive(useUser()),
             checkout: {
                 step: 1,
                 totals: {},
@@ -83,8 +89,6 @@ function init() {
         computed: {
             // Wrap the local storage in getter and setter functions so you do not have to interact using .value
             guestEmail: wrapValue(useLocalStorage('email', (window.debug ? 'wayne@enterprises.com' : ''), {serializer: StorageSerializers.string})),
-            cart: wrapValue(useSessionStorage('cart', null, {serializer: StorageSerializers.object})),
-            user: wrapValue(useSessionStorage('user', null, {serializer: StorageSerializers.object})),
         },
         asyncComputed: {
             swatches () {

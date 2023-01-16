@@ -52,7 +52,6 @@
                     await this.login(this.email, this.password, async () => {
                         if (self.$root.cart?.entity_id) {
                             await self.linkUserToCart()
-                            useLocalStorage('mask', self.$root.cart.entity_id).value = self.$root.cart.entity_id
                         } else {
                             await self.refreshCart()
                         }

@@ -88,9 +88,7 @@
                     return [
                         ['asc', window.config.translations.asc],
                         ['desc', window.config.translations.desc]
-                    ].map(function (value) {
-                        let directionLabel, directionKey
-                        [directionLabel, directionKey] = value
+                    ].map(function ([directionLabel, directionKey]) {
                         return {
                             label: window.config.translations.sorting?.[sorting.code]?.[directionKey] ?? sorting.name + ' ' + directionLabel,
                             dataField: sorting.code + (sorting.code != 'price' ? '.keyword' : ''),

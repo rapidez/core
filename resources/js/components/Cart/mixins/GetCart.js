@@ -1,71 +1,43 @@
-import { useLocalStorage, useSessionStorage } from "@vueuse/core"
-
-let mask = useLocalStorage('mask', null)
+import { useLocalStorage } from "@vueuse/core"
+import { cart, refresh as refreshCart, clear as clearCart } from "../../../stores/useCart"
+import { user } from "../../../stores/useUser"
+import { mask, refresh as retrieveMask } from "../../../stores/useMask"
 
 export default {
     methods: {
         getCart() {
-            if (mask.value && !this.$root.cart?.entity_id) {
-                this.refreshCart()
-            }
-            return this.$root.cart
+            return cart.value
         },
 
         clearCart(keys = []) {
-            this.$root.cart = {};
-            mask.value = null;
+            clearCart()
 
             Object.values(keys).forEach((key) => {
                 useLocalStorage(key).value = null;
             })
 
             this.clearAdresses()
-
-            this.$root.cart = null
         },
 
         clearAdresses() {
-            this.$root.checkout.shipping_address.forEach(() => null);
-            this.$root.checkout.billing_address.forEach(() => null);
+            useLocalStorage('billing_address').value = null;
+            useLocalStorage('shipping_address').value = null;
         },
 
         async refreshCart() {
-            await this.getMask()
-
-            if (mask.value) {
-                try {
-                    let response = await axios.get('/api/cart/' + (localStorage.token ? localStorage.token : mask.value))
-                    this.$root.cart = response.data
-                    window.app.$emit('cart-refreshed')
-                } catch (error) {
-                    if (error.response.status == 404) {
-                        mask.value = null
-                    }
-                    Notify(window.config.translations.errors.wrong, 'warning')
-                }
-            }
+            return await refreshCart();
         },
 
         async getMask() {
-            if (!mask.value) {
-                try {
-                    var response = window.app.user
-                        ? await magentoUser.post('carts/mine')
-                        : await magento.post('guest-carts')
-                } catch (error) {
-                    Notify(window.config.translations.errors.wrong, 'error')
-                }
-
-                if (response !== undefined && response.data) {
-                    mask.value = response.data
-                }
-            }
+            await retrieveMask();
         },
 
         async linkUserToCart() {
             await magentoUser.put('guest-carts/'+mask.value, {
-                customerId: window.app.user.id,
+                customerId: user.value?.id,
                 storeId: config.store
+            }).then(() => {
+                mask.value = cart.entity_id
             }).catch((error) => {
                 Notify(error.response.data.message, 'warning')
             })
@@ -73,8 +45,7 @@ export default {
 
         expiredCartCheck(error) {
             if (error.response.data?.parameters?.fieldName == 'quoteId' || error.response.status === 404) {
-                mask.value = null;
-                this.$root.cart = null
+                clearCart();
                 Notify(window.config.translations.errors.cart_expired, 'error')
                 return true
             }
