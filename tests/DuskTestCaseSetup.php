@@ -17,7 +17,10 @@ trait DuskTestCaseSetup
 
         Browser::macro('waitUntilAllAjaxCallsAreFinished', function ($pauseMs = false) {
             /** @var Browser $this */
-            $this->waitUntil('window.app.$data?.loading === false && await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 2}))', 10);
+            $this->waitUntilIdle()
+                // Ensure we repeatedly check for ajax calls while js is not idle.
+                ->waitUntil('window.app.$data?.loading === false && await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 2}))', 10)
+                ->waitUntilIdle();
 
             if ($pauseMs) {
                 $this->pause($pauseMs);
