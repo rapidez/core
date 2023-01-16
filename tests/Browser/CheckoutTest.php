@@ -34,6 +34,7 @@ class CheckoutTest extends DuskTestCase
 
             if ($createAccountWithEmail) {
                 $browser->click('@create_account')
+                    ->waitUntilAllAjaxCallsAreFinished()
                     ->type('@password', 'IronManSucks.91939')
                     ->type('@password_repeat', 'IronManSucks.91939');
             }
@@ -72,6 +73,7 @@ class CheckoutTest extends DuskTestCase
                 ->type('@email', $email)
                 ->click('@continue')
                 ->waitUntilAllAjaxCallsAreFinished()
+                ->pause(1000)
                 ->type('@password', 'IronManSucks.91939')
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->click('@continue') // login
