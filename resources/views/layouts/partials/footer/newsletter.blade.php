@@ -1,5 +1,5 @@
 <div class="mt-4 md:mt-0">
-    <h3 class="text-base font-medium text-gray-900">@lang('Want product news and updates?')</h3>
+    <h3 class="text-base font-bold text-gray-900">@lang('Want product news and updates?')</h3>
     <p class="mt-4 text-base text-gray-500">@lang('Sign up for our newsletter to stay up to date.')</p>
     <div class="sm:w-full sm:max-w-md xl:mt-0" dusk="newsletter">
         <lazy class="w-full">
