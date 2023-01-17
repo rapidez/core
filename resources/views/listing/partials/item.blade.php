@@ -1,6 +1,6 @@
 <template {!! isset($slider) ? '' : 'slot="renderItem" slot-scope="{ item, count }"' !!}>
     <div class="flex-none w-1/2 lg:w-1/3 my-0.5 px-0.5 sm:px-2 sm:my-2 snap-start">
-        <div class="w-full bg-white border rounded hover:opacity-80 group relative p-1" :key="item.id">
+        <div class="w-full bg-white border rounded hover:opacity-80 group relative" :key="item.id">
             <a :href="item.url" class="block">
                 <picture v-if="item.thumbnail">
                     <source :srcset="'/storage/resizes/200/catalog/product' + item.thumbnail + '.webp'" type="image/webp">
