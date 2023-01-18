@@ -15,16 +15,26 @@ trait DuskTestCaseSetup
     {
         parent::setUp();
 
-        Browser::macro('waitUntilAllAjaxCallsAreFinished', function ($pause = false) {
-            $this->waitUntil('!window.app.$data.loading', 10);
+        Browser::macro('waitUntilAllAjaxCallsAreFinished', function ($pauseMs = false) {
+            /** @var Browser $this */
+            $this->waitUntilIdle()
+                // Ensure we repeatedly check for ajax calls while js is not idle.
+                ->waitUntil('window.app.$data?.loading === false && await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 2}))', 10)
+                ->waitUntilIdle();
 
-            if ($pause) {
-                $this->pause($pause);
+            if ($pauseMs) {
+                $this->pause($pauseMs);
             }
 
             return $this;
         });
 
+        Browser::macro('waitUntilIdle', function ($seconds = null) {
+            /** @var Browser $this */
+            $this->waitUntil('await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: '.($seconds ? 2 : 0).'}));', $seconds);
+
+            return $this;
+        });
         $this->flat = (new Product())->getTable();
 
         $this->testProduct = Product::selectAttributes([
