@@ -12,15 +12,17 @@ class CheckoutTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($createAccountWithEmail) {
             $browser->visit($this->testProduct->url)
                 ->waitUntilAllAjaxCallsAreFinished()
+                ->waitUntilEnabled('@add-to-cart')
                 ->click('@add-to-cart')
+                ->waitUntilAllAjaxCallsAreFinished()
+                ->waitUntil('localStorage.mask')
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->visit('/checkout')
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->type('@email', $createAccountWithEmail ?: 'wayne@enterprises.com')
                 ->waitUntilAllAjaxCallsAreFinished()
+                ->waitUntilEnabled('@continue')
                 ->click('@continue')
-                ->waitUntilAllAjaxCallsAreFinished()
-                ->pause(2000)
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->waitFor('@shipping_country', 15)
                 ->type('@shipping_firstname', 'Bruce')
@@ -43,10 +45,12 @@ class CheckoutTest extends DuskTestCase
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->click('@method-0') // select shipping method
                 ->waitUntilAllAjaxCallsAreFinished()
+                ->waitUntilEnabled('@continue')
                 ->click('@continue') // go to payment step
                 ->waitUntilAllAjaxCallsAreFinished(2000)
                 ->click('@method-0') // select payment method
                 ->waitUntilAllAjaxCallsAreFinished()
+                ->waitUntilEnabled('@continue')
                 ->click('@continue') // place order
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->assertPresent('@checkout-success');
@@ -66,24 +70,29 @@ class CheckoutTest extends DuskTestCase
                 ->click('@logout')
                 ->visit($this->testProduct->url)
                 ->waitUntilAllAjaxCallsAreFinished()
+                ->waitUntilEnabled('@add-to-cart')
                 ->click('@add-to-cart')
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->visit('/checkout')
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->type('@email', $email)
+                ->waitUntilEnabled('@continue')
                 ->click('@continue')
                 ->waitUntilAllAjaxCallsAreFinished()
-                ->pause(1000)
+                ->waitFor('@password')
                 ->type('@password', 'IronManSucks.91939')
                 ->waitUntilAllAjaxCallsAreFinished()
+                ->waitUntilEnabled('@continue')
                 ->click('@continue') // login
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->click('@method-0') // select shipping method
                 ->waitUntilAllAjaxCallsAreFinished()
+                ->waitUntilEnabled('@continue')
                 ->click('@continue') // go to payment step
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->click('@method-0') // select payment method
                 ->waitUntilAllAjaxCallsAreFinished()
+                ->waitUntilEnabled('@continue')
                 ->click('@continue') // place order
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->assertPresent('@checkout-success');
