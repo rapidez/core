@@ -19,6 +19,7 @@ export const refresh = async function () {
     } catch (error) {
         if (error.response.status == 404) {
             mask.value = null
+            return false;
         }
 
         Notify(window.config.translations.errors.wrong, 'warning')
