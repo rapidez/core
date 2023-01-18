@@ -88,11 +88,13 @@ class CheckoutTest extends DuskTestCase
                 ->waitUntilEnabled('@continue')
                 ->click('@continue') // login
                 ->waitUntilAllAjaxCallsAreFinished()
-                ->waitForText('Payment method')
+                ->waitForText('Shipping method')
                 ->click('@method-0') // select shipping method
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->waitUntilEnabled('@continue')
                 ->click('@continue') // go to payment step
+                ->waitUntilAllAjaxCallsAreFinished()
+                ->waitForText('Payment method')
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->click('@method-0') // select payment method
                 ->waitUntilAllAjaxCallsAreFinished()
