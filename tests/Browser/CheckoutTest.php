@@ -88,8 +88,6 @@ class CheckoutTest extends DuskTestCase
                 ->waitUntilEnabled('@continue')
                 ->click('@continue') // login
                 ->waitUntilAllAjaxCallsAreFinished()
-                ->waitUntil('!isNaN(localStorage.mask)')
-                ->waitUntilAllAjaxCallsAreFinished()
                 ->waitForText('Payment method')
                 ->click('@method-0') // select shipping method
                 ->waitUntilAllAjaxCallsAreFinished()
