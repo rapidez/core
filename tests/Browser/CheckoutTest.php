@@ -48,6 +48,7 @@ class CheckoutTest extends DuskTestCase
                 ->waitUntilEnabled('@continue')
                 ->click('@continue') // go to payment step
                 ->waitUntilAllAjaxCallsAreFinished(2000)
+                ->waitForText('Payment method')
                 ->click('@method-0') // select payment method
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->waitUntilEnabled('@continue')
@@ -73,6 +74,8 @@ class CheckoutTest extends DuskTestCase
                 ->waitUntilEnabled('@add-to-cart')
                 ->click('@add-to-cart')
                 ->waitUntilAllAjaxCallsAreFinished()
+                ->waitUntil('localStorage.mask')
+                ->waitUntilAllAjaxCallsAreFinished()
                 ->visit('/checkout')
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->type('@email', $email)
@@ -87,6 +90,7 @@ class CheckoutTest extends DuskTestCase
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->waitUntil('!isNaN(localStorage.mask)')
                 ->waitUntilAllAjaxCallsAreFinished()
+                ->waitForText('Payment method')
                 ->click('@method-0') // select shipping method
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->waitUntilEnabled('@continue')

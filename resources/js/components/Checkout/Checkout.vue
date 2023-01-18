@@ -1,7 +1,7 @@
 <script>
     import GetCart from './../Cart/mixins/GetCart'
     import InteractWithUser from './../User/mixins/InteractWithUser'
-    import { useEventListener } from '@vueuse/core';
+    import { useEventListener, useLocalStorage } from '@vueuse/core';
 
     export default {
         mixins: [GetCart, InteractWithUser],
@@ -166,7 +166,8 @@
                     this.$root.$emit('checkout-credentials-saved')
                     return true
                 } catch (error) {
-                    Notify(error.response.data.message, 'error', error.response.data?.parameters)
+                    console.error(error)
+                    Notify(error?.response?.data?.message ?? window.config.translations.errors.wrong, 'error', error?.response?.data?.parameters)
                     return false
                 }
             },
