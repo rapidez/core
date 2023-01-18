@@ -85,7 +85,7 @@
 
                     if (this.check) {
                         if (!eval('response.data.' + this.check)) {
-                            Turbolinks.visit(this.redirect)
+                            Turbo.visit(this.redirect)
                             return
                         }
                     }

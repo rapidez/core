@@ -69,7 +69,7 @@
                     && Object.values(this.product.children).length
                     && window.location.pathname !== this.product.url
                     && !config.show_swatches) {
-                    Turbolinks.visit(this.product.url)
+                    Turbo.visit(this.product.url)
                     return;
                 }
 
@@ -100,7 +100,7 @@
                         Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success', [], '/cart')
                     }
                     if (config.redirect_cart) {
-                        Turbolinks.visit('/cart')
+                        Turbo.visit('/cart')
                     }
                 }).catch((error) => {
                     if (error.response.status == 401) {

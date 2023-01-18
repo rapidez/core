@@ -11,7 +11,7 @@ export default {
             const success = await refreshUser()
 
             if (!success && redirect) {
-                Turbolinks.visit('/login')
+                Turbo.visit('/login')
             }
         },
 
@@ -46,7 +46,7 @@ export default {
         onLogout(data = {}) {
             clearUser()
             useLocalStorage('email', '').value = ''
-            Turbolinks.clearCache()
+            Turbo.clearCache()
             window.location.href = data?.redirect ?? '/'
         },
 
