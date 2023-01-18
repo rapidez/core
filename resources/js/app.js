@@ -118,7 +118,7 @@ function init() {
         methods: {
             search(value) {
                 if (value.length) {
-                    Turbolinks.visit('/search?q=' + encodeURIComponent(value))
+                    Turbo.visit('/search?q=' + encodeURIComponent(value))
                 }
             }
         },
@@ -145,4 +145,4 @@ function init() {
     }
 }
 
-document.addEventListener('turbolinks:load', init)
+document.addEventListener('turbo:load', init)

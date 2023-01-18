@@ -22,7 +22,7 @@ export default {
                     localStorage.removeItem('token')
                 }
                 if (redirect) {
-                    Turbolinks.visit('/login')
+                    Turbo.visit('/login')
                 }
             }
         },
@@ -59,7 +59,7 @@ export default {
             localStorage.removeItem('user')
             localStorage.removeItem('email')
             this.$root.user = null
-            Turbolinks.clearCache()
+            Turbo.clearCache()
             window.location.href = data?.redirect ?? '/'
         },
 
