@@ -57,7 +57,7 @@ class Category extends Model
 
     public function subcategories()
     {
-        return $this->hasMany(Category::class, 'parent_id', 'entity_id')->where('parent_id', $this->entity_id);
+        return $this->hasMany(self::class, 'parent_id', 'entity_id');
     }
 
     public function getParentcategoriesAttribute()
