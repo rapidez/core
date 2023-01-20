@@ -16,14 +16,14 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                primary: 'var(--primary)', // Text color
-                secondary: 'var(--secondary)', // Text inactive color
-                accent: 'var(--accent)', // Theme color
-                enhanced: 'var(--enhanced)', // Checkout conversion color
-                highlight: 'var(--highlight)' // Background highlight color
+                primary: 'rgb(var(--primary)  / <alpha-value>)', // Text color
+                secondary: 'rgb(var(--secondary) / <alpha-value>)', // Text inactive color
+                accent: 'rgb(var(--accent) / <alpha-value>)', // Theme color
+                enhanced: 'rgb(var(--enhanced) / <alpha-value>)', // Checkout conversion color
+                highlight: 'rgb(var(--highlight) / <alpha-value>)' // Background highlight color
             },
             borderColor: {
-                DEFAULT: 'var(--border)'
+                DEFAULT: 'rgb(var(--border) / <alpha-value>)'
             },
         },
         fontFamily: {

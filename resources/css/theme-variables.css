@@ -1,8 +1,8 @@
 :root {
-    --primary: #334155;
-    --secondary: #64748b;
-    --accent: #0ea5e9;
-    --enhanced: #f97316;
-    --highlight: #e2e8f0;
-    --border: #f1f5f9;
+    --primary: 51 65 85;
+    --secondary: 100 116 139;
+    --accent: 14 165 233;
+    --enhanced: 249 115 22;
+    --highlight: 226 232 240;
+    --border: 241 245 249;
 }
