@@ -1,5 +1,11 @@
 # Changelog 
 
+## 0.78.0 - 2023-01-20
+
+### Changed
+
+- Renamed subcategories and added subcategories (#187)
+
 ## 0.77.0 - 2023-01-18
 
 ### Added
