@@ -59,7 +59,7 @@ export default {
             localStorage.removeItem('user')
             localStorage.removeItem('email')
             this.$root.user = null
-            Turbo.clearCache()
+            Turbo.cache.clear()
             window.location.href = data?.redirect ?? '/'
         },
 
