@@ -1,5 +1,5 @@
 <x-rapidez::notifications />
-<footer class="bg-white">
+<footer class="bg-white mt-auto">
     <div class="container mx-auto mt-8 border-t border-gray-200 py-12 pt-8 lg:py-16">
         @if (Route::currentRouteName() !== 'checkout')
             <div class="flex flex-col justify-between md:flex-row xl:gap-8">
