@@ -119,12 +119,12 @@ class RapidezServiceProvider extends ServiceProvider
         View::addExtension('graphql', 'blade');
 
         Vite::useScriptTagAttributes([
-            'data-turbolinks-track' => 'reload',
-            'defer'                 => true,
+            'data-turbo-track' => 'reload',
+            'defer'            => true,
         ]);
 
         Vite::useStyleTagAttributes([
-            'data-turbolinks-track' => 'reload',
+            'data-turbo-track' => 'reload',
         ]);
 
         return $this;

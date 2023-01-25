@@ -83,6 +83,7 @@ function init() {
                     'city': localStorage.shipping_city ?? (window.debug ? 'Gotham' : ''),
                     'telephone': localStorage.shipping_telephone ?? (window.debug ? '530-7972' : ''),
                     'country_id': localStorage.shipping_country_id ?? (window.debug ? 'NL' : window.config.default_country),
+                    'custom_attributes': [],
                 },
                 billing_address: {
                     'customer_address_id': null,
@@ -93,6 +94,7 @@ function init() {
                     'city': localStorage.billing_city ?? (window.debug ? 'Gotham' : ''),
                     'telephone': localStorage.billing_telephone ?? (window.debug ? '530-7972' : ''),
                     'country_id': localStorage.billing_country_id ?? (window.debug ? 'NL' : window.config.default_country),
+                    'custom_attributes': [],
                 },
                 hide_billing: localStorage.hide_billing === 'false' ? false : true,
 
@@ -116,7 +118,7 @@ function init() {
         methods: {
             search(value) {
                 if (value.length) {
-                    Turbolinks.visit('/search?q=' + encodeURIComponent(value))
+                    Turbo.visit('/search?q=' + encodeURIComponent(value))
                 }
             }
         },
@@ -137,6 +139,10 @@ function init() {
             }
         }
     })
+
+    if(window.debug) {
+        window.app.$on('notification-message', console.debug);
+    }
 }
 
-document.addEventListener('turbolinks:load', init)
+document.addEventListener('turbo:load', init)
