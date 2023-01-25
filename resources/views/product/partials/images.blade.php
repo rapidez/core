@@ -1,4 +1,7 @@
 <div class="relative">
+    <div class="absolute top-0 right-0 z-10 group p-2">
+        @include('rapidez::wishlist.button')
+    </div>
     @if (count($product->images))
         <div class="absolute inset-0 flex h-[440px] items-center justify-center rounded border p-5">
             <img src="/storage/resizes/400/catalog/product{{ $product->images[0] }}.webp" alt="{{ $product->name }}" class="m-auto max-h-[400px] w-full object-contain" width="400" height="400" />
@@ -27,7 +30,7 @@
                 </a>
             </div>
             <div v-if="zoomed" @class([
-            	config('rapidez.z-indexes.lightbox'), 
+            	config('rapidez.z-indexes.lightbox'),
             	'pointer-events-none fixed top-3 right-3'
             ])>
                 <x-heroicon-o-x class="h-6 w-6" />

@@ -9,6 +9,7 @@
                 @if(App::providerIsLoaded('Rapidez\Account\AccountServiceProvider'))
                     <a class="block hover:bg-secondary px-3 py-2" href="/account">@lang('Account')</a>
                     <a class="block hover:bg-secondary px-3 py-2" href="/account/orders">@lang('Orders')</a>
+                    <a class="block hover:bg-secondary px-3 py-2" href="/account/wishlist">@lang('Wishlist')</a>
                 @endif
                 <user>
                     <a
