@@ -1,18 +1,18 @@
 <cart v-cloak >
     <toggler slot-scope="{ cart, hasItems }">
-        <div v-if="hasItems" v-on-click-away="close" slot-scope="{toggle, close, isOpen}">
+        <div class="relative" v-if="hasItems" v-on-click-away="close" slot-scope="{toggle, close, isOpen}">
             <button class="flex my-1 focus:outline-none" v-on:click="toggle">
                 <x-heroicon-o-shopping-cart class="h-6 w-6"/>
                 <span class="bg-primary rounded-full w-6 h-6 text-white text-center">@{{ Math.round(cart.items_qty) }}</span>
             </button>
-            <div v-if="isOpen" class="absolute right-0 bg-white border shadow rounded p-3 mr-1 {{ config('rapidez.z-indexes.header-dropdowns') }}">
-                <table class="mb-3">
+            <div v-if="isOpen" class="absolute right-0 bg-white border shadow rounded p-3 mr-1 w-80 {{ config('rapidez.z-indexes.header-dropdowns') }}">
+                <table class="w-full mb-3">
                     <tr class="py-3" v-for="item in cart.items">
-                        <td>@{{ item.name }}</td>
+                        <td class="block w-48 truncate overflow-hidden">@{{ item.name }}</td>
                         <td class="text-right px-4">@{{ item.qty }}</td>
                         <td class="text-right">@{{ item.price | price }}</td>
                     </tr>
-                    <tr class="py-3">
+                    <tr class="font-bold py-4 border-t">
                         <td colspan="2">@lang('Total')</td>
                         <td class="text-right">@{{ cart.total | price }}</td>
                     </tr>

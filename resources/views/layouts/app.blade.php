@@ -16,7 +16,7 @@
     @stack('head')
 </head>
 <body class="text-primary antialiased">
-    <div id="app">
+    <div id="app" class="flex flex-col min-h-screen">
         @include('rapidez::layouts.partials.header')
         <main>
             @yield('content')
