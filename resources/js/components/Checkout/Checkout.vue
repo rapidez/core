@@ -112,7 +112,7 @@
 
             goToStep(step) {
                 if (step === 0) {
-                    Turbolinks.visit("/cart");
+                    Turbo.visit("/cart");
                     return
                 }
 

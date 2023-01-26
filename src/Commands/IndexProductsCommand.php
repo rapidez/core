@@ -44,7 +44,7 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
                         'type' => 'flattened',
                     ],
                 ],
-            ]));
+            ]), Eventy::filter('index.product.settings', []));
 
             try {
                 $flat = (new $productModel())->getTable();
@@ -62,7 +62,9 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
                     foreach ($products as $product) {
                         $data = array_merge(['store' => $store->store_id], $product->toArray());
                         foreach ($product->super_attributes ?: [] as $superAttribute) {
-                            $data[$superAttribute->code] = array_keys((array) $product->{$superAttribute->code});
+                            $data[$superAttribute->code] = $superAttribute->text_swatch || $superAttribute->visual_swatch
+                                ? array_keys((array) $product->{$superAttribute->code})
+                                : array_pluck($product->{$superAttribute->code} ?: [], 'label');
                         }
 
                         $data = $this->withCategories($data, $categories);
