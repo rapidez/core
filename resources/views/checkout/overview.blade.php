@@ -23,7 +23,7 @@
                             @include('rapidez::checkout.steps.payment')
                         </div>
                     </div>
-                    <div class="md:w-1/3 lg:w-1/4 px-2 md:mt-20">
+                    <div class="md:w-1/3 lg:w-1/4 px-2 md:mt-16">
                         @include('rapidez::checkout.partials.sidebar')
                     </div>
                 </div>

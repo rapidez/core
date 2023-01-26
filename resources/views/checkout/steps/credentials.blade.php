@@ -1,6 +1,6 @@
 <h1 class="font-bold text-4xl mb-5">@lang('Credentials')</h1>
 
-<form class="lg:w-2/3" v-on:submit.prevent="save(['credentials'], 3)">
+<form class="bg-highlight p-4 md:p-8 rounded mt-6" v-on:submit.prevent="save(['credentials'], 3)">
     <div class="grid grid-cols-12 gap-4 mb-3">
         <p class="col-span-12 font-bold text-2xl">
             @lang('Shipping address')
