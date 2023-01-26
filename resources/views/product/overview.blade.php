@@ -51,20 +51,22 @@
             </div>
         </div>
     </div>
-    <div class="bg-highlight my-5">
-        <div class="container mx-auto grid sm:grid-cols-3 gap-5 w-full grid-cols-1 p-5">
-            <div class="sm:sticky top-5 h-fit bg-white rounded p-4 w-full">
-                @include('rapidez-reviews::form', ['sku' => $product->sku])
-            </div>
-            <div class="col-span-2">
-                @include('rapidez-reviews::reviews', [
-                    'sku' => $product->sku,
-                    'reviews_count' => $product->reviews_count,
-                    'reviews_score' => $product->reviews_score,
-                ])
+    @if (App::providerIsLoaded('Rapidez\Reviews\ReviewsServiceProvider'))
+        <div class="bg-highlight my-5">
+            <div class="container mx-auto grid sm:grid-cols-3 gap-5 w-full grid-cols-1 p-5">
+                <div class="sm:sticky top-5 h-fit bg-white rounded p-4 w-full">
+                    @include('rapidez-reviews::form', ['sku' => $product->sku])
+                </div>
+                <div class="col-span-2">
+                    @include('rapidez-reviews::reviews', [
+                        'sku' => $product->sku,
+                        'reviews_count' => $product->reviews_count,
+                        'reviews_score' => $product->reviews_score,
+                    ])
+                </div>
             </div>
         </div>
-    </div>
+    @endif
     <div class="container mx-auto">
         <x-rapidez::productlist title="Related products" field="id" :value="$product->relation_ids" />
         <x-rapidez::productlist title="We found other products you might like!" field="id" :value="$product->upsell_ids" />
