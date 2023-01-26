@@ -1,4 +1,4 @@
-<nav class="grid grid-cols-12 text-center my-5">
+<nav class="grid grid-cols-12 my-5">
     @foreach(array_slice((config('rapidez.checkout_steps.'.config('rapidez.store_code')) ?? config('rapidez.checkout_steps.default')), 0, -1) as $stepTitle)
         <button class="col-span-3 relative focus:outline-none" :disabled="checkout.step < {{ $loop->index }}" :class="checkout.step < {{ $loop->index }} ? 'cursor-default' : ''" v-on:click="if (checkout.step >= {{ $loop->index }}) goToStep({{ $loop->index }})">
             @if(!$loop->last)
