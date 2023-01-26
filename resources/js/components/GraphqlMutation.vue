@@ -162,7 +162,7 @@
                             }, 1500)
                         }
                         this.mutating = false
-                        Turbolinks.visit(this.redirect)
+                        Turbo.visit(this.redirect)
                     }
                 } catch (e) {
                     this.mutating = false

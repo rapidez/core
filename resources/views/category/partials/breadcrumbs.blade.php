@@ -1,11 +1,11 @@
 <x-rapidez::breadcrumbs>
-    @foreach($category->subcategories as $subcategory)
+    @foreach($category->parentcategories as $parentcategory)
         <x-rapidez::breadcrumb
-            :url="$subcategory->url"
-            :active="$subcategory->entity_id == $category->entity_id"
+            :url="$parentcategory->url"
+            :active="$parentcategory->entity_id == $category->entity_id"
             :position="$loop->iteration + 1"
         >
-            {{ $subcategory->name }}
+            {{ $parentcategory->name }}
         </x-rapidez::breadcrumb>
     @endforeach
 </x-rapidez::breadcrumbs>
