@@ -20,8 +20,6 @@ class CheckoutTest extends DuskTestCase
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->click('@continue')
                 ->waitUntilAllAjaxCallsAreFinished()
-                ->pause(2000)
-                ->waitUntilAllAjaxCallsAreFinished()
                 ->waitFor('@shipping_country', 15)
                 ->type('@shipping_firstname', 'Bruce')
                 ->type('@shipping_lastname', 'Wayne')
@@ -73,7 +71,6 @@ class CheckoutTest extends DuskTestCase
                 ->type('@email', $email)
                 ->click('@continue')
                 ->waitUntilAllAjaxCallsAreFinished()
-                ->pause(1000)
                 ->type('@password', 'IronManSucks.91939')
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->click('@continue') // login

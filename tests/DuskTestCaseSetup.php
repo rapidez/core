@@ -18,7 +18,6 @@ trait DuskTestCaseSetup
         Browser::macro('waitUntilTrueForDuration', function (string $expression = 'true', float $milliseconds = 500, int $intervalMs = 50, $timeoutSeconds = 120) {
             // Waits until the expression is truthy for x milliseconds, supports await.
             /** @var Browser $this */
-
             $this->waitUntil('await new Promise((resolve, reject) => {
                 let counter = 0;
                 let interval = setInterval(async function () {
