@@ -120,7 +120,7 @@ class RapidezServiceProvider extends ServiceProvider
 
         Vite::useScriptTagAttributes(fn (string $src, string $url, array|null $chunk, array|null $manifest) => [
             'data-turbo-track' => str_contains($url, 'app') ? 'reload' : false,
-            'defer' => true,
+            'defer'            => true,
         ]);
 
         Vite::useStyleTagAttributes([
