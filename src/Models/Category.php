@@ -55,7 +55,12 @@ class Category extends Model
         return '/'.$this->url_path;
     }
 
-    public function getSubcategoriesAttribute()
+    public function subcategories()
+    {
+        return $this->hasMany(self::class, 'parent_id', 'entity_id');
+    }
+
+    public function getParentcategoriesAttribute()
     {
         $categoryIds = explode('/', $this->path);
         $categoryIds = array_slice($categoryIds, array_search(config('rapidez.root_category_id'), $categoryIds) + 1);

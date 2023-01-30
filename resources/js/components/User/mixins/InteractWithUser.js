@@ -46,7 +46,7 @@ export default {
         onLogout(data = {}) {
             clearUser()
             useLocalStorage('email', '').value = ''
-            Turbo.clearCache()
+            Turbo.cache.clear()
             window.location.href = data?.redirect ?? '/'
         },
 
