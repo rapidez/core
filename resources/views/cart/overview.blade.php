@@ -69,17 +69,17 @@
                     <div class="flex mt-5">
                         <div class="flex flex-wrap justify-end w-full self-baseline lg:w-64">
                             <div class="flex flex-wrap w-full p-3 mb-5 border rounded-lg">
-                                <div class="w-1/2">@lang('Subtotal')</div>
-                                <div class="w-1/2 text-right">@{{ cart.subtotal | price }}</div>
-                                <div class="w-1/2" v-if="cart.tax > 0">@lang('Tax')</div>
-                                <div class="w-1/2 text-right" v-if="cart.tax > 0">@{{ cart.tax | price }}</div>
-                                <div class="w-1/2" v-if="cart.shipping_amount > 0">@lang('Shipping')<br><small>@{{ cart.shipping_description }}</small></div>
-                                <div class="w-1/2 text-right" v-if="cart.shipping_amount > 0">@{{ cart.shipping_amount | price }}</div>
-                                <div class="w-1/2" v-if="cart.discount_name && cart.discount_amount < 0">@lang('Discount'): @{{ cart.discount_name }}</div>
-                                <div class="w-1/2" v-if="!cart.discount_name && cart.discount_amount < 0">@lang('Discount')</div>
-                                <div class="w-1/2 text-right" v-if="cart.discount_amount < 0">@{{ cart.discount_amount | price }}</div>
-                                <div class="w-1/2 font-bold">@lang('Total')</div>
-                                <div class="w-1/2 text-right font-bold">@{{ cart.total | price }}</div>
+                                <div class="w-1/2 py-3 border-b">@lang('Subtotal')</div>
+                                <div class="w-1/2 text-right py-3 border-b">@{{ cart.subtotal | price }}</div>
+                                <div class="w-1/2 py-3 border-b" v-if="cart.tax > 0">@lang('Tax')</div>
+                                <div class="w-1/2 text-right py-3 border-b" v-if="cart.tax > 0">@{{ cart.tax | price }}</div>
+                                <div class="w-1/2 py-3 border-b" v-if="cart.shipping_amount > 0">@lang('Shipping')<br><small>@{{ cart.shipping_description }}</small></div>
+                                <div class="w-1/2 text-right py-3 border-b" v-if="cart.shipping_amount > 0">@{{ cart.shipping_amount | price }}</div>
+                                <div class="w-1/2 py-3 border-b" v-if="cart.discount_name && cart.discount_amount < 0">@lang('Discount'): @{{ cart.discount_name }}</div>
+                                <div class="w-1/2 py-3 border-b" v-if="!cart.discount_name && cart.discount_amount < 0">@lang('Discount')</div>
+                                <div class="w-1/2 text-right py-3 border-b" v-if="cart.discount_amount < 0">@{{ cart.discount_amount | price }}</div>
+                                <div class="w-1/2 font-bold py-3">@lang('Total')</div>
+                                <div class="w-1/2 text-right font-bold py-3">@{{ cart.total | price }}</div>
                             </div>
 
                             <x-rapidez::button href="/checkout" dusk="checkout">
