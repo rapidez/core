@@ -23,7 +23,8 @@ module.exports = {
                 highlight: 'rgb(var(--highlight) / <alpha-value>)' // Background highlight color
             },
             borderColor: {
-                DEFAULT: 'rgb(var(--border) / <alpha-value>)'
+                DEFAULT: 'rgb(var(--border) / <alpha-value>)',
+                border: 'rgb(var(--border) / <alpha-value>)'
             },
         },
         fontFamily: {
