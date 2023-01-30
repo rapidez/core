@@ -1,5 +1,4 @@
 window.debug = import.meta.env.VITE_DEBUG == 'true'
-console.deprecated = window.debug ? console.warn : () => {}
 window.Notify = (message, type, params = [], link = null) => window.app.$emit('notification-message', message, type, params, link);
 if (!window.process) {
     // Workaround for process missing, if data is actually needed from here you should apply the following polyfill.
@@ -7,7 +6,7 @@ if (!window.process) {
     window.process = {};
 }
 
-import { useLocalStorage, useSessionStorage, StorageSerializers, toReactive } from '@vueuse/core'
+import { useLocalStorage, StorageSerializers } from '@vueuse/core'
 import useCart from './stores/useCart';
 import useUser from './stores/useUser';
 import './vue'
@@ -54,15 +53,15 @@ function init() {
             config: window.config,
             loading: false,
             loadAutocomplete: false,
-            cart: toReactive(useCart()),
-            user: toReactive(useUser()),
+            cart: useCart(),
+            user: useUser(),
             checkout: {
                 step: 1,
                 totals: {},
 
-                shipping_address: toReactive(useLocalStorage('shipping_address', address_defaults, {mergeDefaults: true, serializer: StorageSerializers.object})),
-                billing_address: toReactive(useLocalStorage('billing_address', address_defaults, {mergeDefaults: true, serializer: StorageSerializers.object})),
-                hide_billing: toReactive(useLocalStorage('billing_address', address_defaults, {mergeDefaults: true, serializer: StorageSerializers.object})),
+                shipping_address: useLocalStorage('shipping_address', address_defaults, {mergeDefaults: true, serializer: StorageSerializers.object}),
+                billing_address: useLocalStorage('billing_address', address_defaults, {mergeDefaults: true, serializer: StorageSerializers.object}),
+                hide_billing: useLocalStorage('billing_address', address_defaults, {mergeDefaults: true, serializer: StorageSerializers.object}),
 
                 shipping_method: null,
                 shipping_methods: [],

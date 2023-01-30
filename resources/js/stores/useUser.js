@@ -1,6 +1,6 @@
 import { useLocalStorage, useSessionStorage, StorageSerializers } from '@vueuse/core'
 import { clear as clearCart } from './useCart'
-import { computed, watch } from '@vue/composition-api'
+import { computed, watch } from 'vue'
 
 export const token = useLocalStorage('token', '')
 const userStorage = useSessionStorage('user', {}, {serializer: StorageSerializers.object})

@@ -47,14 +47,14 @@
         },
 
         mounted() {
-            if (Object.keys(this.attributes.value).length) {
+            if (Object.keys(this.attributes).length) {
                 this.loaded = true
                 return;
             }
 
             axios.get('/api/attributes')
                  .then((response) => {
-                    this.attributes.value = response.data
+                    this.attributes = response.data
                     this.loaded = true
                  })
                  .catch((error) => {
@@ -64,12 +64,12 @@
 
         computed: {
             filters: function () {
-                return Object.values(this.attributes.value)
+                return Object.values(this.attributes)
                     .filter((attribute) => attribute.filter)
                     .sort((a, b) => a.position - b.position);
             },
             sortings: function () {
-                return Object.values(this.attributes.value)
+                return Object.values(this.attributes)
                     .filter((attribute) => attribute.sorting)
             },
             reactiveFilters: function () {

@@ -1,5 +1,5 @@
 import { useSessionStorage, StorageSerializers } from '@vueuse/core'
-import { computed, watch } from '@vue/composition-api'
+import { computed, watch } from 'vue'
 import { mask, clear as clearMask } from './useMask'
 
 const cartStorage = useSessionStorage('cart', {}, {serializer: StorageSerializers.object})

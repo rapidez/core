@@ -123,8 +123,8 @@
             },
 
             getOptions: function (superAttributeCode) {
-                if (this.$root.swatches.value?.hasOwnProperty(superAttributeCode)) {
-                    let swatchOptions = this.$root.swatches.value[superAttributeCode].options
+                if (this.$root.swatches.hasOwnProperty(superAttributeCode)) {
+                    let swatchOptions = this.$root.swatches[superAttributeCode].options
                     let values = {}
 
                     Object.entries(this.product[superAttributeCode]).forEach(([key, val]) => {

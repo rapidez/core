@@ -41,9 +41,11 @@
                 this.show = false
             },
             format(str, arr) {
-                return str.replace(/%(\d+)/g, function(_,m) {
-                    return arr[--m];
-                });
+                return str
+                    // Replace indexed variables
+                    .replace(/%(\d+)/g, (_,m) => arr[--m])
+                    // Replace named variables
+                    .replace(/%(?<fieldName>\w+)/g, (match, fieldName) => arr[fieldName] ?? '%' + fieldName);
             }
 
         },
