@@ -2,6 +2,7 @@
     import GetCart from './../Cart/mixins/GetCart'
     import InteractWithUser from './../User/mixins/InteractWithUser'
     import { useEventListener, useLocalStorage } from '@vueuse/core';
+    import useMask from '../../stores/useMask';
 
     export default {
         mixins: [GetCart, InteractWithUser],
@@ -152,7 +153,8 @@
                         await this.login(customer.email, this.checkout.password, async () => {
                             if (self.$root.cart?.entity_id) {
                                 await self.linkUserToCart()
-                                useLocalStorage('mask', self.$root.cart.entity_id).value = self.$root.cart.entity_id
+                                let mask = useMask('mask')
+                                mask.value = self.$root.cart.entity_id
                             }
                         });
                     }
@@ -213,7 +215,7 @@
 
             async selectPaymentMethod() {
                 let response = await this.magentoCart('post', 'set-payment-information', {
-                    email: this.user?.email === null ? this.$root.guestEmail : this.user.email,
+                    email: this.user?.email ? this.user.email : this.$root.guestEmail,
                     paymentMethod: {
                         method:  this.checkout.payment_method
                     }

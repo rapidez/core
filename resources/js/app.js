@@ -9,6 +9,7 @@ if (!window.process) {
 import { useLocalStorage, StorageSerializers } from '@vueuse/core'
 import useCart from './stores/useCart';
 import useUser from './stores/useUser';
+import useSwatches from './stores/useSwatches';
 import './vue'
 import './axios'
 import './filters'
@@ -55,6 +56,7 @@ function init() {
             loadAutocomplete: false,
             cart: useCart(),
             user: useUser(),
+            swatches: useSwatches(),
             checkout: {
                 step: 1,
                 totals: {},
@@ -89,24 +91,6 @@ function init() {
             // Wrap the local storage in getter and setter functions so you do not have to interact using .value
             guestEmail: wrapValue(useLocalStorage('email', (window.debug ? 'wayne@enterprises.com' : ''), {serializer: StorageSerializers.string})),
         },
-        asyncComputed: {
-            swatches () {
-                if (Object.keys(swatches.value).length !== 0) {
-                    return swatches;
-                }
-
-                return axios.get('/api/swatches')
-                    .then((response) => {
-                        swatches.value = response.data
-
-                        return swatches
-                    })
-                    .catch((error) => {
-                        console.error(error)
-                        Notify(window.config.errors.wrong, 'error')
-                    });
-            }
-        }
     })
 
     if(window.debug) {

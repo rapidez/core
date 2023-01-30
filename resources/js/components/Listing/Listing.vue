@@ -9,7 +9,7 @@
     } from '@appbaseio/reactivesearch-vue'
     import VueSlider from 'vue-slider-component'
     import categoryFilter from './Filters/CategoryFilter.vue'
-    import { useLocalStorage } from '@vueuse/core'
+    import useAttributes from '../../stores/useAttributes.js'
 
     Vue.use(ReactiveBase)
     Vue.use(ReactiveList)
@@ -34,7 +34,7 @@
 
         data: () => ({
             loaded: false,
-            attributes: useLocalStorage('attributes', {}),
+            attributes: useAttributes(),
         }),
 
         render() {
@@ -47,19 +47,7 @@
         },
 
         mounted() {
-            if (Object.keys(this.attributes).length) {
-                this.loaded = true
-                return;
-            }
-
-            axios.get('/api/attributes')
-                 .then((response) => {
-                    this.attributes = response.data
-                    this.loaded = true
-                 })
-                 .catch((error) => {
-                    Notify(window.config.errors.wrong, 'error', error.response.data?.parameters)
-                })
+            this.loaded = Object.keys(this.attributes).length > 0
         },
 
         computed: {
@@ -96,6 +84,11 @@
                         }
                     })
                 })).concat(this.additionalSorting)
+            }
+        },
+        watch: {
+            attributes: function (value) {
+                this.loaded = Object.keys(value).length > 0
             }
         }
     }
