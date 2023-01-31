@@ -37,7 +37,8 @@ class CheckoutTest extends DuskTestCase
         });
     }
 
-    public function addProductToCart($browser) {
+    public function addProductToCart($browser)
+    {
         $browser
             ->visit($this->testProduct->url)
             ->waitUntilAllAjaxCallsAreFinished()
