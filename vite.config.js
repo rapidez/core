@@ -1,7 +1,7 @@
 import path from 'path'
 import { defineConfig } from 'vite'
 import laravel from 'laravel-vite-plugin'
-import { createVuePlugin } from 'vite-plugin-vue2'
+import vue from '@vitejs/plugin-vue2'
 import { visualizer } from 'rollup-plugin-visualizer'
 
 export default defineConfig({
@@ -13,7 +13,7 @@ export default defineConfig({
             ],
             refresh: true,
         }),
-        createVuePlugin(),
+        vue(),
         visualizer(),
     ],
     resolve: {
