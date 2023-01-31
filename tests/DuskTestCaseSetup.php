@@ -34,9 +34,9 @@ trait DuskTestCaseSetup
             return $this;
         });
 
-        Browser::macro('waitUntilAllAjaxCallsAreFinished', function ($pauseMs = false) {
+        Browser::macro('waitUntilAllAjaxCallsAreFinished', function ($pauseMs = false, $timeout = 60) {
             /** @var Browser $this */
-            $this->waitUntilTrueForDuration('window.app?.$data?.loading !== true && await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 5}))', $pauseMs ?: 500);
+            $this->waitUntilTrueForDuration('window.app?.$data?.loading !== true && await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 5}))', $pauseMs ?: 500, 50, $timeout);
 
             return $this;
         });

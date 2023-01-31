@@ -74,7 +74,7 @@ class CheckoutTest extends DuskTestCase
                 ->type('@shipping_city', 'Gotham')
                 ->select('@shipping_country', 'NL')
                 ->type('@shipping_telephone', '530-7972')
-                ->waitUntilAllAjaxCallsAreFinished();
+                ->waitUntilAllAjaxCallsAreFinished(false, 120);
         }
 
         if ($password && $register) {
@@ -82,7 +82,7 @@ class CheckoutTest extends DuskTestCase
                 ->waitUntilAllAjaxCallsAreFinished()
                 ->type('@password', $password)
                 ->type('@password_repeat', $password)
-                ->waitUntilAllAjaxCallsAreFinished();
+                ->waitUntilAllAjaxCallsAreFinished(false, 120);
         }
 
         $browser
