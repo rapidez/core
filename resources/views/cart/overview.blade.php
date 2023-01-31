@@ -14,15 +14,12 @@
                         <div class="flex flex-wrap items-center mb-4 border-b pb-2"  v-for="(item, productId, index) in cart.items">
                             <div class="w-1/6 sm:w-1/12 pr-3">
                                 <a :href="item.url" class="block">
-                                    <picture>
-                                        <source :srcset="'/storage/resizes/80x80/catalog/product' + item.image + '.webp'" type="image/webp">
-                                        <img
-                                            :alt="item.name"
-                                            :src="'/storage/resizes/80x80/catalog/product' + item.image"
-                                            height="100"
-                                            class="mx-auto"
-                                        />
-                                    </picture>
+                                    <img
+                                        :alt="item.name"
+                                        :src="'/storage/resizes/80x80/catalog/product' + item.image + '.webp'"
+                                        height="100"
+                                        class="mx-auto"
+                                    />
                                 </a>
                             </div>
                             <div class="w-5/6 sm:w-5/12 lg:w-5/12">
