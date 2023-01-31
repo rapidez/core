@@ -4,7 +4,12 @@
             @if(!$loop->last)
                 <div :class="checkout.step > {{ $loop->index }} ? 'bg-primary' : 'bg-secondary'" class="absolute flex w-full h-0.5 top-5 left-1/2"></div>
             @endif
-            <div :class="checkout.step >= {{ $loop->index }} ? 'border-primary' : 'border-secondary'" class="relative flex w-10 h-10 mx-auto justify-center rounded-full font-bold bg-white items-center border">{{ $loop->index + 1 }}</div>
+            <div
+                :class="{'bg-primary text-white': {{ $loop->index }} <= checkout.step, 'bg-white': {{ $loop->index }} > checkout.step, 'bg-primary text-white shadow-md shadow-primary': {{ $loop->index }} === checkout.step}"
+                class="relative flex w-10 h-10 mx-auto justify-center rounded-full font-bold items-center border border-primary"
+            >
+                {{ $loop->index + 1 }}
+            </div>
             <span class="hidden sm:block">@lang(ucfirst($stepTitle))<span>
         </button>
     @endforeach
