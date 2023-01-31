@@ -12,3 +12,13 @@
         </div>
     </div>
 </div>
+
+<div v-if="$root.checkout.shipping_address" class="w-full flex flex-col gap-x-1 p-3 border mt-4">
+    <p class="text-primary font-lg font-bold mb-2">@lang('Shipping address')</p>
+    <ul>
+        <li>@{{ $root.checkout?.shipping_address?.firstname }} @{{ $root.checkout?.shipping_address?.lastname }}</li>
+        <li>@{{ $root.checkout?.shipping_address?.street[0] }} @{{ $root.checkout?.shipping_address?.street[1] }} @{{ $root.checkout?.billing_address?.street[2] }}</li>
+        <li>@{{ $root.checkout?.shipping_address?.postcode }} - @{{ $root.checkout?.shipping_address?.city }} - @{{ $root.checkout?.shipping_address?.country_id }}</li>
+        <li>@{{ $root.checkout?.shipping_address?.telephone }}</li>
+    </ul>
+</div>
