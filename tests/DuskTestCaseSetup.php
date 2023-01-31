@@ -15,7 +15,7 @@ trait DuskTestCaseSetup
     {
         parent::setUp();
 
-        Browser::macro('waitUntilTrueForDuration', function (string $expression = 'true', float $milliseconds = 500, int $intervalMs = 50, $timeoutSeconds = 120) {
+        Browser::macro('waitUntilTrueForDuration', function (string $expression = 'true', float $milliseconds = 500, int $intervalMs = 50, $timeoutSeconds = 10) {
             // Waits until the expression is truthy for x milliseconds, supports await.
             /** @var Browser $this */
             $this->waitUntil('await new Promise((resolve, reject) => {
@@ -36,14 +36,14 @@ trait DuskTestCaseSetup
 
         Browser::macro('waitUntilAllAjaxCallsAreFinished', function ($pauseMs = false) {
             /** @var Browser $this */
-            $this->waitUntilTrueForDuration('window.app.$data?.loading === false && await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 2}))', $pauseMs ?: 500);
+            $this->waitUntilTrueForDuration('window.app?.$data?.loading !== true && await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 2}))', $pauseMs ?: 500);
 
             return $this;
         });
 
         Browser::macro('waitUntilIdle', function ($seconds = null) {
             /** @var Browser $this */
-            $this->waitUntilTrueForDuration('await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 2}))', null, null, $seconds ?: 120);
+            $this->waitUntilTrueForDuration('await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 2}))', null, null, $seconds ?: 10);
 
             return $this;
         });
