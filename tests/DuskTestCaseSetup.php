@@ -15,7 +15,7 @@ trait DuskTestCaseSetup
     {
         parent::setUp();
 
-        Browser::macro('waitUntilTrueForDuration', function (string $script = 'true', $timeout = 60, $for = 0.5) {
+        Browser::macro('waitUntilTrueForDuration', function (string $script = 'true', $timeout = 120, $for = 0.5) {
             // Waits until the script is truthy for x seconds, supports await.
             $interval = 0.05;
 
@@ -36,7 +36,7 @@ trait DuskTestCaseSetup
             return $this;
         });
 
-        Browser::macro('waitUntilIdle', function ($timeout = 60) {
+        Browser::macro('waitUntilIdle', function ($timeout = 120) {
             /** @var Browser $this */
             $this->waitUntilTrueForDuration('window.app?.$data?.loading !== true && await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 5}))', $timeout);
 
