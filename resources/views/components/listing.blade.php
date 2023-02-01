@@ -22,6 +22,7 @@
             <reactive-base
                 :app="config.es_prefix + '_products_' + config.store"
                 :url="config.es_url"
+                v-if="loaded"
             >
                 @isset($query)
                     <reactive-component
