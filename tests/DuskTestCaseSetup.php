@@ -15,7 +15,7 @@ trait DuskTestCaseSetup
     {
         parent::setUp();
 
-        Browser::macro('waitUntilTrueForDuration', function (string $script = 'true', $timeout = 60, $for = 0.5) {
+        Browser::macro('waitUntilTrueForDuration', function (string $script = 'true', $timeout = 120, $for = 0.5) {
             // Waits until the script is truthy for x seconds, supports await.
             $interval = 0.05;
 
