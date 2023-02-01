@@ -1,5 +1,17 @@
 # Changelog 
 
+## 0.79.0 - 2023-01-31
+
+### Changed
+
+- Vue 2.7 update (#202)
+
+### Fixed
+
+- Load Vue as ES Module (94fa925)
+- Replaced deprecated Turbo.clearCache (a8740d9)
+- Prevent full page reload when navigating from listing (#200)
+
 ## 0.78.0 - 2023-01-20
 
 ### Changed
