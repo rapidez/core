@@ -15,35 +15,30 @@ trait DuskTestCaseSetup
     {
         parent::setUp();
 
-        Browser::macro('waitUntilTrueForDuration', function (string $expression = 'true', float $milliseconds = 500, int $intervalMs = 50, $timeoutSeconds = 60) {
-            // Waits until the expression is truthy for x milliseconds, supports await.
+        Browser::macro('waitUntilTrueForDuration', function (string $script = 'true', $timeout = 60, $for = 0.5) {
+            // Waits until the script is truthy for x seconds, supports await.
+            $interval = 0.05;
+
             /** @var Browser $this */
             $this->waitUntil('await new Promise((resolve, reject) => {
                 let counter = 0;
                 let interval = setInterval(async function () {
-                    let result = '.$expression.';
+                    let result = '.$script.';
                     counter = result ? counter + 1 : 0;
-                    if (counter >= '.($milliseconds / $intervalMs).') {
+                    if (counter >= '.($for / $interval).') {
                         clearInterval(interval)
                         resolve(true)
                     }
-                }, '.$intervalMs.');
-                setTimeout(() => resolve(false), '.($timeoutSeconds * 1000).')
-            }) === true', $timeoutSeconds);
+                }, '.($interval * 1000).');
+                setTimeout(() => resolve(false), '.($timeout * 1000).')
+            }) === true', $timeout);
 
             return $this;
         });
 
-        Browser::macro('waitUntilAllAjaxCallsAreFinished', function ($pauseMs = false, $timeout = 60) {
+        Browser::macro('waitUntilIdle', function ($timeout = 60) {
             /** @var Browser $this */
-            $this->waitUntilTrueForDuration('window.app?.$data?.loading !== true && await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 5}))', $pauseMs ?: 500, 50, $timeout);
-
-            return $this;
-        });
-
-        Browser::macro('waitUntilIdle', function ($seconds = null) {
-            /** @var Browser $this */
-            $this->waitUntilTrueForDuration('await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 5}))', 500, 50, $seconds ?: 10);
+            $this->waitUntilTrueForDuration('window.app?.$data?.loading !== true && await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 5}))', $timeout);
 
             return $this;
         });

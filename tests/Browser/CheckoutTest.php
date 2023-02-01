@@ -28,7 +28,7 @@ class CheckoutTest extends DuskTestCase
         // Go through checkout as guest and log in.
         $this->browse(function (Browser $browser) use ($email) {
             $browser->waitForReload(fn ($browser) => $browser->visit('/'), 4)
-                ->waitUntilAllAjaxCallsAreFinished()
+                ->waitUntilIdle()
                 ->waitFor('@account_menu')
                 ->click('@account_menu')
                 ->click('@logout');
@@ -41,9 +41,9 @@ class CheckoutTest extends DuskTestCase
     {
         $browser
             ->visit($this->testProduct->url)
-            ->waitUntilAllAjaxCallsAreFinished()
+            ->waitUntilIdle()
             ->click('@add-to-cart')
-            ->waitUntilAllAjaxCallsAreFinished();
+            ->waitUntilIdle();
 
         return $browser;
     }
@@ -52,17 +52,17 @@ class CheckoutTest extends DuskTestCase
     {
         $browser
             ->visit('/checkout')
-            ->waitUntilAllAjaxCallsAreFinished()
+            ->waitUntilIdle()
             ->type('@email', $email ?: 'wayne@enterprises.com')
             ->click('@continue')
-            ->waitUntilAllAjaxCallsAreFinished();
+            ->waitUntilIdle();
 
         if ($password && !$register) {
             $browser
                 ->type('@password', $password)
-                ->waitUntilAllAjaxCallsAreFinished()
+                ->waitUntilIdle()
                 ->click('@continue') // login
-                ->waitUntilAllAjaxCallsAreFinished();
+                ->waitUntilIdle();
         } else {
             $browser
                 ->waitFor('@shipping_country', 15)
@@ -74,26 +74,26 @@ class CheckoutTest extends DuskTestCase
                 ->type('@shipping_city', 'Gotham')
                 ->select('@shipping_country', 'NL')
                 ->type('@shipping_telephone', '530-7972')
-                ->waitUntilAllAjaxCallsAreFinished(false, 120);
+                ->waitUntilIdle(120);
         }
 
         if ($password && $register) {
             $browser->click('@create_account')
-                ->waitUntilAllAjaxCallsAreFinished()
+                ->waitUntilIdle()
                 ->type('@password', $password)
                 ->type('@password_repeat', $password)
-                ->waitUntilAllAjaxCallsAreFinished(false, 120);
+                ->waitUntilIdle(120);
         }
 
         $browser
             ->click('@method-0') // select shipping method
-            ->waitUntilAllAjaxCallsAreFinished()
+            ->waitUntilIdle()
             ->click('@continue') // go to payment step
-            ->waitUntilAllAjaxCallsAreFinished()
+            ->waitUntilIdle()
             ->click('@method-0') // select payment method
-            ->waitUntilAllAjaxCallsAreFinished()
+            ->waitUntilIdle()
             ->click('@continue') // place order
-            ->waitUntilAllAjaxCallsAreFinished()
+            ->waitUntilIdle()
             ->assertPresent('@checkout-success');
 
         return $browser;
