@@ -16,16 +16,16 @@ class NewsletterTest extends DuskTestCase
             $email = $this->faker->email;
             $browser->visit('/')
                     ->scrollIntoView('@newsletter')
-                    ->waitUntilAllAjaxCallsAreFinished()
+                    ->waitUntilIdle()
                     ->type('@newsletter-email', $email)
                     ->click('@newsletter-submit')
-                    ->waitUntilAllAjaxCallsAreFinished()
+                    ->waitUntilIdle()
                     ->assertSee('Thank you for subscribing!')
 
                     ->waitForText('We care about the protection of your data.')
                     ->type('@newsletter-email', $email)
                     ->click('@newsletter-submit')
-                    ->waitUntilAllAjaxCallsAreFinished()
+                    ->waitUntilIdle()
                     ->assertSee('This email address is already subscribed.');
         });
     }

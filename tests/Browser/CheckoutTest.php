@@ -7,23 +7,64 @@ use Rapidez\Core\Tests\DuskTestCase;
 
 class CheckoutTest extends DuskTestCase
 {
-    public function testCheckoutAsGuest($createAccountWithEmail = false)
+    public function testCheckoutAsGuest()
     {
-        $this->browse(function (Browser $browser) use ($createAccountWithEmail) {
-            $browser->visit($this->testProduct->url)
-                ->waitUntilAllAjaxCallsAreFinished()
-                ->waitUntilEnabled('@add-to-cart')
-                ->click('@add-to-cart')
-                ->waitUntilAllAjaxCallsAreFinished()
-                ->waitUntil('localStorage.mask')
-                ->waitUntilAllAjaxCallsAreFinished()
-                ->visit('/checkout')
-                ->waitUntilAllAjaxCallsAreFinished()
-                ->type('@email', $createAccountWithEmail ?: 'wayne@enterprises.com')
-                ->waitUntilAllAjaxCallsAreFinished()
-                ->waitUntilEnabled('@continue')
-                ->click('@continue')
-                ->waitUntilAllAjaxCallsAreFinished()
+        $this->browse(function (Browser $browser) {
+            $this->addProductToCart($browser);
+            $this->doCheckout($browser, 'wayne+'.mt_rand().'@enterprises.com');
+        });
+    }
+
+    public function testCheckoutAsUser()
+    {
+        $email = 'wayne+'.mt_rand().'@enterprises.com';
+
+        // Go through checkout as guest and register.
+        $this->browse(function (Browser $browser) use ($email) {
+            $this->addProductToCart($browser);
+            $this->doCheckout($browser, $email, 'IronManSucks.91939', true);
+        });
+
+        // Go through checkout as guest and log in.
+        $this->browse(function (Browser $browser) use ($email) {
+            $browser->waitForReload(fn ($browser) => $browser->visit('/'), 4)
+                ->waitUntilIdle()
+                ->waitFor('@account_menu')
+                ->click('@account_menu')
+                ->click('@logout');
+            $this->addProductToCart($browser);
+            $this->doCheckout($browser, $email, 'IronManSucks.91939', false);
+        });
+    }
+
+    public function addProductToCart($browser)
+    {
+        $browser
+            ->visit($this->testProduct->url)
+            ->waitUntilIdle()
+            ->click('@add-to-cart')
+            ->waitUntilIdle();
+
+        return $browser;
+    }
+
+    public function doCheckout($browser, $email = false, $password = false, $register = false)
+    {
+        $browser
+            ->visit('/checkout')
+            ->waitUntilIdle()
+            ->type('@email', $email ?: 'wayne@enterprises.com')
+            ->click('@continue')
+            ->waitUntilIdle();
+
+        if ($password && !$register) {
+            $browser
+                ->type('@password', $password)
+                ->waitUntilIdle()
+                ->click('@continue') // login
+                ->waitUntilIdle();
+        } else {
+            $browser
                 ->waitFor('@shipping_country', 15)
                 ->type('@shipping_firstname', 'Bruce')
                 ->type('@shipping_lastname', 'Wayne')
@@ -32,76 +73,29 @@ class CheckoutTest extends DuskTestCase
                 ->type('@shipping_street', 'Mountain Drive')
                 ->type('@shipping_city', 'Gotham')
                 ->select('@shipping_country', 'NL')
-                ->type('@shipping_telephone', '530-7972');
+                ->type('@shipping_telephone', '530-7972')
+                ->waitUntilIdle(120);
+        }
 
-            if ($createAccountWithEmail) {
-                $browser->click('@create_account')
-                    ->waitUntilAllAjaxCallsAreFinished()
-                    ->type('@password', 'IronManSucks.91939')
-                    ->type('@password_repeat', 'IronManSucks.91939');
-            }
+        if ($password && $register) {
+            $browser->click('@create_account')
+                ->waitUntilIdle()
+                ->type('@password', $password)
+                ->type('@password_repeat', $password)
+                ->waitUntilIdle(120);
+        }
 
-            $browser
-                ->waitUntilAllAjaxCallsAreFinished()
-                ->click('@method-0') // select shipping method
-                ->waitUntilAllAjaxCallsAreFinished()
-                ->waitUntilEnabled('@continue')
-                ->click('@continue') // go to payment step
-                ->waitUntilAllAjaxCallsAreFinished(2000)
-                ->waitForText('Payment method')
-                ->click('@method-0') // select payment method
-                ->waitUntilAllAjaxCallsAreFinished()
-                ->waitUntilEnabled('@continue')
-                ->click('@continue') // place order
-                ->waitUntilAllAjaxCallsAreFinished()
-                ->assertPresent('@checkout-success');
-        });
-    }
+        $browser
+            ->click('@method-0') // select shipping method
+            ->waitUntilIdle()
+            ->click('@continue') // go to payment step
+            ->waitUntilIdle()
+            ->click('@method-0') // select payment method
+            ->waitUntilIdle()
+            ->click('@continue') // place order
+            ->waitUntilIdle()
+            ->assertPresent('@checkout-success');
 
-    public function testCheckoutAsUser()
-    {
-        $email = 'wayne'.mt_rand().'@enterprises.com';
-        $this->testCheckoutAsGuest($email);
-
-        $this->browse(function (Browser $browser) use ($email) {
-            $browser->waitForReload(fn ($browser) => $browser->visit('/'), 4)
-                ->waitUntilAllAjaxCallsAreFinished()
-                ->waitFor('@account_menu')
-                ->click('@account_menu')
-                ->click('@logout')
-                ->visit($this->testProduct->url)
-                ->waitUntilAllAjaxCallsAreFinished()
-                ->waitUntilEnabled('@add-to-cart')
-                ->click('@add-to-cart')
-                ->waitUntilAllAjaxCallsAreFinished()
-                ->waitUntil('localStorage.mask')
-                ->waitUntilAllAjaxCallsAreFinished()
-                ->visit('/checkout')
-                ->waitUntilAllAjaxCallsAreFinished()
-                ->type('@email', $email)
-                ->waitUntilEnabled('@continue')
-                ->click('@continue')
-                ->waitUntilAllAjaxCallsAreFinished()
-                ->waitFor('@password')
-                ->type('@password', 'IronManSucks.91939')
-                ->waitUntilAllAjaxCallsAreFinished()
-                ->waitUntilEnabled('@continue')
-                ->click('@continue') // login
-                ->waitUntilAllAjaxCallsAreFinished()
-                ->waitForText('Shipping method')
-                ->click('@method-0') // select shipping method
-                ->waitUntilAllAjaxCallsAreFinished()
-                ->waitUntilEnabled('@continue')
-                ->click('@continue') // go to payment step
-                ->waitUntilAllAjaxCallsAreFinished()
-                ->waitForText('Payment method')
-                ->waitUntilAllAjaxCallsAreFinished()
-                ->click('@method-0') // select payment method
-                ->waitUntilAllAjaxCallsAreFinished()
-                ->waitUntilEnabled('@continue')
-                ->click('@continue') // place order
-                ->waitUntilAllAjaxCallsAreFinished()
-                ->assertPresent('@checkout-success');
-        });
+        return $browser;
     }
 }

@@ -15,26 +15,34 @@ trait DuskTestCaseSetup
     {
         parent::setUp();
 
-        Browser::macro('waitUntilAllAjaxCallsAreFinished', function ($pauseMs = false) {
-            /** @var Browser $this */
-            $this->waitUntilIdle()
-                // Ensure we repeatedly check for ajax calls while js is not idle.
-                ->waitUntil('window.app.$data?.loading === false && await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 2}))', 10)
-                ->waitUntilIdle();
+        Browser::macro('waitUntilTrueForDuration', function (string $script = 'true', $timeout = 60, $for = 0.5) {
+            // Waits until the script is truthy for x seconds, supports await.
+            $interval = 0.05;
 
-            if ($pauseMs) {
-                $this->pause($pauseMs);
-            }
+            /** @var Browser $this */
+            $this->waitUntil('await new Promise((resolve, reject) => {
+                let counter = 0;
+                let interval = setInterval(async function () {
+                    let result = '.$script.';
+                    counter = result ? counter + 1 : 0;
+                    if (counter >= '.($for / $interval).') {
+                        clearInterval(interval)
+                        resolve(true)
+                    }
+                }, '.($interval * 1000).');
+                setTimeout(() => resolve(false), '.($timeout * 1000).')
+            }) === true', $timeout);
 
             return $this;
         });
 
-        Browser::macro('waitUntilIdle', function ($seconds = null) {
+        Browser::macro('waitUntilIdle', function ($timeout = 60) {
             /** @var Browser $this */
-            $this->waitUntil('await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: '.($seconds ? 2 : 0).'}));', $seconds);
+            $this->waitUntilTrueForDuration('window.app?.$data?.loading !== true && await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 5}))', $timeout);
 
             return $this;
         });
+
         $this->flat = (new Product())->getTable();
 
         $this->testProduct = Product::selectAttributes([
