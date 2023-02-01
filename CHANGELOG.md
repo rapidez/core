@@ -1,5 +1,11 @@
 # Changelog 
 
+## 0.79.2 - 2023-02-01
+
+### Fixed
+
+- Replaced old helper with facade (35b545a)
+
 ## 0.79.1 - 2023-02-01
 
 ### Fixed
