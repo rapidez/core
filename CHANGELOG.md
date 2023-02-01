@@ -1,5 +1,12 @@
 # Changelog 
 
+## 0.79.1 - 2023-02-01
+
+### Fixed
+
+- Improved Dusk tests (#201)
+- Raise Dusk test default idle timeout to 2 minutes (#205)
+
 ## 0.79.0 - 2023-01-31
 
 ### Changed
