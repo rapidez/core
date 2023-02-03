@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static self addFallbackRoute($action, $position = 9999)
+ * @method static self removeFallbackRoute($action)
  * @method static Collection getAllFallbackRoutes()
  * @method static ?string config(string $path, $default = null, bool $sensitive = false)
  * @method static ?string content($content)
