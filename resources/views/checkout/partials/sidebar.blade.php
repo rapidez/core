@@ -20,5 +20,6 @@
         <li>@{{ $root.checkout?.shipping_address?.street[0] }} @{{ $root.checkout?.shipping_address?.street[1] }} @{{ $root.checkout?.billing_address?.street[2] }}</li>
         <li>@{{ $root.checkout?.shipping_address?.postcode }} - @{{ $root.checkout?.shipping_address?.city }} - @{{ $root.checkout?.shipping_address?.country_id }}</li>
         <li>@{{ $root.checkout?.shipping_address?.telephone }}</li>
+        <li>@{{ $root.checkout?.shipping_address?.company }}</li>
     </ul>
 </div>
