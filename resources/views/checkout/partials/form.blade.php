@@ -78,7 +78,7 @@
             <x-rapidez::input
                 name="{{ $type }}_addition"
                 label="Addition"
-                :placeholder="__('Nr.')"
+                :placeholder="__('Addition')"
                 v-model.lazy="checkout.{{ $type }}_address.street[2]"
             />
         </div>
