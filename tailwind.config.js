@@ -40,5 +40,6 @@ module.exports = {
         require('@tailwindcss/typography'),
         require('@tailwindcss/aspect-ratio'),
         require('tailwind-scrollbar-hide'),
+        require('@tushargugnani/tailwind-group-peer-checked'),
     ]
 }
