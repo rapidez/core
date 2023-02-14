@@ -20,7 +20,6 @@
         <x-rapidez::input
             label="Firstname"
             name="{{ $type }}_firstname"
-            :placeholder="__('Firstname')"
             v-model.lazy="checkout.{{ $type }}_address.firstname"
             required
         />
@@ -30,7 +29,6 @@
             <x-rapidez::input
                 name="{{ $type }}_middlename"
                 label="Middlename"
-                :placeholder="__('Middlename')"
                 v-model.lazy="checkout.{{ $type }}_address.middlename"
             />
         </div>
@@ -39,7 +37,6 @@
         <x-rapidez::input
             name="{{ $type }}_lastname"
             label="Lastname"
-            :placeholder="__('Lastname')"
             v-model.lazy="checkout.{{ $type }}_address.lastname"
             required
         />
@@ -48,7 +45,6 @@
         <x-rapidez::input
             name="{{ $type }}_postcode"
             label="Postcode"
-            :placeholder="__('Postcode')"
             v-model.lazy="checkout.{{ $type }}_address.postcode"
             required
         />
@@ -57,7 +53,6 @@
         <x-rapidez::input
             name="{{ $type }}_street"
             label="Street"
-            :placeholder="__('Street')"
             v-model.lazy="checkout.{{ $type }}_address.street[0]"
             required
         />
@@ -67,7 +62,7 @@
             <x-rapidez::input
                 name="{{ $type }}_housenumber"
                 label="Housenumber"
-                :placeholder="__('Nr.')"
+                placeholder="Nr."
                 v-model.lazy="checkout.{{ $type }}_address.street[1]"
                 required
             />
@@ -78,7 +73,6 @@
             <x-rapidez::input
                 name="{{ $type }}_addition"
                 label="Addition"
-                :placeholder="__('Addition')"
                 v-model.lazy="checkout.{{ $type }}_address.street[2]"
             />
         </div>
@@ -87,7 +81,6 @@
         <x-rapidez::input
             name="{{ $type }}_city"
             label="City"
-            :placeholder="__('City')"
             v-model.lazy="checkout.{{ $type }}_address.city"
             required
         />
@@ -105,7 +98,6 @@
             <x-rapidez::input
                 name="{{ $type }}_telephone"
                 label="Telephone"
-                :placeholder="__('Telephone')"
                 v-model.lazy="checkout.{{ $type }}_address.telephone"
                 :required="Rapidez::config('customer/address/telephone_show', 'req') == 'req'"
             />

@@ -596,11 +596,6 @@
     lodash.merge "^4.6.2"
     postcss-selector-parser "6.0.10"
 
-"@tushargugnani/tailwind-group-peer-checked@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@tushargugnani/tailwind-group-peer-checked/-/tailwind-group-peer-checked-1.0.0.tgz#9ecfed839307bc68ee89ac5aaf0b435d9e84a6d4"
-  integrity sha512-2y/VnMfsFM2r/+8tpERswy5jOX9p0+mCsW09YCJxjuWuA90t/KpDMIYEFCsTnMpxWzOEpmxUvRzELSucP2OxJQ==
-
 "@types/parse-json@^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
