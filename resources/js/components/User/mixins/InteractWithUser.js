@@ -19,10 +19,7 @@ export default {
                 window.app.user = response.data
             } catch (error) {
                 if (error.response.status == 401) {
-                    localStorage.removeItem('token')
-                }
-                if (redirect) {
-                    Turbo.visit('/login')
+                    this.logout(redirect ? '/login' : false)
                 }
             }
         },
@@ -50,7 +47,7 @@ export default {
             })
         },
 
-        logout(redirect = '/') {
+        logout(redirect = false) {
             this.$root.$emit('logout', {'redirect': redirect})
         },
 
@@ -60,7 +57,10 @@ export default {
             localStorage.removeItem('email')
             this.$root.user = null
             Turbo.cache.clear()
-            window.location.href = data?.redirect ?? '/'
+
+            if (data?.redirect) {
+                window.location.href = data?.redirect
+            }
         },
 
         async createCustomer(customer) {

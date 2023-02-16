@@ -16,7 +16,7 @@
                         class="block hover:bg-secondary px-3 py-2"
                         dusk="logout"
                         slot-scope="{ logout }"
-                        @click.prevent="logout()"
+                        @click.prevent="logout('/')"
                     >
                         @lang('Logout')
                     </a>
