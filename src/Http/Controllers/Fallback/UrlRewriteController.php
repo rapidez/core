@@ -9,7 +9,9 @@ class UrlRewriteController
     public function __invoke(Request $request)
     {
         $rewriteModel = config('rapidez.models.rewrite');
-        if (!$rewrite = $rewriteModel::firstWhere('request_path', $request->path())) {
+        if (!$rewrite = $rewriteModel::where('request_path', $request->path())
+            ->orWhere('request_path', $request->path().'/')
+            ->first()) {
             return;
         }
 
