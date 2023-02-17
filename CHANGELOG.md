@@ -1,5 +1,15 @@
 # Changelog 
 
+## 0.80.0 - 2023-02-16
+
+### Added
+
+- Ability to remove fallback routes (#206)
+
+### Fixed
+
+- Logout completely when user refresh fails due a 401 (621501f)
+
 ## 0.79.2 - 2023-02-01
 
 ### Fixed
