@@ -1,5 +1,11 @@
 # Changelog 
 
+## 0.80.1 - 2023-02-17
+
+### Fixed
+
+- Do not trigger the logout event when there is no token (cb72bb8)
+
 ## 0.80.0 - 2023-02-16
 
 ### Added
