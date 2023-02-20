@@ -2,6 +2,9 @@
 
 namespace Rapidez\Core\Http\Controllers;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\RecordsNotFoundException;
+use Illuminate\Routing\Exceptions\BackedEnumCaseNotFoundException;
 use Illuminate\Support\Facades\App;
 use Rapidez\Core\Facades\Rapidez;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -21,7 +24,7 @@ class FallbackController
                 }
 
                 return $response;
-            } catch (RouteNotFoundException|NotFoundHttpException $e) {
+            } catch (RouteNotFoundException|NotFoundHttpException|BackedEnumCaseNotFoundException|ModelNotFoundException|RecordsNotFoundException $e) {
             }
         }
 
