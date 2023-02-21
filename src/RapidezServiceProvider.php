@@ -104,7 +104,8 @@ class RapidezServiceProvider extends ServiceProvider
                     }
 
                     return response($response);
-                } catch (NotFoundHttpException $e) {}
+                } catch (NotFoundHttpException $e) {
+                }
             })
         );
 
