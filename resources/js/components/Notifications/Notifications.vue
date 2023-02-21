@@ -1,4 +1,7 @@
 <script>
+    import notification from './Notification.vue'
+    Vue.component('notification', notification)
+
     export default {
         data: () => ({
             notifications: []
