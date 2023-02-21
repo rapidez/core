@@ -2,29 +2,53 @@
 
 namespace Rapidez\Core\Http\Controllers;
 
+use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Facades\Rapidez;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class FallbackController
 {
-    public function __invoke()
+    public function __invoke(Request $request)
     {
-        foreach (Rapidez::getAllFallbackRoutes() as $route) {
-            try {
-                $response = App::call($route['action']['uses']);
+        $cacheKey = 'fallbackroute-' . md5($request->url());
+        $route = Cache::get($cacheKey);
+        if($route && $response = $this->tryRoute($route)) {
+            return $response;
+        }
 
-                // Null response is equal to no response or 404.
-                if ($response === null) {
-                    abort(404);
+        foreach (Rapidez::getAllFallbackRoutes() as $route) {
+            if($response = $this->tryRoute($route)) {
+                try {
+                    Cache::put($cacheKey, $route, 3600);
+                } catch (Exception $e) {
+                    // We can't cache it, no worries.
+                    // Ususally a sign it's a direct callback or caching hasn't been configured properly.
                 }
 
                 return $response;
-            } catch (RouteNotFoundException|NotFoundHttpException $e) {
             }
         }
 
         abort(404);
+    }
+
+    protected function tryRoute($route)
+    {
+        try {
+            $response = App::call($route['action']['uses']);
+
+            // Null response is equal to no response or 404.
+            if ($response === null) {
+                abort(404);
+            }
+
+            return $response;
+        } catch (RouteNotFoundException|NotFoundHttpException $e) {
+            return null;
+        }
     }
 }
