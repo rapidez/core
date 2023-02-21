@@ -1,5 +1,19 @@
 # Changelog 
 
+## 0.81.0 - 2023-02-21
+
+### Added
+
+- Expose logout slot from login component (#216)
+
+### Changed
+
+- Prefix images coming from Magento (#213)
+
+### Fixed
+
+- Catch exceptions resembling 404 (#212)
+
 ## 0.80.1 - 2023-02-17
 
 ### Fixed
