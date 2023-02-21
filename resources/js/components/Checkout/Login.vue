@@ -29,6 +29,7 @@
                 emailAvailable: this.emailAvailable,
                 password: this.password,
                 go: this.go,
+                logout: this.logout,
             })
         },
 
