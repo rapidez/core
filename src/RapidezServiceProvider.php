@@ -3,6 +3,8 @@
 namespace Rapidez\Core;
 
 use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
@@ -15,10 +17,13 @@ use Rapidez\Core\Facades\Rapidez as RapidezFacade;
 use Rapidez\Core\Http\Controllers\Fallback\CmsPageController;
 use Rapidez\Core\Http\Controllers\Fallback\LegacyFallbackController;
 use Rapidez\Core\Http\Controllers\Fallback\UrlRewriteController;
+use Rapidez\Core\Http\Controllers\FallbackController;
 use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
 use Rapidez\Core\Http\ViewComposers\ConfigComposer;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class RapidezServiceProvider extends ServiceProvider
 {
@@ -88,6 +93,20 @@ class RapidezServiceProvider extends ServiceProvider
         RapidezFacade::addFallbackRoute(UrlRewriteController::class, 5);
         RapidezFacade::addFallbackRoute(CmsPageController::class, 10);
         RapidezFacade::addFallbackRoute(LegacyFallbackController::class, 99999);
+
+        $this->app->afterResolving(
+            ExceptionHandler::class,
+            fn ($handler) => $handler->renderable(function (NotFoundHttpException $e, $request) {
+                try {
+                    $response = App::call(FallbackController::class);
+                    if ($response instanceof Response) {
+                        return $response;
+                    }
+
+                    return response($response);
+                } catch (NotFoundHttpException $e) {}
+            })
+        );
 
         return $this;
     }
