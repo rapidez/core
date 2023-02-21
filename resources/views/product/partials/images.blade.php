@@ -2,7 +2,7 @@
     @if(count($product->images))
         <div class="flex items-center justify-center border rounded p-5 h-[440px]">
             <img
-                src="/storage/resizes/400/catalog/product{{ $product->images[0] }}.webp"
+                src="/storage/resizes/400/magento/catalog/product{{ $product->images[0] }}.webp"
                 alt="{{ $product->name }}"
                 class="object-contain w-full m-auto max-h-[400px]"
                 width="400"
@@ -22,7 +22,7 @@
                 >
                     <img
                         v-if="!zoomed"
-                        :src="'/storage/resizes/400/catalog/product' + images[active] + '.webp'"
+                        :src="'/storage/resizes/400/magento/catalog/product' + images[active] + '.webp'"
                         alt="{{ $product->name }}"
                         class="object-contain w-full m-auto max-h-[400px]"
                         width="400"
@@ -56,7 +56,7 @@
                     @click.prevent="change(imageId)"
                 >
                     <img
-                        :src="'/storage/resizes/80x80/catalog/product' + image + '.webp'"
+                        :src="'/storage/resizes/80x80/magento/catalog/product' + image + '.webp'"
                         alt="{{ $product->name }}"
                         class="object-contain w-full m-auto max-h-[80px]"
                         loading="lazy"
