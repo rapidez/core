@@ -1,12 +1,12 @@
-<checkout-success>
+<checkout-success v-slot="{ order }">
     <div dusk="checkout-success">
         <h1 class="font-bold text-4xl mb-5">@lang('Order placed succesfully')</h1>
         <div class="bg-highlight rounded p-8">
             <p>@lang('We will get to work for you right away')</p>
-            <p>@lang('We will send a confirmation of your order to') <span class="font-bold">@{{$root.user?.email}}</span></p>
+            <p>@lang('We will send a confirmation of your order to') <span class="font-bold">@{{ order.email }}</span></p>
         </div>
         <div class="mt-4">
-            <div class="flex flex-wrap items-center mb-4 border-b pb-2" v-for="(item, productId, index) in cart.items">
+            <div class="flex flex-wrap items-center mb-4 border-b pb-2" v-for="(item, productId, index) in order.items">
                 <div class="w-1/6 sm:w-1/12 pr-3">
                     <a :href="item.url" class="block">
                         <img
@@ -38,19 +38,19 @@
             <div class="w-full p-8 bg-highlight rounded border-l-2 border-primary md:w-1/2">
                 <p class="text-primary font-lg font-bold mb-2">@lang('Billing address')</p>
                 <ul>
-                    <li>@{{ $root.checkout?.billing_address?.firstname }} @{{ $root.checkout?.billing_address?.lastname }}</li>
-                    <li>@{{ $root.checkout?.billing_address?.street[0] }} @{{ $root.checkout?.billing_address?.street[1] }} @{{ $root.checkout?.billing_address?.street[2] }}</li>
-                    <li>@{{ $root.checkout?.billing_address?.postcode }} - @{{ $root.checkout?.billing_address?.city }} - @{{ $root.checkout?.billing_address?.country_id }}</li>
-                    <li>@{{ $root.checkout?.billing_address?.telephone }}</li>
+                    <li>@{{ order.billingAddress.firstname }} @{{ order.billingAddress.lastname }}</li>
+                    <li>@{{ order.billingAddress.street[0] }} @{{ order.billingAddress.street[1] }} @{{ order.billingAddress.street[2] }}</li>
+                    <li>@{{ order.billingAddress.postcode }} - @{{ order.billingAddress.city }} - @{{ order.billingAddress.country_id }}</li>
+                    <li>@{{ order.billingAddress.telephone }}</li>
                 </ul>
             </div>
             <div class="w-full p-8 bg-highlight rounded border-l-2 border-primary mt-4 md:mt-0 md:w-1/2">
                 <p class="text-primary font-lg font-bold mb-2">@lang('Shipping address')</p>
                 <ul>
-                    <li>@{{ $root.checkout?.shipping_address?.firstname }} @{{ $root.checkout?.shipping_address?.lastname }}</li>
-                    <li>@{{ $root.checkout?.shipping_address?.street[0] }} @{{ $root.checkout?.shipping_address?.street[1] }} @{{ $root.checkout?.billing_address?.street[2] }}</li>
-                    <li>@{{ $root.checkout?.shipping_address?.postcode }} - @{{ $root.checkout?.shipping_address?.city }} - @{{ $root.checkout?.shipping_address?.country_id }}</li>
-                    <li>@{{ $root.checkout?.shipping_address?.telephone }}</li>
+                    <li>@{{ order.shippingAddress.firstname }} @{{ order.shippingAddress.lastname }}</li>
+                    <li>@{{ order.shippingAddress.street[0] }} @{{ order.shippingAddress.street[1] }} @{{ order.shippingAddress.street[2] }}</li>
+                    <li>@{{ order.shippingAddress.postcode }} - @{{ order.shippingAddress.city }} - @{{ order.shippingAddress.country_id }}</li>
+                    <li>@{{ order.shippingAddress.telephone }}</li>
                 </ul>
             </div>
         </div>
@@ -58,11 +58,11 @@
         <div class="flex flex-col mt-4 gap-x-4 md:flex-row">
             <div class="w-full p-8 bg-highlight rounded border-l-2 border-primary md:w-1/2">
                 <p class="text-primary font-lg font-bold mb-2">@lang('Shipping method')</p>
-                <p>@{{ $root.checkout?.shipping_method }}</p>
+                <p>@{{ order.shippingMethod }}</p>
             </div>
             <div class="w-full p-8 bg-highlight rounded border-l-2 border-primary mt-4 md:mt-0 md:w-1/2">
                 <p class="text-primary font-lg font-bold mb-2">@lang('Payment method')</p>
-                <p>@{{ $root.checkout?.payment_method }}</p>
+                <p>@{{ order.paymentMethod }}</p>
             </div>
         </div>
     </div>
