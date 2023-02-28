@@ -6,7 +6,10 @@ if (!window.process) {
     window.process = {};
 }
 
-import './lodash'
+import { useLocalStorage, StorageSerializers } from '@vueuse/core'
+import useCart from './stores/useCart';
+import useUser from './stores/useUser';
+import useSwatches from './stores/useSwatches';
 import './vue'
 import './axios'
 import './filters'
@@ -14,52 +17,34 @@ import './mixins'
 import './turbolinks'
 import './cookies'
 import './callbacks'
-
-import cart from './components/Cart/Cart.vue'
-Vue.component('cart', cart)
-import toggler from './components/Elements/Toggler.vue'
-Vue.component('toggler', toggler)
-import slider from './components/Elements/Slider.vue'
-Vue.component('slider', slider)
-import addToCart from './components/Product/AddToCart.vue'
-Vue.component('add-to-cart', addToCart)
-import user from './components/User/User.vue'
-Vue.component('user', user)
-import lazy from './components/Lazy.vue'
-Vue.component('lazy', lazy)
-import graphql from './components/Graphql.vue'
-Vue.component('graphql', graphql)
-import graphqlMutation from './components/GraphqlMutation.vue'
-Vue.component('graphql-mutation', graphqlMutation)
-import notifications from './components/Notifications/Notifications.vue'
-Vue.component('notifications', notifications)
-import notification from './components/Notifications/Notification.vue'
-Vue.component('notification', notification)
-import images from './components/Product/Images.vue'
-Vue.component('images', images)
-
-import categoryFilter from './components/Listing/Filters/CategoryFilter.vue'
-Vue.component('category-filter', categoryFilter)
-import categoryFilterCategory from './components/Listing/Filters/CategoryFilterCategory.vue'
-Vue.component('category-filter-category', categoryFilterCategory)
-
-Vue.component('autocomplete', () => import('./components/Search/Autocomplete.vue'))
-Vue.component('login', () => import('./components/Checkout/Login.vue'))
-Vue.component('listing', () => import('./components/Listing/Listing.vue'))
-Vue.component('coupon', () => import('./components/Coupon/Coupon.vue'))
-Vue.component('checkout', () => import('./components/Checkout/Checkout.vue'))
-Vue.component('checkout-success', () => import('./components/Checkout/CheckoutSuccess.vue'))
+import './vue-components'
 
 function init() {
     Vue.prototype.window = window
     Vue.prototype.config = window.config
 
+    let swatches = useLocalStorage('swatches', {});
+
     // Check if the localstorage needs a flush.
-    if (localStorage.cachekey !== window.config.cachekey) {
+    let cachekey = useLocalStorage('cachekey');
+    if (cachekey.value !== window.config.cachekey) {
         window.config.flushable_localstorage_keys.forEach((key) => {
-            localStorage.removeItem(key)
+            useLocalStorage(key).value = null;
         })
-        localStorage.cachekey = window.config.cachekey
+
+        cachekey.value = window.config.cachekey
+    }
+
+    window.address_defaults = {
+        'customer_address_id': null,
+        'firstname': (window.debug ? 'Bruce' : ''),
+        'lastname': (window.debug ? 'Wayne' : ''),
+        'postcode': (window.debug ? '72000' : ''),
+        'street': (window.debug ? ['Mountain Drive', 1007, ''] : ['', '', '']),
+        'city': (window.debug ? 'Gotham' : ''),
+        'telephone': (window.debug ? '530-7972' : ''),
+        'country_id': (window.debug ? 'NL' : window.config.default_country),
+        'custom_attributes': [],
     }
 
     window.app = new Vue({
@@ -68,37 +53,17 @@ function init() {
             custom: {},
             config: window.config,
             loading: false,
-            guestEmail: localStorage.email ?? null,
-            user: null,
-            cart: null,
             loadAutocomplete: false,
+            cart: useCart(),
+            user: useUser(),
+            swatches: useSwatches(),
             checkout: {
                 step: 1,
-                shipping_address: {
-                    'customer_address_id': null,
-                    'firstname': localStorage.shipping_firstname ?? (window.debug ? 'Bruce' : ''),
-                    'lastname': localStorage.shipping_lastname ?? (window.debug ? 'Wayne' : ''),
-                    'postcode': localStorage.shipping_postcode ?? (window.debug ? '72000' : ''),
-                    'street': localStorage.shipping_street?.split(',') ?? (window.debug ? ['Mountain Drive', 1007, ''] : ['', '', '']),
-                    'city': localStorage.shipping_city ?? (window.debug ? 'Gotham' : ''),
-                    'telephone': localStorage.shipping_telephone ?? (window.debug ? '530-7972' : ''),
-                    'country_id': localStorage.shipping_country_id ?? (window.debug ? 'NL' : window.config.default_country),
-                    'custom_attributes': [],
-                },
-                billing_address: {
-                    'customer_address_id': null,
-                    'firstname': localStorage.billing_firstname ?? (window.debug ? 'Bruce' : ''),
-                    'lastname': localStorage.billing_lastname ?? (window.debug ? 'Wayne' : ''),
-                    'postcode': localStorage.billing_postcode ?? (window.debug ? '72000' : ''),
-                    'street': localStorage.billing_street?.split(',') ?? (window.debug ? ['Mountain Drive', 1007, ''] : ['', '', '']),
-                    'city': localStorage.billing_city ?? (window.debug ? 'Gotham' : ''),
-                    'telephone': localStorage.billing_telephone ?? (window.debug ? '530-7972' : ''),
-                    'country_id': localStorage.billing_country_id ?? (window.debug ? 'NL' : window.config.default_country),
-                    'custom_attributes': [],
-                },
-                hide_billing: localStorage.hide_billing === 'false' ? false : true,
-
                 totals: {},
+
+                shipping_address: useLocalStorage('shipping_address', address_defaults, {mergeDefaults: true, serializer: StorageSerializers.object}),
+                billing_address: useLocalStorage('billing_address', address_defaults, {mergeDefaults: true, serializer: StorageSerializers.object}),
+                hide_billing: useLocalStorage('billing_address', address_defaults, {mergeDefaults: true, serializer: StorageSerializers.object}),
 
                 shipping_method: null,
                 shipping_methods: [],
@@ -122,22 +87,10 @@ function init() {
                 }
             }
         },
-        asyncComputed: {
-            swatches () {
-                if (localStorage.swatches) {
-                    return JSON.parse(localStorage.swatches);
-                }
-
-                return axios.get('/api/swatches')
-                    .then((response) => {
-                        localStorage.swatches = JSON.stringify(response.data)
-                        return response.data
-                    })
-                    .catch((error) => {
-                        Notify(window.config.errors.wrong, 'error')
-                    })
-            }
-        }
+        computed: {
+            // Wrap the local storage in getter and setter functions so you do not have to interact using .value
+            guestEmail: wrapValue(useLocalStorage('email', (window.debug ? 'wayne@enterprises.com' : ''), {serializer: StorageSerializers.string})),
+        },
     })
 
     if(window.debug) {
