@@ -74,7 +74,7 @@ class CheckoutTest extends DuskTestCase
                 ->type('@shipping_city', 'Gotham')
                 ->select('@shipping_country', 'NL')
                 ->type('@shipping_telephone', '530-7972')
-                ->waitUntilIdle(120);
+                ->waitUntilIdle();
         }
 
         if ($password && $register) {
@@ -82,7 +82,7 @@ class CheckoutTest extends DuskTestCase
                 ->waitUntilIdle()
                 ->type('@password', $password)
                 ->type('@password_repeat', $password)
-                ->waitUntilIdle(120);
+                ->waitUntilIdle();
         }
 
         $browser

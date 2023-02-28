@@ -39,7 +39,7 @@ export default {
             })
         },
 
-        logout(redirect = '/') {
+        logout(redirect = false) {
             this.$root.$emit('logout', {'redirect': redirect})
         },
 
@@ -47,7 +47,10 @@ export default {
             clearUser()
             useLocalStorage('email', '').value = ''
             Turbo.cache.clear()
-            window.location.href = data?.redirect ?? '/'
+
+            if (data?.redirect) {
+                window.location.href = data?.redirect
+            }
         },
 
         async createCustomer(customer) {

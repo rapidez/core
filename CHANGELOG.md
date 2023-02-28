@@ -1,5 +1,48 @@
 # Changelog 
 
+## 0.81.0 - 2023-02-21
+
+### Added
+
+- Expose logout slot from login component (#216)
+
+### Changed
+
+- Prefix images coming from Magento (#213)
+
+### Fixed
+
+- Catch exceptions resembling 404 (#212)
+
+## 0.80.1 - 2023-02-17
+
+### Fixed
+
+- Do not trigger the logout event when there is no token (cb72bb8)
+
+## 0.80.0 - 2023-02-16
+
+### Added
+
+- Ability to remove fallback routes (#206)
+
+### Fixed
+
+- Logout completely when user refresh fails due a 401 (621501f)
+
+## 0.79.2 - 2023-02-01
+
+### Fixed
+
+- Replaced old helper with facade (35b545a)
+
+## 0.79.1 - 2023-02-01
+
+### Fixed
+
+- Improved Dusk tests (#201)
+- Raise Dusk test default idle timeout to 2 minutes (#205)
+
 ## 0.79.0 - 2023-01-31
 
 ### Changed

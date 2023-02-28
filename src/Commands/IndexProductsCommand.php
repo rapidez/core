@@ -4,6 +4,7 @@ namespace Rapidez\Core\Commands;
 
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Jobs\IndexProductJob;
@@ -64,7 +65,7 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
                         foreach ($product->super_attributes ?: [] as $superAttribute) {
                             $data[$superAttribute->code] = $superAttribute->text_swatch || $superAttribute->visual_swatch
                                 ? array_keys((array) $product->{$superAttribute->code})
-                                : array_pluck($product->{$superAttribute->code} ?: [], 'label');
+                                : Arr::pluck($product->{$superAttribute->code} ?: [], 'label');
                         }
 
                         $data = $this->withCategories($data, $categories);
