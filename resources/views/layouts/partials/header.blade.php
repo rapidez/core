@@ -6,7 +6,9 @@
                     <span class="hidden sm:inline">
                         <img src="https://raw.githubusercontent.com/rapidez/art/master/logo.svg" height="48" width="152" alt="">
                     </span>
-                    <span class="inline sm:hidden">🚀</span>
+                    <span class="inline sm:hidden">
+                        <img src="https://raw.githubusercontent.com/rapidez/art/master/r.svg" height="48" width="48" alt="">
+                    </span>
                 </a>
             </div>
         </div>
