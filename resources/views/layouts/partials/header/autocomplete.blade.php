@@ -10,10 +10,7 @@
 >
 
 <autocomplete v-if="$root.loadAutocomplete" v-cloak>
-    <reactive-base
-        :app="config.es_prefix + '_products_' + config.store"
-        :url="config.es_url"
-    >
+    <x-rapidez::reactive-base>
         <data-search
             placeholder="@lang('Search')"
             v-on:value-selected="search"
@@ -50,5 +47,5 @@
                 </ul>
             </div>
         </data-search>
-    </reactive-base>
+    </x-rapidez::reactive-base>
 </autocomplete>
