@@ -49,6 +49,8 @@
                     this.checkout.shipping_methods = response.data
 
                     if (response.data.length === 1) {
+                        this.checkout.shipping_carrier_code = response.data[0].carrier_code
+                        this.checkout.shipping_method_code = response.data[0].method_code
                         this.checkout.shipping_method = response.data[0].carrier_code+'_'+response.data[0].method_code
                     }
 
@@ -133,8 +135,8 @@
                     }
 
                     if (!this.hasOnlyVirtualItems) {
-                        addressInformation.shipping_carrier_code = this.checkout.shipping_method.split('_')[0]
-                        addressInformation.shipping_method_code = this.checkout.shipping_method.split('_')[1]
+                        addressInformation.shipping_carrier_code = this.checkout.shipping_carrier_code
+                        addressInformation.shipping_method_code = this.checkout.shipping_method_code
                     }
 
                     if (this.checkout.create_account && this.checkout.password) {
@@ -202,8 +204,8 @@
                     addressInformation: {
                         shipping_address: this.shippingAddress,
                         billing_address: this.billingAddress,
-                        shipping_carrier_code: this.checkout.shipping_method.split('_')[0],
-                        shipping_method_code: this.checkout.shipping_method.split('_')[1],
+                        shipping_carrier_code: this.checkout.shipping_carrier_code,
+                        shipping_method_code: this.checkout.shipping_method_code,
                     }
                 })
                 this.checkout.totals = response.data.totals
