@@ -122,8 +122,7 @@ function init() {
                 }
             },
             setSearchParams(url) {
-                window.history.pushState({ path: url }, '', url)
-                window.Turbo.navigator.history.push(url)
+                window.history.pushState(window.history.state, '', new URL(url))
             }
         },
         asyncComputed: {
