@@ -1,6 +1,13 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/0.82.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/0.82.1...master)
+## [0.82.1](https://github.com/rapidez/core/releases/tag/0.82.1) - 2023-03-16
+
+#### Fixed
+
+- update history with state so Turbo behaves (https://github.com/rapidez/core/pull/222)
+
+
 ## [0.82.0](https://github.com/rapidez/core/releases/tag/0.82.0) - 2023-03-09
 
 #### Changed
