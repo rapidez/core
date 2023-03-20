@@ -133,9 +133,8 @@
                     }
 
                     if (!this.hasOnlyVirtualItems) {
-                        let currentShippingMethod = this.currentShipmentMethod();
-                        addressInformation.shipping_carrier_code = currentShippingMethod.carrier_code
-                        addressInformation.shipping_method_code = currentShippingMethod.method_code
+                        addressInformation.shipping_carrier_code = this.currentShipmentMethod.carrier_code
+                        addressInformation.shipping_method_code = this.currentShipmentMethod.method_code
                     }
 
                     if (this.checkout.create_account && this.checkout.password) {
@@ -199,13 +198,12 @@
             },
 
             async selectShippingMethod() {
-                let currentShippingMethod = this.currentShipmentMethod();
                 let response = await this.magentoCart('post', 'shipping-information', {
                     addressInformation: {
                         shipping_address: this.shippingAddress,
                         billing_address: this.billingAddress,
-                        shipping_carrier_code: currentShippingMethod.carrier_code,
-                        shipping_method_code: currentShippingMethod.method_code
+                        shipping_carrier_code: this.currentShipmentMethod.carrier_code,
+                        shipping_method_code: this.currentShipmentMethod.method_code
                     }
                 })
                 this.checkout.totals = response.data.totals
@@ -291,10 +289,6 @@
                 }, false)
 
                 history.replaceState(null, null, '#'+ this.steps[this.checkout.step])
-            },
-
-            currentShipmentMethod() {
-                return this.checkout.shipping_methods.find(obj => obj.carrier_code+'_'+ obj.method_code === this.checkout.shipping_method)
             }
         },
 
@@ -317,6 +311,9 @@
                 }
 
                 return this.removeUnusedAddressInfo(this.$root.checkout.billing_address)
+            },
+            currentShipmentMethod: function () {
+                return this.checkout.shipping_methods.find(obj => obj.carrier_code+'_'+ obj.method_code === this.checkout.shipping_method)
             }
         },
         watch: {
