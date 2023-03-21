@@ -21,7 +21,7 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
 
     public function handle()
     {
-        Eventy::action('rapidez.index.before', $this);
+        Eventy::action('index.before', $this);
         
         $this->call('cache:clear');
         $productModel = config('rapidez.models.product');
@@ -89,7 +89,7 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
             $this->line('');
         }
         
-        Eventy::action('rapidez.index.after', $this);
+        Eventy::action('index.after', $this);
         $this->info('Done!');
     }
 
