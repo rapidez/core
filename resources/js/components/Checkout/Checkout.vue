@@ -313,7 +313,9 @@
                 return this.removeUnusedAddressInfo(this.$root.checkout.billing_address)
             },
             currentShipmentMethod: function () {
-                return this.checkout.shipping_methods.find(obj => obj.carrier_code+'_'+ obj.method_code === this.checkout.shipping_method)
+                return this.checkout.shipping_methods.find((method) => {
+                    return method.carrier_code + '_' + method.method_code === this.checkout.shipping_method
+                })
             }
         },
         watch: {
