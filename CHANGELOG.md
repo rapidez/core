@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/0.82.1...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/0.83.0...master)
+## [0.83.0](https://github.com/rapidez/core/releases/tag/0.83.0) - 2023-03-21
+
+#### Added
+
+- Eventy before/after index actions (#224)
+
 ## [0.82.1](https://github.com/rapidez/core/releases/tag/0.82.1) - 2023-03-16
 
 #### Fixed
