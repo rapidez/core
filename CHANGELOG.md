@@ -11,7 +11,7 @@
 
 #### Fixed
 
-- Update history with state so Turbo behaves (https://github.com/rapidez/core/pull/222)
+- Update history with state so Turbo behaves (#222)
 
 
 ## [0.82.0](https://github.com/rapidez/core/releases/tag/0.82.0) - 2023-03-09
