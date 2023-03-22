@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/0.83.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/0.83.1...master)
+## [0.83.1](https://github.com/rapidez/core/releases/tag/0.83.1) - 2023-03-22
+
+#### Fixed
+
+- Sort super attributes on the frontend (0e1db6f)
+
 ## [0.83.0](https://github.com/rapidez/core/releases/tag/0.83.0) - 2023-03-21
 
 #### Added
