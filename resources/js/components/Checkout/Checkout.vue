@@ -135,8 +135,8 @@
                     }
 
                     if (!this.hasOnlyVirtualItems) {
-                        addressInformation.shipping_carrier_code = this.checkout.shipping_method.split('_')[0]
-                        addressInformation.shipping_method_code = this.checkout.shipping_method.split('_')[1]
+                        addressInformation.shipping_carrier_code = this.currentShippingMethod.carrier_code
+                        addressInformation.shipping_method_code = this.currentShippingMethod.method_code
                     }
 
                     if (this.checkout.create_account && this.checkout.password) {
@@ -206,8 +206,8 @@
                     addressInformation: {
                         shipping_address: this.shippingAddress,
                         billing_address: this.billingAddress,
-                        shipping_carrier_code: this.checkout.shipping_method.split('_')[0],
-                        shipping_method_code: this.checkout.shipping_method.split('_')[1],
+                        shipping_carrier_code: this.currentShippingMethod.carrier_code,
+                        shipping_method_code: this.currentShippingMethod.method_code,
                     }
                 })
                 this.checkout.totals = response.data.totals
@@ -303,6 +303,12 @@
                 }
 
                 return this.removeUnusedAddressInfo(this.$root.checkout.billing_address)
+            },
+            currentShippingMethod: function () {
+                debugger
+                return this.checkout.shipping_methods.find((method) => {
+                    return method.carrier_code + '_' + method.method_code === this.checkout.shipping_method
+                })
             }
         },
         watch: {
