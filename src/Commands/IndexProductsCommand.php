@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Rapidez\Core\Events\IndexAfterEvent;
+use Rapidez\Core\Events\IndexBeforeEvent;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Jobs\IndexProductJob;
 use Rapidez\Core\Models\Category;
@@ -21,7 +23,7 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
 
     public function handle()
     {
-        Eventy::action('index.before', $this);
+        IndexBeforeEvent::dispatch($this);
 
         $this->call('cache:clear');
         $productModel = config('rapidez.models.product');
@@ -89,7 +91,7 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
             $this->line('');
         }
 
-        Eventy::action('index.after', $this);
+        IndexAfterEvent::dispatch($this);
         $this->info('Done!');
     }
 
