@@ -25,6 +25,7 @@ class Category extends Model
                 'path',
                 'parent_id',
                 'children',
+                'children_count',
                 'position',
             ];
 
