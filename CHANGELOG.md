@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/0.84.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/0.85.0...master)
+## [0.85.0](https://github.com/rapidez/core/releases/tag/0.85.0) - 2023-03-28
+
+#### Added
+
+- Select category children_count by default (821a23b)
+
 ## [0.84.0](https://github.com/rapidez/core/releases/tag/0.84.0) - 2023-03-23
 
 #### Added
