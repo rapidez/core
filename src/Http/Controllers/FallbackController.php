@@ -24,16 +24,18 @@ class FallbackController
         }
 
         foreach (Rapidez::getAllFallbackRoutes() as $route) {
-            if($response = $this->tryRoute($route)) {
-                try {
-                    Cache::put($cacheKey, $route, 3600);
-                } catch (Exception $e) {
-                    // We can't cache it, no worries.
-                    // Ususally a sign it's a direct callback or caching hasn't been configured properly.
-                }
-
-                return $response;
+            if(!($response = $this->tryRoute($route))) {
+                continue;
             }
+
+            try {
+                Cache::put($cacheKey, $route, config('rapidez.fallback_routes.cache_duration', 3600));
+            } catch (Exception $e) {
+                // We can't cache it, no worries.
+                // Ususally a sign it's a direct callback or caching hasn't been configured properly.
+            }
+
+            return $response;
         }
 
         abort(404);
