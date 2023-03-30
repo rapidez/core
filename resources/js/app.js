@@ -120,6 +120,9 @@ function init() {
                 if (value.length) {
                     Turbo.visit('/search?q=' + encodeURIComponent(value))
                 }
+            },
+            setSearchParams(url) {
+                window.history.pushState(window.history.state, '', new URL(url))
             }
         },
         asyncComputed: {

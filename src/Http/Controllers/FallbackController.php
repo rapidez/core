@@ -3,7 +3,10 @@
 namespace Rapidez\Core\Http\Controllers;
 
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\RecordsNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Exceptions\BackedEnumCaseNotFoundException;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Facades\Rapidez;
@@ -47,7 +50,7 @@ class FallbackController
             }
 
             return $response;
-        } catch (RouteNotFoundException|NotFoundHttpException $e) {
+        } catch (RouteNotFoundException|NotFoundHttpException|BackedEnumCaseNotFoundException|ModelNotFoundException|RecordsNotFoundException $e) {
             return null;
         }
     }

@@ -13,6 +13,10 @@ export default {
         },
 
         async refreshUser(redirect = true) {
+            if (!localStorage.token) {
+                return this.onLogout()
+            }
+
             try {
                 let response = await magentoUser.get('customers/me')
                 localStorage.user = JSON.stringify(response.data)
