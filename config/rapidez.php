@@ -56,7 +56,7 @@ return [
     'routes' => true,
     'fallback_routes' => [
         // How long (in seconds) it should cache which controller handles which route.
-        // null means cache forever, 0 means never cache.
+        // null means cache forever, 0 means never cache. customisation is possible using a closure.
         // This does not cache the response, it caches the controller used for that page.
         'cache_duration' => 3600,
     ],

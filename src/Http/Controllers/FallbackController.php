@@ -29,7 +29,7 @@ class FallbackController
             }
 
             try {
-                Cache::put($cacheKey, $route, config('rapidez.fallback_routes.cache_duration', 3600));
+                Cache::put($cacheKey, $route, value(config('rapidez.fallback_routes.cache_duration', 3600), $request, $response, $route));
             } catch (Exception $e) {
                 // We can't cache it, no worries.
                 // Ususally a sign it's a direct callback or caching hasn't been configured properly.
