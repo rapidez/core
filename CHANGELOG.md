@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/0.85.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/0.85.1...master)
+## [0.85.1](https://github.com/rapidez/core/releases/tag/0.85.1) - 2023-03-31
+
+#### Fixed
+
+- Clear cache order in the index products command (67c85ed)
+
 ## [0.85.0](https://github.com/rapidez/core/releases/tag/0.85.0) - 2023-03-28
 
 #### Added
