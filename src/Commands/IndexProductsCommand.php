@@ -23,9 +23,10 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
 
     public function handle()
     {
+        $this->call('cache:clear');
+
         IndexBeforeEvent::dispatch($this);
 
-        $this->call('cache:clear');
         $productModel = config('rapidez.models.product');
         $storeModel = config('rapidez.models.store');
         $stores = $this->argument('store') ? $storeModel::where('store_id', $this->argument('store'))->get() : $storeModel::all();
