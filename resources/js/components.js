@@ -1,12 +1,11 @@
-(() => {
-    const components = {
-        ...import.meta.glob(['./components/*.vue', '!./components/*.lazy.vue'], { eager: true, import: 'default' }),
-        ...import.meta.glob(['./components/*.lazy.vue'], { eager: false, import: 'default' })
-    };
-    for (const path in components) {
-        Vue.component(path.split('/').pop().split('.').shift(), components[path])
-    }
-})();
+import lazy from './components/Lazy.vue'
+Vue.component('lazy', lazy)
+
+import graphQl from './components/Graphql.vue'
+Vue.component('graphql', graphQl)
+
+import graphQlMutation from './components/GraphqlMutation.vue'
+Vue.component('graphql-mutation', graphQlMutation)
 
 import toggler from './components/Elements/Toggler.vue'
 Vue.component('toggler', toggler)
