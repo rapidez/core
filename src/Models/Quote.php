@@ -17,6 +17,37 @@ class Quote extends Model
     protected $casts = [
         'items'       => QuoteItems::class,
         'cross_sells' => CommaSeparatedToIntegerArray::class,
+        'store_id' => 'int',
+        'is_active' => 'int',
+        'is_virtual' => 'int',
+        'is_multi_shipping' => 'int',
+        'items_count' => 'int',
+        'items_qty' => 'float',
+        'orig_order_id' => 'int',
+        'store_to_base_rate' => 'float',
+        'store_to_quote_rate' => 'float',
+        'grand_total' => 'float',
+        'base_grand_total' => 'float',
+        'customer_id' => 'int',
+        'customer_tax_class_id' => 'int',
+        'customer_group_id' => 'int',
+        'customer_note_notify' => 'int',
+        'customer_is_guest' => 'int',
+        'base_to_global_rate' => 'float',
+        'base_to_quote_rate' => 'float',
+        'subtotal' => 'float',
+        'base_subtotal' => 'float',
+        'subtotal_with_discount' => 'float',
+        'base_subtotal_with_discount' => 'float',
+        'is_changed' => 'int',
+        'trigger_recollect' => 'int',
+        'gift_message_id' => 'int',
+        'is_persistent' => 'int',
+    ];
+
+    protected $dates = [
+        'converted_at',
+        'customer_dob',
     ];
 
     protected static function booting()
@@ -79,5 +110,15 @@ class Quote extends Model
                 })
                 ->groupBy('quote.entity_id');
         });
+    }
+
+    public function quote_id_masks()
+    {
+        return $this->hasMany(config('rapidez.models.sales.quote_id_mask'), 'quote_id');
+    }
+
+    public function sales_order()
+    {
+        return $this->belongsTo(config('rapidez.models.sales.order'));
     }
 }

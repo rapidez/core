@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Rapidez\Core\Http\Controllers\CartOrderController;
 use Rapidez\Core\Http\Middleware\VerifyAdminToken;
 
 Route::middleware('api')->prefix('api')->group(function () {
@@ -18,6 +19,8 @@ Route::middleware('api')->prefix('api')->group(function () {
 
         return $optionswatchModel::getCachedSwatchValues();
     });
+
+    Route::get('cart/order/{quoteIdMaskOrCustomerToken}', CartOrderController::class);
 
     Route::get('cart/{quoteIdMaskOrCustomerToken}', function ($quoteIdMaskOrCustomerToken) {
         $quoteModel = config('rapidez.models.quote');

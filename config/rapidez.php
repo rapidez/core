@@ -83,6 +83,19 @@ return [
         'store'        => Rapidez\Core\Models\Store::class,
         'widget'       => Rapidez\Core\Models\Widget::class,
         'block'        => Rapidez\Core\Models\Block::class,
+        'sales'        => [
+            'quote_id_mask' => Rapidez\Core\Models\Quote\QuoteIdMask::class,
+            'order'         => Rapidez\Core\Models\Sales\SalesOrder::class,
+            'order_address' => Rapidez\Core\Models\Sales\SalesOrderAddress::class,
+            'order_item'    => Rapidez\Core\Models\Sales\SalesOrderItem::class,
+            'order_payment' => Rapidez\Core\Models\Sales\SalesOrderPayment::class,
+        ],
+        'customer' => [
+            'entity' => Rapidez\Core\Models\Customer\CustomerEntity::class,
+        ],
+        'oauth' => [
+            'token' => Rapidez\Core\Models\Oauth\OauthToken::class,
+        ]
     ],
 
     // The fully qualified class names of the widgets.
