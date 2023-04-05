@@ -8,6 +8,7 @@ if (!window.process) {
 
 import './lodash'
 import './vue'
+import { computed } from 'vue';
 import './axios'
 import './filters'
 import './mixins'
@@ -67,7 +68,8 @@ function init() {
         data: {
             custom: {},
             config: window.config,
-            loading: false,
+            loadingCount: 0,
+            loading: computed(() => window.app?.$data?.loadingCount > 0),
             guestEmail: localStorage.email ?? null,
             user: null,
             cart: null,
