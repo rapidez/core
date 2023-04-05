@@ -4,6 +4,7 @@ import { computed, watch } from 'vue'
 
 export const token = useLocalStorage('token', '')
 const userStorage = useSessionStorage('user', {}, {serializer: StorageSerializers.object})
+let isRefreshing = false;
 
 export const refresh = async function () {
     if (!token.value) {
@@ -11,9 +12,15 @@ export const refresh = async function () {
         return false
     }
 
+    if (isRefreshing) {
+        console.debug('Refresh canceled, request already in progress...')
+        return;
+    }
+
     try {
+        isRefreshing = true
         window.magentoUser.defaults.headers.common['Authorization'] = `Bearer ${token.value}`;
-        let response = await magentoUser.get('customers/me')
+        let response = await magentoUser.get('customers/me').finally(() => {isRefreshing = false;})
         userStorage.value = response.data
     } catch (error) {
         if (error.response.status == 401) {
