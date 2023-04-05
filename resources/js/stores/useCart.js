@@ -4,6 +4,7 @@ import { mask, clear as clearMask } from './useMask'
 
 const cartStorage = useSessionStorage('cart', {}, {serializer: StorageSerializers.object})
 let hasRefreshed = false;
+let isRefreshing = false;
 
 export const refresh = async function () {
     hasRefreshed = true;
@@ -12,8 +13,14 @@ export const refresh = async function () {
         return false;
     }
 
+    if (isRefreshing) {
+        console.debug('Refresh canceled, request already in progress...')
+        return;
+    }
+
     try {
-        let response = await axios.get('/api/cart/' + (localStorage.token ? localStorage.token : mask.value))
+        isRefreshing = true;
+        let response = await axios.get('/api/cart/' + (localStorage.token ? localStorage.token : mask.value)).finally(() => {isRefreshing = false;})
         cartStorage.value = response.data
         window.app.$emit('cart-refreshed')
     } catch (error) {
