@@ -2,23 +2,31 @@
 # yarn lockfile v1
 
 
-"@appbaseio/reactivecore@9.14.29":
-  version "9.14.29"
-  resolved "https://registry.yarnpkg.com/@appbaseio/reactivecore/-/reactivecore-9.14.29.tgz#fe75b9a9394f65fef4dbc06ff8c2fce301dab6e0"
-  integrity sha512-zdBALqZ91y1lZCKoVLekA7sc0x1qCPaXdJG9PiUawGZG+KojizNz9rZZoXSRoJCZ36q47rj+qcKzWKma6oHKyQ==
+"@appbaseio/analytics@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@appbaseio/analytics/-/analytics-1.1.1.tgz#398ff80ad3d7d20bc0e66efc1c0b2c50bb2a959e"
+  integrity sha512-8ydvIbn9otjldUHKuYg48nqUvpdC4jMUl6BZNxTWniBnFi5ihxWI94cKabu2+L65uNJR3Aioa1FV0t6d4am2oQ==
   dependencies:
     cross-fetch "^3.0.4"
+
+"@appbaseio/reactivecore@9.14.40":
+  version "9.14.40"
+  resolved "https://registry.yarnpkg.com/@appbaseio/reactivecore/-/reactivecore-9.14.40.tgz#346cac1a476b4e9b5e9305e849746fd858d947f1"
+  integrity sha512-PIq31VBQRV45nNMVxmOBgYu05h2TxXw+GOQhBmPdAyDiX8Y/nNNua5SPNqZ/OHomIOIT1fGSygkKR6E/iZYdlA==
+  dependencies:
+    cross-fetch "^3.0.4"
+    dayjs "^1.11.7"
     prop-types "^15.6.0"
     redux "^4.0.0"
     redux-thunk "^2.3.0"
-    xdate "^0.8.2"
 
-"@appbaseio/reactivesearch-vue@<1.33.0":
-  version "1.32.4"
-  resolved "https://registry.yarnpkg.com/@appbaseio/reactivesearch-vue/-/reactivesearch-vue-1.32.4.tgz#aa4dcbdb61b4abe6d3d72232c21e9448360319c5"
-  integrity sha512-X5l+7p9r2uZjx+cj1lvmjR/6ZZ06YatDEewVHfPrQ4V2f0nYLElSViQ3HBZ5uuq0+pO8ZfsegY7nGh99h9pLFg==
+"@appbaseio/reactivesearch-vue@^1.33.13":
+  version "1.33.13"
+  resolved "https://registry.yarnpkg.com/@appbaseio/reactivesearch-vue/-/reactivesearch-vue-1.33.13.tgz#33aa197f4c51d9eaa14c73be96958774ee1a3fe5"
+  integrity sha512-csfqu1pOPaB/SS57xovAdQbl7CiGr5yvdjpKVccP+RfI6diqW/29Za+kI6BXHvFckNYnZTukfYbndnKP+fL0Cg==
   dependencies:
-    "@appbaseio/reactivecore" "9.14.29"
+    "@appbaseio/analytics" "^1.1.1"
+    "@appbaseio/reactivecore" "9.14.40"
     "@appbaseio/vue-emotion" "0.4.4"
     "@vue/babel-helper-vue-jsx-merge-props" "^1.0.0"
     appbase-js "^5.2.0"
@@ -657,6 +665,11 @@ csstype@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.1.1.tgz#841b532c45c758ee546a11d5bd7b7b473c8c30b9"
   integrity sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==
+
+dayjs@^1.11.7:
+  version "1.11.7"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.7.tgz#4b296922642f70999544d1144a2c25730fce63e2"
+  integrity sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==
 
 de-indent@^1.0.2:
   version "1.0.2"
@@ -1681,11 +1694,6 @@ wrap-ansi@^7.0.0:
     ansi-styles "^4.0.0"
     string-width "^4.1.0"
     strip-ansi "^6.0.0"
-
-xdate@^0.8.2:
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/xdate/-/xdate-0.8.2.tgz#d7b033c00485d02695baf0044f4eacda3fc961a3"
-  integrity sha1-17AzwASF0CaVuvAET06s2j/JYaM=
 
 xtend@^4.0.2:
   version "4.0.2"
