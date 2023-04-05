@@ -63,7 +63,7 @@ function init() {
 
                 shipping_address: useLocalStorage('shipping_address', address_defaults, {mergeDefaults: true, serializer: StorageSerializers.object}),
                 billing_address: useLocalStorage('billing_address', address_defaults, {mergeDefaults: true, serializer: StorageSerializers.object}),
-                hide_billing: useLocalStorage('billing_address', address_defaults, {mergeDefaults: true, serializer: StorageSerializers.object}),
+                hide_billing: useLocalStorage('hide_billing', true),
 
                 shipping_method: null,
                 shipping_methods: [],
