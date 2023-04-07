@@ -199,6 +199,11 @@ class Product extends Model
             return $val;
         }
 
-        return $this->transformModelValue($key, parent::getAttribute('super_'.$key));
+        $val = parent::getAttribute('super_'.$key);
+        if($this->hasCast('super_'.$key)) {
+            return $val;
+        }
+
+        return $this->transformModelValue($key, $val);
     }
 }
