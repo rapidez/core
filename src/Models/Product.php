@@ -4,6 +4,7 @@ namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Str;
 use Rapidez\Core\Casts\Children;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
@@ -189,5 +190,15 @@ class Product extends Model
     public static function exist($productId): bool
     {
         return self::withoutGlobalScopes()->where('entity_id', $productId)->exists();
+    }
+
+    public function getAttribute($key) {
+        $val = parent::getAttribute(...func_get_args());
+
+        if(isset($val) || Str::startsWith($key, 'super_')) {
+            return $val;
+        }
+
+        return $this->transformModelValue($key, parent::getAttribute('super_'.$key));
     }
 }
