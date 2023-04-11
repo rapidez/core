@@ -124,5 +124,4 @@ return [
         'notification'     => 'z-20',
         'slideover'        => 'z-50',
     ],
-
 ];

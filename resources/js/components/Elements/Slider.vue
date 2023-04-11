@@ -17,6 +17,10 @@
             vertical: {
                 type: Boolean,
                 default: false
+            },
+            visibleSlides: {
+                type: Number,
+                default: 3
             }
         },
         data: () => {
@@ -63,7 +67,7 @@
                 if (this.mounted) {
                     return this.vertical
                         ? Math.round(this.slider.scrollHeight / this.slider.offsetHeight)
-                        : Math.round(this.slider.scrollWidth / this.slider.offsetWidth)
+                        : Math.round(this.slider.scrollWidth / (this.slider.offsetWidth / this.visibleSlides) - this.visibleSlides + 1)
                 }
             }
         }

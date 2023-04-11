@@ -1,6 +1,11 @@
 <template {!! isset($slider) ? '' : 'slot="renderItem" slot-scope="{ item, count }"' !!}>
-    <div class="flex-none w-1/2 sm:w-1/3 lg:w-1/4 px-1 my-1 snap-start">
-        <div class="w-full bg-white rounded hover:shadow group relative" :key="item.id">
+    <div class="flex-none w-1/2 lg:w-1/3 my-0.5 px-0.5 sm:px-2 sm:my-2 snap-start">
+        <div class="w-full bg-white border rounded hover:opacity-80 group relative h-full flex flex-col" :key="item.id">
+            @if (App::providerIsLoaded('Rapidez\Wishlist\WishlistServiceProvider'))
+                <div class="absolute top-0 right-0 z-10 group p-2">
+                    @include('rapidez::wishlist.button')
+                </div>
+            @endif
             <a :href="item.url" class="block">
                 <picture v-if="item.thumbnail">
                     <source :srcset="'/storage/resizes/200/magento/catalog/product' + item.thumbnail + '.webp'" type="image/webp">
@@ -8,7 +13,7 @@
                 </picture>
                 <x-rapidez::no-image v-else class="rounded-t h-48 mb-3"/>
                 <div class="px-2">
-                    <div class="hyphens">@{{ item.name }}</div>
+                    <div class="text-base font-medium text-gray-900">@{{ item.name }}</div>
                     @if (!Rapidez::config('catalog/frontend/show_swatches_in_product_list', 1))
                         <div class="flex items-center space-x-2">
                             <div class="font-semibold">@{{ (item.special_price || item.price) | price}}</div>

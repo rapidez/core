@@ -15,10 +15,10 @@
 
     @stack('head')
 </head>
-<body class="bg-white antialiased">
-    <div id="app">
+<body class="text-primary antialiased">
+    <div id="app" class="flex flex-col min-h-screen">
         @include('rapidez::layouts.partials.header')
-        <main class="mx-5">
+        <main>
             @yield('content')
         </main>
         @include('rapidez::layouts.partials.footer')

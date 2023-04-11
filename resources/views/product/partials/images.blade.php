@@ -1,18 +1,17 @@
 <div class="relative">
-    @if(count($product->images))
-        <div class="flex items-center justify-center border rounded p-5 h-[440px]">
-            <img
-                src="/storage/resizes/400/magento/catalog/product{{ $product->images[0] }}.webp"
-                alt="{{ $product->name }}"
-                class="object-contain w-full m-auto max-h-[400px]"
-                width="400"
-                height="400"
-            />
+    @if (App::providerIsLoaded('Rapidez\Wishlist\WishlistServiceProvider'))
+        <div class="absolute top-0 right-0 z-10 group p-2">
+            @include('rapidez::wishlist.button')
+        </div>
+    @endif
+    @if (count($product->images))
+        <div class="absolute inset-0 flex h-[440px] items-center justify-center rounded border p-5">
+            <img src="/storage/resizes/400/catalog/product{{ $product->images[0] }}.webp" alt="{{ $product->name }}" class="m-auto max-h-[400px] w-full object-contain" width="400" height="400" />
         </div>
     @endif
 
     <images v-cloak>
-        <div class="absolute inset-0" slot-scope="{ images, active, zoomed, toggleZoom, change }">
+        <div slot-scope="{ images, active, zoomed, toggleZoom, change }">
             <div class="relative" v-if="images.length">
                 <a
                     :href="config.media_url + '/catalog/product' + images[active]"
@@ -36,16 +35,14 @@
                         loading="lazy"
                     />
                 </a>
-
-                <button class="top-1/2 -translate-y-1/2 left-3 {{ config('rapidez.z-indexes.lightbox')}}" :class="zoomed ? 'fixed' : 'absolute'" v-if="active" v-on:click="change(active-1)" aria-label="@lang('Prev')">
-                    <x-heroicon-s-chevron-left class="h-12 w-12"/>
+                <button class="{{ config('rapidez.z-indexes.lightbox') }} top-1/2 left-3 -translate-y-1/2" :class="zoomed ? 'fixed' : 'absolute'" v-if="active" v-on:click="change(active-1)" aria-label="@lang('Prev')">
+                    <x-heroicon-o-chevron-left class="h-8 w-8 text-gray-900" />
                 </button>
-
-                <button class="top-1/2 -translate-y-1/2 right-3 {{ config('rapidez.z-indexes.lightbox')}}" :class="zoomed ? 'fixed' : 'absolute'" v-if="active != images.length-1" v-on:click="change(active+1)" aria-label="@lang('Next')">
-                    <x-heroicon-s-chevron-right class="h-12 w-12"/>
+                <button class="{{ config('rapidez.z-indexes.lightbox') }} top-1/2 right-3 -translate-y-1/2" :class="zoomed ? 'fixed' : 'absolute'" v-if="active != images.length-1" v-on:click="change(active+1)" aria-label="@lang('Next')">
+                    <x-heroicon-o-chevron-right class="h-8 w-8 text-gray-900" />
                 </button>
             </div>
-            <x-rapidez::no-image v-else class="rounded h-96"/>
+            <x-rapidez::no-image v-else class="h-96 rounded" />
 
             <div v-if="images.length > 1" class="flex" :class="zoomed ? 'fixed bottom-0 left-3 {{ config('rapidez.z-indexes.lightbox')}}' : ' flex-wrap mt-3'">
                 <a
@@ -65,9 +62,11 @@
                     />
                 </a>
             </div>
-
-            <div v-if="zoomed" class="fixed top-3 right-3 pointer-events-none {{ config('rapidez.z-indexes.lightbox')}}">
-                <x-heroicon-o-x class="h-6 w-6"/>
+            <div v-if="zoomed" @class([
+            	config('rapidez.z-indexes.lightbox'),
+            	'pointer-events-none fixed top-3 right-3'
+            ])>
+                <x-heroicon-o-x class="h-6 w-6" />
             </div>
         </div>
     </images>
