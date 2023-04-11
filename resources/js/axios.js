@@ -16,17 +16,17 @@ window.magentoUser.defaults.headers.common['Authorization'] = `Bearer ${localSto
 const instances = [window.axios, window.magento, window.magentoUser]
 instances.forEach(function (instance) {
     instance.interceptors.request.use(function (config) {
-        window.app.$data.loading = true
+        window.app.$data.loadingCount++
         return config;
     }, function (error) {
         return Promise.reject(error);
     });
 
     instance.interceptors.response.use(function (response) {
-        window.app.$data.loading = false
+        window.app.$data.loadingCount--
         return response
     }, function(error) {
-        window.app.$data.loading = false
+        window.app.$data.loadingCount--
         return Promise.reject(error)
     });
 })

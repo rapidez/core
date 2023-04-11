@@ -33,5 +33,3 @@ Vue.component('listing', () => import('./components/Listing/Listing.vue'))
 Vue.component('coupon', () => import('./components/Coupon/Coupon.vue'))
 Vue.component('checkout', () => import('./components/Checkout/Checkout.vue'))
 Vue.component('checkout-success', () => import('./components/Checkout/CheckoutSuccess.vue'))
-
-
