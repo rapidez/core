@@ -19,11 +19,7 @@
         v-cloak
     >
         <div slot-scope="{ loaded, filters, sortOptions, reactiveFilters }">
-            <reactive-base
-                :app="config.es_prefix + '_products_' + config.store"
-                :url="config.es_url"
-                v-if="loaded"
-            >
+            <x-rapidez::reactive-base v-if="loaded">
                 @isset($query)
                     <reactive-component
                         component-id="query-filter"
@@ -46,7 +42,7 @@
                      {{ $slot }}
                 @endif
                 {{ $after ?? '' }}
-            </reactive-base>
+            </x-rapidez::reactive-base>
         </div>
     </listing>
 </div>

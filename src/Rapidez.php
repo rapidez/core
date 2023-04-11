@@ -21,6 +21,14 @@ class Rapidez
         return $this;
     }
 
+    public function removeFallbackRoute($action)
+    {
+        $action = RouteAction::parse('', $action);
+        $this->routes = $this->routes->reject(fn ($route) => $route['action'] === $action);
+
+        return $this;
+    }
+
     public function getAllFallbackRoutes()
     {
         return $this->routes->sortBy('position');
