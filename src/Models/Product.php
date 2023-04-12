@@ -191,19 +191,4 @@ class Product extends Model
     {
         return self::withoutGlobalScopes()->where('entity_id', $productId)->exists();
     }
-
-    public function getAttribute($key) {
-        $val = parent::getAttribute(...func_get_args());
-
-        if(isset($val) || Str::startsWith($key, 'super_')) {
-            return $val;
-        }
-
-        $val = parent::getAttribute('super_'.$key);
-        if($this->hasCast('super_'.$key)) {
-            return $val;
-        }
-
-        return $this->transformModelValue($key, $val);
-    }
 }
