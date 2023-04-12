@@ -19,10 +19,10 @@
                 >
                     <option disabled selected hidden :value="undefined">@lang('Select') @{{ superAttribute.label.toLowerCase() }}</option>
                     <option
-                        v-for="option in Object.values(config.product[superAttribute.code]).sort((a, b) => a.sort_order - b.sort_order)"
+                        v-for="option in Object.values(config.product['super_'+superAttribute.code]).sort((a, b) => a.sort_order - b.sort_order)"
                         v-text="option.label"
                         :value="option.value"
-                        :disabled="disabledOptions[superAttribute.code].includes(option.value)"
+                        :disabled="disabledOptions['super_'+superAttribute.code].includes(option.value)"
                     />
                 </x-rapidez::select>
             </div>

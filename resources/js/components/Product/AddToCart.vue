@@ -127,9 +127,10 @@
                     let swatchOptions = this.$root.swatches[superAttributeCode].options
                     let values = {}
 
-                    Object.entries(this.product[superAttributeCode]).forEach(([key, val]) => {
-                        if (swatchOptions[val]) {
-                            values[val] = swatchOptions[val]
+                    Object.entries(this.product['super_'+superAttributeCode]).forEach(([key, val]) => {
+                        let swatch = swatchOptions.find((swatch) => swatch.value === val);
+                        if (swatch) {
+                            values[val] = swatch
                         }
                     })
 
@@ -198,7 +199,7 @@
                 }
 
                 Object.entries(this.product.super_attributes).forEach(([attributeId, attribute]) => {
-                    disabledOptions[attribute.code] = []
+                    disabledOptions['super_'+attribute.code] = []
                     valuesPerAttribute[attributeId] = {}
 
                     // Fill list with products per attribute value
@@ -232,7 +233,7 @@
                                 return;
                             }
 
-                            disabledOptions[attributeCode].push(valueId)
+                            disabledOptions['super_'+attributeCode].push(valueId)
                         })
                     })
                 })
