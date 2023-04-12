@@ -33,7 +33,7 @@ class WithProductSuperAttributesScope implements Scope
                 ->whereColumn('parent_id', $model->getTable().'.entity_id')
                 ->whereNotNull($superAttribute);
 
-            $builder->selectSub($query, $superAttribute);
+            $builder->selectSub($query, 'super_'.$superAttribute);
         }
 
         $query = DB::table('catalog_product_super_attribute')
