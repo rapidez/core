@@ -55,11 +55,11 @@ class Quote extends Model
         static::addGlobalScope(new IsActiveScope());
         static::addGlobalScope('with-all-information', function (Builder $builder) {
             $builder
-                ->addSelect([
-                    'quote.entity_id',
+                ->addSelect($builder->qualifyColumns([
+                    'entity_id',
                     'items_count',
                     'items_qty',
-                ])
+                ]))
                 ->selectRaw('
                     MAX(quote_address.subtotal_incl_tax) as subtotal,
                     MAX(quote_address.subtotal) as subtotal_excl_tax,
@@ -92,13 +92,13 @@ class Quote extends Model
                         "type", quote_item.product_type
                     QUERY).'
                 )), "$.null__") AS items')
-                ->leftJoin('quote_id_mask', 'quote_id_mask.quote_id', '=', 'quote.entity_id')
-                ->leftJoin('oauth_token', 'oauth_token.customer_id', '=', 'quote.customer_id')
-                ->leftJoin('quote_address', function ($join) {
-                    $join->on('quote_address.quote_id', '=', 'quote.entity_id');
+                ->leftJoin('quote_id_mask', 'quote_id_mask.quote_id', '=', $builder->getModel()->getQualifiedKeyName())
+                ->leftJoin('oauth_token', 'oauth_token.customer_id', '=', $builder->qualifyColumn('customer_id'))
+                ->leftJoin('quote_address', function ($join) use ($builder) {
+                    $join->on('quote_address.quote_id', '=', $builder->getModel()->getQualifiedKeyName());
                 })
-                ->leftJoin('quote_item', function ($join) {
-                    $join->on('quote_item.quote_id', '=', 'quote.entity_id')->whereNull('quote_item.parent_item_id');
+                ->leftJoin('quote_item', function ($join) use ($builder) {
+                    $join->on('quote_item.quote_id', '=', $builder->getModel()->getQualifiedKeyName())->whereNull('quote_item.parent_item_id');
                 })
                 ->leftJoin('quote_item_option', function ($join) {
                     $join->on('quote_item.item_id', '=', 'quote_item_option.item_id')->where('code', 'attributes');
@@ -108,13 +108,8 @@ class Quote extends Model
                 ->leftJoin('catalog_product_link AS cross_sell', function ($join) {
                     $join->on('cross_sell.product_id', '=', 'quote_item.product_id')->where('cross_sell.link_type_id', '=', 5);
                 })
-                ->groupBy('quote.entity_id');
+                ->groupBy($builder->getModel()->getQualifiedKeyName());
         });
-    }
-
-    public function quote_id_masks()
-    {
-        return $this->hasMany(config('rapidez.models.sales.quote_id_mask'), 'quote_id');
     }
 
     public function sales_order()

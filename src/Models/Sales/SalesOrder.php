@@ -4,8 +4,6 @@ namespace Rapidez\Core\Models\Sales;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Rapidez\Core\Models\Customer\CustomerEntity;
-use Rapidez\Core\Models\Quote\Quote;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
 
 class SalesOrder extends Model
@@ -132,11 +130,6 @@ class SalesOrder extends Model
         return $this->belongsTo(config('rapidez.models.quote'), 'quote_id');
     }
 
-    public function customer_entity()
-    {
-        return $this->belongsTo(config('rapidez.models.customer.entity'), 'customer_id');
-    }
-
     public function sales_order_addresses()
     {
         return $this->hasMany(config('rapidez.models.sales.order_address'), 'parent_id');
@@ -152,39 +145,14 @@ class SalesOrder extends Model
         return $this->hasMany(config('rapidez.models.sales.order_payment'), 'parent_id');
     }
 
-    public function scopeWhereQuoteIdMask(Builder $query, $quoteIdMask)
+    public function scopeWhereQuoteIdOrCustomerToken(Builder $query, $quoteIdMaskOrCustomerToken)
     {
         $query->whereHas(
             'quote',
             fn ($query) => $query
-            ->withoutGlobalScope(IsActiveScope::class)
-            ->whereHas(
-                'quote_id_masks',
-                fn ($query) => $query
-                ->where('masked_id', $quoteIdMask)
-            )
-        );
-    }
-
-    public function scopeWhereCustomerToken(Builder $query, $customerToken)
-    {
-        $query->whereHas(
-            'customer_entity',
-            fn ($query) => $query
-            ->whereHas(
-                'oauth_tokens',
-                fn ($query) => $query
-                ->where('token', $customerToken)
-            )
-        );
-    }
-
-    public function scopeWhereQuoteIdOrCustomerToken(Builder $query, $quoteIdMaskOrCustomerToken)
-    {
-        $query->where(
-            fn ($query) => $query
-                ->whereQuoteIdMask($quoteIdMaskOrCustomerToken)
-                ->orWhere(fn ($query) => $query->whereCustomerToken($quoteIdMaskOrCustomerToken))
+                ->withoutGlobalScope(IsActiveScope::class)
+                ->where('quote_id_mask.masked_id', $quoteIdMaskOrCustomerToken)
+                ->orWhere('oauth_token.token', $quoteIdMaskOrCustomerToken)
         );
     }
 }
