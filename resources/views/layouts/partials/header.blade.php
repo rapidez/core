@@ -1,5 +1,5 @@
 <header class="relative mb-5 border-b shadow">
-    <div class="{{ Route::currentRouteName() == 'checkout' ? 'justify-center' : '' }} container mx-auto flex flex-wrap items-center px-3">
+    <div class="{{ Route::currentRouteName() == 'checkout' ? 'justify-center' : '' }} container mx-auto flex flex-wrap items-center max-sm:px-3">
         <input
             id="navigation"
             class="peer hidden"
