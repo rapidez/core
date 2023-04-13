@@ -14,7 +14,9 @@ export default {
 
         async refreshUser(redirect = true) {
             if (!localStorage.token) {
-                return this.onLogout()
+                localStorage.removeItem('user')
+                this.$root.user = null
+                return
             }
 
             try {
