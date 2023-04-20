@@ -50,13 +50,9 @@ export default {
     },
     methods: {
         scroll(event) {
-            this.position = this.vertical
-                ? event.currentTarget.scrollTop
-                : event.currentTarget.scrollLeft
+            this.position = this.vertical? event.currentTarget.scrollTop: event.currentTarget.scrollLeft
             this.showLeft = this.position
-            this.showRight =
-                this.slider.offsetWidth + this.position <
-                this.slider.scrollWidth - 1
+            this.showRight =this.slider.offsetWidth + this.position <this.slider.scrollWidth - 1
         },
 
         navigate(index) {
@@ -86,26 +82,10 @@ export default {
             return this.$scopedSlots.default()[0].context.$refs[this.reference]
         },
         currentSlide() {
-            if (this.mounted) {
-                return this.vertical
-                    ? Math.round(
-                          this.position / this.slider.children[0]?.offsetHeight
-                      )
-                    : Math.round(
-                          this.position / this.slider.children[0]?.offsetWidth
-                      )
-            }
+            if (this.mounted) {return this.vertical? Math.round(this.position / this.slider.children[0]?.offsetHeight): Math.round( this.position / this.slider.children[0]?.offsetWidth)}
         },
         slidesTotal() {
-            if (this.mounted) {
-                return this.vertical
-                    ? Math.round(
-                          this.slider.scrollHeight / this.slider.offsetHeight
-                      )
-                    : Math.round(
-                          this.slider.scrollWidth / this.slider.offsetWidth
-                      )
-            }
+            if (this.mounted) {return this.vertical? Math.round(this.slider.scrollHeight / this.slider.offsetHeight): Math.round(this.slider.scrollWidth / this.slider.offsetWidth)}
         },
     },
 }
