@@ -18,7 +18,7 @@ export default {
             type: Boolean,
             default: false,
         },
-        interval: {
+        autoScrollInterval: {
             type: Number,
             default: false,
         },
@@ -37,14 +37,14 @@ export default {
         this.slider.dispatchEvent(new CustomEvent('scroll'))
         this.mounted = true
         if (this.interval > 0) {
-            window.setInterval(this.autoScroll, this.interval * 1000)
+            window.setInterval(this.autoScroll, this.autoScrollInterval * 1000)
         }
     },
     beforeDestroy() {
         this.slider.removeEventListener('scroll', this.scroll)
     },
     destroyed() {
-        if (this.interval > 0) {
+        if (this.autoScrollInterval > 0) {
             window.clearInterval(this.autoScroll)
         }
     },
