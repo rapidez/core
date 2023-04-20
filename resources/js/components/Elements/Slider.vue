@@ -70,9 +70,6 @@ export default {
                       0
                   )
         },
-        setHover(value) {
-            this.hover = value
-        },
 
         autoScroll() {
             if (!this.hover) {
