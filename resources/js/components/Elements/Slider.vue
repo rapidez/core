@@ -54,7 +54,7 @@
             }
 
             if (this.autoplay) {
-                const { pause, resume } = useIntervalFn(this.autoScroll, this.interval)
+                let { pause, resume } = useIntervalFn(this.autoScroll, this.interval)
                 this.pause = pause
                 this.resume = resume
             }
