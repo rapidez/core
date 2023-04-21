@@ -1,5 +1,6 @@
 <script>
-    import { useElementHover } from '@vueuse/core'
+    import { useElementHover, useIntervalFn } from '@vueuse/core'
+    
     export default {
         render() {
             return this.$scopedSlots.default({
@@ -21,7 +22,7 @@
             },
             interval: {
                 type: Number,
-                default: 5,
+                default: 5000,
             },
             autoplay: {
                 type: Boolean,
@@ -38,7 +39,9 @@
                 showLeft: false,
                 showRight: false,
                 mounted: false,
-                hover: false
+                hover: false,
+                pause: ()=>{},
+                resume: ()=>{}
             }
         },
         mounted() {
@@ -49,15 +52,15 @@
             if(this.stopOnHover){
                 this.hover = useElementHover(this.slider);
             }
+
             if (this.autoplay && this.interval > 0) {
-                window.setInterval(this.autoScroll, this.interval * 1000)
+                const { pause, resume } = useIntervalFn(this.autoScroll, this.interval)
+                this.pause = pause
+                this.resume = resume
             }
         },
         beforeDestroy() {
             this.slider.removeEventListener('scroll', this.scroll)
-            if (this.autoplay && this.interval > 0) {
-                window.clearInterval(this.autoScroll)
-            }
         },
         methods: {
             scroll(event) {
@@ -67,19 +70,27 @@
             },
 
             autoScroll() {
-                if(!this.hover || !this.stopOnHover) {
-                    let next = this.currentSlide + 1
-                    while (next >= this.slidesTotal) {
-                        next -= this.slidesTotal
-                    }
-                    this.navigate(next)
+                let next = this.currentSlide + 1
+                if (next >= this.slidesTotal) {
+                    next = 0
                 }
+                this.navigate(next)
             },
 
             navigate(index) {
                 this.vertical
                     ? this.slider.scrollTo(0, this.slider.children[index]?.offsetTop)
                     : this.slider.scrollTo(this.slider.children[0]?.offsetWidth * index, 0)
+            }
+        },
+        watch: {
+            hover(isHovering){
+                if (!isHovering || !this.stopOnHover) {
+                    this.resume()
+                }
+                else {
+                    this.pause()
+                }
             }
         },
         computed: {
