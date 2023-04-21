@@ -42,8 +42,6 @@ export default {
     },
     beforeDestroy() {
         this.slider.removeEventListener('scroll', this.scroll)
-    },
-    destroyed() {
         if (this.autoScrollInterval > 0) {
             window.clearInterval(this.autoScroll)
         }
