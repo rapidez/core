@@ -24,7 +24,7 @@
             },
             interval: {
             type: Number,
-            default: false,
+            default: 5,
             },
             autoplay: {
                 type: Boolean,
