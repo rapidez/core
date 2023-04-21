@@ -23,8 +23,8 @@
                 default: false
             },
             interval: {
-            type: Number,
-            default: 5,
+                type: Number,
+                default: 5,
             },
             autoplay: {
                 type: Boolean,
