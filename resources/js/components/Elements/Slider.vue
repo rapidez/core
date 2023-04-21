@@ -1,6 +1,5 @@
 <script>
     import { useElementHover } from '@vueuse/core'
-    import { ref } from 'vue'
     export default {
         render() {
             return this.$scopedSlots.default({
