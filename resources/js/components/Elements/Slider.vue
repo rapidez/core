@@ -87,8 +87,7 @@
             hover(isHovering){
                 if (!isHovering || !this.stopOnHover) {
                     this.resume()
-                }
-                else {
+                } else {
                     this.pause()
                 }
             }
