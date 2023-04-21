@@ -53,7 +53,7 @@
                 this.hover = useElementHover(this.slider);
             }
 
-            if (this.autoplay && this.interval > 0) {
+            if (this.autoplay) {
                 const { pause, resume } = useIntervalFn(this.autoScroll, this.interval)
                 this.pause = pause
                 this.resume = resume
