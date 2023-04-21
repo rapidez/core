@@ -37,7 +37,7 @@ class IndexCategoriesCommand extends InteractsWithElasticsearchCommand
             $this->line('Indexing categories for store: '.$store->name);
             $this->setStore($store);
 
-            $categoryModelInstance = new $categoryModel;
+            $categoryModelInstance = new $categoryModel();
             $data = config('rapidez.models.category')::select($categoryModelInstance->qualifyColumns(['entity_id', 'name', 'url_path', 'children_count']))
                 ->whereNotNull('url_key')->whereNot('url_key', 'default-category')
                 ->where('children_count', '>', 0)
@@ -50,11 +50,11 @@ class IndexCategoriesCommand extends InteractsWithElasticsearchCommand
             foreach ($data as $item) {
                 $this->elasticsearch->index([
                     'index' => $index,
-                    'id' => $item->entity_id,
-                    'body' => [
-                        'title' => $item->name,
-                        'url' => $item->url_path,
-                        'content' => $item->name,
+                    'id'    => $item->entity_id,
+                    'body'  => [
+                        'title'    => $item->name,
+                        'url'      => $item->url_path,
+                        'content'  => $item->name,
                         'children' => $item->children_count ?? 0,
                     ],
                 ]);
