@@ -1,6 +1,40 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/0.83.1...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/0.86.0...master)
+## [0.86.0](https://github.com/rapidez/core/releases/tag/0.86.0) - 2023-04-14
+
+#### Changed
+
+- Prefix super attributes (#234)
+
+#### Fixed
+
+- Update reactivesearch to the latest version fixing u-r-l-params (#232)
+- Prevent loading turning false when one of multiple simultaneous finishes (#233)
+- Change onLogout usage to avoid unnecessarily clearing email (#239)
+
+## [0.85.1](https://github.com/rapidez/core/releases/tag/0.85.1) - 2023-03-31
+
+#### Fixed
+
+- Clear cache order in the index products command (67c85ed)
+
+## [0.85.0](https://github.com/rapidez/core/releases/tag/0.85.0) - 2023-03-28
+
+#### Added
+
+- Select category children_count by default (821a23b)
+
+## [0.84.0](https://github.com/rapidez/core/releases/tag/0.84.0) - 2023-03-23
+
+#### Added
+
+- Use laravel events for before/after index (#227)
+
+#### Fixed
+
+- Exact match the shipping method instead of splitting by underscore (#220)
+
 ## [0.83.1](https://github.com/rapidez/core/releases/tag/0.83.1) - 2023-03-22
 
 #### Fixed
