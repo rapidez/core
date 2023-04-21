@@ -49,7 +49,7 @@
             this.slider.dispatchEvent(new CustomEvent('scroll'))
             this.mounted = true
 
-            if(this.stopOnHover){
+            if (this.stopOnHover){
                 this.hover = useElementHover(this.slider);
             }
 
