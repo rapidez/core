@@ -1,4 +1,6 @@
 <script>
+    import { useElementHover } from '@vueuse/core'
+    import { ref } from 'vue'
     export default {
         render() {
             return this.$scopedSlots.default({
@@ -7,10 +9,6 @@
                 showRight: this.showRight,
                 currentSlide: this.currentSlide,
                 slidesTotal: this.slidesTotal,
-                navigate: this.navigate,
-                currentSlide: this.currentSlide,
-                slidesTotal: this.slidesTotal,
-                setHover: this.setHover
             })
         },
         props: {
@@ -30,6 +28,10 @@
                 type: Boolean,
                 default: false,
             },
+            stopOnHover: {
+                type: Boolean,
+                default: false,
+            },
         },
         data: () => {
             return {
@@ -37,13 +39,17 @@
                 showLeft: false,
                 showRight: false,
                 mounted: false,
-                hover: false
+                hover: ref()
             }
         },
         mounted() {
             this.slider.addEventListener('scroll', this.scroll)
             this.slider.dispatchEvent(new CustomEvent('scroll'))
             this.mounted = true
+            
+            if(this.stopOnHover){
+                this.hover = useElementHover(this.slider);
+            }
             if (this.autoplay && this.interval > 0) {
                 window.setInterval(this.autoScroll, this.interval * 1000)
             }
@@ -61,11 +67,8 @@
                 this.showRight = (this.slider.offsetWidth + this.position) < this.slider.scrollWidth - 1
             },
 
-            setHover(value) {
-                this.hover = value
-            },
             autoScroll() {
-                if (!this.hover) {
+                if(!this.hover || !this.stopOnHover) {
                     let next = this.currentSlide + 1
                     while (next >= this.slidesTotal) {
                         next -= this.slidesTotal
@@ -97,7 +100,7 @@
                         ? Math.round(this.slider.scrollHeight / this.slider.offsetHeight)
                         : Math.round(this.slider.scrollWidth / this.slider.offsetWidth)
                 }
-            }
-        }
+            },
+        },
     }
 </script>
