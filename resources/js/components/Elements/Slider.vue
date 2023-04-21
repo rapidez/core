@@ -30,7 +30,7 @@
             },
             stopOnHover: {
                 type: Boolean,
-                default: false,
+                default: true,
             },
         },
         data: () => {
@@ -39,14 +39,14 @@
                 showLeft: false,
                 showRight: false,
                 mounted: false,
-                hover: ref()
+                hover: false
             }
         },
         mounted() {
             this.slider.addEventListener('scroll', this.scroll)
             this.slider.dispatchEvent(new CustomEvent('scroll'))
             this.mounted = true
-            
+
             if(this.stopOnHover){
                 this.hover = useElementHover(this.slider);
             }
