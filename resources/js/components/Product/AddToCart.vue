@@ -64,7 +64,7 @@
                 this.qty = event.target.value
             },
 
-            async add() {
+            async add(count) {
                 if ('children' in this.product
                     && Object.values(this.product.children).length
                     && window.location.pathname !== this.product.url
@@ -72,6 +72,8 @@
                     Turbo.visit(this.product.url)
                     return;
                 }
+                
+                let addQty = count ?? this.qty;
 
                 this.added = false
                 this.adding = true
@@ -81,7 +83,7 @@
                     cartItem: {
                         sku: this.product.sku,
                         quote_id: localStorage.mask,
-                        qty: this.qty,
+                        qty: addQty,
                         product_option: this.productOptions
                     }
                 }).then(async (response) => {
@@ -90,11 +92,11 @@
                     this.added = true
                     setTimeout(() => { this.added = false }, this.addedDuration)
                     if (this.callback) {
-                        await this.callback(this.product, this.qty)
+                        await this.callback(this.product, addQty)
                     }
                     this.$root.$emit('cart-add', {
                         product: this.product,
-                        qty: this.qty,
+                        qty: addQty,
                     })
                     if (this.notifySuccess) {
                         Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success', [], '/cart')
