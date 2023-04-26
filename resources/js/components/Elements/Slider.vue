@@ -59,9 +59,6 @@
                 this.resume = resume
             }
         },
-        beforeDestroy() {
-            this.slider.removeEventListener('scroll', this.scroll)
-        },
         methods: {
             scroll(event) {
                 this.position  = this.vertical ? event.currentTarget.scrollTop : event.currentTarget.scrollLeft
