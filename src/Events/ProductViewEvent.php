@@ -8,7 +8,8 @@ use Rapidez\Core\Models\Product;
 
 class ProductViewEvent
 {
-    use Dispatchable, SerializesModels;
+    use Dispatchable;
+    use SerializesModels;
 
     public $product;
 

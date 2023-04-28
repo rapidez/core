@@ -5,7 +5,6 @@ namespace Rapidez\Core\Listeners;
 use Illuminate\Support\Facades\DB;
 use Rapidez\Core\Events\ProductViewEvent;
 use Rapidez\Core\Facades\Rapidez;
-use Rapidez\Core\Models\Product;
 
 class ReportProductView
 {
@@ -17,7 +16,7 @@ class ReportProductView
 
         DB::table('report_viewed_product_index')->insert([
             'product_id' => $event->product->id,
-            'store_id' => config('rapidez.store'),
+            'store_id'   => config('rapidez.store'),
         ]);
     }
 }
