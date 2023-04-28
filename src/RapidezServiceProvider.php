@@ -4,6 +4,7 @@ namespace Rapidez\Core;
 
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -11,12 +12,14 @@ use Rapidez\Core\Commands\IndexProductsCommand;
 use Rapidez\Core\Commands\InstallCommand;
 use Rapidez\Core\Commands\InstallTestsCommand;
 use Rapidez\Core\Commands\ValidateCommand;
+use Rapidez\Core\Events\ProductViewEvent;
 use Rapidez\Core\Facades\Rapidez as RapidezFacade;
 use Rapidez\Core\Http\Controllers\Fallback\CmsPageController;
 use Rapidez\Core\Http\Controllers\Fallback\LegacyFallbackController;
 use Rapidez\Core\Http\Controllers\Fallback\UrlRewriteController;
 use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
 use Rapidez\Core\Http\ViewComposers\ConfigComposer;
+use Rapidez\Core\Listeners\ReportProductView;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
 
