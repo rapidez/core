@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core\Http\Controllers;
 
+use Rapidez\Core\Events\ProductViewEvent;
 use TorMorten\Eventy\Facades\Eventy;
 
 class ProductController
@@ -19,6 +20,8 @@ class ProductController
         foreach ($product->super_attributes ?: [] as $superAttribute) {
             $attributes[] = 'super_'.$superAttribute->code;
         }
+
+        ProductViewEvent::dispatch($product);
 
         config(['frontend.product' => $product->only($attributes)]);
 

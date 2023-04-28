@@ -32,7 +32,8 @@ class RapidezServiceProvider extends ServiceProvider
             ->bootViews()
             ->bootBladeComponents()
             ->bootMiddleware()
-            ->bootTranslations();
+            ->bootTranslations()
+            ->bootListeners();
     }
 
     public function bootTranslations()
@@ -175,6 +176,13 @@ class RapidezServiceProvider extends ServiceProvider
     {
         $this->app->singleton('rapidez', Rapidez::class);
         $this->app->bind('widget-directive', WidgetDirective::class);
+
+        return $this;
+    }
+
+    protected function bootListeners(): self
+    {
+        Event::listen(ProductViewEvent::class, ReportProductView::class);
 
         return $this;
     }
