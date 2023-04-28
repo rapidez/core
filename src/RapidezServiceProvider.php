@@ -36,11 +36,6 @@ class RapidezServiceProvider extends ServiceProvider
             ->bootListeners();
     }
 
-    public function bootTranslations()
-    {
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'rapidez');
-    }
-
     public function register()
     {
         $this
@@ -165,6 +160,20 @@ class RapidezServiceProvider extends ServiceProvider
         return $this;
     }
 
+    public function bootTranslations(): self
+    {
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'rapidez');
+
+        return $this;
+    }
+
+    protected function bootListeners(): self
+    {
+        Event::listen(ProductViewEvent::class, ReportProductView::class);
+
+        return $this;
+    }
+
     protected function registerConfigs(): self
     {
         $this->mergeConfigFrom(__DIR__.'/../config/rapidez.php', 'rapidez');
@@ -176,13 +185,6 @@ class RapidezServiceProvider extends ServiceProvider
     {
         $this->app->singleton('rapidez', Rapidez::class);
         $this->app->bind('widget-directive', WidgetDirective::class);
-
-        return $this;
-    }
-
-    protected function bootListeners(): self
-    {
-        Event::listen(ProductViewEvent::class, ReportProductView::class);
 
         return $this;
     }
