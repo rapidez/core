@@ -2,7 +2,6 @@
 
 namespace Rapidez\Core\Listeners;
 
-use Illuminate\Support\Facades\DB;
 use Rapidez\Core\Events\ProductViewEvent;
 use Rapidez\Core\Facades\Rapidez;
 
