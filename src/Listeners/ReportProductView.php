@@ -14,9 +14,6 @@ class ReportProductView
             return;
         }
 
-        DB::table('report_viewed_product_index')->insert([
-            'product_id' => $event->product->id,
-            'store_id'   => config('rapidez.store'),
-        ]);
+        $event->product->views()->create();
     }
 }
