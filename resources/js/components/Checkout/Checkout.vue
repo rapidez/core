@@ -207,7 +207,7 @@
                         shipping_address: this.shippingAddress,
                         billing_address: this.billingAddress,
                         shipping_carrier_code: this.currentShippingMethod.carrier_code,
-                        shipping_method_code: this.currentShippingMethod.method_code,
+                        shipping_method_code: this.currentShippingMethod.method_code
                     }
                 })
                 this.checkout.totals = response.data.totals

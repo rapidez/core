@@ -1,6 +1,5 @@
 <script>
 import { useWebWorkerFn } from '@vueuse/core'
-
 import categoryFilterCategory from './CategoryFilterCategory.vue'
 Vue.component('category-filter-category', categoryFilterCategory)
 
