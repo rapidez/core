@@ -3,6 +3,9 @@ import { useWebWorkerFn } from '@vueuse/core'
 import categoryFilterCategory from './CategoryFilterCategory.vue'
 Vue.component('category-filter-category', categoryFilterCategory)
 
+import categoryFilterCategory from './CategoryFilterCategory.vue'
+Vue.component('category-filter-category', categoryFilterCategory)
+
 export default {
     props: {
         aggregations: Object,

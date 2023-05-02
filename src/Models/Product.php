@@ -4,6 +4,7 @@ namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Rapidez\Core\Casts\Children;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
@@ -85,6 +86,15 @@ class Product extends Model
             'catalog_product_entity_media_gallery_value_to_entity',
             'entity_id',
             'value_id',
+            'id'
+        );
+    }
+
+    public function views(): HasMany
+    {
+        return $this->hasMany(
+            config('rapidez.models.productview'),
+            'product_id',
             'id'
         );
     }

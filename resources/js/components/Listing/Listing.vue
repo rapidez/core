@@ -9,6 +9,7 @@
     } from '@appbaseio/reactivesearch-vue'
     import VueSlider from 'vue-slider-component'
     import categoryFilter from './Filters/CategoryFilter.vue'
+    import useAttributes from '../../stores/useAttributes.js'
 
     Vue.use(ReactiveBase)
     Vue.use(ReactiveList)
@@ -33,7 +34,7 @@
 
         data: () => ({
             loaded: false,
-            attributes: [],
+            attributes: useAttributes(),
         }),
 
         render() {
@@ -46,38 +47,23 @@
         },
 
         mounted() {
-            if (localStorage.attributes) {
-                this.attributes = JSON.parse(localStorage.attributes)
-                this.loaded = true
-                return;
-            }
-
-            axios.get('/api/attributes')
-                 .then((response) => {
-                    this.attributes = response.data
-                    localStorage.attributes = JSON.stringify(this.attributes)
-                    this.loaded = true
-                 })
-                 .catch((error) => {
-                    Notify(window.config.errors.wrong, 'error', error.response.data?.parameters)
-                })
+            this.loaded = Object.keys(this.attributes).length > 0
         },
 
         computed: {
             filters: function () {
-                return window.sortBy(window.filter(this.attributes, function (attribute) {
-                    return attribute.filter;
-                }), 'position')
+                return Object.values(this.attributes)
+                    .filter((attribute) => attribute.filter)
+                    .sort((a, b) => a.position - b.position);
             },
             sortings: function () {
-                return window.filter(this.attributes, function (attribute) {
-                    return attribute.sorting;
-                })
+                return Object.values(this.attributes)
+                    .filter((attribute) => attribute.sorting)
             },
             reactiveFilters: function () {
-                return window.map(this.filters, function (filter) {
-                    return filter.code;
-                }).concat(this.additionalFilters);
+                return this.filters
+                    .map((filter) => filter.code)
+                    .concat(this.additionalFilters);
             },
             sortOptions: function () {
                 return [
@@ -86,11 +72,11 @@
                         dataField: '_score',
                         sortBy: 'desc'
                     }
-                ].concat(window.flatMap(this.sortings, function (sorting) {
-                    return window.map({
-                        asc: window.config.translations.asc,
-                        desc: window.config.translations.desc
-                    }, function (directionLabel, directionKey) {
+                ].concat(this.sortings.flatMap(function (sorting) {
+                    return [
+                        ['asc', window.config.translations.asc],
+                        ['desc', window.config.translations.desc]
+                    ].map(function ([directionLabel, directionKey]) {
                         return {
                             label: window.config.translations.sorting?.[sorting.code]?.[directionKey] ?? sorting.name + ' ' + directionLabel,
                             dataField: sorting.code + (sorting.code != 'price' ? '.keyword' : ''),
@@ -98,6 +84,11 @@
                         }
                     })
                 })).concat(this.additionalSorting)
+            }
+        },
+        watch: {
+            attributes: function (value) {
+                this.loaded = Object.keys(value).length > 0
             }
         }
     }

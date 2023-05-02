@@ -1,4 +1,4 @@
-<div class="col-span-12" v-if="$root.user">
+<div class="col-span-12" v-if="$root.user?.id">
     <graphql query="{ customer { addresses { id firstname lastname street city postcode country_code } } }">
         <div v-if="data" slot-scope="{ data }">
             <x-rapidez::select v-model="checkout.{{ $type }}_address.customer_address_id" label="">
@@ -15,7 +15,7 @@
     </graphql>
 </div>
 
-<div class="contents" v-if="!$root.user || !checkout.{{ $type }}_address.customer_address_id">
+<div class="contents" v-if="!$root.user?.id || !checkout.{{ $type }}_address.customer_address_id">
     <div class="col-span-12 {{ Rapidez::config('customer/address/middlename_show', 0) ? 'sm:col-span-4' : 'sm:col-span-6'}}">
         <x-rapidez::input
             label="Firstname"

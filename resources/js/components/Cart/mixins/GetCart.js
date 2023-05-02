@@ -1,73 +1,43 @@
+import { useLocalStorage } from "@vueuse/core"
+import { cart, refresh as refreshCart, clear as clearCart } from "../../../stores/useCart"
+import { user } from "../../../stores/useUser"
+import { mask, refresh as retrieveMask } from "../../../stores/useMask"
+
 export default {
     methods: {
         getCart() {
-            if (this.$root.cart === null && localStorage.cart) {
-                this.$root.cart = JSON.parse(localStorage.cart)
-            }
-
-            return this.$root.cart
+            return cart.value
         },
 
         clearCart(keys = []) {
-            keys.push('cart')
-            keys.push('mask')
+            clearCart()
 
             Object.values(keys).forEach((key) => {
-                localStorage.removeItem(key)
+                useLocalStorage(key).value = null;
             })
 
             this.clearAdresses()
-
-            window.app.cart = null
         },
 
         clearAdresses() {
-            Object.keys(localStorage).forEach((key) => {
-                if (!key.startsWith('shipping_') && !key.startsWith('billing_')) {
-                    return;
-                }
-                localStorage.removeItem(key)
-            })
+            useLocalStorage('billing_address').value = null;
+            useLocalStorage('shipping_address').value = null;
         },
 
         async refreshCart() {
-            await this.getMask()
-
-            if (localStorage.mask) {
-                try {
-                    let response = await axios.get('/api/cart/' + (localStorage.token ? localStorage.token : localStorage.mask))
-                    localStorage.cart = JSON.stringify(response.data)
-                    window.app.cart = response.data
-                    window.app.$emit('cart-refreshed')
-                } catch (error) {
-                    if (error.response.status == 404) {
-                        localStorage.removeItem('mask')
-                    }
-                    Notify(window.config.translations.errors.wrong, 'warning')
-                }
-            }
+            return await refreshCart();
         },
 
         async getMask() {
-            if (!localStorage.mask) {
-                try {
-                    var response = window.app.user
-                        ? await magentoUser.post('carts/mine')
-                        : await magento.post('guest-carts')
-                } catch (error) {
-                    Notify(window.config.translations.errors.wrong, 'error')
-                }
-
-                if (response !== undefined && response.data) {
-                    localStorage.mask = response.data
-                }
-            }
+            await retrieveMask();
         },
 
         async linkUserToCart() {
-            await magentoUser.put('guest-carts/'+localStorage.mask, {
-                customerId: window.app.user.id,
+            await magentoUser.put('guest-carts/'+mask.value, {
+                customerId: user.value?.id,
                 storeId: config.store
+            }).then(() => {
+                mask.value = cart.entity_id
             }).catch((error) => {
                 Notify(error.response.data.message, 'warning')
             })
@@ -75,8 +45,7 @@ export default {
 
         expiredCartCheck(error) {
             if (error.response.data?.parameters?.fieldName == 'quoteId' || error.response.status === 404) {
-                localStorage.removeItem('mask')
-                localStorage.removeItem('cart')
+                clearCart();
                 Notify(window.config.translations.errors.cart_expired, 'error')
                 return true
             }

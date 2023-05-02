@@ -1,6 +1,7 @@
 <script>
     import GetCart from './../Cart/mixins/GetCart'
     import InteractWithUser from './../User/mixins/InteractWithUser'
+    import { useLocalStorage } from '@vueuse/core'
 
     export default {
         mixins: [GetCart, InteractWithUser],
@@ -17,7 +18,7 @@
         },
 
         data: () => ({
-            email: localStorage.email ?? (window.debug ? 'wayne@enterprises.com' : ''),
+            email: useLocalStorage('email').value,
             password: '',
             emailAvailable: true,
         }),
@@ -35,7 +36,7 @@
 
         created() {
             this.refreshUser(false)
-            if (this.$root.user) {
+            if (this.$root.user?.id) {
                 this.successfulLogin()
             }
         },
@@ -50,9 +51,8 @@
                 if (this.email && this.password) {
                     let self = this
                     await this.login(this.email, this.password, async () => {
-                        if (self.$root.cart) {
+                        if (self.$root.cart?.entity_id) {
                             await self.linkUserToCart()
-                            localStorage.mask = self.$root.cart.entity_id
                         } else {
                             await self.refreshCart()
                         }
@@ -96,11 +96,6 @@
                 } else if (this.redirect) {
                     Turbo.visit(this.redirect)
                 }
-            }
-        },
-        watch: {
-            email: function () {
-                localStorage.email = this.email
             }
         }
     }

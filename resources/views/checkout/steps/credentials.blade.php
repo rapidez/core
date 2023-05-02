@@ -5,7 +5,7 @@
         <p class="col-span-12 font-bold text-2xl">
             @lang('Shipping address')
         </p>
-        @include('rapidez::checkout.partials.form', ['type' => 'shipping'])
+        @include('rapidez::checkout.partials.address', ['type' => 'shipping'])
     </div>
 
     <div class="col-span-12 my-5">
@@ -22,7 +22,7 @@
         <p class="col-span-12 font-bold text-2xl">
             @lang('Billing address')
         </p>
-        @include('rapidez::checkout.partials.form', ['type' => 'billing'])
+        @include('rapidez::checkout.partials.address', ['type' => 'billing'])
     </div>
 
     <h1 v-if="checkout.shipping_methods.length" class="font-bold text-4xl mt-5 mb-3">@lang('Shipping method')</h1>

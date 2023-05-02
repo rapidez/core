@@ -123,13 +123,14 @@
             },
 
             getOptions: function (superAttributeCode) {
-                if (this.$root.swatches?.hasOwnProperty(superAttributeCode)) {
+                if (this.$root.swatches.hasOwnProperty(superAttributeCode)) {
                     let swatchOptions = this.$root.swatches[superAttributeCode].options
                     let values = {}
 
-                    Object.entries(this.product[superAttributeCode]).forEach(([key, val]) => {
-                        if (swatchOptions[val]) {
-                            values[val] = swatchOptions[val]
+                    Object.entries(this.product['super_'+superAttributeCode]).forEach(([key, val]) => {
+                        let swatch = swatchOptions.find((swatch) => swatch.value === val);
+                        if (swatch) {
+                            values[val] = swatch
                         }
                     })
 
@@ -198,8 +199,8 @@
                 }
 
                 Object.entries(this.product.super_attributes).forEach(([attributeId, attribute]) => {
-                    disabledOptions[attribute.code] = []
-                    valuesPerAttribute[attributeId] = []
+                    disabledOptions['super_'+attribute.code] = []
+                    valuesPerAttribute[attributeId] = {}
 
                     // Fill list with products per attribute value
                     Object.entries(this.product.children).forEach(([productId, option]) => {
@@ -220,19 +221,20 @@
                 // selected attribute values.
                 Object.entries(valuesPerAttribute).forEach(([attributeId, productsPerValue]) => {
                     Object.entries(valuesPerAttribute).forEach(([attributeId2, productsPerValue2]) => {
-                        if (attributeId !== attributeId2) {
-                            var selectedValueId = this.options[attributeId]
-                            if (selectedValueId) {
-                                Object.entries(productsPerValue2).forEach(([valueId, products]) => {
-                                    // If there is no product that intersects for this attribute value
-                                    // there will be no product available for this attribute value
-                                    if (window.intersection(productsPerValue[selectedValueId], products).length <= 0) {
-                                        var attributeCode = this.product.super_attributes[attributeId2].code
-                                        disabledOptions[attributeCode].push(valueId)
-                                    }
-                                })
+                        if (attributeId === attributeId2) return;
+                        var selectedValueId = this.options[attributeId]
+                        if (!selectedValueId) return;
+                        var attributeCode = this.product.super_attributes[attributeId2].code
+
+                        Object.entries(productsPerValue2).forEach(([valueId, products]) => {
+                            // If there is no product that intersects for this attribute value
+                            // there will be no product available for this attribute value
+                            if (!productsPerValue[selectedValueId] || productsPerValue[selectedValueId].some((val) => products.includes(val))) {
+                                return;
                             }
-                        }
+
+                            disabledOptions['super_'+attributeCode].push(valueId)
+                        })
                     })
                 })
 
