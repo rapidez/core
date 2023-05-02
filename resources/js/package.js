@@ -6,6 +6,10 @@ if (!window.process) {
     window.process = {};
 }
 
+import { useLocalStorage, StorageSerializers } from '@vueuse/core'
+import useCart from './stores/useCart';
+import useUser from './stores/useUser';
+import useSwatches from './stores/useSwatches';
 import './vue'
 import { computed } from 'vue';
 import './axios'
@@ -14,18 +18,34 @@ import './mixins'
 import './turbolinks'
 import './cookies'
 import './callbacks'
-import './components'
+import './vue-components'
 
 function init() {
     Vue.prototype.window = window
     Vue.prototype.config = window.config
 
+    let swatches = useLocalStorage('swatches', {});
+
     // Check if the localstorage needs a flush.
-    if (localStorage.cachekey !== window.config.cachekey) {
+    let cachekey = useLocalStorage('cachekey');
+    if (cachekey.value !== window.config.cachekey) {
         window.config.flushable_localstorage_keys.forEach((key) => {
-            localStorage.removeItem(key)
+            useLocalStorage(key).value = null;
         })
-        localStorage.cachekey = window.config.cachekey
+
+        cachekey.value = window.config.cachekey
+    }
+
+    window.address_defaults = {
+        'customer_address_id': null,
+        'firstname': (window.debug ? 'Bruce' : ''),
+        'lastname': (window.debug ? 'Wayne' : ''),
+        'postcode': (window.debug ? '72000' : ''),
+        'street': (window.debug ? ['Mountain Drive', 1007, ''] : ['', '', '']),
+        'city': (window.debug ? 'Gotham' : ''),
+        'telephone': (window.debug ? '530-7972' : ''),
+        'country_id': (window.debug ? 'NL' : window.config.default_country),
+        'custom_attributes': [],
     }
 
     window.app = new Vue({
@@ -35,37 +55,17 @@ function init() {
             config: window.config,
             loadingCount: 0,
             loading: computed(() => window.app?.$data?.loadingCount > 0),
-            guestEmail: localStorage.email ?? null,
-            user: null,
-            cart: null,
             loadAutocomplete: false,
+            cart: useCart(),
+            user: useUser(),
+            swatches: useSwatches(),
             checkout: {
                 step: 1,
-                shipping_address: {
-                    'customer_address_id': null,
-                    'firstname': localStorage.shipping_firstname ?? (window.debug ? 'Bruce' : ''),
-                    'lastname': localStorage.shipping_lastname ?? (window.debug ? 'Wayne' : ''),
-                    'postcode': localStorage.shipping_postcode ?? (window.debug ? '72000' : ''),
-                    'street': localStorage.shipping_street?.split(',') ?? (window.debug ? ['Mountain Drive', 1007, ''] : ['', '', '']),
-                    'city': localStorage.shipping_city ?? (window.debug ? 'Gotham' : ''),
-                    'telephone': localStorage.shipping_telephone ?? (window.debug ? '530-7972' : ''),
-                    'country_id': localStorage.shipping_country_id ?? (window.debug ? 'NL' : window.config.default_country),
-                    'custom_attributes': [],
-                },
-                billing_address: {
-                    'customer_address_id': null,
-                    'firstname': localStorage.billing_firstname ?? (window.debug ? 'Bruce' : ''),
-                    'lastname': localStorage.billing_lastname ?? (window.debug ? 'Wayne' : ''),
-                    'postcode': localStorage.billing_postcode ?? (window.debug ? '72000' : ''),
-                    'street': localStorage.billing_street?.split(',') ?? (window.debug ? ['Mountain Drive', 1007, ''] : ['', '', '']),
-                    'city': localStorage.billing_city ?? (window.debug ? 'Gotham' : ''),
-                    'telephone': localStorage.billing_telephone ?? (window.debug ? '530-7972' : ''),
-                    'country_id': localStorage.billing_country_id ?? (window.debug ? 'NL' : window.config.default_country),
-                    'custom_attributes': [],
-                },
-                hide_billing: localStorage.hide_billing === 'false' ? false : true,
-
                 totals: {},
+
+                shipping_address: useLocalStorage('shipping_address', address_defaults, {mergeDefaults: true, serializer: StorageSerializers.object}),
+                billing_address: useLocalStorage('billing_address', address_defaults, {mergeDefaults: true, serializer: StorageSerializers.object}),
+                hide_billing: useLocalStorage('hide_billing', true),
 
                 shipping_method: null,
                 shipping_methods: [],
@@ -92,22 +92,10 @@ function init() {
                 window.history.pushState(window.history.state, '', new URL(url))
             }
         },
-        asyncComputed: {
-            swatches () {
-                if (localStorage.swatches) {
-                    return JSON.parse(localStorage.swatches);
-                }
-
-                return axios.get('/api/swatches')
-                    .then((response) => {
-                        localStorage.swatches = JSON.stringify(response.data)
-                        return response.data
-                    })
-                    .catch((error) => {
-                        Notify(window.config.errors.wrong, 'error')
-                    })
-            }
-        }
+        computed: {
+            // Wrap the local storage in getter and setter functions so you do not have to interact using .value
+            guestEmail: wrapValue(useLocalStorage('email', (window.debug ? 'wayne@enterprises.com' : ''), {serializer: StorageSerializers.string})),
+        },
     })
 
     if(window.debug) {
