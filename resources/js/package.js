@@ -6,7 +6,6 @@ if (!window.process) {
     window.process = {};
 }
 
-import './lodash'
 import './vue'
 import { computed } from 'vue';
 import './axios'
