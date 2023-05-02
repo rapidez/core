@@ -1,5 +1,5 @@
 <script>
-    import { useElementHover, useIntervalFn } from '@vueuse/core'
+    import { useElementHover, useIntervalFn, useEventListener } from '@vueuse/core'
 
     export default {
         render() {
