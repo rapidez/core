@@ -52,6 +52,7 @@
                 options: this.options,
                 error: this.error,
                 add: this.add,
+                addQty: this.addQty,
                 qty: this.qty,
 
                 adding: this.adding,
@@ -64,7 +65,11 @@
                 this.qty = event.target.value
             },
 
-            async add(count) {
+            async add() {
+                return this.addCount(this.qty);
+            },
+
+            async addQty(count) {
                 if ('children' in this.product
                     && Object.values(this.product.children).length
                     && window.location.pathname !== this.product.url
