@@ -66,7 +66,7 @@
             },
 
             async add() {
-                return this.addCount(this.qty);
+                return this.addQty(this.qty);
             },
 
             async addQty(count) {
