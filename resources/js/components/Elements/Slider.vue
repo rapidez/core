@@ -12,10 +12,7 @@
             })
         },
         props: {
-            reference: {
-                type: String,
-                default: 'slider'
-            },
+            reference: String,
             vertical: {
                 type: Boolean,
                 default: false
@@ -91,6 +88,9 @@
         },
         computed: {
             slider() {
+                if(!this.reference) {
+                    return this.$el;
+                }
                 return this.$scopedSlots.default()[0].context.$refs[this.reference]
             },
             currentSlide() {
