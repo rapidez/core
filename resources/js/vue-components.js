@@ -24,6 +24,9 @@ Vue.component('notifications', notifications)
 import images from './components/Product/Images.vue'
 Vue.component('images', images)
 
+import price from './components/Price.vue'
+Vue.component('price', price)
+
 Vue.component('autocomplete', () => import('./components/Search/Autocomplete.vue'))
 Vue.component('login', () => import('./components/Checkout/Login.vue'))
 Vue.component('listing', () => import('./components/Listing/Listing.vue'))

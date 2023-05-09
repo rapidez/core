@@ -5,10 +5,13 @@ namespace Rapidez\Core\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Rapidez\Core\Casts\Children;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
 use Rapidez\Core\Casts\DecodeHtmlEntities;
+use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Scopes\Product\WithProductAttributesScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductCategoryInfoScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductChildrenScope;
@@ -16,6 +19,7 @@ use Rapidez\Core\Models\Scopes\Product\WithProductGroupedScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductRelationIdsScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductStockScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductSuperAttributesScope;
+use Rapidez\Core\Models\Scopes\Product\WithProductTaxClassScope;
 use Rapidez\Core\Models\Traits\Product\CastMultiselectAttributes;
 use Rapidez\Core\Models\Traits\Product\CastSuperAttributes;
 use Rapidez\Core\Models\Traits\Product\SelectAttributeScopes;
@@ -31,7 +35,7 @@ class Product extends Model
 
     protected $primaryKey = 'entity_id';
 
-    protected $appends = ['url'];
+    protected $appends = ['url', 'tax'];
 
     protected static function booting(): void
     {
@@ -42,6 +46,7 @@ class Product extends Model
         static::addGlobalScope(new WithProductRelationIdsScope());
         static::addGlobalScope(new WithProductChildrenScope());
         static::addGlobalScope(new WithProductGroupedScope());
+        static::addGlobalScope(new WithProductTaxClassScope());
         static::addGlobalScope('defaults', function (Builder $builder) {
             $builder
                 ->whereNotIn($builder->getQuery()->from.'.type_id', ['bundle'])
@@ -196,8 +201,27 @@ class Product extends Model
         return $this->getImageAttribute($image);
     }
 
+    public function getTaxAttribute(): float
+    {
+        return $this->taxValues()[$this->tax_class_id] ?? 1;
+    }
+
     public static function exist($productId): bool
     {
         return self::withoutGlobalScopes()->where('entity_id', $productId)->exists();
+    }
+
+    // This is a weird place to have this and should be placed on another somewhere else when finished
+    public function taxValues(): array
+    {
+        return Cache::rememberForever('tax_'.config('rapidez.store'), function () {
+            return DB::table('tax_class')
+                ->join('tax_calculation', 'tax_calculation.product_tax_class_id', '=', 'tax_class.class_id')
+                ->join('tax_calculation_rate', 'tax_calculation_rate.tax_calculation_rate_id', '=', 'tax_calculation.tax_calculation_rate_id')
+                ->where('tax_country_id', Rapidez::config('tax/defaults/country', 'US'))
+                ->where('customer_tax_class_id', Rapidez::config('tax/classes/default_customer_tax_class', 3))
+                ->pluck('rate', 'class_id')
+                ->toArray();
+        });
     }
 }

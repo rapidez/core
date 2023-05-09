@@ -1,9 +1,11 @@
 <add-to-cart v-bind:product="item" v-cloak>
     <div class="px-2 pb-2" slot-scope="{ options, error, add, disabledOptions, simpleProduct, getOptions, adding, added }">
-        <div class="flex items-center space-x-2 mb-2">
-            <div class="font-semibold">@{{ (simpleProduct.special_price || simpleProduct.price) | price }}</div>
-            <div class="line-through text-sm" v-if="simpleProduct.special_price">@{{ simpleProduct.price | price }}</div>
-        </div>
+        <price :product="simpleProduct" :tax="simpleProduct.tax">
+            <div class="flex items-center space-x-2 mb-2" slot-scope="{ price, specialPrice }">
+                <div class="font-semibold">@{{ (specialPrice || price) | price }}</div>
+                <div class="line-through text-sm" v-if="specialPrice">@{{ price | price }}</div>
+            </div>
+        </price>
 
         <p v-if="!item.in_stock" class="text-red-600 text-xs">@lang('Sorry! This product is currently out of stock.')</p>
         <div v-else>
