@@ -2,8 +2,10 @@
 
 namespace Rapidez\Core\Commands;
 
+use Carbon\Carbon;
 use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
 use Illuminate\Console\Command;
+use Rapidez\Core\Models\Store;
 
 abstract class InteractsWithElasticsearchCommand extends Command
 {
@@ -44,5 +46,22 @@ abstract class InteractsWithElasticsearchCommand extends Command
                 $this->elasticsearch->indices()->delete(['index' => $indexLinkedToAlias]);
             }
         }
+    }
+
+    public function getStores()
+    {
+        $storeModel = config('rapidez.models.store');
+        return $this->argument('store')
+            ? $storeModel::where('store_id', $this->argument('store'))->get()
+            : $storeModel::all();
+    }
+
+    public function setStore(Store $store): void
+    {
+        config()->set('rapidez.store', $store->store_id);
+        $code = config('rapidez.models.store')::getCachedWhere(function ($store) {
+            return $store['store_id'] == config('rapidez.store');
+        })['code'];
+        config()->set('rapidez.store_code', $code);
     }
 }
