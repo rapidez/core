@@ -48,6 +48,11 @@ abstract class InteractsWithElasticsearchCommand extends Command
         }
     }
 
+    public function deleteIndex(string $index): void
+    {
+        $this->elasticsearch->indices()->delete(['index' => $index]);
+    }
+
     public function getStores()
     {
         $storeModel = config('rapidez.models.store');

@@ -2,18 +2,17 @@
 
 namespace Rapidez\Core\Commands;
 
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Rapidez\Core\Events\IndexAfterEvent;
 use Rapidez\Core\Events\IndexBeforeEvent;
 use Rapidez\Core\Facades\Rapidez;
-use Rapidez\Core\Jobs\IndexProductJob;
+use Rapidez\Core\Jobs\IndexJob;
 use Rapidez\Core\Models\Category;
 use TorMorten\Eventy\Facades\Eventy;
 
-class IndexProductsCommand extends InteractsWithElasticsearchCommand
+class IndexProductsCommand extends ElasticsearchIndexCommand
 {
     protected $signature = 'rapidez:index {store? : Store ID from Magento}';
 
@@ -28,16 +27,11 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
         IndexBeforeEvent::dispatch($this);
 
         $productModel = config('rapidez.models.product');
-        $storeModel = config('rapidez.models.store');
-        $stores = $this->argument('store') ? $storeModel::where('store_id', $this->argument('store'))->get() : $storeModel::all();
-
+        $stores = $this->getStores();
         foreach ($stores as $store) {
             $this->line('Store: '.$store->name);
-            config()->set('rapidez.store', $store->store_id);
-            config()->set('rapidez.website', $store->website_id);
-
-            $alias = config('rapidez.es_prefix').'_products_'.$store->store_id;
-            $index = $alias.'_'.Carbon::now()->format('YmdHis');
+            $this->setStore($store);
+            [$alias, $index] = $this->createAlias($store, 'products');
             $this->createIndex($index, Eventy::filter('index.product.mapping', [
                 'properties' => [
                     'price' => [
@@ -53,7 +47,6 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
             ]), Eventy::filter('index.product.settings', []));
 
             try {
-                $flat = (new $productModel())->getTable();
                 $productQuery = $productModel::selectOnlyIndexable()
                     ->withEventyGlobalScopes('index.product.scopes');
 
@@ -75,7 +68,8 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
 
                         $data = $this->withCategories($data, $categories);
                         $data = Eventy::filter('index.product.data', $data, $product);
-                        IndexProductJob::dispatch($index, $data);
+
+                        IndexJob::dispatch($index, $data->id, $data);
                     }
 
                     $bar->advance($products->count());
@@ -83,7 +77,7 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
 
                 $this->switchAlias($alias, $index);
             } catch (Exception $e) {
-                $this->elasticsearch->indices()->delete(['index' => $index]);
+                $this->deleteIndex($index);
 
                 throw $e;
             }
@@ -91,6 +85,7 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
             $bar->finish();
             $this->line('');
         }
+
 
         IndexAfterEvent::dispatch($this);
         $this->info('Done!');

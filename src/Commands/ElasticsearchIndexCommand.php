@@ -3,6 +3,7 @@
 namespace Rapidez\Core\Commands;
 
 use Carbon\Carbon;
+use Exception;
 use Rapidez\Core\Commands\InteractsWithElasticsearchCommand;
 
 abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchCommand
@@ -33,36 +34,29 @@ abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchComma
     public function indexStore($store, $indexName, $data, $values)
     {
         $this->line('Indexing `'.$indexName.'` for store: '.$store->name);
-        [$alias, $index] = $this->prepareIndexer($store, $indexName);
+        try {
+            [$alias, $index] = $this->prepareIndexer($store, $indexName);
 
-        $currentData = is_callable($data)
-            ? $data(config()->get('rapidez.store_code'))
-            : $data;
+            $currentData = is_callable($data)
+                ? $data(config()->get('rapidez.store_code'))
+                : $data;
 
-        foreach ($currentData as $item) {
-            $this->indexItem($index, $item, $item->id, $values);
+            foreach ($currentData as $item) {
+                $this->indexItem($index, $item, $item->id, $values);
+            }
+            $this->switchAlias($alias, $index);
+        } catch (Exception $e) {
+            $this->deleteIndex($index);
+            throw $e;
         }
-        $this->switchAlias($alias, $index);
     }
 
-    /**
-     * Creates an alias for the current index
-     *
-     * @param  object $store
-     * @param  string $indexName
-     */
     public function createAlias($store, $indexName): array
     {
         $alias = config('rapidez.es_prefix').'_'.$indexName.'_'.$store->store_id;
         return [$alias, $alias.'_'.Carbon::now()->format('YmdHis')];
     }
 
-    /**
-     * Prepares the indexer for indexing
-     *
-     * @param  object $store
-     * @param  string $indexName
-     */
     public function prepareIndexer($store, $indexName): array
     {
         $this->setStore($store);
