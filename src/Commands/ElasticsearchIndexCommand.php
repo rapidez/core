@@ -4,6 +4,7 @@ namespace Rapidez\Core\Commands;
 
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Arr;
 use Rapidez\Core\Commands\InteractsWithElasticsearchCommand;
 
 abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchCommand
@@ -15,7 +16,7 @@ abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchComma
      * @param  (callable(object): array)|array $data
      * @param  (callable(object): array)|array $values
      */
-    public function indexAll($indexName, $data, $values)
+    public function indexAllStores($indexName, $data, $values)
     {
         $stores = $this->getStores();
         foreach ($stores as $store) {
@@ -36,11 +37,7 @@ abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchComma
         $this->line('Indexing `'.$indexName.'` for store: '.$store->name);
         try {
             [$alias, $index] = $this->prepareIndexer($store, $indexName);
-
-            $currentData = is_callable($data)
-                ? $data(config()->get('rapidez.store_code'))
-                : $data;
-
+            $currentData = value($data, config()->get('rapidez.store_code'));
             foreach ($currentData as $item) {
                 $this->indexItem($index, $item, $item->id, $values);
             }
@@ -69,7 +66,7 @@ abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchComma
     {
         $currentValues = is_callable($values)
             ? $values($item)
-            : collect($item)->only($values);
+            : Arr::only($item, $values);
 
         $this->elasticsearch->index([
             'index' => $index,
