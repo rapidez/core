@@ -33,20 +33,15 @@ abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchComma
     public function indexStore($store, $indexName, $data, $values)
     {
         $this->line('Indexing `'.$indexName.'` for store: '.$store->name);
-        $this->setStore($store);
-        $alias = $this->createAlias($store, $indexName);
-        $index = $alias.'_'.Carbon::now()->format('YmdHis');
-
-        $this->createIndex($index);
+        [$alias, $index] = $this->prepareIndexer($store, $indexName);
 
         $currentData = is_callable($data)
             ? $data(config()->get('rapidez.store_code'))
             : $data;
 
         foreach ($currentData as $item) {
-            $this->indexItem($item, $values, $index);
+            $this->indexItem($index, $item, $item->id, $values);
         }
-
         $this->switchAlias($alias, $index);
     }
 
@@ -56,12 +51,27 @@ abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchComma
      * @param  object $store
      * @param  string $indexName
      */
-    public function createAlias($store, $indexName): string
+    public function createAlias($store, $indexName): array
     {
-        return config('rapidez.es_prefix').'_'.$indexName.'_'.$store->store_id;
+        $alias = config('rapidez.es_prefix').'_'.$indexName.'_'.$store->store_id;
+        return [$alias, $alias.'_'.Carbon::now()->format('YmdHis')];
     }
 
-    public function indexItem($item, $values, $index)
+    /**
+     * Prepares the indexer for indexing
+     *
+     * @param  object $store
+     * @param  string $indexName
+     */
+    public function prepareIndexer($store, $indexName): array
+    {
+        $this->setStore($store);
+        [$alias, $index] = $this->createAlias($store, $indexName);
+        $this->createIndex($index);
+        return [$alias, $index];
+    }
+
+    public function indexItem($index, $item, $id, $values)
     {
         $currentValues = is_callable($values)
             ? $values($item)
@@ -69,7 +79,7 @@ abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchComma
 
         $this->elasticsearch->index([
             'index' => $index,
-            'id' => $item->id,
+            'id' => $id,
             'body' => $currentValues,
         ]);
     }
