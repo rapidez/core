@@ -5,16 +5,15 @@ namespace Rapidez\Core\Commands;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Arr;
-use Rapidez\Core\Commands\InteractsWithElasticsearchCommand;
 
 abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchCommand
 {
     /**
-     * Index all items in all stores
+     * Index all items in all stores.
      *
-     * @param  string $indexName
-     * @param  (callable(object): array)|array $data
-     * @param  (callable(object): array)|array $values
+     * @param string $indexName
+     * @param (callable(object): array)|array $data
+     * @param (callable(object): array)|array $values
      */
     public function indexAllStores($indexName, $data, $values)
     {
@@ -25,12 +24,12 @@ abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchComma
     }
 
     /**
-     * Index all items in a specific stores
+     * Index all items in a specific stores.
      *
-     * @param  object $store
-     * @param  string $indexName
-     * @param  (callable(object): array)|array $data
-     * @param  (callable(object): array)|array $values
+     * @param object $store
+     * @param string $indexName
+     * @param (callable(object): array)|array $data
+     * @param (callable(object): array)|array $values
      */
     public function indexStore($store, $indexName, $data, $values)
     {
@@ -70,8 +69,8 @@ abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchComma
 
         $this->elasticsearch->index([
             'index' => $index,
-            'id' => $id,
-            'body' => $currentValues,
+            'id'    => $id,
+            'body'  => $currentValues,
         ]);
     }
 }
