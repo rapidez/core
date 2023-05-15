@@ -117,6 +117,24 @@ function init() {
                 doNotGoToTheNextStep: false,
             },
         },
+        directives: {
+            element: {
+                inserted: function(el) {
+                    // Try to find the containing component by looking through the parent chain
+                    let parent = el.parentElement;
+                    while(!parent.__vue__?.$vnode?.componentInstance) {
+                        parent = parent.parentElement;
+                        if(!parent) {
+                            // No component found in the parent chain
+                            return;
+                        }
+                    }
+
+                    // Set a magic $element variable
+                    parent.__vue__.$vnode.componentInstance.$element = el;
+                }
+            }
+        },
         methods: {
             search(value) {
                 if (value.length) {
