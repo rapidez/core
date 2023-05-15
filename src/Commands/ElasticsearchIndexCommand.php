@@ -31,7 +31,7 @@ abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchComma
     /**
      * Index all items in a specific stores.
      *
-     * @param Store $store
+     * @param Store  $store
      * @param string $indexName
      * @param (callable(Store): iterable)|iterable $items
      * @param (callable(object): array)|array $values
@@ -53,7 +53,7 @@ abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchComma
     }
 
     /**
-     * Index a chunk of items
+     * Index a chunk of items.
      *
      * @param string $index
      * @param (callable(Store): iterable)|iterable $items
@@ -63,13 +63,13 @@ abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchComma
     public function indexItems($index, $items, $values, $id = 'id')
     {
         $currentData = value($items, config()->get('rapidez.store_code'));
-        foreach($currentData as $item) {
+        foreach ($currentData as $item) {
             $this->indexItem($index, $item, $values, $id);
         }
     }
 
     /**
-     * Index a single item
+     * Index a single item.
      *
      * @param string $index
      * @param object $item
@@ -80,13 +80,13 @@ abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchComma
     {
         $currentValues = is_callable($values)
             ? $values($item)
-            : Arr::only((array)$item, $values);
+            : Arr::only((array) $item, $values);
 
         $currentId = is_callable($id)
             ? $id($item)
             : $item[$id];
 
-        if($this->useJob) {
+        if ($this->useJob) {
             IndexJob::dispatch($index, $currentId, $currentValues);
         } else {
             $this->elasticsearch->index([

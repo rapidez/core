@@ -55,7 +55,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                     ->pluck('name', 'entity_id');
 
                 $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $index, $categories) {
-                    $this->indexItems($index, $products, function($product) use ($store, $categories) {
+                    $this->indexItems($index, $products, function ($product) use ($store, $categories) {
                         $data = array_merge(['store' => $store->store_id], $product->toArray());
                         foreach ($product->super_attributes ?: [] as $superAttribute) {
                             $data['super_'.$superAttribute->code] = $superAttribute->text_swatch || $superAttribute->visual_swatch
