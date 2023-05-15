@@ -89,7 +89,7 @@ return [
             'order_address' => Rapidez\Core\Models\Sales\SalesOrderAddress::class,
             'order_item'    => Rapidez\Core\Models\Sales\SalesOrderItem::class,
             'order_payment' => Rapidez\Core\Models\Sales\SalesOrderPayment::class,
-        ]
+        ],
     ],
 
     // The fully qualified class names of the widgets.
