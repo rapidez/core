@@ -5,6 +5,7 @@ namespace Rapidez\Core\Commands;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Arr;
+use Rapidez\Core\Facades\Rapidez;
 
 abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchCommand
 {
@@ -17,7 +18,7 @@ abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchComma
      */
     public function indexAllStores($indexName, $data, $values)
     {
-        $stores = $this->getStores();
+        $stores = Rapidez::getStores();
         foreach ($stores as $store) {
             $this->indexStore($store, $indexName, $data, $values);
         }
@@ -55,7 +56,7 @@ abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchComma
 
     public function prepareIndexer($store, $indexName): array
     {
-        $this->setStore($store);
+        Rapidez::setStore($store);
         [$alias, $index] = $this->createAlias($store, $indexName);
         $this->createIndex($index);
         return [$alias, $index];

@@ -4,6 +4,7 @@ namespace Rapidez\Core;
 
 use Illuminate\Routing\RouteAction;
 use Illuminate\Support\Collection;
+use Rapidez\Core\Models\Store;
 
 class Rapidez
 {
@@ -60,5 +61,21 @@ class Rapidez
         ];
 
         return json_decode(str_replace(array_values($mapping), array_keys($mapping), $encodedString));
+    }
+
+    public function getStores(): Collection
+    {
+        $storeModel = config('rapidez.models.store');
+        return $storeModel::all();
+    }
+
+    public function setStore(Store $store): void
+    {
+        config()->set('rapidez.store', $store->store_id);
+        config()->set('rapidez.website', $store->website_id);
+        $code = config('rapidez.models.store')::getCachedWhere(function ($store) {
+            return $store['store_id'] == config('rapidez.store');
+        })['code'];
+        config()->set('rapidez.store_code', $code);
     }
 }

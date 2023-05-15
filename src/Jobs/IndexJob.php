@@ -24,8 +24,8 @@ class IndexJob
     {
         $elasticsearch->index([
             'index' => $this->index,
-            'id' => $this->id,
-            'body' => $this->values,
+            'id'    => $this->id,
+            'body'  => $this->values,
         ]);
     }
 }

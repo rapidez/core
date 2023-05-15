@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static ?string    config(string $path, $default = null, bool $sensitive = false)
  * @method static ?string    content($content)
  * @method static object     fancyMagentoSyntaxDecoder(string $encodedString)
+ * @method static Collection getStores()
+ * @method static void       setStore($store)
  *
  * @see \Rapidez\Core\Rapidez
  */
