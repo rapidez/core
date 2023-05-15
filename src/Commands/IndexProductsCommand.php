@@ -86,7 +86,6 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
             $this->line('');
         }
 
-
         IndexAfterEvent::dispatch($this);
         $this->info('Done!');
     }

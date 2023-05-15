@@ -66,6 +66,7 @@ class Rapidez
     public function getStores(): Collection
     {
         $storeModel = config('rapidez.models.store');
+
         return $storeModel::all();
     }
 

@@ -4,7 +4,6 @@ namespace Rapidez\Core\Commands;
 
 use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
 use Illuminate\Console\Command;
-use Rapidez\Core\Models\Store;
 
 abstract class InteractsWithElasticsearchCommand extends Command
 {

@@ -35,6 +35,7 @@ abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchComma
     public function indexStore($store, $indexName, $data, $values)
     {
         $this->line('Indexing `'.$indexName.'` for store: '.$store->name);
+
         try {
             [$alias, $index] = $this->prepareIndexer($store, $indexName);
             $currentData = value($data, config()->get('rapidez.store_code'));
@@ -51,6 +52,7 @@ abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchComma
     public function createAlias($store, $indexName): array
     {
         $alias = config('rapidez.es_prefix').'_'.$indexName.'_'.$store->store_id;
+
         return [$alias, $alias.'_'.Carbon::now()->format('YmdHis')];
     }
 
@@ -59,6 +61,7 @@ abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchComma
         Rapidez::setStore($store);
         [$alias, $index] = $this->createAlias($store, $indexName);
         $this->createIndex($index);
+
         return [$alias, $index];
     }
 
