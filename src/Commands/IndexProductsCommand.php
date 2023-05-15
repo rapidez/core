@@ -8,7 +8,6 @@ use Illuminate\Support\Collection;
 use Rapidez\Core\Events\IndexAfterEvent;
 use Rapidez\Core\Events\IndexBeforeEvent;
 use Rapidez\Core\Facades\Rapidez;
-use Rapidez\Core\Jobs\IndexJob;
 use Rapidez\Core\Models\Category;
 use TorMorten\Eventy\Facades\Eventy;
 
@@ -27,12 +26,10 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
         IndexBeforeEvent::dispatch($this);
 
         $productModel = config('rapidez.models.product');
-        $stores = $this->getStores();
+        $stores = Rapidez::getStores();
         foreach ($stores as $store) {
             $this->line('Store: '.$store->name);
-            $this->setStore($store);
-            [$alias, $index] = $this->createAlias($store, 'products');
-            $this->createIndex($index, Eventy::filter('index.product.mapping', [
+            [$alias, $index] = $this->prepareIndexer($store, 'products', Eventy::filter('index.product.mapping', [
                 'properties' => [
                     'price' => [
                         'type' => 'double',
@@ -58,7 +55,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                     ->pluck('name', 'entity_id');
 
                 $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $index, $categories) {
-                    foreach ($products as $product) {
+                    $this->indexItems($index, $products, function($product) use ($store, $categories) {
                         $data = array_merge(['store' => $store->store_id], $product->toArray());
                         foreach ($product->super_attributes ?: [] as $superAttribute) {
                             $data['super_'.$superAttribute->code] = $superAttribute->text_swatch || $superAttribute->visual_swatch
@@ -67,10 +64,9 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                         }
 
                         $data = $this->withCategories($data, $categories);
-                        $data = Eventy::filter('index.product.data', $data, $product);
 
-                        IndexJob::dispatch($index, $data->id, $data);
-                    }
+                        return Eventy::filter('index.product.data', $data, $product);
+                    });
 
                     $bar->advance($products->count());
                 });
