@@ -13,26 +13,6 @@ class SalesOrderPayment extends Model
     public $timestamps = false;
 
     protected $casts = [
-        'parent_id' => 'int',
-        'base_shipping_captured' => 'float',
-        'shipping_captured' => 'float',
-        'amount_refunded' => 'float',
-        'base_amount_paid' => 'float',
-        'amount_canceled' => 'float',
-        'base_amount_authorized' => 'float',
-        'base_amount_paid_online' => 'float',
-        'base_amount_refunded_online' => 'float',
-        'base_shipping_amount' => 'float',
-        'shipping_amount' => 'float',
-        'amount_paid' => 'float',
-        'amount_authorized' => 'float',
-        'base_amount_ordered' => 'float',
-        'base_shipping_refunded' => 'float',
-        'shipping_refunded' => 'float',
-        'base_amount_refunded' => 'float',
-        'amount_ordered' => 'float',
-        'base_amount_canceled' => 'float',
-        'quote_payment_id' => 'int',
         'additional_information' => 'collection',
     ];
 

@@ -2,8 +2,6 @@
 
 namespace Rapidez\Core\Http\Controllers;
 
-use Rapidez\Core\Models\Sales\SalesOrder;
-
 class CartOrderController
 {
     public function __invoke($quoteIdMaskOrCustomerToken = '')
