@@ -10,10 +10,6 @@
             })
         },
         props: {
-            reference: {
-                type: String,
-                default: 'slider'
-            },
             vertical: {
                 type: Boolean,
                 default: false
@@ -50,7 +46,7 @@
         },
         computed: {
             slider() {
-                return this.$scopedSlots.default()[0].context.$refs[this.reference]
+                return this.$element;
             },
             currentSlide() {
                 if (this.mounted) {
