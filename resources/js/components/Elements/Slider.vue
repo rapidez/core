@@ -1,5 +1,5 @@
 <script>
-    import { useElementHover, useIntervalFn, useEventListener } from '@vueuse/core'
+    import { useElementHover, useIntervalFn, useEventListener, useThrottleFn } from '@vueuse/core'
 
     export default {
         render() {
@@ -45,27 +45,32 @@
             }
         },
         mounted() {
-            useEventListener(this.slider, 'scroll', this.scroll)
+            useEventListener(this.slider, 'scroll', useThrottleFn(this.scroll, 150, true, true), {passive: true})
             this.slider.dispatchEvent(new CustomEvent('scroll'))
             this.mounted = true
 
-            if (this.stopOnHover){
-                this.hover = useElementHover(this.slider);
-            }
-
-            if (this.autoplay) {
-                let { pause, resume } = useIntervalFn(this.autoScroll, this.interval)
-                this.pause = pause
-                this.resume = resume
-            }
+            this.initAutoPlay();
         },
         methods: {
+            initAutoPlay() {
+                if (!this.autoplay) {
+                    return;
+                }
+
+                const { pause, resume } = useIntervalFn(this.autoScroll, this.interval)
+                this.pause = pause
+                this.resume = resume
+
+                if (!this.stopOnHover){
+                    return;
+                }
+                this.hover = useElementHover(this.slider);
+            },
             scroll(event) {
-                this.position  = this.vertical ? event.currentTarget.scrollTop : event.currentTarget.scrollLeft
-                this.showLeft = this.position
+                this.position  = this.vertical ? event.target.scrollTop : event.target.scrollLeft
+                this.showLeft = this.position > 0
                 this.showRight = (this.slider.offsetWidth + this.position) < this.slider.scrollWidth - 1
             },
-
             autoScroll() {
                 let next = this.currentSlide + 1
                 if (next >= this.slidesTotal) {
@@ -94,18 +99,22 @@
                 return this.$scopedSlots.default()[0].context.$refs[this.reference]
             },
             currentSlide() {
-                if (this.mounted) {
-                    return this.vertical
-                        ? Math.round(this.position / this.slider.children[0]?.offsetHeight)
-                        : Math.round(this.position / this.slider.children[0]?.offsetWidth)
+                if (!this.mounted) {
+                    return 0;
                 }
+
+                return this.vertical
+                    ? Math.round(this.position / this.slider.children[0]?.offsetHeight)
+                    : Math.round(this.position / this.slider.children[0]?.offsetWidth)
             },
             slidesTotal() {
-                if (this.mounted) {
-                    return this.vertical
-                        ? Math.round(this.slider.scrollHeight / this.slider.offsetHeight)
-                        : Math.round(this.slider.scrollWidth / this.slider.offsetWidth)
+                if (!this.mounted) {
+                    return 0;
                 }
+
+                return this.vertical
+                    ? Math.round(this.slider.scrollHeight / this.slider.offsetHeight)
+                    : Math.round(this.slider.scrollWidth / this.slider.offsetWidth)
             },
         },
     }
