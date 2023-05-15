@@ -1,6 +1,17 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/0.86.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/0.87.0...master)
+## [0.87.0](https://github.com/rapidez/core/releases/tag/0.87.0) - 2023-05-03
+
+#### Added
+
+- Slider autoscroll (#240)
+- Package.js for auto importing (9f80221)
+
+#### Fixed
+
+- Use suggestion.source._id in autocomplete (#248)
+
 ## [0.86.0](https://github.com/rapidez/core/releases/tag/0.86.0) - 2023-04-14
 
 #### Changed
