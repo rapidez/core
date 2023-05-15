@@ -6,6 +6,7 @@
                 showLeft: this.showLeft,
                 showRight: this.showRight,
                 currentSlide: this.currentSlide,
+                slidesVisible: this.slidesVisible,
                 slidesTotal: this.slidesTotal
             })
         },
@@ -55,15 +56,20 @@
             currentSlide() {
                 if (this.mounted) {
                     return this.vertical
-                        ? Math.round(this.position / this.slider.children[0]?.offsetHeight)
-                        : Math.round(this.position / this.slider.children[0]?.offsetWidth)
+                        ? Math.round(this.position / (this.slider.children[0]?.offsetHeight ?? this.slider.offsetHeight))
+                        : Math.round(this.position / (this.slider.children[0]?.offsetWidth ?? this.slider.offsetWidth))
+                }
+            },
+            slidesVisible() {
+                if(this.mounted) {
+                    return this.vertical
+                        ? Math.round(this.slider.offsetHeight / (this.slider.children[0]?.offsetHeight ?? this.slider.offsetHeight))
+                        : Math.round(this.slider.offsetWidth / (this.slider.children[0]?.offsetWidth ?? this.slider.offsetWidth))
                 }
             },
             slidesTotal() {
                 if (this.mounted) {
-                    return this.vertical
-                        ? Math.round(this.slider.scrollHeight / this.slider.offsetHeight)
-                        : Math.round(this.slider.scrollWidth / this.slider.offsetWidth)
+                    return (this.slider.children?.length ?? 1) - this.slidesVisible + 1;
                 }
             }
         }
