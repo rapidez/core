@@ -13,7 +13,7 @@ class OptionSwatch extends Model
     protected $primaryKey = 'swatch_id';
 
     protected $casts = [
-        'options' => 'array',
+        'options' => 'collection',
     ];
 
     public static function getCachedSwatchValues(): array
@@ -25,7 +25,7 @@ class OptionSwatch extends Model
 
         return Cache::rememberForever('swatchvalues', function () use ($swatchAttributes) {
             return self::select('eav_attribute.attribute_code')
-                ->selectRaw('JSON_OBJECTAGG(eav_attribute_option.sort_order, JSON_OBJECT(
+                ->selectRaw('JSON_OBJECTAGG(eav_attribute_option_value.option_id, JSON_OBJECT(
                     "label", COALESCE(eav_attribute_option_value_store.value, eav_attribute_option_value.value),
                     "sort_order", eav_attribute_option.sort_order,
                     "value", eav_attribute_option_value.option_id,
@@ -51,6 +51,11 @@ class OptionSwatch extends Model
                 ->distinct()
                 ->get()
                 ->keyBy('attribute_code')
+                ->map(function (self $optionSwatch) {
+                    $optionSwatch->options = $optionSwatch->options->sortBy('sort_order')->values();
+
+                    return $optionSwatch;
+                })
                 ->toArray();
         });
     }
