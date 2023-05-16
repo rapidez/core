@@ -1,5 +1,5 @@
 <div class="mr-3">
-    <toggler v-if="$root.user" v-cloak>
+    <toggler v-if="$root.user?.id" v-cloak>
         <div slot-scope="{ toggle, close, isOpen }" v-on-click-away="close">
             <button dusk="account_menu" class="flex my-1" v-on:click="toggle">
                 <x-heroicon-o-user class="h-6 w-6"/>
