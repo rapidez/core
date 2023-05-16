@@ -14,21 +14,21 @@ abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchComma
     public string $alias;
     public string $index;
 
-    public function indexAllStores(string $indexName, callable|iterable $items, callable|array $values, callable|string $id = 'id')
+    public function indexAllStores(string $indexName, callable|iterable $items, callable|array $mapping, callable|string $id = 'id')
     {
         $stores = Rapidez::getStores();
         foreach ($stores as $store) {
-            $this->indexStore($store, $indexName, $items, $values, $id);
+            $this->indexStore($store, $indexName, $items, $mapping, $id);
         }
     }
 
-    public function indexStore(Store $store, string $indexName, callable|iterable $items, callable|array $values, callable|string $id = 'id')
+    public function indexStore(Store $store, string $indexName, callable|iterable $items, callable|array $mapping, callable|string $id = 'id')
     {
         $this->line('Indexing `'.$indexName.'` for store: '.$store->name);
 
         try {
             $this->prepareIndex($store, $indexName);
-            $this->indexItems($items, $values, $id);
+            $this->indexItems($items, $mapping, $id);
             $this->finishIndex();
         } catch (Exception $e) {
             $this->abortIndex();
@@ -37,19 +37,19 @@ abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchComma
         }
     }
 
-    public function indexItems(callable|iterable $items, callable|array $values, callable|string $id = 'id')
+    public function indexItems(callable|iterable $items, callable|array $mapping, callable|string $id = 'id')
     {
         $currentData = value($items, config()->get('rapidez.store_code'));
         foreach ($currentData as $item) {
-            $this->indexItem($item, $values, $id);
+            $this->indexItem($item, $mapping, $id);
         }
     }
 
-    public function indexItem(object $item, callable|array $values, callable|string $id = 'id')
+    public function indexItem(object $item, callable|array $mapping, callable|string $id = 'id')
     {
-        $currentValues = is_callable($values)
-            ? $values($item)
-            : Arr::only((array) $item, $values);
+        $currentValues = is_callable($mapping)
+            ? $mapping($item)
+            : Arr::only((array) $item, $mapping);
 
         $currentId = is_callable($id)
             ? $id($item)
