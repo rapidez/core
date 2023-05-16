@@ -1,6 +1,18 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/0.85.1...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/0.86.0...master)
+## [0.86.0](https://github.com/rapidez/core/releases/tag/0.86.0) - 2023-04-14
+
+#### Changed
+
+- Prefix super attributes (#234)
+
+#### Fixed
+
+- Update reactivesearch to the latest version fixing u-r-l-params (#232)
+- Prevent loading turning false when one of multiple simultaneous finishes (#233)
+- Change onLogout usage to avoid unnecessarily clearing email (#239)
+
 ## [0.85.1](https://github.com/rapidez/core/releases/tag/0.85.1) - 2023-03-31
 
 #### Fixed
