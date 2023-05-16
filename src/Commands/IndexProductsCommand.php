@@ -29,7 +29,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
         $stores = Rapidez::getStores();
         foreach ($stores as $store) {
             $this->line('Store: '.$store->name);
-            [$alias, $index] = $this->prepareIndexer($store, 'products', Eventy::filter('index.product.mapping', [
+            $this->prepareIndex($store, 'products', Eventy::filter('index.product.mapping', [
                 'properties' => [
                     'price' => [
                         'type' => 'double',
@@ -54,8 +54,8 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                     ->where('catalog_category_flat_store_'.config('rapidez.store').'.entity_id', '<>', Rapidez::config('catalog/category/root_id', 2))
                     ->pluck('name', 'entity_id');
 
-                $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $index, $categories) {
-                    $this->indexItems($index, $products, function ($product) use ($store, $categories) {
+                $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $categories) {
+                    $this->indexItems($products, function ($product) use ($store, $categories) {
                         $data = array_merge(['store' => $store->store_id], $product->toArray());
                         foreach ($product->super_attributes ?: [] as $superAttribute) {
                             $data['super_'.$superAttribute->code] = $superAttribute->text_swatch || $superAttribute->visual_swatch
@@ -71,9 +71,9 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                     $bar->advance($products->count());
                 });
 
-                $this->switchAlias($alias, $index);
+                $this->finishIndex();
             } catch (Exception $e) {
-                $this->deleteIndex($index);
+                $this->abortIndex();
 
                 throw $e;
             }

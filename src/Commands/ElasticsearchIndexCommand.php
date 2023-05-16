@@ -7,20 +7,14 @@ use Exception;
 use Illuminate\Support\Arr;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Jobs\IndexJob;
+use Rapidez\Core\Models\Store;
 
 abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchCommand
 {
-    protected bool $useJob = true;
+    public string $alias;
+    public string $index;
 
-    /**
-     * Index all items in all stores.
-     *
-     * @param string $indexName
-     * @param (callable(Store): iterable)|iterable $items
-     * @param (callable(object): array)|array $values
-     * @param (callable(object): int)|string $id
-     */
-    public function indexAllStores($indexName, $items, $values, $id = 'id')
+    public function indexAllStores(string $indexName, callable|iterable $items, callable|array $values, callable|string $id = 'id')
     {
         $stores = Rapidez::getStores();
         foreach ($stores as $store) {
@@ -28,55 +22,30 @@ abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchComma
         }
     }
 
-    /**
-     * Index all items in a specific stores.
-     *
-     * @param Store  $store
-     * @param string $indexName
-     * @param (callable(Store): iterable)|iterable $items
-     * @param (callable(object): array)|array $values
-     * @param (callable(object): int)|string $id
-     */
-    public function indexStore($store, $indexName, $items, $values, $id = 'id')
+    public function indexStore(Store $store, string $indexName, callable|iterable $items, callable|array $values, callable|string $id = 'id')
     {
         $this->line('Indexing `'.$indexName.'` for store: '.$store->name);
 
         try {
-            [$alias, $index] = $this->prepareIndexer($store, $indexName);
-            $this->indexItems($index, $items, $values, $id);
-            $this->switchAlias($alias, $index);
+            $this->prepareIndex($store, $indexName);
+            $this->indexItems($items, $values, $id);
+            $this->finishIndex();
         } catch (Exception $e) {
-            $this->deleteIndex($index);
+            $this->abortIndex();
 
             throw $e;
         }
     }
 
-    /**
-     * Index a chunk of items.
-     *
-     * @param string $index
-     * @param (callable(Store): iterable)|iterable $items
-     * @param (callable(object): array)|array $values
-     * @param (callable(object): int)|string $id
-     */
-    public function indexItems($index, $items, $values, $id = 'id')
+    public function indexItems(callable|iterable $items, callable|array $values, callable|string $id = 'id')
     {
         $currentData = value($items, config()->get('rapidez.store_code'));
         foreach ($currentData as $item) {
-            $this->indexItem($index, $item, $values, $id);
+            $this->indexItem($item, $values, $id);
         }
     }
 
-    /**
-     * Index a single item.
-     *
-     * @param string $index
-     * @param object $item
-     * @param (callable(object): array)|array $values
-     * @param (callable(object): int)|string $id
-     */
-    public function indexItem($index, $item, $values, $id = 'id')
+    public function indexItem(object $item, callable|array $values, callable|string $id = 'id')
     {
         $currentValues = is_callable($values)
             ? $values($item)
@@ -86,30 +55,29 @@ abstract class ElasticsearchIndexCommand extends InteractsWithElasticsearchComma
             ? $id($item)
             : $item[$id];
 
-        if ($this->useJob) {
-            IndexJob::dispatch($index, $currentId, $currentValues);
-        } else {
-            $this->elasticsearch->index([
-                'index' => $index,
-                'id'    => $currentId,
-                'body'  => $currentValues,
-            ]);
-        }
+        IndexJob::dispatch($this->index, $currentId, $currentValues);
     }
 
-    public function createAlias($store, $indexName): array
+    public function finishIndex()
     {
-        $alias = config('rapidez.es_prefix').'_'.$indexName.'_'.$store->store_id;
-
-        return [$alias, $alias.'_'.Carbon::now()->format('YmdHis')];
+        $this->switchAlias($this->alias, $this->index);
     }
 
-    public function prepareIndexer($store, $indexName, array $mapping = [], array $settings = []): array
+    public function abortIndex()
+    {
+        $this->deleteIndex($this->index);
+    }
+
+    public function createAlias($store, $indexName)
+    {
+        $this->alias = config('rapidez.es_prefix').'_'.$indexName.'_'.$store->store_id;
+        $this->index = $this->alias.'_'.Carbon::now()->format('YmdHis');
+    }
+
+    public function prepareIndex($store, $indexName, array $mapping = [], array $settings = [])
     {
         Rapidez::setStore($store);
-        [$alias, $index] = $this->createAlias($store, $indexName);
-        $this->createIndex($index, $mapping, $settings);
-
-        return [$alias, $index];
+        $this->createAlias($store, $indexName);
+        $this->createIndex($this->index, $mapping, $settings);
     }
 }
