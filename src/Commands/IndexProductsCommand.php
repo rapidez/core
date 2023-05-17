@@ -29,7 +29,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
         $stores = Rapidez::getStores();
         foreach ($stores as $store) {
             $this->line('Store: '.$store->name);
-            $this->prepareIndex($store, 'products', Eventy::filter('index.product.mapping', [
+            $this->prepareIndexerWithStore($store, 'products', Eventy::filter('index.product.mapping', [
                 'properties' => [
                     'price' => [
                         'type' => 'double',
@@ -55,7 +55,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                     ->pluck('name', 'entity_id');
 
                 $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $categories) {
-                    $this->indexItems($products, function ($product) use ($store, $categories) {
+                    $this->indexer->index($products, function ($product) use ($store, $categories) {
                         $data = array_merge(['store' => $store->store_id], $product->toArray());
                         foreach ($product->super_attributes ?: [] as $superAttribute) {
                             $data['super_'.$superAttribute->code] = $superAttribute->text_swatch || $superAttribute->visual_swatch
@@ -71,9 +71,9 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                     $bar->advance($products->count());
                 });
 
-                $this->finishIndex();
+                $this->indexer->finish();
             } catch (Exception $e) {
-                $this->abortIndex();
+                $this->indexer->abort();
 
                 throw $e;
             }
