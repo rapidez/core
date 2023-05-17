@@ -28,6 +28,7 @@ abstract class ElasticsearchIndexCommand extends Command
     public function indexStore(Store $store, string $indexName, callable|iterable $items, callable|array $mapping, callable|string $id = 'id'): void
     {
         $this->line('Indexing `'.$indexName.'` for store '.$store->name);
+
         try {
             $this->prepareIndexerWithStore($store, $indexName);
             $this->indexer->index($this->dataFrom($items), $mapping, $id);
