@@ -1,5 +1,5 @@
 <script>
-    import { useElementHover, useIntervalFn } from '@vueuse/core'
+    import { useElementHover, useIntervalFn, useEventListener, useThrottleFn } from '@vueuse/core'
     
     export default {
         render() {
@@ -45,24 +45,30 @@
             }
         },
         mounted() {
-            this.slider.addEventListener('scroll', this.scroll)
-            this.slider.dispatchEvent(new CustomEvent('scroll'))
-            this.mounted = true
+            useEventListener('scroll', useThrottleFn(this.scroll, 150, true, true), {passive: true})
+            this.$nextTick(() => {
+                this.slider.dispatchEvent(new CustomEvent('scroll'))
+                this.mounted = true
 
-            if (this.stopOnHover){
-                this.hover = useElementHover(this.slider);
-            }
-
-            if (this.autoplay) {
-                let { pause, resume } = useIntervalFn(this.autoScroll, this.interval)
-                this.pause = pause
-                this.resume = resume
-            }
-        },
-        beforeDestroy() {
-            this.slider.removeEventListener('scroll', this.scroll)
+                this.initAutoPlay()
+            })
         },
         methods: {
+            initAutoPlay() {
+                if (!this.autoplay) {
+                    return;
+                }
+
+                const { pause, resume } = useIntervalFn(this.autoScroll, this.interval)
+                this.pause = pause
+                this.resume = resume
+
+                if (!this.stopOnHover){
+                    return;
+                }
+                this.hover = useElementHover(this.slider);
+            },
+
             scroll(event) {
                 this.position  = this.vertical ? event.currentTarget.scrollTop : event.currentTarget.scrollLeft
                 this.showLeft = this.position
