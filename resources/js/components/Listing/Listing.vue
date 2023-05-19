@@ -35,6 +35,9 @@
         data: () => ({
             loaded: false,
             attributes: useAttributes(),
+            variables: {
+                pageSize: ''
+            }
         }),
 
         render() {
@@ -43,6 +46,22 @@
                 filters: this.filters,
                 sortOptions: this.sortOptions,
                 reactiveFilters: this.reactiveFilters,
+                variables: this.variables
+            })
+        },
+
+        methods: {
+            initPageSize() {
+                this.variables.pageSize = Turbo.navigator.location.searchParams?.get('pageSize') ?? this.$root.config.grid_per_page
+            }
+        },
+
+        created() {
+            this.initPageSize()
+            this.$watch('variables.pageSize', (pageSize) => {
+                let currentURL = new URL(window.location)
+                currentURL.searchParams.set('pageSize', pageSize)
+                window.history.pushState({}, '', currentURL)
             })
         },
 

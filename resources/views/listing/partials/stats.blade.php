@@ -5,8 +5,13 @@
     </template>
 
     <div class="justify-self-end mr-1">
-        <select class="{{ $dropdownClasses }}" v-model="$root.config.grid_per_page">
-            <option v-for="s in $root.config.grid_per_page_values.concat($root.config.translations.all)" v-bind:value="s"> @{{ s }}</option>
+        <select class="{{ $dropdownClasses }}" v-model="variables.pageSize">
+            <option
+                v-for="size in $root.config.grid_per_page_values.concat($root.config.translations.all)"
+                v-bind:value="size"
+            >
+                    @{{ size }}
+            </option>
         </select>
     </div>
 </div>
