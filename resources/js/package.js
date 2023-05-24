@@ -21,6 +21,8 @@ import './callbacks'
 import './vue-components'
 
 function init() {
+    // https://vuejs.org/api/application.html#app-config-performance
+    Vue.config.performance = import.meta.env.VITE_PERFORMANCE == 'true'
     Vue.prototype.window = window
     Vue.prototype.config = window.config
 

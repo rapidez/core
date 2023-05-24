@@ -46,10 +46,12 @@
         },
         mounted() {
             useEventListener(this.slider, 'scroll', useThrottleFn(this.scroll, 150, true, true), {passive: true})
-            this.slider.dispatchEvent(new CustomEvent('scroll'))
-            this.mounted = true
+            this.$nextTick(() => {
+                this.slider.dispatchEvent(new CustomEvent('scroll'))
+                this.mounted = true
 
-            this.initAutoPlay();
+                this.initAutoPlay()
+            })
         },
         methods: {
             initAutoPlay() {
