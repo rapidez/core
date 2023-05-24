@@ -157,9 +157,9 @@
 
                     if (this.redirect) {
                         if (this.notify.message) {
-                            setTimeout(() => {
+                            document.addEventListener('turbo:load', () => {
                                 Notify(this.notify.message, this.notify.type ?? 'success')
-                            }, 1500)
+                            }, { once: true })
                         }
                         this.mutating = false
                         Turbo.visit(this.redirect)
