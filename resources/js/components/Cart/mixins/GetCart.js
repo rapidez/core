@@ -29,7 +29,11 @@ export default {
         },
 
         async getMask() {
+            if (mask.value) {
+                return mask.value
+            }
             await retrieveMask();
+            return mask.value
         },
 
         async linkUserToCart() {
