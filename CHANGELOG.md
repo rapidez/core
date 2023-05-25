@@ -1,6 +1,17 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/0.87.1...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/0.88.0...master)
+## [0.88.0](https://github.com/rapidez/core/releases/tag/0.88.0) - 2023-05-25
+
+### Added
+
+- Slider performance improvements + Vue performance variable (#261)
+- Slider autoplay bounce prop (#267)
+
+### Fixed
+
+- Aggregate swatches by value id, sort swatches later (#258)
+
 ## [0.87.1](https://github.com/rapidez/core/releases/tag/0.87.1) - 2023-05-24
 
 ### Fixed
