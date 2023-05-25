@@ -50,7 +50,7 @@
             }
         },
         mounted() {
-            useEventListener('scroll', useThrottleFn(this.scroll, 150, true, true), {passive: true})
+            useEventListener(this.slider, 'scroll', useThrottleFn(this.scroll, 150, true, true), {passive: true})
             this.$nextTick(() => {
                 this.slider.dispatchEvent(new CustomEvent('scroll'))
                 this.mounted = true
@@ -74,8 +74,8 @@
                 this.hover = useElementHover(this.slider);
             },
 
-            scroll(event) {
-                this.position  = this.vertical ? event.currentTarget.scrollTop : event.currentTarget.scrollLeft
+            scroll() {
+                this.position  = this.vertical ? this.slider.scrollTop : this.slider.scrollLeft
                 this.showLeft = this.position
                 this.showRight = (this.slider.offsetWidth + this.position) < this.slider.scrollWidth - 1
             },
