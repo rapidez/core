@@ -28,6 +28,10 @@
                 type: Boolean,
                 default: false,
             },
+            bounce: {
+                type: Boolean,
+                default: false,
+            },
             stopOnHover: {
                 type: Boolean,
                 default: true,
@@ -40,6 +44,7 @@
                 showRight: false,
                 mounted: false,
                 hover: false,
+                direction: 1,
                 pause: ()=>{},
                 resume: ()=>{}
             }
@@ -76,9 +81,17 @@
             },
 
             autoScroll() {
-                let next = this.currentSlide + 1
-                if (next >= this.slidesTotal) {
-                    next = 0
+                if(this.slidesTotal == 1) {
+                    return
+                }
+                let next = this.currentSlide + this.direction
+                if (next >= this.slidesTotal || next < 0) {
+                    if (this.bounce) {
+                        this.direction = -this.direction
+                        next = this.currentSlide + this.direction
+                    } else {
+                        next = 0
+                    }
                 }
                 this.navigate(next)
             },
