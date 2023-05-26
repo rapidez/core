@@ -36,7 +36,7 @@
 
         created() {
             this.refreshUser(false)
-            if (window.app.loggedIn) {
+            if (this.$root.loggedIn) {
                 this.successfulLogin()
             }
         },
