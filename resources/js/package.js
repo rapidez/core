@@ -97,6 +97,10 @@ function init() {
         computed: {
             // Wrap the local storage in getter and setter functions so you do not have to interact using .value
             guestEmail: wrapValue(useLocalStorage('email', (window.debug ? 'wayne@enterprises.com' : ''), {serializer: StorageSerializers.string})),
+
+            loggedIn() {
+                return Boolean(this.user?.id)
+            },
         },
     })
 
