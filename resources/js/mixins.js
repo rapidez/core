@@ -7,7 +7,7 @@ Vue.mixin({
         },
 
         async magentoCart(method, endpoint, data) {
-            if (this.loggedIn) {
+            if (window.app.loggedIn) {
                 return await magentoUser[method]('carts/mine/' + endpoint, data)
             } else {
                 return await magento[method]('guest-carts/' + localStorage.mask + '/' + endpoint, data)
