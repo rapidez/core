@@ -25,7 +25,7 @@
                 position: 0,
                 showLeft: false,
                 showRight: false,
-                mounted: false
+                mounted: false,
             }
         },
         mounted() {
@@ -55,21 +55,29 @@
             },
             currentSlide() {
                 if (this.mounted) {
-                    return this.vertical
-                        ? Math.round(this.position / (this.slider.children[0]?.offsetHeight ?? this.slider.offsetHeight))
-                        : Math.round(this.position / (this.slider.children[0]?.offsetWidth ?? this.slider.offsetWidth))
+                    return Math.round(this.position / this.childSpan)
                 }
             },
             slidesVisible() {
                 if(this.mounted) {
-                    return this.vertical
-                        ? Math.round(this.slider.offsetHeight / (this.slider.children[0]?.offsetHeight ?? this.slider.offsetHeight))
-                        : Math.round(this.slider.offsetWidth / (this.slider.children[0]?.offsetWidth ?? this.slider.offsetWidth))
+                    return Math.round(this.sliderSpan / this.childSpan)
                 }
             },
             slidesTotal() {
                 if (this.mounted) {
                     return (this.slider.children?.length ?? 1) - this.slidesVisible + 1;
+                }
+            },
+            childSpan() {
+                if(this.mounted) {
+                    return this.vertical
+                        ? this.slider.children[0]?.offsetHeight ?? this.slider.offsetHeight
+                        : this.slider.children[0]?.offsetWidth ?? this.slider.offsetWidth
+                }
+            },
+            sliderSpan() {
+                if(this.mounted) {
+                    return this.vertical ? this.slider.offsetHeight : this.slider.offsetWidth
                 }
             }
         }
