@@ -99,7 +99,7 @@ function init() {
             guestEmail: wrapValue(useLocalStorage('email', (window.debug ? 'wayne@enterprises.com' : ''), {serializer: StorageSerializers.string})),
 
             loggedIn() {
-                return Boolean(this.$root.user?.id)
+                return Boolean(this.user?.id)
             },
         },
     })
