@@ -99,7 +99,7 @@
                 try {
                     let options = { headers: {} }
 
-                    if (this.$root.user) {
+                    if (this.loggedIn) {
                         options['headers']['Authorization'] = `Bearer ${localStorage.token}`
                     }
 

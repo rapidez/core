@@ -15,6 +15,7 @@ import { computed } from 'vue';
 import './axios'
 import './filters'
 import './mixins'
+import './helpers'
 import './turbolinks'
 import './cookies'
 import './callbacks'
