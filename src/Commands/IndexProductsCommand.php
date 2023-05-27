@@ -64,8 +64,14 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
                     ->where('catalog_category_flat_store_'.config('rapidez.store').'.entity_id', '<>', Rapidez::config('catalog/category/root_id', 2))
                     ->pluck('name', 'entity_id');
 
-                $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $index, $categories) {
+                $showOutOfStock = (bool)Rapidez::config('cataloginventory/options/show_out_of_stock', 0);
+
+                $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $index, $categories, $showOutOfStock) {
                     foreach ($products as $product) {
+                        if (!$showOutOfStock && !$product->in_stock) {
+                            continue;
+                        }
+
                         $data = array_merge(['store' => $store->store_id], $product->toArray());
                         foreach ($product->super_attributes ?: [] as $superAttribute) {
                             $data['super_'.$superAttribute->code] = $superAttribute->text_swatch || $superAttribute->visual_swatch
