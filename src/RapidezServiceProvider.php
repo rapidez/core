@@ -153,14 +153,6 @@ class RapidezServiceProvider extends ServiceProvider
             return "<?php echo $configModel::getCachedByPath($expression) ?>";
         });
 
-        Blade::directive('title', function() {
-            return "<title><?php if (! empty(trim(\$__env->yieldContent('title')))) {
-                echo e(Rapidez::config('design/head/title_prefix').' '.\$__env->yieldContent('title').' '.Rapidez::config('design/head/title_suffix'));
-            } else {
-                echo e(Rapidez::config('design/head/default_title'));
-            } ?></title>";
-        });
-
         return $this;
     }
 
