@@ -19,11 +19,6 @@ class Quote extends Model
         'cross_sells' => CommaSeparatedToIntegerArray::class,
     ];
 
-    protected $dates = [
-        'converted_at',
-        'customer_dob',
-    ];
-
     protected static function booting()
     {
         static::addGlobalScope(new IsActiveScope());
