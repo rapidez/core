@@ -84,6 +84,12 @@ return [
         'store'        => Rapidez\Core\Models\Store::class,
         'widget'       => Rapidez\Core\Models\Widget::class,
         'block'        => Rapidez\Core\Models\Block::class,
+        'sales'        => [
+            'order'         => Rapidez\Core\Models\Sales\SalesOrder::class,
+            'order_address' => Rapidez\Core\Models\Sales\SalesOrderAddress::class,
+            'order_item'    => Rapidez\Core\Models\Sales\SalesOrderItem::class,
+            'order_payment' => Rapidez\Core\Models\Sales\SalesOrderPayment::class,
+        ],
     ],
 
     // The fully qualified class names of the widgets.
