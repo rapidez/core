@@ -22,7 +22,6 @@
         },
 
         render() {
-            return this.$scopedSlots.default()
             return this.$scopedSlots.default({
                 order: this.order,
                 refreshOrder: this.refreshOrder,
