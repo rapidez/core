@@ -40,7 +40,7 @@
         methods: {
             refreshOrder()
             {
-                axios.get('/api/order/' + (this.token ? this.token : this.mask))
+                axios.get('/api/order/' + (this.token || this.mask))
                     .then((response) => this.order = response.data);
             }
         }

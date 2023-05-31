@@ -12,10 +12,6 @@ class SalesOrder extends Model
 
     protected $primaryKey = 'entity_id';
 
-    protected $dates = [
-        'customer_dob',
-    ];
-
     protected $hidden = [
         'protect_code',
         'remote_ip',
