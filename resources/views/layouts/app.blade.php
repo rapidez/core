@@ -6,7 +6,15 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', '')</title>
+    <title>
+        @hasSection('title')
+            {{ Rapidez::config('design/head/title_prefix') }}
+            @yield('title')
+            {{ Rapidez::config('design/head/title_suffix') }}
+        @else
+            {{ Rapidez::config('design/head/default_title') }}
+        @endif
+    </title>
     <meta name="description" content="@yield('description', '')"/>
     <meta name="robots" content="@yield('robots', Rapidez::config('design/search_engine_robots/default_robots', 'INDEX,FOLLOW'))"/>
     <link rel="canonical" href="@yield('canonical', url()->current())" />
