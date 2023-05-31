@@ -19,6 +19,7 @@ class CartTest extends DuskTestCase
     public function testAddMultipleSimpleProduct()
     {
         $this->browse(function (Browser $browser) {
+            $browser->script('localStorage.clear();');
             $this->addProduct($browser, $this->testProduct->url);
             $this->addProduct($browser, $this->testProduct->url);
             $browser->assertSeeIn('@minicart-count', 2);
