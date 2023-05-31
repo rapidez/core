@@ -10,12 +10,18 @@ class CartTest extends DuskTestCase
     public function testAddSimpleProduct()
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit($this->testProduct->url)
-                    ->waitUntilIdle()
-                    ->click('@add-to-cart')
-                    ->waitForText('Added', 60)
-                    ->visit('/cart')
-                    ->assertSee($this->testProduct->name);
+            $this->addProduct($browser, $this->testProduct->url)
+                ->visit('/cart')
+                ->assertSee($this->testProduct->name);
+        });
+    }
+
+    public function testAddMultipleSimpleProduct()
+    {
+        $this->browse(function (Browser $browser) {
+            $this->addProduct($browser, $this->testProduct->url);
+            $this->addProduct($browser, $this->testProduct->url);
+            $browser->assertSeeIn('@minicart-count', 2);
         });
     }
 
@@ -40,5 +46,13 @@ class CartTest extends DuskTestCase
                     ->waitUntilIdle()
                     ->assertDontSee('@cart-item-name');
         });
+    }
+
+    public function addProduct($browser, $url)
+    {
+        return $browser->visit($url)
+            ->waitUntilIdle()
+            ->click('@add-to-cart')
+            ->waitForText('Added', 60);
     }
 }
