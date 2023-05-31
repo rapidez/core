@@ -1,6 +1,18 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/0.88.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/0.89.0...master)
+## [0.89.0](https://github.com/rapidez/core/releases/tag/0.89.0) - 2023-05-31
+
+### Added
+
+- Magento title prefix, suffix and default support (#273)
+- Get order information on success page (#230)
+
+### Fixed
+
+- Slider event fix (#270)
+- Slider visible slides calculation fix (#256)
+
 ## [0.88.0](https://github.com/rapidez/core/releases/tag/0.88.0) - 2023-05-25
 
 ### Added
