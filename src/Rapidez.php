@@ -63,17 +63,17 @@ class Rapidez
         return json_decode(str_replace(array_values($mapping), array_keys($mapping), $encodedString));
     }
 
-    public function getStores(): Collection
+    public function getStores(): array
     {
         $storeModel = config('rapidez.models.store');
 
-        return $storeModel::all();
+        return $storeModel::getCached();
     }
 
-    public function setStore(Store $store): void
+    public function setStore(Store|array $store): void
     {
-        config()->set('rapidez.store', $store->store_id);
-        config()->set('rapidez.website', $store->website_id);
+        config()->set('rapidez.store', $store['store_id']);
+        config()->set('rapidez.website', $store['website_id']);
         $code = config('rapidez.models.store')::getCachedWhere(function ($store) {
             return $store['store_id'] == config('rapidez.store');
         })['code'];

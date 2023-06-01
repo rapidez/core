@@ -28,7 +28,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
         $productModel = config('rapidez.models.product');
         $stores = Rapidez::getStores();
         foreach ($stores as $store) {
-            $this->line('Store: '.$store->name);
+            $this->line('Store: '.$store['name']);
             $this->prepareIndexerWithStore($store, 'products', Eventy::filter('index.product.mapping', [
                 'properties' => [
                     'price' => [
@@ -56,7 +56,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
 
                 $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $categories) {
                     $this->indexer->index($products, function ($product) use ($store, $categories) {
-                        $data = array_merge(['store' => $store->store_id], $product->toArray());
+                        $data = array_merge(['store' => $store['store_id']], $product->toArray());
                         foreach ($product->super_attributes ?: [] as $superAttribute) {
                             $data['super_'.$superAttribute->code] = $superAttribute->text_swatch || $superAttribute->visual_swatch
                                 ? array_keys((array) $product->{'super_'.$superAttribute->code})

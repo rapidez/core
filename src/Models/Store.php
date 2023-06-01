@@ -25,12 +25,13 @@ class Store extends Model
         });
     }
 
-    public static function getCachedWhere(callable $callback): array
+    public static function getCached(): array
     {
         if (!$stores = config('cache.app.stores')) {
             $stores = Cache::rememberForever('stores', function () {
                 return self::select([
                     'store_id',
+                    'store.name',
                     'store.code',
                     'store.website_id',
                     'store_group.root_category_id',
@@ -39,6 +40,13 @@ class Store extends Model
             });
             config(['cache.app.stores' => $stores]);
         }
+
+        return $stores;
+    }
+
+    public static function getCachedWhere(callable $callback): array
+    {
+        $stores = static::getCached();
 
         $store = Arr::first($stores, function ($store) use ($callback) {
             return $callback($store);
