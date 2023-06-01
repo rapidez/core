@@ -41,13 +41,25 @@ class ElasticsearchIndexer
 
     public function indexItem(object $item, callable|array $mapping, callable|string $id = 'id'): void
     {
+        if(is_null($item)) {
+            return;
+        }
+
         $currentValues = is_callable($mapping)
             ? $mapping($item)
             : Arr::only((array) $item, $mapping);
 
+        if(is_null($currentValues)) {
+            return;
+        }
+
         $currentId = is_callable($id)
             ? $id($item)
             : $item[$id];
+
+        if(is_null($currentId)) {
+            return;
+        }
 
         IndexJob::dispatch($this->index, $currentId, $currentValues);
     }

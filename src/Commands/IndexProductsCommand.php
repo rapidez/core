@@ -54,8 +54,14 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                     ->where('catalog_category_flat_store_'.config('rapidez.store').'.entity_id', '<>', Rapidez::config('catalog/category/root_id', 2))
                     ->pluck('name', 'entity_id');
 
-                $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $categories) {
-                    $this->indexer->index($products, function ($product) use ($store, $categories) {
+                $showOutOfStock = (bool) Rapidez::config('cataloginventory/options/show_out_of_stock', 0);
+
+                $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $categories, $showOutOfStock) {
+                    $this->indexer->index($products, function ($product) use ($store, $categories, $showOutOfStock) {
+                        if (!$showOutOfStock && !$product->in_stock) {
+                            return null;
+                        }
+
                         $data = array_merge(['store' => $store['store_id']], $product->toArray());
                         foreach ($product->super_attributes ?: [] as $superAttribute) {
                             $data['super_'.$superAttribute->code] = $superAttribute->text_swatch || $superAttribute->visual_swatch
