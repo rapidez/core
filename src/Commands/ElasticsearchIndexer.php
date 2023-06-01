@@ -41,7 +41,7 @@ class ElasticsearchIndexer
 
     public function indexItem(object $item, callable|array $mapping, callable|string $id = 'id'): void
     {
-        if(is_null($item)) {
+        if (is_null($item)) {
             return;
         }
 
@@ -49,7 +49,7 @@ class ElasticsearchIndexer
             ? $mapping($item)
             : Arr::only((array) $item, $mapping);
 
-        if(is_null($currentValues)) {
+        if (is_null($currentValues)) {
             return;
         }
 
@@ -57,7 +57,7 @@ class ElasticsearchIndexer
             ? $id($item)
             : $item[$id];
 
-        if(is_null($currentId)) {
+        if (is_null($currentId)) {
             return;
         }
 
