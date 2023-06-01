@@ -63,6 +63,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                         }
 
                         $data = array_merge(['store' => $store['store_id']], $product->toArray());
+
                         foreach ($product->super_attributes ?: [] as $superAttribute) {
                             $data['super_'.$superAttribute->code] = $superAttribute->text_swatch || $superAttribute->visual_swatch
                                 ? array_keys((array) $product->{'super_'.$superAttribute->code})

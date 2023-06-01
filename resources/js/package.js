@@ -21,6 +21,8 @@ import './callbacks'
 import './vue-components'
 
 function init() {
+    // https://vuejs.org/api/application.html#app-config-performance
+    Vue.config.performance = import.meta.env.VITE_PERFORMANCE == 'true'
     Vue.prototype.window = window
     Vue.prototype.config = window.config
 
@@ -95,6 +97,10 @@ function init() {
         computed: {
             // Wrap the local storage in getter and setter functions so you do not have to interact using .value
             guestEmail: wrapValue(useLocalStorage('email', (window.debug ? 'wayne@enterprises.com' : ''), {serializer: StorageSerializers.string})),
+
+            loggedIn() {
+                return Boolean(this.user?.id)
+            },
         },
     })
 
