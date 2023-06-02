@@ -10,7 +10,7 @@ class CheckoutTest extends DuskTestCase
     public function testCheckoutAsGuest()
     {
         $this->browse(function (Browser $browser) {
-            $browser->plainCookie('cookie-notice', true);
+            $browser->script("localStorage['cookie-notice'] = true;");
             $this->addProductToCart($browser);
             $this->doCheckout($browser, 'wayne+'.mt_rand().'@enterprises.com');
         });
@@ -22,15 +22,15 @@ class CheckoutTest extends DuskTestCase
 
         // Go through checkout as guest and register.
         $this->browse(function (Browser $browser) use ($email) {
-            $browser->plainCookie('cookie-notice', true);
+            $browser->script("localStorage['cookie-notice'] = true;");
             $this->addProductToCart($browser);
             $this->doCheckout($browser, $email, 'IronManSucks.91939', true);
         });
 
         // Go through checkout as guest and log in.
         $this->browse(function (Browser $browser) use ($email) {
-            $browser->plainCookie('cookie-notice', true)
-                ->waitForReload(fn ($browser) => $browser->visit('/'), 4)
+            $browser->script("localStorage['cookie-notice'] = true;");
+            $browser->waitForReload(fn ($browser) => $browser->visit('/'), 4)
                 ->waitUntilIdle()
                 ->waitFor('@account_menu')
                 ->click('@account_menu')
@@ -42,8 +42,8 @@ class CheckoutTest extends DuskTestCase
 
     public function addProductToCart($browser)
     {
-        $browser->plainCookie('cookie-notice', true)
-            ->visit($this->testProduct->url)
+        $browser->script("localStorage['cookie-notice'] = true;");
+        $browser->visit($this->testProduct->url)
             ->waitUntilIdle()
             ->click('@add-to-cart')
             ->waitUntilIdle();
