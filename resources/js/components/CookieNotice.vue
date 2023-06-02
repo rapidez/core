@@ -1,20 +1,45 @@
 <script>
-    import Popup from './Popup.vue'
     export default {
-        extends: Popup,
         render() {
             return this.$scopedSlots.default({
-                show: this.show,
                 close: this.close,
                 accept: this.accept,
             })
         },
+        props: {
+            name: {
+                type: String,
+                required: true,
+            },
+            showUntilClose: {
+                type: Boolean,
+                default: false,
+            },
+            showOnce: {
+                type: Boolean,
+                default: false,
+            },
+        },
         methods: {
+            open() {
+                this.$el.show()
+            },
             accept() {
                 document.cookie = 'accept-cookies=true'
                 this.close()
                 location.reload()
             },
+            close() {
+                this.$el.show()
+                if (this.showUntilClose) {
+                    localStorage.setItem(this.name, true)
+                }
+            },
+        },
+        mounted() {
+            if (!localStorage.getItem(this.name)) {
+                this.open()
+            }
         },
     }
 </script>
