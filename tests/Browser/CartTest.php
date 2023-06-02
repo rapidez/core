@@ -10,9 +10,9 @@ class CartTest extends DuskTestCase
     public function testAddSimpleProduct()
     {
         $this->browse(function (Browser $browser) {
+            $browser->visit($this->testProduct->url);
             $browser->script("localStorage['cookie-notice'] = true;");
-            $browser->visit($this->testProduct->url)
-                    ->waitUntilIdle()
+            $browser->waitUntilIdle()
                     ->click('@add-to-cart')
                     ->waitForText('Added', 60)
                     ->visit('/cart')
@@ -23,9 +23,9 @@ class CartTest extends DuskTestCase
     public function testChangeProductQty()
     {
         $this->browse(function (Browser $browser) {
+            $browser->visit('/cart');
             $browser->script("localStorage['cookie-notice'] = true;");
-            $browser->visit('/cart')
-                    ->waitUntilIdle()
+            $browser->waitUntilIdle()
                     ->type('@qty-0', 5)
                     ->click('@item-update-0')
                     ->waitUntilIdle()
@@ -36,9 +36,9 @@ class CartTest extends DuskTestCase
     public function testRemoveProduct()
     {
         $this->browse(function (Browser $browser) {
+            $browser->visit('/cart');
             $browser->script("localStorage['cookie-notice'] = true;");
-            $browser->visit('/cart')
-                    ->waitUntilIdle()
+            $browser->waitUntilIdle()
                     ->click('@item-delete-0')
                     ->waitUntilIdle()
                     ->assertDontSee('@cart-item-name');

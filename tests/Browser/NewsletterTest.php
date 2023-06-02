@@ -14,9 +14,9 @@ class NewsletterTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $email = $this->faker->email;
+            $browser->visit('/');
             $browser->script("localStorage['cookie-notice'] = true;");
-            $browser->visit('/')
-                    ->scrollIntoView('@newsletter')
+            $browser->scrollIntoView('@newsletter')
                     ->waitUntilIdle()
                     ->type('@newsletter-email', $email)
                     ->click('@newsletter-submit')
