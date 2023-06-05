@@ -30,7 +30,7 @@
                 location.reload()
             },
             close() {
-                this.$el.show()
+                this.$el.close()
                 if (this.showUntilClose) {
                     localStorage.setItem(this.name, true)
                 }
