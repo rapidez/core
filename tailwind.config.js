@@ -27,9 +27,6 @@ module.exports = {
                 border: 'rgb(var(--border) / <alpha-value>)'
             },
         },
-        fontFamily: {
-            sans: ['Arial', 'sans-serif']
-        },
         container: {
             center: true,
             padding: '1.25rem',
