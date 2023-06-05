@@ -58,11 +58,6 @@
 
         created() {
             this.initPageSize()
-            this.$watch('variables.pageSize', (pageSize) => {
-                let currentURL = new URL(window.location)
-                currentURL.searchParams.set('pageSize', pageSize)
-                window.history.pushState({}, '', currentURL)
-            })
         },
 
         mounted() {
@@ -103,11 +98,19 @@
                         }
                     })
                 })).concat(this.additionalSorting)
+            },
+            pageSize: function () {
+                return this.variables.pageSize
             }
         },
         watch: {
             attributes: function (value) {
                 this.loaded = Object.keys(value).length > 0
+            },
+            pageSize: function (pageSize) {
+                let currentURL = new URL(window.location)
+                currentURL.searchParams.set('pageSize', pageSize)
+                window.history.pushState({}, '', currentURL)
             }
         }
     }
