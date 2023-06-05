@@ -6,38 +6,51 @@
 
 @section('content')
     <div class="container">
-        <h1 class="font-bold text-4xl mb-5">@lang('Cart')</h1>
+        <h1 class="mb-5 text-4xl font-bold">@lang('Cart')</h1>
         <cart v-cloak>
-            <div v-if="hasItems" slot-scope="{ cart, hasItems, changeQty, remove }">
+            <div
+                v-if="hasItems"
+                slot-scope="{ cart, hasItems, changeQty, remove }"
+            >
                 <div class="flex flex-col lg:flex-row lg:gap-x-6">
-                    <div class="flex flex-col w-full">
-                        <div class="flex flex-wrap items-center mb-4 border-b pb-2"  v-for="(item, productId, index) in cart.items">
-                            <div class="w-1/6 sm:w-1/12 pr-3">
-                                <a :href="item.url" class="block">
+                    <div class="flex w-full flex-col">
+                        <div
+                            class="mb-4 flex flex-wrap items-center border-b pb-2"
+                            v-for="(item, productId, index) in cart.items"
+                        >
+                            <div class="w-1/6 pr-3 sm:w-1/12">
+                                <a
+                                    class="block"
+                                    :href="item.url"
+                                >
                                     <img
+                                        class="mx-auto"
                                         :alt="item.name"
                                         :src="'/storage/resizes/80x80/catalog/product' + item.image + '.webp'"
                                         height="100"
-                                        class="mx-auto"
                                     />
                                 </a>
                             </div>
                             <div class="w-5/6 sm:w-5/12 xl:w-6/12">
-                                <a :href="item.url" dusk="cart-item-name" class="font-bold">@{{ item.name }}</a>
+                                <a
+                                    class="font-bold"
+                                    :href="item.url"
+                                    dusk="cart-item-name"
+                                >@{{ item.name }}</a>
                                 <div v-for="(optionValue, option) in item.options">
                                     @{{ option }}: @{{ optionValue }}
                                 </div>
                             </div>
-                            <div class="w-2/6 sm:w-1/6 xl:w-2/12 text-right pr-5">
+                            <div class="w-2/6 pr-5 text-right sm:w-1/6 xl:w-2/12">
                                 @{{ item.price | price }}
                             </div>
                             <div class="w-2/6 sm:w-1/6 xl:w-1/12">
                                 <div class="inline-flex lg:w-3/4 xl:w-full">
                                     <x-rapidez::input
-                                        :label="false"
                                         class="text-right"
-                                        type="number"
                                         name="qty"
+                                        type="number"
+                                        :label="false"
                                         v-model="item.qty"
                                         v-bind:dusk="'qty-'+index"
                                         ::min="item.min_sale_qty > item.qty_increments ? item.min_sale_qty : item.qty_increments"
@@ -49,38 +62,56 @@
                                         v-on:click="changeQty(item)"
                                         v-bind:dusk="'item-update-'+index"
                                     >
-                                        <x-heroicon-s-refresh class="w-4 h-4"/>
+                                        <x-heroicon-s-refresh class="h-4 w-4" />
                                     </x-rapidez::button>
                                 </div>
                             </div>
-                            <div class="w-2/6 sm:w-1/6 xl:w-2/12 flex justify-end items-center text-right">
+                            <div class="flex w-2/6 items-center justify-end text-right sm:w-1/6 xl:w-2/12">
                                 @{{ item.total | price }}
-                                <a href="#" @click.prevent="remove(item)" class="ml-2" title="@lang('Remove')" :dusk="'item-delete-'+index">
-                                    <x-heroicon-s-x class="w-4 h-4"/>
+                                <a
+                                    class="ml-2"
+                                    href="#"
+                                    title="@lang('Remove')"
+                                    @click.prevent="remove(item)"
+                                    :dusk="'item-delete-' + index"
+                                >
+                                    <x-heroicon-s-x class="h-4 w-4" />
                                 </a>
                             </div>
                         </div>
-                        <div class="flex flex-wrap justify-between items-start">
+                        <div class="flex flex-wrap items-start justify-between">
                             <div class="w-full md:w-auto">
                                 @include('rapidez::cart.coupon')
                             </div>
                             <div class="flex w-full md:w-auto">
-                                <div class="flex flex-wrap justify-end w-full self-baseline lg:w-64">
-                                    <div class="flex flex-wrap w-full p-3 mb-5 border rounded-lg">
-                                        <div class="w-1/2 py-3 border-b">@lang('Subtotal')</div>
-                                        <div class="w-1/2 text-right py-3 border-b">@{{ cart.subtotal | price }}</div>
-                                        <div class="w-1/2 py-3 border-b" v-if="cart.tax > 0">@lang('Tax')</div>
-                                        <div class="w-1/2 text-right py-3 border-b" v-if="cart.tax > 0">@{{ cart.tax | price }}</div>
-                                        <div class="w-1/2 py-3 border-b" v-if="cart.shipping_amount > 0">@lang('Shipping')<br><small>@{{ cart.shipping_description }}</small></div>
-                                        <div class="w-1/2 text-right py-3 border-b" v-if="cart.shipping_amount > 0">@{{ cart.shipping_amount | price }}</div>
-                                        <div class="w-1/2 py-3 border-b" v-if="cart.discount_name && cart.discount_amount < 0">@lang('Discount'): @{{ cart.discount_name }}</div>
-                                        <div class="w-1/2 py-3 border-b" v-if="!cart.discount_name && cart.discount_amount < 0">@lang('Discount')</div>
-                                        <div class="w-1/2 text-right py-3 border-b" v-if="cart.discount_amount < 0">@{{ cart.discount_amount | price }}</div>
-                                        <div class="w-1/2 font-bold py-3">@lang('Total')</div>
-                                        <div class="w-1/2 text-right font-bold py-3">@{{ cart.total | price }}</div>
-                                    </div>
+                                <div class="flex w-full flex-wrap justify-end self-baseline lg:w-64">
+                                    <dl class="mb-5 flex w-full flex-wrap rounded-lg border p-3 [&>dd:nth-last-of-type(-n+2)]:border-none [&>dd]:w-1/2 [&>dd]:border-b [&>dd]:py-3">
+                                        <dd>@lang('Subtotal')</dd>
+                                        <dd class="text-right">@{{ cart.subtotal | price }}</dd>
+                                        <dd v-if="cart.tax > 0">@lang('Tax')</dd>
+                                        <dd
+                                            class="text-right"
+                                            v-if="cart.tax > 0"
+                                        >@{{ cart.tax | price }}</dd>
+                                        <dd v-if="cart.shipping_amount > 0">@lang('Shipping')<br><small>@{{ cart.shipping_description }}</small></dd>
+                                        <dd
+                                            class="text-right"
+                                            v-if="cart.shipping_amount > 0"
+                                        >@{{ cart.shipping_amount | price }}</dd>
+                                        <dd v-if="cart.discount_name && cart.discount_amount < 0">@lang('Discount'): @{{ cart.discount_name }}</dd>
+                                        <dd v-if="!cart.discount_name && cart.discount_amount < 0">@lang('Discount')</dd>
+                                        <dd
+                                            class="text-right"
+                                            v-if="cart.discount_amount < 0"
+                                        >@{{ cart.discount_amount | price }}</dd>
+                                        <dd class="font-bold">@lang('Total')</dd>
+                                        <dd class="text-right font-bold">@{{ cart.total | price }}</dd>
+                                    </dl>
 
-                                    <x-rapidez::button href="/checkout" dusk="checkout">
+                                    <x-rapidez::button
+                                        href="/checkout"
+                                        dusk="checkout"
+                                    >
                                         @lang('Checkout')
                                     </x-rapidez::button>
                                 </div>
@@ -89,7 +120,11 @@
                     </div>
                 </div>
 
-                <x-rapidez::productlist title="More choices to go with your product" field="id" value="cart.cross_sells"/>
+                <x-rapidez::productlist
+                    value="cart.cross_sells"
+                    title="More choices to go with your product"
+                    field="id"
+                />
             </div>
             <div v-else>
                 @lang('You don\'t have anything in your cart.')
