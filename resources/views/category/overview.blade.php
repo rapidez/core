@@ -5,11 +5,11 @@
 
 @section('content')
     @include('rapidez::category.partials.breadcrumbs')
-    <div class="container mx-auto">
-        <h1 class="font-bold text-3xl mb-5">{{ $category->name }}</h1>
+    <div class="container">
+        <h1 class="mb-5 text-3xl font-bold">{{ $category->name }}</h1>
 
-        @if($category->is_anchor)
-            <x-rapidez::listing query="{ bool: { must: [{ terms: { visibility: [2, 4] } }, { terms: { category_ids: [config.category.entity_id] } }] } }"/>
+        @if ($category->is_anchor)
+            <x-rapidez::listing query="{ bool: { must: [{ terms: { visibility: [2, 4] } }, { terms: { category_ids: [config.category.entity_id] } }] } }" />
         @else
             <div class="flex flex-col md:flex-row">
                 <div class="md:w-1/5">

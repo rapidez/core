@@ -1,8 +1,8 @@
 <header class="relative mb-5 border-b shadow">
-    <div class="{{ Route::currentRouteName() == 'checkout' ? 'justify-center' : '' }} container mx-auto flex flex-wrap items-center max-sm:px-3">
+    <div class="{{ Route::currentRouteName() == 'checkout' ? 'justify-center' : '' }} container flex flex-wrap items-center max-sm:px-3">
         <input
-            id="navigation"
             class="peer hidden"
+            id="navigation"
             type="checkbox"
         />
         <div class="py-2">
@@ -48,7 +48,7 @@
             </div>
         @endif
         @if (Route::currentRouteName() !== 'checkout')
-            <nav class="inset-x-0 top-full z-10 w-full overflow-hidden rounded-b bg-white transition-all peer-checked:max-h-screen max-sm:absolute max-sm:max-h-0 max-sm:border max-sm:shadow">
+            <nav class="inset-x-0 top-full w-full overflow-hidden rounded-b bg-white transition-all peer-checked:max-h-screen max-sm:absolute max-sm:max-h-0 max-sm:border max-sm:shadow">
                 {{-- Because the lack of an @includeIf or @includeWhen equivalent for Blade components we're using a placeholder --}}
                 <x-dynamic-component :component="App::providerIsLoaded('Rapidez\Menu\MenuServiceProvider') ? 'menu' : 'placeholder'" />
             </nav>
