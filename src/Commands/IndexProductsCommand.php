@@ -4,7 +4,10 @@ namespace Rapidez\Core\Commands;
 
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Rapidez\Core\Events\IndexAfterEvent;
+use Rapidez\Core\Events\IndexBeforeEvent;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Jobs\IndexProductJob;
 use Rapidez\Core\Models\Category;
@@ -21,6 +24,9 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
     public function handle()
     {
         $this->call('cache:clear');
+
+        IndexBeforeEvent::dispatch($this);
+
         $productModel = config('rapidez.models.product');
         $storeModel = config('rapidez.models.store');
         $stores = $this->argument('store') ? $storeModel::where('store_id', $this->argument('store'))->get() : $storeModel::all();
@@ -62,9 +68,9 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
                     foreach ($products as $product) {
                         $data = array_merge(['store' => $store->store_id], $product->toArray());
                         foreach ($product->super_attributes ?: [] as $superAttribute) {
-                            $data[$superAttribute->code] = $superAttribute->text_swatch || $superAttribute->visual_swatch
-                                ? array_keys((array) $product->{$superAttribute->code})
-                                : array_pluck($product->{$superAttribute->code} ?: [], 'label');
+                            $data['super_'.$superAttribute->code] = $superAttribute->text_swatch || $superAttribute->visual_swatch
+                                ? array_keys((array) $product->{'super_'.$superAttribute->code})
+                                : Arr::pluck($product->{'super_'.$superAttribute->code} ?: [], 'label');
                         }
 
                         $data = $this->withCategories($data, $categories);
@@ -85,6 +91,8 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
             $bar->finish();
             $this->line('');
         }
+
+        IndexAfterEvent::dispatch($this);
         $this->info('Done!');
     }
 

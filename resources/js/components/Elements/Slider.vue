@@ -22,6 +22,10 @@
             },
             interval: {
                 type: Number,
+                default: 3
+            },
+            interval: {
+                type: Number,
                 default: 5000,
             },
             autoplay: {

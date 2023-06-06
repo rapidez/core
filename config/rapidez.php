@@ -78,6 +78,7 @@ return [
         'optionswatch' => Rapidez\Core\Models\OptionSwatch::class,
         'optionvalue'  => Rapidez\Core\Models\OptionValue::class,
         'productimage' => Rapidez\Core\Models\ProductImage::class,
+        'productview'  => Rapidez\Core\Models\ProductView::class,
         'quote'        => Rapidez\Core\Models\Quote::class,
         'rewrite'      => Rapidez\Core\Models\Rewrite::class,
         'store'        => Rapidez\Core\Models\Store::class,

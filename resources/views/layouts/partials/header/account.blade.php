@@ -1,5 +1,5 @@
 <div class="mr-3">
-    <toggler v-if="$root.user" v-cloak>
+    <toggler v-if="$root.user?.id" v-cloak>
         <div slot-scope="{ toggle, close, isOpen }" v-on-click-away="close">
             <button dusk="account_menu" class="flex my-1" v-on:click="toggle">
                 <x-heroicon-o-user class="h-6 w-6"/>
@@ -19,7 +19,7 @@
                         class="block hover:bg-secondary px-3 py-2"
                         dusk="logout"
                         slot-scope="{ logout }"
-                        @click.prevent="logout()"
+                        @click.prevent="logout('/')"
                     >
                         @lang('Logout')
                     </a>

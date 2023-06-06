@@ -11,7 +11,7 @@ class CartTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit($this->testProduct->url)
-                    ->waitUntilAllAjaxCallsAreFinished()
+                    ->waitUntilIdle()
                     ->click('@add-to-cart')
                     ->waitForText('Added', 60)
                     ->visit('/cart')
@@ -23,10 +23,10 @@ class CartTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/cart')
-                    ->waitUntilAllAjaxCallsAreFinished()
+                    ->waitUntilIdle()
                     ->type('@qty-0', 5)
                     ->click('@item-update-0')
-                    ->waitUntilAllAjaxCallsAreFinished()
+                    ->waitUntilIdle()
                     ->assertSee($this->testProduct->price * 5);
         });
     }
@@ -35,9 +35,9 @@ class CartTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/cart')
-                    ->waitUntilAllAjaxCallsAreFinished()
+                    ->waitUntilIdle()
                     ->click('@item-delete-0')
-                    ->waitUntilAllAjaxCallsAreFinished()
+                    ->waitUntilIdle()
                     ->assertDontSee('@cart-item-name');
         });
     }

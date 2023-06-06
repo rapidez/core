@@ -19,7 +19,7 @@ class WithProductSuperAttributesScope implements Scope
 
         foreach ($superAttributes as $superAttributeId => $superAttribute) {
             $query = DB::table('catalog_product_super_link')
-                ->selectRaw('JSON_OBJECTAGG(option.sort_order, JSON_OBJECT(
+                ->selectRaw('JSON_OBJECTAGG('.$superAttribute.', JSON_OBJECT(
                     "sort_order", option.sort_order,
                     "label", '.$superAttribute.'_value,
                     "value", '.$superAttribute.'
@@ -33,7 +33,7 @@ class WithProductSuperAttributesScope implements Scope
                 ->whereColumn('parent_id', $model->getTable().'.entity_id')
                 ->whereNotNull($superAttribute);
 
-            $builder->selectSub($query, $superAttribute);
+            $builder->selectSub($query, 'super_'.$superAttribute);
         }
 
         $query = DB::table('catalog_product_super_attribute')

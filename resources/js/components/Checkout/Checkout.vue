@@ -1,6 +1,8 @@
 <script>
     import GetCart from './../Cart/mixins/GetCart'
     import InteractWithUser from './../User/mixins/InteractWithUser'
+    import { useEventListener, useLocalStorage } from '@vueuse/core';
+    import useMask from '../../stores/useMask';
 
     export default {
         mixins: [GetCart, InteractWithUser],
@@ -133,8 +135,8 @@
                     }
 
                     if (!this.hasOnlyVirtualItems) {
-                        addressInformation.shipping_carrier_code = this.checkout.shipping_method.split('_')[0]
-                        addressInformation.shipping_method_code = this.checkout.shipping_method.split('_')[1]
+                        addressInformation.shipping_carrier_code = this.currentShippingMethod.carrier_code
+                        addressInformation.shipping_method_code = this.currentShippingMethod.method_code
                     }
 
                     if (this.checkout.create_account && this.checkout.password) {
@@ -149,9 +151,10 @@
                         }
                         let self = this
                         await this.login(customer.email, this.checkout.password, async () => {
-                            if (self.$root.cart) {
+                            if (self.$root.cart?.entity_id) {
                                 await self.linkUserToCart()
-                                localStorage.mask = self.$root.cart.entity_id
+                                let mask = useMask('mask')
+                                mask.value = self.$root.cart.entity_id
                             }
                         });
                     }
@@ -165,7 +168,8 @@
                     this.$root.$emit('checkout-credentials-saved')
                     return true
                 } catch (error) {
-                    Notify(error.response.data.message, 'error', error.response.data?.parameters)
+                    console.error(error)
+                    Notify(error?.response?.data?.message ?? window.config.translations.errors.wrong, 'error', error?.response?.data?.parameters)
                     return false
                 }
             },
@@ -202,8 +206,8 @@
                     addressInformation: {
                         shipping_address: this.shippingAddress,
                         billing_address: this.billingAddress,
-                        shipping_carrier_code: this.checkout.shipping_method.split('_')[0],
-                        shipping_method_code: this.checkout.shipping_method.split('_')[1],
+                        shipping_carrier_code: this.currentShippingMethod.carrier_code,
+                        shipping_method_code: this.currentShippingMethod.method_code
                     }
                 })
                 this.checkout.totals = response.data.totals
@@ -211,7 +215,7 @@
 
             async selectPaymentMethod() {
                 let response = await this.magentoCart('post', 'set-payment-information', {
-                    email: this.user == null ? this.$root.guestEmail : this.user.email,
+                    email: this.user?.email ? this.user.email : this.$root.guestEmail,
                     paymentMethod: {
                         method:  this.checkout.payment_method
                     }
@@ -229,7 +233,7 @@
                     let response = await this.magentoCart('post', 'payment-information', {
                         billingAddress: this.billingAddress,
                         shippingAddress: this.shippingAddress,
-                        email: this.user ? this.user.email : this.$root.guestEmail,
+                        email: this.user?.email ? this.user.email : this.$root.guestEmail,
                         paymentMethod: {
                             method: this.checkout.payment_method,
                             extension_attributes: {
@@ -270,23 +274,11 @@
                 return address
             },
 
-            storeCredentials(type) {
-                Object.keys(this.checkout[type + '_address']).forEach((key) => {
-                    let value = this.checkout[type + '_address'][key]
-                    let storageKey = type + '_' + key
-                    if (value !== '') {
-                        localStorage[storageKey] = value
-                    } else {
-                        localStorage.removeItem(storageKey);
-                    }
-                })
-            },
-
             setupHistory() {
-                window.addEventListener('hashchange', () => {
+                useEventListener('hashchange', () => {
                     this.backEvent = true
                     this.checkout.step = this.steps.indexOf(window.location.hash.substring(1))
-                }, false)
+                })
 
                 history.replaceState(null, null, '#'+ this.steps[this.checkout.step])
             }
@@ -311,29 +303,20 @@
                 }
 
                 return this.removeUnusedAddressInfo(this.$root.checkout.billing_address)
+            },
+            currentShippingMethod: function () {
+                return this.checkout.shipping_methods.find((method) => {
+                    return method.carrier_code + '_' + method.method_code === this.checkout.shipping_method
+                })
             }
         },
         watch: {
             'checkout.shipping_address.customer_address_id': function (customerAddressId) {
                 this.setCustomerAddressByAddressId('shipping', customerAddressId)
             },
-            'checkout.shipping_address': {
-                deep: true,
-                handler: function() {
-                    this.storeCredentials('shipping')
-                }
-            },
+
             'checkout.billing_address.customer_address_id': function (customerAddressId) {
                 this.setCustomerAddressByAddressId('billing', customerAddressId)
-            },
-            'checkout.billing_address': {
-                deep: true,
-                handler: function() {
-                    this.storeCredentials('billing')
-                }
-            },
-            'checkout.hide_billing': function (value) {
-                localStorage.hide_billing = value
             },
             'checkout.shipping_method': function () {
                 this.selectShippingMethod()

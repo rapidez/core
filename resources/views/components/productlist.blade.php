@@ -3,7 +3,7 @@
 @if($value)
     <lazy v-slot="{ intersected }">
         <listing v-if="intersected">
-            <reactive-base v-cloak :app="config.es_prefix + '_products_' + config.store" :url="config.es_url">
+            <x-rapidez::reactive-base>
                 <reactive-list
                     component-id="{{ md5(serialize($value)) }}"
                     data-field="{{ $field }}"
@@ -60,7 +60,7 @@
                         </slider>
                     </div>
                 </reactive-list>
-            </reactive-base>
+            </x-rapidez::reactive-base>
         </listing>
     </lazy>
 @endif

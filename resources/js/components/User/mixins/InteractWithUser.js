@@ -1,29 +1,17 @@
+import { useLocalStorage } from "@vueuse/core"
+import { user, token, refresh as refreshUser, clear as clearUser } from "../../../stores/useUser"
+
 export default {
     methods: {
         async getUser() {
-            if (this.$root.user === null) {
-                if (localStorage.token) {
-                    if (!localStorage.user) {
-                        await this.refreshUser()
-                    }
-                    this.$root.user = JSON.parse(localStorage.user)
-                }
-            }
-            return this.$root.user
+            return user
         },
 
         async refreshUser(redirect = true) {
-            try {
-                let response = await magentoUser.get('customers/me')
-                localStorage.user = JSON.stringify(response.data)
-                window.app.user = response.data
-            } catch (error) {
-                if (error.response.status == 401) {
-                    localStorage.removeItem('token')
-                }
-                if (redirect) {
-                    Turbo.visit('/login')
-                }
+            const success = await refreshUser()
+
+            if (!success && redirect) {
+                Turbo.visit('/login')
             }
         },
 
@@ -33,8 +21,7 @@ export default {
                 password: password
             })
             .then(async(response) => {
-                localStorage.token = response.data
-                window.magentoUser.defaults.headers.common['Authorization'] = `Bearer ${localStorage.token}`;
+                token.value = response.data
 
                 await this.refreshUser(false)
 
@@ -46,21 +33,24 @@ export default {
             })
             .catch((error) => {
                 Notify(error.response.data.message, 'error', error.response.data?.parameters)
+                console.error(error)
+
                 return false
             })
         },
 
-        logout(redirect = '/') {
+        logout(redirect = false) {
             this.$root.$emit('logout', {'redirect': redirect})
         },
 
         onLogout(data = {}) {
-            localStorage.removeItem('token')
-            localStorage.removeItem('user')
-            localStorage.removeItem('email')
-            this.$root.user = null
+            clearUser()
+            useLocalStorage('email', '').value = ''
             Turbo.cache.clear()
-            window.location.href = data?.redirect ?? '/'
+
+            if (data?.redirect) {
+                window.location.href = data?.redirect
+            }
         },
 
         async createCustomer(customer) {
@@ -77,12 +67,14 @@ export default {
                 return response.data
             } catch (error) {
                 Notify(error.response.data.message, 'error', error.response.data?.parameters)
+                console.error(error)
+
                 return false
             }
         },
 
         setCheckoutCredentialsFromDefaultUserAddresses() {
-            if (this.$root && this.$root.user) {
+            if (this.$root && this.$root.user?.id) {
                 this.setCustomerAddressByAddressId('shipping', this.$root.user.default_shipping)
                 this.setCustomerAddressByAddressId('billing', this.$root.user.default_billing)
             }
@@ -90,14 +82,17 @@ export default {
 
         setCustomerAddressByAddressId(type, id) {
             if (!id) {
+                this.$root.checkout[type + '_address'].customer_address_id = null;
                 return
             }
 
             let address = this.$root.user.addresses.find((address) => address.id == id)
 
-            this.$root.checkout[type + '_address'] = Object.assign({
-                customer_address_id: address.id
-            }, address)
+            this.$root.checkout[type + '_address'] = Object.assign(
+                this.$root.checkout[type + '_address'],
+                Object.assign({
+                    customer_address_id: address.id
+                }, address))
         },
     },
 
