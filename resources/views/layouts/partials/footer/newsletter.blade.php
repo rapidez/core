@@ -2,7 +2,7 @@
     <h3 class="text-base font-bold text-gray-900">@lang('Want product news and updates?')</h3>
     <p class="mt-4 text-base text-gray-500">@lang('Sign up for our newsletter to stay up to date.')</p>
     <div class="sm:w-full sm:max-w-md xl:mt-0" dusk="newsletter">
-        <lazy class="w-full">
+        <lazy>
             <graphql-mutation v-cloak query="mutation visitor ($email: String!) { subscribeEmailToNewsletter(email: $email) { status } }" :alert="false" :clear="true">
                 <div slot-scope="{ mutate, variables, mutated, error }">
                     <p v-if="mutated" class="text-primary text-xl font-bold">

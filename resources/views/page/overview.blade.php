@@ -4,7 +4,7 @@
 @section('description', $page->meta_description)
 
 @section('content')
-    <div class="container mx-auto">
+    <div class="container">
         @if($page->identifier != 'home' && $page->content_heading)
             <h1 class="font-bold text-4xl mb-5">{{ $page->content_heading }}</h1>
         @endif

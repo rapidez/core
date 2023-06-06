@@ -5,7 +5,7 @@
 @section('robots', 'NOINDEX,NOFOLLOW')
 
 @section('content')
-    <div class="container mx-auto">
+    <div class="container">
         <checkout v-cloak v-slot="{ checkout, cart, hasItems, save, goToStep }">
             <div>
                 <template v-if="checkout.step !== 4">

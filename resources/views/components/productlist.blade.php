@@ -32,12 +32,22 @@
                                         @include('rapidez::listing.partials.item', ['slider' => true])
                                     </template>
                                 </div>
-                                <x-rapidez::button variant="slider" class="absolute left-0 top-1/2 sm:-translate-x-1/2 -translate-y-1/2" v-if="showLeft" v-on:click="navigate(currentSlide - 1)" :aria-label="__('Prev')">
-                                    <x-heroicon-o-chevron-left class="w-6 h-6"/>
-                                </x-rapidez::button>
-                                <x-rapidez::button variant="slider" class="absolute right-0 top-1/2 sm:translate-x-1/2 -translate-y-1/2" v-if="showRight" v-on:click="navigate(currentSlide + 1)" :aria-label="__('Next')">
-                                    <x-heroicon-o-chevron-right class="w-6 h-6"/>
-                                </x-rapidez::button>
+                                <x-rapidez::button.slider
+                                    class="absolute left-0 top-1/2 sm:-translate-x-1/2 -translate-y-1/2"
+                                    v-if="showLeft"
+                                    v-on:click="navigate(currentSlide - 1)"
+                                    :aria-label="__('Prev')"
+                                >
+                                    <x-heroicon-o-chevron-left class="w-6 h-6 shrink-0"/>
+                                </x-rapidez::button.slider>
+                                <x-rapidez::button.slider
+                                    class="absolute right-0 top-1/2 sm:translate-x-1/2 -translate-y-1/2"
+                                    v-if="showRight"
+                                    v-on:click="navigate(currentSlide + 1)"
+                                    :aria-label="__('Next')"
+                                >
+                                    <x-heroicon-o-chevron-right class="w-6 h-6 shrink-0"/>
+                                </x-rapidez::button.slider>
                                 <div v-show="slidesTotal > 1" class="flex flex-row justify-center w-full mt-[35px]">
                                     <div
                                         v-for="slide, index in slidesTotal"

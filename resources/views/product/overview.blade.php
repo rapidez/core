@@ -4,7 +4,7 @@
 @section('description', $product->meta_description)
 
 @section('content')
-    <div class="container mx-auto">
+    <div class="container">
         @include('rapidez::product.partials.breadcrumbs')
         <div itemtype="https://schema.org/Product" itemscope>
             @include('rapidez::product.partials.microdata')
@@ -53,7 +53,7 @@
     </div>
     @if (App::providerIsLoaded('Rapidez\Reviews\ReviewsServiceProvider'))
         <div class="bg-highlight my-5">
-            <div class="container mx-auto grid sm:grid-cols-3 gap-5 w-full grid-cols-1 p-5">
+            <div class="container grid sm:grid-cols-3 gap-5 w-full grid-cols-1 p-5">
                 <div class="sm:sticky top-5 h-fit bg-white rounded p-4 w-full">
                     @include('rapidez-reviews::form', ['sku' => $product->sku])
                 </div>
@@ -67,7 +67,7 @@
             </div>
         </div>
     @endif
-    <div class="container mx-auto">
+    <div class="container">
         <x-rapidez::productlist title="Related products" field="id" :value="$product->relation_ids" />
         <x-rapidez::productlist title="We found other products you might like!" field="id" :value="$product->upsell_ids" />
     </div>

@@ -35,10 +35,10 @@
                 {{ $before ?? '' }}
                 @if ($slot->isEmpty())
                     <div class="flex flex-col lg:flex-row">
-                        <div class="lg:w-1/5">
+                        <div class="xl:w-1/5">
                             @include('rapidez::listing.filters')
                         </div>
-                        <div class="lg:w-4/5">
+                        <div class="xl:w-4/5">
                             @include('rapidez::listing.products')
                         </div>
                     </div>
