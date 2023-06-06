@@ -35,9 +35,7 @@
         data: () => ({
             loaded: false,
             attributes: useAttributes(),
-            variables: {
-                pageSize: ''
-            }
+            pageSize: ''
         }),
 
         render() {
@@ -46,13 +44,13 @@
                 filters: this.filters,
                 sortOptions: this.sortOptions,
                 reactiveFilters: this.reactiveFilters,
-                variables: this.variables
+                pageSize: this.pageSize
             })
         },
 
         methods: {
             initPageSize() {
-                this.variables.pageSize = Turbo.navigator.location.searchParams?.get('pageSize') ?? this.$root.config.grid_per_page
+                this.pageSize = Turbo.navigator.location.searchParams?.get('pageSize') ?? this.$root.config.grid_per_page
             }
         },
 
@@ -98,9 +96,6 @@
                         }
                     })
                 })).concat(this.additionalSorting)
-            },
-            pageSize: function () {
-                return this.variables.pageSize
             }
         },
         watch: {
