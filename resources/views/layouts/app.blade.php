@@ -17,11 +17,13 @@
 </head>
 <body class="text-primary antialiased">
     <div id="app" class="flex flex-col min-h-screen">
-        @include('rapidez::layouts.partials.header')
+        @includeWhen(!request()->is('checkout'), 'rapidez::layouts.partials.header')
+        @includeWhen(request()->is('checkout'), 'rapidez::layouts.checkout.header')
         <main>
             @yield('content')
         </main>
-        @include('rapidez::layouts.partials.footer')
+        @includeWhen(!request()->is('checkout'), 'rapidez::layouts.partials.footer')
+        @includeWhen(request()->is('checkout'), 'rapidez::layouts.checkout.footer')
         @stack('page_end')
     </div>
 

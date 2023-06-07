@@ -9,7 +9,7 @@
             <x-rapidez::input name="password" type="password" v-model="checkout.password" required />
         </div>
         <div class="col-span-12 sm:col-span-6" v-if="checkout.create_account || checkout.hasVirtualItems">
-            <x-rapidez::input name="password_repeat" type="password" v-model="checkout.password_repeat" label="Repeat password" placeholder="Password" required />
+            <x-rapidez::input label="Repeat password" name="password_repeat" type="password" v-model="checkout.password_repeat" required />
         </div>
     </div>
 </div>

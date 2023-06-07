@@ -26,7 +26,7 @@
                         leave-to-class="translate-x-full"
                     >
                         <div v-show="isOpen" class="w-screen max-w-md {{ $mobileOnly ? 'lg:!block' : '' }}">
-                            <div class="h-full flex flex-col space-y-6 py-6 bg-white shadow-xl overflow-y-scroll {{ $mobileOnly ? 'lg:py-0 lg:space-y-0' : '' }}">
+                            <div class="h-full flex flex-col space-y-6 py-6 bg-white shadow-xl overflow-y-scroll scrollbar-hide {{ $mobileOnly ? 'lg:py-0 lg:space-y-0' : '' }}">
                                 <header class="px-4 {{ $mobileOnly ? 'lg:hidden' : '' }}">
                                     <div class="flex items-start justify-between space-x-3">
                                         <h2 class="text-lg leading-7 font-medium text-gray-900">

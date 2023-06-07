@@ -12,14 +12,8 @@
     <ul>
         <p>Support</p>
         <li><a href="/customer-service.html">Customer Service</a></li>
-        <li><a
-                href="https://docs.rapidez.io/"
-                target="_blank"
-            >Documentation</a></li>
-        <li><a
-                href="https://rapidez.io/#faq"
-                target="_blank"
-            >FAQ</a></li>
+        <li><a href="https://docs.rapidez.io/" target="_blank">Documentation</a></li>
+        <li><a href="https://rapidez.io/#faq" target="_blank">FAQ</a></li>
     </ul>
     <ul>
         <p>Legal</p>
@@ -28,13 +22,7 @@
     </ul>
     <ul>
         <p>Rapidez</p>
-        <li><a
-                href="https://rapidez.io/"
-                target="_blank"
-            >Website</a></li>
-        <li><a
-                href="https://github.com/rapidez"
-                target="_blank"
-            >GitHub</a></li>
+        <li><a href="https://rapidez.io/" target="_blank">Website</a></li>
+        <li><a href="https://github.com/rapidez" target="_blank">GitHub</a></li>
     </ul>
 </nav>
