@@ -54,6 +54,7 @@ return [
     // Should the routes be registered? The controllers
     // below will not be used anymore when disabled.
     'routes' => true,
+
     'fallback_routes' => [
         // How long (in seconds) it should cache which controller handles which route.
         // null means cache forever, 0 means never cache. customisation is possible using a closure.
