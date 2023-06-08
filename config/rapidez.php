@@ -55,6 +55,13 @@ return [
     // below will not be used anymore when disabled.
     'routes' => true,
 
+    'fallback_routes' => [
+        // How long (in seconds) it should cache which controller handles which route.
+        // null means cache forever, 0 means never cache. customisation is possible using a closure.
+        // This does not cache the response, it caches the controller used for that page.
+        'cache_duration' => 3600,
+    ],
+
     // Link store codes to theme folders
     // The structure is `'store_code' => 'folder_path'`
     'themes' => [
