@@ -50,7 +50,7 @@ Vue.component('listing', () => import('./components/Listing/Listing.vue'))
 Vue.component('coupon', () => import('./components/Coupon/Coupon.vue'))
 Vue.component('checkout', () => import('./components/Checkout/Checkout.vue'))
 Vue.component('checkout-success', () => import('./components/Checkout/CheckoutSuccess.vue'))
-Vue.component('cookie-notice', () => import('./components/CookieNotice.vue'))
+Vue.component('popup', () => import('./components/Popup.vue'))
 
 function init() {
     // https://vuejs.org/api/application.html#app-config-performance
