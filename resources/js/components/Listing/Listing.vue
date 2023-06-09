@@ -35,15 +35,11 @@
         data: () => ({
             loaded: false,
             attributes: useAttributes(),
+            pageSize: Turbo.navigator.location.searchParams.get('pageSize') || config.grid_per_page
         }),
 
         render() {
-            return this.$scopedSlots.default({
-                loaded: this.loaded,
-                filters: this.filters,
-                sortOptions: this.sortOptions,
-                reactiveFilters: this.reactiveFilters,
-            })
+            return this.$scopedSlots.default(Object.assign(this, { self: this }))
         },
 
         mounted() {
@@ -89,6 +85,12 @@
         watch: {
             attributes: function (value) {
                 this.loaded = Object.keys(value).length > 0
+            },
+
+            pageSize: function (pageSize) {
+                let url = new URL(window.location)
+                url.searchParams.set('pageSize', pageSize)
+                window.history.pushState(window.history.state, '', url)
             }
         }
     }
