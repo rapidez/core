@@ -67,6 +67,8 @@
             "yarn run prod",
             "cp -r public/. vendor/orchestra/testbench-dusk/laravel/public/"
         ],
-        "dusk:test": ["./vendor/bin/phpunit -c phpunit.dusk.xml --colors=always"]
+        "dusk:test": [
+            "./vendor/bin/phpunit -c phpunit.dusk.xml --colors=always"
+        ]
     }
 }

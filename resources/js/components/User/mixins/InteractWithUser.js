@@ -31,30 +31,31 @@ export default {
         },
 
         async login(username, password, loginCallback = false) {
-            await magento.post('integration/customer/token', {
-                username: username,
-                password: password
-            })
-            .then(async(response) => {
-                localStorage.token = response.data
-                window.magentoUser.defaults.headers.common['Authorization'] = `Bearer ${localStorage.token}`;
+            await magento
+                .post('integration/customer/token', {
+                    username: username,
+                    password: password,
+                })
+                .then(async (response) => {
+                    localStorage.token = response.data
+                    window.magentoUser.defaults.headers.common['Authorization'] = `Bearer ${localStorage.token}`
 
-                await this.refreshUser(false)
+                    await this.refreshUser(false)
 
-                this.setCheckoutCredentialsFromDefaultUserAddresses()
-                await window.app.$emit('logged-in')
-                if (loginCallback) {
-                    await loginCallback()
-                }
-            })
-            .catch((error) => {
-                Notify(error.response.data.message, 'error', error.response.data?.parameters)
-                return false
-            })
+                    this.setCheckoutCredentialsFromDefaultUserAddresses()
+                    await window.app.$emit('logged-in')
+                    if (loginCallback) {
+                        await loginCallback()
+                    }
+                })
+                .catch((error) => {
+                    Notify(error.response.data.message, 'error', error.response.data?.parameters)
+                    return false
+                })
         },
 
         logout(redirect = false) {
-            this.$root.$emit('logout', {'redirect': redirect})
+            this.$root.$emit('logout', { redirect: redirect })
         },
 
         onLogout(data = {}) {
@@ -78,7 +79,7 @@ export default {
                         lastname: customer.lastname,
                         store_id: window.config.store,
                     },
-                    password: customer.password
+                    password: customer.password,
                 })
                 return response.data
             } catch (error) {
@@ -101,19 +102,22 @@ export default {
 
             let address = this.$root.user.addresses.find((address) => address.id == id)
 
-            this.$root.checkout[type + '_address'] = Object.assign({
-                customer_address_id: address.id
-            }, address)
+            this.$root.checkout[type + '_address'] = Object.assign(
+                {
+                    customer_address_id: address.id,
+                },
+                address
+            )
         },
     },
 
     created() {
-        this.$root.$on('logout', this.onLogout);
+        this.$root.$on('logout', this.onLogout)
     },
 
     asyncComputed: {
         user: function () {
             return this.getUser()
-        }
-    }
+        },
+    },
 }
