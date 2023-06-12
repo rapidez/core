@@ -16,7 +16,7 @@ class Store extends Model
 
     public static function getCachedWhere(callable $callback): array
     {
-        if (! $stores = config('cache.app.stores')) {
+        if (!$stores = config('cache.app.stores')) {
             $stores = Cache::rememberForever('stores', function () {
                 return self::select([
                     'store_id',
@@ -44,7 +44,7 @@ class Store extends Model
 
     protected static function booting()
     {
-        static::addGlobalScope(new IsActiveScope);
+        static::addGlobalScope(new IsActiveScope());
         static::addGlobalScope('defaults', function (Builder $builder) {
             $builder
                 ->where('store.code', '<>', 'admin')

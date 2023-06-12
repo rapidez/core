@@ -28,7 +28,7 @@ class QuoteItems implements CastsAttributes
             }
             $item->options = $options;
             $configModel = config('rapidez.models.config');
-            $item->url = '/' . $item->url_key . $configModel::getCachedByPath('catalog/seo/product_url_suffix', '.html');
+            $item->url = '/'.$item->url_key.$configModel::getCachedByPath('catalog/seo/product_url_suffix', '.html');
             unset($item->attributes);
         }
 

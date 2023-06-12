@@ -10,10 +10,10 @@ trait HasEventyGlobalScopeFilter
     public static function bootHasEventyGlobalScopeFilter()
     {
         $eventyName = strtolower(collect(explode('\\', get_called_class()))->last());
-        $scopes = Eventy::filter($eventyName . '.scopes', []);
+        $scopes = Eventy::filter($eventyName.'.scopes', []);
 
         foreach ($scopes as $scope) {
-            static::addGlobalScope(new $scope);
+            static::addGlobalScope(new $scope());
         }
     }
 
@@ -22,7 +22,7 @@ trait HasEventyGlobalScopeFilter
         $scopes = Eventy::filter($scope, []);
 
         foreach ($scopes as $scope) {
-            $query->withGlobalScope($scope, new $scope);
+            $query->withGlobalScope($scope, new $scope());
         }
 
         return $query;

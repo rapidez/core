@@ -14,11 +14,11 @@ class Attribute extends Model
 
     public static function getCachedWhere(callable $callback): array
     {
-        if (! $attributes = config('cache.app.attributes.' . config('rapidez.store'))) {
-            $attributes = Cache::rememberForever('attributes.' . config('rapidez.store'), function () {
+        if (!$attributes = config('cache.app.attributes.'.config('rapidez.store'))) {
+            $attributes = Cache::rememberForever('attributes.'.config('rapidez.store'), function () {
                 return self::all()->toArray();
             });
-            config(['cache.app.attributes.' . config('rapidez.store') => $attributes]);
+            config(['cache.app.attributes.'.config('rapidez.store') => $attributes]);
         }
 
         return Arr::where($attributes, function ($attribute) use ($callback) {
@@ -28,6 +28,6 @@ class Attribute extends Model
 
     protected static function booting()
     {
-        static::addGlobalScope(new OnlyProductAttributesScope);
+        static::addGlobalScope(new OnlyProductAttributesScope());
     }
 }

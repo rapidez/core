@@ -14,19 +14,19 @@ class Widget
                 $options[trim($parameter)] = trim($value);
             }
 
-            if (! isset($type)) {
+            if (!isset($type)) {
                 return '';
             }
 
-            $widgetClass = config('rapidez.widgets.' . $type);
+            $widgetClass = config('rapidez.widgets.'.$type);
 
             if (class_exists($widgetClass)) {
                 return (new $widgetClass((object) $options))->render();
             }
 
             if (is_null($widgetClass)) {
-                return ! app()->environment('production')
-                    ? '<hr>' . __('Widget not implemented (:type).', compact('type')) . '<hr>'
+                return !app()->environment('production')
+                    ? '<hr>'.__('Widget not implemented (:type).', compact('type')).'<hr>'
                     : '';
             }
 

@@ -17,14 +17,14 @@ class FallbackController
 {
     public function __invoke(Request $request)
     {
-        $cacheKey = 'fallbackroute-' . md5($request->url());
+        $cacheKey = 'fallbackroute-'.md5($request->url());
         $route = Cache::get($cacheKey);
         if ($route && $response = $this->tryRoute($route)) {
             return $response;
         }
 
         foreach (Rapidez::getAllFallbackRoutes() as $route) {
-            if (! ($response = $this->tryRoute($route))) {
+            if (!($response = $this->tryRoute($route))) {
                 continue;
             }
 

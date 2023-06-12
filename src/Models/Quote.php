@@ -21,7 +21,7 @@ class Quote extends Model
 
     protected static function booting()
     {
-        static::addGlobalScope(new IsActiveScope);
+        static::addGlobalScope(new IsActiveScope());
         static::addGlobalScope('with-all-information', function (Builder $builder) {
             $builder
                 ->addSelect($builder->qualifyColumns([
@@ -43,7 +43,7 @@ class Quote extends Model
                     GROUP_CONCAT(DISTINCT cross_sell.linked_product_id) as cross_sells
                 ')
                 ->selectRaw('JSON_REMOVE(JSON_OBJECTAGG(IFNULL(quote_item.item_id, "null__"), JSON_OBJECT(
-                    ' . Eventy::filter('quote.items.select', <<<'QUERY'
+                    '.Eventy::filter('quote.items.select', <<<'QUERY'
                         "item_id", quote_item.item_id,
                         "product_id", quote_item.product_id,
                         "sku", quote_item.sku,
@@ -59,7 +59,7 @@ class Quote extends Model
                         "total_excl_tax", quote_item.row_total,
                         "attributes", quote_item_option.value,
                         "type", quote_item.product_type
-                    QUERY) . '
+                    QUERY).'
                 )), "$.null__") AS items')
                 ->leftJoin('quote_id_mask', 'quote_id_mask.quote_id', '=', $builder->getModel()->getQualifiedKeyName())
                 ->leftJoin('oauth_token', 'oauth_token.customer_id', '=', $builder->qualifyColumn('customer_id'))
@@ -72,7 +72,7 @@ class Quote extends Model
                 ->leftJoin('quote_item_option', function ($join) {
                     $join->on('quote_item.item_id', '=', 'quote_item_option.item_id')->where('code', 'attributes');
                 })
-                ->leftJoin('catalog_product_flat_' . config('rapidez.store') . ' AS product', 'product.entity_id', '=', 'quote_item.product_id')
+                ->leftJoin('catalog_product_flat_'.config('rapidez.store').' AS product', 'product.entity_id', '=', 'quote_item.product_id')
                 ->leftJoin('cataloginventory_stock_item AS stock', 'stock.product_id', '=', 'quote_item.product_id')
                 ->leftJoin('catalog_product_link AS cross_sell', function ($join) {
                     $join->on('cross_sell.product_id', '=', 'quote_item.product_id')->where('cross_sell.link_type_id', '=', 5);

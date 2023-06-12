@@ -13,7 +13,7 @@ class Page extends Model
 
     protected static function booting()
     {
-        static::addGlobalScope(new IsActiveScope);
-        static::addGlobalScope(new ForCurrentStoreScope);
+        static::addGlobalScope(new IsActiveScope());
+        static::addGlobalScope(new ForCurrentStoreScope());
     }
 }
