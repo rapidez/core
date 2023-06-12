@@ -7,7 +7,10 @@ use Rapidez\Core\Tests\DuskTestCase;
 
 class CartTest extends DuskTestCase
 {
-    public function testAddSimpleProduct()
+    /**
+     * @test
+     */
+    public function addSimpleProduct()
     {
         $this->browse(function (Browser $browser) {
             $this->addProduct($browser, $this->testProduct->url)
@@ -16,7 +19,10 @@ class CartTest extends DuskTestCase
         });
     }
 
-    public function testAddMultipleSimpleProduct()
+    /**
+     * @test
+     */
+    public function addMultipleSimpleProduct()
     {
         $this->browse(function (Browser $browser) {
             $browser->script('localStorage.clear();');
@@ -26,7 +32,10 @@ class CartTest extends DuskTestCase
         });
     }
 
-    public function testChangeProductQty()
+    /**
+     * @test
+     */
+    public function changeProductQty()
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/cart')
@@ -38,7 +47,10 @@ class CartTest extends DuskTestCase
         });
     }
 
-    public function testRemoveProduct()
+    /**
+     * @test
+     */
+    public function removeProduct()
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/cart')

@@ -6,13 +6,12 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class ProductView extends Model
 {
-    protected $table = 'report_viewed_product_index';
-
-    protected $primaryKey = 'index_id';
-
     const CREATED_AT = 'added_at';
 
     const UPDATED_AT = null;
+    protected $table = 'report_viewed_product_index';
+
+    protected $primaryKey = 'index_id';
 
     protected static function booted(): void
     {

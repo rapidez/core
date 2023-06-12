@@ -18,7 +18,7 @@ class ProductController
         $attributes = Eventy::filter('productpage.frontend.attributes', $attributes);
 
         foreach ($product->super_attributes ?: [] as $superAttribute) {
-            $attributes[] = 'super_'.$superAttribute->code;
+            $attributes[] = 'super_' . $superAttribute->code;
         }
 
         ProductViewEvent::dispatch($product);

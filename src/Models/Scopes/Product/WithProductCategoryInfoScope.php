@@ -17,8 +17,8 @@ class WithProductCategoryInfoScope implements Scope
         // https://github.com/rapidez/core/blob/c30c620694fc77713364160a4bc329a8a29f844a/src/Models/Scopes/Product/WithProductCategoryIdsScope.php
         $builder
             ->selectRaw('GROUP_CONCAT(DISTINCT(category_id)) as category_ids')
-            ->selectRaw('GROUP_CONCAT(DISTINCT(catalog_category_flat_store_'.config('rapidez.store').'.path)) as category_paths')
-            ->leftJoin('catalog_category_product_index_store'.config('rapidez.store'), 'catalog_category_product_index_store'.config('rapidez.store').'.product_id', '=', $model->getTable().'.entity_id')
-            ->leftJoin('catalog_category_flat_store_'.config('rapidez.store'), 'catalog_category_flat_store_'.config('rapidez.store').'.entity_id', '=', 'catalog_category_product_index_store'.config('rapidez.store').'.category_id');
+            ->selectRaw('GROUP_CONCAT(DISTINCT(catalog_category_flat_store_' . config('rapidez.store') . '.path)) as category_paths')
+            ->leftJoin('catalog_category_product_index_store' . config('rapidez.store'), 'catalog_category_product_index_store' . config('rapidez.store') . '.product_id', '=', $model->getTable() . '.entity_id')
+            ->leftJoin('catalog_category_flat_store_' . config('rapidez.store'), 'catalog_category_flat_store_' . config('rapidez.store') . '.entity_id', '=', 'catalog_category_product_index_store' . config('rapidez.store') . '.category_id');
     }
 }

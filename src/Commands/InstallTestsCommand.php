@@ -24,7 +24,7 @@ class InstallTestsCommand extends Command
             ));
         }
 
-        shell_exec('cd '.base_path().' && composer require --dev laravel/dusk && php artisan dusk:install && php artisan dusk:chrome-driver --detect');
+        shell_exec('cd ' . base_path() . ' && composer require --dev laravel/dusk && php artisan dusk:install && php artisan dusk:chrome-driver --detect');
 
         $duskTestCaseFile = base_path('tests/DuskTestCase.php');
         file_put_contents($duskTestCaseFile, str(file_get_contents($duskTestCaseFile))
