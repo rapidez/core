@@ -1,6 +1,6 @@
 <?php
 
-if (! function_exists('price')) {
+if (!function_exists('price')) {
     function price($price)
     {
         $configModel = config('rapidez.models.config');
@@ -12,7 +12,7 @@ if (! function_exists('price')) {
     }
 }
 
-if (! function_exists('vite_filename_with_chunkhash')) {
+if (!function_exists('vite_filename_with_chunkhash')) {
     function vite_filename_with_chunkhash($file)
     {
         $manifest = @json_decode(@file_get_contents(public_path('build/manifest.json')));
@@ -26,7 +26,7 @@ if (! function_exists('vite_filename_with_chunkhash')) {
     }
 }
 
-if (! function_exists('vite_filename_path')) {
+if (!function_exists('vite_filename_path')) {
     function vite_filename_path($file)
     {
         $manifest = @json_decode(@file_get_contents(public_path('build/manifest.json')));

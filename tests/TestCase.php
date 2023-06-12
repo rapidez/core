@@ -38,7 +38,7 @@ class TestCase extends BaseTestCase
             return;
         }
 
-        fwrite(STDOUT, 'A Magento 2 database dump is being imported.' . PHP_EOL);
+        fwrite(STDOUT, 'A Magento 2 database dump is being imported.'.PHP_EOL);
 
         exec(strtr('mysql -h HOST -P PORT -u USERNAME -pPASSWORD DATABASE < DUMP', [
             'HOST'     => config('database.connections.mysql.host'),
@@ -46,10 +46,10 @@ class TestCase extends BaseTestCase
             'USERNAME' => config('database.connections.mysql.username'),
             'PASSWORD' => config('database.connections.mysql.password'),
             'DATABASE' => config('database.connections.mysql.database'),
-            'DUMP'     => __DIR__ . '/database/dump.sql',
+            'DUMP'     => __DIR__.'/database/dump.sql',
         ]));
 
-        fwrite(STDOUT, 'Done' . PHP_EOL);
+        fwrite(STDOUT, 'Done'.PHP_EOL);
     }
 
     protected function getEnvironmentSetUp($app)

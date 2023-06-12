@@ -15,7 +15,7 @@ class WithProductGroupedScope implements Scope
 
         $builder
             ->selectRaw('JSON_REMOVE(JSON_OBJECTAGG(IFNULL(grouped.entity_id, "null__"), JSON_OBJECT(
-                ' . Eventy::filter('product.grouped.select', <<<QUERY
+                '.Eventy::filter('product.grouped.select', <<<QUERY
                     "id", grouped.entity_id,
                     "sku", grouped.sku,
                     "name", grouped.name,
@@ -27,13 +27,13 @@ class WithProductGroupedScope implements Scope
                     "min_sale_qty", grouped_stock.min_sale_qty,
                     {$stockQty}
                     "qty_increments", IFNULL(NULLIF(grouped_stock.qty_increments, 0), 1)
-                QUERY) . '
+                QUERY).'
             )), "$.null__") AS grouped')
             ->leftJoin('catalog_product_link AS grouped_link', function ($join) use ($model) {
-                $join->on('grouped_link.product_id', '=', $model->getTable() . '.entity_id')
+                $join->on('grouped_link.product_id', '=', $model->getTable().'.entity_id')
                      ->where('grouped_link.link_type_id', 3);
             })
-            ->leftJoin($model->getTable() . ' as grouped', 'grouped_link.linked_product_id', '=', 'grouped.entity_id')
+            ->leftJoin($model->getTable().' as grouped', 'grouped_link.linked_product_id', '=', 'grouped.entity_id')
             ->leftJoin('cataloginventory_stock_item AS grouped_stock', 'grouped.entity_id', '=', 'grouped_stock.product_id');
     }
 }

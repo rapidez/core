@@ -15,9 +15,9 @@ class WithProductRelationIdsScope implements Scope
             $query = DB::table('catalog_product_link')
                 ->selectRaw('GROUP_CONCAT(linked_product_id)')
                 ->where('link_type_id', $linkTypeId)
-                ->whereColumn('product_id', $model->getTable() . '.entity_id');
+                ->whereColumn('product_id', $model->getTable().'.entity_id');
 
-            $builder->selectSub($query, $linkCode . '_ids');
+            $builder->selectSub($query, $linkCode.'_ids');
         }
     }
 }

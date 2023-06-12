@@ -39,28 +39,28 @@ class Product extends Model
 
     protected static function booting(): void
     {
-        static::addGlobalScope(new WithProductAttributesScope);
-        static::addGlobalScope(new WithProductSuperAttributesScope);
-        static::addGlobalScope(new WithProductStockScope);
-        static::addGlobalScope(new WithProductCategoryInfoScope);
-        static::addGlobalScope(new WithProductRelationIdsScope);
-        static::addGlobalScope(new WithProductChildrenScope);
-        static::addGlobalScope(new WithProductGroupedScope);
+        static::addGlobalScope(new WithProductAttributesScope());
+        static::addGlobalScope(new WithProductSuperAttributesScope());
+        static::addGlobalScope(new WithProductStockScope());
+        static::addGlobalScope(new WithProductCategoryInfoScope());
+        static::addGlobalScope(new WithProductRelationIdsScope());
+        static::addGlobalScope(new WithProductChildrenScope());
+        static::addGlobalScope(new WithProductGroupedScope());
         static::addGlobalScope('defaults', function (Builder $builder) {
             $builder
-                ->whereNotIn($builder->getQuery()->from . '.type_id', ['bundle'])
-                ->groupBy($builder->getQuery()->from . '.entity_id');
+                ->whereNotIn($builder->getQuery()->from.'.type_id', ['bundle'])
+                ->groupBy($builder->getQuery()->from.'.entity_id');
         });
     }
 
     public function getTable(): string
     {
-        return 'catalog_product_flat_' . config('rapidez.store');
+        return 'catalog_product_flat_'.config('rapidez.store');
     }
 
     public function getCasts(): array
     {
-        if (! $this->casts) {
+        if (!$this->casts) {
             $this->casts = array_merge(
                 parent::getCasts(),
                 [
@@ -96,7 +96,7 @@ class Product extends Model
 
     public function scopeByIds(Builder $query, array $productIds): Builder
     {
-        return $query->whereIn($this->getTable() . '.entity_id', $productIds);
+        return $query->whereIn($this->getTable().'.entity_id', $productIds);
     }
 
     public function getPriceAttribute($price)
@@ -114,7 +114,7 @@ class Product extends Model
 
     public function getSpecialPriceAttribute($specialPrice)
     {
-        if (! in_array($this->type, ['configurable', 'grouped'])) {
+        if (!in_array($this->type, ['configurable', 'grouped'])) {
             if ($this->special_from_date && $this->special_from_date > now()->toDateTimeString()) {
                 return null;
             }
@@ -127,7 +127,7 @@ class Product extends Model
         }
 
         return collect($this->type == 'configurable' ? $this->children : $this->grouped)->filter(function ($child) {
-            if (! $child->special_price) {
+            if (!$child->special_price) {
                 return false;
             }
 
@@ -147,27 +147,27 @@ class Product extends Model
     {
         $configModel = config('rapidez.models.config');
 
-        return '/' . $this->url_key . $configModel::getCachedByPath('catalog/seo/product_url_suffix', '.html');
+        return '/'.$this->url_key.$configModel::getCachedByPath('catalog/seo/product_url_suffix', '.html');
     }
 
     public function getBreadcrumbCategoriesAttribute()
     {
-        if (! $path = session('latest_category_path')) {
+        if (!$path = session('latest_category_path')) {
             return [];
         }
 
         $categoryIds = explode('/', $path);
         $categoryIds = array_slice($categoryIds, array_search(config('rapidez.root_category_id'), $categoryIds) + 1);
 
-        if (! in_array(end($categoryIds), $this->category_ids)) {
+        if (!in_array(end($categoryIds), $this->category_ids)) {
             return [];
         }
 
         $categoryModel = config('rapidez.models.category');
-        $categoryTable = (new $categoryModel)->getTable();
+        $categoryTable = (new $categoryModel())->getTable();
 
-        return Category::whereIn($categoryTable . '.entity_id', $categoryIds)
-            ->orderByRaw('FIELD(' . $categoryTable . '.entity_id,' . implode(',', $categoryIds) . ')')
+        return Category::whereIn($categoryTable.'.entity_id', $categoryIds)
+            ->orderByRaw('FIELD('.$categoryTable.'.entity_id,'.implode(',', $categoryIds).')')
             ->get();
     }
 
