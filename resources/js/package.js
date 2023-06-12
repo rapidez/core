@@ -1,17 +1,17 @@
 window.debug = import.meta.env.VITE_DEBUG == 'true'
-window.Notify = (message, type, params = [], link = null) => window.app.$emit('notification-message', message, type, params, link);
+window.Notify = (message, type, params = [], link = null) => window.app.$emit('notification-message', message, type, params, link)
 if (!window.process) {
     // Workaround for process missing, if data is actually needed from here you should apply the following polyfill.
     // https://stackoverflow.com/questions/72221740/how-do-i-polyfill-the-process-node-module-in-the-vite-dev-server
-    window.process = {};
+    window.process = {}
 }
 
 import { useLocalStorage, StorageSerializers } from '@vueuse/core'
-import useCart from './stores/useCart';
-import useUser from './stores/useUser';
-import useSwatches from './stores/useSwatches';
+import useCart from './stores/useCart'
+import useUser from './stores/useUser'
+import useSwatches from './stores/useSwatches'
 import './vue'
-import { computed } from 'vue';
+import { computed } from 'vue'
 import './axios'
 import './filters'
 import './mixins'
@@ -26,28 +26,28 @@ function init() {
     Vue.prototype.window = window
     Vue.prototype.config = window.config
 
-    let swatches = useLocalStorage('swatches', {});
+    let swatches = useLocalStorage('swatches', {})
 
     // Check if the localstorage needs a flush.
-    let cachekey = useLocalStorage('cachekey');
+    let cachekey = useLocalStorage('cachekey')
     if (cachekey.value !== window.config.cachekey) {
         window.config.flushable_localstorage_keys.forEach((key) => {
-            useLocalStorage(key).value = null;
+            useLocalStorage(key).value = null
         })
 
         cachekey.value = window.config.cachekey
     }
 
     window.address_defaults = {
-        'customer_address_id': null,
-        'firstname': (window.debug ? 'Bruce' : ''),
-        'lastname': (window.debug ? 'Wayne' : ''),
-        'postcode': (window.debug ? '72000' : ''),
-        'street': (window.debug ? ['Mountain Drive', 1007, ''] : ['', '', '']),
-        'city': (window.debug ? 'Gotham' : ''),
-        'telephone': (window.debug ? '530-7972' : ''),
-        'country_id': (window.debug ? 'NL' : window.config.default_country),
-        'custom_attributes': [],
+        customer_address_id: null,
+        firstname: window.debug ? 'Bruce' : '',
+        lastname: window.debug ? 'Wayne' : '',
+        postcode: window.debug ? '72000' : '',
+        street: window.debug ? ['Mountain Drive', 1007, ''] : ['', '', ''],
+        city: window.debug ? 'Gotham' : '',
+        telephone: window.debug ? '530-7972' : '',
+        country_id: window.debug ? 'NL' : window.config.default_country,
+        custom_attributes: [],
     }
 
     window.app = new Vue({
@@ -65,8 +65,14 @@ function init() {
                 step: 1,
                 totals: {},
 
-                shipping_address: useLocalStorage('shipping_address', address_defaults, {mergeDefaults: true, serializer: StorageSerializers.object}),
-                billing_address: useLocalStorage('billing_address', address_defaults, {mergeDefaults: true, serializer: StorageSerializers.object}),
+                shipping_address: useLocalStorage('shipping_address', address_defaults, {
+                    mergeDefaults: true,
+                    serializer: StorageSerializers.object,
+                }),
+                billing_address: useLocalStorage('billing_address', address_defaults, {
+                    mergeDefaults: true,
+                    serializer: StorageSerializers.object,
+                }),
                 hide_billing: useLocalStorage('hide_billing', true),
 
                 shipping_method: null,
@@ -92,11 +98,13 @@ function init() {
             },
             setSearchParams(url) {
                 window.history.pushState(window.history.state, '', new URL(url))
-            }
+            },
         },
         computed: {
             // Wrap the local storage in getter and setter functions so you do not have to interact using .value
-            guestEmail: wrapValue(useLocalStorage('email', (window.debug ? 'wayne@enterprises.com' : ''), {serializer: StorageSerializers.string})),
+            guestEmail: wrapValue(
+                useLocalStorage('email', window.debug ? 'wayne@enterprises.com' : '', { serializer: StorageSerializers.string })
+            ),
 
             loggedIn() {
                 return Boolean(this.user?.id)
@@ -104,8 +112,8 @@ function init() {
         },
     })
 
-    if(window.debug) {
-        window.app.$on('notification-message', console.debug);
+    if (window.debug) {
+        window.app.$on('notification-message', console.debug)
     }
 }
 

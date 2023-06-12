@@ -3,8 +3,8 @@ import { clear as clearCart } from './useCart'
 import { computed, watch } from 'vue'
 
 export const token = useLocalStorage('token', '')
-const userStorage = useSessionStorage('user', {}, {serializer: StorageSerializers.object})
-let isRefreshing = false;
+const userStorage = useSessionStorage('user', {}, { serializer: StorageSerializers.object })
+let isRefreshing = false
 
 export const refresh = async function () {
     if (!token.value) {
@@ -14,31 +14,33 @@ export const refresh = async function () {
 
     if (isRefreshing) {
         console.debug('Refresh canceled, request already in progress...')
-        return;
+        return
     }
 
     try {
         isRefreshing = true
-        window.magentoUser.defaults.headers.common['Authorization'] = `Bearer ${token.value}`;
-        let response = await magentoUser.get('customers/me').finally(() => {isRefreshing = false;})
+        window.magentoUser.defaults.headers.common['Authorization'] = `Bearer ${token.value}`
+        let response = await magentoUser.get('customers/me').finally(() => {
+            isRefreshing = false
+        })
         userStorage.value = response.data
     } catch (error) {
         if (error.response.status == 401) {
-            token.value = '';
+            token.value = ''
             return false
         }
 
-        console.error(error);
-        return false;
+        console.error(error)
+        return false
     }
 
-    return true;
+    return true
 }
 
 export const clear = async function () {
     token.value = ''
     userStorage.value = {}
-    await clearCart();
+    await clearCart()
 }
 
 export const user = computed({
@@ -51,10 +53,10 @@ export const user = computed({
     },
     set(value) {
         userStorage.value = value
-    }
+    },
 })
 
 // If token gets changed or emptied we should update the user.
-watch(token, refresh);
+watch(token, refresh)
 
-export default ()=>(user)
+export default () => user

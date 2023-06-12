@@ -65,38 +65,38 @@ export default {
                 threshold: this.threshold,
                 observer: null,
             },
-        };
+        }
     },
     watch: {
         isIntersected(value) {
             if (value) {
-                this.state.isIntersected = true;
+                this.state.isIntersected = true
             }
         },
         'state.isIntersected'(value) {
             if (value) {
-                this.$emit('intersected', this.$el);
+                this.$emit('intersected', this.$el)
             }
         },
     },
     mounted() {
         if ('IntersectionObserver' in window) {
             if (!this.state.isIntersected && !this.state.idle) {
-                this.observe();
+                this.observe()
             }
         }
 
         this.onIdle(() => {
-            this.state.isIntersected = true;
+            this.state.isIntersected = true
         })
 
-        if(this.state.isIntersected) {
-            this.$emit('intersected', this.$el);
+        if (this.state.isIntersected) {
+            this.$emit('intersected', this.$el)
         }
     },
     beforeDestroy() {
         if (!this.state.isIntersected && !this.state.idle) {
-            this.unobserve();
+            this.unobserve()
         }
     },
     methods: {
@@ -106,27 +106,22 @@ export default {
             }, 3000)
         },
         observe() {
-            const { rootMargin, threshold } = this.state;
-            const config = { root: undefined, rootMargin, threshold };
-            this.state.observer = new IntersectionObserver(
-                this.onIntersection,
-                config
-            );
-            this.state.observer.observe(this.$el);
+            const { rootMargin, threshold } = this.state
+            const config = { root: undefined, rootMargin, threshold }
+            this.state.observer = new IntersectionObserver(this.onIntersection, config)
+            this.state.observer.observe(this.$el)
         },
         onIntersection(entries) {
-            this.state.isIntersected = entries.some(
-                (entry) => entry.intersectionRatio > 0
-            );
+            this.state.isIntersected = entries.some((entry) => entry.intersectionRatio > 0)
             if (this.state.isIntersected) {
-                this.unobserve();
+                this.unobserve()
             }
         },
         unobserve() {
             if ('IntersectionObserver' in window) {
-                this.state.observer.unobserve(this.$el);
+                this.state.observer.unobserve(this.$el)
             }
         },
     },
-};
+}
 </script>

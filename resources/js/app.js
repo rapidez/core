@@ -1,1 +1,1 @@
-import './package.js';
+import './package.js'

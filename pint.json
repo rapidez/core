@@ -13,7 +13,7 @@
         "binary_operator_spaces": {
             "default": "single_space",
             "operators": {
-              "=>": "align_single_space_minimal"
+                "=>": "align_single_space_minimal"
             }
         },
         "curly_braces_position": {
@@ -37,11 +37,7 @@
         },
         "ordered_imports": {
             "sort_algorithm": "alpha",
-            "imports_order": [
-                "const",
-                "class",
-                "function"
-            ]
+            "imports_order": ["const", "class", "function"]
         },
         "php_unit_test_annotation": {
             "style": "annotation"
