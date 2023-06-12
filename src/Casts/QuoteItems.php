@@ -4,7 +4,6 @@ namespace Rapidez\Core\Casts;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Support\Arr;
-use Rapidez\Core\Models\Attribute;
 
 class QuoteItems implements CastsAttributes
 {
