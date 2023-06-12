@@ -9,7 +9,7 @@ class WidgetDirective
     public function render($location, $type, $handle = 'default', $entities = null, $replace = [])
     {
         return Cache::rememberForever(
-            'widget.'.md5(serialize(func_get_args())).'_'.config('rapidez.store'),
+            'widget.' . md5(serialize(func_get_args())) . '_' . config('rapidez.store'),
             function () use ($location, $type, $handle, $entities, $replace) {
                 $html = '';
 
@@ -27,12 +27,12 @@ class WidgetDirective
                 }
 
                 foreach ($widgets->get() as $widget) {
-                    $widgetClass = config('rapidez.widgets.'.$widget->instance_type);
+                    $widgetClass = config('rapidez.widgets.' . $widget->instance_type);
 
-                    if (!class_exists($widgetClass)) {
+                    if (! class_exists($widgetClass)) {
                         if (is_null($widgetClass)) {
-                            if (!app()->environment('production')) {
-                                $html .= '<hr>'.__('Widget not implemented (:type).', ['type' => $widget->instance_type]).'<hr>';
+                            if (! app()->environment('production')) {
+                                $html .= '<hr>' . __('Widget not implemented (:type).', ['type' => $widget->instance_type]) . '<hr>';
                             }
                         } else {
                             // When the widgetClass is not a class instance we handle it as a view name

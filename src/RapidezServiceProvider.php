@@ -37,7 +37,7 @@ class RapidezServiceProvider extends ServiceProvider
 
     public function bootTranslations()
     {
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'rapidez');
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'rapidez');
     }
 
     public function register()
@@ -63,15 +63,15 @@ class RapidezServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/rapidez.php' => config_path('rapidez.php'),
+                __DIR__ . '/../config/rapidez.php' => config_path('rapidez.php'),
             ], 'config');
 
             $this->publishes([
-                __DIR__.'/../resources/views' => resource_path('views/vendor/rapidez'),
+                __DIR__ . '/../resources/views' => resource_path('views/vendor/rapidez'),
             ], 'views');
 
             $this->publishes([
-                __DIR__.'/../resources/lang' => resource_path('lang/vendor/rapidez'),
+                __DIR__ . '/../resources/lang' => resource_path('lang/vendor/rapidez'),
             ], 'translations');
         }
 
@@ -81,8 +81,8 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootRoutes(): self
     {
         if (config('rapidez.routes')) {
-            $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
-            $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
+            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+            $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
         }
 
         RapidezFacade::addFallbackRoute(UrlRewriteController::class, 5);
@@ -94,9 +94,9 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function bootThemes(): self
     {
-        $path = config('rapidez.themes.'.request()->server('MAGE_RUN_CODE', request()->has('_store') && !app()->isProduction() ? request()->get('_store') : 'default'), false);
+        $path = config('rapidez.themes.' . request()->server('MAGE_RUN_CODE', request()->has('_store') && ! app()->isProduction() ? request()->get('_store') : 'default'), false);
 
-        if (!$path) {
+        if (! $path) {
             return $this;
         }
 
@@ -112,7 +112,7 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function bootViews(): self
     {
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'rapidez');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'rapidez');
 
         View::composer('rapidez::layouts.app', ConfigComposer::class);
 
@@ -166,7 +166,7 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function registerConfigs(): self
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/rapidez.php', 'rapidez');
+        $this->mergeConfigFrom(__DIR__ . '/../config/rapidez.php', 'rapidez');
 
         return $this;
     }
