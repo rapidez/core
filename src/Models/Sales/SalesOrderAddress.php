@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class SalesOrderAddress extends Model
 {
     public $timestamps = false;
+
     protected $table = 'sales_order_address';
 
     protected $primaryKey = 'entity_id';

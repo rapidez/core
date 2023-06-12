@@ -9,6 +9,7 @@ class ProductView extends Model
     const CREATED_AT = 'added_at';
 
     const UPDATED_AT = null;
+
     protected $table = 'report_viewed_product_index';
 
     protected $primaryKey = 'index_id';

@@ -26,13 +26,13 @@ class ValidateCommand extends Command
         if (is_object($data)
             && property_exists($data, 'version')
             && $data->version->build_flavor !== 'oss'
-            && !version_compare($data->version->number, $this->esVersion, '>=')
+            && ! version_compare($data->version->number, $this->esVersion, '>=')
         ) {
             $this->error('Your Elasticsearch version is too low!');
-            $this->error('Your version: '.$data->version->number.' ('.$data->version->build_flavor.')');
-            $this->error('You need at least: '.$this->esVersion.' basic/default (non OSS version)');
-        } elseif (!is_object($data) || !property_exists($data, 'version')) {
-            $this->error('Elasticsearch is not reachable at: '.config('rapidez.es_url'));
+            $this->error('Your version: ' . $data->version->number . ' (' . $data->version->build_flavor . ')');
+            $this->error('You need at least: ' . $this->esVersion . ' basic/default (non OSS version)');
+        } elseif (! is_object($data) || ! property_exists($data, 'version')) {
+            $this->error('Elasticsearch is not reachable at: ' . config('rapidez.es_url'));
         }
     }
 
@@ -40,16 +40,16 @@ class ValidateCommand extends Command
     {
         $configModel = config('rapidez.models.config');
         $attributeModel = config('rapidez.models.attribute');
-        if (!$configModel::getCachedByPath('catalog/frontend/flat_catalog_category', 0) || !$configModel::getCachedByPath('catalog/frontend/flat_catalog_product', 0)) {
+        if (! $configModel::getCachedByPath('catalog/frontend/flat_catalog_category', 0) || ! $configModel::getCachedByPath('catalog/frontend/flat_catalog_product', 0)) {
             $this->error('The flat tables are disabled!');
         }
 
         $nonFlatAttributes = Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {
-            return !$attribute['flat'] && ($attribute['listing'] || $attribute['filter'] || $attribute['productpage']);
+            return ! $attribute['flat'] && ($attribute['listing'] || $attribute['filter'] || $attribute['productpage']);
         }), 'code');
 
-        if (!empty($nonFlatAttributes)) {
-            $this->warn('Not all attributes are in the flat table: '.PHP_EOL.'- '.implode(PHP_EOL.'- ', $nonFlatAttributes));
+        if (! empty($nonFlatAttributes)) {
+            $this->warn('Not all attributes are in the flat table: ' . PHP_EOL . '- ' . implode(PHP_EOL . '- ', $nonFlatAttributes));
         }
 
         $superAttributesCount = count($attributeModel::getCachedWhere(fn ($attribute) => $attribute['super']));

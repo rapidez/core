@@ -32,12 +32,12 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
         $stores = $this->argument('store') ? $storeModel::where('store_id', $this->argument('store'))->get() : $storeModel::all();
 
         foreach ($stores as $store) {
-            $this->line('Store: '.$store->name);
+            $this->line('Store: ' . $store->name);
             config()->set('rapidez.store', $store->store_id);
             config()->set('rapidez.website', $store->website_id);
 
-            $alias = config('rapidez.es_prefix').'_products_'.$store->store_id;
-            $index = $alias.'_'.Carbon::now()->format('YmdHis');
+            $alias = config('rapidez.es_prefix') . '_products_' . $store->store_id;
+            $index = $alias . '_' . Carbon::now()->format('YmdHis');
             $this->createIndex($index, Eventy::filter('index.product.mapping', [
                 'properties' => [
                     'price' => [
@@ -53,7 +53,7 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
             ]), Eventy::filter('index.product.settings', []));
 
             try {
-                $flat = (new $productModel())->getTable();
+                $flat = (new $productModel)->getTable();
                 $productQuery = $productModel::selectOnlyIndexable()
                     ->withEventyGlobalScopes('index.product.scopes');
 
@@ -61,22 +61,22 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
                 $bar->start();
 
                 $categories = Category::query()
-                    ->where('catalog_category_flat_store_'.config('rapidez.store').'.entity_id', '<>', Rapidez::config('catalog/category/root_id', 2))
+                    ->where('catalog_category_flat_store_' . config('rapidez.store') . '.entity_id', '<>', Rapidez::config('catalog/category/root_id', 2))
                     ->pluck('name', 'entity_id');
 
                 $showOutOfStock = (bool) Rapidez::config('cataloginventory/options/show_out_of_stock', 0);
 
                 $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $index, $categories, $showOutOfStock) {
                     foreach ($products as $product) {
-                        if (!$showOutOfStock && !$product->in_stock) {
+                        if (! $showOutOfStock && ! $product->in_stock) {
                             continue;
                         }
 
                         $data = array_merge(['store' => $store->store_id], $product->toArray());
                         foreach ($product->super_attributes ?: [] as $superAttribute) {
-                            $data['super_'.$superAttribute->code] = $superAttribute->text_swatch || $superAttribute->visual_swatch
-                                ? array_keys((array) $product->{'super_'.$superAttribute->code})
-                                : Arr::pluck($product->{'super_'.$superAttribute->code} ?: [], 'label');
+                            $data['super_' . $superAttribute->code] = $superAttribute->text_swatch || $superAttribute->visual_swatch
+                                ? array_keys((array) $product->{'super_' . $superAttribute->code})
+                                : Arr::pluck($product->{'super_' . $superAttribute->code} ?: [], 'label');
                         }
 
                         $data = $this->withCategories($data, $categories);
@@ -108,10 +108,10 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
             $category = [];
             foreach (explode('/', $categoryPath) as $categoryId) {
                 if (isset($categories[$categoryId])) {
-                    $category[] = $categoryId.'::'.$categories[$categoryId];
+                    $category[] = $categoryId . '::' . $categories[$categoryId];
                 }
             }
-            if (!empty($category)) {
+            if (! empty($category)) {
                 $data['categories'][] = implode(' /// ', $category);
             }
         }

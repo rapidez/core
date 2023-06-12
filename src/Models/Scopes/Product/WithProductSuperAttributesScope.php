@@ -19,21 +19,21 @@ class WithProductSuperAttributesScope implements Scope
 
         foreach ($superAttributes as $superAttributeId => $superAttribute) {
             $query = DB::table('catalog_product_super_link')
-                ->selectRaw('JSON_OBJECTAGG('.$superAttribute.', JSON_OBJECT(
+                ->selectRaw('JSON_OBJECTAGG(' . $superAttribute . ', JSON_OBJECT(
                     "sort_order", option.sort_order,
-                    "label", '.$superAttribute.'_value,
-                    "value", '.$superAttribute.'
-                )) AS '.$superAttribute)
-                ->join($model->getTable().' AS children', 'children.entity_id', '=', 'catalog_product_super_link.product_id')
+                    "label", ' . $superAttribute . '_value,
+                    "value", ' . $superAttribute . '
+                )) AS ' . $superAttribute)
+                ->join($model->getTable() . ' AS children', 'children.entity_id', '=', 'catalog_product_super_link.product_id')
                 ->join('catalog_product_super_attribute', function ($join) use ($superAttributeId) {
                     $join->on('catalog_product_super_attribute.product_id', '=', 'catalog_product_super_link.parent_id')
                         ->where('attribute_id', $superAttributeId);
                 })
                 ->join('eav_attribute_option AS option', 'option.option_id', '=', $superAttribute)
-                ->whereColumn('parent_id', $model->getTable().'.entity_id')
+                ->whereColumn('parent_id', $model->getTable() . '.entity_id')
                 ->whereNotNull($superAttribute);
 
-            $builder->selectSub($query, 'super_'.$superAttribute);
+            $builder->selectSub($query, 'super_' . $superAttribute);
         }
 
         $query = DB::table('catalog_product_super_attribute')
@@ -51,7 +51,7 @@ class WithProductSuperAttributesScope implements Scope
                     ->on('catalog_product_super_attribute_label.product_super_attribute_id', '=', 'catalog_product_super_attribute.product_super_attribute_id')
                     ->where('catalog_product_super_attribute_label.store_id', config('rapidez.store'));
             })
-            ->whereColumn('product_id', $model->getTable().'.entity_id')
+            ->whereColumn('product_id', $model->getTable() . '.entity_id')
             ->orderBy('catalog_product_super_attribute.position');
 
         $builder->selectSub($query, 'super_attributes');
