@@ -3,7 +3,6 @@
 namespace Rapidez\Core\Http\Middleware;
 
 use Closure;
-use Rapidez\Core\Models\Store;
 
 class DetermineAndSetShop
 {
