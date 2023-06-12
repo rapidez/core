@@ -7,17 +7,23 @@ use Rapidez\Core\Tests\DuskTestCase;
 
 class CheckoutTest extends DuskTestCase
 {
-    public function testCheckoutAsGuest()
+    /**
+     * @test
+     */
+    public function checkoutAsGuest()
     {
         $this->browse(function (Browser $browser) {
             $this->addProductToCart($browser);
-            $this->doCheckout($browser, 'wayne+'.mt_rand().'@enterprises.com');
+            $this->doCheckout($browser, 'wayne+' . mt_rand() . '@enterprises.com');
         });
     }
 
-    public function testCheckoutAsUser()
+    /**
+     * @test
+     */
+    public function checkoutAsUser()
     {
-        $email = 'wayne+'.mt_rand().'@enterprises.com';
+        $email = 'wayne+' . mt_rand() . '@enterprises.com';
 
         // Go through checkout as guest and register.
         $this->browse(function (Browser $browser) use ($email) {
@@ -57,7 +63,7 @@ class CheckoutTest extends DuskTestCase
             ->click('@continue')
             ->waitUntilIdle();
 
-        if ($password && !$register) {
+        if ($password && ! $register) {
             $browser
                 ->type('@password', $password)
                 ->waitUntilIdle()

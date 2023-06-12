@@ -12,32 +12,14 @@ class Config extends Model
 
     protected $primaryKey = 'config_id';
 
-    protected static function booting()
-    {
-        static::addGlobalScope('scope-fallback', function (Builder $builder) {
-            $builder
-                ->where(function ($query) {
-                    $query->where(function ($query) {
-                        $query->where('scope', 'stores')->where('scope_id', config('rapidez.store'));
-                    })->orWhere(function ($query) {
-                        $query->where('scope', 'websites')->where('scope_id', config('rapidez.website'));
-                    })->orWhere(function ($query) {
-                        $query->where('scope', 'default')->where('scope_id', 0);
-                    });
-                })
-                ->orderByRaw('FIELD(scope, "stores", "websites", "default") ASC')
-                ->limit(1);
-        });
-    }
-
     public static function getCachedByPath(string $path, $default = false, bool $sensitive = false): string|bool
     {
-        $cacheKey = 'config.'.config('rapidez.store').'.'.str_replace('/', '.', $path);
+        $cacheKey = 'config.' . config('rapidez.store') . '.' . str_replace('/', '.', $path);
 
         $value = Cache::rememberForever($cacheKey, function () use ($path, $default) {
             $value = ($config = self::where('path', $path)->first('value')) ? $config->value : $default;
 
-            return !is_null($value) ? $value : false;
+            return ! is_null($value) ? $value : false;
         });
 
         return $sensitive && $value ? self::decrypt($value) : $value;
@@ -71,5 +53,23 @@ class Config extends Model
             $nonce,
             config('rapidez.crypt_key')
         );
+    }
+
+    protected static function booting()
+    {
+        static::addGlobalScope('scope-fallback', function (Builder $builder) {
+            $builder
+                ->where(function ($query) {
+                    $query->where(function ($query) {
+                        $query->where('scope', 'stores')->where('scope_id', config('rapidez.store'));
+                    })->orWhere(function ($query) {
+                        $query->where('scope', 'websites')->where('scope_id', config('rapidez.website'));
+                    })->orWhere(function ($query) {
+                        $query->where('scope', 'default')->where('scope_id', 0);
+                    });
+                })
+                ->orderByRaw('FIELD(scope, "stores", "websites", "default") ASC')
+                ->limit(1);
+        });
     }
 }
