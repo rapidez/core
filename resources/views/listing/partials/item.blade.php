@@ -11,8 +11,8 @@
                     <div class="hyphens">@{{ item.name }}</div>
                     @if (!Rapidez::config('catalog/frontend/show_swatches_in_product_list', 1))
                         <div class="flex items-center space-x-2">
-                            <div class="font-semibold">@{{ (item.special_price || item.price) | price}}</div>
-                            <div class="line-through text-sm" v-if="item.special_price">@{{ item.price | price}}</div>
+                            <div class="font-semibold">@{{ (item.special_price || item.price) | price }}</div>
+                            <div class="line-through text-sm" v-if="item.special_price">@{{ item.price | price }}</div>
                         </div>
                     @endif
                 </div>

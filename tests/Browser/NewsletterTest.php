@@ -10,6 +10,9 @@ class NewsletterTest extends DuskTestCase
 {
     use WithFaker;
 
+    /**
+     * @test
+     */
     public function test()
     {
         $this->browse(function (Browser $browser) {

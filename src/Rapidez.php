@@ -44,7 +44,7 @@ class Rapidez
     public function content($content)
     {
         foreach (config('rapidez.content-variables') as $parser) {
-            $content = (new $parser())($content);
+            $content = (new $parser)($content);
         }
 
         return $content;

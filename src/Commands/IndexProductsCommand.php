@@ -51,7 +51,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                 $bar->start();
 
                 $categories = Category::query()
-                    ->where('catalog_category_flat_store_'.config('rapidez.store').'.entity_id', '<>', Rapidez::config('catalog/category/root_id', 2))
+                    ->where('catalog_category_flat_store_' . config('rapidez.store') . '.entity_id', '<>', Rapidez::config('catalog/category/root_id', 2))
                     ->pluck('name', 'entity_id');
 
                 $showOutOfStock = (bool) Rapidez::config('cataloginventory/options/show_out_of_stock', 0);
@@ -65,9 +65,9 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                         $data = array_merge(['store' => $store['store_id']], $product->toArray());
 
                         foreach ($product->super_attributes ?: [] as $superAttribute) {
-                            $data['super_'.$superAttribute->code] = $superAttribute->text_swatch || $superAttribute->visual_swatch
-                                ? array_keys((array) $product->{'super_'.$superAttribute->code})
-                                : Arr::pluck($product->{'super_'.$superAttribute->code} ?: [], 'label');
+                            $data['super_' . $superAttribute->code] = $superAttribute->text_swatch || $superAttribute->visual_swatch
+                                ? array_keys((array) $product->{'super_' . $superAttribute->code})
+                                : Arr::pluck($product->{'super_' . $superAttribute->code} ?: [], 'label');
                         }
 
                         $data = $this->withCategories($data, $categories);
@@ -99,10 +99,10 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
             $category = [];
             foreach (explode('/', $categoryPath) as $categoryId) {
                 if (isset($categories[$categoryId])) {
-                    $category[] = $categoryId.'::'.$categories[$categoryId];
+                    $category[] = $categoryId . '::' . $categories[$categoryId];
                 }
             }
-            if (!empty($category)) {
+            if (! empty($category)) {
                 $data['categories'][] = implode(' /// ', $category);
             }
         }

@@ -12,9 +12,9 @@ class OptionValue extends Model
 
     public static function getCachedByOptionId(int $optionId): string
     {
-        $cacheKey = 'optionvalue.'.config('rapidez.store').'.'.$optionId;
+        $cacheKey = 'optionvalue.' . config('rapidez.store') . '.' . $optionId;
 
-        if (!$optionValue = config('cache.app.'.$cacheKey)) {
+        if (! $optionValue = config('cache.app.' . $cacheKey)) {
             $optionValue = Cache::rememberForever($cacheKey, function () use ($optionId) {
                 return html_entity_decode(self::where('option_id', $optionId)
                     ->whereIn('store_id', [config('rapidez.store'), 0])
@@ -23,7 +23,7 @@ class OptionValue extends Model
                     ->value ?? false);
             });
 
-            config(['cache.app.'.$cacheKey => $optionValue]);
+            config(['cache.app.' . $cacheKey => $optionValue]);
         }
 
         return $optionValue;

@@ -1,17 +1,19 @@
 import { computedAsync, useLocalStorage } from '@vueuse/core'
 
 export const swatchesStorage = useLocalStorage('swatches', {})
-let isRefreshing = false;
+let isRefreshing = false
 
 export const refresh = async function () {
     if (isRefreshing) {
         console.debug('Refresh canceled, request already in progress...')
-        return;
+        return
     }
 
     try {
         isRefreshing = true
-        var response = await axios.get('/api/swatches').finally(() => {isRefreshing = false;})
+        var response = await axios.get('/api/swatches').finally(() => {
+            isRefreshing = false
+        })
     } catch (error) {
         console.error(error)
         Notify(window.config.translations.errors.wrong, 'error')
@@ -32,12 +34,16 @@ export const clear = async function () {
     swatchesStorage.value = {}
 }
 
-export const swatches = computedAsync(async () => {
-    if (Object.keys(swatchesStorage.value).length === 0) {
-        await refresh();
-    }
+export const swatches = computedAsync(
+    async () => {
+        if (Object.keys(swatchesStorage.value).length === 0) {
+            await refresh()
+        }
 
-    return swatchesStorage;
-}, swatchesStorage.value, { lazy: true, shallow: false })
+        return swatchesStorage
+    },
+    swatchesStorage.value,
+    { lazy: true, shallow: false }
+)
 
-export default ()=>(swatches)
+export default () => swatches
