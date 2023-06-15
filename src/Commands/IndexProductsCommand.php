@@ -26,7 +26,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
         IndexBeforeEvent::dispatch($this);
 
         $productModel = config('rapidez.models.product');
-        $stores = Rapidez::getStores();
+        $stores = Rapidez::getStores($this->argument('store'));
         foreach ($stores as $store) {
             $this->line('Store: '.$store['name']);
             $this->prepareIndexerWithStore($store, 'products', Eventy::filter('index.product.mapping', [
@@ -59,7 +59,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                 $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $categories, $showOutOfStock) {
                     $this->indexer->index($products, function ($product) use ($store, $categories, $showOutOfStock) {
                         if (!$showOutOfStock && !$product->in_stock) {
-                            return null;
+                            return;
                         }
 
                         $data = array_merge(['store' => $store['store_id']], $product->toArray());
