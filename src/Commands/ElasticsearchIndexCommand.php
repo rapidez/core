@@ -27,7 +27,7 @@ abstract class ElasticsearchIndexCommand extends Command
 
     public function indexStore(Store|array $store, string $indexName, callable|iterable $items, callable|array $mapping, callable|string $id = 'id'): void
     {
-        $this->line('Indexing `'.$indexName.'` for store '.$store['name']);
+        $this->line('Indexing `' . $indexName . '` for store ' . $store['name']);
 
         try {
             $this->prepareIndexerWithStore($store, $indexName);
@@ -43,7 +43,7 @@ abstract class ElasticsearchIndexCommand extends Command
     public function prepareIndexerWithStore(Store|array $store, string $indexName, array $mapping = [], array $settings = []): void
     {
         Rapidez::setStore($store);
-        $this->indexer->prepare(config('rapidez.es_prefix').'_'.$indexName.'_'.$store['store_id'], $mapping, $settings);
+        $this->indexer->prepare(config('rapidez.es_prefix') . '_' . $indexName . '_' . $store['store_id'], $mapping, $settings);
     }
 
     public function dataFrom(callable|iterable $items)

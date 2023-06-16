@@ -11,7 +11,7 @@ class DetermineAndSetShop
     public function handle($request, Closure $next)
     {
         // Set the store based on MAGE_RUN_CODE.
-        $storeCode = $request->has('_store') && !app()->isProduction()
+        $storeCode = $request->has('_store') && ! app()->isProduction()
             ? $request->get('_store')
             : $request->server('MAGE_RUN_CODE');
 

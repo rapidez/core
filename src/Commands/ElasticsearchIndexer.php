@@ -11,6 +11,7 @@ class ElasticsearchIndexer
 {
     public string $alias;
     public string $index;
+
     protected Elasticsearch $elasticsearch;
 
     public function __construct(Elasticsearch $elasticsearch)
@@ -83,7 +84,7 @@ class ElasticsearchIndexer
     public function createAlias(string $indexName): void
     {
         $this->alias = $indexName;
-        $this->index = $this->alias.'_'.Carbon::now()->format('YmdHis');
+        $this->index = $this->alias . '_' . Carbon::now()->format('YmdHis');
     }
 
     public function createIndex(string $index, array $mapping = [], array $settings = []): void

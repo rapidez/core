@@ -68,9 +68,9 @@ class Rapidez
     {
         $storeModel = config('rapidez.models.store');
 
-        if($store) {
+        if ($store) {
             return Arr::where($storeModel::getCached(),
-                fn($s) => is_callable($store)
+                fn ($s) => is_callable($store)
                     ? $store($s)
                     : $s['store_id'] == $store || $s['code'] == $store
             );
@@ -86,7 +86,7 @@ class Rapidez
 
     public function setStore(Store|array|callable|int|string $store): void
     {
-        if(is_callable($store) || is_integer($store) || is_string($store)) {
+        if (is_callable($store) || is_int($store) || is_string($store)) {
             $store = $this->getStore($store);
         } else {
             $store = $this->getStore($store['store_id']);
