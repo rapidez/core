@@ -15,7 +15,7 @@ class DetermineAndSetShop
             ? $request->get('_store')
             : $request->server('MAGE_RUN_CODE');
 
-        $store = $storeCode ? Rapidez::getStore($storeCode) : Rapidez::getStore(config('rapidez.store'));
+        $store = Rapidez::getStore($storeCode ?: config('rapidez.store'));
 
         Rapidez::setStore($store);
 
