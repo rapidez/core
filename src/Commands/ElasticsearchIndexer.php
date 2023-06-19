@@ -4,6 +4,7 @@ namespace Rapidez\Core\Commands;
 
 use Carbon\Carbon;
 use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Rapidez\Core\Jobs\IndexJob;
 
@@ -48,7 +49,7 @@ class ElasticsearchIndexer
 
         $currentValues = is_callable($mapping)
             ? $mapping($item)
-            : Arr::only((array) $item, $mapping);
+            : Arr::only($item instanceof Model ? $item->toArray() : (array)$item, $mapping);
 
         if (is_null($currentValues)) {
             return;

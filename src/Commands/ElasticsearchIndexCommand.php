@@ -19,7 +19,11 @@ abstract class ElasticsearchIndexCommand extends Command
 
     public function indexAllStores(string $indexName, callable|iterable $items, callable|array $mapping, callable|string $id = 'id'): void
     {
-        $stores = Rapidez::getStores();
+        $this->indexStores(Rapidez::getStores(), $indexName, $items, $mapping, $id);
+    }
+
+    public function indexStores(array $stores, string $indexName, callable|iterable $items, callable|array $mapping, callable|string $id = 'id'): void
+    {
         foreach ($stores as $store) {
             $this->indexStore($store, $indexName, $items, $mapping, $id);
         }
