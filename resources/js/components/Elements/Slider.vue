@@ -20,7 +20,7 @@
                 type: Boolean,
                 default: false
             },
-            visibleSlides: {
+            interval: {
                 type: Number,
                 default: 3
             },
