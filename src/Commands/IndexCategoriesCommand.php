@@ -4,6 +4,7 @@ namespace Rapidez\Core\Commands;
 
 use Rapidez\Core\Commands\ElasticsearchIndexCommand;
 use Rapidez\Core\Facades\Rapidez;
+use TorMorten\Eventy\Facades\Eventy;
 
 class IndexCategoriesCommand extends ElasticsearchIndexCommand
 {
@@ -15,12 +16,17 @@ class IndexCategoriesCommand extends ElasticsearchIndexCommand
     {
         $categoryModel = config('rapidez.models.category');
         $categoryModelInstance = new $categoryModel;
-        $categories = config('rapidez.models.category')::select($categoryModelInstance->qualifyColumns(['entity_id', 'name', 'url_path', 'children_count']))
-            ->whereNotNull('url_key')->whereNot('url_key', 'default-category')
-            ->where('children_count', '>', 0)
-            ->get() ?? [];
 
-        $this->indexStores(Rapidez::getStores($this->argument('store')), 'categories', $categories, ['name', 'url_path', 'children_count'], 'entity_id');
+        $this->indexStores(
+            Rapidez::getStores($this->argument('store')),
+            'categories',
+            fn() => config('rapidez.models.category')::select($categoryModelInstance->qualifyColumns(['entity_id', 'name', 'url_path', 'children_count']))
+                ->whereNotNull('url_key')->whereNot('url_key', 'default-category')
+                ->where('children_count', '>', 0)
+                ->get() ?? [],
+            fn($data) => Eventy::filter('index.category.data', $data),
+            'entity_id'
+        );
 
         return 0;
     }
