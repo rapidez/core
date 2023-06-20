@@ -1,4 +1,5 @@
 @props(['mobileOnly' => false])
+
 <toggler v-slot="{ isOpen, toggle, close }">
     <div>
         {{ $button }}
