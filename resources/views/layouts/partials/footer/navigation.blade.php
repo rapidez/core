@@ -1,5 +1,4 @@
-<nav
-    class="flex w-full flex-wrap lg:flex-nowrap md:gap-8 [&>ul]:mt-4 [&>ul]:w-1/2 [&>ul]:space-y-4 [&>ul]:px-10 [&>ul]:md:mt-0 [&>ul]:md:w-1/4 [&>ul>li]:text-base [&>ul>li]:text-gray-500 hover:[&>ul>li]:text-gray-900 [&>ul>p]:text-base [&>ul>p]:font-bold [&>ul>p]:text-gray-900">
+<nav class="flex w-full flex-wrap md:gap-8 lg:flex-nowrap [&>ul>li]:text-base [&>ul>li]:text-gray-500 hover:[&>ul>li]:text-gray-900 [&>ul>p]:text-base [&>ul>p]:font-bold [&>ul>p]:text-gray-900 [&>ul]:mt-4 [&>ul]:w-1/2 [&>ul]:space-y-4 [&>ul]:px-10 [&>ul]:md:mt-0 [&>ul]:md:w-1/4">
     <ul>
         <p>Catalog</p>
         <li><a href="/what-is-new.html">What's New</a></li>

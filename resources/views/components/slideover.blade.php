@@ -1,51 +1,51 @@
 @props(['mobileOnly' => false])
-
 <toggler v-slot="{ isOpen, toggle, close }">
     <div>
         {{ $button }}
-
-        <div class="fixed inset-0 overflow-hidden {{ config('rapidez.z-indexes.slideover') }} {{ $mobileOnly ? 'lg:static lg:block' : '' }}" :class="isOpen ? 'pointer-events-auto' : 'pointer-events-none'">
-            <div class="absolute inset-0 overflow-hidden {{ $mobileOnly ? 'lg:static' : '' }}">
-                <transition
-                    enter-active-class="ease-in-out duration-500"
-                    enter-class="opacity-0"
-                    enter-to-class="opacity-100"
-                    leave-active-class="ease-in-out duration-500"
-                    leave-class="opacity-100"
-                    leave-to-class="opacity-0"
-                >
-                    <div v-show="isOpen" v-on:click="toggle" class="absolute inset-0 pointer-events-auto bg-gray-500 bg-opacity-75 transition-opacity {{ $mobileOnly ? 'lg:!hidden' : '' }}"></div>
-                </transition>
-                <section class="absolute inset-y-0 right-0 max-w-full flex pointer-events-auto {{ $mobileOnly ? 'lg:static lg:pl-0' : '' }}" :class="isOpen ? 'pl-10' : ''">
-                    <transition
-                        enter-active-class="transform transition ease-in-out duration-500 sm:duration-700"
-                        enter-class="translate-x-full"
-                        enter-to-class="translate-x-0"
-                        leave-active-class="transform transition ease-in-out duration-500 sm:duration-700"
-                        leave-class="translate-x-0"
-                        leave-to-class="translate-x-full"
+        <div
+            @class([
+                'fixed inset-0 overflow-hidden',
+                'md:contents' => $mobileOnly,
+                config('rapidez.z-indexes.slideover'),
+            ])
+            :class="isOpen ? 'pointer-events-auto' : 'pointer-events-none'"
+        >
+            <div
+                @class([
+                    'pointer-events-none absolute inset-0 -z-10 cursor-pointer bg-gray-500 opacity-0 transition-opacity',
+                    'md:hidden' => $mobileOnly,
+                ])
+                :class="{ 'opacity-75 pointer-events-auto': isOpen }"
+                v-on:click="toggle"
+            ></div>
+            <div
+                @class([
+                    'absolute inset-y-0 flex w-full max-w-md flex-col bg-white px-5 py-6 transition-[right]',
+                    'md:contents' => $mobileOnly,
+                ])
+                :class="isOpen ? 'right-0' : '-right-full'"
+            >
+                <div @class([
+                    'flex items-center justify-between pb-6',
+                    'md:hidden' => $mobileOnly,
+                ])>
+                    <h2 class="text-lg font-medium">
+                        {{ $title }}
+                    </h2>
+                    <button
+                        class="text-gray-400 transition hover:text-gray-500"
+                        aria-label="@lang('Close filters')"
+                        v-on:click="toggle"
                     >
-                        <div v-show="isOpen" class="w-screen max-w-md {{ $mobileOnly ? 'lg:!block' : '' }}">
-                            <div class="h-full flex flex-col space-y-6 py-6 bg-white shadow-xl overflow-y-scroll {{ $mobileOnly ? 'lg:py-0 lg:space-y-0' : '' }}">
-                                <header class="px-4 {{ $mobileOnly ? 'lg:hidden' : '' }}">
-                                    <div class="flex items-start justify-between space-x-3">
-                                        <h2 class="text-lg leading-7 font-medium text-gray-900">
-                                            {{ $title }}
-                                        </h2>
-                                        <div class="h-7 flex items-center">
-                                            <button aria-label="@lang('Close filters')" class="text-gray-400 hover:text-gray-500 transition ease-in-out duration-150" v-on:click="toggle">
-                                                <x-heroicon-o-x class="h-6 w-6"/>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </header>
-                                <div class="relative flex-1 px-4 {{ $mobileOnly ? 'lg:pl-0' : '' }}">
-                                    {{ $slot }}
-                                </div>
-                            </div>
-                        </div>
-                    </transition>
-                </section>
+                        <x-heroicon-o-x class="h-6 w-6" />
+                    </button>
+                </div>
+                <div @class([
+                    'max-h-full overflow-y-auto scrollbar-hide',
+                    'md:contents' => $mobileOnly,
+                ])>
+                    {{ $slot }}
+                </div>
             </div>
         </div>
     </div>
