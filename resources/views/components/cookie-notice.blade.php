@@ -15,7 +15,7 @@
                 </div>
             </div>
             <x-rapidez::button @click="close" variant="outline" class="mt-3 w-full shrink-0 md:ml-6 md:w-auto">
-                {{ $button ?? __('Accept coockies') }}
+                {{ $button ?? __('Accept cookies') }}
             </x-rapidez::button>
         </div>
     </dialog>
