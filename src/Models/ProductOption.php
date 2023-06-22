@@ -4,11 +4,10 @@ namespace Rapidez\Core\Models;
 
 class ProductOption extends Model
 {
+    public $timestamps = false;
     protected $table = 'catalog_product_option';
 
     protected $primaryKey = 'option_id';
-
-    public $timestamps = false;
 
     public function product()
     {

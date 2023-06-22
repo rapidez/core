@@ -77,11 +77,11 @@ return [
 
     // The fully qualified class names of the models.
     'models' => [
-        'page'                      => Rapidez\Core\Models\Page::class,
-        'attribute'                 => Rapidez\Core\Models\Attribute::class,
-        'product'                   => Rapidez\Core\Models\Product::class,
-        'category'                  => Rapidez\Core\Models\Category::class,
-        'config'                    => Rapidez\Core\Models\Config::class,
+        'page'      => Rapidez\Core\Models\Page::class,
+        'attribute' => Rapidez\Core\Models\Attribute::class,
+        'product'   => Rapidez\Core\Models\Product::class,
+        'category'  => Rapidez\Core\Models\Category::class,
+        'config'    => Rapidez\Core\Models\Config::class,
         // TODO: Underscore this as well? To keep it inline with the new models?
         'optionswatch'              => Rapidez\Core\Models\OptionSwatch::class,
         'optionvalue'               => Rapidez\Core\Models\OptionValue::class,
@@ -100,11 +100,11 @@ return [
         'block'                     => Rapidez\Core\Models\Block::class,
         // TODO: Underscore this as well? As we can't use this
         // naming with quotes as quote itself is a model.
-        'sales'                     => [
-            'order'                 => Rapidez\Core\Models\Sales\SalesOrder::class,
-            'order_address'         => Rapidez\Core\Models\Sales\SalesOrderAddress::class,
-            'order_item'            => Rapidez\Core\Models\Sales\SalesOrderItem::class,
-            'order_payment'         => Rapidez\Core\Models\Sales\SalesOrderPayment::class,
+        'sales' => [
+            'order'         => Rapidez\Core\Models\Sales\SalesOrder::class,
+            'order_address' => Rapidez\Core\Models\Sales\SalesOrderAddress::class,
+            'order_item'    => Rapidez\Core\Models\Sales\SalesOrderItem::class,
+            'order_payment' => Rapidez\Core\Models\Sales\SalesOrderPayment::class,
         ],
     ],
 

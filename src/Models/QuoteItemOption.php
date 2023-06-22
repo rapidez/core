@@ -7,11 +7,10 @@ use Illuminate\Support\Facades\DB;
 
 class QuoteItemOption extends Model
 {
+    public $timestamps = false;
     protected $table = 'quote_item_option';
 
     protected $primaryKey = 'option_id';
-
-    public $timestamps = false;
 
     protected $appends = ['label'];
 
@@ -25,8 +24,8 @@ class QuoteItemOption extends Model
         return Attribute::make(
             get: fn (string $value) => match ($this->code) {
                 'info_buyRequest' => json_decode($value),
-                'option_ids' => explode(',', $value),
-                default => (function () use ($value) {
+                'option_ids'      => explode(',', $value),
+                default           => (function () use ($value) {
                     if (in_array($this->option->type, ['drop_down'])) {
                         return ProductOptionTypeValue::find($value)
                             ->titles()
