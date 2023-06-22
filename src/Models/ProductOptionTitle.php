@@ -5,6 +5,7 @@ namespace Rapidez\Core\Models;
 class ProductOptionTitle extends Model
 {
     public $timestamps = false;
+
     protected $table = 'catalog_product_option_title';
 
     protected $primaryKey = 'option_title_id';

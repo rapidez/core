@@ -5,6 +5,7 @@ namespace Rapidez\Core\Models;
 class ProductOptionTypeValue extends Model
 {
     public $timestamps = false;
+
     protected $table = 'catalog_product_option_type_value';
 
     protected $primaryKey = 'option_type_id';
