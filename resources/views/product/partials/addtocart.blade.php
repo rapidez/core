@@ -1,8 +1,8 @@
 <add-to-cart :default-qty="{{ $product->min_sale_qty > $product->qty_increments ? $product->min_sale_qty : $product->qty_increments }}" v-cloak>
-    <div slot-scope="{ qty, changeQty, options, error, add, disabledOptions, simpleProduct, adding, added }">
+    <form slot-scope="{ qty, changeQty, options, customOptions, error, add, disabledOptions, simpleProduct, adding, added, setProductOptions, setCustomOptionFile, price, specialPrice, priceAddition }" v-on:submit.prevent="add">
         <div class="flex items-center space-x-3 font-bold mb-3">
-            <div class="text-3xl">@{{ (simpleProduct.special_price || simpleProduct.price) | price }}</div>
-            <div class="line-through" v-if="simpleProduct.special_price">@{{ simpleProduct.price | price }}</div>
+            <div class="text-3xl">@{{ (specialPrice || price) | price }}</div>
+            <div class="line-through" v-if="specialPrice">@{{ price | price }}</div>
         </div>
 
         @if(!$product->in_stock)
@@ -27,6 +27,8 @@
                 </x-rapidez::select>
             </div>
 
+            @include('rapidez::product.partials.options')
+
             <div class="flex mt-5">
                 <x-rapidez::select
                     name="qty"
@@ -42,7 +44,7 @@
                     @endfor
                 </x-rapidez::select>
 
-                <x-rapidez::button class="flex items-center" v-on:click="add" dusk="add-to-cart">
+                <x-rapidez::button type="submit" class="flex items-center" dusk="add-to-cart">
                     <x-heroicon-o-shopping-cart class="h-5 w-5 mr-2" v-if="!adding && !added" />
                     <x-heroicon-o-refresh class="h-5 w-5 mr-2 animate-spin" v-if="adding" />
                     <x-heroicon-o-check class="h-5 w-5 mr-2" v-if="added" />
@@ -52,5 +54,5 @@
                 </x-rapidez::button>
             </div>
         @endif
-    </div>
+    </form>
 </add-to-cart>

@@ -28,7 +28,7 @@ Route::middleware('api')->prefix('api')->group(function () {
         return $quoteModel::where(function ($query) use ($quoteIdMaskOrCustomerToken) {
             $query->where('masked_id', $quoteIdMaskOrCustomerToken)
                   ->orWhere('token', $quoteIdMaskOrCustomerToken);
-        })->firstOrFail();
+        })->with('items2.options')->firstOrFail();
     });
 
     Route::prefix('admin')->middleware(VerifyAdminToken::class)->group(function () {

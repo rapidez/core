@@ -9,7 +9,7 @@
 
     <cart v-cloak>
         <div v-if="hasItems" slot-scope="{ cart, hasItems, changeQty, remove }">
-            <div class="flex flex-wrap items-center border-b pb-2 mb-2" v-for="(item, productId, index) in cart.items">
+            <div class="flex flex-wrap items-center border-b pb-2 mb-2" v-for="(item, itemId, index) in cart.items">
                 <div class="w-1/6 sm:w-1/12 pr-3">
                     <a :href="item.url" class="block">
                         <picture>
@@ -27,6 +27,9 @@
                     <a :href="item.url" dusk="cart-item-name" class="font-bold">@{{ item.name }}</a>
                     <div v-for="(optionValue, option) in item.options">
                         @{{ option }}: @{{ optionValue }}
+                    </div>
+                    <div v-for="option in cart.items2.find((item) => item.item_id == itemId).options.filter((option) => !['info_buyRequest', 'option_ids'].includes(option.code))">
+                        @{{ option.label }}: @{{ option.value.title || option.value }}
                     </div>
                 </div>
                 <div class="w-2/6 sm:w-1/6 lg:w-1/12 text-right pr-5">

@@ -12,3 +12,13 @@ Vue.filter('price', function (value) {
         currency: config.currency,
     }).format(value)
 })
+
+Vue.filter('plus_price_type', function (value) {
+    if (!value.price) {
+        return
+    }
+
+    return '+ ' + (value.price_type == 'PERCENT'
+        ? value.price+'%'
+        : Vue.filter('price')(value.price))
+})

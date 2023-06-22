@@ -77,25 +77,34 @@ return [
 
     // The fully qualified class names of the models.
     'models' => [
-        'page'         => Rapidez\Core\Models\Page::class,
-        'attribute'    => Rapidez\Core\Models\Attribute::class,
-        'product'      => Rapidez\Core\Models\Product::class,
-        'category'     => Rapidez\Core\Models\Category::class,
-        'config'       => Rapidez\Core\Models\Config::class,
-        'optionswatch' => Rapidez\Core\Models\OptionSwatch::class,
-        'optionvalue'  => Rapidez\Core\Models\OptionValue::class,
-        'productimage' => Rapidez\Core\Models\ProductImage::class,
-        'productview'  => Rapidez\Core\Models\ProductView::class,
-        'quote'        => Rapidez\Core\Models\Quote::class,
-        'rewrite'      => Rapidez\Core\Models\Rewrite::class,
-        'store'        => Rapidez\Core\Models\Store::class,
-        'widget'       => Rapidez\Core\Models\Widget::class,
-        'block'        => Rapidez\Core\Models\Block::class,
-        'sales'        => [
-            'order'         => Rapidez\Core\Models\Sales\SalesOrder::class,
-            'order_address' => Rapidez\Core\Models\Sales\SalesOrderAddress::class,
-            'order_item'    => Rapidez\Core\Models\Sales\SalesOrderItem::class,
-            'order_payment' => Rapidez\Core\Models\Sales\SalesOrderPayment::class,
+        'page'                      => Rapidez\Core\Models\Page::class,
+        'attribute'                 => Rapidez\Core\Models\Attribute::class,
+        'product'                   => Rapidez\Core\Models\Product::class,
+        'category'                  => Rapidez\Core\Models\Category::class,
+        'config'                    => Rapidez\Core\Models\Config::class,
+        // TODO: Underscore this as well? To keep it inline with the new models?
+        'optionswatch'              => Rapidez\Core\Models\OptionSwatch::class,
+        'optionvalue'               => Rapidez\Core\Models\OptionValue::class,
+        'productimage'              => Rapidez\Core\Models\ProductImage::class,
+        'productview'               => Rapidez\Core\Models\ProductView::class,
+        'product_option'            => Rapidez\Core\Models\ProductOption::class,
+        'product_option_title'      => Rapidez\Core\Models\ProductOptionTitle::class,
+        'product_option_type_title' => Rapidez\Core\Models\ProductOptionTypeTitle::class,
+        'product_option_type_value' => Rapidez\Core\Models\ProductOptionTypeValue::class,
+        'quote'                     => Rapidez\Core\Models\Quote::class,
+        'quote_item'                => Rapidez\Core\Models\QuoteItem::class,
+        'quote_item_option'         => Rapidez\Core\Models\QuoteItemOption::class,
+        'rewrite'                   => Rapidez\Core\Models\Rewrite::class,
+        'store'                     => Rapidez\Core\Models\Store::class,
+        'widget'                    => Rapidez\Core\Models\Widget::class,
+        'block'                     => Rapidez\Core\Models\Block::class,
+        // TODO: Underscore this as well? As we can't use this
+        // naming with quotes as quote itself is a model.
+        'sales'                     => [
+            'order'                 => Rapidez\Core\Models\Sales\SalesOrder::class,
+            'order_address'         => Rapidez\Core\Models\Sales\SalesOrderAddress::class,
+            'order_item'            => Rapidez\Core\Models\Sales\SalesOrderItem::class,
+            'order_payment'         => Rapidez\Core\Models\Sales\SalesOrderPayment::class,
         ],
     ],
 
