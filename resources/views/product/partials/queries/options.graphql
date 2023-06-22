@@ -1,5 +1,5 @@
 {
-    products(filter: {sku: {eq: "{{ $sku }}"}}) {
+    products(filter: { sku: { eq: "{{ $sku }}" } }) {
         items {
             ... on CustomizableProductInterface {
                 options {
@@ -27,7 +27,7 @@
                         }
                     }
                     ... on CustomizableDropDownOption {
-                         dropdownValue: value {
+                        dropdownValue: value {
                             uid
                             option_type_id
                             title

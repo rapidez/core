@@ -146,7 +146,7 @@ export default {
             let file = event.target.files[0]
             let reader = new FileReader()
             reader.onerror = (error) => alert(error)
-            reader.onload = () => this.customOptions[optionId] = 'FILE;'+file.name+';'+reader.result
+            reader.onload = () => (this.customOptions[optionId] = 'FILE;' + file.name + ';' + reader.result)
             reader.readAsDataURL(file)
         },
 
@@ -159,15 +159,16 @@ export default {
                 }
 
                 let option = this.customOptionsData.find((option) => option.option_id == key)
-                let value = option.fieldValue
-                    || option.areaValue
-                    || option.fileValue
-                    || Object.values(option.dropdownValue).find((dropdownValue) => dropdownValue.option_type_id == val)
+                let value =
+                    option.fieldValue ||
+                    option.areaValue ||
+                    option.fileValue ||
+                    Object.values(option.dropdownValue).find((dropdownValue) => dropdownValue.option_type_id == val)
 
                 if (value.price_type == 'FIXED') {
                     addition += parseFloat(value.price)
                 } else {
-                    addition += parseFloat(basePrice) * parseFloat(value.price) / 100
+                    addition += (parseFloat(basePrice) * parseFloat(value.price)) / 100
                 }
             })
 
@@ -233,22 +234,22 @@ export default {
                                 base64_encoded_data: values[3].replace('base64,', ''),
                                 type: values[2].replace('data:', ''),
                                 name: values[1],
-                            }
-                        }
+                            },
+                        },
                     })
                     return
                 }
 
                 customOptions.push({
                     option_id: key,
-                    option_value: val
+                    option_value: val,
                 })
             })
 
             return {
                 extension_attributes: {
                     configurable_item_options: options,
-                    custom_options: customOptions
+                    custom_options: customOptions,
                 },
             }
         },
@@ -310,7 +311,7 @@ export default {
 
         specialPrice: function () {
             return parseFloat(this.simpleProduct.special_price) + this.priceAddition(this.simpleProduct.special_price)
-        }
+        },
     },
 }
 </script>
