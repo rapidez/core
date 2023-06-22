@@ -91,6 +91,7 @@ class Quote extends Model
         return $this->belongsTo(config('rapidez.models.sales.order'));
     }
 
+    // Named it like this as "items" is already in use to keep it backwards compatible.
     public function items2()
     {
         return $this->hasMany(config('rapidez.models.quote_item'), 'quote_id');
