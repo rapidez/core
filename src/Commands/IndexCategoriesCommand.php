@@ -15,12 +15,11 @@ class IndexCategoriesCommand extends ElasticsearchIndexCommand
     public function handle(): int
     {
         $categoryModel = config('rapidez.models.category');
-        $categoryModelInstance = new $categoryModel;
 
         $this->indexStores(
             Rapidez::getStores($this->argument('store')),
             'categories',
-            fn() => config('rapidez.models.category')::select($categoryModelInstance->qualifyColumns(['entity_id', 'name', 'url_path', 'children_count']))
+            fn() => config('rapidez.models.category')::select((new $categoryModel)->qualifyColumns(['entity_id', 'name', 'url_path', 'children_count']))
                 ->whereNotNull('url_key')->whereNot('url_key', 'default-category')
                 ->where('children_count', '>', 0)
                 ->get() ?? [],
