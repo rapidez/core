@@ -3,6 +3,7 @@
 namespace Rapidez\Core;
 
 use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\View;
@@ -36,7 +37,8 @@ class RapidezServiceProvider extends ServiceProvider
             ->bootBladeComponents()
             ->bootMiddleware()
             ->bootTranslations()
-            ->bootListeners();
+            ->bootListeners()
+            ->bootMacros();
     }
 
     public function register()
@@ -173,6 +175,17 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootListeners(): self
     {
         Event::listen(ProductViewEvent::class, ReportProductView::class);
+
+        return $this;
+    }
+
+    protected function bootMacros(): self
+    {
+        Collection::macro('firstForCurrentStore', function () {
+            return $this->filter(function ($value) {
+                return in_array($value->store_id, [config('rapidez.store'), 0]);
+            })->sortByDesc('store_id')->first();
+        });
 
         return $this;
     }

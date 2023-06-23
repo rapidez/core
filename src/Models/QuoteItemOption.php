@@ -28,11 +28,7 @@ class QuoteItemOption extends Model
                 'option_ids'      => explode(',', $value),
                 default           => (function () use ($value) {
                     if (in_array($this->option->type, ['drop_down'])) {
-                        return config('rapidez.models.product_option_type_value')::find($value)
-                            ->titles()
-                            ->whereIn('store_id', [0, config('rapidez.store')])
-                            ->orderByDesc('store_id')
-                            ->first()->title;
+                        return config('rapidez.models.product_option_type_value')::find($value)->titles->firstForCurrentStore()->title;
                     }
 
                     if ($this->option->type == 'file') {
@@ -47,12 +43,7 @@ class QuoteItemOption extends Model
     protected function label(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this
-                ->option
-                ?->titles()
-                ->whereIn('store_id', [0, config('rapidez.store')])
-                ->first()
-                ->title
+            get: fn () => $this->option?->titles->firstForCurrentStore()->title
         )->shouldCache();
     }
 

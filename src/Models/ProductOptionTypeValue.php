@@ -24,11 +24,7 @@ class ProductOptionTypeValue extends Model
     protected function title(): Attribute
     {
         return Attribute::make(
-            get: function () {
-                $titles = $this->titles->pluck('title', 'store_id')->toArray();
-
-                return $titles[config('rapidez.store')] ?? $titles[0];
-            },
+            get: fn () => $this->titles->firstForCurrentStore()->title,
         )->shouldCache();
     }
 
@@ -40,7 +36,7 @@ class ProductOptionTypeValue extends Model
     protected function price(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->prices->sortByDesc('store_id')->first(),
+            get: fn () => $this->prices->firstForCurrentStore(),
         )->shouldCache();
     }
 
