@@ -37,12 +37,12 @@ class ProductOptionTypeValue extends Model
         return $this->hasMany(config('rapidez.models.product_option_type_title'), 'option_type_id');
     }
 
-        protected function price(): Attribute
-        {
-            return Attribute::make(
-                get: fn () => $this->prices->sortByDesc('store_id')->first(),
-            )->shouldCache();
-        }
+    protected function price(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->prices->sortByDesc('store_id')->first(),
+        )->shouldCache();
+    }
 
     protected function priceLabel(): Attribute
     {
