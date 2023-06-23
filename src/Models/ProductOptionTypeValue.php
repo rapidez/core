@@ -38,11 +38,11 @@ class ProductOptionTypeValue extends Model
     }
 
         protected function price(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->prices->sortByDesc('store_id')->first(),
-        )->shouldCache();
-    }
+        {
+            return Attribute::make(
+                get: fn () => $this->prices->sortByDesc('store_id')->first(),
+            )->shouldCache();
+        }
 
     protected function priceLabel(): Attribute
     {
