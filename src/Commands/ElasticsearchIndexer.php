@@ -25,31 +25,32 @@ class ElasticsearchIndexer
         $this->elasticsearch->indices()->delete(['index' => $index]);
     }
 
-    public function index(iterable|object $data, callable|array $mapping, callable|string $id = 'id'): void
+    public function index(iterable|object $data, callable|array|null $dataFilter, callable|string $id = 'id'): void
     {
         if (is_iterable($data)) {
-            $this->indexItems($data, $mapping, $id);
+            $this->indexItems($data, $dataFilter, $id);
         } else {
-            $this->indexItem($data, $mapping, $id);
+            $this->indexItem($data, $dataFilter, $id);
         }
     }
 
-    public function indexItems(iterable $items, callable|array $mapping, callable|string $id = 'id'): void
+    public function indexItems(iterable $items, callable|array|null $dataFilter, callable|string $id = 'id'): void
     {
         foreach ($items as $item) {
-            $this->indexItem($item, $mapping, $id);
+            $this->indexItem($item, $dataFilter, $id);
         }
     }
 
-    public function indexItem(object $item, callable|array $mapping, callable|string $id = 'id'): void
+    public function indexItem(object $item, callable|array|null $dataFilter, callable|string $id = 'id'): void
     {
         if (is_null($item)) {
             return;
         }
 
-        $currentValues = is_callable($mapping)
-            ? $mapping($item)
-            : Arr::only($item instanceof Model ? $item->toArray() : (array)$item, $mapping);
+        $arrItem = $item instanceof Model ? $item->toArray() : (array)$item;
+        $currentValues = is_callable($dataFilter)
+            ? $dataFilter($item)
+            : (is_null($dataFilter) ? $arrItem : Arr::only($arrItem, $dataFilter));
 
         if (is_null($currentValues)) {
             return;
