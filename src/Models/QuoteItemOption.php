@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 class QuoteItemOption extends Model
 {
     public $timestamps = false;
+
     protected $table = 'quote_item_option';
 
     protected $primaryKey = 'option_id';

@@ -18,7 +18,5 @@ Vue.filter('plus_price_type', function (value) {
         return
     }
 
-    return '+ ' + (value.price_type == 'PERCENT'
-        ? value.price+'%'
-        : Vue.filter('price')(value.price))
+    return '+ ' + (value.price_type == 'PERCENT' ? value.price + '%' : Vue.filter('price')(value.price))
 })
