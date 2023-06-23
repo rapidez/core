@@ -2,18 +2,16 @@
 
 namespace Rapidez\Core\Commands;
 
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Rapidez\Core\Events\IndexAfterEvent;
 use Rapidez\Core\Events\IndexBeforeEvent;
 use Rapidez\Core\Facades\Rapidez;
-use Rapidez\Core\Jobs\IndexProductJob;
 use Rapidez\Core\Models\Category;
 use TorMorten\Eventy\Facades\Eventy;
 
-class IndexProductsCommand extends InteractsWithElasticsearchCommand
+class IndexProductsCommand extends ElasticsearchIndexCommand
 {
     protected $signature = 'rapidez:index {store? : Store ID from Magento}';
 
@@ -28,17 +26,10 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
         IndexBeforeEvent::dispatch($this);
 
         $productModel = config('rapidez.models.product');
-        $storeModel = config('rapidez.models.store');
-        $stores = $this->argument('store') ? $storeModel::where('store_id', $this->argument('store'))->get() : $storeModel::all();
-
+        $stores = Rapidez::getStores($this->argument('store'));
         foreach ($stores as $store) {
-            $this->line('Store: ' . $store->name);
-            config()->set('rapidez.store', $store->store_id);
-            config()->set('rapidez.website', $store->website_id);
-
-            $alias = config('rapidez.es_prefix') . '_products_' . $store->store_id;
-            $index = $alias . '_' . Carbon::now()->format('YmdHis');
-            $this->createIndex($index, Eventy::filter('index.product.mapping', [
+            $this->line('Store: ' . $store['name']);
+            $this->prepareIndexerWithStore($store, 'products', Eventy::filter('index.product.mapping', [
                 'properties' => [
                     'price' => [
                         'type' => 'double',
@@ -53,7 +44,6 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
             ]), Eventy::filter('index.product.settings', []));
 
             try {
-                $flat = (new $productModel)->getTable();
                 $productQuery = $productModel::selectOnlyIndexable()
                     ->withEventyGlobalScopes('index.product.scopes');
 
@@ -66,13 +56,14 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
 
                 $showOutOfStock = (bool) Rapidez::config('cataloginventory/options/show_out_of_stock', 0);
 
-                $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $index, $categories, $showOutOfStock) {
-                    foreach ($products as $product) {
+                $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $categories, $showOutOfStock) {
+                    $this->indexer->index($products, function ($product) use ($store, $categories, $showOutOfStock) {
                         if (! $showOutOfStock && ! $product->in_stock) {
-                            continue;
+                            return;
                         }
 
-                        $data = array_merge(['store' => $store->store_id], $product->toArray());
+                        $data = array_merge(['store' => $store['store_id']], $product->toArray());
+
                         foreach ($product->super_attributes ?: [] as $superAttribute) {
                             $data['super_' . $superAttribute->code] = $superAttribute->text_swatch || $superAttribute->visual_swatch
                                 ? array_keys((array) $product->{'super_' . $superAttribute->code})
@@ -80,16 +71,16 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
                         }
 
                         $data = $this->withCategories($data, $categories);
-                        $data = Eventy::filter('index.product.data', $data, $product);
-                        IndexProductJob::dispatch($index, $data);
-                    }
+
+                        return Eventy::filter('index.product.data', $data, $product);
+                    });
 
                     $bar->advance($products->count());
                 });
 
-                $this->switchAlias($alias, $index);
+                $this->indexer->finish();
             } catch (Exception $e) {
-                $this->elasticsearch->indices()->delete(['index' => $index]);
+                $this->indexer->abort();
 
                 throw $e;
             }
