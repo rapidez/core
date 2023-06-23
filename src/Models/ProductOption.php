@@ -21,19 +21,30 @@ class ProductOption extends Model
         return $this->belongsTo(config('rapidez.models.product'), 'product_id');
     }
 
+    public function titles()
+    {
+        return $this->hasMany(config('rapidez.models.product_option_title'), 'option_id');
+    }
+
+    public function prices()
+    {
+        return $this->hasMany(config('rapidez.models.product_option_price'), 'option_id');
+    }
+
+    public function values()
+    {
+        return $this->hasMany(config('rapidez.models.product_option_type_value'), 'option_id');
+    }
+
     protected function title(): Attribute
     {
         return Attribute::make(
             get: function () {
                 $titles = $this->titles->pluck('title', 'store_id')->toArray();
+
                 return $titles[config('rapidez.store')] ?? $titles[0];
             },
         )->shouldCache();
-    }
-
-    public function titles()
-    {
-        return $this->hasMany(config('rapidez.models.product_option_title'), 'option_id');
     }
 
     protected function price(): Attribute
@@ -47,26 +58,16 @@ class ProductOption extends Model
     {
         return Attribute::make(
             get: function () {
-                if (!floatval($this->price?->price)) {
+                if (! floatval($this->price?->price)) {
                     return;
                 }
 
                 if ($this->price->price_type == 'percent') {
-                    return '+ '.floatval($this->price->price).'%';
+                    return '+ ' . floatval($this->price->price) . '%';
                 }
 
-                return '+ '.price($this->price->price);
+                return '+ ' . price($this->price->price);
             },
         )->shouldCache();
-    }
-
-    public function prices()
-    {
-        return $this->hasMany(config('rapidez.models.product_option_price'), 'option_id');
-    }
-
-    public function values()
-    {
-        return $this->hasMany(config('rapidez.models.product_option_type_value'), 'option_id');
     }
 }

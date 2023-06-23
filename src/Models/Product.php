@@ -170,6 +170,26 @@ class Product extends Model
         return '/' . $this->url_key . $configModel::getCachedByPath('catalog/seo/product_url_suffix', '.html');
     }
 
+    public function getImagesAttribute(): array
+    {
+        return $this->gallery->pluck('value')->toArray();
+    }
+
+    public function getImageAttribute($image): ?string
+    {
+        return $image !== 'no_selection' ? $image : null;
+    }
+
+    public function getSmallImageAttribute($image): ?string
+    {
+        return $this->getImageAttribute($image);
+    }
+
+    public function getThumbnailAttribute($image): ?string
+    {
+        return $this->getImageAttribute($image);
+    }
+
     protected function breadcrumbCategories(): Attribute
     {
         return Attribute::make(
@@ -193,25 +213,5 @@ class Product extends Model
                     ->get();
             },
         )->shouldCache();
-    }
-
-    public function getImagesAttribute(): array
-    {
-        return $this->gallery->pluck('value')->toArray();
-    }
-
-    public function getImageAttribute($image): ?string
-    {
-        return $image !== 'no_selection' ? $image : null;
-    }
-
-    public function getSmallImageAttribute($image): ?string
-    {
-        return $this->getImageAttribute($image);
-    }
-
-    public function getThumbnailAttribute($image): ?string
-    {
-        return $this->getImageAttribute($image);
     }
 }
