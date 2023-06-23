@@ -2,13 +2,13 @@
 
 namespace Rapidez\Core\Models;
 
-class ProductOptionTypeTitle extends Model
+class ProductOptionTypePrice extends Model
 {
     public $timestamps = false;
 
-    protected $table = 'catalog_product_option_type_title';
+    protected $table = 'catalog_product_option_type_price';
 
-    protected $primaryKey = 'option_type_title_id';
+    protected $primaryKey = 'option_type_price_id';
 
     public function store()
     {

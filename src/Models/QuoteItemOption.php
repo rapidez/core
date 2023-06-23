@@ -28,7 +28,7 @@ class QuoteItemOption extends Model
                 'option_ids'      => explode(',', $value),
                 default           => (function () use ($value) {
                     if (in_array($this->option->type, ['drop_down'])) {
-                        return ProductOptionTypeValue::find($value)
+                        return config('rapidez.models.product_option_type_value')::find($value)
                             ->titles()
                             ->whereIn('store_id', [0, config('rapidez.store')])
                             ->orderByDesc('store_id')
@@ -61,7 +61,7 @@ class QuoteItemOption extends Model
     protected function option(): Attribute
     {
         return Attribute::make(
-            get: fn () => ProductOption::find(explode('_', $this->code)[1])
+            get: fn () => config('rapidez.models.product_option')::find(explode('_', $this->code)[1])
         )->shouldCache();
     }
 }

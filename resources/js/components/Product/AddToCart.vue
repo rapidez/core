@@ -34,7 +34,6 @@ export default {
         qty: 1,
         options: {},
         customOptions: {},
-        customOptionsData: {},
         error: null,
 
         adding: false,
@@ -50,10 +49,6 @@ export default {
     },
 
     methods: {
-        changeQty(event) {
-            this.qty = event.target.value
-        },
-
         async add() {
             if (
                 'children' in this.product &&
@@ -137,11 +132,6 @@ export default {
             return {}
         },
 
-        setProductOptions(response) {
-            this.customOptionsData = response.data.data.products.items[0].options
-            return response.data.data
-        },
-
         setCustomOptionFile(event, optionId) {
             let file = event.target.files[0]
             let reader = new FileReader()
@@ -158,17 +148,15 @@ export default {
                     return
                 }
 
-                let option = this.customOptionsData.find((option) => option.option_id == key)
-                let value =
-                    option.fieldValue ||
-                    option.areaValue ||
-                    option.fileValue ||
-                    Object.values(option.dropdownValue).find((dropdownValue) => dropdownValue.option_type_id == val)
+                let option = this.product.options.find((option) => option.option_id == key)
+                let optionPrice = ['drop_down'].includes(option.type)
+                    ? option.values.find((value) => value.option_type_id == val).price
+                    : option.price
 
-                if (value.price_type == 'FIXED') {
-                    addition += parseFloat(value.price)
+                if (optionPrice.price_type == 'fixed') {
+                    addition += parseFloat(optionPrice.price)
                 } else {
-                    addition += (parseFloat(basePrice) * parseFloat(value.price)) / 100
+                    addition += (parseFloat(basePrice) * parseFloat(optionPrice.price)) / 100
                 }
             })
 
