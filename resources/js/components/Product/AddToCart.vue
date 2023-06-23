@@ -210,21 +210,24 @@ export default {
 
             Object.entries(this.customOptions).forEach(([key, val]) => {
                 if (typeof val === 'string' && val.startsWith('FILE;')) {
-                    let values = val.split(';', 4)
-                    if (!values.length == 4) {
+                    let [prefix, name, type, data] = val.split(';', 4)
+
+                    if (!data) {
                         return
                     }
+
                     customOptions.push({
                         option_id: key,
                         option_value: 'file',
                         extension_attributes: {
                             file_info: {
-                                base64_encoded_data: values[3].replace('base64,', ''),
-                                type: values[2].replace('data:', ''),
-                                name: values[1],
+                                base64_encoded_data: data.replace('base64,', ''),
+                                type: type.replace('data:', ''),
+                                name: name,
                             },
                         },
                     })
+
                     return
                 }
 
