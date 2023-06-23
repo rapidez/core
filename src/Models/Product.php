@@ -87,7 +87,7 @@ class Product extends Model
     public function gallery(): BelongsToMany
     {
         return $this->belongsToMany(
-            config('rapidez.models.productimage'),
+            config('rapidez.models.product_image'),
             'catalog_product_entity_media_gallery_value_to_entity',
             'entity_id',
             'value_id',
@@ -98,7 +98,7 @@ class Product extends Model
     public function views(): HasMany
     {
         return $this->hasMany(
-            config('rapidez.models.productview'),
+            config('rapidez.models.product_view'),
             'product_id',
             'id'
         );

@@ -15,7 +15,7 @@ Route::middleware('api')->prefix('api')->group(function () {
     });
 
     Route::get('swatches', function () {
-        $optionswatchModel = config('rapidez.models.optionswatch');
+        $optionswatchModel = config('rapidez.models.option_swatch');
 
         return $optionswatchModel::getCachedSwatchValues();
     });

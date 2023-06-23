@@ -1,6 +1,6 @@
 <?php
 
-namespace Rapidez\Core\Models\Sales;
+namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -26,17 +26,17 @@ class SalesOrder extends Model
 
     public function sales_order_addresses()
     {
-        return $this->hasMany(config('rapidez.models.sales.order_address'), 'parent_id');
+        return $this->hasMany(config('rapidez.models.sales_order_address'), 'parent_id');
     }
 
     public function sales_order_items()
     {
-        return $this->hasMany(config('rapidez.models.sales.order_item'), 'order_id');
+        return $this->hasMany(config('rapidez.models.sales_order_item'), 'order_id');
     }
 
     public function sales_order_payments()
     {
-        return $this->hasMany(config('rapidez.models.sales.order_payment'), 'parent_id');
+        return $this->hasMany(config('rapidez.models.sales_order_payment'), 'parent_id');
     }
 
     public function scopeWhereQuoteIdOrCustomerToken(Builder $query, $quoteIdMaskOrCustomerToken)

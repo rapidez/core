@@ -88,7 +88,7 @@ class Quote extends Model
 
     public function sales_order()
     {
-        return $this->belongsTo(config('rapidez.models.sales.order'));
+        return $this->belongsTo(config('rapidez.models.sales_order'));
     }
 
     // Named it like this as "items" is already in use to keep it backwards compatible.
