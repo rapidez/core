@@ -4,11 +4,11 @@ namespace Rapidez\Core\Models;
 
 class ProductOptionTypePrice extends Model
 {
-    public $timestamps = false;
-
     protected $table = 'catalog_product_option_type_price';
 
     protected $primaryKey = 'option_type_price_id';
+
+    public $timestamps = false;
 
     public function store()
     {

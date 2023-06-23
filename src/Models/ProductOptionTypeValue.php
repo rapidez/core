@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class ProductOptionTypeValue extends Model
 {
-    public $timestamps = false;
-
     protected $table = 'catalog_product_option_type_value';
 
     protected $primaryKey = 'option_type_id';
+
+    public $timestamps = false;
 
     protected $appends = ['title', 'price', 'price_label'];
 
@@ -19,16 +19,6 @@ class ProductOptionTypeValue extends Model
     public function option()
     {
         return $this->belongsTo(config('rapidez.models.product_option'), 'option_id');
-    }
-
-    public function titles()
-    {
-        return $this->hasMany(config('rapidez.models.product_option_type_title'), 'option_type_id');
-    }
-
-    public function prices()
-    {
-        return $this->hasMany(config('rapidez.models.product_option_type_price'), 'option_type_id');
     }
 
     protected function title(): Attribute
@@ -42,7 +32,12 @@ class ProductOptionTypeValue extends Model
         )->shouldCache();
     }
 
-    protected function price(): Attribute
+    public function titles()
+    {
+        return $this->hasMany(config('rapidez.models.product_option_type_title'), 'option_type_id');
+    }
+
+        protected function price(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->prices->sortByDesc('store_id')->first(),
@@ -64,5 +59,10 @@ class ProductOptionTypeValue extends Model
                 return '+ ' . price($this->price->price);
             },
         )->shouldCache();
+    }
+
+    public function prices()
+    {
+        return $this->hasMany(config('rapidez.models.product_option_type_price'), 'option_type_id');
     }
 }

@@ -46,13 +46,6 @@ class RapidezServiceProvider extends ServiceProvider
             ->registerBindings();
     }
 
-    public function bootTranslations(): self
-    {
-        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'rapidez');
-
-        return $this;
-    }
-
     protected function bootCommands(): self
     {
         $this->commands([
@@ -166,6 +159,13 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootMiddleware(): self
     {
         $this->app->make(Kernel::class)->pushMiddleware(DetermineAndSetShop::class);
+
+        return $this;
+    }
+
+    protected function bootTranslations(): self
+    {
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'rapidez');
 
         return $this;
     }

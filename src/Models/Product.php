@@ -34,11 +34,6 @@ class Product extends Model
 
     protected $appends = ['url'];
 
-    public static function exist($productId): bool
-    {
-        return self::withoutGlobalScopes()->where('entity_id', $productId)->exists();
-    }
-
     protected static function booting(): void
     {
         static::addGlobalScope(new WithProductAttributesScope);
@@ -213,5 +208,10 @@ class Product extends Model
                     ->get();
             },
         )->shouldCache();
+    }
+
+    public static function exist($productId): bool
+    {
+        return self::withoutGlobalScopes()->where('entity_id', $productId)->exists();
     }
 }

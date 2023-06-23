@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class ProductOption extends Model
 {
-    public $timestamps = false;
-
     protected $table = 'catalog_product_option';
 
     protected $primaryKey = 'option_id';
+
+    public $timestamps = false;
 
     protected $appends = ['title', 'price', 'price_label'];
 
@@ -19,21 +19,6 @@ class ProductOption extends Model
     public function product()
     {
         return $this->belongsTo(config('rapidez.models.product'), 'product_id');
-    }
-
-    public function titles()
-    {
-        return $this->hasMany(config('rapidez.models.product_option_title'), 'option_id');
-    }
-
-    public function prices()
-    {
-        return $this->hasMany(config('rapidez.models.product_option_price'), 'option_id');
-    }
-
-    public function values()
-    {
-        return $this->hasMany(config('rapidez.models.product_option_type_value'), 'option_id');
     }
 
     protected function title(): Attribute
@@ -45,6 +30,11 @@ class ProductOption extends Model
                 return $titles[config('rapidez.store')] ?? $titles[0];
             },
         )->shouldCache();
+    }
+
+    public function titles()
+    {
+        return $this->hasMany(config('rapidez.models.product_option_title'), 'option_id');
     }
 
     protected function price(): Attribute
@@ -69,5 +59,15 @@ class ProductOption extends Model
                 return '+ ' . price($this->price->price);
             },
         )->shouldCache();
+    }
+
+    public function prices()
+    {
+        return $this->hasMany(config('rapidez.models.product_option_price'), 'option_id');
+    }
+
+    public function values()
+    {
+        return $this->hasMany(config('rapidez.models.product_option_type_value'), 'option_id');
     }
 }

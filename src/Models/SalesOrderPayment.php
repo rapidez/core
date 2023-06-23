@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class SalesOrderPayment extends Model
 {
-    public $timestamps = false;
-
     protected $table = 'sales_order_payment';
 
     protected $primaryKey = 'entity_id';
+
+    public $timestamps = false;
 
     protected $casts = [
         'additional_information' => 'collection',
