@@ -6,7 +6,7 @@
     :label="false"
     :name="false"
     id="option_{{ $option->option_id }}"
-    required="{{ $option->is_require }}"
+    :required="$option->is_require"
     v-on:change="setCustomOptionFile($event, {{ $option->option_id }})"
     class="px-0"
 />

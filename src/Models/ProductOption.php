@@ -16,6 +16,10 @@ class ProductOption extends Model
 
     protected $with = ['values', 'titles', 'prices'];
 
+    protected $casts = [
+        'is_require' => 'boolean',
+    ];
+
     public function product()
     {
         return $this->belongsTo(config('rapidez.models.product'), 'product_id');
