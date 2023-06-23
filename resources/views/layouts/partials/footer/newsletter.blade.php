@@ -5,7 +5,7 @@
         <lazy>
             <graphql-mutation v-cloak query="mutation visitor ($email: String!) { subscribeEmailToNewsletter(email: $email) { status } }" :alert="false" :clear="true">
                 <div slot-scope="{ mutate, variables, mutated, error }">
-                    <p v-if="mutated" class="text-primary text-xl font-bold">
+                    <p v-if="mutated" class="text-neutral text-xl font-bold">
                         @lang('Thank you for subscribing!')
                     </p>
                     <div v-else>

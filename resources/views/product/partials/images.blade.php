@@ -55,7 +55,7 @@
                     href="#"
                     v-for="(image, imageId) in images"
                     class="flex items-center justify-center bg-white border rounded p-2 mr-3 mb-3 h-[100px] w-[100px]"
-                    :class="active == imageId ? 'border-primary' : ''"
+                    :class="active == imageId ? 'border-neutral' : ''"
                     @click.prevent="change(imageId)"
                 >
                     <img

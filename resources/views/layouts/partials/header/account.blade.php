@@ -7,16 +7,16 @@
             </button>
             <div v-if="isOpen" class="absolute bg-white border shadow rounded mr-1 {{ config('rapidez.z-indexes.header-dropdowns')}} {{ Route::currentRouteName() == 'checkout' ? 'right-0' : '' }}">
                 @if(App::providerIsLoaded('Rapidez\Account\AccountServiceProvider'))
-                    <a class="block hover:bg-secondary px-3 py-2" href="/account">@lang('Account')</a>
-                    <a class="block hover:bg-secondary px-3 py-2" href="/account/orders">@lang('Orders')</a>
+                    <a class="block hover:bg-inactive px-3 py-2" href="/account">@lang('Account')</a>
+                    <a class="block hover:bg-inactive px-3 py-2" href="/account/orders">@lang('Orders')</a>
                     @if (App::providerIsLoaded('Rapidez\Wishlist\WishlistServiceProvider'))
-                        <a class="block hover:bg-secondary px-3 py-2" href="/account/wishlist">@lang('Wishlist')</a>
+                        <a class="block hover:bg-inactive px-3 py-2" href="/account/wishlist">@lang('Wishlist')</a>
                     @endif
                 @endif
                 <user>
                     <a
                         href="#"
-                        class="block hover:bg-secondary px-3 py-2"
+                        class="block hover:bg-inactive px-3 py-2"
                         dusk="logout"
                         slot-scope="{ logout }"
                         @click.prevent="logout('/')"

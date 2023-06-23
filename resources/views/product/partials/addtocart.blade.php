@@ -18,7 +18,7 @@
             </div>
             <div class="mt-5 flex flex-wrap items-center gap-3" v-cloak>
                 <div>
-                    <div class="text-2xl font-bold text-primary">@{{ (simpleProduct.special_price || simpleProduct.price) | price }}</div>
+                    <div class="text-2xl font-bold text-neutral">@{{ (simpleProduct.special_price || simpleProduct.price) | price }}</div>
                     <div class="text-lg text-gray-500 line-through" v-if="simpleProduct.special_price">@{{ simpleProduct.price | price }}</div>
                 </div>
                 <x-rapidez::select

@@ -1,41 +1,47 @@
 module.exports = {
     content: [
-        './resources/views/**/*.blade.php',
-        './resources/css/**/*.css',
-        './resources/js/**/*.vue',
+        "./resources/views/**/*.blade.php",
+        "./resources/css/**/*.css",
+        "./resources/js/**/*.vue",
 
-        './vendor/rapidez/**/*.blade.php',
-        './vendor/rapidez/**/*.css',
-        './vendor/rapidez/**/*.vue',
+        "./vendor/rapidez/**/*.blade.php",
+        "./vendor/rapidez/**/*.css",
+        "./vendor/rapidez/**/*.vue",
 
-        './config/rapidez.php',
-        './vendor/rapidez/core/config/rapidez.php',
-        './vendor/rapidez/menu/config/menu.php',
-        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/tailwind.blade.php',
+        "./config/rapidez.php",
+        "./vendor/rapidez/core/config/rapidez.php",
+        "./vendor/rapidez/menu/config/menu.php",
+        "./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/tailwind.blade.php",
     ],
     theme: {
         extend: {
             colors: {
-                primary: 'rgb(var(--primary)  / <alpha-value>)', // Text color
-                secondary: 'rgb(var(--secondary) / <alpha-value>)', // Text inactive color
-                accent: 'rgb(var(--accent) / <alpha-value>)', // Theme color
-                enhanced: 'rgb(var(--enhanced) / <alpha-value>)', // Checkout conversion color
-                highlight: 'rgb(var(--highlight) / <alpha-value>)' // Background highlight color
+                primary: {
+                    DEFAULT: "#2FBC85", // Theme color
+                    text: "#FFF", // Text color that goes onto primary color
+                },
+                secondary: {
+                    DEFAULT: "#F97316", // Conversion color
+                    text: "#FFF", // Text color that goes onto secondary color
+                },
+                neutral: "#334155", // Default text color
+                inactive: "#64748B", // Inactive text color
+                highlight: "#F1F5F9", // Background highlight color
+                border: "#F1F5F9", // Border color
             },
             borderColor: {
-                DEFAULT: 'rgb(var(--border) / <alpha-value>)',
-                border: 'rgb(var(--border) / <alpha-value>)'
+                DEFAULT: "#F1F5F9", // Border color default so it gets used when only using border
             },
         },
         container: {
             center: true,
-            padding: '1.25rem',
-        }
+            padding: "1.25rem",
+        },
     },
     plugins: [
-        require('@tailwindcss/forms'),
-        require('@tailwindcss/typography'),
-        require('@tailwindcss/aspect-ratio'),
-        require('tailwind-scrollbar-hide'),
-    ]
-}
+        require("@tailwindcss/forms"),
+        require("@tailwindcss/typography"),
+        require("@tailwindcss/aspect-ratio"),
+        require("tailwind-scrollbar-hide"),
+    ],
+};
