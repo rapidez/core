@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\View\ComponentAttributeBag;
 use Rapidez\Core\Commands\IndexProductsCommand;
 use Rapidez\Core\Commands\InstallCommand;
 use Rapidez\Core\Commands\InstallTestsCommand;
@@ -30,6 +31,7 @@ class RapidezServiceProvider extends ServiceProvider
             ->bootRoutes()
             ->bootThemes()
             ->bootViews()
+            ->bootMacros()
             ->bootBladeComponents()
             ->bootMiddleware()
             ->bootTranslations();
@@ -44,7 +46,8 @@ class RapidezServiceProvider extends ServiceProvider
     {
         $this
             ->registerConfigs()
-            ->registerBindings();
+            ->registerBindings()
+            ->registerBladeDirectives();
     }
 
     protected function bootCommands(): self
@@ -134,6 +137,11 @@ class RapidezServiceProvider extends ServiceProvider
     {
         Blade::component('placeholder', PlaceholderComponent::class);
 
+        return $this;
+    }
+
+    protected function registerBladeDirectives(): self
+    {
         Blade::directive('content', function ($expression) {
             return "<?php echo Rapidez::content({$expression}) ?>";
         });
@@ -152,6 +160,75 @@ class RapidezServiceProvider extends ServiceProvider
             $configModel = config('rapidez.models.config');
 
             return "<?php echo {$configModel}::getCachedByPath({$expression}) ?>";
+        });
+
+        Blade::directive('attributes', function (string $expression) {
+            /**
+             * Echo out a componentAttributeBag with the given attributes.
+             * Usage: @attributes(['id' => 'test', 'name' => 'some_name'])
+             */
+            return "<?php echo (new \Illuminate\View\ComponentAttributeBag)($expression); ?>";
+        });
+
+        Blade::directive('return', function () {
+            return "<?php return; ?>";
+        });
+
+        Blade::directive('includeFirstSafe', function (string $expression) {
+            /**
+             * @see \Illuminate\View\Compilers\Concerns\CompilesIncludes@compileIncludeFirst
+             * Attempt to include the first existing file, if none exists. Do nothing.
+             * Usage: @includeFirstSafe(['potentially-missing-template', 'another-potentially-missing-template'], $set)
+             */
+            $expression = Blade::stripParentheses($expression);
+
+            return "<?php try { echo \$__env->first({$expression}, \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); } catch (\InvalidArgumentException \$e) { if (!app()->environment('production')) { echo '<hr>'.__('View not found: :view', ['view' => implode(', ', [{$expression}][0])]).'<hr>'; } } ?>";
+        });
+
+        Blade::directive('slots', function ($expression) {
+            /**
+             * @see https://github.com/laravel/framework/pull/47574
+             * Define optional slots you will use in your component,
+             * this will ensure those slots will be \Illuminate\View\ComponentSlot
+             * Usage: @slots(['optionalSlot', 'anotherSlot' => ['contents' => 'default text', 'attributes' => ['class' => 'default classes']]])
+             */
+            return "<?php foreach ({$expression} as \$__key => \$__value) {
+    \$__key = is_numeric(\$__key) ? \$__value : \$__key;
+    \$__value = !is_array(\$__value) && !\$__value instanceof \ArrayAccess ? [] : \$__value;
+    if (!isset(\$\$__key) || is_string(\$\$__key)) {
+        \$\$__key = new \Illuminate\View\ComponentSlot(\$\$__key ?? \$__value['contents'] ?? '', \$__value['attributes'] ?? []);
+    }
+} ?>
+<?php \$attributes ??= new \\Illuminate\\View\\ComponentAttributeBag; ?>
+<?php \$attributes = \$attributes->exceptProps($expression); ?>";
+        });
+
+        return $this;
+    }
+
+    protected function bootMacros(): self
+    {
+        /**
+         * @see https://github.com/laravel/framework/pull/47569
+         * Check if the componentAttributeBag contains any of the keys.
+         * Usage: $attributes->hasAny(['href', ':href', "v-bind:href"])
+         */
+        ComponentAttributeBag::macro('hasAny', function ($key)
+        {
+            /** @var ComponentAttributeBag $this */
+            if (!isset($this->attributes)) {
+                return false;
+            }
+
+            $keys = is_array($key) ? $key : func_get_args();
+
+            foreach ($keys as $value) {
+                if ($this->has($value)) {
+                    return true;
+                }
+            }
+
+            return false;
         });
 
         return $this;
