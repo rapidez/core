@@ -147,10 +147,10 @@ function init() {
             },
         },
         watch: {
-            loadingCount: function(count) {
+            loadingCount: function (count) {
                 window.app.$data.loading = count > 0
-            }
-        }
+            },
+        },
     })
 
     if (window.debug) {
