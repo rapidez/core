@@ -71,7 +71,7 @@ function init() {
             custom: {},
             config: window.config,
             loadingCount: 0,
-            loading: computed(() => window.app?.$data?.loadingCount > 0),
+            loading: false,
             guestEmail: localStorage.email ?? null,
             user: null,
             cart: null,
@@ -146,6 +146,11 @@ function init() {
                     })
             },
         },
+        watch: {
+            loadingCount: function(count) {
+                window.app.$data.loading = count > 0
+            }
+        }
     })
 
     if (window.debug) {
