@@ -12,9 +12,11 @@ class ProductOptionTypeValue extends Model
 
     public $timestamps = false;
 
+    protected $with = ['titles', 'prices'];
+
     protected $appends = ['title', 'price', 'price_label'];
 
-    protected $with = ['titles', 'prices'];
+    protected $hidden = ['titles', 'prices'];
 
     public function option()
     {

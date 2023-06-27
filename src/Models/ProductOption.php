@@ -12,9 +12,11 @@ class ProductOption extends Model
 
     public $timestamps = false;
 
+    protected $with = ['values', 'titles', 'prices'];
+
     protected $appends = ['title', 'price', 'price_label'];
 
-    protected $with = ['values', 'titles', 'prices'];
+    protected $hidden = ['titles', 'prices'];
 
     protected $casts = [
         'is_require' => 'boolean',
