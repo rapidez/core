@@ -92,6 +92,7 @@ class Quote extends Model
     }
 
     // Named it like this as "items" is already in use to keep it backwards compatible.
+    // This will be removed when we migrate the cart to GraphQL.
     public function items2()
     {
         return $this->hasMany(config('rapidez.models.quote_item'), 'quote_id');
