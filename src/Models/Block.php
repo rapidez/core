@@ -12,6 +12,12 @@ class Block extends Model
 
     protected $primaryKey = 'block_id';
 
+    protected static function booting()
+    {
+        static::addGlobalScope(new IsActiveScope);
+        static::addGlobalScope(new ForCurrentStoreScope);
+    }
+
     public static function getCachedByIdentifier(string $identifier, array $replace = []): ?string
     {
         $cacheKey = 'block.' . config('rapidez.store') . '.' . $identifier;
@@ -21,11 +27,5 @@ class Block extends Model
         });
 
         return empty($replace) ? $block : strtr($block, $replace);
-    }
-
-    protected static function booting()
-    {
-        static::addGlobalScope(new IsActiveScope);
-        static::addGlobalScope(new ForCurrentStoreScope);
     }
 }

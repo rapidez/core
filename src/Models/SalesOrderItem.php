@@ -1,6 +1,6 @@
 <?php
 
-namespace Rapidez\Core\Models\Sales;
+namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,6 +16,6 @@ class SalesOrderItem extends Model
 
     public function sales_order()
     {
-        return $this->belongsTo(config('rapidez.models.sales.order'), 'order_id');
+        return $this->belongsTo(config('rapidez.models.sales_order'), 'order_id');
     }
 }

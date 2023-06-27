@@ -18,7 +18,7 @@ class QuoteItems implements CastsAttributes
         }), 'name', 'id');
 
         $items = json_decode($value);
-        $optionvalueModel = config('rapidez.models.optionvalue');
+        $optionvalueModel = config('rapidez.models.option_value');
         foreach ($items as $item) {
             $options = null;
             foreach (json_decode($item->attributes) ?: [] as $attributeId => $attributeValue) {

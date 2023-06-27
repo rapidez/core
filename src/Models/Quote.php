@@ -81,8 +81,19 @@ class Quote extends Model
         });
     }
 
+    public function store()
+    {
+        return $this->belongsTo(config('rapidez.models.store'));
+    }
+
     public function sales_order()
     {
-        return $this->belongsTo(config('rapidez.models.sales.order'));
+        return $this->belongsTo(config('rapidez.models.sales_order'));
+    }
+
+    // Named it like this as "items" is already in use to keep it backwards compatible.
+    public function items2()
+    {
+        return $this->hasMany(config('rapidez.models.quote_item'), 'quote_id');
     }
 }

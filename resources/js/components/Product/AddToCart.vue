@@ -33,6 +33,7 @@ export default {
     data: () => ({
         qty: 1,
         options: {},
+        customOptions: {},
         error: null,
 
         adding: false,
@@ -44,26 +45,10 @@ export default {
     },
 
     render() {
-        return this.$scopedSlots.default({
-            getOptions: this.getOptions,
-            simpleProduct: this.simpleProduct,
-            disabledOptions: this.disabledOptions,
-            changeQty: this.changeQty,
-            options: this.options,
-            error: this.error,
-            add: this.add,
-            qty: this.qty,
-
-            adding: this.adding,
-            added: this.added,
-        })
+        return this.$scopedSlots.default(Object.assign(this, { self: this }))
     },
 
     methods: {
-        changeQty(event) {
-            this.qty = event.target.value
-        },
-
         async add() {
             if (
                 'children' in this.product &&
@@ -146,6 +131,37 @@ export default {
 
             return {}
         },
+
+        setCustomOptionFile(event, optionId) {
+            let file = event.target.files[0]
+            let reader = new FileReader()
+            reader.onerror = (error) => alert(error)
+            reader.onload = () => (this.customOptions[optionId] = 'FILE;' + file.name + ';' + reader.result)
+            reader.readAsDataURL(file)
+        },
+
+        priceAddition: function (basePrice) {
+            let addition = 0
+
+            Object.entries(this.customOptions).forEach(([key, val]) => {
+                if (!val) {
+                    return
+                }
+
+                let option = this.product.options.find((option) => option.option_id == key)
+                let optionPrice = ['drop_down'].includes(option.type)
+                    ? option.values.find((value) => value.option_type_id == val).price
+                    : option.price
+
+                if (optionPrice.price_type == 'fixed') {
+                    addition += parseFloat(optionPrice.price)
+                } else {
+                    addition += (parseFloat(basePrice) * parseFloat(optionPrice.price)) / 100
+                }
+            })
+
+            return addition
+        },
     },
 
     computed: {
@@ -183,15 +199,48 @@ export default {
 
         productOptions: function () {
             let options = []
+            let customOptions = []
+
             Object.entries(this.options).forEach(([key, val]) => {
                 options.push({
                     option_id: key,
                     option_value: val,
                 })
             })
+
+            Object.entries(this.customOptions).forEach(([key, val]) => {
+                if (typeof val === 'string' && val.startsWith('FILE;')) {
+                    let [prefix, name, type, data] = val.split(';', 4)
+
+                    if (!data) {
+                        return
+                    }
+
+                    customOptions.push({
+                        option_id: key,
+                        option_value: 'file',
+                        extension_attributes: {
+                            file_info: {
+                                base64_encoded_data: data.replace('base64,', ''),
+                                type: type.replace('data:', ''),
+                                name: name,
+                            },
+                        },
+                    })
+
+                    return
+                }
+
+                customOptions.push({
+                    option_id: key,
+                    option_value: val,
+                })
+            })
+
             return {
                 extension_attributes: {
                     configurable_item_options: options,
+                    custom_options: customOptions,
                 },
             }
         },
@@ -245,6 +294,14 @@ export default {
             })
 
             return disabledOptions
+        },
+
+        price: function () {
+            return parseFloat(this.simpleProduct.price) + this.priceAddition(this.simpleProduct.price)
+        },
+
+        specialPrice: function () {
+            return parseFloat(this.simpleProduct.special_price) + this.priceAddition(this.simpleProduct.special_price)
         },
     },
 }

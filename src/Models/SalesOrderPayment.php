@@ -1,16 +1,16 @@
 <?php
 
-namespace Rapidez\Core\Models\Sales;
+namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class SalesOrderPayment extends Model
 {
-    public $timestamps = false;
-
     protected $table = 'sales_order_payment';
 
     protected $primaryKey = 'entity_id';
+
+    public $timestamps = false;
 
     protected $casts = [
         'additional_information' => 'collection',
@@ -36,6 +36,6 @@ class SalesOrderPayment extends Model
 
     public function sales_order()
     {
-        return $this->belongsTo(config('rapidez.models.sales.order'), 'parent_id');
+        return $this->belongsTo(config('rapidez.models.sales_order'), 'parent_id');
     }
 }

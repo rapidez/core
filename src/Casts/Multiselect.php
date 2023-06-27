@@ -8,7 +8,7 @@ class Multiselect implements CastsAttributes
 {
     public function get($model, $key, $value, $attributes)
     {
-        $optionvalueModel = config('rapidez.models.optionvalue');
+        $optionvalueModel = config('rapidez.models.option_value');
         if ($value) {
             foreach (explode(',', $value) as $optionValueId) {
                 $values[] = is_numeric($optionValueId)

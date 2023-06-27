@@ -3,6 +3,7 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Rapidez\Core\Casts\Children;
@@ -32,11 +33,6 @@ class Product extends Model
     protected $primaryKey = 'entity_id';
 
     protected $appends = ['url'];
-
-    public static function exist($productId): bool
-    {
-        return self::withoutGlobalScopes()->where('entity_id', $productId)->exists();
-    }
 
     protected static function booting(): void
     {
@@ -87,7 +83,7 @@ class Product extends Model
     public function gallery(): BelongsToMany
     {
         return $this->belongsToMany(
-            config('rapidez.models.productimage'),
+            config('rapidez.models.product_image'),
             'catalog_product_entity_media_gallery_value_to_entity',
             'entity_id',
             'value_id',
@@ -98,9 +94,18 @@ class Product extends Model
     public function views(): HasMany
     {
         return $this->hasMany(
-            config('rapidez.models.productview'),
+            config('rapidez.models.product_view'),
             'product_id',
             'id'
+        );
+    }
+
+    public function options(): HasMany
+    {
+        return $this->hasMany(
+            config('rapidez.models.product_option'),
+            'product_id',
+            'id',
         );
     }
 
@@ -160,27 +165,6 @@ class Product extends Model
         return '/' . $this->url_key . $configModel::getCachedByPath('catalog/seo/product_url_suffix', '.html');
     }
 
-    public function getBreadcrumbCategoriesAttribute()
-    {
-        if (! $path = session('latest_category_path')) {
-            return [];
-        }
-
-        $categoryIds = explode('/', $path);
-        $categoryIds = array_slice($categoryIds, array_search(config('rapidez.root_category_id'), $categoryIds) + 1);
-
-        if (! in_array(end($categoryIds), $this->category_ids)) {
-            return [];
-        }
-
-        $categoryModel = config('rapidez.models.category');
-        $categoryTable = (new $categoryModel)->getTable();
-
-        return Category::whereIn($categoryTable . '.entity_id', $categoryIds)
-            ->orderByRaw('FIELD(' . $categoryTable . '.entity_id,' . implode(',', $categoryIds) . ')')
-            ->get();
-    }
-
     public function getImagesAttribute(): array
     {
         return $this->gallery->pluck('value')->toArray();
@@ -199,5 +183,35 @@ class Product extends Model
     public function getThumbnailAttribute($image): ?string
     {
         return $this->getImageAttribute($image);
+    }
+
+    protected function breadcrumbCategories(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if (! $path = session('latest_category_path')) {
+                    return [];
+                }
+
+                $categoryIds = explode('/', $path);
+                $categoryIds = array_slice($categoryIds, array_search(config('rapidez.root_category_id'), $categoryIds) + 1);
+
+                if (! in_array(end($categoryIds), $this->category_ids)) {
+                    return [];
+                }
+
+                $categoryModel = config('rapidez.models.category');
+                $categoryTable = (new $categoryModel)->getTable();
+
+                return Category::whereIn($categoryTable . '.entity_id', $categoryIds)
+                    ->orderByRaw('FIELD(' . $categoryTable . '.entity_id,' . implode(',', $categoryIds) . ')')
+                    ->get();
+            },
+        )->shouldCache();
+    }
+
+    public static function exist($productId): bool
+    {
+        return self::withoutGlobalScopes()->where('entity_id', $productId)->exists();
     }
 }
