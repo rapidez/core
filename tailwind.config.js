@@ -17,20 +17,20 @@ module.exports = {
         extend: {
             colors: {
                 primary: {
-                    DEFAULT: "#2FBC85", // Theme color
-                    text: "#FFF", // Text color that goes onto primary color
+                    DEFAULT: "rgb(var(--primary) / <alpha-value>)", // Theme color
+                    text: "rgb(var(--primary-text) / <alpha-value>)", // Text color that goes onto primary color
                 },
                 secondary: {
-                    DEFAULT: "#F97316", // Conversion color
-                    text: "#FFF", // Text color that goes onto secondary color
+                    DEFAULT: "rgb(var(--secondary) / <alpha-value>)", // Conversion color
+                    text: "rgb(var(--secondary-text) / <alpha-value>)", // Text color that goes onto secondary color
                 },
-                neutral: "#334155", // Default text color
-                inactive: "#64748B", // Inactive text color
-                highlight: "#F1F5F9", // Background highlight color
-                border: "#F1F5F9", // Border color
+                neutral: "rgb(var(--neutral) / <alpha-value>)", // Default text color
+                inactive: "rgb(var(--inactive) / <alpha-value>)", // Inactive text color
+                highlight: "rgb(var(--highlight) / <alpha-value>)", // Background highlight color
+                border: "rgb(var(--border) / <alpha-value>)", // Border color
             },
             borderColor: {
-                DEFAULT: "#F1F5F9", // Border color default so it gets used when only using border
+                DEFAULT: "rgb(var(--border) / <alpha-value>)", // Border color default so it gets used when only using border
             },
         },
         container: {
