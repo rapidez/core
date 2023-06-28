@@ -18,16 +18,16 @@
                     </tr>
                 </table>
                 <div class="flex justify-between items-center">
-                    <x-rapidez::button href="/cart" variant="outline" class="mr-5">
+                    <x-rapidez::button href="{{ route('cart') }}" variant="outline" class="mr-5">
                         @lang('Show cart')
                     </x-rapidez::button>
-                    <x-rapidez::button href="/checkout">
+                    <x-rapidez::button href="{{ route('checkout') }}">
                         @lang('Checkout')
                     </x-rapidez::button>
                 </div>
             </div>
         </div>
-        <a href="/cart" aria-label="@lang('Cart')" class="my-1" v-else>
+        <a href="{{ route('cart') }}" aria-label="@lang('Cart')" class="my-1" v-else>
             <x-heroicon-o-shopping-cart class="h-6 w-6"/>
         </a>
     </toggler>

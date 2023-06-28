@@ -11,7 +11,7 @@
         <div v-if="hasItems" slot-scope="{ cart, hasItems, changeQty, remove }">
             <div class="flex flex-wrap items-center border-b pb-2 mb-2" v-for="(item, productId, index) in cart.items">
                 <div class="w-1/6 sm:w-1/12 pr-3">
-                    <a :href="item.url" class="block">
+                    <a :href="item.url | url" class="block">
                         <picture>
                             <source :srcset="'/storage/resizes/80x80/magento/catalog/product' + item.image + '.webp'" type="image/webp">
                             <img
@@ -24,7 +24,7 @@
                     </a>
                 </div>
                 <div class="w-5/6 sm:w-5/12 lg:w-8/12">
-                    <a :href="item.url" dusk="cart-item-name" class="font-bold">@{{ item.name }}</a>
+                    <a :href="item.url | url" dusk="cart-item-name" class="font-bold">@{{ item.name }}</a>
                     <div v-for="(optionValue, option) in item.options">
                         @{{ option }}: @{{ optionValue }}
                     </div>
@@ -79,7 +79,7 @@
                         <div class="w-1/2 text-right font-bold">@{{ cart.total | price }}</div>
                     </div>
 
-                    <x-rapidez::button href="/checkout" dusk="checkout">
+                    <x-rapidez::button href="{{ route('checkout') }}" dusk="checkout">
                         @lang('Checkout')
                     </x-rapidez::button>
                 </div>

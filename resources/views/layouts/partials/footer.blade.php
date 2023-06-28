@@ -5,22 +5,22 @@
         @if(Route::currentRouteName() !== 'checkout')
             <nav class="-mx-5 -my-2 flex flex-wrap justify-center">
                 <div class="px-5 py-2">
-                    <a href="/about-us" class="text-base leading-6 text-gray-600 hover:text-gray-900">
+                    <a href="{{ url('/about-us') }}" class="text-base leading-6 text-gray-600 hover:text-gray-900">
                         @lang('About')
                     </a>
                 </div>
                 <div class="px-5 py-2">
-                    <a href="/customer-service" class="text-base leading-6 text-gray-600 hover:text-gray-900">
+                    <a href="{{ url('/customer-service') }}" class="text-base leading-6 text-gray-600 hover:text-gray-900">
                         @lang('Service')
                     </a>
                 </div>
                 <div class="px-5 py-2">
-                    <a href="/privacy-policy-cookie-restriction-mode" class="text-base leading-6 text-gray-600 hover:text-gray-900">
+                    <a href="{{ url('/privacy-policy-cookie-restriction-mode') }}" class="text-base leading-6 text-gray-600 hover:text-gray-900">
                         @lang('Privacy')
                     </a>
                 </div>
                 <div class="px-5 py-2">
-                    <a href="/enable-cookies" class="text-base leading-6 text-gray-600 hover:text-gray-900">
+                    <a href="{{ url('/enable-cookies') }}" class="text-base leading-6 text-gray-600 hover:text-gray-900">
                         @lang('Cookies')
                     </a>
                 </div>

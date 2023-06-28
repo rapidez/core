@@ -12,6 +12,25 @@ if (! function_exists('price')) {
     }
 }
 
+if (! function_exists('to')) {
+    /**
+     * Generate a relative safe url for the application.
+     *
+     * @param  string|null  $path
+     * @param  mixed  $parameters
+     * @param  bool|null  $secure
+     * @return \Illuminate\Contracts\Routing\UrlGenerator|string
+     */
+    function to($path = null, $parameters = [], $secure = null)
+    {
+        if (!str_starts_with($path ?? '/', '/')) {
+            return $path;
+        }
+
+        return url(...func_get_args());
+    }
+}
+
 if (! function_exists('vite_filename_with_chunkhash')) {
     function vite_filename_with_chunkhash($file)
     {
