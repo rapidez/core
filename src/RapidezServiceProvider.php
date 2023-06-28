@@ -172,10 +172,9 @@ class RapidezServiceProvider extends ServiceProvider
          * Check if the componentAttributeBag contains any of the keys.
          * Usage: $attributes->hasAny(['href', ':href', "v-bind:href"])
          */
-        ComponentAttributeBag::macro('hasAny', function ($key)
-        {
+        ComponentAttributeBag::macro('hasAny', function ($key) {
             /** @var ComponentAttributeBag $this */
-            if (!isset($this->attributes)) {
+            if (! isset($this->attributes)) {
                 return false;
             }
 
