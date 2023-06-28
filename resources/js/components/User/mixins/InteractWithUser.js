@@ -66,7 +66,7 @@ export default {
             Turbo.cache.clear()
 
             if (data?.redirect) {
-                window.location.href = data?.redirect
+                window.location.href = window.url(data?.redirect)
             }
         },
 
