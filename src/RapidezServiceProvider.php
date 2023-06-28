@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\View\ComponentAttributeBag;
 use Rapidez\Core\Commands\IndexProductsCommand;
 use Rapidez\Core\Commands\InstallCommand;
 use Rapidez\Core\Commands\InstallTestsCommand;
@@ -29,6 +30,7 @@ class RapidezServiceProvider extends ServiceProvider
             ->bootPublishables()
             ->bootRoutes()
             ->bootViews()
+            ->bootMacros()
             ->bootBladeComponents()
             ->bootMiddleware()
             ->bootTranslations();
@@ -44,7 +46,8 @@ class RapidezServiceProvider extends ServiceProvider
         $this
             ->registerConfigs()
             ->registerBindings()
-            ->registerThemes();
+            ->registerThemes()
+            ->registerBladeDirectives();
     }
 
     protected function bootCommands(): self
@@ -134,6 +137,11 @@ class RapidezServiceProvider extends ServiceProvider
     {
         Blade::component('placeholder', PlaceholderComponent::class);
 
+        return $this;
+    }
+
+    protected function registerBladeDirectives(): self
+    {
         Blade::directive('content', function ($expression) {
             return "<?php echo Rapidez::content({$expression}) ?>";
         });
@@ -152,6 +160,34 @@ class RapidezServiceProvider extends ServiceProvider
             $configModel = config('rapidez.models.config');
 
             return "<?php echo {$configModel}::getCachedByPath({$expression}) ?>";
+        });
+
+        return $this;
+    }
+
+    protected function bootMacros(): self
+    {
+        /**
+         * @see https://github.com/laravel/framework/pull/47569
+         * Check if the componentAttributeBag contains any of the keys.
+         * Usage: $attributes->hasAny(['href', ':href', "v-bind:href"])
+         */
+        ComponentAttributeBag::macro('hasAny', function ($key)
+        {
+            /** @var ComponentAttributeBag $this */
+            if (!isset($this->attributes)) {
+                return false;
+            }
+
+            $keys = is_array($key) ? $key : func_get_args();
+
+            foreach ($keys as $value) {
+                if ($this->has($value)) {
+                    return true;
+                }
+            }
+
+            return false;
         });
 
         return $this;
