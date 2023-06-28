@@ -29,7 +29,6 @@ class RapidezServiceProvider extends ServiceProvider
             ->bootCommands()
             ->bootPublishables()
             ->bootRoutes()
-            ->bootThemes()
             ->bootViews()
             ->bootMacros()
             ->bootBladeComponents()
@@ -47,6 +46,7 @@ class RapidezServiceProvider extends ServiceProvider
         $this
             ->registerConfigs()
             ->registerBindings()
+            ->registerThemes()
             ->registerBladeDirectives();
     }
 
@@ -95,7 +95,7 @@ class RapidezServiceProvider extends ServiceProvider
         return $this;
     }
 
-    protected function bootThemes(): self
+    protected function registerThemes(): self
     {
         $path = config('rapidez.themes.' . request()->server('MAGE_RUN_CODE', request()->has('_store') && ! app()->isProduction() ? request()->get('_store') : 'default'), false);
 
