@@ -45,7 +45,8 @@ class RapidezServiceProvider extends ServiceProvider
         $this
             ->registerConfigs()
             ->registerBindings()
-            ->registerThemes();
+            ->registerThemes()
+            ->registerBladeDirectives();
     }
 
     protected function bootCommands(): self
@@ -135,6 +136,11 @@ class RapidezServiceProvider extends ServiceProvider
     {
         Blade::component('placeholder', PlaceholderComponent::class);
 
+        return $this;
+    }
+
+    protected function registerBladeDirectives(): self
+    {
         Blade::directive('content', function ($expression) {
             return "<?php echo Rapidez::content({$expression}) ?>";
         });
