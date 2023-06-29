@@ -1,6 +1,7 @@
 import { useSessionStorage, StorageSerializers } from '@vueuse/core'
 import { computed, watch } from 'vue'
 import { mask, clear as clearMask } from './useMask'
+import { token } from './useUser'
 
 const cartStorage = useSessionStorage('cart', {}, { serializer: StorageSerializers.object })
 let hasRefreshed = false
@@ -8,7 +9,7 @@ let isRefreshing = false
 
 export const refresh = async function () {
     hasRefreshed = true
-    if (!mask.value && !localStorage.token) {
+    if (!mask.value && !token.value) {
         cartStorage.value = {}
         return false
     }
@@ -20,10 +21,10 @@ export const refresh = async function () {
 
     try {
         isRefreshing = true
-        let response = await axios.get('/api/cart/' + (localStorage.token ? localStorage.token : mask.value)).finally(() => {
+        let response = await axios.get('/api/cart/' + (token.value ? token.value : mask.value)).finally(() => {
             isRefreshing = false
         })
-        cartStorage.value = response.data
+        cartStorage.value = !mask.value && !token.value ? {} : response.data
         window.app.$emit('cart-refreshed')
     } catch (error) {
         if (error.response.status == 404) {
@@ -40,7 +41,7 @@ export const refresh = async function () {
 
 export const clear = async function () {
     await clearMask()
-    cartStorage.value = {}
+    await refresh()
 }
 
 export const cart = computed({

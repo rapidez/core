@@ -1,5 +1,11 @@
-import { useLocalStorage } from '@vueuse/core'
+import { useLocalStorage, useMemoize } from '@vueuse/core'
 import { user, token, refresh as refreshUser, clear as clearUser } from '../../../stores/useUser'
+
+const onOnce = useMemoize((eventName, callback) => {
+    window.app.$on(eventName, callback)
+}, {
+    getKey: (eventName, callback) => eventName + callback.toString()
+})
 
 export default {
     methods: {
@@ -44,13 +50,13 @@ export default {
             this.$root.$emit('logout', { redirect: redirect })
         },
 
-        onLogout(data = {}) {
-            clearUser()
+        async onLogout(data = {}) {
+            await clearUser()
             useLocalStorage('email', '').value = ''
             Turbo.cache.clear()
 
             if (data?.redirect) {
-                window.location.href = data?.redirect
+                this.$nextTick(() => window.location.href = data?.redirect)
             }
         },
 
@@ -102,7 +108,7 @@ export default {
     },
 
     created() {
-        this.$root.$on('logout', this.onLogout)
+        onOnce('logout', this.onLogout);
     },
 
     asyncComputed: {
