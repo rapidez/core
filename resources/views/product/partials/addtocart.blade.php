@@ -1,10 +1,10 @@
 <add-to-cart :default-qty="{{ $product->min_sale_qty > $product->qty_increments ? $product->min_sale_qty : $product->qty_increments }}">
     <form slot-scope="{ self: addToCartSlotProps, options, customOptions, error, add, disabledOptions, simpleProduct, adding, added, price, specialPrice, setCustomOptionFile }" v-on:submit.prevent="add">
         <div class="flex items-center space-x-3 font-bold mb-3">
-            <div class="text-3xl" v-text="(specialPrice || price) | price">
+            <div class="text-3xl" v-text="$options.filters.price(specialPrice || price)">
                 {{ price($product->special_price ?: $product->price) }}
             </div>
-            <div class="line-through" v-if="specialPrice" v-text="price | price">
+            <div class="line-through" v-if="specialPrice" v-text="$options.filters.price(price)">
                 {{ $product->special_price ? price($product->price) : '' }}
             </div>
         </div>
