@@ -24,7 +24,7 @@ export default {
         clearAdresses() {
             Object.keys(localStorage).forEach((key) => {
                 if (!key.startsWith('shipping_') && !key.startsWith('billing_')) {
-                    return;
+                    return
                 }
                 localStorage.removeItem(key)
             })
@@ -51,9 +51,7 @@ export default {
         async getMask() {
             if (!localStorage.mask) {
                 try {
-                    var response = window.app.user
-                        ? await magentoUser.post('carts/mine')
-                        : await magento.post('guest-carts')
+                    var response = window.app.user ? await magentoUser.post('carts/mine') : await magento.post('guest-carts')
                 } catch (error) {
                     Notify(window.config.translations.errors.wrong, 'error')
                 }
@@ -65,12 +63,14 @@ export default {
         },
 
         async linkUserToCart() {
-            await magentoUser.put('guest-carts/'+localStorage.mask, {
-                customerId: window.app.user.id,
-                storeId: config.store
-            }).catch((error) => {
-                Notify(error.response.data.message, 'warning')
-            })
+            await magentoUser
+                .put('guest-carts/' + localStorage.mask, {
+                    customerId: window.app.user.id,
+                    storeId: config.store,
+                })
+                .catch((error) => {
+                    Notify(error.response.data.message, 'warning')
+                })
         },
 
         expiredCartCheck(error) {
@@ -80,11 +80,11 @@ export default {
                 Notify(window.config.translations.errors.cart_expired, 'error')
                 return true
             }
-        }
+        },
     },
 
     created() {
-        this.$root.$on('logout', () => this.clearCart());
+        this.$root.$on('logout', () => this.clearCart())
     },
 
     computed: {
@@ -102,6 +102,6 @@ export default {
 
         hasOnlyVirtualItems: function () {
             return this.hasVirtualItems === this.hasItems
-        }
+        },
     },
 }

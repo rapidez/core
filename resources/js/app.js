@@ -1,14 +1,14 @@
 window.debug = import.meta.env.VITE_DEBUG == 'true'
-window.Notify = (message, type, params = [], link = null) => window.app.$emit('notification-message', message, type, params, link);
+window.Notify = (message, type, params = [], link = null) => window.app.$emit('notification-message', message, type, params, link)
 if (!window.process) {
     // Workaround for process missing, if data is actually needed from here you should apply the following polyfill.
     // https://stackoverflow.com/questions/72221740/how-do-i-polyfill-the-process-node-module-in-the-vite-dev-server
-    window.process = {};
+    window.process = {}
 }
 
 import './lodash'
 import './vue'
-import { computed } from 'vue';
+import { computed } from 'vue'
 import './axios'
 import './filters'
 import './mixins'
@@ -72,7 +72,7 @@ function init() {
             custom: {},
             config: window.config,
             loadingCount: 0,
-            loading: computed(() => window.app?.$data?.loadingCount > 0),
+            loading: false,
             guestEmail: localStorage.email ?? null,
             user: null,
             cart: null,
@@ -80,26 +80,26 @@ function init() {
             checkout: {
                 step: 1,
                 shipping_address: {
-                    'customer_address_id': null,
-                    'firstname': localStorage.shipping_firstname ?? (window.debug ? 'Bruce' : ''),
-                    'lastname': localStorage.shipping_lastname ?? (window.debug ? 'Wayne' : ''),
-                    'postcode': localStorage.shipping_postcode ?? (window.debug ? '72000' : ''),
-                    'street': localStorage.shipping_street?.split(',') ?? (window.debug ? ['Mountain Drive', 1007, ''] : ['', '', '']),
-                    'city': localStorage.shipping_city ?? (window.debug ? 'Gotham' : ''),
-                    'telephone': localStorage.shipping_telephone ?? (window.debug ? '530-7972' : ''),
-                    'country_id': localStorage.shipping_country_id ?? (window.debug ? 'NL' : window.config.default_country),
-                    'custom_attributes': [],
+                    customer_address_id: null,
+                    firstname: localStorage.shipping_firstname ?? (window.debug ? 'Bruce' : ''),
+                    lastname: localStorage.shipping_lastname ?? (window.debug ? 'Wayne' : ''),
+                    postcode: localStorage.shipping_postcode ?? (window.debug ? '72000' : ''),
+                    street: localStorage.shipping_street?.split(',') ?? (window.debug ? ['Mountain Drive', 1007, ''] : ['', '', '']),
+                    city: localStorage.shipping_city ?? (window.debug ? 'Gotham' : ''),
+                    telephone: localStorage.shipping_telephone ?? (window.debug ? '530-7972' : ''),
+                    country_id: localStorage.shipping_country_id ?? (window.debug ? 'NL' : window.config.default_country),
+                    custom_attributes: [],
                 },
                 billing_address: {
-                    'customer_address_id': null,
-                    'firstname': localStorage.billing_firstname ?? (window.debug ? 'Bruce' : ''),
-                    'lastname': localStorage.billing_lastname ?? (window.debug ? 'Wayne' : ''),
-                    'postcode': localStorage.billing_postcode ?? (window.debug ? '72000' : ''),
-                    'street': localStorage.billing_street?.split(',') ?? (window.debug ? ['Mountain Drive', 1007, ''] : ['', '', '']),
-                    'city': localStorage.billing_city ?? (window.debug ? 'Gotham' : ''),
-                    'telephone': localStorage.billing_telephone ?? (window.debug ? '530-7972' : ''),
-                    'country_id': localStorage.billing_country_id ?? (window.debug ? 'NL' : window.config.default_country),
-                    'custom_attributes': [],
+                    customer_address_id: null,
+                    firstname: localStorage.billing_firstname ?? (window.debug ? 'Bruce' : ''),
+                    lastname: localStorage.billing_lastname ?? (window.debug ? 'Wayne' : ''),
+                    postcode: localStorage.billing_postcode ?? (window.debug ? '72000' : ''),
+                    street: localStorage.billing_street?.split(',') ?? (window.debug ? ['Mountain Drive', 1007, ''] : ['', '', '']),
+                    city: localStorage.billing_city ?? (window.debug ? 'Gotham' : ''),
+                    telephone: localStorage.billing_telephone ?? (window.debug ? '530-7972' : ''),
+                    country_id: localStorage.billing_country_id ?? (window.debug ? 'NL' : window.config.default_country),
+                    custom_attributes: [],
                 },
                 hide_billing: localStorage.hide_billing === 'false' ? false : true,
 
@@ -128,15 +128,16 @@ function init() {
             },
             setSearchParams(url) {
                 window.history.pushState(window.history.state, '', new URL(url))
-            }
+            },
         },
         asyncComputed: {
-            swatches () {
+            swatches() {
                 if (localStorage.swatches) {
-                    return JSON.parse(localStorage.swatches);
+                    return JSON.parse(localStorage.swatches)
                 }
 
-                return axios.get('/api/swatches')
+                return axios
+                    .get('/api/swatches')
                     .then((response) => {
                         localStorage.swatches = JSON.stringify(response.data)
                         return response.data
@@ -144,12 +145,17 @@ function init() {
                     .catch((error) => {
                         Notify(window.config.errors.wrong, 'error')
                     })
-            }
-        }
+            },
+        },
+        watch: {
+            loadingCount: function (count) {
+                window.app.$data.loading = count > 0
+            },
+        },
     })
 
-    if(window.debug) {
-        window.app.$on('notification-message', console.debug);
+    if (window.debug) {
+        window.app.$on('notification-message', console.debug)
     }
 }
 

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\View\ComponentAttributeBag;
 use Rapidez\Core\Commands\IndexProductsCommand;
 use Rapidez\Core\Commands\InstallCommand;
 use Rapidez\Core\Commands\InstallTestsCommand;
@@ -28,8 +29,8 @@ class RapidezServiceProvider extends ServiceProvider
             ->bootCommands()
             ->bootPublishables()
             ->bootRoutes()
-            ->bootThemes()
             ->bootViews()
+            ->bootMacros()
             ->bootBladeComponents()
             ->bootMiddleware()
             ->bootTranslations();
@@ -37,14 +38,16 @@ class RapidezServiceProvider extends ServiceProvider
 
     public function bootTranslations()
     {
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'rapidez');
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'rapidez');
     }
 
     public function register()
     {
         $this
             ->registerConfigs()
-            ->registerBindings();
+            ->registerBindings()
+            ->registerThemes()
+            ->registerBladeDirectives();
     }
 
     protected function bootCommands(): self
@@ -63,15 +66,15 @@ class RapidezServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/rapidez.php' => config_path('rapidez.php'),
+                __DIR__ . '/../config/rapidez.php' => config_path('rapidez.php'),
             ], 'config');
 
             $this->publishes([
-                __DIR__.'/../resources/views' => resource_path('views/vendor/rapidez'),
+                __DIR__ . '/../resources/views' => resource_path('views/vendor/rapidez'),
             ], 'views');
 
             $this->publishes([
-                __DIR__.'/../resources/lang' => resource_path('lang/vendor/rapidez'),
+                __DIR__ . '/../resources/lang' => resource_path('lang/vendor/rapidez'),
             ], 'translations');
         }
 
@@ -81,8 +84,8 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootRoutes(): self
     {
         if (config('rapidez.routes')) {
-            $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
-            $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
+            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+            $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
         }
 
         RapidezFacade::addFallbackRoute(UrlRewriteController::class, 5);
@@ -92,11 +95,11 @@ class RapidezServiceProvider extends ServiceProvider
         return $this;
     }
 
-    protected function bootThemes(): self
+    protected function registerThemes(): self
     {
-        $path = config('rapidez.themes.'.request()->server('MAGE_RUN_CODE', request()->has('_store') && !app()->isProduction() ? request()->get('_store') : 'default'), false);
+        $path = config('rapidez.themes.' . request()->server('MAGE_RUN_CODE', request()->has('_store') && ! app()->isProduction() ? request()->get('_store') : 'default'), false);
 
-        if (!$path) {
+        if (! $path) {
             return $this;
         }
 
@@ -112,7 +115,7 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function bootViews(): self
     {
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'rapidez');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'rapidez');
 
         View::composer('rapidez::layouts.app', ConfigComposer::class);
 
@@ -134,24 +137,56 @@ class RapidezServiceProvider extends ServiceProvider
     {
         Blade::component('placeholder', PlaceholderComponent::class);
 
+        return $this;
+    }
+
+    protected function registerBladeDirectives(): self
+    {
         Blade::directive('content', function ($expression) {
-            return "<?php echo Rapidez::content($expression) ?>";
+            return "<?php echo Rapidez::content({$expression}) ?>";
         });
 
         Blade::directive('widget', function ($expression) {
-            return "<?php echo app('widget-directive')->render($expression) ?>";
+            return "<?php echo app('widget-directive')->render({$expression}) ?>";
         });
 
         Blade::directive('block', function ($expression) {
             $blockModel = config('rapidez.models.block');
 
-            return "<?php echo Rapidez::content($blockModel::getCachedByIdentifier($expression)) ?>";
+            return "<?php echo Rapidez::content({$blockModel}::getCachedByIdentifier({$expression})) ?>";
         });
 
         Blade::directive('config', function ($expression) {
             $configModel = config('rapidez.models.config');
 
-            return "<?php echo $configModel::getCachedByPath($expression) ?>";
+            return "<?php echo {$configModel}::getCachedByPath({$expression}) ?>";
+        });
+
+        return $this;
+    }
+
+    protected function bootMacros(): self
+    {
+        /**
+         * @see https://github.com/laravel/framework/pull/47569
+         * Check if the componentAttributeBag contains any of the keys.
+         * Usage: $attributes->hasAny(['href', ':href', "v-bind:href"])
+         */
+        ComponentAttributeBag::macro('hasAny', function ($key) {
+            /** @var ComponentAttributeBag $this */
+            if (! isset($this->attributes)) {
+                return false;
+            }
+
+            $keys = is_array($key) ? $key : func_get_args();
+
+            foreach ($keys as $value) {
+                if ($this->has($value)) {
+                    return true;
+                }
+            }
+
+            return false;
         });
 
         return $this;
@@ -166,7 +201,7 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function registerConfigs(): self
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/rapidez.php', 'rapidez');
+        $this->mergeConfigFrom(__DIR__ . '/../config/rapidez.php', 'rapidez');
 
         return $this;
     }

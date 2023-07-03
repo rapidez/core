@@ -17,6 +17,6 @@ class IsActiveScope implements Scope
 
     public function apply(Builder $builder, Model $model)
     {
-        $builder->where($builder->getQuery()->from.'.'.$this->column, 1);
+        $builder->where($builder->getQuery()->from . '.' . $this->column, 1);
     }
 }

@@ -23,6 +23,7 @@
         "illuminate/events": "^9.0",
         "illuminate/queue": "^9.0",
         "illuminate/support": "^9.23",
+        "rapidez/blade-directives": "^0.0.1",
         "tormjens/eventy": "^0.8"
     },
     "require-dev": {
@@ -67,6 +68,8 @@
             "yarn run prod",
             "cp -r public/. vendor/orchestra/testbench-dusk/laravel/public/"
         ],
-        "dusk:test": ["./vendor/bin/phpunit -c phpunit.dusk.xml --colors=always"]
+        "dusk:test": [
+            "./vendor/bin/phpunit -c phpunit.dusk.xml --colors=always"
+        ]
     }
 }
