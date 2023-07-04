@@ -51,7 +51,7 @@ export default {
         }
 
         axios
-            .get('/api/attributes')
+            .get(window.url('/api/attributes'))
             .then((response) => {
                 this.attributes = response.data
                 localStorage.attributes = JSON.stringify(this.attributes)

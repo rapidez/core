@@ -88,7 +88,7 @@ export default {
 
                 if (this.check) {
                     if (!eval('response.data.' + this.check)) {
-                        Turbo.visit(this.redirect)
+                        Turbo.visit(window.url(this.redirect))
                         return
                     }
                 }
