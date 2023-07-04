@@ -46,7 +46,6 @@ class CheckoutTest extends DuskTestCase
     public function addProductToCart($browser)
     {
         $browser->visit($this->testProduct->url);
-        $browser->script("localStorage['cookie-notice'] = true;");
         $browser->waitUntilIdle()
             ->click('@add-to-cart')
             ->waitUntilIdle();
