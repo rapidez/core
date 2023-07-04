@@ -2,7 +2,7 @@
 
 <li class="flex items-center" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
     @if(!$active)
-        <a {{ $attributes->merge(['class' => 'text-sm text-primary hover:underline', 'href' => $url, 'itemprop' => 'item']) }}>
+        <a {{ $attributes->merge(['class' => 'text-sm text-neutral hover:underline', 'href' => $url, 'itemprop' => 'item']) }}>
             <span itemprop="name">{{ $slot }}</span>
             <meta itemprop="position" content="{{ $position }}" />
         </a>

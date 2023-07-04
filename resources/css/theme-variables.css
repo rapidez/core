@@ -1,8 +1,10 @@
 :root {
-    --primary: 51 65 85;
-    --secondary: 100 116 139;
-    --accent: 47 188 133;
-    --enhanced: 249 115 22;
+    --primary: 47 188 133;
+    --primary-text: 255 255 255;
+    --secondary: 249 115 22;
+    --secondary-text: 255 255 255;
+    --neutral: 51 65 85;
+    --inactive: 100 116 139;
     --highlight: 241 245 249;
     --border: 241 245 249;
 }

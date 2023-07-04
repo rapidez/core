@@ -3,7 +3,7 @@
 <div class="{{ $wrapperClass ?? '' }}">
     @if(!isset($label) || (isset($label) && $label))
         <x-rapidez::label
-        class="{{ $labelClass ?? '' }} mb-2 block text-secondary"
+        class="{{ $labelClass ?? '' }} mb-2 block text-inactive"
         for="{{ $name }}">
             @lang($label ?? ucfirst($name))
         </x-rapidez::label>
@@ -13,6 +13,6 @@
         'name' => $name,
         'placeholder' => __($placeholder ?? ucfirst($name)),
         'dusk' => $attributes->get('v-bind:dusk') ? null : $name,
-        'class' => 'w-full py-2 px-3 border-border rounded !ring-0 focus:!border-secondary sm:text-sm text-primary',
+        'class' => 'w-full py-2 px-3 border-border rounded !ring-0 focus:!border-inactive sm:text-sm text-neutral',
     ]) }}></textarea>
 </div>

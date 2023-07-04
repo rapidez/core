@@ -1,6 +1,6 @@
 <template {!! isset($slider) ? '' : 'slot="renderItem" slot-scope="{ item, count }"' !!}>
     <div class="flex-none w-1/2 lg:w-1/3 my-0.5 px-0.5 sm:px-2 sm:my-2 snap-start">
-        <div class="w-full bg-white border rounded hover:border-primary group relative h-full flex flex-col" :key="item.id">
+        <div class="w-full bg-white border rounded group relative h-full flex flex-col" :key="item.id">
             @if (App::providerIsLoaded('Rapidez\Wishlist\WishlistServiceProvider'))
                 <div class="absolute top-0 right-0 z-10 group p-2">
                     @include('rapidez::wishlist.button')

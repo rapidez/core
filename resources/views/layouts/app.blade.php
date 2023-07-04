@@ -15,7 +15,7 @@
 
     @stack('head')
 </head>
-<body class="text-primary antialiased">
+<body class="text-neutral antialiased">
     <div id="app" class="flex flex-col min-h-screen">
         @includeWhen(!request()->is('checkout'), 'rapidez::layouts.partials.header')
         @includeWhen(request()->is('checkout'), 'rapidez::layouts.checkout.header')
