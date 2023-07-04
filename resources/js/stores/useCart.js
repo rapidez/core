@@ -20,7 +20,7 @@ export const refresh = async function () {
 
     try {
         isRefreshing = true
-        let response = await axios.get('/api/cart/' + (localStorage.token ? localStorage.token : mask.value)).finally(() => {
+        let response = await axios.get(window.url('/api/cart/' + (localStorage.token ? localStorage.token : mask.value))).finally(() => {
             isRefreshing = false
         })
         cartStorage.value = response.data
