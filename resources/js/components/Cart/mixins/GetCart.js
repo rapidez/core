@@ -59,10 +59,6 @@ export default {
         },
     },
 
-    created() {
-        this.$root.$on('logout', () => this.clearCart())
-    },
-
     computed: {
         cart: function () {
             return this.getCart()

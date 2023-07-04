@@ -23,7 +23,7 @@ export const refresh = async function () {
         let response = await magentoUser.get('customers/me').finally(() => {
             isRefreshing = false
         })
-        userStorage.value = response.data
+        userStorage.value = !token.value ? {} : response.data
     } catch (error) {
         if (error.response.status == 401) {
             token.value = ''

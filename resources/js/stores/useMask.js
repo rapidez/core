@@ -23,7 +23,7 @@ export const refresh = async function () {
 }
 
 export const clear = async function () {
-    mask.value = {}
+    mask.value = ''
 }
 
 export default () => mask
