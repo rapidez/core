@@ -80,7 +80,7 @@ export default {
 
                 if (response.data.errors) {
                     if (response.data.errors[0].extensions.category == 'graphql-authorization') {
-                        this.logout('/login')
+                        this.logout(window.url('/login'))
                     } else {
                         Notify(response.data.errors[0].message, 'error')
                     }

@@ -11,7 +11,7 @@ export const refresh = async function () {
 
     try {
         isRefreshing = true
-        var response = await axios.get('/api/attributes').finally(() => {
+        var response = await axios.get(window.url('/api/attributes')).finally(() => {
             isRefreshing = false
         })
     } catch (error) {

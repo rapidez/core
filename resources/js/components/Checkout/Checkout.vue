@@ -57,7 +57,7 @@ export default {
                 return true
             } catch (error) {
                 if ([401, 404].includes(error.response.status)) {
-                    this.logout('/login')
+                    this.logout(window.url('/login'))
                 } else {
                     Notify(error.response.data.message, 'error', error.response.data?.parameters)
                 }
@@ -80,7 +80,7 @@ export default {
                 return true
             } catch (error) {
                 if ([401, 404].includes(error.response.status)) {
-                    this.logout('/login')
+                    this.logout(window.url('/login'))
                 } else {
                     Notify(error.response.data.message, 'error', error.response.data?.parameters)
                 }

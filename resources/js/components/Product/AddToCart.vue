@@ -96,7 +96,7 @@ export default {
                 .catch((error) => {
                     if (error.response.status == 401) {
                         Notify(window.config.translations.errors.session_expired, 'error', error.response.data?.parameters)
-                        this.logout('/login')
+                        this.logout(window.url('/login'))
                     }
 
                     if (this.expiredCartCheck(error)) {
