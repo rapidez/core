@@ -170,7 +170,7 @@ export default {
                         )
                     }
                     this.mutating = false
-                    Turbo.visit(this.redirect)
+                    Turbo.visit(window.url(this.redirect))
                 }
             } catch (e) {
                 this.mutating = false

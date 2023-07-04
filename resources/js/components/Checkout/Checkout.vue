@@ -27,7 +27,7 @@ export default {
 
     created() {
         if (!this.hasItems) {
-            window.location.replace('/')
+            window.location.replace(window.url('/'))
             return
         }
 
@@ -114,7 +114,7 @@ export default {
 
         goToStep(step) {
             if (step === 0) {
-                Turbo.visit('/cart')
+                Turbo.visit(window.url('/cart'))
                 return
             }
 
