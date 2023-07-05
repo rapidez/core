@@ -22,7 +22,7 @@ instances.forEach(function (instance) {
         },
         function (error) {
             return Promise.reject(error)
-        }
+        },
     )
 
     instance.interceptors.response.use(
@@ -33,6 +33,6 @@ instances.forEach(function (instance) {
         function (error) {
             window.app.$data.loadingCount--
             return Promise.reject(error)
-        }
+        },
     )
 })

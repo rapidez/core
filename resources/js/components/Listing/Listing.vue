@@ -68,7 +68,7 @@ export default {
                 window.filter(this.attributes, function (attribute) {
                     return attribute.filter
                 }),
-                'position'
+                'position',
             )
         },
         sortings: function () {
@@ -106,9 +106,9 @@ export default {
                                     dataField: sorting.code + (sorting.code != 'price' ? '.keyword' : ''),
                                     sortBy: directionKey,
                                 }
-                            }
+                            },
                         )
-                    })
+                    }),
                 )
                 .concat(this.additionalSorting)
         },

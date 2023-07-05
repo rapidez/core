@@ -5,7 +5,7 @@ $tag = $attributes->has('href') || $attributes->has(':href') ? 'a' : 'button';
 $baseClasses[] = 'inline-block font-semibold py-2 px-4 border rounded disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-75';
 $variants = [
     'primary' => 'bg-primary border-primary text-white',
-    'outline' => 'bg-transparent hover:bg-primary text-primary hover:text-white border-primary hover:border-transparent',
+    'outline' => 'bg-transparent hover:bg-primary text-primary hover:text-primary border-primary hover:border-transparent',
     'slider' => ['flex items-center justify-center rounded-full w-12 h-12 bg-white border hover:bg-primary hover:text-white'],
 ];
 @endphp

@@ -1,5 +1,9 @@
 @includeWhen(Route::currentRouteName() !== 'checkout', 'rapidez::layouts.partials.footer.newsletter')
 <x-rapidez::notifications />
+<x-rapidez::cookie-notice>
+    @lang('This website uses cookies')
+    <x-slot:button>@lang('Accept cookies')</x-slot:button>
+</x-rapidez::cookie-notice>
 <footer class="border-t mt-12">
     <div class="max-w-screen-xl mx-auto py-12 px-4 overflow-hidden space-y-8 sm:px-6 lg:px-8">
         @if(Route::currentRouteName() !== 'checkout')
