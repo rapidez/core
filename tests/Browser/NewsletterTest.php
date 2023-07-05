@@ -17,8 +17,8 @@ class NewsletterTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $email = $this->faker->email;
-            $browser->visit('/');
-            $browser->scrollIntoView('@newsletter')
+            $browser->visit('/')
+                    ->scrollIntoView('@newsletter')
                     ->waitUntilIdle()
                     ->type('@newsletter-email', $email)
                     ->click('@newsletter-submit')

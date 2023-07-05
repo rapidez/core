@@ -13,8 +13,8 @@ class CartTest extends DuskTestCase
     public function addSimpleProduct()
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit($this->testProduct->url);
-            $browser->waitUntilIdle()
+            $browser->visit($this->testProduct->url)
+                    ->waitUntilIdle()
                     ->click('@add-to-cart')
                     ->waitForText('Added', 60)
                     ->visit('/cart')
@@ -28,8 +28,8 @@ class CartTest extends DuskTestCase
     public function changeProductQty()
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit('/cart');
-            $browser->waitUntilIdle()
+            $browser->visit('/cart')
+                    ->waitUntilIdle()
                     ->type('@qty-0', 5)
                     ->click('@item-update-0')
                     ->waitUntilIdle()
@@ -43,8 +43,8 @@ class CartTest extends DuskTestCase
     public function removeProduct()
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit('/cart');
-            $browser->waitUntilIdle()
+            $browser->visit('/cart')
+                    ->waitUntilIdle()
                     ->click('@item-delete-0')
                     ->waitUntilIdle()
                     ->assertDontSee('@cart-item-name');

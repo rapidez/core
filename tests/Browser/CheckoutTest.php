@@ -45,10 +45,10 @@ class CheckoutTest extends DuskTestCase
 
     public function addProductToCart($browser)
     {
-        $browser->visit($this->testProduct->url);
-        $browser->waitUntilIdle()
-            ->click('@add-to-cart')
-            ->waitUntilIdle();
+        $browser->visit($this->testProduct->url)
+                ->waitUntilIdle()
+                ->click('@add-to-cart')
+                ->waitUntilIdle();
 
         return $browser;
     }
