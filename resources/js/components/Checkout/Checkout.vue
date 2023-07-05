@@ -187,7 +187,7 @@ export default {
             }
 
             const optionalFields = Object.keys(
-                Object.fromEntries(Object.entries(window.config.customer_fields_show).filter(([key, value]) => !value || value === 'opt'))
+                Object.fromEntries(Object.entries(window.config.customer_fields_show).filter(([key, value]) => !value || value === 'opt')),
             )
             Object.entries(this.checkout.shipping_address).forEach(([key, val]) => {
                 if (!val && !['region_id', 'customer_address_id'].concat(optionalFields).includes(key)) {
@@ -284,7 +284,7 @@ export default {
                     this.backEvent = true
                     this.checkout.step = this.steps.indexOf(window.location.hash.substring(1))
                 },
-                false
+                false,
             )
 
             history.replaceState(null, null, '#' + this.steps[this.checkout.step])
