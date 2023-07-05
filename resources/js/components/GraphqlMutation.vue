@@ -129,7 +129,7 @@ export default {
 
                 if (response.data.errors) {
                     if (response.data.errors[0]?.extensions?.category == 'graphql-authorization') {
-                        this.logout('/login')
+                        this.logout(window.url('/login'))
                         return
                     }
 
@@ -170,7 +170,7 @@ export default {
                         )
                     }
                     this.mutating = false
-                    Turbo.visit(this.redirect)
+                    Turbo.visit(window.url(this.redirect))
                 }
             } catch (e) {
                 this.mutating = false

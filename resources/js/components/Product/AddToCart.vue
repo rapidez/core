@@ -56,7 +56,7 @@ export default {
                 window.location.pathname !== this.product.url &&
                 !config.show_swatches
             ) {
-                Turbo.visit(this.product.url)
+                Turbo.visit(window.url(this.product.url))
                 return
             }
 
@@ -87,16 +87,16 @@ export default {
                         qty: this.qty,
                     })
                     if (this.notifySuccess) {
-                        Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success', [], '/cart')
+                        Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success', [], window.url('/cart'))
                     }
                     if (config.redirect_cart) {
-                        Turbo.visit('/cart')
+                        Turbo.visit(window.url('/cart'))
                     }
                 })
                 .catch((error) => {
                     if (error.response.status == 401) {
                         Notify(window.config.translations.errors.session_expired, 'error', error.response.data?.parameters)
-                        this.logout('/login')
+                        this.logout(window.url('/login'))
                     }
 
                     if (this.expiredCartCheck(error)) {

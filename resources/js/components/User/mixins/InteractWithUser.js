@@ -20,7 +20,7 @@ export default {
             const success = await refreshUser()
 
             if (!success && redirect) {
-                Turbo.visit('/login')
+                Turbo.visit(window.url('/login'))
             }
         },
 
@@ -59,7 +59,7 @@ export default {
             Turbo.cache.clear()
 
             if (data?.redirect) {
-                this.$nextTick(() => (window.location.href = data?.redirect))
+                this.$nextTick(() => (window.location.href = window.url(data?.redirect)))
             }
         },
 

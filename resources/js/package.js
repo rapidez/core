@@ -93,7 +93,7 @@ function init() {
         methods: {
             search(value) {
                 if (value.length) {
-                    Turbo.visit('/search?q=' + encodeURIComponent(value))
+                    Turbo.visit(window.url('/search?q=' + encodeURIComponent(value)))
                 }
             },
             setSearchParams(url) {
