@@ -75,7 +75,7 @@ export default {
                             }
                         })
                         .filter((bucket) =>
-                            getCategoryPaths(allCategoryPaths, currentCategory).find((path) => path.key.includes(bucket.id))
+                            getCategoryPaths(allCategoryPaths, currentCategory).find((path) => path.key.includes(bucket.id)),
                         )
 
                     return buildCategoryStructure(lowestCategories).children
@@ -90,7 +90,7 @@ export default {
                     let categoryPaths = allCategoryPaths.filter(
                         (bucket) =>
                             bucket.key.includes(String(currentCategory.entity_id)) &&
-                            bucket.key.at(-1) !== String(currentCategory.entity_id)
+                            bucket.key.at(-1) !== String(currentCategory.entity_id),
                     )
 
                     if (categoryPaths.length > 1) {
@@ -100,7 +100,7 @@ export default {
                     // No child categories, get siblings instead.
                     let parentCategoryId = categoryPaths[0].key.at(-2)
                     return allCategoryPaths.filter(
-                        (bucket) => bucket.key.includes(parentCategoryId) && bucket.key.at(-1) !== parentCategoryId
+                        (bucket) => bucket.key.includes(parentCategoryId) && bucket.key.at(-1) !== parentCategoryId,
                     )
                 }
 
@@ -140,7 +140,7 @@ export default {
             this.results = await getCategoryStructureWorker(
                 this.aggregations.categories.buckets,
                 this.aggregations.category_paths.buckets,
-                this.currentCategory
+                this.currentCategory,
             )
         },
     },

@@ -43,7 +43,7 @@ export const attributes = computedAsync(
         return attributesStorage
     },
     attributesStorage.value,
-    { lazy: true, shallow: false }
+    { lazy: true, shallow: false },
 )
 
 export default () => attributes

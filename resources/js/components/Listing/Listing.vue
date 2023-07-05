@@ -80,7 +80,7 @@ export default {
                                 sortBy: directionKey,
                             }
                         })
-                    })
+                    }),
                 )
                 .concat(this.additionalSorting)
         },

@@ -7,7 +7,7 @@ const onOnce = useMemoize(
     },
     {
         getKey: (eventName, callback) => eventName + callback.toString(),
-    }
+    },
 )
 
 export default {
@@ -104,8 +104,8 @@ export default {
                     {
                         customer_address_id: address.id,
                     },
-                    address
-                )
+                    address,
+                ),
             )
         },
     },

@@ -124,7 +124,7 @@ export default {
                         query: query,
                         variables: variables,
                     },
-                    options
+                    options,
                 )
 
                 if (response.data.errors) {
@@ -166,7 +166,7 @@ export default {
                             () => {
                                 Notify(this.notify.message, this.notify.type ?? 'success')
                             },
-                            { once: true }
+                            { once: true },
                         )
                     }
                     this.mutating = false

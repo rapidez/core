@@ -172,7 +172,7 @@ export default {
                 Notify(
                     error?.response?.data?.message ?? window.config.translations.errors.wrong,
                     'error',
-                    error?.response?.data?.parameters
+                    error?.response?.data?.parameters,
                 )
                 return false
             }
@@ -195,7 +195,7 @@ export default {
             }
 
             const optionalFields = Object.keys(
-                Object.fromEntries(Object.entries(window.config.customer_fields_show).filter(([key, value]) => !value || value === 'opt'))
+                Object.fromEntries(Object.entries(window.config.customer_fields_show).filter(([key, value]) => !value || value === 'opt')),
             )
             Object.entries(this.checkout.shipping_address).forEach(([key, val]) => {
                 if (!val && !['region_id', 'customer_address_id'].concat(optionalFields).includes(key)) {

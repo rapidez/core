@@ -43,7 +43,7 @@ export const swatches = computedAsync(
         return swatchesStorage
     },
     swatchesStorage.value,
-    { lazy: true, shallow: false }
+    { lazy: true, shallow: false },
 )
 
 export default () => swatches

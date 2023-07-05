@@ -75,7 +75,7 @@ export default {
                         query: this.query,
                         variables: this.variables,
                     },
-                    options
+                    options,
                 )
 
                 if (response.data.errors) {
