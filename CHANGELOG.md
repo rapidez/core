@@ -1,6 +1,14 @@
 # Changelog
 
-[Unreleased changes](https://github.com/rapidez/core/compare/0.90.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/0.90.1...master)
+
+## [0.90.1](https://github.com/rapidez/core/releases/tag/0.90.1) - 2023-06-29
+
+### Fixed
+
+-   Watch loadingCount instead of a computed prop to set loading (#288)
+-   Use Blade directives from rapidez/blade-directives + hasAny macro (#285)
+-   Order the quote so it is getting the latest (a3cd531)
 
 ## [0.90.0](https://github.com/rapidez/core/releases/tag/0.90.0) - 2023-06-27
 

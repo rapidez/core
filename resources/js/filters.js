@@ -12,3 +12,14 @@ Vue.filter('price', function (value) {
         currency: config.currency,
     }).format(value)
 })
+
+window.url = function (path = '') {
+    // Transform urls starting with / into url with domain
+    if (!path.startsWith('/')) {
+        return path
+    }
+
+    return (window.config.base_url || window.origin) + path
+}
+
+Vue.filter('url', window.url)

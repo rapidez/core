@@ -95,7 +95,7 @@ export default {
             if (this.checkoutLogin) {
                 this.$root.checkout.step = 2
             } else if (this.redirect) {
-                Turbo.visit(this.redirect)
+                Turbo.visit(window.url(this.redirect))
             }
         },
     },

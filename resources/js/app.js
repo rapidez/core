@@ -123,7 +123,7 @@ function init() {
         methods: {
             search(value) {
                 if (value.length) {
-                    Turbo.visit('/search?q=' + encodeURIComponent(value))
+                    Turbo.visit(window.url('/search?q=' + encodeURIComponent(value)))
                 }
             },
             setSearchParams(url) {
@@ -137,7 +137,7 @@ function init() {
                 }
 
                 return axios
-                    .get('/api/swatches')
+                    .get(window.url('/api/swatches'))
                     .then((response) => {
                         localStorage.swatches = JSON.stringify(response.data)
                         return response.data
