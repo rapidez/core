@@ -13,7 +13,7 @@ class DialogTest extends DuskTestCase
     public function test()
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit('/?testingcookienoticetrue')
+            $browser->visit('/?show-cookie-notice')
                     ->assertSee('Accept cookies')
                     ->waitForReload(function (Browser $browser) {
                         $browser->press('Accept cookies');
