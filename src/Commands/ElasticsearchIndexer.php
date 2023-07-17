@@ -4,7 +4,7 @@ namespace Rapidez\Core\Commands;
 
 use Carbon\Carbon;
 use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Rapidez\Core\Jobs\IndexJob;
 
@@ -47,10 +47,12 @@ class ElasticsearchIndexer
             return;
         }
 
-        $arrItem = $item instanceof Model ? $item->toArray() : (array)$item;
-        $currentValues = is_callable($dataFilter)
-            ? $dataFilter($item)
-            : (is_null($dataFilter) ? $arrItem : Arr::only($arrItem, $dataFilter));
+        $arrItem = $item instanceof Arrayable ? $item->toArray() : (array)$item;
+        $currentValues = match (true) {
+            is_callable($dataFilter) => $dataFilter($item),
+            is_null($dataFilter) => $arrItem,
+            default => Arr::only($arrItem, $dataFilter),
+        };
 
         if (is_null($currentValues)) {
             return;
