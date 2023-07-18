@@ -7,19 +7,35 @@ use Rapidez\Core\Tests\DuskTestCase;
 
 class CartTest extends DuskTestCase
 {
-    public function testAddSimpleProduct()
+    /**
+     * @test
+     */
+    public function addSimpleProduct()
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit($this->testProduct->url)
-                    ->waitUntilIdle()
-                    ->click('@add-to-cart')
-                    ->waitForText('Added', 60)
-                    ->visit('/cart')
-                    ->assertSee($this->testProduct->name);
+            $this->addProduct($browser, $this->testProduct->url)
+                ->visit('/cart')
+                ->assertSee($this->testProduct->name);
         });
     }
 
-    public function testChangeProductQty()
+    /**
+     * @test
+     */
+    public function addMultipleSimpleProduct()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->script('localStorage.clear();');
+            $this->addProduct($browser, $this->testProduct->url);
+            $this->addProduct($browser, $this->testProduct->url);
+            $browser->assertSeeIn('@minicart-count', 2);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function changeProductQty()
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/cart')
@@ -31,7 +47,10 @@ class CartTest extends DuskTestCase
         });
     }
 
-    public function testRemoveProduct()
+    /**
+     * @test
+     */
+    public function removeProduct()
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/cart')
@@ -40,5 +59,13 @@ class CartTest extends DuskTestCase
                     ->waitUntilIdle()
                     ->assertDontSee('@cart-item-name');
         });
+    }
+
+    public function addProduct($browser, $url)
+    {
+        return $browser->visit($url)
+            ->waitUntilIdle()
+            ->click('@add-to-cart')
+            ->waitForText('Added', 60);
     }
 }

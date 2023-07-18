@@ -5,5 +5,9 @@
 @tailwind components;
 @tailwind utilities;
 
-[v-cloak] { display: none; }
-* { -webkit-tap-highlight-color: transparant; }
+[v-cloak] {
+    display: none;
+}
+* {
+    -webkit-tap-highlight-color: transparant;
+}

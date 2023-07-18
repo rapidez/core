@@ -3,7 +3,7 @@
 }
 
 .vue-slider-dot-tooltip-inner {
-    @apply bg-primary border-primary !important;
+    @apply border-primary bg-primary !important;
 }
 
 .vue-slider-process {

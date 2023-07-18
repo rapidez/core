@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Rapidez\Core\Http\Controllers\OrderController;
 use Rapidez\Core\Http\Middleware\VerifyAdminToken;
 
 Route::middleware('api')->prefix('api')->group(function () {
@@ -14,10 +15,12 @@ Route::middleware('api')->prefix('api')->group(function () {
     });
 
     Route::get('swatches', function () {
-        $optionswatchModel = config('rapidez.models.optionswatch');
+        $optionswatchModel = config('rapidez.models.option_swatch');
 
         return $optionswatchModel::getCachedSwatchValues();
     });
+
+    Route::get('order/{quoteIdMaskOrCustomerToken}', OrderController::class);
 
     Route::get('cart/{quoteIdMaskOrCustomerToken}', function ($quoteIdMaskOrCustomerToken) {
         $quoteModel = config('rapidez.models.quote');
@@ -25,7 +28,7 @@ Route::middleware('api')->prefix('api')->group(function () {
         return $quoteModel::where(function ($query) use ($quoteIdMaskOrCustomerToken) {
             $query->where('masked_id', $quoteIdMaskOrCustomerToken)
                   ->orWhere('token', $quoteIdMaskOrCustomerToken);
-        })->firstOrFail();
+        })->with('items2.options')->orderByDesc('quote.entity_id')->firstOrFail();
     });
 
     Route::prefix('admin')->middleware(VerifyAdminToken::class)->group(function () {

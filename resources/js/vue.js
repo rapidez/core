@@ -11,14 +11,13 @@ Vue.directive('on-click-away', onClickaway)
  * @param {Ref} storage
  * @returns mixed
  */
-window.wrapValue = function(storage)
-{
+window.wrapValue = function (storage) {
     return {
-        get: function() {
-            return storage.value;
+        get: function () {
+            return storage.value
         },
-        set: function(value) {
-            storage.value = value;
-        }
+        set: function (value) {
+            storage.value = value
+        },
     }
 }

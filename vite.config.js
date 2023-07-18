@@ -7,10 +7,7 @@ import { visualizer } from 'rollup-plugin-visualizer'
 export default defineConfig({
     plugins: [
         laravel({
-            input: [
-                'resources/css/app.css',
-                'resources/js/app.js',
-            ],
+            input: ['resources/css/app.css', 'resources/js/app.js'],
             refresh: true,
         }),
         vue(),
@@ -20,9 +17,9 @@ export default defineConfig({
         preserveSymlinks: true,
         alias: {
             '@': path.resolve(__dirname, './resources/js'),
-            'Vendor': path.resolve(__dirname, './vendor'),
-            'vue': path.resolve(__dirname, './node_modules/vue/dist/vue.esm.js')
-        }
+            Vendor: path.resolve(__dirname, './vendor'),
+            vue: path.resolve(__dirname, './node_modules/vue/dist/vue.esm.js'),
+        },
     },
     build: {
         commonjsOptions: {
@@ -30,4 +27,4 @@ export default defineConfig({
             requireReturnsDefault: 'preferred',
         },
     },
-});
+})

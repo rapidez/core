@@ -1,4 +1,4 @@
-<div v-if="cart" class="p-3 border rounded">
+<div v-if="cart?.entity_id" class="p-3 border rounded">
     <div class="flex flex-col w-full">
         <div class="flex gap-x-1 py-3 border-b" v-for="item in cart.items">
             <div class="w-7/12">@{{ item.name }}</div>

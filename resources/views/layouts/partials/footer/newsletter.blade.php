@@ -37,7 +37,7 @@
                         </p>
                         <p class="mt-3 text-sm text-gray-600">
                             @lang('We care about the protection of your data. Read our')
-                            <a href="/privacy-policy-cookie-restriction-mode" class="underline">
+                            <a href="{{ url('/privacy-policy-cookie-restriction-mode') }}" class="underline">
                                 @lang('Privacy Policy')
                             </a>
                         </p>

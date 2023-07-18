@@ -11,7 +11,7 @@ return [
     'es_prefix' => env('ELASTICSEARCH_PREFIX', 'rapidez'),
 
     // Media url.
-    'media_url' => env('MEDIA_URL', env('MAGENTO_URL').'/media'),
+    'media_url' => env('MEDIA_URL', env('MAGENTO_URL') . '/media'),
 
     // Magento url.
     'magento_url' => env('MAGENTO_URL'),
@@ -55,6 +55,13 @@ return [
     // below will not be used anymore when disabled.
     'routes' => true,
 
+    'fallback_routes' => [
+        // How long (in seconds) it should cache which controller handles which route.
+        // null means cache forever, 0 means never cache. customisation is possible using a closure.
+        // This does not cache the response, it caches the controller used for that page.
+        'cache_duration' => 3600,
+    ],
+
     // Link store codes to theme folders
     // The structure is `'store_code' => 'folder_path'`
     'themes' => [
@@ -70,20 +77,32 @@ return [
 
     // The fully qualified class names of the models.
     'models' => [
-        'page'         => Rapidez\Core\Models\Page::class,
-        'attribute'    => Rapidez\Core\Models\Attribute::class,
-        'product'      => Rapidez\Core\Models\Product::class,
-        'category'     => Rapidez\Core\Models\Category::class,
-        'config'       => Rapidez\Core\Models\Config::class,
-        'optionswatch' => Rapidez\Core\Models\OptionSwatch::class,
-        'optionvalue'  => Rapidez\Core\Models\OptionValue::class,
-        'productimage' => Rapidez\Core\Models\ProductImage::class,
-        'productview'  => Rapidez\Core\Models\ProductView::class,
-        'quote'        => Rapidez\Core\Models\Quote::class,
-        'rewrite'      => Rapidez\Core\Models\Rewrite::class,
-        'store'        => Rapidez\Core\Models\Store::class,
-        'widget'       => Rapidez\Core\Models\Widget::class,
-        'block'        => Rapidez\Core\Models\Block::class,
+        'page'                      => Rapidez\Core\Models\Page::class,
+        'attribute'                 => Rapidez\Core\Models\Attribute::class,
+        'product'                   => Rapidez\Core\Models\Product::class,
+        'category'                  => Rapidez\Core\Models\Category::class,
+        'config'                    => Rapidez\Core\Models\Config::class,
+        'option_swatch'             => Rapidez\Core\Models\OptionSwatch::class,
+        'option_value'              => Rapidez\Core\Models\OptionValue::class,
+        'product_image'             => Rapidez\Core\Models\ProductImage::class,
+        'product_view'              => Rapidez\Core\Models\ProductView::class,
+        'product_option'            => Rapidez\Core\Models\ProductOption::class,
+        'product_option_title'      => Rapidez\Core\Models\ProductOptionTitle::class,
+        'product_option_price'      => Rapidez\Core\Models\ProductOptionPrice::class,
+        'product_option_type_title' => Rapidez\Core\Models\ProductOptionTypeTitle::class,
+        'product_option_type_price' => Rapidez\Core\Models\ProductOptionTypePrice::class,
+        'product_option_type_value' => Rapidez\Core\Models\ProductOptionTypeValue::class,
+        'quote'                     => Rapidez\Core\Models\Quote::class,
+        'quote_item'                => Rapidez\Core\Models\QuoteItem::class,
+        'quote_item_option'         => Rapidez\Core\Models\QuoteItemOption::class,
+        'rewrite'                   => Rapidez\Core\Models\Rewrite::class,
+        'store'                     => Rapidez\Core\Models\Store::class,
+        'widget'                    => Rapidez\Core\Models\Widget::class,
+        'block'                     => Rapidez\Core\Models\Block::class,
+        'sales_order'               => Rapidez\Core\Models\SalesOrder::class,
+        'sales_order_address'       => Rapidez\Core\Models\SalesOrderAddress::class,
+        'sales_order_item'          => Rapidez\Core\Models\SalesOrderItem::class,
+        'sales_order_payment'       => Rapidez\Core\Models\SalesOrderPayment::class,
     ],
 
     // The fully qualified class names of the widgets.

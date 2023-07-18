@@ -14,13 +14,13 @@ class Block extends Model
 
     protected static function booting()
     {
-        static::addGlobalScope(new IsActiveScope());
-        static::addGlobalScope(new ForCurrentStoreScope());
+        static::addGlobalScope(new IsActiveScope);
+        static::addGlobalScope(new ForCurrentStoreScope);
     }
 
     public static function getCachedByIdentifier(string $identifier, array $replace = []): ?string
     {
-        $cacheKey = 'block.'.config('rapidez.store').'.'.$identifier;
+        $cacheKey = 'block.' . config('rapidez.store') . '.' . $identifier;
 
         $block = Cache::rememberForever($cacheKey, function () use ($identifier) {
             return optional(self::where('identifier', $identifier)->first('content'))->content ?: false;
