@@ -3,8 +3,8 @@
 namespace Rapidez\Core\Jobs;
 
 use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Rapidez\Core\Models\Model;
 
 class IndexJob
 {
@@ -18,7 +18,7 @@ class IndexJob
     {
         $this->index = $index;
         $this->id = $id;
-        $this->values = ($values instanceof Model ? $values->toArray() : (array)$values);
+        $this->values = ($values instanceof Arrayable ? $values->toArray() : (array)$values);
     }
 
     public function handle(Elasticsearch $elasticsearch)
