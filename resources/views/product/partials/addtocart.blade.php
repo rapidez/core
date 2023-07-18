@@ -17,6 +17,8 @@
                 </x-rapidez::select>
                 @include('rapidez::product.partials.options')
             </div>
+
+            @include('rapidez::product.partials.options')
             <div class="mt-5 flex flex-wrap items-center gap-3" v-cloak>
                 <div>
                     <div class="text-2xl font-bold text-neutral">@{{ (simpleProduct.special_price || simpleProduct.price) | price }}</div>
