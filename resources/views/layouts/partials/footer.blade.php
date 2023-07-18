@@ -1,4 +1,3 @@
-@includeWhen(Route::currentRouteName() !== 'checkout', 'rapidez::layouts.partials.footer.newsletter')
 <x-rapidez::notifications />
 <x-rapidez::cookie-notice>
     @lang('This website uses cookies')
