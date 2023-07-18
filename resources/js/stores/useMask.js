@@ -5,9 +5,7 @@ export const mask = useLocalStorage('mask', '')
 
 export const refresh = async function () {
     try {
-        var response = user?.value?.id
-            ? await magentoUser.post('carts/mine')
-            : await magento.post('guest-carts')
+        var response = user?.value?.id ? await magentoUser.post('carts/mine') : await magento.post('guest-carts')
     } catch (error) {
         Notify(window.config.translations.errors.wrong, 'error')
         console.error(error)
@@ -25,7 +23,7 @@ export const refresh = async function () {
 }
 
 export const clear = async function () {
-    mask.value = {}
+    mask.value = ''
 }
 
-export default ()=>(mask)
+export default () => mask

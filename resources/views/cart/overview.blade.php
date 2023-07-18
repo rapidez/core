@@ -21,7 +21,7 @@
                             <div class="w-1/6 pr-3 sm:w-1/12">
                                 <a
                                     class="block"
-                                    :href="item.url"
+                                    :href="item.url | url"
                                 >
                                     <img
                                         class="mx-auto"
@@ -34,11 +34,14 @@
                             <div class="w-5/6 sm:w-5/12 xl:w-6/12">
                                 <a
                                     class="font-bold"
-                                    :href="item.url"
+                                    :href="item.url | url"
                                     dusk="cart-item-name"
                                 >@{{ item.name }}</a>
                                 <div v-for="(optionValue, option) in item.options">
                                     @{{ option }}: @{{ optionValue }}
+                                </div>
+                                <div v-for="option in cart.items2.find((item) => item.item_id == itemId).options.filter((option) => !['info_buyRequest', 'option_ids'].includes(option.code))">
+                                    @{{ option.label }}: @{{ option.value.title || option.value }}
                                 </div>
                             </div>
                             <div class="w-2/6 pr-5 text-right sm:w-1/6 xl:w-2/12">
@@ -118,6 +121,10 @@
                             </div>
                         </div>
                     </div>
+
+                    <x-rapidez::button href="{{ route('checkout') }}" dusk="checkout">
+                        @lang('Checkout')
+                    </x-rapidez::button>
                 </div>
 
                 <x-rapidez::productlist

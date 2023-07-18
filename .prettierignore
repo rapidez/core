@@ -1,0 +1,7 @@
+/public
+/vendor
+.github
+.git
+**/*.php
+!**/*.blade.php
+composer.lock

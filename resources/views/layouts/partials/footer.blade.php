@@ -1,4 +1,9 @@
+@includeWhen(Route::currentRouteName() !== 'checkout', 'rapidez::layouts.partials.footer.newsletter')
 <x-rapidez::notifications />
+<x-rapidez::cookie-notice>
+    @lang('This website uses cookies')
+    <x-slot:button>@lang('Accept cookies')</x-slot:button>
+</x-rapidez::cookie-notice>
 <footer class="container bg-white mt-auto">
     <div class="mt-8 py-12 pt-8 lg:py-16 border-t">
         <div class="flex flex-col justify-between md:flex-row xl:gap-8">

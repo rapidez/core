@@ -4,7 +4,6 @@ namespace Rapidez\Core\Casts;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Support\Arr;
-use Rapidez\Core\Models\Attribute;
 
 class QuoteItems implements CastsAttributes
 {
@@ -19,7 +18,7 @@ class QuoteItems implements CastsAttributes
         }), 'name', 'id');
 
         $items = json_decode($value);
-        $optionvalueModel = config('rapidez.models.optionvalue');
+        $optionvalueModel = config('rapidez.models.option_value');
         foreach ($items as $item) {
             $options = null;
             foreach (json_decode($item->attributes) ?: [] as $attributeId => $attributeValue) {
@@ -29,7 +28,7 @@ class QuoteItems implements CastsAttributes
             }
             $item->options = $options;
             $configModel = config('rapidez.models.config');
-            $item->url = '/'.$item->url_key.$configModel::getCachedByPath('catalog/seo/product_url_suffix', '.html');
+            $item->url = '/' . $item->url_key . $configModel::getCachedByPath('catalog/seo/product_url_suffix', '.html');
             unset($item->attributes);
         }
 

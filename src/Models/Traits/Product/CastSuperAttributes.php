@@ -14,7 +14,7 @@ trait CastSuperAttributes
         }), 'code');
 
         foreach ($superAttributes as $superAttribute) {
-            $casts['super_'.$superAttribute] = 'object';
+            $casts['super_' . $superAttribute] = 'object';
         }
 
         $casts['super_attributes'] = 'object';

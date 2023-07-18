@@ -1,5 +1,5 @@
 <add-to-cart :default-qty="{{ $product->min_sale_qty > $product->qty_increments ? $product->min_sale_qty : $product->qty_increments }}">
-    <div slot-scope="{ qty, changeQty, options, error, add, disabledOptions, simpleProduct, adding, added }">
+    <form slot-scope="{ self: addToCartSlotProps, options, customOptions, error, add, disabledOptions, simpleProduct, adding, added, price, specialPrice, setCustomOptionFile }" v-on:submit.prevent="add">
         <h1 class="mb-3 text-3xl font-bold" itemprop="name">{{ $product->name }}</h1>
         @if (!$product->in_stock)
             <p class="text-red-600">@lang('Sorry! This product is currently out of stock.')</p>
@@ -15,6 +15,7 @@
                         :disabled="disabledOptions['super_'+superAttribute.code].includes(option.value)"
                     />
                 </x-rapidez::select>
+                @include('rapidez::product.partials.options')
             </div>
             <div class="mt-5 flex flex-wrap items-center gap-3" v-cloak>
                 <div>
@@ -25,8 +26,7 @@
                     class="w-auto"
                     name="qty"
                     label="Quantity"
-                    v-bind:value="qty"
-                    v-on:input="changeQty"
+                    v-model="addToCartSlotProps.qty"
                     labelClass="flex items-center sr-only"
                     wrapperClass="flex"
                 >
@@ -34,15 +34,15 @@
                         <option value="{{ $i }}">{{ $i }}</option>
                     @endfor
                 </x-rapidez::select>
-                <x-rapidez::button class="flex items-center" v-on:click="add" dusk="add-to-cart">
+                <x-rapidez::button type="submit" class="flex items-center" dusk="add-to-cart">
                     <x-heroicon-o-shopping-cart class="mr-2 h-5 w-5" v-if="!adding && !added" />
-                    <x-heroicon-o-refresh class="mr-2 h-5 w-5 animate-spin" v-if="adding" />
-                    <x-heroicon-o-check class="mr-2 h-5 w-5" v-if="added" />
+                    <x-heroicon-o-refresh class="mr-2 h-5 w-5 animate-spin" v-if="adding" v-cloak />
+                    <x-heroicon-o-check class="mr-2 h-5 w-5" v-if="added" v-cloak />
                     <span v-if="!adding && !added">@lang('Add to cart')</span>
-                    <span v-if="adding">@lang('Adding')...</span>
-                    <span v-if="added">@lang('Added')</span>
+                    <span v-if="adding" v-cloak>@lang('Adding')...</span>
+                    <span v-if="added" v-cloak>@lang('Added')</span>
                 </x-rapidez::button>
             </div>
         @endif
-    </div>
+    </form>
 </add-to-cart>
