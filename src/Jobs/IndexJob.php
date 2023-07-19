@@ -18,7 +18,7 @@ class IndexJob
     {
         $this->index = $index;
         $this->id = $id;
-        $this->values = ($values instanceof Arrayable ? $values->toArray() : (array)$values);
+        $this->values = ($values instanceof Arrayable ? $values->toArray() : (array) $values);
     }
 
     public function handle(Elasticsearch $elasticsearch)

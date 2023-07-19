@@ -47,11 +47,11 @@ class ElasticsearchIndexer
             return;
         }
 
-        $arrItem = $item instanceof Arrayable ? $item->toArray() : (array)$item;
+        $arrItem = $item instanceof Arrayable ? $item->toArray() : (array) $item;
         $currentValues = match (true) {
             is_callable($dataFilter) => $dataFilter($item),
-            is_null($dataFilter) => $arrItem,
-            default => Arr::only($arrItem, $dataFilter),
+            is_null($dataFilter)     => $arrItem,
+            default                  => Arr::only($arrItem, $dataFilter),
         };
 
         if (is_null($currentValues)) {
