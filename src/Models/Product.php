@@ -13,6 +13,7 @@ use Rapidez\Core\Casts\DecodeHtmlEntities;
 use Rapidez\Core\Models\Scopes\Product\WithProductAttributesScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductCategoryInfoScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductChildrenScope;
+use Rapidez\Core\Models\Scopes\Product\WithProductCreatedScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductGroupedScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductRelationIdsScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductStockScope;
@@ -38,6 +39,7 @@ class Product extends Model
     {
         static::addGlobalScope(new WithProductAttributesScope);
         static::addGlobalScope(new WithProductSuperAttributesScope);
+        static::addGlobalScope(new WithProductCreatedScope);
         static::addGlobalScope(new WithProductStockScope);
         static::addGlobalScope(new WithProductCategoryInfoScope);
         static::addGlobalScope(new WithProductRelationIdsScope);
