@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Rapidez\Core\Commands\IndexCategoriesCommand;
 use Rapidez\Core\Commands\IndexProductsCommand;
 use Rapidez\Core\Commands\InstallCommand;
 use Rapidez\Core\Commands\InstallTestsCommand;
@@ -53,6 +54,7 @@ class RapidezServiceProvider extends ServiceProvider
     {
         $this->commands([
             IndexProductsCommand::class,
+            IndexCategoriesCommand::class,
             ValidateCommand::class,
             InstallCommand::class,
             InstallTestsCommand::class,
