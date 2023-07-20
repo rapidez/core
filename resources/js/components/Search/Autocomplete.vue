@@ -54,7 +54,7 @@ export default {
                     data: JSON.stringify(esQuery),
                 }).then((response) => {
                     this.results[name] = response.data?.hits ?? []
-                    this.results.count += this.results[name].hits.length;
+                    this.results.count += this.results[name]?.hits?.length ?? 0;
                 })
             })
         }
