@@ -9,8 +9,14 @@
     v-if="!$root.loadAutocomplete"
 >
 
-<autocomplete v-if="$root.loadAutocomplete" v-cloak>
-    <x-rapidez::reactive-base>
+<autocomplete
+    v-if="$root.loadAutocomplete"
+    v-cloak
+    @if(config('rapidez.autocomplete_categories'))
+        :additionals="{ categories: ['name^3', 'meta_description^1'] }"
+    @endif
+>
+    <x-rapidez::reactive-base slot-scope="{ results, searchAdditionals, additionals }">
         <data-search
             placeholder="@lang('Search')"
             v-on:value-selected="search"
@@ -22,29 +28,46 @@
             fuzziness="AUTO"
             :debounce="100"
             :size="9"
+            v-on:value-change="searchAdditionals($event)"
         >
             <div
                 slot="render"
                 slot-scope="{ downshiftProps: { isOpen }, data: suggestions }"
             >
-                <ul class="absolute left-2/3 right-auto bg-white border shadow-xl rounded-b-lg lg:rounded-t-lg w-screen sm:w-full lg:w-[960px] xl:ml-0 sm:left-1/2 transform -translate-x-1/2 xl:rounded-t-lg mt-px flex flex-wrap {{ config('rapidez.z-indexes.header-dropdowns') }}" v-if="isOpen && suggestions.length">
-                    <li
-                        class="flex w-1/2 sm:w-1/2 md:w-1/3 px-4 my-4"
-                        v-for="suggestion in suggestions"
-                        :key="suggestion.source._id"
-                    >
-                        <a :href="suggestion.source.url | url" class="flex flex-wrap w-full h-full" key="suggestion.source._id">
-                            <picture class="contents">
-                                <source :srcset="'/storage/resizes/80x80/magento/catalog/product' + suggestion.source.thumbnail + '.webp'" type="image/webp">
-                                <img :src="'/storage/resizes/80x80/magento/catalog/product' + suggestion.source.thumbnail" class="object-contain lg:w-3/12 self-center" />
-                            </picture>
-                            <div class="px-2 flex flex-wrap flex-grow lg:w-1/2">
-                                <strong class="block hyphens w-full">@{{ suggestion.source.name }}</strong>
-                                <div class="self-end">@{{ suggestion.source.price | price }}</div>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
+                <div
+                    class="absolute left-2/3 right-auto bg-white border shadow-xl rounded-b-lg lg:rounded-t-lg w-screen sm:w-full lg:w-[960px] xl:ml-0 sm:left-1/2 transform -translate-x-1/2 xl:rounded-t-lg mt-px flex flex-col {{ config('rapidez.z-indexes.header-dropdowns') }}"
+                    v-if="isOpen && (suggestions.length || results.count)"
+                >
+                    @if(config('rapidez.autocomplete_categories'))
+                        <ul class="flex flex-col gap-1 p-2 m-2 rounded-lg bg-gray-100" v-if="results.categories && results.categories.hits.length">
+                            <li class="font-bold">@lang('Categories')</li>
+                            <li v-for="hit in results.categories.hits" class="w-full">
+                                <a :href="hit._source.url" class="w-full hover:text-primary flex gap-1">
+                                    <span class="ml-2">@{{ hit._source.name }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    @endif
+
+                    <ul class="flex flex-wrap">
+                        <li
+                            class="flex w-1/2 sm:w-1/2 md:w-1/3 px-4 my-4"
+                            v-for="suggestion in suggestions"
+                            :key="suggestion.source._id"
+                        >
+                            <a :href="suggestion.source.url | url" class="flex flex-wrap w-full h-full" key="suggestion.source._id">
+                                <picture class="contents">
+                                    <source :srcset="'/storage/resizes/80x80/magento/catalog/product' + suggestion.source.thumbnail + '.webp'" type="image/webp">
+                                    <img :src="'/storage/resizes/80x80/magento/catalog/product' + suggestion.source.thumbnail" class="object-contain lg:w-3/12 self-center" />
+                                </picture>
+                                <div class="px-2 flex flex-wrap flex-grow lg:w-1/2">
+                                    <strong class="block hyphens w-full">@{{ suggestion.source.name }}</strong>
+                                    <div class="self-end">@{{ suggestion.source.price | price }}</div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </data-search>
     </x-rapidez::reactive-base>
