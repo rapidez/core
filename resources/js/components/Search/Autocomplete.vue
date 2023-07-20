@@ -11,7 +11,7 @@ export default {
         debounce: {
             type: Number,
             default: 100,
-        }
+        },
     },
 
     render() {
@@ -24,14 +24,14 @@ export default {
 
     data() {
         return {
-            results: { count: 0 }
+            results: { count: 0 },
         }
     },
 
     methods: {
         searchAdditionals(query) {
-            if(!this.additionals) {
-                return;
+            if (!this.additionals) {
+                return
             }
 
             this.results = { count: 0 }
@@ -54,10 +54,10 @@ export default {
                     data: JSON.stringify(esQuery),
                 }).then((response) => {
                     this.results[name] = response.data?.hits ?? []
-                    this.results.count += this.results[name].hits.length;
+                    this.results.count += this.results[name].hits.length
                 })
             })
-        }
+        },
     },
 }
 </script>
