@@ -62,9 +62,7 @@ class RapidezServiceProvider extends ServiceProvider
         ]);
 
         Event::listen(IndexBeforeEvent::class, function ($event) {
-            if (config('rapidez.autocomplete_categories')) {
-                $event->context->call('rapidez:index:categories');
-            }
+            $event->context->call('rapidez:index:categories');
         });
 
         return $this;

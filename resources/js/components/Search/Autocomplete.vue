@@ -15,11 +15,7 @@ export default {
     },
 
     render() {
-        return this.$scopedSlots.default({
-            results: this.results,
-            searchAdditionals: this.searchAdditionals,
-            additionals: this.additionals,
-        })
+        return this.$scopedSlots.default(Object.assign(this, { self: this }))
     },
 
     data() {
