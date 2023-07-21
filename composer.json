@@ -23,7 +23,7 @@
         "illuminate/events": "^9.0",
         "illuminate/queue": "^9.0",
         "illuminate/support": "^9.23",
-        "rapidez/blade-directives": "^0.0.1",
+        "rapidez/blade-directives": "~0.1",
         "tormjens/eventy": "^0.8"
     },
     "require-dev": {
