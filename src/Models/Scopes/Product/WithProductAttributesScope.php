@@ -27,7 +27,7 @@ class WithProductAttributesScope implements Scope
             ->addSelect($builder->getQuery()->from . '.sku')
             ->addSelect($builder->getQuery()->from . '.visibility')
             ->addSelect($builder->getQuery()->from . '.type_id AS type')
-            ->addSelect($builder->getQuery()->from . '.created_at');
+            ->addSelect($model->getQualifiedCreatedAtColumn());
 
         foreach ($attributes as $attribute) {
             $attribute = (object) $attribute;
