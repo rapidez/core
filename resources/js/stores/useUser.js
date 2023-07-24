@@ -8,7 +8,11 @@ let isRefreshing = false
 
 export const refresh = async function () {
     if (!token.value) {
-        userStorage.value = {}
+        if (localStorage.token) {
+            token.value = localStorage.token
+        } else {
+            userStorage.value = {}
+        }
         return false
     }
 
