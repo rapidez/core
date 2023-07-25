@@ -3,7 +3,12 @@ import { user, token, refresh as refreshUser, clear as clearUser } from '../../.
 
 const onOnce = useMemoize(
     (eventName, callback) => {
-        window.app.$on(eventName, callback)
+        if(window.app?.$on) {
+            window.app.$on(eventName, callback)
+        } else {
+            // App isn't available yet, wait for vue to load in and then try.
+            window.setTimeout(() => window.app.$on(eventName, callback))
+        }
     },
     {
         getKey: (eventName, callback) => eventName + callback.toString(),
