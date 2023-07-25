@@ -32,9 +32,6 @@ return [
         'customer_fields_show',
     ],
 
-    // Query the categories in the autocomplete & hook into rapidez indexer with categories index
-    'autocomplete_categories' => false,
-
     // Additional searchable attributes with the search weight.
     'searchable' => [
         // 'attribute' => 4.0,

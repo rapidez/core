@@ -12,9 +12,7 @@
 <autocomplete
     v-if="$root.loadAutocomplete"
     v-cloak
-    @if(config('rapidez.autocomplete_categories'))
-        :additionals="{ categories: ['name^3', 'meta_description^1'] }"
-    @endif
+    :additionals="{ categories: ['name^3', 'meta_description^1'] }"
 >
     <x-rapidez::reactive-base slot-scope="{ results, searchAdditionals, additionals }">
         <data-search
@@ -38,16 +36,14 @@
                     class="absolute left-2/3 right-auto bg-white border shadow-xl rounded-b-lg lg:rounded-t-lg w-screen sm:w-full lg:w-[960px] xl:ml-0 sm:left-1/2 transform -translate-x-1/2 xl:rounded-t-lg mt-px flex flex-col {{ config('rapidez.z-indexes.header-dropdowns') }}"
                     v-if="isOpen && (suggestions.length || results.count)"
                 >
-                    @if(config('rapidez.autocomplete_categories'))
-                        <ul class="flex flex-col gap-1 p-2 m-2 rounded-lg bg-gray-100" v-if="results.categories && results.categories.hits.length">
-                            <li class="font-bold">@lang('Categories')</li>
-                            <li v-for="hit in results.categories.hits" class="w-full">
-                                <a :href="hit._source.url" class="w-full hover:text-primary flex gap-1">
-                                    <span class="ml-2">@{{ hit._source.name }}</span>
-                                </a>
-                            </li>
-                        </ul>
-                    @endif
+                    <ul class="flex flex-col gap-1 p-2 m-2 rounded-lg bg-gray-100" v-if="results.categories && results.categories.hits.length">
+                        <li class="font-bold">@lang('Categories')</li>
+                        <li v-for="hit in results.categories.hits" class="w-full">
+                            <a :href="hit._source.url" class="w-full hover:text-primary flex gap-1">
+                                <span class="ml-2">@{{ hit._source.name }}</span>
+                            </a>
+                        </li>
+                    </ul>
 
                     <ul class="flex flex-wrap">
                         <li
