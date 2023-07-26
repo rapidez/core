@@ -10,6 +10,7 @@ use Rapidez\Core\Casts\Children;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
 use Rapidez\Core\Casts\DecodeHtmlEntities;
+use Rapidez\Core\Casts\Tierprices;
 use Rapidez\Core\Models\Scopes\Product\WithProductAttributesScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductCategoryInfoScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductChildrenScope;
@@ -68,6 +69,7 @@ class Product extends Model
                     'upsell_ids'     => CommaSeparatedToIntegerArray::class,
                     'children'       => Children::class,
                     'grouped'        => Children::class,
+                    'tierprices'     => Tierprices::class,
                     'qty_increments' => 'int',
                     'min_sale_qty'   => 'int',
                 ],
