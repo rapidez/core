@@ -1,5 +1,4 @@
 <script>
-import { useThrottledRefHistory } from '@vueuse/core'
 import GetCart from './../Cart/mixins/GetCart'
 import InteractWithUser from './../User/mixins/InteractWithUser'
 
