@@ -22,12 +22,13 @@ class WithProductAttributesScope implements Scope
 
         $attributes = array_filter($attributes, fn ($a) => $a['type'] !== 'static');
 
-        $builder
-            ->addSelect($builder->getQuery()->from . '.entity_id AS id')
-            ->addSelect($builder->getQuery()->from . '.sku')
-            ->addSelect($builder->getQuery()->from . '.visibility')
-            ->addSelect($builder->getQuery()->from . '.type_id AS type')
-            ->addSelect($model->getQualifiedCreatedAtColumn());
+        $builder->addSelect([
+            'id'         => $model->getQualifiedKeyName(),
+            'sku'        => $model->qualifyColumn('sku'),
+            'visibility' => $model->qualifyColumn('visibility'),
+            'type'       => $model->qualifyColumn('type_id'),
+            'created_at' => $model->getQualifiedCreatedAtColumn(),
+        ]);
 
         foreach ($attributes as $attribute) {
             $attribute = (object) $attribute;
