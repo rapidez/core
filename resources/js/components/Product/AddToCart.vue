@@ -178,23 +178,18 @@ export default {
             return best
         },
 
-        tierPriceDiscount(price) {
-            if(!this.tierPrice) {
-                this.tierPrice = this.getTierPrice(this.qty)
-            }
-
-            let discount = this.tierPrices[this.tierPrice]
-
-            if (!discount) {
+        tierPriceDiscount(price, tier) {
+            let discount = tier ?? this.tierPrices[this.tierPrice] ?? null;
+            if(!discount) {
                 return price
             }
 
-            if (discount.percentage > 0) {
-                return price * (100 - discount.percentage) / 100
+            if (discount.percentage_value > 0) {
+                return price * (100 - discount.percentage_value) / 100
             }
 
             if (discount.value > 0) {
-                return price - discount.value
+                return price - discount.value * this.qty
             }
 
             return price
@@ -262,7 +257,8 @@ export default {
                 {
                     qty: option.qty,
                     value: option.value,
-                    percentage: option.percentage_value,
+                    percentage_value: option.percentage_value,
+                    price: this.tierPriceDiscount(this.basePrice, option)
                 }
             ]))
         },
@@ -366,12 +362,20 @@ export default {
             return disabledOptions
         },
 
+        basePrice: function () {
+            return parseFloat(this.simpleProduct.price) + this.priceAddition(this.simpleProduct.price)
+        },
+
+        baseSpecialPrice: function () {
+            parseFloat(this.simpleProduct.special_price) + this.priceAddition(this.simpleProduct.special_price)
+        },
+
         price: function () {
-            return this.tierPriceDiscount(parseFloat(this.simpleProduct.price) + this.priceAddition(this.simpleProduct.price))
+            return this.tierPriceDiscount(this.basePrice)
         },
 
         specialPrice: function () {
-            return this.tierPriceDiscount(parseFloat(this.simpleProduct.special_price) + this.priceAddition(this.simpleProduct.special_price))
+            return this.tierPriceDiscount(this.baseSpecialPrice)
         },
     },
 }

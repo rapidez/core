@@ -35,13 +35,10 @@
 
             <ul class="flex flex-col" v-if="tierPrices" v-cloak>
                 <li v-for="tier in tierPrices">
-                    @lang('Order :amount to get a discount of', ['amount' => ' @{{ Math.round(tier.qty) }}'])
-                    <template v-if="tier.value > 0">
-                        @{{ tier.value | price }}
-                    </template>
-                    <template v-else>
-                        @{{ parseFloat(tier.percentage) }}%
-                    </template>
+                    @lang('Order :amount and pay :price per item', [
+                        'amount' => '@{{ Math.round(tier.qty) }}',
+                        'price' => '@{{ tier.price | price }}',
+                    ])
                 </li>
             </ul>
 
