@@ -13,13 +13,14 @@ class IndexCategoriesCommand extends ElasticsearchIndexCommand
 
     public function handle(): int
     {
-        $this->indexStores(
-            stores: Rapidez::getStores($this->argument('store')),
-            indexName: 'categories',
-            items: $this->getCategories(...),
-            dataFilter: fn ($data) => Eventy::filter('index.category.data', $data),
-            id: 'entity_id'
-        );
+        $this->onlyStores($this->argument('store'))
+            ->withFilter(fn ($data) => Eventy::filter('index.category.data', $data))
+            ->chunk(25)
+            ->index(
+                indexName: 'categories',
+                items: $this->getCategories(...),
+                id: 'entity_id'
+            );
 
         return 0;
     }
@@ -29,8 +30,6 @@ class IndexCategoriesCommand extends ElasticsearchIndexCommand
         return config('rapidez.models.category')::query()
             ->select((new (config('rapidez.models.category')))->qualifyColumns(['entity_id', 'name', 'url_path', 'children_count']))
             ->whereNotNull('url_key')
-            ->whereNot('url_key', 'default-category')
-            ->where('children_count', '>', 0)
-            ->get() ?? [];
+            ->whereNot('url_key', 'default-category');
     }
 }
