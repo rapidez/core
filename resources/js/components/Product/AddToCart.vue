@@ -189,7 +189,7 @@ export default {
             }
 
             if (discount.value > 0) {
-                return price - discount.value * this.qty
+                return price - discount.value
             }
 
             return price
