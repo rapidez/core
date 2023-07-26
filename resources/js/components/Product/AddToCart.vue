@@ -367,7 +367,7 @@ export default {
         },
 
         baseSpecialPrice: function () {
-            parseFloat(this.simpleProduct.special_price) + this.priceAddition(this.simpleProduct.special_price)
+            return parseFloat(this.simpleProduct.special_price) + this.priceAddition(this.simpleProduct.special_price)
         },
 
         price: function () {
