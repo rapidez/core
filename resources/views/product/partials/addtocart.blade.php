@@ -1,5 +1,5 @@
 <add-to-cart :default-qty="{{ $product->min_sale_qty > $product->qty_increments ? $product->min_sale_qty : $product->qty_increments }}">
-    <form slot-scope="{ self: addToCartSlotProps, options, customOptions, error, add, disabledOptions, simpleProduct, adding, added, price, specialPrice, setCustomOptionFile }" v-on:submit.prevent="add">
+    <form slot-scope="{ self: addToCartSlotProps, tierPrices, options, customOptions, error, add, disabledOptions, simpleProduct, adding, added, price, specialPrice, setCustomOptionFile }" v-on:submit.prevent="add">
         <div class="flex items-center space-x-3 font-bold mb-3">
             <div class="text-3xl" v-text="$options.filters.price(specialPrice || price)">
                 {{ price($product->special_price ?: $product->price) }}
@@ -32,6 +32,18 @@
             </div>
 
             @include('rapidez::product.partials.options')
+
+            <ul class="flex flex-col" v-if="tierPrices" v-cloak>
+                <li v-for="tier in tierPrices">
+                    @lang('Order :amount to get a discount of', ['amount' => ' @{{ Math.round(tier.qty) }}'])
+                    <template v-if="tier.value > 0">
+                        @{{ tier.value | price }}
+                    </template>
+                    <template v-else>
+                        @{{ parseFloat(tier.percentage) }}%
+                    </template>
+                </li>
+            </ul>
 
             <div class="flex mt-5">
                 <x-rapidez::select

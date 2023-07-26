@@ -1,4 +1,5 @@
 <script>
+import { useThrottledRefHistory } from '@vueuse/core'
 import GetCart from './../Cart/mixins/GetCart'
 import InteractWithUser from './../User/mixins/InteractWithUser'
 
@@ -34,6 +35,7 @@ export default {
         qty: 1,
         options: {},
         customOptions: {},
+        tierPrice: null,
         error: null,
 
         adding: false,
@@ -162,6 +164,55 @@ export default {
 
             return addition
         },
+
+        getTierPrice(qty) {
+            qty = parseInt(qty)
+            let best = null
+            let bestQty = 0
+            Object.entries(this.tierPrices).forEach(([id, tier]) => {
+                if (tier.qty > bestQty && tier.qty <= qty) {
+                    best = id
+                    bestQty = tier.qty
+                }
+            })
+
+            return best
+        },
+
+        tierPriceDiscount(price) {
+            if(!this.tierPrice) {
+                this.tierPrice = this.getTierPrice(this.qty)
+            }
+
+            let discount = this.tierPrices[this.tierPrice]
+
+            if (!discount) {
+                return price
+            }
+
+            if (discount.percentage > 0) {
+                return price * (100 - discount.percentage) / 100
+            }
+
+            if (discount.value > 0) {
+                return price - discount.value
+            }
+
+            return price
+        },
+
+        selectTier(id) {
+            this.tierPrice = id
+
+            let tierQty = this.tierPrices[this.tierPrice]?.qty ?? 1
+            this.qty = parseInt(tierQty);
+        }
+    },
+
+    watch: {
+        qty() {
+            this.tierPrice = this.getTierPrice(this.qty)
+        },
     },
 
     computed: {
@@ -195,6 +246,26 @@ export default {
             this.$root.$emit('product-super-attribute-change', product)
 
             return product
+        },
+
+        tierPrices: function ()  {
+            if (!this.product.tierprices || this.product.tierprices.length == 0) {
+                return {}
+            }
+
+            let availableOptions = this.product.tierprices.filter(option =>
+                option.all_groups ||
+                option.customer_group_id == this.$root.user?.group_id
+            )
+
+            return Object.fromEntries(availableOptions.map(option => [
+                option.value_id,
+                {
+                    qty: option.qty,
+                    value: option.value,
+                    percentage: option.percentage_value,
+                }
+            ]))
         },
 
         productOptions: function () {
@@ -297,11 +368,11 @@ export default {
         },
 
         price: function () {
-            return parseFloat(this.simpleProduct.price) + this.priceAddition(this.simpleProduct.price)
+            return this.tierPriceDiscount(parseFloat(this.simpleProduct.price) + this.priceAddition(this.simpleProduct.price))
         },
 
         specialPrice: function () {
-            return parseFloat(this.simpleProduct.special_price) + this.priceAddition(this.simpleProduct.special_price)
+            return this.tierPriceDiscount(parseFloat(this.simpleProduct.special_price) + this.priceAddition(this.simpleProduct.special_price))
         },
     },
 }
