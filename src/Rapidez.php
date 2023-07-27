@@ -100,12 +100,15 @@ class Rapidez
         config()->set('rapidez.root_category_id', $store['root_category_id']);
     }
 
-    public function withStore(Store|array|callable|int|string $store, callable $callback)
+    public function withStore(Store|array|callable|int|string $store, callable $callback, ...$args)
     {
         $initialStore = config('rapidez.store');
         Rapidez::setStore($store);
-        $result = $callback();
-        Rapidez::setStore($initialStore);
+        try {
+            $result = $callback(...$args);
+        } finally {
+            Rapidez::setStore($initialStore);
+        }
 
         return $result;
     }
