@@ -2,10 +2,8 @@
 
 namespace Rapidez\Core\Models\Traits;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Rapidez\Core\Facades\Rapidez;
-use TorMorten\Eventy\Facades\Eventy;
 
 trait HasAlternatesThroughRewrites
 {
@@ -21,7 +19,8 @@ trait HasAlternatesThroughRewrites
                 ->mapWithKeys(function ($url, $storeId) {
                     return Rapidez::withStore($storeId, function () use ($url) {
                         $locale = str(Rapidez::config('general/locale/code', 'en_US'))->replace('_', '-')->lower()->value();
-                        $url = Rapidez::config('web/secure/base_url').$url;
+                        $url = Rapidez::config('web/secure/base_url') . $url;
+
                         return [$locale => $url];
                     });
                 })
