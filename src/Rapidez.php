@@ -106,6 +106,7 @@ class Rapidez
         Rapidez::setStore($store);
         $result = $callback();
         Rapidez::setStore($initialStore);
+
         return $result;
     }
 }
