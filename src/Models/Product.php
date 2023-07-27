@@ -116,7 +116,7 @@ class Product extends Model
         return $this
             ->hasMany(config('rapidez.models.rewrite'), 'entity_id', 'id')
             ->withoutGlobalScope('store')
-            ->where('entity_type', 'category');
+            ->where('entity_type', 'product');
     }
 
     public function scopeByIds(Builder $query, array $productIds): Builder
