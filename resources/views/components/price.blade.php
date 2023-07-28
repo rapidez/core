@@ -16,7 +16,7 @@
             </span>
         </template>
         <template v-else>
-            <span v-text="(specialPrice || price) | price">
+            <span v-text="$options.filters.price(specialPrice || price)">
                 {{ $placeholder }}
             </span>
             <span
