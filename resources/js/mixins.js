@@ -25,14 +25,14 @@ Vue.mixin({
             let total = options.total ?? false
             let special_price = options.special_price ?? false
 
-            let displayTax = window.app.includeTaxAt(location);
+            let displayTax = this.includeTaxAt(location);
 
             // Shortcut if the values have already been pre-calculated
             if ((total && ('price_excl_tax' in product)) || (!total && ('total_excl_tax' in product))) {
                 if (total) {
-                    return window.app.decideTax(product.total, product.total_excl_tax, displayTax)
+                    return this.decideTax(product.total, product.total_excl_tax, displayTax)
                 } else {
-                    return window.app.decideTax(product.price, product.price_excl_tax, displayTax)
+                    return this.decideTax(product.price, product.price_excl_tax, displayTax)
                 }
             }
 
@@ -41,10 +41,10 @@ Vue.mixin({
                 : product.price ?? 0
 
             if(options.product_options) {
-                price += window.app.calculateOptionsValue(price, product, options.product_options)
+                price += this.calculateOptionsValue(price, product, options.product_options)
             }
 
-            let taxMultiplier = (window.config.tax.values[product.tax_class_id] ?? product.tax_amount ?? 0) + 1
+            let taxMultiplier = parseFloat(window.config.tax.values[product.tax_class_id] ?? product.tax_amount ?? 0) + 1
             let qty = total ? product.qty ?? 1 : 1
 
             if (window.config.tax.calculation.price_includes_tax == displayTax) {
@@ -57,7 +57,7 @@ Vue.mixin({
         },
 
         decideTax(including, excluding, location) {
-            return window.app.includeTaxAt(location) ? including : excluding
+            return this.includeTaxAt(location) ? including : excluding
         },
 
         calculateOptionsValue(basePrice, product, customOptions) {

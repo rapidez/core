@@ -15,7 +15,7 @@ class ProductController
             ->with('options')
             ->findOrFail($productId);
 
-        $attributes = ['id', 'name', 'sku', 'super_attributes', 'children', 'grouped', 'options', 'price', 'special_price', 'images', 'url', 'min_sale_qty'];
+        $attributes = ['id', 'name', 'sku', 'super_attributes', 'children', 'grouped', 'options', 'price', 'special_price', 'tax_class_id', 'images', 'url', 'min_sale_qty'];
         $attributes = Eventy::filter('productpage.frontend.attributes', $attributes);
 
         foreach ($product->super_attributes ?: [] as $superAttribute) {

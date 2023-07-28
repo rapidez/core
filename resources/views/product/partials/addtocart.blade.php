@@ -4,7 +4,7 @@
             <div class="text-3xl" v-text="$options.filters.price(specialPrice || price)">
                 {{ price($product->special_price ?: $product->price) }}
             </div>
-            <div class="line-through" v-if="specialPrice" v-text="$options.filters.price(price)">
+            <div class="line-through" v-if="specialPrice && specialPrice < price" v-text="$options.filters.price(price)">
                 {{ $product->special_price ? price($product->price) : '' }}
             </div>
         </div>
