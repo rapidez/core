@@ -34,6 +34,7 @@ class Store extends Model
                     'store.name',
                     'store.code',
                     'store.website_id',
+                    'store.group_id',
                     'store_group.root_category_id',
                     'store_website.code AS website_code',
                 ])->get()->keyBy('store_id')->toArray();
