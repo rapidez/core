@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div class="w-2/6 sm:w-1/6 lg:w-1/12 text-right pr-5">
-                    @{{ $root.calculatePrice(item, 'cart_price') | price }}
+                    @{{ $root.decideTax(item.price, item.price_excl_tax, 'cart_price') | price }}
                 </div>
                 <div class="w-2/6 sm:w-1/6 lg:w-1/12">
                     <div class="inline-flex">
@@ -58,7 +58,7 @@
                     </div>
                 </div>
                 <div class="w-2/6 sm:w-1/6 lg:w-1/12 flex justify-end items-center text-right">
-                    @{{ $root.calculatePrice(item, 'cart_price', { total: true }) | price }}
+                    @{{ $root.decideTax(item.total, item.total_excl_tax, 'cart_price') | price }}
                     <a href="#" @click.prevent="remove(item)" class="ml-2" title="@lang('Remove')" :dusk="'item-delete-'+index">
                         <x-heroicon-s-x class="w-4 h-4"/>
                     </a>

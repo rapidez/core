@@ -27,15 +27,6 @@ Vue.mixin({
 
             let displayTax = this.includeTaxAt(location);
 
-            // Shortcut if the values have already been pre-calculated
-            if ((total && ('price_excl_tax' in product)) || (!total && ('total_excl_tax' in product))) {
-                if (total) {
-                    return this.decideTax(product.total, product.total_excl_tax, displayTax)
-                } else {
-                    return this.decideTax(product.price, product.price_excl_tax, displayTax)
-                }
-            }
-
             let price = special_price
                 ? product.special_price ?? product.price ?? 0
                 : product.price ?? 0
