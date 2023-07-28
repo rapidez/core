@@ -38,9 +38,7 @@ export default {
         },
 
         calculatePrice(product, location, options = {}) {
-            let total = options.total ?? false
             let special_price = options.special_price ?? false
-
             let displayTax = this.$root.includeTaxAt(location);
 
             let price = special_price
@@ -53,15 +51,13 @@ export default {
 
             let taxMultiplier = this.getTaxPercent(product) + 1
 
-            let qty = total ? product.qty ?? 1 : 1
-
             if (window.config.tax.calculation.price_includes_tax == displayTax) {
-                return qty * price
+                return price
             }
 
             return displayTax
-                ? qty * price * taxMultiplier
-                : qty * price / taxMultiplier
+                ? price * taxMultiplier
+                : price / taxMultiplier
         },
 
         calculateOptionsValue(basePrice, product, customOptions) {
