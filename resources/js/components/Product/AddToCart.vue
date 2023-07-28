@@ -139,29 +139,6 @@ export default {
             reader.onload = () => (this.customOptions[optionId] = 'FILE;' + file.name + ';' + reader.result)
             reader.readAsDataURL(file)
         },
-
-        priceAddition: function (basePrice) {
-            let addition = 0
-
-            Object.entries(this.customOptions).forEach(([key, val]) => {
-                if (!val) {
-                    return
-                }
-
-                let option = this.product.options.find((option) => option.option_id == key)
-                let optionPrice = ['drop_down'].includes(option.type)
-                    ? option.values.find((value) => value.option_type_id == val).price
-                    : option.price
-
-                if (optionPrice.price_type == 'fixed') {
-                    addition += parseFloat(optionPrice.price)
-                } else {
-                    addition += (parseFloat(basePrice) * parseFloat(optionPrice.price)) / 100
-                }
-            })
-
-            return addition
-        },
     },
 
     computed: {
@@ -296,12 +273,17 @@ export default {
             return disabledOptions
         },
 
-        price: function () {
-            return parseFloat(this.simpleProduct.price) + this.priceAddition(this.simpleProduct.price)
+        price: function() {
+            return this.$root.calculatePrice(this.product, 'catalog', {
+                product_options: this.customOptions,
+            })
         },
 
-        specialPrice: function () {
-            return parseFloat(this.simpleProduct.special_price) + this.priceAddition(this.simpleProduct.special_price)
+        specialPrice: function() {
+            return this.$root.calculatePrice(this.product, 'catalog', {
+                product_options: this.customOptions,
+                special_price: true,
+            })
         },
     },
 }

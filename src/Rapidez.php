@@ -5,6 +5,8 @@ namespace Rapidez\Core;
 use Illuminate\Routing\RouteAction;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Rapidez\Core\Models\Store;
 
 class Rapidez
@@ -97,5 +99,23 @@ class Rapidez
         config()->set('rapidez.website', $store['website_id']);
         config()->set('rapidez.website_code', $store['website_code']);
         config()->set('rapidez.root_category_id', $store['root_category_id']);
+    }
+
+    public function getTaxValues(): array
+    {
+        return Cache::rememberForever('tax_'.config('rapidez.store'), function () {
+            return DB::table('tax_class')
+                ->join('tax_calculation', 'tax_calculation.product_tax_class_id', '=', 'tax_class.class_id')
+                ->join('tax_calculation_rate', 'tax_calculation_rate.tax_calculation_rate_id', '=', 'tax_calculation.tax_calculation_rate_id')
+                ->where('tax_country_id', Rapidez::config('tax/defaults/country', 'US'))
+                ->where('customer_tax_class_id', Rapidez::config('tax/classes/default_customer_tax_class', 3))
+                ->pluck(DB::raw('rate / 100'), 'class_id')
+                ->toArray();
+        });
+    }
+
+    public function getTaxValue($tax_class_id): float
+    {
+        return $this->getTaxValues()[$tax_class_id] ?? 0;
     }
 }

@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div class="w-2/6 sm:w-1/6 lg:w-1/12 text-right pr-5">
-                    @{{ item.price | price }}
+                    @{{ $root.calculatePrice(item, 'cart_price') | price }}
                 </div>
                 <div class="w-2/6 sm:w-1/6 lg:w-1/12">
                     <div class="inline-flex">
@@ -58,7 +58,7 @@
                     </div>
                 </div>
                 <div class="w-2/6 sm:w-1/6 lg:w-1/12 flex justify-end items-center text-right">
-                    @{{ item.total | price }}
+                    @{{ $root.calculatePrice(item, 'cart_price', { total: true }) | price }}
                     <a href="#" @click.prevent="remove(item)" class="ml-2" title="@lang('Remove')" :dusk="'item-delete-'+index">
                         <x-heroicon-s-x class="w-4 h-4"/>
                     </a>
@@ -70,11 +70,11 @@
                 <div class="flex flex-wrap justify-end sm:w-64">
                     <div class="flex flex-wrap w-full p-3 mb-5 bg-secondary rounded-lg">
                         <div class="w-1/2">@lang('Subtotal')</div>
-                        <div class="w-1/2 text-right">@{{ cart.subtotal | price }}</div>
+                        <div class="w-1/2 text-right">@{{ $root.decideTax(cart.subtotal, cart.subtotal_excl_tax, 'cart_subtotal') | price }}</div>
                         <div class="w-1/2" v-if="cart.tax > 0">@lang('Tax')</div>
                         <div class="w-1/2 text-right" v-if="cart.tax > 0">@{{ cart.tax | price }}</div>
                         <div class="w-1/2" v-if="cart.shipping_amount > 0">@lang('Shipping')<br><small>@{{ cart.shipping_description }}</small></div>
-                        <div class="w-1/2 text-right" v-if="cart.shipping_amount > 0">@{{ cart.shipping_amount | price }}</div>
+                        <div class="w-1/2 text-right" v-if="cart.shipping_amount > 0">@{{ $root.decideTax(cart.shipping_amount, cart.shipping_amount_excl_tax, 'cart_shipping') | price }}</div>
                         <div class="w-1/2" v-if="cart.discount_name && cart.discount_amount < 0">@lang('Discount'): @{{ cart.discount_name }}</div>
                         <div class="w-1/2" v-if="!cart.discount_name && cart.discount_amount < 0">@lang('Discount')</div>
                         <div class="w-1/2 text-right" v-if="cart.discount_amount < 0">@{{ cart.discount_amount | price }}</div>

@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static array      getStores($storeId = null)
  * @method static array      getStore($storeId)
  * @method static void       setStore($store)
+ * @method static array      getTaxValues()
+ * @method static float      getTaxMultiplier($tax_class_id)
  *
  * @see \Rapidez\Core\Rapidez
  */

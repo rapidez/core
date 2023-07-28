@@ -10,6 +10,7 @@ use Rapidez\Core\Casts\Children;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
 use Rapidez\Core\Casts\DecodeHtmlEntities;
+use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Scopes\Product\WithProductAttributesScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductCategoryInfoScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductChildrenScope;
@@ -32,7 +33,7 @@ class Product extends Model
 
     protected $primaryKey = 'entity_id';
 
-    protected $appends = ['url'];
+    protected $appends = ['url', 'tax_multiplier'];
 
     protected static function booting(): void
     {
@@ -156,6 +157,11 @@ class Product extends Model
 
             return true;
         })->min->special_price;
+    }
+
+    public function getTaxMultiplierAttribute()
+    {
+        return Rapidez::getTaxMultiplier($this->tax_class_id);
     }
 
     public function getUrlAttribute(): string
