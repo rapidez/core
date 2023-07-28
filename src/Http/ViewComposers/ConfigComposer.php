@@ -65,7 +65,8 @@ class ConfigComposer
     public function getTaxConfiguration()
     {
         return [
-            'values' => Rapidez::getTaxValues(),
+            'values' => (object) Rapidez::getTaxTable(),
+            'groups' => (object) Rapidez::getTaxGroups(),
             'calculation' => [
                 'price_includes_tax' => boolval(Rapidez::config('tax/calculation/price_includes_tax', 0)),
                 'base_subtotal_should_include_tax' => boolval(Rapidez::config('tax/calculation/base_subtotal_should_include_tax', 1)),

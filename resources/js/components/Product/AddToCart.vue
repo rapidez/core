@@ -272,19 +272,6 @@ export default {
 
             return disabledOptions
         },
-
-        price: function() {
-            return this.$root.calculatePrice(this.product, 'catalog', {
-                product_options: this.customOptions,
-            })
-        },
-
-        specialPrice: function() {
-            return this.$root.calculatePrice(this.product, 'catalog', {
-                product_options: this.customOptions,
-                special_price: true,
-            })
-        },
     },
 }
 </script>

@@ -9,6 +9,10 @@ export default {
             type: String,
             default: 'catalog',
         },
+        options: {
+            type: Object,
+            default: {},
+        },
     },
     render() {
         return this.$scopedSlots.default(Object.assign(this, { self: this }))
@@ -22,19 +26,81 @@ export default {
         this.mounted = true
     },
 
+    methods: {
+        getTaxPercent(product) {
+            let taxClass = product.tax_class_id ?? product
+            let taxValues = product.tax_values ?? window.config.tax.values[taxClass] ?? {}
+
+            let groupId = this.$root.user?.group_id ?? 0 // 0 is always the NOT_LOGGED_IN group
+            let customerTaxClass = window.config.tax.groups[groupId] ?? 0
+
+            return taxValues[customerTaxClass] ?? 0
+        },
+
+        calculatePrice(product, location, options = {}) {
+            let total = options.total ?? false
+            let special_price = options.special_price ?? false
+
+            let displayTax = this.$root.includeTaxAt(location);
+
+            let price = special_price
+                ? product.special_price ?? product.price ?? 0
+                : product.price ?? 0
+
+            if(options.product_options) {
+                price += this.calculateOptionsValue(price, product, options.product_options)
+            }
+
+            let taxMultiplier = this.getTaxPercent(product) + 1
+
+            let qty = total ? product.qty ?? 1 : 1
+
+            if (window.config.tax.calculation.price_includes_tax == displayTax) {
+                return qty * price
+            }
+
+            return displayTax
+                ? qty * price * taxMultiplier
+                : qty * price / taxMultiplier
+        },
+
+        calculateOptionsValue(basePrice, product, customOptions) {
+            let addition = 0
+
+            Object.entries(customOptions).forEach(([key, val]) => {
+                if (!val) {
+                    return
+                }
+
+                let option = product.options.find((option) => option.option_id == key)
+                let optionPrice = ['drop_down'].includes(option.type)
+                    ? option.values.find((value) => value.option_type_id == val).price
+                    : option.price
+
+                if (optionPrice.price_type == 'fixed') {
+                    addition += parseFloat(optionPrice.price)
+                } else {
+                    addition += (parseFloat(basePrice) * parseFloat(optionPrice.price)) / 100
+                }
+            })
+
+            return addition
+        }
+    },
+
     computed: {
         specialPrice() {
             if(!this.mounted) {
                 return;
             }
-            return this.$root.calculatePrice(this.product, this.type, { special_price: true })
+            return this.calculatePrice(this.product, this.type, Object.assign(this.options, { special_price: true }))
         },
 
         price() {
             if(!this.mounted) {
                 return;
             }
-            return this.$root.calculatePrice(this.product, this.type)
+            return this.calculatePrice(this.product, this.type, this.options)
         },
 
         isDiscounted() {
@@ -51,7 +117,7 @@ export default {
             }
 
             let prices = Object.values(this.product.children).map(
-                (child) => this.$root.calculatePrice(child, this.type, { special_price: true })
+                (child) => this.calculatePrice(child, this.type, Object.assign(this.options, { special_price: true }))
             )
 
             return {

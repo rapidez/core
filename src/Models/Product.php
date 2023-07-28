@@ -35,7 +35,7 @@ class Product extends Model
 
     protected $primaryKey = 'entity_id';
 
-    protected $appends = ['url', 'tax_multiplier'];
+    protected $appends = ['url', 'tax_rates'];
 
     protected static function booting(): void
     {
@@ -169,9 +169,9 @@ class Product extends Model
         })->min->special_price;
     }
 
-    public function getTaxMultiplierAttribute()
+    public function getTaxRatesAttribute(): object
     {
-        return Rapidez::getTaxMultiplier($this->tax_class_id);
+        return (object)Rapidez::getTaxRates($this->tax_class_id);
     }
 
     public function getUrlAttribute(): string
