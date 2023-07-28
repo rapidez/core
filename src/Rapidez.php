@@ -108,6 +108,8 @@ class Rapidez
                 ->join('tax_calculation', 'tax_calculation.product_tax_class_id', '=', 'tax_class.class_id')
                 ->join('tax_calculation_rate', 'tax_calculation_rate.tax_calculation_rate_id', '=', 'tax_calculation.tax_calculation_rate_id')
                 ->where('tax_country_id', Rapidez::config('tax/defaults/country', 'US'))
+                ->where('tax_region_id', Rapidez::config('tax/defaults/region', 0))
+                ->whereIn('tax_postcode', [null, '*', Rapidez::config('tax/default/postcode', null)])
                 ->where('customer_tax_class_id', Rapidez::config('tax/classes/default_customer_tax_class', 3))
                 ->pluck(DB::raw('rate / 100'), 'class_id')
                 ->toArray();
