@@ -87,7 +87,7 @@ class Product extends Model
             'catalog_product_entity_media_gallery_value_to_entity',
             'entity_id',
             'value_id',
-            'id'
+            'entity_id'
         );
     }
 
@@ -96,7 +96,7 @@ class Product extends Model
         return $this->hasMany(
             config('rapidez.models.product_view'),
             'product_id',
-            'id'
+            'entity_id'
         );
     }
 
@@ -105,7 +105,7 @@ class Product extends Model
         return $this->hasMany(
             config('rapidez.models.product_option'),
             'product_id',
-            'id',
+            'entity_id',
         );
     }
 
