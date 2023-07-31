@@ -26,7 +26,7 @@
                                     <img
                                         class="mx-auto"
                                         :alt="item.name"
-                                        :src="'/storage/resizes/80x80/magento/catalog/product' + item.image"
+                                        :src="'/storage/resizes/80x80/magento/catalog/product' + item.image + '.webp'"
                                         height="100"
                                     />
                                 </a>
