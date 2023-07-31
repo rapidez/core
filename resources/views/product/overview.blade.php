@@ -20,14 +20,14 @@
                 <div class="p-3 my-5 sm:mt-0 bg-gray-200 rounded prose prose-green max-w-none" itemprop="description">
                     {!! $product->description !!}
                 </div>
-                @includeWhen($product->type == 'grouped', 'rapidez::product.partials.grouped')
-                @includeWhen($product->type !== 'grouped', 'rapidez::product.partials.addtocart')
+                @includeWhen($product->type_id == 'grouped', 'rapidez::product.partials.grouped')
+                @includeWhen($product->type_id !== 'grouped', 'rapidez::product.partials.addtocart')
             </div>
         </div>
 
         <dl class="flex flex-wrap w-full bg-gray-200 rounded p-3 prose prose-green max-w-none">
             <dt class="w-1/2 sm:w-1/4 font-bold">ID</dt>
-            <dd class="w-1/2 sm:w-3/4">{{ $product->id }}</dd>
+            <dd class="w-1/2 sm:w-3/4">{{ $product->entity_id }}</dd>
             <dt class="w-1/2 sm:w-1/4 font-bold">SKU</dt>
             <dd class="w-1/2 sm:w-3/4">{{ $product->sku }}</dd>
             @foreach(config('rapidez.models.attribute')::getCachedWhere(fn ($a) => $a['productpage']) as $attribute)
