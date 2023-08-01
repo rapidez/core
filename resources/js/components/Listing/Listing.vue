@@ -32,15 +32,11 @@ export default {
     data: () => ({
         loaded: false,
         attributes: [],
+        pageSize: Turbo.navigator.location.searchParams.get('pageSize') || config.grid_per_page
     }),
 
     render() {
-        return this.$scopedSlots.default({
-            loaded: this.loaded,
-            filters: this.filters,
-            sortOptions: this.sortOptions,
-            reactiveFilters: this.reactiveFilters,
-        })
+        return this.$scopedSlots.default(Object.assign(this, { self: this }))
     },
 
     mounted() {
@@ -113,5 +109,12 @@ export default {
                 .concat(this.additionalSorting)
         },
     },
+    watch: {
+        pageSize: function (pageSize) {
+            let url = new URL(window.location)
+            url.searchParams.set('pageSize', pageSize)
+            window.history.pushState(window.history.state, '', url)
+        }
+    }
 }
 </script>
