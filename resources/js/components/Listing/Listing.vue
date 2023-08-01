@@ -32,7 +32,7 @@ export default {
     data: () => ({
         loaded: false,
         attributes: [],
-        pageSize: Turbo.navigator.location.searchParams.get('pageSize') || config.grid_per_page
+        pageSize: Turbo.navigator.location.searchParams.get('pageSize') || config.grid_per_page,
     }),
 
     render() {
@@ -114,7 +114,7 @@ export default {
             let url = new URL(window.location)
             url.searchParams.set('pageSize', pageSize)
             window.history.pushState(window.history.state, '', url)
-        }
-    }
+        },
+    },
 }
 </script>
