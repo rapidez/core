@@ -36,7 +36,7 @@
                 </x-rapidez::select>
                 <x-rapidez::button class="flex items-center" v-on:click="add" dusk="add-to-cart">
                     <x-heroicon-o-shopping-cart class="mr-2 h-5 w-5" v-if="!adding && !added" />
-                    <x-heroicon-o-refresh class="mr-2 h-5 w-5 animate-spin" v-if="adding" />
+                    <x-heroicon-o-arrow-path class="mr-2 h-5 w-5 animate-spin" v-if="adding" />
                     <x-heroicon-o-check class="mr-2 h-5 w-5" v-if="added" />
                     <span v-if="!adding && !added">@lang('Add to cart')</span>
                     <span v-if="adding">@lang('Adding')...</span>

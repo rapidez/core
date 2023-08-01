@@ -38,7 +38,7 @@
                         aria-label="@lang('Close filters')"
                         v-on:click="toggle"
                     >
-                        <x-heroicon-o-x class="h-6 w-6" />
+                        <x-heroicon-o-x-mark class="h-6 w-6" />
                     </button>
                 </div>
                 <div @class([
