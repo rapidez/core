@@ -15,7 +15,7 @@
             placeholder="@lang('Search')"
             v-on:value-selected="search"
             component-id="autocomplete"
-            :inner-class="{ input: '{{ $inputClasses }}' }"
+            :inner-class="{ input: '{{ $inputClasses }} -mb-2.5' }"
             :data-field="Object.keys(config.searchable)"
             :field-weights="Object.values(config.searchable)"
             :show-icon="false"
