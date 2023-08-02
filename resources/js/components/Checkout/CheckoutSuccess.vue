@@ -1,15 +1,45 @@
 <script>
-    import GetCart from './../Cart/mixins/GetCart'
+import GetCart from './../Cart/mixins/GetCart'
 
-    export default {
-        mixins: [GetCart],
+export default {
+    mixins: [GetCart],
 
-        render() {
-            return this.$scopedSlots.default()
+    props: {
+        token: {
+            type: String,
+            default: null,
         },
+        mask: {
+            type: String,
+            default: null,
+        },
+    },
 
-        created() {
-            this.clearCart()
+    data() {
+        return {
+            order: {},
         }
-    }
+    },
+
+    render() {
+        return this.$scopedSlots.default({
+            order: this.order,
+            refreshOrder: this.refreshOrder,
+        })
+    },
+
+    created() {
+        this.token ??= localStorage.token
+        this.mask ??= localStorage.mask
+
+        this.refreshOrder()
+        this.clearCart()
+    },
+
+    methods: {
+        refreshOrder() {
+            axios.get(window.url('/api/order/' + (this.token || this.mask))).then((response) => (this.order = response.data))
+        },
+    },
+}
 </script>

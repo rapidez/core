@@ -2,6 +2,7 @@
 
 @section('title', $product->meta_title ?: $product->name)
 @section('description', $product->meta_description)
+@include('rapidez::layouts.partials.head.hreflang', ['alternates' => $product->alternates])
 
 @section('content')
     <div class="container">

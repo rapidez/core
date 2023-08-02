@@ -6,7 +6,7 @@
                     @include('rapidez::wishlist.button')
                 </div>
             @endif
-            <a :href="item.url" class="block">
+            <a :href="item.url | url" class="block">
                 <picture v-if="item.thumbnail">
                     <source :srcset="'/storage/resizes/200/magento/catalog/product' + item.thumbnail + '.webp'" type="image/webp">
                     <img :src="'/storage/resizes/200/magento/catalog/product' + item.thumbnail" class="object-contain rounded-t h-48 w-full mb-3" :alt="item.name" :loading="config.category && count <= 4 ? 'eager' : 'lazy'" width="200" height="200" />
@@ -16,8 +16,8 @@
                     <div class="text-base font-medium text-gray-900">@{{ item.name }}</div>
                     @if (!Rapidez::config('catalog/frontend/show_swatches_in_product_list', 1))
                         <div class="flex items-center space-x-2">
-                            <div class="font-semibold">@{{ (item.special_price || item.price) | price}}</div>
-                            <div class="line-through text-sm" v-if="item.special_price">@{{ item.price | price}}</div>
+                            <div class="font-semibold">@{{ (item.special_price || item.price) | price }}</div>
+                            <div class="line-through text-sm" v-if="item.special_price">@{{ item.price | price }}</div>
                         </div>
                     @endif
                 </div>

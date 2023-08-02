@@ -4,7 +4,7 @@
             <div class="relative" v-if="hasItems" v-on-click-away="close" slot-scope="{toggle, close, isOpen}">
                 <button class="flex my-1 focus:outline-none" v-on:click="toggle">
                     <x-heroicon-o-shopping-cart class="h-6 w-6"/>
-                    <span class="bg-neutral rounded-full w-6 h-6 text-white text-center">@{{ Math.round(cart.items_qty) }}</span>
+                    <span class="bg-neutral rounded-full w-6 h-6 text-white text-center" dusk="minicart-count">@{{ Math.round(cart.items_qty) }}</span>
                 </button>
                 <div v-if="isOpen" class="absolute right-0 bg-white border shadow rounded p-3 mr-1 w-80 {{ config('rapidez.z-indexes.header-dropdowns') }}">
                     <table class="w-full mb-3">
@@ -19,16 +19,16 @@
                         </tr>
                     </table>
                     <div class="flex justify-between items-center">
-                        <x-rapidez::button.outline href="/cart" class="mr-5">
+                        <x-rapidez::button.outline href="{{ route('cart') }}" class="mr-5">
                             @lang('Show cart')
                         </x-rapidez::button.outline>
-                        <x-rapidez::button href="/checkout">
+                        <x-rapidez::button href="{{ route('checkout') }}">
                             @lang('Checkout')
                         </x-rapidez::button>
                     </div>
                 </div>
             </div>
-            <a href="/cart" aria-label="@lang('Cart')" class="my-1" v-else>
+            <a href="{{ route('cart') }}" aria-label="@lang('Cart')" class="my-1" v-else>
                 <x-heroicon-o-shopping-cart class="h-6 w-6"/>
             </a>
         </toggler>
