@@ -3,10 +3,14 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
+use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
 
 class Category extends Model
 {
+    use HasAlternatesThroughRewrites;
+
     protected $appends = ['url'];
 
     protected static function booting()
@@ -59,6 +63,14 @@ class Category extends Model
     public function subcategories()
     {
         return $this->hasMany(self::class, 'parent_id', 'entity_id');
+    }
+
+    public function rewrites(): HasMany
+    {
+        return $this
+            ->hasMany(config('rapidez.models.rewrite'), 'entity_id', 'entity_id')
+            ->withoutGlobalScope('store')
+            ->where('entity_type', 'category');
     }
 
     public function getParentcategoriesAttribute()
