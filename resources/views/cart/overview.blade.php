@@ -13,10 +13,10 @@
                 <div class="w-1/6 sm:w-1/12 pr-3">
                     <a :href="item.url | url" class="block">
                         <picture>
-                            <source :srcset="'/storage/resizes/80x80/magento/catalog/product' + item.image + '.webp'" type="image/webp">
+                            <source :srcset="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product' + item.image + '.webp'" type="image/webp">
                             <img
                                 :alt="item.name"
-                                :src="'/storage/resizes/80x80/magento/catalog/product' + item.image"
+                                :src="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product' + item.image"
                                 height="100"
                                 class="mx-auto"
                             />
