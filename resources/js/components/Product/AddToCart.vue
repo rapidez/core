@@ -149,7 +149,7 @@ export default {
                 }
 
                 let option = this.product.options.find((option) => option.option_id == key)
-                let optionPrice = ['drop_down'].includes(option.type)
+                let optionPrice = ['drop_down', 'radio'].includes(option.type)
                     ? option.values.find((value) => value.option_type_id == val).price
                     : option.price
 

@@ -56,7 +56,7 @@ function init() {
             custom: {},
             config: window.config,
             loadingCount: 0,
-            loading: computed(() => window.app?.$data?.loadingCount > 0),
+            loading: false,
             loadAutocomplete: false,
             cart: useCart(),
             user: useUser(),
@@ -108,6 +108,11 @@ function init() {
 
             loggedIn() {
                 return Boolean(this.user?.id)
+            },
+        },
+        watch: {
+            loadingCount: function (count) {
+                window.app.$data.loading = count > 0
             },
         },
     })

@@ -17,21 +17,26 @@ abstract class ElasticsearchIndexCommand extends Command
         $this->indexer = $indexer;
     }
 
-    public function indexAllStores(string $indexName, callable|iterable $items, callable|array $mapping, callable|string $id = 'id'): void
+    public function indexAllStores(string $indexName, callable|iterable $items, callable|array|null $dataFilter, callable|string $id = 'id'): void
     {
-        $stores = Rapidez::getStores();
+        $this->indexStores(Rapidez::getStores(), $indexName, $items, $dataFilter, $id);
+    }
+
+    public function indexStores(array $stores, string $indexName, callable|iterable $items, callable|array|null $dataFilter, callable|string $id = 'id'): void
+    {
         foreach ($stores as $store) {
-            $this->indexStore($store, $indexName, $items, $mapping, $id);
+            $this->indexStore($store, $indexName, $items, $dataFilter, $id);
         }
     }
 
-    public function indexStore(Store|array $store, string $indexName, callable|iterable $items, callable|array $mapping, callable|string $id = 'id'): void
+    public function indexStore(Store|array $store, string $indexName, callable|iterable $items, callable|array $dataFilter, callable|string $id = 'id'): void
     {
-        $this->line('Indexing `' . $indexName . '` for store ' . $store['name']);
+        $storeName = $store['name'] ?? $store['code'] ?? reset($store);
+        $this->line('Indexing `' . $indexName . '` for store ' . $storeName);
 
         try {
             $this->prepareIndexerWithStore($store, $indexName);
-            $this->indexer->index($this->dataFrom($items), $mapping, $id);
+            $this->indexer->index($this->dataFrom($items), $dataFilter, $id);
             $this->indexer->finish();
         } catch (Exception $e) {
             $this->indexer->abort();
