@@ -311,8 +311,8 @@ export default {
             handler() {
                 this.calculatePrices()
             },
-            deep: true
-        }
+            deep: true,
+        },
     },
 }
 </script>
