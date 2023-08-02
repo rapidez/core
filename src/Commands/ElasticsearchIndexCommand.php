@@ -84,7 +84,7 @@ abstract class ElasticsearchIndexCommand extends Command
         return $this;
     }
 
-    public function index(string $indexName, callable|iterable|Builder $items, callable|string $id = 'id'): void
+    public function index(string $indexName, callable|iterable|Builder $items, callable|string $id = 'entity_id'): void
     {
         foreach ($this->stores as $store) {
             $this->indexStore(
@@ -96,7 +96,7 @@ abstract class ElasticsearchIndexCommand extends Command
         }
     }
 
-    public function indexStore(Store|array $store, string $indexName, callable|iterable|Builder $items, callable|string $id = 'id'): void
+    public function indexStore(Store|array $store, string $indexName, callable|iterable|Builder $items, callable|string $id): void
     {
         $storeName = $store['name'] ?? $store['code'] ?? reset($store);
         $this->line('Indexing `' . $indexName . '` for store ' . $storeName);
@@ -125,7 +125,7 @@ abstract class ElasticsearchIndexCommand extends Command
         }
     }
 
-    public function tryIndexItems(iterable|Builder $items, callable|string $id = 'id'): void
+    public function tryIndexItems(iterable|Builder $items, callable|string $id): void
     {
         if (!$this->indexer->prepared) {
             throw new Exception('Attempted to index items without preparing the indexer first.');
@@ -133,19 +133,9 @@ abstract class ElasticsearchIndexCommand extends Command
 
         try {
             if (is_iterable($items)) {
-                foreach (array_chunk((array)$items, $this->chunkSize) as $chunk) {
-                    $this->indexer->index($chunk, $this->dataFilter, $id);
-                    if ($this->progressBar) {
-                        $this->bar->advance(count($chunk));
-                    }
-                }
+                $this->indexPartialIterable($items, $id);
             } else {
-                $items->chunk($this->chunkSize, function($chunk) use ($id) {
-                    $this->indexer->index($chunk, $this->dataFilter, $id);
-                    if ($this->progressBar) {
-                        $this->bar->advance(count($chunk));
-                    }
-                });
+                $this->indexPartialQuery($items, $id);
             }
             $this->indexer->finish();
         } catch (Exception $e) {
@@ -153,6 +143,26 @@ abstract class ElasticsearchIndexCommand extends Command
 
             throw $e;
         }
+    }
+
+    public function indexPartialIterable(iterable $items, callable|string $id): void
+    {
+        foreach (array_chunk((array)$items, $this->chunkSize) as $chunk) {
+            $this->indexer->index($chunk, $this->dataFilter, $id);
+            if ($this->progressBar) {
+                $this->bar->advance(count($chunk));
+            }
+        }
+    }
+
+    public function indexPartialQuery(Builder $items, callable|string $id): void
+    {
+        $items->chunk($this->chunkSize, function($chunk) use ($id) {
+            $this->indexer->index($chunk, $this->dataFilter, $id);
+            if ($this->progressBar) {
+                $this->bar->advance(count($chunk));
+            }
+        });
     }
 
     public function prepareIndexerWithStore(Store|array $store, string $indexName, array|null $mapping, array|null $settings): void

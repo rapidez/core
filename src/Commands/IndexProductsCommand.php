@@ -50,6 +50,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
             ->index(
                 indexName: 'products',
                 items: fn() => $productModel::selectOnlyIndexable()->withEventyGlobalScopes('index.product.scopes'),
+                id: 'id',
             );
 
         IndexAfterEvent::dispatch($this);

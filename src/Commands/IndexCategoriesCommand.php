@@ -18,7 +18,6 @@ class IndexCategoriesCommand extends ElasticsearchIndexCommand
             ->index(
                 indexName: 'categories',
                 items: $this->getCategories(...),
-                id: 'entity_id'
             );
 
         return 0;
