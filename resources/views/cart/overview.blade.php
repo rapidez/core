@@ -26,7 +26,7 @@
                                     <img
                                         class="mx-auto"
                                         :alt="item.name"
-                                        :src="'/storage/resizes/80x80/magento/catalog/product' + item.image + '.webp'"
+                                        :src="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product' + item.image + '.webp'"
                                         height="100"
                                     />
                                 </a>
@@ -76,7 +76,7 @@
                                     href="#"
                                     title="@lang('Remove')"
                                     @click.prevent="remove(item)"
-                                    :dusk="'item-delete-' + index"
+                                    :dusk="'item-delete-'+index"
                                 >
                                     <x-heroicon-s-x class="h-4 w-4" />
                                 </a>

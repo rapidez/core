@@ -8,7 +8,7 @@
         <div class="absolute inset-0 flex h-[440px] items-center justify-center rounded border p-5">
             <img
                 class="m-auto max-h-[400px] w-full object-contain"
-                src="/storage/resizes/400/catalog/product{{ $product->images[0] }}.webp"
+                src="/storage/{{ config('rapidez.store') }}/resizes/400/catalog/product{{ $product->images[0] }}.webp"
                 alt="{{ $product->name }}"
                 width="400"
                 height="400"
@@ -27,7 +27,7 @@
                 >
                     <img
                         v-if="!zoomed"
-                        :src="'/storage/resizes/400/magento/catalog/product' + images[active] + '.webp'"
+                        :src="'/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product' + images[active] + '.webp'"
                         alt="{{ $product->name }}"
                         class="object-contain w-full m-auto max-h-[400px]"
                         width="400"
@@ -59,7 +59,7 @@
                     @click.prevent="change(imageId)"
                 >
                     <img
-                        :src="'/storage/resizes/80x80/magento/catalog/product' + image + '.webp'"
+                        :src="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product' + image + '.webp'"
                         alt="{{ $product->name }}"
                         class="object-contain w-full m-auto max-h-[80px]"
                         loading="lazy"

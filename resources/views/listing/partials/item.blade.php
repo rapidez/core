@@ -8,8 +8,8 @@
             @endif
             <a :href="item.url | url" class="block">
                 <picture v-if="item.thumbnail">
-                    <source :srcset="'/storage/resizes/200/magento/catalog/product' + item.thumbnail + '.webp'" type="image/webp">
-                    <img :src="'/storage/resizes/200/magento/catalog/product' + item.thumbnail" class="object-contain rounded-t h-48 w-full mb-3" :alt="item.name" :loading="config.category && count <= 4 ? 'eager' : 'lazy'" width="200" height="200" />
+                    <source :srcset="'/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + item.thumbnail + '.webp'" type="image/webp">
+                    <img :src="'/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + item.thumbnail" class="object-contain rounded-t h-48 w-full mb-3" :alt="item.name" :loading="config.category && count <= 4 ? 'eager' : 'lazy'" width="200" height="200" />
                 </picture>
                 <x-rapidez::no-image v-else class="rounded-t h-48 mb-3"/>
                 <div class="px-2">
