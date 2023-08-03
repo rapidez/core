@@ -11,22 +11,8 @@
                     href="{{ url('/') }}"
                     aria-label="@lang('Go to home')"
                 >
-                    <span class="hidden sm:inline">
-                        <img
-                            src="https://raw.githubusercontent.com/rapidez/art/master/logo.svg"
-                            alt=""
-                            height="48"
-                            width="152"
-                        >
-                    </span>
-                    <span class="inline sm:hidden">
-                        <img
-                            src="https://raw.githubusercontent.com/rapidez/art/master/r.svg"
-                            alt=""
-                            height="30"
-                            width="30"
-                        >
-                    </span>
+                    <x-icon-rapidez class="h-12 hidden sm:inline" />
+                    <x-icon-r class="h-10 inline sm:hidden" />
                 </a>
                 <label
                     class="ml-3 cursor-pointer sm:hidden"
@@ -39,7 +25,7 @@
         <div class="flex h-12 max-w-lg flex-1 items-center">
             @include('rapidez::layouts.partials.header.autocomplete')
         </div>
-        <div class="ml-auto flex justify-end items-center pl-3">
+        <div class="ml-auto flex items-center justify-end pl-3">
             @include('rapidez::layouts.partials.header.account')
             @include('rapidez::layouts.partials.header.minicart')
         </div>
