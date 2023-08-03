@@ -8,7 +8,7 @@
         <div class="py-2">
             <div class="mr-3 flex items-center text-xl sm:text-3xl">
                 <a
-                    href="/"
+                    href="{{ url('/') }}"
                     aria-label="@lang('Go to home')"
                 >
                     <span class="hidden sm:inline">

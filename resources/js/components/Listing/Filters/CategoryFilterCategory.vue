@@ -15,13 +15,7 @@
 
         <ul :class="classes.ul" v-if="category.children">
             <template v-for="child in category.children">
-                <category-filter-category
-                    :category="child"
-                    :key="child.key"
-                    :value="value"
-                    :set-query="setQuery"
-                    :classes="classes"
-                />
+                <category-filter-category :category="child" :key="child.key" :value="value" :set-query="setQuery" :classes="classes" />
             </template>
         </ul>
     </li>
@@ -44,8 +38,8 @@ export default {
                     span: '',
                     small: '',
                 }
-            }
-        }
+            },
+        },
     },
 }
 </script>

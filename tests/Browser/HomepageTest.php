@@ -7,10 +7,13 @@ use Rapidez\Core\Tests\DuskTestCase;
 
 class HomepageTest extends DuskTestCase
 {
-    public function testHomepage()
+    /**
+     * @test
+     */
+    public function homepage()
     {
         $this->browse(function (Browser $browser) {
-            $browser->resize(1920, 1080)->visit('/')->assertSee('Hot Sellers');
+            $browser->resize(1920, 1080)->visit('/')->assertSee('All rights reserved.');
         });
     }
 }

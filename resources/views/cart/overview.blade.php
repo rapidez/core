@@ -12,21 +12,21 @@
                 v-if="hasItems"
                 slot-scope="{ cart, hasItems, changeQty, remove }"
             >
-                <div class="flex flex-col lg:flex-row lg:gap-x-6">
+                <div class="flex flex-col lg:flex-row gap-x-6">
                     <div class="flex w-full flex-col">
                         <div
                             class="mb-4 flex flex-wrap items-center border-b pb-2"
-                            v-for="(item, productId, index) in cart.items"
+                            v-for="(item, itemId, index) in cart.items"
                         >
                             <div class="w-1/6 pr-3 sm:w-1/12">
                                 <a
                                     class="block"
-                                    :href="item.url"
+                                    :href="item.url | url"
                                 >
                                     <img
                                         class="mx-auto"
                                         :alt="item.name"
-                                        :src="'/storage/resizes/80x80/catalog/product' + item.image + '.webp'"
+                                        :src="'/storage/resizes/80x80/magento/catalog/product' + item.image + '.webp'"
                                         height="100"
                                     />
                                 </a>
@@ -34,11 +34,14 @@
                             <div class="w-5/6 sm:w-5/12 xl:w-6/12">
                                 <a
                                     class="font-bold"
-                                    :href="item.url"
+                                    :href="item.url | url"
                                     dusk="cart-item-name"
                                 >@{{ item.name }}</a>
                                 <div v-for="(optionValue, option) in item.options">
                                     @{{ option }}: @{{ optionValue }}
+                                </div>
+                                <div v-for="option in cart.items2.find((item) => item.item_id == itemId).options.filter((option) => !['info_buyRequest', 'option_ids'].includes(option.code))">
+                                    @{{ option.label }}: @{{ option.value.title || option.value }}
                                 </div>
                             </div>
                             <div class="w-2/6 pr-5 text-right sm:w-1/6 xl:w-2/12">
@@ -79,42 +82,43 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="flex flex-wrap items-start justify-between">
-                            <div class="w-full md:w-auto">
-                                @include('rapidez::cart.coupon')
-                            </div>
-                            <div class="flex w-full md:w-auto">
-                                <div class="flex w-full flex-wrap justify-end self-baseline lg:w-64">
-                                    <dl class="mb-5 flex w-full flex-wrap rounded-lg border p-3 [&>dd:nth-last-of-type(-n+2)]:border-none [&>dd]:w-1/2 [&>dd]:border-b [&>dd]:py-3">
-                                        <dd>@lang('Subtotal')</dd>
-                                        <dd class="text-right">@{{ cart.subtotal | price }}</dd>
-                                        <dd v-if="cart.tax > 0">@lang('Tax')</dd>
-                                        <dd
-                                            class="text-right"
-                                            v-if="cart.tax > 0"
-                                        >@{{ cart.tax | price }}</dd>
-                                        <dd v-if="cart.shipping_amount > 0">@lang('Shipping')<br><small>@{{ cart.shipping_description }}</small></dd>
-                                        <dd
-                                            class="text-right"
-                                            v-if="cart.shipping_amount > 0"
-                                        >@{{ cart.shipping_amount | price }}</dd>
-                                        <dd v-if="cart.discount_name && cart.discount_amount < 0">@lang('Discount'): @{{ cart.discount_name }}</dd>
-                                        <dd v-if="!cart.discount_name && cart.discount_amount < 0">@lang('Discount')</dd>
-                                        <dd
-                                            class="text-right"
-                                            v-if="cart.discount_amount < 0"
-                                        >@{{ cart.discount_amount | price }}</dd>
-                                        <dd class="font-bold">@lang('Total')</dd>
-                                        <dd class="text-right font-bold">@{{ cart.total | price }}</dd>
-                                    </dl>
+                        <div class="w-full md:w-auto">
+                            @include('rapidez::cart.coupon')
+                        </div>
+                    </div>
 
-                                    <x-rapidez::button
-                                        href="/checkout"
-                                        dusk="checkout"
-                                    >
-                                        @lang('Checkout')
-                                    </x-rapidez::button>
-                                </div>
+                    <div class="flex flex-wrap items-start justify-between">
+                        <div class="flex w-full md:w-auto">
+                            <div class="flex w-full flex-wrap justify-end self-baseline lg:w-64">
+                                <dl class="mb-5 flex w-full flex-wrap rounded-lg border p-3 [&>dd:nth-last-of-type(-n+2)]:border-none [&>dd]:w-1/2 [&>dd]:border-b [&>dd]:py-3">
+                                    <dd>@lang('Subtotal')</dd>
+                                    <dd class="text-right">@{{ cart.subtotal | price }}</dd>
+                                    <dd v-if="cart.tax > 0">@lang('Tax')</dd>
+                                    <dd
+                                        class="text-right"
+                                        v-if="cart.tax > 0"
+                                    >@{{ cart.tax | price }}</dd>
+                                    <dd v-if="cart.shipping_amount > 0">@lang('Shipping')<br><small>@{{ cart.shipping_description }}</small></dd>
+                                    <dd
+                                        class="text-right"
+                                        v-if="cart.shipping_amount > 0"
+                                    >@{{ cart.shipping_amount | price }}</dd>
+                                    <dd v-if="cart.discount_name && cart.discount_amount < 0">@lang('Discount'): @{{ cart.discount_name }}</dd>
+                                    <dd v-if="!cart.discount_name && cart.discount_amount < 0">@lang('Discount')</dd>
+                                    <dd
+                                        class="text-right"
+                                        v-if="cart.discount_amount < 0"
+                                    >@{{ cart.discount_amount | price }}</dd>
+                                    <dd class="font-bold">@lang('Total')</dd>
+                                    <dd class="text-right font-bold">@{{ cart.total | price }}</dd>
+                                </dl>
+
+                                <x-rapidez::button
+                                    href="{{ route('checkout') }}"
+                                    dusk="checkout"
+                                >
+                                    @lang('Checkout')
+                                </x-rapidez::button>
                             </div>
                         </div>
                     </div>

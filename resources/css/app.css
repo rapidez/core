@@ -1,9 +1,13 @@
-@import "components/vue-slider";
-@import "./theme-variables.css";
+@import 'components/vue-slider';
+@import './theme-variables.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-[v-cloak] { display: none; }
-* { -webkit-tap-highlight-color: transparant; }
+[v-cloak] {
+    display: none;
+}
+* {
+    -webkit-tap-highlight-color: transparant;
+}

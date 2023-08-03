@@ -16,7 +16,7 @@ class Store extends Model
 
     protected static function booting()
     {
-        static::addGlobalScope(new IsActiveScope());
+        static::addGlobalScope(new IsActiveScope);
         static::addGlobalScope('defaults', function (Builder $builder) {
             $builder
                 ->where('store.code', '<>', 'admin')
@@ -25,20 +25,29 @@ class Store extends Model
         });
     }
 
-    public static function getCachedWhere(callable $callback): array
+    public static function getCached(): array
     {
-        if (!$stores = config('cache.app.stores')) {
+        if (! $stores = config('cache.app.stores')) {
             $stores = Cache::rememberForever('stores', function () {
                 return self::select([
                     'store_id',
+                    'store.name',
                     'store.code',
                     'store.website_id',
+                    'store.group_id',
                     'store_group.root_category_id',
                     'store_website.code AS website_code',
                 ])->get()->keyBy('store_id')->toArray();
             });
             config(['cache.app.stores' => $stores]);
         }
+
+        return $stores;
+    }
+
+    public static function getCachedWhere(callable $callback): array
+    {
+        $stores = static::getCached();
 
         $store = Arr::first($stores, function ($store) use ($callback) {
             return $callback($store);

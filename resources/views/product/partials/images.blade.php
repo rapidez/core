@@ -22,7 +22,7 @@
                 <a
                     :href="config.media_url + '/catalog/product' + images[active]"
                     class="flex items-center justify-center"
-                :class="zoomed ? 'fixed inset-0 bg-white !h-full {{ config('rapidez.z-indexes.lightbox')}} cursor-[zoom-out]' : 'border rounded p-5 h-[440px]'"
+                :class="zoomed ? 'fixed inset-0 bg-white !h-full {{ config('rapidez.z-indexes.lightbox') }} cursor-[zoom-out]' : 'border rounded p-5 h-[440px]'"
                     v-on:click.prevent="toggleZoom"
                 >
                     <img
@@ -41,16 +41,16 @@
                         loading="lazy"
                     />
                 </a>
-                <button class="{{ config('rapidez.z-indexes.lightbox') }} top-1/2 left-3 -translate-y-1/2" :class="zoomed ? 'fixed' : 'absolute'" v-if="active" v-on:click="change(active-1)" aria-label="@lang('Prev')">
+                <button class="{{ config('rapidez.z-indexes.lightbox')  }} top-1/2 left-3 -translate-y-1/2" :class="zoomed ? 'fixed' : 'absolute'" v-if="active" v-on:click="change(active-1)" aria-label="@lang('Prev')">
                     <x-heroicon-o-chevron-left class="h-8 w-8 text-gray-900" />
                 </button>
-                <button class="{{ config('rapidez.z-indexes.lightbox') }} top-1/2 right-3 -translate-y-1/2" :class="zoomed ? 'fixed' : 'absolute'" v-if="active != images.length-1" v-on:click="change(active+1)" aria-label="@lang('Next')">
+                <button class="{{ config('rapidez.z-indexes.lightbox')  }} top-1/2 right-3 -translate-y-1/2" :class="zoomed ? 'fixed' : 'absolute'" v-if="active != images.length-1" v-on:click="change(active+1)" aria-label="@lang('Next')">
                     <x-heroicon-o-chevron-right class="h-8 w-8 text-gray-900" />
                 </button>
             </div>
             <x-rapidez::no-image v-else class="h-96 rounded" />
 
-            <div v-if="images.length > 1" class="flex" :class="zoomed ? 'fixed bottom-0 left-3 {{ config('rapidez.z-indexes.lightbox')}}' : ' flex-wrap mt-3'">
+            <div v-if="images.length > 1" class="flex" :class="zoomed ? 'fixed bottom-0 left-3 {{ config('rapidez.z-indexes.lightbox') }}' : ' flex-wrap mt-3'">
                 <a
                     href="#"
                     v-for="(image, imageId) in images"

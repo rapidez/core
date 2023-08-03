@@ -33,7 +33,7 @@
                         v-for="suggestion in suggestions"
                         :key="suggestion.source._id"
                     >
-                        <a :href="suggestion.source.url" class="flex flex-wrap w-full h-full" key="suggestion.source._id">
+                        <a :href="suggestion.source.url | url" class="flex flex-wrap w-full h-full" key="suggestion.source._id">
                             <picture class="contents">
                                 <source :srcset="'/storage/resizes/80x80/magento/catalog/product' + suggestion.source.thumbnail + '.webp'" type="image/webp">
                                 <img :src="'/storage/resizes/80x80/magento/catalog/product' + suggestion.source.thumbnail" class="object-contain lg:w-3/12 self-center" />
