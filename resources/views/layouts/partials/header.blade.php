@@ -11,8 +11,22 @@
                     href="{{ url('/') }}"
                     aria-label="@lang('Go to home')"
                 >
-                    <x-icon-rapidez class="h-12 hidden sm:inline" />
-                    <x-icon-r class="h-10 inline sm:hidden" />
+                    <span class="hidden sm:inline">
+                        <img
+                            src="https://raw.githubusercontent.com/rapidez/art/master/logo.svg"
+                            alt=""
+                            height="48"
+                            width="152"
+                        >
+                    </span>
+                    <span class="inline sm:hidden">
+                        <img
+                            src="https://raw.githubusercontent.com/rapidez/art/master/r.svg"
+                            alt=""
+                            height="30"
+                            width="30"
+                        >
+                    </span>
                 </a>
                 <label
                     class="ml-3 cursor-pointer sm:hidden"
