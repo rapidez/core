@@ -15,44 +15,55 @@ export default {
     props: {
         reference: {
             type: String,
-            default: 'slider',
+            default: 'slider'
         },
         vertical: {
             type: Boolean,
-            default: false,
+            default: false
         },
         interval: {
             type: Number,
-            default: 5000,
+            default: 5000
         },
         autoplay: {
             type: Boolean,
-            default: false,
+            default: false
         },
         bounce: {
             type: Boolean,
-            default: false,
+            default: false
         },
         stopOnHover: {
             type: Boolean,
-            default: true,
+            default: true
         },
+        loop: {
+            type: Boolean,
+            default: false
+        }
     },
     data: () => {
         return {
+            slider: '',
+            slidesTotal: 0,
             position: 0,
             showLeft: false,
             showRight: false,
             mounted: false,
             hover: false,
             direction: 1,
+            chunk: '',
             pause: () => {},
-            resume: () => {},
+            resume: () => {}
         }
     },
     mounted() {
+        this.initSlider()
         useEventListener(this.slider, 'scroll', useThrottleFn(this.scroll, 150, true, true), { passive: true })
         this.$nextTick(() => {
+            if (this.loop) {
+                this.chunk = this.slider.cloneNode(true)
+            }
             this.slider.dispatchEvent(new CustomEvent('scroll'))
             this.mounted = true
 
@@ -60,6 +71,11 @@ export default {
         })
     },
     methods: {
+        initSlider() {
+            this.slider = this.$scopedSlots.default()[0].context.$refs[this.reference]
+            this.slidesTotal = (this.slider.children?.length ?? 1) - this.slidesVisible + 1
+        },
+
         initAutoPlay() {
             if (!this.autoplay) {
                 return
@@ -72,13 +88,13 @@ export default {
             if (!this.stopOnHover) {
                 return
             }
-            this.hover = useElementHover(this.slider)
+            this.hover = useElementHover(this.$el)
         },
 
         scroll() {
             this.position = this.vertical ? this.slider.scrollTop : this.slider.scrollLeft
-            this.showLeft = this.position
-            this.showRight = this.slider.offsetWidth + this.position < this.slider.scrollWidth - 1
+            this.showLeft = this.loop ? this.loop : this.position
+            this.showRight = this.loop ? this.loop : this.slider.offsetWidth + this.position < this.slider.scrollWidth - 1
         },
 
         autoScroll() {
@@ -102,6 +118,19 @@ export default {
                 ? this.slider.scrollTo(0, this.slider.children[index]?.offsetTop)
                 : this.slider.scrollTo(this.slider.children[0]?.offsetWidth * index, 0)
         },
+
+        handleLoop() {
+            if (this.currentSlide + 1 === this.slidesTotal - 1) {
+                Array.from(this.chunk.children).forEach((child) => {
+                    this.slider.appendChild(child.cloneNode(true))
+                })
+            }
+            if (this.currentSlide < 1) {
+                Array.from(this.chunk.children).forEach((child) => {
+                    this.slider.insertBefore(child.cloneNode(true), this.slider.firstChild)
+                })
+            }
+        }
     },
     watch: {
         hover(isHovering) {
@@ -111,11 +140,14 @@ export default {
                 this.pause()
             }
         },
+        currentSlide() {
+            this.initSlider()
+            if (this.loop) {
+                this.handleLoop()
+            }
+        }
     },
     computed: {
-        slider() {
-            return this.$scopedSlots.default()[0].context.$refs[this.reference]
-        },
         currentSlide() {
             if (this.mounted) {
                 return Math.round(this.position / this.childSpan)
@@ -124,11 +156,6 @@ export default {
         slidesVisible() {
             if (this.mounted) {
                 return Math.round(this.sliderSpan / this.childSpan)
-            }
-        },
-        slidesTotal() {
-            if (this.mounted) {
-                return (this.slider.children?.length ?? 1) - this.slidesVisible + 1
             }
         },
         childSpan() {
@@ -142,7 +169,7 @@ export default {
             if (this.mounted) {
                 return this.vertical ? this.slider.offsetHeight : this.slider.offsetWidth
             }
-        },
-    },
+        }
+    }
 }
 </script>
