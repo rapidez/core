@@ -32,7 +32,7 @@
                     class="ml-3 cursor-pointer sm:hidden"
                     for="navigation"
                 >
-                    <x-heroicon-o-menu class="inline w-7" />
+                    <x-heroicon-o-bars-3 class="inline w-7" />
                 </label>
             </div>
         </div>

@@ -65,7 +65,7 @@
                                         v-on:click="changeQty(item)"
                                         v-bind:dusk="'item-update-'+index"
                                     >
-                                        <x-heroicon-s-refresh class="h-4 w-4" />
+                                        <x-heroicon-s-arrow-path class="h-4 w-4" />
                                     </x-rapidez::button>
                                 </div>
                             </div>
@@ -78,7 +78,7 @@
                                     @click.prevent="remove(item)"
                                     :dusk="'item-delete-' + index"
                                 >
-                                    <x-heroicon-s-x class="h-4 w-4" />
+                                    <x-heroicon-s-x-mark class="h-4 w-4" />
                                 </a>
                             </div>
                         </div>
