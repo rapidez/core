@@ -45,8 +45,8 @@ class Product extends Model
         static::addGlobalScope(new WithProductGroupedScope);
         static::addGlobalScope('defaults', function (Builder $builder) {
             $builder
-                ->whereNotIn($this->qualifyColumn('type_id'), ['bundle'])
-                ->groupBy($this->getQualifiedKeyName());
+                ->whereNotIn($builder->getQuery()->from . '.type_id', ['bundle'])
+                ->groupBy($builder->getQuery()->from . '.entity_id');
         });
     }
 
