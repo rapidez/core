@@ -45,8 +45,8 @@ class Product extends Model
         static::addGlobalScope(new WithProductGroupedScope);
         static::addGlobalScope('defaults', function (Builder $builder) {
             $builder
-                ->whereNotIn($builder->getQuery()->from . '.type_id', ['bundle'])
-                ->groupBy($builder->getQuery()->from . '.entity_id');
+                ->whereNotIn($this->qualifyColumn('type_id'), ['bundle'])
+                ->groupBy($this->getQualifiedKeyName());
         });
     }
 
@@ -87,7 +87,6 @@ class Product extends Model
             'catalog_product_entity_media_gallery_value_to_entity',
             'entity_id',
             'value_id',
-            'entity_id'
         );
     }
 
@@ -96,7 +95,6 @@ class Product extends Model
         return $this->hasMany(
             config('rapidez.models.product_view'),
             'product_id',
-            'entity_id'
         );
     }
 
@@ -105,13 +103,12 @@ class Product extends Model
         return $this->hasMany(
             config('rapidez.models.product_option'),
             'product_id',
-            'entity_id',
         );
     }
 
     public function scopeByIds(Builder $query, array $productIds): Builder
     {
-        return $query->whereIn($this->getTable() . '.entity_id', $productIds);
+        return $query->whereIn($this->getQualifiedKeyName(), $productIds);
     }
 
     public function getPriceAttribute($price)
