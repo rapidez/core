@@ -96,6 +96,20 @@ class Rapidez
         config()->set('rapidez.store_code', $store['code']);
         config()->set('rapidez.website', $store['website_id']);
         config()->set('rapidez.website_code', $store['website_code']);
+        config()->set('rapidez.group', $store['group_id']);
         config()->set('rapidez.root_category_id', $store['root_category_id']);
+    }
+
+    public function withStore(Store|array|callable|int|string $store, callable $callback, ...$args)
+    {
+        $initialStore = config('rapidez.store');
+        Rapidez::setStore($store);
+        try {
+            $result = $callback(...$args);
+        } finally {
+            Rapidez::setStore($initialStore);
+        }
+
+        return $result;
     }
 }

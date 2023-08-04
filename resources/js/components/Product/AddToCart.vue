@@ -39,10 +39,14 @@ export default {
 
         adding: false,
         added: false,
+
+        price: 0,
+        specialPrice: 0,
     }),
 
     mounted() {
         this.qty = this.defaultQty
+        this.calculatePrices()
     },
 
     render() {
@@ -115,6 +119,11 @@ export default {
                 })
         },
 
+        calculatePrices: function () {
+            this.price = parseFloat(this.simpleProduct.price) + this.priceAddition(this.simpleProduct.price)
+            this.specialPrice = parseFloat(this.simpleProduct.special_price) + this.priceAddition(this.simpleProduct.special_price)
+        },
+
         getOptions: function (superAttributeCode) {
             if (this.$root.swatches.hasOwnProperty(superAttributeCode)) {
                 let swatchOptions = this.$root.swatches[superAttributeCode].options
@@ -150,7 +159,7 @@ export default {
                 }
 
                 let option = this.product.options.find((option) => option.option_id == key)
-                let optionPrice = ['drop_down'].includes(option.type)
+                let optionPrice = ['drop_down', 'radio'].includes(option.type)
                     ? option.values.find((value) => value.option_type_id == val).price
                     : option.price
 
@@ -369,13 +378,22 @@ export default {
         baseSpecialPrice: function () {
             return parseFloat(this.simpleProduct.special_price) + this.priceAddition(this.simpleProduct.special_price)
         },
-
+        
         price: function () {
             return this.tierPriceDiscount(this.basePrice)
         },
 
         specialPrice: function () {
             return this.tierPriceDiscount(this.baseSpecialPrice)
+        },
+    },
+    
+    watch: {
+        customOptions: {
+            handler() {
+                this.calculatePrices()
+            },
+            deep: true,
         },
     },
 }
