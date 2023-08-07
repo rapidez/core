@@ -19,7 +19,7 @@ abstract class ElasticsearchIndexCommand extends Command
     public bool $progressBar = true;
     public array $mapping = [];
     public array $settings = [];
-    public int $chunkSize = 500;
+    public int $chunkSize = 0;
 
     public Builder $query;
     public ProgressBar $bar;
@@ -96,12 +96,33 @@ abstract class ElasticsearchIndexCommand extends Command
         }
     }
 
-    public function indexStore(Store|array $store, string $indexName, callable|iterable|Builder $items, callable|string $id): void
+    public function initIndex(Store|array $store, string $indexName)
     {
         $storeName = $store['name'] ?? $store['code'] ?? reset($store);
         $this->line('Indexing `' . $indexName . '` for store ' . $storeName);
         $this->prepareIndexerWithStore($store, $indexName, $this->mapping, $this->settings);
+    }
 
+    public function beforeIndex(int $totalCount)
+    {
+        if ($this->progressBar) {
+            $this->bar = $this->output->createProgressBar($totalCount);
+            $this->bar->start();
+        }
+    }
+
+    public function afterIndex()
+    {
+        $this->indexer->finish();
+        if ($this->progressBar) {
+            $this->bar->finish();
+            $this->line('');
+        }
+    }
+
+    public function indexStore(Store|array $store, string $indexName, callable|iterable|Builder $items, callable|string $id): void
+    {
+        $this->initIndex($store, $indexName);
         $fullItems = $this->dataFrom($items);
 
         if (is_null($fullItems)) {
@@ -112,32 +133,19 @@ abstract class ElasticsearchIndexCommand extends Command
 
         $count = is_iterable($fullItems) ? count($fullItems) : $fullItems->getQuery()->getCountForPagination();
 
-        if ($this->progressBar) {
-            $this->bar = $this->output->createProgressBar($count);
-            $this->bar->start();
-        }
-
+        $this->beforeIndex($count);
         $this->tryIndexItems($fullItems, $id);
-
-        if ($this->progressBar) {
-            $this->bar->finish();
-            $this->line('');
-        }
+        $this->afterIndex();
     }
 
     public function tryIndexItems(iterable|Builder $items, callable|string $id): void
     {
-        if (!$this->indexer->prepared) {
-            throw new Exception('Attempted to index items without preparing the indexer first.');
-        }
-
         try {
             if (is_iterable($items)) {
                 $this->indexPartialIterable($items, $id);
             } else {
                 $this->indexPartialQuery($items, $id);
             }
-            $this->indexer->finish();
         } catch (Exception $e) {
             $this->indexer->abort();
 
@@ -147,22 +155,34 @@ abstract class ElasticsearchIndexCommand extends Command
 
     public function indexPartialIterable(iterable $items, callable|string $id): void
     {
+        if($this->chunkSize < 1) {
+            $this->indexPartial($items, $id);
+            return;
+        }
+
         foreach (array_chunk((array)$items, $this->chunkSize) as $chunk) {
-            $this->indexer->index($chunk, $this->dataFilter, $id);
-            if ($this->progressBar) {
-                $this->bar->advance(count($chunk));
-            }
+            $this->indexPartial($chunk, $id);
         }
     }
 
     public function indexPartialQuery(Builder $items, callable|string $id): void
     {
+        if($this->chunkSize < 1) {
+            $this->indexPartial($items->get(), $id);
+            return;
+        }
+
         $items->chunk($this->chunkSize, function($chunk) use ($id) {
-            $this->indexer->index($chunk, $this->dataFilter, $id);
-            if ($this->progressBar) {
-                $this->bar->advance(count($chunk));
-            }
+            $this->indexPartial($chunk, $id);
         });
+    }
+
+    public function indexPartial(iterable $items, callable|string $id): void
+    {
+        $this->indexer->index($items, $this->dataFilter, $id);
+        if ($this->progressBar) {
+            $this->bar->advance(count($items));
+        }
     }
 
     public function prepareIndexerWithStore(Store|array $store, string $indexName, array|null $mapping, array|null $settings): void

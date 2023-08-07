@@ -4,6 +4,7 @@ namespace Rapidez\Core\Commands;
 
 use Carbon\Carbon;
 use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
+use Exception;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Rapidez\Core\Jobs\IndexJob;
@@ -46,6 +47,10 @@ class ElasticsearchIndexer
     {
         if (is_null($item)) {
             return;
+        }
+
+        if (!$this->prepared) {
+            throw new Exception('Attempted to index items without preparing the indexer first.');
         }
 
         $arrItem = $item instanceof Arrayable ? $item->toArray() : (array) $item;
