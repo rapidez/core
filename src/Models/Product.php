@@ -89,7 +89,6 @@ class Product extends Model
             'catalog_product_entity_media_gallery_value_to_entity',
             'entity_id',
             'value_id',
-            'id'
         );
     }
 
@@ -98,7 +97,6 @@ class Product extends Model
         return $this->hasMany(
             config('rapidez.models.product_view'),
             'product_id',
-            'id'
         );
     }
 
@@ -107,7 +105,6 @@ class Product extends Model
         return $this->hasMany(
             config('rapidez.models.product_option'),
             'product_id',
-            'id',
         );
     }
 
@@ -121,16 +118,16 @@ class Product extends Model
 
     public function scopeByIds(Builder $query, array $productIds): Builder
     {
-        return $query->whereIn($this->getTable() . '.entity_id', $productIds);
+        return $query->whereIn($this->getQualifiedKeyName(), $productIds);
     }
 
     public function getPriceAttribute($price)
     {
-        if ($this->type == 'configurable') {
+        if ($this->type_id == 'configurable') {
             return collect($this->children)->min->price;
         }
 
-        if ($this->type == 'grouped') {
+        if ($this->type_id == 'grouped') {
             return collect($this->grouped)->min->price;
         }
 
@@ -139,7 +136,7 @@ class Product extends Model
 
     public function getSpecialPriceAttribute($specialPrice)
     {
-        if (! in_array($this->type, ['configurable', 'grouped'])) {
+        if (! in_array($this->type_id, ['configurable', 'grouped'])) {
             if ($this->special_from_date && $this->special_from_date > now()->toDateTimeString()) {
                 return null;
             }
@@ -151,7 +148,7 @@ class Product extends Model
             return $specialPrice !== $this->price ? $specialPrice : null;
         }
 
-        return collect($this->type == 'configurable' ? $this->children : $this->grouped)->filter(function ($child) {
+        return collect($this->type_id == 'configurable' ? $this->children : $this->grouped)->filter(function ($child) {
             if (! $child->special_price) {
                 return false;
             }
