@@ -93,8 +93,8 @@ export default {
 
         scroll() {
             this.position = this.vertical ? this.slider.scrollTop : this.slider.scrollLeft
-            this.showLeft = this.loop ? this.loop : this.position
-            this.showRight = this.loop ? this.loop : this.slider.offsetWidth + this.position < this.slider.scrollWidth - 1
+            this.showLeft = this.loop || this.position
+            this.showRight = this.loop || this.slider.offsetWidth + this.position < this.slider.scrollWidth - 1
         },
 
         autoScroll() {
