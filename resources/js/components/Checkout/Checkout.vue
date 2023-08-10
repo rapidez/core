@@ -190,7 +190,7 @@ export default {
                 Object.fromEntries(Object.entries(window.config.customer_fields_show).filter(([key, value]) => !value || value === 'opt')),
             )
             Object.entries(this.checkout.shipping_address).forEach(([key, val]) => {
-                if (!val && !['region_id', 'customer_address_id'].concat(optionalFields).includes(key)) {
+                if ((val == undefined || val == null) && !['region_id', 'customer_address_id'].concat(optionalFields).includes(key)) {
                     Notify(key + ' cannot be empty', 'warning')
                     validated = false
                 }
@@ -298,8 +298,8 @@ export default {
         shippingAddress: function () {
             let address = this.removeUnusedAddressInfo(this.$root.checkout.shipping_address)
 
-            if (this.checkout.hide_billing) {
-                address.same_as_billing = 1
+            if (this.checkout.hide_billing !== undefined && this.checkout.hide_billing !== null) {
+                address.same_as_billing = Number(this.checkout.hide_billing)
             }
 
             return address
