@@ -298,9 +298,7 @@ export default {
         shippingAddress: function () {
             let address = this.removeUnusedAddressInfo(this.$root.checkout.shipping_address)
 
-            if (this.checkout.hide_billing !== undefined && this.checkout.hide_billing !== null) {
-                address.same_as_billing = Number(this.checkout.hide_billing)
-            }
+            address.same_as_billing = Number(this.checkout.hide_billing)
 
             return address
         },
