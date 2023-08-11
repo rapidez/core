@@ -49,14 +49,6 @@
             required
         />
     </div>
-    <div class="col-span-6 sm:col-span-3">
-        <x-rapidez::input
-            name="{{ $type }}_street"
-            label="Street"
-            v-model.lazy="checkout.{{ $type }}_address.street[0]"
-            required
-        />
-    </div>
     @if(Rapidez::config('customer/address/street_lines', 3) >= 2)
         <div class="col-span-6 sm:col-span-3">
             <x-rapidez::input
@@ -77,6 +69,14 @@
             />
         </div>
     @endif
+    <div class="col-span-6 sm:col-span-3">
+        <x-rapidez::input
+            name="{{ $type }}_street"
+            label="Street"
+            v-model.lazy="checkout.{{ $type }}_address.street[0]"
+            required
+        />
+    </div>
     <div class="col-span-12 sm:col-span-6 sm:col-start-1">
         <x-rapidez::input
             name="{{ $type }}_city"

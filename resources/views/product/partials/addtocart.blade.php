@@ -15,7 +15,6 @@
                         :disabled="disabledOptions['super_'+superAttribute.code].includes(option.value)"
                     />
                 </x-rapidez::select>
-                @include('rapidez::product.partials.options')
             </div>
 
             @include('rapidez::product.partials.options')

@@ -36,10 +36,10 @@
                 </label>
             </div>
         </div>
-        <div class="flex h-12 max-w-3xl flex-1 items-center">
+        <div class="flex h-12 max-w-lg flex-1 items-center">
             @include('rapidez::layouts.partials.header.autocomplete')
         </div>
-        <div class="ml-auto flex justify-end items-center pl-3">
+        <div class="ml-auto flex items-center justify-end pl-3">
             @include('rapidez::layouts.partials.header.account')
             @include('rapidez::layouts.partials.header.minicart')
         </div>

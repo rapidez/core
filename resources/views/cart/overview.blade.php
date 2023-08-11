@@ -8,25 +8,16 @@
     <div class="container">
         <h1 class="mb-5 text-4xl font-bold">@lang('Cart')</h1>
         <cart v-cloak>
-            <div
-                v-if="hasItems"
-                slot-scope="{ cart, hasItems, changeQty, remove }"
-            >
-                <div class="flex flex-col lg:flex-row gap-x-6">
+            <div v-if="hasItems" slot-scope="{ cart, hasItems, changeQty, remove }">
+                <div class="flex flex-col gap-x-6 lg:flex-row">
                     <div class="flex w-full flex-col">
-                        <div
-                            class="mb-4 flex flex-wrap items-center border-b pb-2"
-                            v-for="(item, itemId, index) in cart.items"
-                        >
+                        <div class="mb-4 flex flex-wrap items-center border-b pb-2" v-for="(item, itemId, index) in cart.items">
                             <div class="w-1/6 pr-3 sm:w-1/12">
-                                <a
-                                    class="block"
-                                    :href="item.url | url"
-                                >
+                                <a class="block":href="item.url | url">
                                     <img
                                         class="mx-auto"
                                         :alt="item.name"
-                                        :src="'/storage/resizes/80x80/magento/catalog/product' + item.image + '.webp'"
+                                        :src="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product' + item.image + '.webp'"
                                         height="100"
                                     />
                                 </a>
@@ -94,29 +85,16 @@
                                     <dd>@lang('Subtotal')</dd>
                                     <dd class="text-right">@{{ cart.subtotal | price }}</dd>
                                     <dd v-if="cart.tax > 0">@lang('Tax')</dd>
-                                    <dd
-                                        class="text-right"
-                                        v-if="cart.tax > 0"
-                                    >@{{ cart.tax | price }}</dd>
+                                    <dd class="text-right" v-if="cart.tax > 0">@{{ cart.tax | price }}</dd>
                                     <dd v-if="cart.shipping_amount > 0">@lang('Shipping')<br><small>@{{ cart.shipping_description }}</small></dd>
-                                    <dd
-                                        class="text-right"
-                                        v-if="cart.shipping_amount > 0"
-                                    >@{{ cart.shipping_amount | price }}</dd>
+                                    <dd class="text-right" v-if="cart.shipping_amount > 0">@{{ cart.shipping_amount | price }}</dd>
                                     <dd v-if="cart.discount_name && cart.discount_amount < 0">@lang('Discount'): @{{ cart.discount_name }}</dd>
                                     <dd v-if="!cart.discount_name && cart.discount_amount < 0">@lang('Discount')</dd>
-                                    <dd
-                                        class="text-right"
-                                        v-if="cart.discount_amount < 0"
-                                    >@{{ cart.discount_amount | price }}</dd>
+                                    <dd class="text-right" v-if="cart.discount_amount < 0">@{{ cart.discount_amount | price }}</dd>
                                     <dd class="font-bold">@lang('Total')</dd>
                                     <dd class="text-right font-bold">@{{ cart.total | price }}</dd>
                                 </dl>
-
-                                <x-rapidez::button
-                                    href="{{ route('checkout') }}"
-                                    dusk="checkout"
-                                >
+                                <x-rapidez::button href="{{ route('checkout') }}" dusk="checkout">
                                     @lang('Checkout')
                                 </x-rapidez::button>
                             </div>
