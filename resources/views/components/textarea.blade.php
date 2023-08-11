@@ -1,10 +1,8 @@
 @props(['name', 'label', 'wrapperClass'])
 
 <div class="{{ $wrapperClass ?? '' }}">
-    @if(!isset($label) || (isset($label) && $label))
-        <x-rapidez::label
-        class="{{ $labelClass ?? '' }} mb-2 block text-inactive"
-        for="{{ $name }}">
+    @if (!isset($label) || (isset($label) && $label))
+        <x-rapidez::label for="{{ $name }}" class="{{ $labelClass ?? '' }} mb-2 block text-inactive">
             @lang($label ?? ucfirst($name))
         </x-rapidez::label>
     @endif
