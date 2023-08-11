@@ -68,8 +68,8 @@
                     />
                 </a>
             </div>
-            <div v-if="zoomed" class="{{ config('rapidez.z-indexes.lightbox')  }} pointer-events-none fixed top-3 right-3">
-                <x-heroicon-o-x class="h-6 w-6" />
+            <div v-if="zoomed" class="{{ config('rapidez.z-indexes.lightbox') }} pointer-events-none fixed top-3 right-3">
+                <x-heroicon-o-x-mark class="h-6 w-6" />
             </div>
         </div>
     </images>

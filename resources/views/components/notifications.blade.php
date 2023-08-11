@@ -18,7 +18,7 @@
                                     <x-heroicon-o-check-circle class="h-6 w-6" v-if="type == 'success'"/>
                                     <x-heroicon-o-exclamation-circle class="h-6 w-6" v-if="type == 'error'"/>
                                     <x-heroicon-o-information-circle class="h-6 w-6" v-if="type == 'info'"/>
-                                    <x-heroicon-o-exclamation class="h-6 w-6" v-if="type == 'warning'"/>
+                                    <x-heroicon-o-exclamation-triangle class="h-6 w-6" v-if="type == 'warning'"/>
                                 </div>
                                 <div class="ml-3 w-0 flex-1 pt-0.5">
                                     <p class="text-sm font-medium">
@@ -28,7 +28,7 @@
                                 <div class="ml-4 flex-shrink-0 flex self-start">
                                     <button @click.prevent="close()" class="rounded-md inline-flex focus:outline-none focus:ring-none focus:ring-offset-none">
                                         <span class="sr-only">@lang('Close')</span>
-                                        <x-heroicon-s-x class="h-5 w-5"/>
+                                        <x-heroicon-s-x-mark class="h-5 w-5"/>
                                     </button>
                                 </div>
                             </div>
