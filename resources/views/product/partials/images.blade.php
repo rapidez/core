@@ -8,7 +8,7 @@
         <div class="absolute inset-0 flex h-[440px] items-center justify-center rounded border p-5">
             <img
                 class="m-auto max-h-[400px] w-full object-contain"
-                src="/storage/{{ config('rapidez.store') }}/resizes/400/catalog/product{{ $product->images[0] }}.webp"
+                src="/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product{{ $product->images[0] }}.webp"
                 alt="{{ $product->name }}"
                 width="400"
                 height="400"
@@ -22,7 +22,7 @@
                 <a
                     :href="config.media_url + '/catalog/product' + images[active]"
                     class="flex items-center justify-center"
-                :class="zoomed ? 'fixed inset-0 bg-white !h-full {{ config('rapidez.z-indexes.lightbox') }} cursor-[zoom-out]' : 'border rounded p-5 h-[440px]'"
+                    :class="zoomed ? 'fixed inset-0 bg-white !h-full {{ config('rapidez.z-indexes.lightbox') }} cursor-[zoom-out]' : 'border rounded p-5 h-[440px]'"
                     v-on:click.prevent="toggleZoom"
                 >
                     <img
