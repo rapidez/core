@@ -2,10 +2,7 @@
 
 <div class="{{ $wrapperClass ?? '' }}">
     @if (!isset($label) || (isset($label) && $label))
-        <x-rapidez::label
-            class="{{ $labelClass ?? '' }}"
-            for="{{ $name }}"
-        >
+        <x-rapidez::label for="{{ $name }}" class="{{ $labelClass ?? '' }}">
             @lang($label ?? ucfirst($name))
         </x-rapidez::label>
     @endif

@@ -6,10 +6,7 @@
 
 @section('content')
     <div class="container">
-        <checkout
-            v-cloak
-            v-slot="{ checkout, cart, hasItems, save, goToStep }"
-        >
+        <checkout v-cloak v-slot="{ checkout, cart, hasItems, save, goToStep }">
             <div>
                 <template v-if="checkout.step !== 4">
                     @include('rapidez::checkout.partials.progressbar')
@@ -18,10 +15,7 @@
                     @include('rapidez::checkout.steps.login')
                 </div>
 
-                <div
-                    class="-mx-2 lg:flex"
-                    v-if="[2, 3].includes(checkout.step)"
-                >
+                <div v-if="[2, 3].includes(checkout.step)" class="-mx-2 lg:flex">
                     <div class="mb-5 w-full px-2 lg:w-3/4">
                         <div v-if="checkout.step == 2">
                             @include('rapidez::checkout.steps.credentials')
