@@ -13,10 +13,10 @@
         >
             <div
                 @class([
-                    'pointer-events-none absolute inset-0 -z-10 cursor-pointer bg-gray-500 opacity-0 transition-opacity',
+                    'pointer-events-none absolute inset-0 -z-10 cursor-pointer bg-neutral opacity-0 transition-opacity',
                     'md:hidden' => $mobileOnly,
                 ])
-                :class="{ 'opacity-75 pointer-events-auto': isOpen }"
+                :class="{ '!opacity-75 pointer-events-auto': isOpen }"
                 v-on:click="toggle"
             ></div>
             <div
@@ -34,7 +34,7 @@
                         {{ $title }}
                     </h2>
                     <button
-                        class="text-gray-400 transition hover:text-gray-500"
+                        class="text-gray-400 transition hover:text-text-neutral"
                         aria-label="@lang('Close filters')"
                         v-on:click="toggle"
                     >

@@ -7,10 +7,7 @@
         />
         <div class="py-2">
             <div class="mr-3 flex items-center text-xl sm:text-3xl">
-                <a
-                    href="{{ url('/') }}"
-                    aria-label="@lang('Go to home')"
-                >
+                <a href="{{ url('/') }}" aria-label="@lang('Go to home')">
                     <span class="hidden sm:inline">
                         <img
                             src="https://raw.githubusercontent.com/rapidez/art/master/logo.svg"
@@ -28,10 +25,7 @@
                         >
                     </span>
                 </a>
-                <label
-                    class="ml-3 cursor-pointer sm:hidden"
-                    for="navigation"
-                >
+                <label for="navigation" class="ml-3 cursor-pointer sm:hidden">
                     <x-heroicon-o-bars-3 class="inline w-7" />
                 </label>
             </div>

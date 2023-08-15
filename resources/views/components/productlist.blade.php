@@ -52,7 +52,7 @@
                                     <div
                                         v-for="slide, index in slidesTotal"
                                         v-on:click="navigate(index)"
-                                        class="relative bg-white rounded-full border border-gray-300 w-[15px] h-[15px] mx-1 cursor-pointer"
+                                        class="relative bg-white rounded-full border w-[15px] h-[15px] mx-1 cursor-pointer"
                                         :class="{ 'bg-neutral border-0': index === currentSlide }">
                                     </div>
                                 </div>

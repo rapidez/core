@@ -54,7 +54,6 @@
             <x-rapidez::input
                 name="{{ $type }}_housenumber"
                 label="Housenumber"
-                placeholder="Nr."
                 v-model.lazy="checkout.{{ $type }}_address.street[1]"
                 required
             />

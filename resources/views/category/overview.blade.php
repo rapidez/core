@@ -12,7 +12,7 @@
         @if ($category->is_anchor)
             <x-rapidez::listing query="{ bool: { must: [{ terms: { visibility: [2, 4] } }, { terms: { category_ids: [config.category.entity_id] } }] } }" />
         @else
-            <div class="flex flex-col md:flex-row">
+            <div class="flex max-md:flex-col">
                 <div class="xl:w-1/5">
                     @widget('sidebar.main', 'anchor_categories', 'catalog_category_view_type_layered', $category->entity_id)
                 </div>
