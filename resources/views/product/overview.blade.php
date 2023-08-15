@@ -7,10 +7,7 @@
 @section('content')
     <div class="container">
         @include('rapidez::product.partials.breadcrumbs')
-        <div
-            itemtype="https://schema.org/Product"
-            itemscope
-        >
+        <div itemtype="https://schema.org/Product" itemscope>
             @include('rapidez::product.partials.microdata')
             @include('rapidez::product.partials.opengraph')
             <div class="relative flex flex-col gap-8 sm:flex-row">
@@ -32,10 +29,7 @@
                     @endif
                     <div>
                         <div class="border-t pt-5 text-lg font-bold">@lang('Description')</div>
-                        <div
-                            class="prose text-inactive"
-                            itemprop="description"
-                        >
+                        <div class="prose text-inactive" itemprop="description">
                             {!! $product->description !!}
                         </div>
                     </div>
