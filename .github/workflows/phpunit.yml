@@ -22,7 +22,7 @@ jobs:
             testbench: 8.*
         exclude:
           - php: 8.0
-            laravel 10.*
+            laravel: 10.*
 
     services:
       mysql:
