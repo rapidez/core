@@ -1,6 +1,6 @@
 <template {!! isset($slider) ? '' : 'slot="renderItem" slot-scope="{ item, count }"' !!}>
     <div class="flex-none w-1/2 sm:w-1/3 lg:w-1/4 px-1 my-1 snap-start">
-        <div class="w-full bg-white rounded hover:shadow group relative" :key="item.id">
+        <div class="w-full bg-white rounded hover:shadow group relative" :key="item.entity_id">
             <a :href="item.url | url" class="block">
                 <picture v-if="item.thumbnail">
                     <source :srcset="'/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + item.thumbnail + '.webp'" type="image/webp">
