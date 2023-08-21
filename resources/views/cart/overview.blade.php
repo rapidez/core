@@ -63,7 +63,7 @@
                             <div class="flex w-2/6 items-center justify-end text-right sm:w-1/6 xl:w-2/12">
                                 @{{ item.total | price }}
                                 <button
-                                    class="ml-2 cursor-pinter"
+                                    class="ml-2 cursor-pointer"
                                     title="@lang('Remove')"
                                     v-on:click="remove(item)"
                                     v-bind:dusk="'item-delete-' + index"
