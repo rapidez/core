@@ -71,7 +71,7 @@ export default {
                         return [
                             ['asc', window.config.translations.asc],
                             ['desc', window.config.translations.desc],
-                        ].map(function ([directionLabel, directionKey]) {
+                        ].map(function ([directionKey, directionLabel]) {
                             return {
                                 label:
                                     window.config.translations.sorting?.[sorting.code]?.[directionKey] ??
