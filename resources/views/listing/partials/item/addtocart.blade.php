@@ -5,10 +5,10 @@
         <p v-if="!item.in_stock" class="text-red-600 text-xs">@lang('Sorry! This product is currently out of stock.')</p>
         <div v-else>
             <div v-for="(superAttribute, superAttributeId) in item.super_attributes">
-                <x-rapidez::label v-bind:for="item.id+'_super_attribute_'+superAttributeId">@{{ superAttribute.label }}</x-rapidez::label>
+                <x-rapidez::label v-bind:for="item.entity_id+'_super_attribute_'+superAttributeId">@{{ superAttribute.label }}</x-rapidez::label>
                 <x-rapidez::select
                     label=""
-                    v-bind:id="item.id+'_super_attribute_'+superAttributeId"
+                    v-bind:id="item.entity_id+'_super_attribute_'+superAttributeId"
                     v-bind:name="superAttributeId"
                     v-model="options[superAttributeId]"
                     class="block mb-3"

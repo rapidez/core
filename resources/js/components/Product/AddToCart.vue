@@ -38,10 +38,14 @@ export default {
 
         adding: false,
         added: false,
+
+        price: 0,
+        specialPrice: 0,
     }),
 
     mounted() {
         this.qty = this.defaultQty
+        this.calculatePrices()
     },
 
     render() {
@@ -112,6 +116,11 @@ export default {
                 .then(() => {
                     this.adding = false
                 })
+        },
+
+        calculatePrices: function () {
+            this.price = parseFloat(this.simpleProduct.price) + this.priceAddition(this.simpleProduct.price)
+            this.specialPrice = parseFloat(this.simpleProduct.special_price) + this.priceAddition(this.simpleProduct.special_price)
         },
 
         getOptions: function (superAttributeCode) {
@@ -271,6 +280,15 @@ export default {
             })
 
             return disabledOptions
+        },
+    },
+
+    watch: {
+        customOptions: {
+            handler() {
+                this.calculatePrices()
+            },
+            deep: true,
         },
     },
 }
