@@ -62,15 +62,14 @@
                             </div>
                             <div class="flex w-2/6 items-center justify-end text-right sm:w-1/6 xl:w-2/12">
                                 @{{ item.total | price }}
-                                <a
-                                    class="ml-2"
-                                    href="#"
+                                <button
+                                    class="ml-2 cursor-pointer"
                                     title="@lang('Remove')"
-                                    @click.prevent="remove(item)"
-                                    :dusk="'item-delete-' + index"
+                                    v-on:click="remove(item)"
+                                    v-bind:dusk="'item-delete-' + index"
                                 >
                                     <x-heroicon-s-x-mark class="h-4 w-4" />
-                                </a>
+                                </button>
                             </div>
                         </div>
                         <div class="w-full md:w-auto">

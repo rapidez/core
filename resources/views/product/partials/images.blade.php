@@ -51,12 +51,11 @@
             <x-rapidez::no-image v-else class="h-96 rounded" />
 
             <div v-if="images.length > 1" class="flex" :class="zoomed ? 'fixed bottom-0 left-3 {{ config('rapidez.z-indexes.lightbox') }}' : ' flex-wrap mt-3'">
-                <a
-                    href="#"
+                <button
                     v-for="(image, imageId) in images"
                     class="flex items-center justify-center bg-white border rounded p-2 mr-3 mb-3 h-[100px] w-[100px]"
                     :class="active == imageId ? 'border-neutral' : ''"
-                    @click.prevent="change(imageId)"
+                    @click="change(imageId)"
                 >
                     <img
                         :src="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product' + image + '.webp'"
@@ -66,7 +65,7 @@
                         width="80"
                         height="80"
                     />
-                </a>
+                </button>
             </div>
             <div v-if="zoomed" class="{{ config('rapidez.z-indexes.lightbox') }} pointer-events-none fixed top-3 right-3">
                 <x-heroicon-o-x-mark class="h-6 w-6" />

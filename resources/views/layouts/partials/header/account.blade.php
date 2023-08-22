@@ -14,15 +14,14 @@
                     @endif
                 @endif
                 <user>
-                    <a
-                        href="#"
-                        class="block hover:bg-inactive px-3 py-2"
+                    <button
+                        class="block hover:bg-inactive px-3 py-2 cursor-pointer"
                         dusk="logout"
                         slot-scope="{ logout }"
-                        @click.prevent="logout('/')"
+                        @click="logout('/')"
                     >
                         @lang('Logout')
-                    </a>
+                    </button>
                 </user>
             </div>
         </div>
