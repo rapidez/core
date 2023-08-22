@@ -145,7 +145,7 @@ export default {
             let file = event.target.files[0]
             let reader = new FileReader()
             reader.onerror = (error) => alert(error)
-            reader.onload = () => (this.customOptions[optionId] = 'FILE;' + file.name + ';' + reader.result)
+            reader.onload = () => Vue.set(this.customOptions, optionId, 'FILE;' + file.name + ';' + reader.result)
             reader.readAsDataURL(file)
         },
 
