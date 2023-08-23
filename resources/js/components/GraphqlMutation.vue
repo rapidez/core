@@ -39,6 +39,9 @@ export default {
         callback: {
             type: Function,
         },
+        errorCallback: {
+            type: Function,
+        },
         beforeRequest: {
             type: Function,
         },
@@ -115,7 +118,7 @@ export default {
                     query = this.query
 
                 if (this.beforeRequest) {
-                    ;[query, variables, options] = await this.beforeRequest(this.query, this.variables, options)
+                    [query, variables, options] = await this.beforeRequest(this.query, this.variables, options)
                 }
 
                 let response = await axios.post(
@@ -128,6 +131,11 @@ export default {
                 )
 
                 if (response.data.errors) {
+                    if (this.errorCallback) {
+                        await this.errorCallback(this.data, response)
+                        return
+                    }
+
                     if (response.data.errors[0]?.extensions?.category == 'graphql-authorization') {
                         this.logout(window.url('/login'))
                         return
