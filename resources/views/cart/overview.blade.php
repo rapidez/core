@@ -28,7 +28,7 @@
                     <div v-for="(optionValue, option) in item.options">
                         @{{ option }}: @{{ optionValue }}
                     </div>
-                    <div v-for="option in cart.items2.find((item) => item.item_id == itemId).options.filter((option) => !['info_buyRequest', 'option_ids'].includes(option.code))" v-if="option.label">
+                    <div v-for="option in cart.items2.find((item) => item.item_id == itemId).options.filter((option) => !['info_buyRequest', 'option_ids'].includes(option.code) && option.label)">
                         @{{ option.label }}: @{{ option.value.title || option.value }}
                     </div>
                 </div>
