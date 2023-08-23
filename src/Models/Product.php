@@ -111,7 +111,7 @@ class Product extends Model
     public function rewrites(): HasMany
     {
         return $this
-            ->hasMany(config('rapidez.models.rewrite'), 'entity_id', 'id')
+            ->hasMany(config('rapidez.models.rewrite'), 'entity_id')
             ->withoutGlobalScope('store')
             ->where('entity_type', 'product');
     }
