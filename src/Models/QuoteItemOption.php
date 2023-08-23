@@ -28,7 +28,7 @@ class QuoteItemOption extends Model
                 'option_ids'      => explode(',', $value),
                 default           => (function () use ($value) {
                     if (in_array($this->option->type, ['drop_down', 'radio'])) {
-                        return config('rapidez.models.product_option_type_value')::find($value)->titles->firstForCurrentStore()->title;
+                        return config('rapidez.models.product_option_type_value')::find($value)->title;
                     }
 
                     if ($this->option->type == 'file') {
