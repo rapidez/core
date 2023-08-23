@@ -27,7 +27,7 @@ class QuoteItemOption extends Model
                 'info_buyRequest' => json_decode($value),
                 'option_ids'      => explode(',', $value),
                 default           => (function () use ($value) {
-                    if (!$this->option) {
+                    if (! $this->option) {
                         return;
                     }
 
