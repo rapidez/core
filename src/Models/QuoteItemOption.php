@@ -27,6 +27,10 @@ class QuoteItemOption extends Model
                 'info_buyRequest' => json_decode($value),
                 'option_ids'      => explode(',', $value),
                 default           => (function () use ($value) {
+                    if (!$this->option) {
+                        return;
+                    }
+
                     if (in_array($this->option->type, ['drop_down', 'radio'])) {
                         return config('rapidez.models.product_option_type_value')::find($value)->title;
                     }
