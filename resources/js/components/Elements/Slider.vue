@@ -15,32 +15,32 @@ export default {
     props: {
         reference: {
             type: String,
-            default: 'slider'
+            default: 'slider',
         },
         vertical: {
             type: Boolean,
-            default: false
+            default: false,
         },
         interval: {
             type: Number,
-            default: 5000
+            default: 5000,
         },
         autoplay: {
             type: Boolean,
-            default: false
+            default: false,
         },
         bounce: {
             type: Boolean,
-            default: false
+            default: false,
         },
         stopOnHover: {
             type: Boolean,
-            default: true
+            default: true,
         },
         loop: {
             type: Boolean,
-            default: false
-        }
+            default: false,
+        },
     },
     data: () => {
         return {
@@ -54,7 +54,7 @@ export default {
             direction: 1,
             chunk: '',
             pause: () => {},
-            resume: () => {}
+            resume: () => {},
         }
     },
     mounted() {
@@ -130,7 +130,7 @@ export default {
                     this.slider.insertBefore(child.cloneNode(true), this.slider.firstChild)
                 })
             }
-        }
+        },
     },
     watch: {
         hover(isHovering) {
@@ -145,7 +145,7 @@ export default {
             if (this.loop) {
                 this.handleLoop()
             }
-        }
+        },
     },
     computed: {
         currentSlide() {
@@ -169,7 +169,7 @@ export default {
             if (this.mounted) {
                 return this.vertical ? this.slider.offsetHeight : this.slider.offsetWidth
             }
-        }
-    }
+        },
+    },
 }
 </script>
