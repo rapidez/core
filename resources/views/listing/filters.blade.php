@@ -1,7 +1,6 @@
 <x-rapidez::slideover :mobile-only="true">
     <x-slot:button>
-        <x-rapidez::button
-            v-on:click="toggle" class="mb-3 w-full md:hidden">
+        <x-rapidez::button v-on:click="toggle" class="mb-3 w-full md:hidden">
             @lang('Filters')
         </x-rapidez::button>
     </x-slot:button>
