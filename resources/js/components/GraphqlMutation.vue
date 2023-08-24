@@ -39,6 +39,9 @@ export default {
         callback: {
             type: Function,
         },
+        errorCallback: {
+            type: Function,
+        },
         beforeRequest: {
             type: Function,
         },
@@ -128,6 +131,11 @@ export default {
                 )
 
                 if (response.data.errors) {
+                    if (this.errorCallback) {
+                        await this.errorCallback(this.data, response)
+                        return
+                    }
+
                     if (response.data.errors[0]?.extensions?.category == 'graphql-authorization') {
                         this.logout(window.url('/login'))
                         return

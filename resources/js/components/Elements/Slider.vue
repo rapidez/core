@@ -37,22 +37,33 @@ export default {
             type: Boolean,
             default: true,
         },
+        loop: {
+            type: Boolean,
+            default: false,
+        },
     },
     data: () => {
         return {
+            slider: '',
+            slidesTotal: 0,
             position: 0,
             showLeft: false,
             showRight: false,
             mounted: false,
             hover: false,
             direction: 1,
+            chunk: '',
             pause: () => {},
             resume: () => {},
         }
     },
     mounted() {
+        this.initSlider()
         useEventListener(this.slider, 'scroll', useThrottleFn(this.scroll, 150, true, true), { passive: true })
         this.$nextTick(() => {
+            if (this.loop) {
+                this.chunk = this.slider.cloneNode(true)
+            }
             this.slider.dispatchEvent(new CustomEvent('scroll'))
             this.mounted = true
 
@@ -60,6 +71,10 @@ export default {
         })
     },
     methods: {
+        initSlider() {
+            this.slider = this.$scopedSlots.default()[0].context.$refs[this.reference]
+            this.slidesTotal = (this.slider.children?.length ?? 1) - this.slidesVisible + 1
+        },
         initAutoPlay() {
             if (!this.autoplay) {
                 return
@@ -72,12 +87,12 @@ export default {
             if (!this.stopOnHover) {
                 return
             }
-            this.hover = useElementHover(this.slider)
+            this.hover = useElementHover(this.$el)
         },
         scroll(event) {
             this.position = this.vertical ? event.target.scrollTop : event.target.scrollLeft
-            this.showLeft = this.position > 0
-            this.showRight = this.slider.offsetWidth + this.position < this.slider.scrollWidth - 1
+            this.showLeft = this.loop || this.position
+            this.showRight = this.loop || this.slider.offsetWidth + this.position < this.slider.scrollWidth - 1
         },
         autoScroll() {
             if (this.slidesTotal == 1) {
@@ -94,11 +109,22 @@ export default {
             }
             this.navigate(next)
         },
-
         navigate(index) {
             this.vertical
                 ? this.slider.scrollTo(0, this.slider.children[index]?.offsetTop)
                 : this.slider.scrollTo(this.slider.children[0]?.offsetWidth * index, 0)
+        },
+        handleLoop() {
+            if (this.currentSlide + 1 === this.slidesTotal - 1) {
+                Array.from(this.chunk.children).forEach((child) => {
+                    this.slider.appendChild(child.cloneNode(true))
+                })
+            }
+            if (this.currentSlide < 1) {
+                Array.from(this.chunk.children).forEach((child) => {
+                    this.slider.insertBefore(child.cloneNode(true), this.slider.firstChild)
+                })
+            }
         },
     },
     watch: {
@@ -109,11 +135,14 @@ export default {
                 this.pause()
             }
         },
+        currentSlide() {
+            this.initSlider()
+            if (this.loop) {
+                this.handleLoop()
+            }
+        },
     },
     computed: {
-        slider() {
-            return this.$scopedSlots.default()[0].context.$refs[this.reference]
-        },
         currentSlide() {
             if (!this.mounted) {
                 return 0
@@ -127,13 +156,6 @@ export default {
             }
 
             return Math.round(this.sliderSpan / this.childSpan)
-        },
-        slidesTotal() {
-            if (!this.mounted) {
-                return 0
-            }
-
-            return (this.slider.children?.length ?? 1) - this.slidesVisible + 1
         },
         childSpan() {
             if (!this.mounted) {

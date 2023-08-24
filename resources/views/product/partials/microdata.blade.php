@@ -1,4 +1,4 @@
-<meta itemprop="mpn" content="{{ $product->id }}" />
+<meta itemprop="mpn" content="{{ $product->entity_id }}" />
 <meta itemprop="sku" content="{{ $product->sku }}" />
 
 @foreach($product->images as $image)
