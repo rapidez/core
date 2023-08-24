@@ -18,8 +18,7 @@
             @include('rapidez::listing.partials.filter.select')
         </template>
     </lazy>
-    <x-rapidez::button
-        v-on:click="toggle" class="w-full text-sm md:hidden">
+    <x-rapidez::button v-on:click="toggle" class="w-full text-sm md:hidden">
         @lang('Show results')
     </x-rapidez::button>
 </x-rapidez::slideover>
