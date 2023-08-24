@@ -118,7 +118,7 @@ export default {
                     query = this.query
 
                 if (this.beforeRequest) {
-                    [query, variables, options] = await this.beforeRequest(this.query, this.variables, options)
+                    ;[query, variables, options] = await this.beforeRequest(this.query, this.variables, options)
                 }
 
                 let response = await axios.post(
