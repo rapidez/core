@@ -18,7 +18,6 @@ class IndexCategoriesCommand extends ElasticsearchIndexCommand
             indexName: 'categories',
             items: $this->getCategories(...),
             dataFilter: fn ($data) => Eventy::filter('index.category.data', $data),
-            id: 'entity_id'
         );
 
         return 0;

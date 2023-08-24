@@ -17,8 +17,8 @@
                     </div>
                 </div>
                 <div class="flex flex-col gap-5 sm:w-1/2">
-                    @includeWhen($product->type == 'grouped', 'rapidez::product.partials.grouped')
-                    @includeWhen($product->type !== 'grouped', 'rapidez::product.partials.addtocart')
+                    @includeWhen($product->type_id == 'grouped', 'rapidez::product.partials.grouped')
+                    @includeWhen($product->type_id !== 'grouped', 'rapidez::product.partials.addtocart')
                     @if (App::providerIsLoaded('Rapidez\Reviews\ReviewsServiceProvider'))
                         @if ($product->reviews_score)
                             <stars
@@ -37,7 +37,7 @@
                         <div class="mb-2 border-t pt-5 text-lg font-bold">@lang('Specifications')</div>
                         <dl class="flex flex-col text-inactive [&>dd]:rounded [&>dd]:p-2 odd:[&>dd]:bg-highlight odd:[&>dd]:font-semibold odd:[&>dd]:text-neutral even:[&>dd]:pl-4">
                             <dd>ID</dd>
-                            <dd>{{ $product->id }}</dd>
+                            <dd>{{ $product->entity_id }}</dd>
                             <dd>SKU</dd>
                             <dd>{{ $product->sku }}</dd>
                             @foreach (config('rapidez.models.attribute')::getCachedWhere(fn($a) => $a['productpage']) as $attribute)
