@@ -3,7 +3,7 @@
         <h1 class="font-bold text-4xl mb-5">@lang('Order placed succesfully')</h1>
         <div class="bg-highlight rounded p-8">
             <p>@lang('We will get to work for you right away')</p>
-            <p>@lang('We will send a confirmation of your order to') <span class="font-bold">@{{$root.user?.email}}</span></p>
+            <p>@lang('We will send a confirmation of your order to') <span class="font-bold">@{{ $root.user?.email }}</span></p>
         </div>
         <div class="mt-4">
             <div class="flex flex-wrap items-center mb-4 border-b pb-2" v-for="(item, productId, index) in cart.items">
