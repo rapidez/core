@@ -37,7 +37,7 @@ export default {
         this.setCheckoutCredentialsFromDefaultUserAddresses()
         this.getShippingMethods()
         this.getTotalsInformation()
-        this.$root.$emit('checkout-step', 1)
+        this.$root.$emit('checkout-step', 2)
     },
 
     methods: {
