@@ -25,6 +25,7 @@ class QuoteItemOption extends Model
         return Attribute::make(
             get: fn (string $value) => match ($this->code) {
                 'info_buyRequest' => json_decode($value),
+                'attributes'      => json_decode($value),
                 'option_ids'      => explode(',', $value),
                 default           => (function () use ($value) {
                     if (! $this->option) {
@@ -57,7 +58,7 @@ class QuoteItemOption extends Model
     protected function option(): Attribute
     {
         return Attribute::make(
-            get: fn () => config('rapidez.models.product_option')::find(explode('_', $this->code)[1])
+            get: fn () => config('rapidez.models.product_option')::find(explode('_', $this->code)[1] ?? '')
         )->shouldCache();
     }
 }
