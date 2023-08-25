@@ -10,7 +10,7 @@ Route::middleware('api')->prefix('api')->group(function () {
         $attributeModel = config('rapidez.models.attribute');
 
         return $attributeModel::getCachedWhere(function ($attribute) {
-            return $attribute['filter'] || $attribute['sorting'];
+            return $attribute['filterable'] || $attribute['sorting'];
         });
     });
 

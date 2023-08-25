@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute as CastsAttribute;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Models\Scopes\Attribute\OnlyProductAttributesScope;
@@ -12,9 +13,18 @@ class Attribute extends Model
 
     protected $primaryKey = 'attribute_id';
 
+    protected $appends = ['filterable'];
+
     protected static function booting()
     {
         static::addGlobalScope(new OnlyProductAttributesScope);
+    }
+
+    protected function filterable(): CastsAttribute
+    {
+        return CastsAttribute::make(
+            get: fn () => $this->filter || in_array($this->code, config('rapidez.extra-filters')),
+        )->shouldCache();
     }
 
     public static function getCachedWhere(callable $callback): array

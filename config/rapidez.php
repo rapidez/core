@@ -145,4 +145,6 @@ return [
         'slideover'        => 'z-50',
     ],
 
+    // Attribute codes of attributes that need to be filtered but can't be set as filterable in magento
+    'extra-filters' => [],
 ];

@@ -49,7 +49,7 @@ export default {
     computed: {
         filters: function () {
             return Object.values(this.attributes)
-                .filter((attribute) => attribute.filter)
+                .filter((attribute) => attribute.filterable)
                 .sort((a, b) => a.position - b.position)
         },
         sortings: function () {
