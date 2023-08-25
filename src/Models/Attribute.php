@@ -13,17 +13,15 @@ class Attribute extends Model
 
     protected $primaryKey = 'attribute_id';
 
-    protected $appends = ['filterable'];
-
     protected static function booting()
     {
         static::addGlobalScope(new OnlyProductAttributesScope);
     }
 
-    protected function filterable(): CastsAttribute
+    protected function filter(): CastsAttribute
     {
         return CastsAttribute::make(
-            get: fn () => $this->filter || in_array($this->code, config('rapidez.extra-filters')),
+            get: fn ($value) => $value || in_array($this->code, config('rapidez.extra-filters')),
         )->shouldCache();
     }
 
