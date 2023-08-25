@@ -145,6 +145,10 @@ return [
         'slideover'        => 'z-50',
     ],
 
-    // Attribute codes of attributes that need to be filtered but can't be set as filterable in magento
-    'extra-filters' => [],
+    // From Magento only "Yes/No, Dropdown, Multiple Select and Price" attribute types
+    // can be configured as filter. If you'd like to have a filter for an attribute
+    // with, for example, the type of "Text", you can specify the attribute code here.
+    'additional_filters' => [
+        // Attribute codes
+    ],
 ];
