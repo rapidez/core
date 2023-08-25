@@ -58,7 +58,7 @@ class QuoteItemOption extends Model
     protected function option(): Attribute
     {
         return Attribute::make(
-            get: fn () => config('rapidez.models.product_option')::find(explode('_', $this->code)[1] ?? '')
+            get: fn () => config('rapidez.models.product_option')::find(explode('_', $this->code)[1] ?? $this->code)
         )->shouldCache();
     }
 }
