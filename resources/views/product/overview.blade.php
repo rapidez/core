@@ -56,7 +56,7 @@
         </div>
     </div>
     @if (App::providerIsLoaded('Rapidez\Reviews\ReviewsServiceProvider'))
-        <div class="my-5 bg-highlight">
+        <div class="my-5 py-8 bg-highlight">
             <div class="container grid w-full grid-cols-1 gap-5 p-5 sm:grid-cols-3">
                 <div class="top-5 self-start w-full rounded bg-white p-4 sm:sticky">
                     @include('rapidez-reviews::form', ['sku' => $product->sku])
