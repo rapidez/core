@@ -3,7 +3,7 @@ import { user, token, refresh as refreshUser, clear as clearUser } from '../../.
 
 const onOnce = useMemoize(
     (self, eventName, callback) => {
-        self.$root.$on(eventName, callback)
+        self.$on(eventName, callback)
     },
     {
         getKey: (eventName, callback) => eventName + callback.toString(),
@@ -111,7 +111,7 @@ export default {
     },
 
     created() {
-        onOnce(this, 'logout', this.onLogout)
+        onOnce(this.$root, 'logout', this.onLogout)
     },
 
     asyncComputed: {
