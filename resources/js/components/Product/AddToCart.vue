@@ -54,9 +54,11 @@ export default {
 
     methods: {
         async add() {
-            if (window.location.pathname !== this.product.url
-                && (this.product?.has_options
-                    || ('children' in this.product && Object.values(this.product.children).length && !config.show_swatches))){
+            if (
+                window.location.pathname !== this.product.url &&
+                (this.product?.has_options ||
+                    ('children' in this.product && Object.values(this.product.children).length && !config.show_swatches))
+            ) {
                 Turbo.visit(window.url(this.product.url))
                 return
             }
