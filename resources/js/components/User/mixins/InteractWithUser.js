@@ -2,8 +2,8 @@ import { useLocalStorage, useMemoize } from '@vueuse/core'
 import { user, token, refresh as refreshUser, clear as clearUser } from '../../../stores/useUser'
 
 const onOnce = useMemoize(
-    (eventName, callback) => {
-        window.app.$on(eventName, callback)
+    (self, eventName, callback) => {
+        self.$on(eventName, callback)
     },
     {
         getKey: (eventName, callback) => eventName + callback.toString(),
@@ -111,7 +111,7 @@ export default {
     },
 
     created() {
-        onOnce('logout', this.onLogout)
+        onOnce(this.$root, 'logout', this.onLogout)
     },
 
     asyncComputed: {
