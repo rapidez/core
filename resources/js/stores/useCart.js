@@ -40,8 +40,14 @@ export const refresh = async function () {
 }
 
 export const clear = async function () {
+    await clearAddresses()
     await clearMask()
     await refresh()
+}
+
+export const clearAddresses = async function () {
+    useLocalStorage('billing_address').value = null
+    useLocalStorage('shipping_address').value = null
 }
 
 export const cart = computed({
