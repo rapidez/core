@@ -102,7 +102,7 @@ export default {
     },
 
     created() {
-        if(!this.$root._events?.logout?.length || !this.$root._events.logout[0].name.includes('onLogout')) {
+        if(!this.$root._events?.logout?.some(e => e.name.includes('onLogout'))) {
             this.$root.$on('logout', this.onLogout)
         }
     },
