@@ -1,4 +1,4 @@
-import { useSessionStorage, StorageSerializers } from '@vueuse/core'
+import { useSessionStorage, StorageSerializers, useLocalStorage } from '@vueuse/core'
 import { computed, watch } from 'vue'
 import { mask, clear as clearMask } from './useMask'
 import { token } from './useUser'
