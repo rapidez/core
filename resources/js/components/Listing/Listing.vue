@@ -39,7 +39,7 @@ export default {
     }),
 
     render() {
-        return this.$scopedSlots.default(Object.assign(this, { self: this }))
+        return this.$scopedSlots.default(this)
     },
 
     mounted() {

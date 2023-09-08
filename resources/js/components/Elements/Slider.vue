@@ -3,14 +3,7 @@ import { useElementHover, useIntervalFn, useEventListener, useThrottleFn } from 
 
 export default {
     render() {
-        return this.$scopedSlots.default({
-            navigate: this.navigate,
-            showLeft: this.showLeft,
-            showRight: this.showRight,
-            currentSlide: this.currentSlide,
-            slidesVisible: this.slidesVisible,
-            slidesTotal: this.slidesTotal,
-        })
+        return this.$scopedSlots.default(this)
     },
     props: {
         reference: {

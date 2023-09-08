@@ -10,14 +10,7 @@ export default {
         },
     },
     render() {
-        return this.$scopedSlots.default({
-            classes: this.classes,
-            close: this.close,
-            message: this.message,
-            show: this.show,
-            type: this.type,
-            link: this.link,
-        })
+        return this.$scopedSlots.default(this)
     },
     created() {
         this.message = this.notification.message.includes('%')
