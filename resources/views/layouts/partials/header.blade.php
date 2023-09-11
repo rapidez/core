@@ -23,7 +23,7 @@
             @include('rapidez::layouts.partials.header.account')
             @include('rapidez::layouts.partials.header.minicart')
         </div>
-        <nav class="w-full max-md:transition-all max-md:grid max-md:grid-rows-[0fr] max-md:peer-checked:grid-rows-[1fr]">
+        <nav class="inset-x-0 top-full w-full bg-white max-md:absolute max-md:z-20 max-md:grid max-md:grid-rows-[0fr] max-md:border-b max-md:shadow max-md:transition-all max-md:peer-checked:grid-rows-[1fr]">
             <div class="max-h-full overflow-hidden">
                 {{-- Because the lack of an @includeIf or @includeWhen equivalent for Blade components we're using a placeholder --}}
                 <x-dynamic-component :component="App::providerIsLoaded('Rapidez\Menu\MenuServiceProvider') ? 'menu' : 'placeholder'" />

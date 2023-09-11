@@ -1,4 +1,4 @@
-<div class="bg-white rounded-lg border sm:w-80 mb-3">
+<div class="bg-white rounded-lg border">
     <div class="p-3">
         <h3 class="text-lg leading-6 font-medium text-gray-900">
             @lang('Apply coupon code')

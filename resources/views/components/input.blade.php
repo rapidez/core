@@ -11,7 +11,7 @@
             'id' => $name,
             'name' => $name,
             'type' => 'text',
-            'placeholder' => __($placeholder ?? ($label ?? ucfirst($name))),
+            'placeholder' => __($placeholder ?? ''),
             'dusk' => $attributes->get('v-bind:dusk') ? null : $name,
             'class' => 'w-full py-2 px-3 border-border rounded !ring-0 focus:!border-inactive sm:text-sm text-neutral',
         ]) }}

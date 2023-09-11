@@ -56,12 +56,11 @@
         </div>
     </div>
     @if (App::providerIsLoaded('Rapidez\Reviews\ReviewsServiceProvider'))
-        <div class="my-5 py-8 bg-highlight">
-            <div class="container grid w-full grid-cols-1 gap-5 p-5 sm:grid-cols-3">
-                <div class="top-5 self-start w-full rounded bg-white p-4 sm:sticky">
-                    @include('rapidez-reviews::form', ['sku' => $product->sku])
-                </div>
-                <div class="col-span-2">
+    <lazy v-cloak>
+        <div class="my-5 py-8 bg-highlight min-h-[515px]">
+            <div class="container grid w-full grid-cols-1 gap-5 p-5 md:grid-cols-3">
+                @include('rapidez-reviews::form', ['sku' => $product->sku])
+                <div class="md:col-span-2">
                     @include('rapidez-reviews::reviews', [
                         'sku' => $product->sku,
                         'reviews_count' => $product->reviews_count,
@@ -70,6 +69,7 @@
                 </div>
             </div>
         </div>
+    </lazy>
     @endif
     <div class="container">
         <x-rapidez::productlist
