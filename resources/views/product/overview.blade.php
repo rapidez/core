@@ -56,7 +56,6 @@
         </div>
     </div>
     @if (App::providerIsLoaded('Rapidez\Reviews\ReviewsServiceProvider'))
-    <lazy v-cloak>
         <div class="my-5 py-8 bg-highlight min-h-[515px]">
             <div class="container grid w-full grid-cols-1 gap-5 p-5 md:grid-cols-3">
                 @include('rapidez-reviews::form', ['sku' => $product->sku])
@@ -69,7 +68,6 @@
                 </div>
             </div>
         </div>
-    </lazy>
     @endif
     <div class="container">
         <x-rapidez::productlist
