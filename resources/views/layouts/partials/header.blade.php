@@ -5,10 +5,10 @@
             <div class="mr-3 flex items-center text-xl sm:text-3xl">
                 <a href="{{ url('/') }}" aria-label="@lang('Go to home')">
                     <span class="hidden sm:inline">
-                        <img src="https://raw.githubusercontent.com/rapidez/art/master/logo.svg" alt="" height="48" width="152">
+                        <img src="https://raw.githubusercontent.com/rapidez/art/master/logo.svg" alt="rapidez-logo" height="48" width="152">
                     </span>
                     <span class="inline sm:hidden">
-                        <img src="https://raw.githubusercontent.com/rapidez/art/master/r.svg" alt="" height="30" width="30">
+                        <img src="https://raw.githubusercontent.com/rapidez/art/master/r.svg" alt="rapidez-logo-mobile" height="30" width="30">
                     </span>
                 </a>
                 <label for="navigation" class="ml-3 cursor-pointer sm:hidden">
