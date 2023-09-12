@@ -5,7 +5,7 @@
             <div class="mr-3 flex items-center text-xl sm:text-3xl">
                 <a href="{{ url('/') }}" aria-label="@lang('Go to home')">
                     <span class="hidden sm:inline">
-                        <img src="https://raw.githubusercontent.com/rapidez/art/master/logo.svg" alt="rapidez-logo" height="48" width="152">
+                        <img src="https://raw.githubusercontent.com/rapidez/art/master/logo.svg" alt="Rapidez logo" height="48" width="152">
                     </span>
                     <span class="inline sm:hidden">
                         <img src="https://raw.githubusercontent.com/rapidez/art/master/r.svg" alt="rapidez-logo-mobile" height="30" width="30">
