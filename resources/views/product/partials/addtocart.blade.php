@@ -18,10 +18,12 @@
             </div>
 
             @include('rapidez::product.partials.options')
-            <div class="mt-5 flex flex-wrap items-center gap-3" v-cloak>
+            <div class="mt-5 flex flex-wrap items-center gap-3" v-blur>
                 <div>
-                    <div class="text-2xl font-bold text-neutral">@{{ (simpleProduct.special_price || simpleProduct.price) | price }}</div>
-                    <div class="text-lg text-text-neutral line-through" v-if="simpleProduct.special_price">@{{ simpleProduct.price | price }}</div>
+                    <div class="text-2xl font-bold text-neutral" v-text="$options.filters.price(simpleProduct.special_price || simpleProduct.price)">
+                        {{ price($product->special_price ?: $product->price) }}
+                    </div>
+                    <div v-cloak class="text-lg text-neutral line-through" v-if="simpleProduct.special_price">@{{ simpleProduct.price | price }}</div>
                 </div>
                 <x-rapidez::select
                     class="w-auto"

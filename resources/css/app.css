@@ -8,6 +8,9 @@
 [v-cloak] {
     display: none;
 }
+[v-blur] {
+    @apply animate-pulse blur;
+}
 * {
     -webkit-tap-highlight-color: transparant;
 }
