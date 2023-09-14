@@ -32,11 +32,6 @@ class Product extends Model
 
     protected $appends = ['url'];
 
-    public static function exist($productId): bool
-    {
-        return self::withoutGlobalScopes()->where('entity_id', $productId)->exists();
-    }
-
     protected static function booting(): void
     {
         static::addGlobalScope(new WithProductAttributesScope);
@@ -150,6 +145,26 @@ class Product extends Model
         return '/' . $this->url_key . $configModel::getCachedByPath('catalog/seo/product_url_suffix', '.html');
     }
 
+    public function getImagesAttribute(): array
+    {
+        return $this->gallery->pluck('value')->toArray();
+    }
+
+    public function getImageAttribute($image): ?string
+    {
+        return $image !== 'no_selection' ? $image : null;
+    }
+
+    public function getSmallImageAttribute($image): ?string
+    {
+        return $this->getImageAttribute($image);
+    }
+
+    public function getThumbnailAttribute($image): ?string
+    {
+        return $this->getImageAttribute($image);
+    }
+
     public function getBreadcrumbCategoriesAttribute()
     {
         if (! $path = session('latest_category_path')) {
@@ -171,23 +186,8 @@ class Product extends Model
             ->get();
     }
 
-    public function getImagesAttribute(): array
+    public static function exist($productId): bool
     {
-        return $this->gallery->pluck('value')->toArray();
-    }
-
-    public function getImageAttribute($image): ?string
-    {
-        return $image !== 'no_selection' ? $image : null;
-    }
-
-    public function getSmallImageAttribute($image): ?string
-    {
-        return $this->getImageAttribute($image);
-    }
-
-    public function getThumbnailAttribute($image): ?string
-    {
-        return $this->getImageAttribute($image);
+        return self::withoutGlobalScopes()->where('entity_id', $productId)->exists();
     }
 }

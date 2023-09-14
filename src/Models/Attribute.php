@@ -12,6 +12,11 @@ class Attribute extends Model
 
     protected $primaryKey = 'attribute_id';
 
+    protected static function booting()
+    {
+        static::addGlobalScope(new OnlyProductAttributesScope);
+    }
+
     public static function getCachedWhere(callable $callback): array
     {
         if (! $attributes = config('cache.app.attributes.' . config('rapidez.store'))) {
@@ -24,10 +29,5 @@ class Attribute extends Model
         return Arr::where($attributes, function ($attribute) use ($callback) {
             return $callback($attribute);
         });
-    }
-
-    protected static function booting()
-    {
-        static::addGlobalScope(new OnlyProductAttributesScope);
     }
 }
