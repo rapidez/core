@@ -14,17 +14,6 @@ class Store extends Model
 
     protected $primaryKey = 'store_id';
 
-    protected static function booting()
-    {
-        static::addGlobalScope(new IsActiveScope);
-        static::addGlobalScope('defaults', function (Builder $builder) {
-            $builder
-                ->where('store.code', '<>', 'admin')
-                ->join('store_group', 'store_group.group_id', '=', 'store.group_id')
-                ->join('store_website', 'store_website.website_id', '=', 'store_group.website_id');
-        });
-    }
-
     public static function getCachedWhere(callable $callback): array
     {
         if (! $stores = config('cache.app.stores')) {
@@ -51,5 +40,16 @@ class Store extends Model
         );
 
         return $store;
+    }
+
+    protected static function booting()
+    {
+        static::addGlobalScope(new IsActiveScope);
+        static::addGlobalScope('defaults', function (Builder $builder) {
+            $builder
+                ->where('store.code', '<>', 'admin')
+                ->join('store_group', 'store_group.group_id', '=', 'store.group_id')
+                ->join('store_website', 'store_website.website_id', '=', 'store_group.website_id');
+        });
     }
 }
