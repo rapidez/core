@@ -23,6 +23,7 @@
         "illuminate/events": "^9.0|^10.0",
         "illuminate/queue": "^9.0|^10.0",
         "illuminate/support": "^9.23|^10.0",
+        "lcobucci/jwt": "^5.0",
         "rapidez/blade-directives": "~0.1",
         "tormjens/eventy": "^0.8"
     },

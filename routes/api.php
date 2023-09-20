@@ -25,10 +25,7 @@ Route::middleware('api')->prefix('api')->group(function () {
     Route::get('cart/{quoteIdMaskOrCustomerToken}', function ($quoteIdMaskOrCustomerToken) {
         $quoteModel = config('rapidez.models.quote');
 
-        return $quoteModel::where(function ($query) use ($quoteIdMaskOrCustomerToken) {
-            $query->where('masked_id', $quoteIdMaskOrCustomerToken)
-                  ->orWhere('token', $quoteIdMaskOrCustomerToken);
-        })->with('items2.options')->orderByDesc('quote.entity_id')->firstOrFail();
+        return $quoteModel::whereQuoteIdOrCustomerToken($quoteIdMaskOrCustomerToken)->with('items2.options')->orderByDesc('quote.entity_id')->firstOrFail();
     });
 
     Route::prefix('admin')->middleware(VerifyAdminToken::class)->group(function () {
