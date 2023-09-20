@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\ComponentAttributeBag;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
-use Rapidez\Core\Commands\IndexCategoriesCommand;
 use Rapidez\Core\Commands\IndexProductsCommand;
 use Rapidez\Core\Commands\InstallCommand;
 use Rapidez\Core\Commands\InstallTestsCommand;

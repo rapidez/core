@@ -29,10 +29,10 @@ class DecodeJwt
                 return (new JwtFacade)->parse(
                     $jwt,
                     new SignedWith(new (config('rapidez.jwt.signed_with')), $key),
-                    new LooseValidAt(new FactoryImmutable())
+                    new LooseValidAt(new FactoryImmutable)
                 );
             } catch (RequiredConstraintsViolated $exception) {
-                if (!Arr::first($exception->violations, fn(ConstraintViolation $violation) => $violation->getMessage() === 'Token signature mismatch')) {
+                if (! Arr::first($exception->violations, fn (ConstraintViolation $violation) => $violation->getMessage() === 'Token signature mismatch')) {
                     throw $exception;
                 }
             }
@@ -49,7 +49,7 @@ class DecodeJwt
         return Str::of(config('rapidez.crypt_key'))
             ->trim()
             ->split('/\s+/s')
-            ->map(fn($key) => InMemory::plainText(str_pad($key, 2048, '&', STR_PAD_BOTH)));
+            ->map(fn ($key) => InMemory::plainText(str_pad($key, 2048, '&', STR_PAD_BOTH)));
     }
 
     public static function isJwt(string $jwt): bool
