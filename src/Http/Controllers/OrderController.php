@@ -2,12 +2,14 @@
 
 namespace Rapidez\Core\Http\Controllers;
 
+use Illuminate\Http\Request;
+
 class OrderController
 {
-    public function __invoke($quoteIdMaskOrCustomerToken = '')
+    public function __invoke(Request $request)
     {
         $salesOrder = config('rapidez.models.sales.order')::with('sales_order_addresses', 'sales_order_items', 'sales_order_payments')
-            ->whereQuoteIdOrCustomerToken($quoteIdMaskOrCustomerToken)
+            ->whereQuoteIdOrCustomerToken($request->bearerToken())
             ->latest()
             ->firstOrFail();
 
