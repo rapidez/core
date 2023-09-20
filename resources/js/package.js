@@ -6,6 +6,7 @@ if (!window.process) {
     window.process = {}
 }
 
+import './polyfills'
 import { useLocalStorage, StorageSerializers } from '@vueuse/core'
 import useCart from './stores/useCart'
 import useUser from './stores/useUser'
