@@ -21,9 +21,11 @@ export const refresh = async function () {
 
     try {
         isRefreshing = true
-        let response = await axios.get(window.url('/api/cart'), {headers: {Authorization: 'Bearer ' + (token.value || mask.value)}}).finally(() => {
-            isRefreshing = false
-        })
+        let response = await axios
+            .get(window.url('/api/cart'), { headers: { Authorization: 'Bearer ' + (token.value || mask.value) } })
+            .finally(() => {
+                isRefreshing = false
+            })
         cartStorage.value = !mask.value && !token.value ? {} : response.data
         window.app.$emit('cart-refreshed')
     } catch (error) {
