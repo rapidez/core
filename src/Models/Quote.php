@@ -87,7 +87,7 @@ class Quote extends Model
         return $this->belongsTo(config('rapidez.models.sales.order'));
     }
 
-    public function scopeWhereQuoteIdOrCustomerToken(Builder $query, $quoteIdMaskOrCustomerToken)
+    public function scopeWhereQuoteIdOrCustomerToken(Builder $query, string $quoteIdMaskOrCustomerToken)
     {
         $query->when(
             DecodeJwt::isJwt($quoteIdMaskOrCustomerToken),

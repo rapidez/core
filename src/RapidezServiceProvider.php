@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core;
 
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
@@ -221,7 +222,7 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function registerExceptionHandlers(): self
     {
-        $exceptionHandler = app(\Illuminate\Contracts\Debug\ExceptionHandler::class);
+        $exceptionHandler = app(ExceptionHandler::class);
 
         $exceptionHandler->reportable(function (RequiredConstraintsViolated $e) {
             return false;

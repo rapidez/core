@@ -8,6 +8,8 @@ class OrderController
 {
     public function __invoke(Request $request)
     {
+        abort_unless($request->bearerToken(), 401);
+
         $salesOrder = config('rapidez.models.sales.order')::with('sales_order_addresses', 'sales_order_items', 'sales_order_payments')
             ->whereQuoteIdOrCustomerToken($request->bearerToken())
             ->latest()
