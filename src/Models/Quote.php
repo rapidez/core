@@ -99,7 +99,7 @@ class Quote extends Model
         return $this->hasMany(config('rapidez.models.quote_item'), 'quote_id');
     }
 
-    public function scopeWhereQuoteIdOrCustomerToken(Builder $query, $quoteIdMaskOrCustomerToken)
+    public function scopeWhereQuoteIdOrCustomerToken(Builder $query, string $quoteIdMaskOrCustomerToken)
     {
         $query->when(
             DecodeJwt::isJwt($quoteIdMaskOrCustomerToken),

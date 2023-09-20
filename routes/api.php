@@ -23,8 +23,9 @@ Route::middleware('api')->prefix('api')->group(function () {
     Route::get('order', OrderController::class);
 
     Route::get('cart', function (Request $request) {
-        $quoteModel = config('rapidez.models.quote');
+        abort_unless($request->bearerToken(), 401);
 
+        $quoteModel = config('rapidez.models.quote');
         return $quoteModel::whereQuoteIdOrCustomerToken($request->bearerToken())->with('items2.options')->orderByDesc('quote.entity_id')->firstOrFail();
     });
 

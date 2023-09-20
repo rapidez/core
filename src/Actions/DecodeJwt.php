@@ -4,10 +4,12 @@ namespace Rapidez\Core\Actions;
 
 use Carbon\FactoryImmutable;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Lcobucci\JWT\JwtFacade;
+use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Key\InMemory;
-use Lcobucci\JWT\Token\Plain;
+use Lcobucci\JWT\UnencryptedToken;
 use Lcobucci\JWT\Validation\Constraint\LooseValidAt;
 use Lcobucci\JWT\Validation\Constraint\SignedWith;
 use Lcobucci\JWT\Validation\ConstraintViolation;
@@ -15,12 +17,12 @@ use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
 
 class DecodeJwt
 {
-    public function __invoke($jwt)
+    public function __invoke(string $jwt): UnencryptedToken
     {
         return static::decode(...func_get_args());
     }
 
-    public static function decode($jwt): Plain
+    public static function decode(string $jwt): UnencryptedToken
     {
         foreach (static::getKeys() as $key) {
             try {
@@ -39,7 +41,10 @@ class DecodeJwt
         throw $exception;
     }
 
-    public static function getKeys()
+    /**
+     * @return Collection<Key>
+     */
+    public static function getKeys(): Collection
     {
         return Str::of(config('rapidez.crypt_key'))
             ->trim()
@@ -47,7 +52,7 @@ class DecodeJwt
             ->map(fn ($key) => InMemory::plainText(str_pad($key, 2048, '&', STR_PAD_BOTH)));
     }
 
-    public static function isJwt($jwt): bool
+    public static function isJwt(string $jwt): bool
     {
         return preg_match('/^(?:[\w-]*\.){2}[\w-]*$/', $jwt);
     }
