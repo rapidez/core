@@ -35,7 +35,9 @@ export default {
 
             if (localStorage.mask) {
                 try {
-                    let response = await axios.get(window.url('/api/cart'), {headers: {Authorization: 'Bearer ' + (localStorage.token || localStorage.mask)}})
+                    let response = await axios.get(window.url('/api/cart'), {
+                        headers: { Authorization: 'Bearer ' + (localStorage.token || localStorage.mask) },
+                    })
                     localStorage.cart = JSON.stringify(response.data)
                     window.app.cart = response.data
                     window.app.$emit('cart-refreshed')
