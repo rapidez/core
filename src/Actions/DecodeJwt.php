@@ -2,10 +2,11 @@
 
 namespace Rapidez\Core\Actions;
 
-use Carbon\FactoryImmutable;
+use DateTimeZone;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Lcobucci\Clock\SystemClock;
 use Lcobucci\JWT\JwtFacade;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Key\InMemory;
@@ -29,10 +30,10 @@ class DecodeJwt
                 return (new JwtFacade)->parse(
                     $jwt,
                     new SignedWith(new (config('rapidez.jwt.signed_with')), $key),
-                    new LooseValidAt(new FactoryImmutable)
+                    new LooseValidAt(new SystemClock(new DateTimeZone(date_default_timezone_get())))
                 );
             } catch (RequiredConstraintsViolated $exception) {
-                if (! Arr::first($exception->violations, fn (ConstraintViolation $violation) => $violation->getMessage() === 'Token signature mismatch')) {
+                if (! Arr::first($exception->violations(), fn (ConstraintViolation $violation) => $violation->getMessage() === 'Token signature mismatch')) {
                     throw $exception;
                 }
             }
