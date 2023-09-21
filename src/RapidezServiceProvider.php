@@ -222,13 +222,15 @@ class RapidezServiceProvider extends ServiceProvider
     {
         $exceptionHandler = app(ExceptionHandler::class);
 
-        $exceptionHandler->reportable(function (RequiredConstraintsViolated $e) {
-            return false;
-        });
+        method_exists($exceptionHandler, 'reportable') && $exceptionHandler
+            ->reportable(function (RequiredConstraintsViolated $e) {
+                return false;
+            });
 
-        $exceptionHandler->renderable(function (RequiredConstraintsViolated $e, Request $request) {
-            throw new HttpException(401, $e->getMessage(), $e);
-        });
+        method_exists($exceptionHandler, 'renderable') && $exceptionHandler
+            ->renderable(function (RequiredConstraintsViolated $e, Request $request) {
+                throw new HttpException(401, $e->getMessage(), $e);
+            });
 
         return $this;
     }
