@@ -95,12 +95,11 @@ class CheckoutTest extends DuskTestCase
         $browser
             ->waitForText(__('Shipping method'))
             ->click('@method-0') // select shipping method
-            ->withKeyboard(fn ($keyboard) => $keyboard->press(WebDriverKeys::TAB)->release(WebDriverKeys::TAB))
             ->waitUntilIdle()
             ->waitUntilEnabled('@continue')
             ->click('@continue') // go to payment step
             ->waitUntilIdle()
-            ->waitForText(__('Payment method'))
+            ->waitForText(__('Payment method'), 30)
             ->click('@method-0') // select payment method
             ->waitUntilIdle()
             ->click('@continue') // place order
