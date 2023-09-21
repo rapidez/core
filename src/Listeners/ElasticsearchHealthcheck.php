@@ -11,7 +11,7 @@ class ElasticsearchHealthcheck
     public function handle()
     {
         $response = [
-            'healthy' => true,
+            'healthy'  => true,
             'messages' => [],
         ];
 
@@ -23,16 +23,16 @@ class ElasticsearchHealthcheck
         ) {
             $response['healthy'] = false;
             $response['messages'][] = [
-                'type' => 'error',
+                'type'  => 'error',
                 'value' => __('Your Elasticsearch version is too low!') . PHP_EOL .
                     __('Your version: :version (:build_flavour)', ['version' => $data->version->number, 'build_flavour' => $data->version->build_flavor]) . PHP_EOL .
-                    __('You need at least: :version basic/default (non OSS version)', ['version' => $this->esVersion])
+                    __('You need at least: :version basic/default (non OSS version)', ['version' => $this->esVersion]),
             ];
         } elseif (! is_object($data) || ! property_exists($data, 'version')) {
             $response['healthy'] = false;
             $response['messages'][] = [
-                'type' => 'error',
-                'value' => __('Elasticsearch is not reachable at: :url', ['url' => config('rapidez.es_url')])
+                'type'  => 'error',
+                'value' => __('Elasticsearch is not reachable at: :url', ['url' => config('rapidez.es_url')]),
             ];
         }
 

@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core\Http\Middleware;
 
+use Closure;
 use Symfony\Component\HttpFoundation\IpUtils;
 
 class AuthenticateHealthCheck
@@ -10,7 +11,7 @@ class AuthenticateHealthCheck
      * Handle the incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  Closure  $next
      * @return \Illuminate\Http\Response|null
      */
     public function handle($request, $next)

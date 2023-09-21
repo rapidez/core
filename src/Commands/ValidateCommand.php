@@ -16,16 +16,16 @@ class ValidateCommand extends Command
     {
         $this->call('cache:clear');
         $result = array_merge_recursive(...Event::dispatch('rapidez:health-check'));
-        $isHealthy = Arr::first($result['healthy'], fn ($healthy) => !$healthy, true);
+        $isHealthy = Arr::first($result['healthy'], fn ($healthy) => ! $healthy, true);
 
         foreach ($result['messages'] as $message) {
-            (match($message['type']) {
+            (match ($message['type']) {
                 'error' => $this->error(...),
-                'warn' => $this->warn(...),
+                'warn'  => $this->warn(...),
                 default => $this->info(...),
             })($message['value']);
         }
 
-        return (int)!$isHealthy;
+        return (int) ! $isHealthy;
     }
 }
