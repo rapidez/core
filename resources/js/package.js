@@ -122,15 +122,15 @@ function init() {
         window.app.$on('notification-message', function (message, type, params, link) {
             switch (type) {
                 case 'error':
-                    console.error(...arguments);
+                    console.error(...arguments)
                 case 'warning':
-                    console.warn(...arguments);
+                    console.warn(...arguments)
                 case 'success':
                 case 'info':
                 default:
-                    console.log(...arguments);
+                    console.log(...arguments)
             }
-        });
+        })
     }
 }
 
