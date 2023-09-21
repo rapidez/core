@@ -119,7 +119,7 @@ function init() {
     })
 
     if (window.debug) {
-        window.app.$on('notification-message', console.debug)
+        window.app.$on('notification-message', console.log)
     }
 }
 
