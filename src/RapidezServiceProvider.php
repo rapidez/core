@@ -21,6 +21,8 @@ use Rapidez\Core\Http\Controllers\Fallback\LegacyFallbackController;
 use Rapidez\Core\Http\Controllers\Fallback\UrlRewriteController;
 use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
 use Rapidez\Core\Http\ViewComposers\ConfigComposer;
+use Rapidez\Core\Listeners\ElasticsearchHealthcheck;
+use Rapidez\Core\Listeners\MagentoSettingsHealthcheck;
 use Rapidez\Core\Listeners\ReportProductView;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
@@ -183,6 +185,8 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootListeners(): self
     {
         Event::listen(ProductViewEvent::class, ReportProductView::class);
+        MagentoSettingsHealthcheck::register();
+        ElasticsearchHealthcheck::register();
 
         return $this;
     }
