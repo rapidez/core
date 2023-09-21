@@ -19,6 +19,11 @@ return [
     // Magento crypt key.
     'crypt_key' => env('CRYPT_KEY'),
 
+    'jwt' => [
+        // What magento signs the JWT with, visible under `configuration > Services > Magento Web API > JWT Authentication`
+        'signed_with' => \Lcobucci\JWT\Signer\Hmac\Sha256::class,
+    ],
+
     // The variables which should be exposed to the frontend.
     'exposed' => [
         'store',
