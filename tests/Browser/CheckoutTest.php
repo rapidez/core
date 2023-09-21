@@ -2,7 +2,6 @@
 
 namespace Rapidez\Core\Tests\Browser;
 
-use Facebook\WebDriver\WebDriverKeys;
 use Laravel\Dusk\Browser;
 use Rapidez\Core\Tests\DuskTestCase;
 
