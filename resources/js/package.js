@@ -119,7 +119,18 @@ function init() {
     })
 
     if (window.debug) {
-        window.app.$on('notification-message', console.log)
+        window.app.$on('notification-message', function (message, type, params, link) {
+            switch (type) {
+                case 'error':
+                    console.error(...arguments);
+                case 'warning':
+                    console.warn(...arguments);
+                case 'success':
+                case 'info':
+                default:
+                    console.log(...arguments);
+            }
+        });
     }
 }
 
