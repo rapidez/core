@@ -1,4 +1,4 @@
-import { useSessionStorage, StorageSerializers } from '@vueuse/core'
+import { useSessionStorage, StorageSerializers, useLocalStorage } from '@vueuse/core'
 import { computed, watch } from 'vue'
 import { mask, clear as clearMask } from './useMask'
 import { token } from './useUser'
@@ -40,8 +40,14 @@ export const refresh = async function () {
 }
 
 export const clear = async function () {
+    await clearAddresses()
     await clearMask()
     await refresh()
+}
+
+export const clearAddresses = async function () {
+    useLocalStorage('billing_address').value = null
+    useLocalStorage('shipping_address').value = null
 }
 
 export const cart = computed({

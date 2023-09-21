@@ -122,4 +122,15 @@
             />
         </div>
     @endif
+    @if(Rapidez::config('customer/address/taxvat_show', 0))
+        <div class="col-span-12 sm:col-span-6">
+            <x-rapidez::input
+                name="{{ $type }}_vat_id"
+                label="Tax ID"
+                placeholder=""
+                v-model.lazy="checkout.{{ $type }}_address.vat_id"
+                :required="Rapidez::config('customer/address/taxvat_show', 'opt') == 'req'"
+            />
+        </div>
+    @endif
 </div>

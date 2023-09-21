@@ -1,6 +1,6 @@
 @extends('rapidez::layouts.app')
 
-@section('title', 'Cart')
+@section('title', __('Cart'))
 
 @section('robots', 'NOINDEX,NOFOLLOW')
 
@@ -13,10 +13,10 @@
                 <div class="w-1/6 sm:w-1/12 pr-3">
                     <a :href="item.url | url" class="block">
                         <picture>
-                            <source :srcset="'/storage/resizes/80x80/magento/catalog/product' + item.image + '.webp'" type="image/webp">
+                            <source :srcset="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product' + item.image + '.webp'" type="image/webp">
                             <img
                                 :alt="item.name"
-                                :src="'/storage/resizes/80x80/magento/catalog/product' + item.image"
+                                :src="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product' + item.image"
                                 height="100"
                                 class="mx-auto"
                             />
@@ -28,7 +28,7 @@
                     <div v-for="(optionValue, option) in item.options">
                         @{{ option }}: @{{ optionValue }}
                     </div>
-                    <div v-for="option in cart.items2.find((item) => item.item_id == itemId).options.filter((option) => !['info_buyRequest', 'option_ids'].includes(option.code))">
+                    <div v-for="option in cart.items2.find((item) => item.item_id == itemId).options.filter((option) => !['info_buyRequest', 'option_ids'].includes(option.code) && option.label)">
                         @{{ option.label }}: @{{ option.value.title || option.value }}
                     </div>
                 </div>

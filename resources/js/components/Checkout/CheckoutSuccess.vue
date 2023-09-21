@@ -22,10 +22,7 @@ export default {
     },
 
     render() {
-        return this.$scopedSlots.default({
-            order: this.order,
-            refreshOrder: this.refreshOrder,
-        })
+        return this.$scopedSlots.default(this)
     },
 
     created() {
