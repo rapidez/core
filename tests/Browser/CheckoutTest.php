@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core\Tests\Browser;
 
+use Facebook\WebDriver\WebDriverKeys;
 use Laravel\Dusk\Browser;
 use Rapidez\Core\Tests\DuskTestCase;
 
@@ -94,7 +95,9 @@ class CheckoutTest extends DuskTestCase
         $browser
             ->waitForText(__('Shipping method'))
             ->click('@method-0') // select shipping method
+            ->withKeyboard(fn ($keyboard) => $keyboard->press(WebDriverKeys::TAB)->release(WebDriverKeys::TAB))
             ->waitUntilIdle()
+            ->waitUntilEnabled('@continue')
             ->click('@continue') // go to payment step
             ->waitUntilIdle()
             ->waitForText(__('Payment method'))
