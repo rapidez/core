@@ -3,6 +3,7 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Rapidez\Core\Actions\DecodeJwt;
 use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
 use Rapidez\Core\Casts\QuoteItems;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
@@ -84,5 +85,22 @@ class Quote extends Model
     public function sales_order()
     {
         return $this->belongsTo(config('rapidez.models.sales.order'));
+    }
+
+    public function scopeWhereQuoteIdOrCustomerToken(Builder $query, string $quoteIdMaskOrCustomerToken)
+    {
+        $query->when(
+            DecodeJwt::isJwt($quoteIdMaskOrCustomerToken),
+            fn (Builder $query) => $query
+                ->where(
+                    $this->qualifyColumn('customer_id'),
+                    DecodeJwt::decode($quoteIdMaskOrCustomerToken)
+                        ->claims()
+                        ->get('uid')
+                ),
+            fn (Builder $query) => $query
+                ->where('masked_id', $quoteIdMaskOrCustomerToken)
+                ->orWhere('token', $quoteIdMaskOrCustomerToken)
+        );
     }
 }
