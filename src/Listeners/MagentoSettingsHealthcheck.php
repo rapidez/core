@@ -9,6 +9,11 @@ use PDOException;
 
 class MagentoSettingsHealthcheck
 {
+    public static function register()
+    {
+        Event::listen('rapidez:health-check', static::class);
+    }
+
     public function handle()
     {
         $response = [
@@ -67,10 +72,5 @@ class MagentoSettingsHealthcheck
         }
 
         return $response;
-    }
-
-    public static function register()
-    {
-        Event::listen('rapidez:health-check', static::class);
     }
 }

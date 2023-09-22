@@ -8,6 +8,11 @@ class ElasticsearchHealthcheck
 {
     protected $esVersion = '7.6';
 
+    public static function register()
+    {
+        Event::listen('rapidez:health-check', static::class);
+    }
+
     public function handle()
     {
         $response = [
@@ -37,10 +42,5 @@ class ElasticsearchHealthcheck
         }
 
         return $response;
-    }
-
-    public static function register()
-    {
-        Event::listen('rapidez:health-check', static::class);
     }
 }

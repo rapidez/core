@@ -7,6 +7,11 @@ use Symfony\Component\HttpFoundation\IpUtils;
 
 class AuthenticateHealthCheck
 {
+    public static function auth($request)
+    {
+        return IpUtils::checkIp($request->ip(), config('rapidez.health_check.allowed_ips', ['127.0.0.1/8']));
+    }
+
     /**
      * Handle the incoming request.
      *
@@ -20,10 +25,5 @@ class AuthenticateHealthCheck
         abort_unless($auth($request), 403);
 
         return $next($request);
-    }
-
-    public static function auth($request)
-    {
-        return IpUtils::checkIp($request->ip(), config('rapidez.health_check.allowed_ips', ['127.0.0.1/8']));
     }
 }
