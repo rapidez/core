@@ -79,6 +79,8 @@ class CheckoutTest extends DuskTestCase
                 ->type('@shipping_city', 'Gotham')
                 ->select('@shipping_country', 'NL')
                 ->type('@shipping_telephone', '530-7972')
+                ->waitUntilIdle()
+                ->assertFormValid('form')
                 ->waitUntilIdle();
         }
 
@@ -87,12 +89,16 @@ class CheckoutTest extends DuskTestCase
                 ->waitUntilIdle()
                 ->type('@password', $password)
                 ->type('@password_repeat', $password)
+                ->assertFormValid('form')
                 ->waitUntilIdle();
         }
 
         $browser
+            ->scrollIntoView('@method-0')
             ->click('@method-0') // select shipping method
             ->waitUntilIdle()
+            ->assertFormValid('form')
+            ->scrollIntoView('@continue')
             ->click('@continue') // go to payment step
             ->waitUntilIdle()
             ->click('@method-0') // select payment method

@@ -3,6 +3,7 @@
 namespace Rapidez\Core\Tests;
 
 use Laravel\Dusk\Browser;
+use PHPUnit\Framework\Assert;
 use Rapidez\Core\Models\Product;
 
 trait DuskTestCaseSetup
@@ -39,6 +40,18 @@ trait DuskTestCaseSetup
         Browser::macro('waitUntilIdle', function ($timeout = 120) {
             /** @var Browser $this */
             $this->waitUntilTrueForDuration('window.app?.$data?.loading !== true && await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 5}))', $timeout);
+
+            return $this;
+        });
+
+        Browser::macro('assertFormValid', function ($selector) {
+            /** @var Browser $this */
+            $fullSelector = $this->resolver->format($selector);
+            Assert::assertEquals(
+                true,
+                $this->driver->executeScript("return document.querySelector('{$fullSelector}').reportValidity();"),
+                'Form is not valid: ' . PHP_EOL . $this->driver->executeScript("return Array.from(document.querySelector('{$fullSelector}').elements).filter(el => !el.validity.valid).map(el => el.name + ': ' + el.validationMessage).join('\\n');")
+            );
 
             return $this;
         });
