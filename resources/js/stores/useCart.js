@@ -67,6 +67,6 @@ export const cart = computed({
 // If mask gets added, updated or removed we should update the cart.
 watch(mask, refresh)
 // refresh the cart on first pageload after a while
-window.setTimeout(() => window.requestIdleCallback(() => !hasRefreshed && refresh), 5000)
+window.setTimeout(() => window.requestIdleCallback(() => !hasRefreshed && refresh()), 5000)
 
 export default () => cart
