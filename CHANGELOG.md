@@ -1,6 +1,15 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/0.94.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/0.95.0...master)
+## [0.95.0](https://github.com/rapidez/core/releases/tag/0.95.0) - 2023-09-22
+
+### Added
+- Accept JWT as access token (#339)
+- Implement healthchecks (#342)
+
+### Fixed
+- Fix duster and prettier errors when running on PR (#336)
+
 ## [0.94.0](https://github.com/rapidez/core/releases/tag/0.94.0) - 2023-09-08
 
 ### Added
