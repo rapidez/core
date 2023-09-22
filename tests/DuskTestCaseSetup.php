@@ -3,8 +3,8 @@
 namespace Rapidez\Core\Tests;
 
 use Laravel\Dusk\Browser;
-use Rapidez\Core\Models\Product;
 use PHPUnit\Framework\Assert;
+use Rapidez\Core\Models\Product;
 
 trait DuskTestCaseSetup
 {
@@ -49,8 +49,8 @@ trait DuskTestCaseSetup
             $fullSelector = $this->resolver->format($selector);
             Assert::assertEquals(
                 true,
-                $this->driver->executeScript("return document.querySelector('$fullSelector').reportValidity();"),
-                "Form is not valid: " . PHP_EOL . $this->driver->executeScript("return Array.from(document.querySelector('$fullSelector').elements).filter(el => !el.validity.valid).map(el => el.name + ': ' + el.validationMessage).join('\\n');")
+                $this->driver->executeScript("return document.querySelector('{$fullSelector}').reportValidity();"),
+                'Form is not valid: ' . PHP_EOL . $this->driver->executeScript("return Array.from(document.querySelector('{$fullSelector}').elements).filter(el => !el.validity.valid).map(el => el.name + ': ' + el.validationMessage).join('\\n');")
             );
 
             return $this;
