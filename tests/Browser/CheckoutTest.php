@@ -58,6 +58,7 @@ class CheckoutTest extends DuskTestCase
     {
         $browser
             ->visit('/checkout')
+            ->pause(5000)
             ->waitUntilIdle()
             ->type('@email', $email ?: 'wayne@enterprises.com')
             ->click('@continue')
@@ -72,21 +73,14 @@ class CheckoutTest extends DuskTestCase
         } else {
             $browser
                 ->waitFor('@shipping_country', 15)
-                ->typeSlowly('@shipping_firstname', 'Bruce')
-                ->waitUntilIdle()
-                ->typeSlowly('@shipping_lastname', 'Wayne')
-                ->waitUntilIdle()
-                ->typeSlowly('@shipping_postcode', '72000')
-                ->waitUntilIdle()
-                ->typeSlowly('@shipping_housenumber', '1007')
-                ->waitUntilIdle()
-                ->typeSlowly('@shipping_street', 'Mountain Drive')
-                ->waitUntilIdle()
-                ->typeSlowly('@shipping_city', 'Gotham')
-                ->waitUntilIdle()
+                ->type('@shipping_firstname', 'Bruce')
+                ->type('@shipping_lastname', 'Wayne')
+                ->type('@shipping_postcode', '72000')
+                ->type('@shipping_housenumber', '1007')
+                ->type('@shipping_street', 'Mountain Drive')
+                ->type('@shipping_city', 'Gotham')
                 ->select('@shipping_country', 'NL')
-                ->waitUntilIdle()
-                ->typeSlowly('@shipping_telephone', '530-7972')
+                ->type('@shipping_telephone', '530-7972')
                 ->waitUntilIdle()
                 ->assertFormValid('form')
                 ->waitUntilIdle();
