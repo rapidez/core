@@ -6,6 +6,7 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -21,6 +22,9 @@ use Rapidez\Core\Http\Controllers\Fallback\LegacyFallbackController;
 use Rapidez\Core\Http\Controllers\Fallback\UrlRewriteController;
 use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
 use Rapidez\Core\Http\ViewComposers\ConfigComposer;
+use Rapidez\Core\Listeners\ElasticsearchHealthcheck;
+use Rapidez\Core\Listeners\MagentoSettingsHealthcheck;
+use Rapidez\Core\Listeners\ReportProductView;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -37,12 +41,15 @@ class RapidezServiceProvider extends ServiceProvider
             ->bootMacros()
             ->bootBladeComponents()
             ->bootMiddleware()
-            ->bootTranslations();
+            ->bootTranslations()
+            ->bootListeners();
     }
 
-    public function bootTranslations()
+    public function bootTranslations(): self
     {
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'rapidez');
+
+        return $this;
     }
 
     public function register()
@@ -190,9 +197,16 @@ class RapidezServiceProvider extends ServiceProvider
                     return true;
                 }
             }
-
-            return false;
         });
+
+        return $this;
+    }
+
+    protected function bootListeners(): self
+    {
+        Event::listen(ProductViewEvent::class, ReportProductView::class);
+        MagentoSettingsHealthcheck::register();
+        ElasticsearchHealthcheck::register();
 
         return $this;
     }
