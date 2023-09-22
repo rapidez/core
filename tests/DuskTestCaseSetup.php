@@ -46,7 +46,7 @@ trait DuskTestCaseSetup
         Browser::macro('assertFormValid', function ($selector) {
             /** @var Browser $this */
             $fullSelector = $this->resolver->format($selector);
-            $this->assertScript('document.querySelector("'.$fullSelector.'").reportValidity();');
+            $this->assertScript('document.querySelector("' . $fullSelector . '").reportValidity();');
 
             return $this;
         });
