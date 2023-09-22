@@ -73,13 +73,21 @@ class CheckoutTest extends DuskTestCase
             $browser
                 ->waitFor('@shipping_country', 15)
                 ->typeSlowly('@shipping_firstname', 'Bruce')
+                ->waitUntilIdle()
                 ->typeSlowly('@shipping_lastname', 'Wayne')
+                ->waitUntilIdle()
                 ->typeSlowly('@shipping_postcode', '72000')
+                ->waitUntilIdle()
                 ->typeSlowly('@shipping_housenumber', '1007')
+                ->waitUntilIdle()
                 ->typeSlowly('@shipping_street', 'Mountain Drive')
+                ->waitUntilIdle()
                 ->typeSlowly('@shipping_city', 'Gotham')
+                ->waitUntilIdle()
                 ->select('@shipping_country', 'NL')
+                ->waitUntilIdle()
                 ->typeSlowly('@shipping_telephone', '530-7972')
+                ->waitUntilIdle()
                 ->assertFormValid('form')
                 ->waitUntilIdle();
         }
@@ -87,8 +95,8 @@ class CheckoutTest extends DuskTestCase
         if ($password && $register) {
             $browser->click('@create_account')
                 ->waitUntilIdle()
-                ->type('@password', $password)
-                ->type('@password_repeat', $password)
+                ->typeSlowly('@password', $password)
+                ->typeSlowly('@password_repeat', $password)
                 ->assertFormValid('form')
                 ->waitUntilIdle();
         }
