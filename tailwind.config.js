@@ -38,9 +38,5 @@ module.exports = {
             padding: '1.25rem',
         },
     },
-    plugins: [
-        require('@tailwindcss/forms'),
-        require('@tailwindcss/typography'),
-        require('tailwind-scrollbar-hide'),
-    ],
+    plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography'), require('tailwind-scrollbar-hide')],
 }
