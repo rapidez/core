@@ -72,14 +72,14 @@ class CheckoutTest extends DuskTestCase
         } else {
             $browser
                 ->waitFor('@shipping_country', 15)
-                ->type('@shipping_firstname', 'Bruce')
-                ->type('@shipping_lastname', 'Wayne')
-                ->type('@shipping_postcode', '72000')
-                ->type('@shipping_housenumber', '1007')
-                ->type('@shipping_street', 'Mountain Drive')
-                ->type('@shipping_city', 'Gotham')
+                ->typeSlowly('@shipping_firstname', 'Bruce')
+                ->typeSlowly('@shipping_lastname', 'Wayne')
+                ->typeSlowly('@shipping_postcode', '72000')
+                ->typeSlowly('@shipping_housenumber', '1007')
+                ->typeSlowly('@shipping_street', 'Mountain Drive')
+                ->typeSlowly('@shipping_city', 'Gotham')
                 ->select('@shipping_country', 'NL')
-                ->type('@shipping_telephone', '530-7972')
+                ->typeSlowly('@shipping_telephone', '530-7972')
                 ->assertFormValid('form')
                 ->waitUntilIdle();
         }
