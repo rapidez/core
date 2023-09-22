@@ -1,6 +1,6 @@
 @extends('rapidez::layouts.app')
 
-@section('title', 'Cart')
+@section('title', __('Cart'))
 
 @section('robots', 'NOINDEX,NOFOLLOW')
 

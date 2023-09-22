@@ -1,5 +1,5 @@
 <add-to-cart :default-qty="{{ $product->min_sale_qty > $product->qty_increments ? $product->min_sale_qty : $product->qty_increments }}">
-    <form slot-scope="{ self: addToCartSlotProps, options, customOptions, error, add, disabledOptions, simpleProduct, adding, added, price, specialPrice, setCustomOptionFile }" v-on:submit.prevent="add">
+    <form slot-scope="{ _renderProxy: addToCartSlotProps, options, customOptions, error, add, disabledOptions, simpleProduct, adding, added, price, specialPrice, setCustomOptionFile }" v-on:submit.prevent="add">
         <h1 class="mb-3 text-3xl font-bold" itemprop="name">{{ $product->name }}</h1>
         @if (!$product->in_stock)
             <p class="text-red-600">@lang('Sorry! This product is currently out of stock.')</p>

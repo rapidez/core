@@ -1,6 +1,6 @@
 @extends('rapidez::layouts.app')
 
-@section('title', 'Checkout')
+@section('title', __('Checkout'))
 
 @section('robots', 'NOINDEX,NOFOLLOW')
 

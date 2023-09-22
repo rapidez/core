@@ -24,14 +24,7 @@ export default {
     }),
 
     render() {
-        return this.$scopedSlots.default({
-            loginInputChange: this.loginInputChange,
-            email: this.email,
-            emailAvailable: this.emailAvailable,
-            password: this.password,
-            go: this.go,
-            logout: this.logout,
-        })
+        return this.$scopedSlots.default(this)
     },
 
     created() {

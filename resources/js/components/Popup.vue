@@ -1,9 +1,7 @@
 <script>
 export default {
     render() {
-        return this.$scopedSlots.default({
-            close: this.close,
-        })
+        return this.$scopedSlots.default(this)
     },
     props: {
         name: {

@@ -18,7 +18,7 @@
         }]"
         v-cloak
     >
-        <div slot-scope="{ loaded, filters, sortOptions, reactiveFilters, self: listingSlotProps }">
+        <div slot-scope="{ loaded, filters, sortOptions, reactiveFilters, _renderProxy: listingSlotProps }">
             <x-rapidez::reactive-base v-if="loaded">
                 @isset($query)
                     <reactive-component

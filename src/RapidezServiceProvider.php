@@ -2,13 +2,16 @@
 
 namespace Rapidez\Core;
 
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
 use Rapidez\Core\Commands\IndexCategoriesCommand;
 use Rapidez\Core\Commands\IndexProductsCommand;
 use Rapidez\Core\Commands\InstallCommand;
@@ -21,9 +24,12 @@ use Rapidez\Core\Http\Controllers\Fallback\LegacyFallbackController;
 use Rapidez\Core\Http\Controllers\Fallback\UrlRewriteController;
 use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
 use Rapidez\Core\Http\ViewComposers\ConfigComposer;
+use Rapidez\Core\Listeners\ElasticsearchHealthcheck;
+use Rapidez\Core\Listeners\MagentoSettingsHealthcheck;
 use Rapidez\Core\Listeners\ReportProductView;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class RapidezServiceProvider extends ServiceProvider
 {
@@ -47,7 +53,8 @@ class RapidezServiceProvider extends ServiceProvider
             ->registerConfigs()
             ->registerBindings()
             ->registerThemes()
-            ->registerBladeDirectives();
+            ->registerBladeDirectives()
+            ->registerExceptionHandlers();
     }
 
     protected function bootCommands(): self
@@ -183,6 +190,8 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootListeners(): self
     {
         Event::listen(ProductViewEvent::class, ReportProductView::class);
+        MagentoSettingsHealthcheck::register();
+        ElasticsearchHealthcheck::register();
 
         return $this;
     }
@@ -209,6 +218,23 @@ class RapidezServiceProvider extends ServiceProvider
     {
         $this->app->singleton('rapidez', Rapidez::class);
         $this->app->bind('widget-directive', WidgetDirective::class);
+
+        return $this;
+    }
+
+    protected function registerExceptionHandlers(): self
+    {
+        $exceptionHandler = app(ExceptionHandler::class);
+
+        method_exists($exceptionHandler, 'reportable') && $exceptionHandler
+            ->reportable(function (RequiredConstraintsViolated $e) {
+                return false;
+            });
+
+        method_exists($exceptionHandler, 'renderable') && $exceptionHandler
+            ->renderable(function (RequiredConstraintsViolated $e, Request $request) {
+                throw new HttpException(401, $e->getMessage(), $e);
+            });
 
         return $this;
     }

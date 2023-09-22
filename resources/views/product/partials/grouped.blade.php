@@ -1,7 +1,7 @@
 <div class="grid grid-cols-3 gap-3 grid-cols-[auto_max-content_max-content]">
     <template v-for="product in config.product.grouped">
         <add-to-cart :product="product" v-cloak>
-            <div class="contents" slot-scope="{ self: addToCartSlotProps, add, simpleProduct, adding, added }">
+            <div class="contents" slot-scope="{ _renderProxy: addToCartSlotProps, add, simpleProduct, adding, added }">
                 <div>
                     @{{ simpleProduct.name }}
                     <div class="flex items-center space-x-3 font-bold">

@@ -7,13 +7,7 @@ export default {
     }),
 
     render() {
-        return this.$scopedSlots.default({
-            images: this.images,
-            active: this.active,
-            zoomed: this.zoomed,
-            toggleZoom: this.toggleZoom,
-            change: this.change,
-        })
+        return this.$scopedSlots.default(this)
     },
 
     created() {

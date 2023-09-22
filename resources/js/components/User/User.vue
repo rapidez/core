@@ -5,9 +5,7 @@ export default {
     mixins: [InteractWithUser],
 
     render() {
-        return this.$scopedSlots.default({
-            logout: this.logout,
-        })
+        return this.$scopedSlots.default(this)
     },
 }
 </script>

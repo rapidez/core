@@ -45,7 +45,8 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
 
             try {
                 $productQuery = $productModel::selectOnlyIndexable()
-                    ->withEventyGlobalScopes('index.product.scopes');
+                    ->withEventyGlobalScopes('index.product.scopes')
+                    ->withExists('options AS has_options');
 
                 $bar = $this->output->createProgressBar($productQuery->getQuery()->getCountForPagination());
                 $bar->start();

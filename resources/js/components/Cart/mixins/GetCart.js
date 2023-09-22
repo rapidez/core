@@ -15,13 +15,6 @@ export default {
             Object.values(keys).forEach((key) => {
                 useLocalStorage(key).value = null
             })
-
-            this.clearAdresses()
-        },
-
-        clearAdresses() {
-            useLocalStorage('billing_address').value = null
-            useLocalStorage('shipping_address').value = null
         },
 
         async refreshCart() {

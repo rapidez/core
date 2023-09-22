@@ -59,7 +59,7 @@ class Product extends Model
 
     public function getCasts(): array
     {
-        if (! $this->casts) {
+        if (! isset($this->casts['name'])) {
             $this->casts = array_merge(
                 parent::getCasts(),
                 [
