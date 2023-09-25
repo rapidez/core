@@ -69,7 +69,7 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
                         if ($product->visibility == 1) {
                             return;
                         }
-                        
+
                         $data = array_merge(['store' => $store->store_id], $product->toArray());
                         foreach ($product->super_attributes ?: [] as $superAttribute) {
                             $data['super_' . $superAttribute->code] = $superAttribute->text_swatch || $superAttribute->visual_swatch
