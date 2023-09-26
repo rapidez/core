@@ -75,7 +75,7 @@ export default {
         },
 
         async setCheckoutCredentialsFromDefaultUserAddresses() {
-            await this.refreshUser();
+            await this.refreshUser()
             if (this.$root && this.$root.loggedIn) {
                 this.setCustomerAddressByAddressId('shipping', this.$root.user.default_shipping)
                 this.setCustomerAddressByAddressId('billing', this.$root.user.default_billing)
