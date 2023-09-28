@@ -165,12 +165,12 @@ export default {
             return this.vertical ? this.slider.offsetHeight : this.slider.offsetWidth
         },
         slidesTotal() {
-            if(!this.mounted) {
+            if (!this.mounted) {
                 return 0
             }
 
             return (this.slider.children?.length ?? 1) - this.slidesVisible + 1
-        }
+        },
     },
 }
 </script>
