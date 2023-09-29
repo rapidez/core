@@ -10,7 +10,7 @@ class SearchController
 {
     public function __invoke(Request $request)
     {
-        if ($searchQuery = Cache::rememberForever('search.query.'.Str::slug($request->q), function () use ($request) {
+        if ($searchQuery = Cache::rememberForever('search.query.' . Str::slug($request->q), function () use ($request) {
             $searchQueryModel = config('rapidez.models.search_query');
 
             return $searchQueryModel::where('query_text', $request->q)
