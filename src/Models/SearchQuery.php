@@ -25,19 +25,18 @@ use Rapidez\Core\Models\Scopes\IsActiveScope;
  */
 class SearchQuery extends Model
 {
+    public $timestamps = false;
     protected $table = 'search_query';
 
     protected $primaryKey = 'query_id';
 
-    public $timestamps = false;
-
     protected $casts = [
-        'num_results' => 'int',
-        'popularity' => 'int',
-        'store_id' => 'int',
+        'num_results'      => 'int',
+        'popularity'       => 'int',
+        'store_id'         => 'int',
         'display_in_terms' => 'int',
-        'is_active' => 'int',
-        'is_processed' => 'int',
+        'is_active'        => 'int',
+        'is_processed'     => 'int',
     ];
 
     protected $fillable = [
@@ -54,7 +53,7 @@ class SearchQuery extends Model
     public static function boot()
     {
         parent::boot();
-        static::addGlobalScope(new IsActiveScope());
+        static::addGlobalScope(new IsActiveScope);
     }
 
     public function store()
