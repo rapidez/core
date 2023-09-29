@@ -10,17 +10,17 @@ class SearchController
 {
     public function __invoke(Request $request)
     {
-        if ($rewrite = Cache::rememberForever('search.query.'.Str::slug($request->q), function () use ($request) {
-            $searchQuery = config('rapidez.models.search_query');
+        if ($searchQuery = Cache::rememberForever('search.query.'.Str::slug($request->q), function () use ($request) {
+            $searchQueryModel = config('rapidez.models.search_query');
 
-            return $searchQuery::where('query_text', $request->q)
+            return $searchQueryModel::where('query_text', $request->q)
                 ->where('store_id', config('rapidez.store'))
                 ->whereNotNull('redirect')
                 ->first();
         })) {
-            $rewrite->increment('popularity');
+            $searchQuery->increment('popularity');
 
-            return redirect($rewrite->redirect);
+            return redirect($searchQuery->redirect);
         }
 
         return view('rapidez::search.overview');

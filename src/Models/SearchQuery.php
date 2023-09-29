@@ -3,7 +3,6 @@
 namespace Rapidez\Core\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
 
@@ -20,8 +19,6 @@ use Rapidez\Core\Models\Scopes\IsActiveScope;
  * @property int|null $is_active
  * @property int|null $is_processed
  * @property Carbon $updated_at
- * @property Store $store
- * @property Collection|CatalogsearchRecommendation[] $catalogsearch_recommendations
  */
 class SearchQuery extends Model
 {
@@ -55,15 +52,5 @@ class SearchQuery extends Model
     {
         parent::boot();
         static::addGlobalScope(new IsActiveScope());
-    }
-
-    public function store()
-    {
-        return $this->belongsTo(Store::class);
-    }
-
-    public function catalogsearch_recommendations()
-    {
-        return $this->hasMany(CatalogsearchRecommendation::class, 'relation_id');
     }
 }
