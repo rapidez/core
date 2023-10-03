@@ -20,7 +20,7 @@ class SearchController
         })) {
             $searchQuery->increment('popularity');
 
-            return redirect($searchQuery->redirect);
+            return redirect($searchQuery->redirect, 301);
         }
 
         return view('rapidez::search.overview');
