@@ -3,7 +3,9 @@
 namespace Rapidez\Core;
 
 use Illuminate\Routing\RouteAction;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Rapidez\Core\Models\Store;
 
 class Rapidez
 {
@@ -42,7 +44,7 @@ class Rapidez
     public function content($content)
     {
         foreach (config('rapidez.content-variables') as $parser) {
-            $content = (new $parser())($content);
+            $content = (new $parser)($content);
         }
 
         return $content;
@@ -60,5 +62,54 @@ class Rapidez
         ];
 
         return json_decode(str_replace(array_values($mapping), array_keys($mapping), $encodedString));
+    }
+
+    public function getStores(callable|int|string $store = null): array
+    {
+        $storeModel = config('rapidez.models.store');
+
+        if ($store) {
+            return Arr::where($storeModel::getCached(),
+                fn ($s) => is_callable($store)
+                    ? $store($s)
+                    : $s['store_id'] == $store || $s['code'] == $store
+            );
+        }
+
+        return $storeModel::getCached();
+    }
+
+    public function getStore(callable|int|string $store): array
+    {
+        return Arr::first($this->getStores($store));
+    }
+
+    public function setStore(Store|array|callable|int|string $store): void
+    {
+        if (is_callable($store) || is_int($store) || is_string($store)) {
+            $store = $this->getStore($store);
+        } else {
+            $store = $this->getStore($store['store_id']);
+        }
+
+        config()->set('rapidez.store', $store['store_id']);
+        config()->set('rapidez.store_code', $store['code']);
+        config()->set('rapidez.website', $store['website_id']);
+        config()->set('rapidez.website_code', $store['website_code']);
+        config()->set('rapidez.group', $store['group_id']);
+        config()->set('rapidez.root_category_id', $store['root_category_id']);
+    }
+
+    public function withStore(Store|array|callable|int|string $store, callable $callback, ...$args)
+    {
+        $initialStore = config('rapidez.store');
+        Rapidez::setStore($store);
+        try {
+            $result = $callback(...$args);
+        } finally {
+            Rapidez::setStore($initialStore);
+        }
+
+        return $result;
     }
 }

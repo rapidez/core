@@ -1,4 +1,4 @@
-<div class="col-span-12" v-if="$root.user?.id">
+<div class="col-span-12" v-if="loggedIn">
     <graphql query="{ customer { addresses { id firstname lastname street city postcode country_code } } }">
         <div v-if="data" slot-scope="{ data }">
             <x-rapidez::select v-model="checkout.{{ $type }}_address.customer_address_id" label="">
@@ -15,8 +15,8 @@
     </graphql>
 </div>
 
-<div class="contents" v-if="!$root.user?.id || !checkout.{{ $type }}_address.customer_address_id">
-    <div class="col-span-12 {{ Rapidez::config('customer/address/middlename_show', 0) ? 'sm:col-span-4' : 'sm:col-span-6'}}">
+<div class="contents" v-if="!loggedIn || !checkout.{{ $type }}_address.customer_address_id">
+    <div class="col-span-12 {{ Rapidez::config('customer/address/middlename_show', 0) ? 'sm:col-span-4' : 'sm:col-span-6' }}">
         <x-rapidez::input
             label="Firstname"
             name="{{ $type }}_firstname"
@@ -35,7 +35,7 @@
             />
         </div>
     @endif
-    <div class="col-span-12 {{ Rapidez::config('customer/address/middlename_show', 0) ? 'sm:col-span-4' : 'sm:col-span-6'}}">
+    <div class="col-span-12 {{ Rapidez::config('customer/address/middlename_show', 0) ? 'sm:col-span-4' : 'sm:col-span-6' }}">
         <x-rapidez::input
             name="{{ $type }}_lastname"
             label="Lastname"
@@ -119,6 +119,17 @@
                 placeholder=""
                 v-model.lazy="checkout.{{ $type }}_address.company"
                 :required="Rapidez::config('customer/address/company_show', 'opt') == 'req'"
+            />
+        </div>
+    @endif
+    @if(Rapidez::config('customer/address/taxvat_show', 0))
+        <div class="col-span-12 sm:col-span-6">
+            <x-rapidez::input
+                name="{{ $type }}_vat_id"
+                label="Tax ID"
+                placeholder=""
+                v-model.lazy="checkout.{{ $type }}_address.vat_id"
+                :required="Rapidez::config('customer/address/taxvat_show', 'opt') == 'req'"
             />
         </div>
     @endif

@@ -27,7 +27,7 @@
             </x-rapidez::button>
 
             @if(App::providerIsLoaded('Rapidez\Account\AccountServiceProvider'))
-                <a href="/forgotpassword" class="inline-block text-sm hover:underline mt-5" v-if="!emailAvailable">
+                <a href="{{ route('account.forgotpassword') }}" class="inline-block text-sm hover:underline mt-5" v-if="!emailAvailable">
                     @lang('Forgot your password?')
                 </a>
             @endif

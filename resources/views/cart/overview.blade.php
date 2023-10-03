@@ -1,6 +1,6 @@
 @extends('rapidez::layouts.app')
 
-@section('title', 'Cart')
+@section('title', __('Cart'))
 
 @section('robots', 'NOINDEX,NOFOLLOW')
 
@@ -9,14 +9,14 @@
 
     <cart v-cloak>
         <div v-if="hasItems" slot-scope="{ cart, hasItems, changeQty, remove }">
-            <div class="flex flex-wrap items-center border-b pb-2 mb-2" v-for="(item, productId, index) in cart.items">
+            <div class="flex flex-wrap items-center border-b pb-2 mb-2" v-for="(item, itemId, index) in cart.items">
                 <div class="w-1/6 sm:w-1/12 pr-3">
-                    <a :href="item.url" class="block">
+                    <a :href="item.url | url" class="block">
                         <picture>
-                            <source :srcset="'/storage/resizes/80x80/magento/catalog/product' + item.image + '.webp'" type="image/webp">
+                            <source :srcset="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product' + item.image + '.webp'" type="image/webp">
                             <img
                                 :alt="item.name"
-                                :src="'/storage/resizes/80x80/magento/catalog/product' + item.image"
+                                :src="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product' + item.image"
                                 height="100"
                                 class="mx-auto"
                             />
@@ -24,9 +24,12 @@
                     </a>
                 </div>
                 <div class="w-5/6 sm:w-5/12 lg:w-8/12">
-                    <a :href="item.url" dusk="cart-item-name" class="font-bold">@{{ item.name }}</a>
+                    <a :href="item.url | url" dusk="cart-item-name" class="font-bold">@{{ item.name }}</a>
                     <div v-for="(optionValue, option) in item.options">
                         @{{ option }}: @{{ optionValue }}
+                    </div>
+                    <div v-for="option in cart.items2.find((item) => item.item_id == itemId).options.filter((option) => !['info_buyRequest', 'option_ids'].includes(option.code) && option.label)">
+                        @{{ option.label }}: @{{ option.value.title || option.value }}
                     </div>
                 </div>
                 <div class="w-2/6 sm:w-1/6 lg:w-1/12 text-right pr-5">
@@ -79,7 +82,7 @@
                         <div class="w-1/2 text-right font-bold">@{{ cart.total | price }}</div>
                     </div>
 
-                    <x-rapidez::button href="/checkout" dusk="checkout">
+                    <x-rapidez::button href="{{ route('checkout') }}" dusk="checkout">
                         @lang('Checkout')
                     </x-rapidez::button>
                 </div>

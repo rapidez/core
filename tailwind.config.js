@@ -20,13 +20,13 @@ module.exports = {
             colors: {
                 primary: colors.green[700],
                 secondary: colors.gray[400],
-            }
-        }
+            },
+        },
     },
     plugins: [
         require('@tailwindcss/forms'),
         require('@tailwindcss/typography'),
         require('@tailwindcss/aspect-ratio'),
         require('tailwind-scrollbar-hide'),
-    ]
+    ],
 }

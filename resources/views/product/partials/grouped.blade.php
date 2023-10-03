@@ -1,7 +1,7 @@
 <div class="grid grid-cols-3 gap-3 grid-cols-[auto_max-content_max-content]">
     <template v-for="product in config.product.grouped">
         <add-to-cart :product="product" v-cloak>
-            <div class="contents" slot-scope="{ qty, changeQty, add, simpleProduct, adding, added }">
+            <div class="contents" slot-scope="{ _renderProxy: addToCartSlotProps, add, simpleProduct, adding, added }">
                 <div>
                     @{{ simpleProduct.name }}
                     <div class="flex items-center space-x-3 font-bold">
@@ -18,8 +18,7 @@
                     <x-rapidez::select
                         name="qty"
                         label="Quantity"
-                        v-bind:value="qty"
-                        v-on:input="changeQty"
+                        v-model="addToCartSlotProps.qty"
                         class="w-auto"
                         labelClass="flex items-center mr-3 sr-only"
                         wrapperClass="flex"

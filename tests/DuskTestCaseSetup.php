@@ -3,6 +3,7 @@
 namespace Rapidez\Core\Tests;
 
 use Laravel\Dusk\Browser;
+use PHPUnit\Framework\Assert;
 use Rapidez\Core\Models\Product;
 
 trait DuskTestCaseSetup
@@ -23,14 +24,14 @@ trait DuskTestCaseSetup
             $this->waitUntil('await new Promise((resolve, reject) => {
                 let counter = 0;
                 let interval = setInterval(async function () {
-                    let result = '.$script.';
+                    let result = ' . $script . ';
                     counter = result ? counter + 1 : 0;
-                    if (counter >= '.($for / $interval).') {
+                    if (counter >= ' . ($for / $interval) . ') {
                         clearInterval(interval)
                         resolve(true)
                     }
-                }, '.($interval * 1000).');
-                setTimeout(() => resolve(false), '.($timeout * 1000).')
+                }, ' . ($interval * 1000) . ');
+                setTimeout(() => resolve(false), ' . ($timeout * 1000) . ')
             }) === true', $timeout);
 
             return $this;
@@ -43,12 +44,24 @@ trait DuskTestCaseSetup
             return $this;
         });
 
-        $this->flat = (new Product())->getTable();
+        Browser::macro('assertFormValid', function ($selector) {
+            /** @var Browser $this */
+            $fullSelector = $this->resolver->format($selector);
+            Assert::assertEquals(
+                true,
+                $this->driver->executeScript("return document.querySelector('{$fullSelector}').reportValidity();"),
+                'Form is not valid: ' . PHP_EOL . $this->driver->executeScript("return Array.from(document.querySelector('{$fullSelector}').elements).filter(el => !el.validity.valid).map(el => el.name + ': ' + el.validationMessage).join('\\n');")
+            );
+
+            return $this;
+        });
+
+        $this->flat = (new Product)->getTable();
 
         $this->testProduct = Product::selectAttributes([
             'name',
             'price',
             'url_key',
-        ])->firstWhere($this->flat.'.sku', env('TEST_PRODUCT', '24-WB02'));
+        ])->firstWhere($this->flat . '.sku', env('TEST_PRODUCT', '24-WB02'));
     }
 }

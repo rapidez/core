@@ -1,0 +1,32 @@
+name: Prettier Fix
+
+on:
+  push:
+  workflow_run:
+    workflows: ["Duster Fix"]
+    types:
+      - completed
+
+jobs:
+  prettier:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Run install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+
+      - name: "Prettier Fix"
+        uses: creyD/prettier_action@v4.3
+        with:
+          prettier_options: --write .
+          commit_message: "Apply fixes from Prettier"
+          prettier_plugins: "prettier-plugin-tailwindcss @shufo/prettier-plugin-blade"

@@ -10,10 +10,7 @@
 >
 
 <autocomplete v-if="$root.loadAutocomplete" v-cloak>
-    <reactive-base
-        :app="config.es_prefix + '_products_' + config.store"
-        :url="config.es_url"
-    >
+    <x-rapidez::reactive-base>
         <data-search
             placeholder="@lang('Search')"
             v-on:value-selected="search"
@@ -34,12 +31,12 @@
                     <li
                         class="flex w-1/2 sm:w-1/2 md:w-1/3 px-4 my-4"
                         v-for="suggestion in suggestions"
-                        :key="suggestion._id"
+                        :key="suggestion.source._id"
                     >
-                        <a :href="suggestion.source.url" class="flex flex-wrap w-full h-full" key="suggestion._id">
+                        <a :href="suggestion.source.url | url" class="flex flex-wrap w-full h-full" key="suggestion.source._id">
                             <picture class="contents">
-                                <source :srcset="'/storage/resizes/80x80/magento/catalog/product' + suggestion.source.thumbnail + '.webp'" type="image/webp">
-                                <img :src="'/storage/resizes/80x80/magento/catalog/product' + suggestion.source.thumbnail" class="object-contain lg:w-3/12 self-center" />
+                                <source :srcset="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product' + suggestion.source.thumbnail + '.webp'" type="image/webp">
+                                <img :src="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product' + suggestion.source.thumbnail" class="object-contain lg:w-3/12 self-center" />
                             </picture>
                             <div class="px-2 flex flex-wrap flex-grow lg:w-1/2">
                                 <strong class="block hyphens w-full">@{{ suggestion.source.name }}</strong>
@@ -50,5 +47,5 @@
                 </ul>
             </div>
         </data-search>
-    </reactive-base>
+    </x-rapidez::reactive-base>
 </autocomplete>

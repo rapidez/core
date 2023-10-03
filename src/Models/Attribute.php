@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute as CastsAttribute;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Models\Scopes\Attribute\OnlyProductAttributesScope;
@@ -14,16 +15,23 @@ class Attribute extends Model
 
     protected static function booting()
     {
-        static::addGlobalScope(new OnlyProductAttributesScope());
+        static::addGlobalScope(new OnlyProductAttributesScope);
+    }
+
+    protected function filter(): CastsAttribute
+    {
+        return CastsAttribute::make(
+            get: fn ($value) => $value || in_array($this->code, config('rapidez.additional_filters')),
+        )->shouldCache();
     }
 
     public static function getCachedWhere(callable $callback): array
     {
-        if (!$attributes = config('cache.app.attributes.'.config('rapidez.store'))) {
-            $attributes = Cache::rememberForever('attributes.'.config('rapidez.store'), function () {
+        if (! $attributes = config('cache.app.attributes.' . config('rapidez.store'))) {
+            $attributes = Cache::rememberForever('attributes.' . config('rapidez.store'), function () {
                 return self::all()->toArray();
             });
-            config(['cache.app.attributes.'.config('rapidez.store') => $attributes]);
+            config(['cache.app.attributes.' . config('rapidez.store') => $attributes]);
         }
 
         return Arr::where($attributes, function ($attribute) use ($callback) {

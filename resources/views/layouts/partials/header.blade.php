@@ -1,7 +1,7 @@
 <header class="flex flex-wrap items-center mb-5 border-b shadow {{ Route::currentRouteName() == 'checkout' ? 'justify-between' : '' }}">
     <div class="w-1/6 sm:w-3/12">
         <div class="text-xl sm:text-3xl ml-3">
-            <a href="/" aria-label="@lang('Go to home')">
+            <a href="{{ url('/') }}" aria-label="@lang('Go to home')">
                 <span class="hidden sm:inline">
                     <img src="https://raw.githubusercontent.com/rapidez/art/master/logo.svg" height="48" width="152" alt="">
                 </span>
