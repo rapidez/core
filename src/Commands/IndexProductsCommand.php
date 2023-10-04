@@ -66,7 +66,7 @@ class IndexProductsCommand extends InteractsWithElasticsearchCommand
 
                 $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $index, $categories) {
                     foreach ($products as $product) {
-                        if ($product->visibility == 1) {
+                        if ($product->visibility === 1) {
                             return;
                         }
 
