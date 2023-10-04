@@ -65,7 +65,7 @@ export default {
             this.initAutoPlay()
         })
 
-        this.updateSpan();
+        this.updateSpan()
 
         new ResizeObserver(this.updateSpan).observe(this.slider)
     },
