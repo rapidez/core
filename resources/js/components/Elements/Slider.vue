@@ -55,6 +55,9 @@ export default {
             chunk: '',
             pause: () => {},
             resume: () => {},
+
+            childSpan: 0,
+            sliderSpan: 0,
         }
     },
     mounted() {
@@ -69,6 +72,10 @@ export default {
 
             this.initAutoPlay()
         })
+
+        this.updateSpan()
+
+        new ResizeObserver(this.updateSpan).observe(this.slider)
     },
     methods: {
         initSlider() {
@@ -131,6 +138,14 @@ export default {
                 })
             }
         },
+
+        updateSpan() {
+            this.childSpan = this.vertical
+                ? this.slider.children[0]?.offsetHeight ?? this.slider.offsetHeight
+                : this.slider.children[0]?.offsetWidth ?? this.slider.offsetWidth
+
+            this.sliderSpan = this.vertical ? this.slider.offsetHeight : this.slider.offsetWidth
+        },
     },
     watch: {
         hover(isHovering) {
@@ -156,18 +171,6 @@ export default {
         slidesVisible() {
             if (this.mounted) {
                 return Math.round(this.sliderSpan / this.childSpan)
-            }
-        },
-        childSpan() {
-            if (this.mounted) {
-                return this.vertical
-                    ? this.slider.children[0]?.offsetHeight ?? this.slider.offsetHeight
-                    : this.slider.children[0]?.offsetWidth ?? this.slider.offsetWidth
-            }
-        },
-        sliderSpan() {
-            if (this.mounted) {
-                return this.vertical ? this.slider.offsetHeight : this.slider.offsetWidth
             }
         },
     },
