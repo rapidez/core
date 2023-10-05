@@ -32,21 +32,21 @@ export default {
             this.zoomed = !this.zoomed
 
             if (this.zoomed) {
-                this.stopKeyUpListener = useEventListener('keyup', this.keyPressed, {passive: true})
+                this.stopKeyUpListener = useEventListener('keyup', this.keyPressed, { passive: true })
             } else {
-                this.stopKeyUpListener();
-                this.stopKeyUpListener = () => {};
+                this.stopKeyUpListener()
+                this.stopKeyUpListener = () => {}
             }
         },
 
         keyPressed(e) {
-            if (e.key == "ArrowLeft" && this.active) {
+            if (e.key == 'ArrowLeft' && this.active) {
                 // left
                 this.active--
-            } else if (e.key == "ArrowRight" && this.active != this.images.length - 1) {
+            } else if (e.key == 'ArrowRight' && this.active != this.images.length - 1) {
                 // right
                 this.active++
-            } else if (e.key == "Escape") {
+            } else if (e.key == 'Escape') {
                 // esc
                 this.toggleZoom()
             }
