@@ -22,7 +22,7 @@ class WithProductSuperAttributesScope implements Scope
             $query = DB::table('catalog_product_super_link')
                 ->selectRaw('JSON_OBJECTAGG(' . $grammar->wrap($superAttribute) . ', JSON_OBJECT(
                     "sort_order", `option`.`sort_order`,
-                    "label", ' . $grammar->wrap($superAttribute . '_value').',
+                    "label", ' . $grammar->wrap($superAttribute . '_value') . ',
                     "value", ' . $grammar->wrap($superAttribute) . '
                 )) AS ' . $grammar->wrap($superAttribute))
                 ->join($model->getTable() . ' AS children', 'children.entity_id', '=', 'catalog_product_super_link.product_id')
