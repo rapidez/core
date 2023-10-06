@@ -77,6 +77,10 @@ export default {
             let billing = this.order.sales_order_addresses.filter(e => e.address_type == 'billing')
             return billing.at(-1)
         },
+
+        items() {
+            return this.order.sales_order_items.filter(item => !item.parent_item_id);
+        }
     },
 }
 </script>

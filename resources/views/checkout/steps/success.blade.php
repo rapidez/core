@@ -1,5 +1,5 @@
 <checkout-success>
-    <div dusk="checkout-success" slot-scope="{ order, hideBilling, shipping, billing }" v-cloak v-if="order">
+    <div dusk="checkout-success" slot-scope="{ order, hideBilling, shipping, billing, items }" v-cloak v-if="order">
         <h1 class="font-bold text-4xl mb-5">@lang('Order placed succesfully')</h1>
         <div class="bg-highlight rounded p-8">
             <p>@lang('We will get to work for you right away')</p>
@@ -8,7 +8,7 @@
         <div class="mt-4">
             <div
                 class="flex flex-wrap items-center mb-4 border-b pb-2"
-                v-for="(item, productId, index) in order.sales_order_items"
+                v-for="(item, productId, index) in items"
                 v-if="!item.parent_item_id"
             >
                 <div class="w-1/6 sm:w-1/12 pr-3">
