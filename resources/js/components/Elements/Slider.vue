@@ -38,7 +38,6 @@ export default {
     data: () => {
         return {
             slider: '',
-            slidesTotal: 0,
             position: 0,
             showLeft: false,
             showRight: false,
@@ -66,7 +65,6 @@ export default {
     methods: {
         initSlider() {
             this.slider = this.$scopedSlots.default()[0].context.$refs[this.reference]
-            this.slidesTotal = (this.slider.children?.length ?? 1) - this.slidesVisible + 1
         },
         initAutoPlay() {
             if (!this.autoplay) {
@@ -165,6 +163,13 @@ export default {
             }
 
             return this.vertical ? this.slider.offsetHeight : this.slider.offsetWidth
+        },
+        slidesTotal() {
+            if (!this.mounted) {
+                return 0
+            }
+
+            return (this.slider.children?.length ?? 1) - this.slidesVisible + 1
         },
     },
 }
