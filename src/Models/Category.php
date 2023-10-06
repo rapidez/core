@@ -69,23 +69,23 @@ class Category extends Model
     public function productIndices(): HasMany
     {
         return $this->hasMany(
-                config('rapidez.models.category_product'),
-                'category_id',
-                'entity_id'
-            )
+            config('rapidez.models.category_product'),
+            'category_id',
+            'entity_id'
+        )
             ->whereIn((new(config('rapidez.models.category_product')))->qualifyColumn('visibility'), [2, 4]);
     }
 
     public function products(): HasManyThrough
     {
         return $this->hasManyThrough(
-                config('rapidez.models.product'),
-                config('rapidez.models.category_product'),
-                'category_id',
-                'entity_id',
-                'entity_id',
-                'product_id'
-            )
+            config('rapidez.models.product'),
+            config('rapidez.models.category_product'),
+            'category_id',
+            'entity_id',
+            'entity_id',
+            'product_id'
+        )
             ->withoutGlobalScopes()
             ->whereIn((new(config('rapidez.models.category_product')))->qualifyColumn('visibility'), [2, 4]);
     }
