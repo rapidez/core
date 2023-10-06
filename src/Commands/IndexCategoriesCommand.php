@@ -25,11 +25,12 @@ class IndexCategoriesCommand extends ElasticsearchIndexCommand
 
     public function getCategories()
     {
-        return config('rapidez.models.category')::query()
-            ->select((new (config('rapidez.models.category')))->qualifyColumns(['entity_id', 'name', 'url_path', 'children_count']))
+        return config('rapidez.models.category')
+            ::select((new (config('rapidez.models.category')))->qualifyColumns(['entity_id', 'name', 'url_path']))
+            ->withCount('products')
             ->whereNotNull('url_key')
             ->whereNot('url_key', 'default-category')
-            ->where('children_count', '>', 0)
+            ->having('products_count', '>', 0)
             ->get() ?? [];
     }
 }
