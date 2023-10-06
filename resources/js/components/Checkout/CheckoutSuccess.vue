@@ -59,28 +59,28 @@ export default {
 
     computed: {
         hideBilling() {
-            return this.shipping && this.billing && this.sameAddress(this.shipping, this.billing);
+            return this.shipping && this.billing && this.sameAddress(this.shipping, this.billing)
         },
 
         shipping() {
-            if(!this.order?.sales_order_addresses) {
-                return null;
+            if (!this.order?.sales_order_addresses) {
+                return null
             }
-            let shipping = this.order.sales_order_addresses.filter(e => e.address_type == 'shipping')
+            let shipping = this.order.sales_order_addresses.filter((e) => e.address_type == 'shipping')
             return shipping.length > 1 ? null : shipping.at(-1)
         },
 
         billing() {
-            if(!this.order?.sales_order_addresses) {
-                return null;
+            if (!this.order?.sales_order_addresses) {
+                return null
             }
-            let billing = this.order.sales_order_addresses.filter(e => e.address_type == 'billing')
+            let billing = this.order.sales_order_addresses.filter((e) => e.address_type == 'billing')
             return billing.at(-1)
         },
 
         items() {
-            return this.order.sales_order_items.filter(item => !item.parent_item_id);
-        }
+            return this.order.sales_order_items.filter((item) => !item.parent_item_id)
+        },
     },
 }
 </script>
