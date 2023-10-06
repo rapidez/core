@@ -17,9 +17,9 @@ class Customer extends Model implements AuthenticatableContract
         'password_hash',
         'rp_token',
         'rp_token_created_at',
-        'confirmation'
+        'confirmation',
     ];
-    
+
     public function getRememberTokenName()
     {
         return '';

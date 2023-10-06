@@ -34,7 +34,7 @@ class AuthenticatedMagentoCustomer
         abort_unless($authId, 401);
 
         auth()->setUser(config('rapidez.models.customer')::findOr($authId, function () {
-        abort(401);
+            abort(401);
         }));
 
         return $next($request);
