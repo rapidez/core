@@ -12,7 +12,6 @@ class AuthenticatedMagentoCustomer
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
@@ -34,7 +33,9 @@ class AuthenticatedMagentoCustomer
 
         abort_unless($authId, 401);
 
-        auth()->setUser(config('rapidez.models.customer')::findOr($authId, function () {abort(401);}));
+        auth()->setUser(config('rapidez.models.customer')::findOr($authId, function () {
+        abort(401);
+        }));
 
         return $next($request);
     }
