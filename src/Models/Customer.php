@@ -13,6 +13,13 @@ class Customer extends Model implements AuthenticatableContract
 
     protected $table = 'customer_entity';
 
+    protected $hidden = [
+        'password_hash',
+        'rp_token',
+        'rp_token_created_at',
+        'confirmation'
+    ];
+    
     public function getRememberTokenName()
     {
         return '';
