@@ -27,10 +27,10 @@ class IndexCategoriesCommand extends ElasticsearchIndexCommand
     {
         return config('rapidez.models.category')
             ::select((new (config('rapidez.models.category')))->qualifyColumns(['entity_id', 'name', 'url_path']))
-            ->withCount('products')
+            ->withCount('productIndices')
             ->whereNotNull('url_key')
             ->whereNot('url_key', 'default-category')
-            ->having('products_count', '>', 0)
+            ->having('product_indices_count', '>', 0)
             ->get() ?? [];
     }
 }
