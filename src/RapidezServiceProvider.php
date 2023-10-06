@@ -7,7 +7,6 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\View;
@@ -63,15 +62,15 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function bootAuth(): self
     {
-        Auth::extend('magento-customer', function (Application $app, string $name, array $config) {
-            return new MagentoCustomerTokenGuard(Auth::createUserProvider($config['provider']), request(), 'token', 'token');
+        auth()->extend('magento-customer', function (Application $app, string $name, array $config) {
+            return new MagentoCustomerTokenGuard(auth()->createUserProvider($config['provider']), request(), 'token', 'token');
         });
 
         config([
             'auth.guards.magento-customer' => [
-                'driver' => 'magento-customer',
+                'driver'   => 'magento-customer',
                 'provider' => 'users',
-            ]
+            ],
         ]);
 
         return $this;
