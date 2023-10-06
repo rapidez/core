@@ -86,6 +86,7 @@ return [
         'attribute'                 => Rapidez\Core\Models\Attribute::class,
         'product'                   => Rapidez\Core\Models\Product::class,
         'category'                  => Rapidez\Core\Models\Category::class,
+        'customer'                  => Rapidez\Core\Models\Customer::class,
         'config'                    => Rapidez\Core\Models\Config::class,
         'option_swatch'             => Rapidez\Core\Models\OptionSwatch::class,
         'option_value'              => Rapidez\Core\Models\OptionValue::class,
