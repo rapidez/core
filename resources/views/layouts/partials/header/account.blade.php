@@ -10,7 +10,7 @@
                     <a class="block hover:bg-inactive px-3 py-2" href="{{ route('account.overview') }}">@lang('Account')</a>
                     <a class="block hover:bg-inactive px-3 py-2" href="{{ route('account.orders') }}">@lang('Orders')</a>
                     @if (App::providerIsLoaded('Rapidez\Wishlist\WishlistServiceProvider'))
-                        {{-- <a class="block hover:bg-inactive px-3 py-2" href="{{ route('account.wishlist') }}">@lang('Wishlist')</a> --}}
+                        <a class="block hover:bg-inactive px-3 py-2" href="{{ route('account.wishlist') }}">@lang('Wishlist')</a>
                     @endif
                 @endif
                 <user>
