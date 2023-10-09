@@ -25,15 +25,9 @@ class MagentoCustomerTokenGuard extends TokenGuard implements Guard
             return $this->user;
         }
 
-        $user = null;
-
         $token = $this->getTokenForRequest();
 
-        if (! empty($token)) {
-            $user = $this->retrieveByToken($token);
-        }
-
-        return $this->user = $user;
+        return $this->user = empty($token) ? null : $this->retrieveByToken($token);
     }
 
     /**
@@ -48,11 +42,7 @@ class MagentoCustomerTokenGuard extends TokenGuard implements Guard
             return false;
         }
 
-        if ($this->retrieveByToken($credentials[$this->inputKey])) {
-            return true;
-        }
-
-        return false;
+        return (bool)$this->retrieveByToken($credentials[$this->inputKey]);
     }
 
     protected function retrieveByToken($token) {
