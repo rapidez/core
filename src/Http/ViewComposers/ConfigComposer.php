@@ -14,8 +14,8 @@ class ConfigComposer
     public function compose(View $view)
     {
         $exposedFrontendConfigValues = Arr::only(
-            config('rapidez'),
-            array_merge(config('rapidez.exposed'), ['store_code'])
+            [...config('rapidez'), ...config('rapidez.frontend')],
+            array_merge(config('rapidez.frontend.exposed'), ['store_code'])
         );
 
         Config::set('frontend', array_merge(

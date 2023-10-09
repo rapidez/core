@@ -5,7 +5,7 @@
                 <x-heroicon-o-shopping-cart class="h-6 w-6"/>
                 <span class="bg-primary rounded-full w-6 h-6 text-white text-center" dusk="minicart-count">@{{ Math.round(cart.items_qty) }}</span>
             </button>
-            <div v-if="isOpen" class="absolute right-0 bg-white border shadow rounded p-3 mr-1 {{ config('rapidez.z-indexes.header-dropdowns') }}">
+            <div v-if="isOpen" class="absolute right-0 bg-white border shadow rounded p-3 mr-1 {{ config('rapidez.frontend.z-indexes.header-dropdowns') }}">
                 <table class="mb-3">
                     <tr class="py-3" v-for="item in cart.items">
                         <td>@{{ item.name }}</td>

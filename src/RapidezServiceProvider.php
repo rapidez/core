@@ -33,6 +33,15 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class RapidezServiceProvider extends ServiceProvider
 {
+    protected $configFiles = [
+        'frontend',
+        'healthcheck',
+        'jwt',
+        'models',
+        'routing',
+    ];
+
+
     public function boot()
     {
         $this
@@ -77,6 +86,12 @@ class RapidezServiceProvider extends ServiceProvider
                 __DIR__ . '/../config/rapidez.php' => config_path('rapidez.php'),
             ], 'config');
 
+            foreach($this->configFiles as $configFile) {
+                $this->publishes([
+                    __DIR__ . '/../config/rapidez/' . $configFile . '.php' => config_path('rapidez/' . $configFile . '.php'),
+                ], 'config');
+            }
+
             $this->publishes([
                 __DIR__ . '/../resources/views' => resource_path('views/vendor/rapidez'),
             ], 'views');
@@ -91,7 +106,7 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function bootRoutes(): self
     {
-        if (config('rapidez.routes')) {
+        if (config('rapidez.routing.enabled')) {
             $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
             $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
         }
@@ -105,7 +120,7 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function registerThemes(): self
     {
-        $path = config('rapidez.themes.' . request()->server('MAGE_RUN_CODE', request()->has('_store') && ! app()->isProduction() ? request()->get('_store') : 'default'), false);
+        $path = config('rapidez.frontend.themes.' . request()->server('MAGE_RUN_CODE', request()->has('_store') && ! app()->isProduction() ? request()->get('_store') : 'default'), false);
 
         if (! $path) {
             return $this;
@@ -210,6 +225,9 @@ class RapidezServiceProvider extends ServiceProvider
     protected function registerConfigs(): self
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/rapidez.php', 'rapidez');
+        foreach($this->configFiles as $configFile) {
+            $this->mergeConfigFrom(__DIR__ . '/../config/rapidez/' . $configFile . '.php', 'rapidez.' . $configFile);
+        }
 
         return $this;
     }

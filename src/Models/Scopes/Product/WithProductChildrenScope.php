@@ -24,7 +24,7 @@ class WithProductChildrenScope implements Scope
             $superAttributesSelect .= '"' . $superAttribute . '", children.' . $superAttribute . ',';
         }
 
-        $stockQty = config('rapidez.expose_stock') ? '"qty", children_stock.qty,' : '';
+        $stockQty = config('rapidez.frontend.expose_stock') ? '"qty", children_stock.qty,' : '';
 
         $builder
             ->selectRaw('JSON_REMOVE(JSON_OBJECTAGG(IFNULL(children.entity_id, "null__"), JSON_OBJECT(
