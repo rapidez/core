@@ -1,4 +1,5 @@
 <?php
+
 // The fully qualified class names of the models.
 return [
     'page'                      => Rapidez\Core\Models\Page::class,

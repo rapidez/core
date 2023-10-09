@@ -1,4 +1,5 @@
 <?php
+
 return [
     // Should the routes be registered? The controllers
     // below will not be used anymore when disabled.

@@ -41,7 +41,6 @@ class RapidezServiceProvider extends ServiceProvider
         'routing',
     ];
 
-
     public function boot()
     {
         $this
@@ -86,7 +85,7 @@ class RapidezServiceProvider extends ServiceProvider
                 __DIR__ . '/../config/rapidez.php' => config_path('rapidez.php'),
             ], 'config');
 
-            foreach($this->configFiles as $configFile) {
+            foreach ($this->configFiles as $configFile) {
                 $this->publishes([
                     __DIR__ . '/../config/rapidez/' . $configFile . '.php' => config_path('rapidez/' . $configFile . '.php'),
                 ], 'config');
@@ -225,7 +224,7 @@ class RapidezServiceProvider extends ServiceProvider
     protected function registerConfigs(): self
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/rapidez.php', 'rapidez');
-        foreach($this->configFiles as $configFile) {
+        foreach ($this->configFiles as $configFile) {
             $this->mergeConfigFrom(__DIR__ . '/../config/rapidez/' . $configFile . '.php', 'rapidez.' . $configFile);
         }
 
