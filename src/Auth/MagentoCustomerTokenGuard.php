@@ -38,7 +38,7 @@ class MagentoCustomerTokenGuard extends TokenGuard implements Guard
             return false;
         }
 
-        return (bool)$this->retrieveByToken($credentials[$this->inputKey]);
+        return (bool) $this->retrieveByToken($credentials[$this->inputKey]);
     }
 
     protected function retrieveByToken($token)
