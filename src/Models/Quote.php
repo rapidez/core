@@ -48,7 +48,7 @@ class Quote extends Model
                         "item_id", quote_item.item_id,
                         "product_id", quote_item.product_id,
                         "sku", quote_item.sku,
-                        "name", quote_item.name,
+                        "name", quote_item.`name`,
                         "image", product.thumbnail,
                         "url_key", product.url_key,
                         "qty", quote_item.qty,

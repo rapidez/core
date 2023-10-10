@@ -19,9 +19,10 @@ class WithProductChildrenScope implements Scope
             return $attribute['super'];
         }), 'code');
 
+        $grammar = $builder->getQuery()->getGrammar();
         $superAttributesSelect = '';
         foreach ($superAttributes as $superAttribute) {
-            $superAttributesSelect .= '"' . $superAttribute . '", children.' . $superAttribute . ',';
+            $superAttributesSelect .= '"' . $superAttribute . '", ' . $grammar->wrap('children.' . $superAttribute) . ',';
         }
 
         $stockQty = config('rapidez.expose_stock') ? '"qty", children_stock.qty,' : '';
