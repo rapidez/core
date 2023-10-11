@@ -30,6 +30,7 @@ class WithProductAttributesScope implements Scope
             $model->getQualifiedCreatedAtColumn(),
         ]);
 
+        $grammar = $builder->getQuery()->getGrammar();
         foreach ($attributes as $attribute) {
             $attribute = (object) $attribute;
 
@@ -45,7 +46,7 @@ class WithProductAttributesScope implements Scope
             } else {
                 if ($attribute->input == 'select') {
                     $builder
-                        ->selectRaw('COALESCE(ANY_VALUE(' . $attribute->code . '_option_value_' . config('rapidez.store') . '.value), ANY_VALUE(' . $attribute->code . '_option_value_0.value)) AS ' . $attribute->code)
+                        ->selectRaw('COALESCE(ANY_VALUE(' . $grammar->wrap($attribute->code . '_option_value_' . config('rapidez.store') . '.value') . '), ANY_VALUE(' . $grammar->wrap($attribute->code . '_option_value_0.value') . ')) AS ' . $grammar->wrap($attribute->code))
                         ->leftJoin(
                             'catalog_product_entity_' . $attribute->type . ' AS ' . $attribute->code,
                             function ($join) use ($builder, $attribute) {
@@ -68,7 +69,7 @@ class WithProductAttributesScope implements Scope
                         );
                 } else {
                     $builder
-                        ->selectRaw('COALESCE(ANY_VALUE(' . $attribute->code . '_' . config('rapidez.store') . '.value), ANY_VALUE(' . $attribute->code . '_0.value)) AS ' . $attribute->code)
+                        ->selectRaw('COALESCE(ANY_VALUE(' . $grammar->wrap($attribute->code . '_' . config('rapidez.store') . '.value') . '), ANY_VALUE(' . $grammar->wrap($attribute->code . '_0.value') . ')) AS ' . $grammar->wrap($attribute->code))
                         ->leftJoin(
                             'catalog_product_entity_' . $attribute->type . ' AS ' . $attribute->code . '_' . config('rapidez.store'),
                             function ($join) use ($builder, $attribute) {
