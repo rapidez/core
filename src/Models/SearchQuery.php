@@ -2,9 +2,7 @@
 
 namespace Rapidez\Core\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Rapidez\Core\Models\Scopes\IsActiveScope;
 
 class SearchQuery extends Model
 {
