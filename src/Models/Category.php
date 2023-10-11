@@ -66,16 +66,6 @@ class Category extends Model
         return $this->hasMany(self::class, 'parent_id', 'entity_id');
     }
 
-    public function productIndices(): HasMany
-    {
-        return $this->hasMany(
-            config('rapidez.models.category_product'),
-            'category_id',
-            'entity_id'
-        )
-            ->whereIn((new(config('rapidez.models.category_product')))->qualifyColumn('visibility'), [2, 4]);
-    }
-
     public function products(): HasManyThrough
     {
         return $this->hasManyThrough(
