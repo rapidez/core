@@ -68,14 +68,15 @@ class Category extends Model
 
     public function products(): HasManyThrough
     {
-        return $this->hasManyThrough(
-            config('rapidez.models.product'),
-            config('rapidez.models.category_product'),
-            'category_id',
-            'entity_id',
-            'entity_id',
-            'product_id'
-        )
+        return $this
+            ->hasManyThrough(
+                config('rapidez.models.product'),
+                config('rapidez.models.category_product'),
+                'category_id',
+                'entity_id',
+                'entity_id',
+                'product_id'
+            )
             ->withoutGlobalScopes()
             ->whereIn((new(config('rapidez.models.category_product')))->qualifyColumn('visibility'), [2, 4]);
     }
