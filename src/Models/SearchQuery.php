@@ -6,14 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class SearchQuery extends Model
 {
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $table = 'search_query';
 
     protected $primaryKey = 'query_id';
 
-    protected $fillable = [
-        'query_text',
-        'store_id',
-    ];
+    protected $guarded = [];
+
+    public function getCreatedAtColumn()
+    {
+        return null;
+    }
 }
