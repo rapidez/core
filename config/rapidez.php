@@ -111,6 +111,7 @@ return [
         'sales_order_address'       => Rapidez\Core\Models\SalesOrderAddress::class,
         'sales_order_item'          => Rapidez\Core\Models\SalesOrderItem::class,
         'sales_order_payment'       => Rapidez\Core\Models\SalesOrderPayment::class,
+        'search_query'              => Rapidez\Core\Models\SearchQuery::class,
     ],
 
     // The fully qualified class names of the widgets.
