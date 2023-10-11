@@ -11,14 +11,24 @@ class SearchController
     {
         $query = Str::lower($request->q);
         $searchQueryModel = config('rapidez.models.search_query');
-        if ($searchQuery = $searchQueryModel::firstOrCreate([
-            'query_text' => $query,
-            'store_id' => config('rapidez.store'),
-        ])) {
-            $searchQuery->increment('popularity');
-            if ($searchQuery->is_active === 1 && $searchQuery->redirect) {
-                return redirect($searchQuery->redirect, 301);
-            }
+        $searchQuery = $searchQueryModel::firstOrNew(
+            [
+                'query_text' => $query,
+                'store_id' => config('rapidez.store'),
+            ],
+            [
+                'popularity' => 1,
+            ]
+        );
+
+        if (!$searchQuery->exists) {
+            $searchQuery->save();
+            return view('rapidez::search.overview');
+        }
+
+        $searchQuery->increment('popularity');
+        if ($searchQuery->is_active === 1 && $searchQuery->redirect) {
+            return redirect($searchQuery->redirect, 301);
         }
 
         return view('rapidez::search.overview');
