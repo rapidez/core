@@ -14,7 +14,7 @@ class SearchController
         $searchQuery = $searchQueryModel::firstOrNew(
             [
                 'query_text' => $query,
-                'store_id' => config('rapidez.store'),
+                'store_id'   => config('rapidez.store'),
             ],
             [
                 'popularity' => 1,
