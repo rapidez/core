@@ -13,7 +13,7 @@ class SearchController
         $searchQueryModel = config('rapidez.models.search_query');
         if ($searchQuery = $searchQueryModel::firstOrCreate([
             'query_text' => $query,
-            'store_id' => config('rapidez.store'),
+            'store_id'   => config('rapidez.store'),
         ])) {
             $searchQuery->increment('popularity');
             if ($searchQuery->is_active === 1 && $searchQuery->redirect) {
