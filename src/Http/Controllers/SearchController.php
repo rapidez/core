@@ -21,8 +21,9 @@ class SearchController
             ]
         );
 
-        if (!$searchQuery->exists) {
+        if (! $searchQuery->exists) {
             $searchQuery->save();
+
             return view('rapidez::search.overview');
         }
 
