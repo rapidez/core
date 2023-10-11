@@ -12,16 +12,13 @@ class SearchController
     public function __invoke(Request $request)
     {
         $query = Str::lower($request->q);
-        if ($searchQuery = Cache::remember('search.query.' . Str::slug($query), Carbon::now()->addHour(), function () use ($query) {
-            $searchQueryModel = config('rapidez.models.search_query');
-
-            return $searchQueryModel::firstOrCreate(
-                ['query_text' => $query],
-                ['store_id' => config('rapidez.store')]
-            );
-        })) {
+        $searchQueryModel = config('rapidez.models.search_query');
+        if ($searchQuery = $searchQueryModel::firstOrCreate(
+            ['query_text' => $query],
+            ['store_id' => config('rapidez.store')]
+        )) {
             $searchQuery->increment('popularity');
-            if ($searchQuery->redirect) {
+            if ($searchQuery->is_active === 1 && $searchQuery->redirect) {
                 return redirect($searchQuery->redirect, 301);
             }
         }
