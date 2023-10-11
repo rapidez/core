@@ -33,7 +33,7 @@ export default {
                 return {
                     li: '',
                     ul: 'pl-3',
-                    label: 'block',
+                    label: 'block cursor-pointer',
                     active: 'font-semibold',
                     span: '',
                     small: '',

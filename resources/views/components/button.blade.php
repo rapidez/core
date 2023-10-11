@@ -2,11 +2,11 @@
 
 @php
 $tag = $attributes->has('href') || $attributes->has(':href') ? 'a' : 'button';
-$baseClasses[] = 'inline-block font-semibold py-2 px-4 border rounded disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-75';
+$baseClasses[] = 'inline-block font-semibold py-2 px-4 border rounded disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-75 whitespace-nowrap transition';
 $variants = [
-    'primary' => 'bg-primary border-primary text-white',
-    'outline' => 'bg-transparent hover:bg-primary text-primary hover:text-white border-primary hover:border-transparent',
-    'slider' => ['flex items-center justify-center rounded-full w-12 h-12 bg-white border hover:bg-primary hover:text-white'],
+    'primary' => 'bg-inactive text-white',
+    'outline' => 'bg-transparent hover:bg-neutral text-neutral hover:text-white border-neutral hover:border-transparent',
+    'slider' => ['flex items-center justify-center rounded-full w-12 h-12 bg-white border hover:bg-neutral hover:text-white'],
 ];
 @endphp
 
