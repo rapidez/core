@@ -64,7 +64,7 @@
         <div class="flex flex-col mt-4 gap-x-4 md:flex-row">
             <div class="w-full p-8 bg-highlight rounded border-l-2 border-neutral md:w-1/2">
                 <p class="text-neutral font-lg font-bold mb-2">@lang('Shipping method')</p>
-                <p v-text="order.shipping_description"></p>
+                <p>@{{ order.shipping_description }}</p>
             </div>
             <div class="w-full p-8 bg-highlight rounded border-l-2 border-neutral mt-4 md:mt-0 md:w-1/2">
                 <p class="text-neutral font-lg font-bold mb-2">@lang('Payment method')</p>
