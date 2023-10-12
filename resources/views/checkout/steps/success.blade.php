@@ -9,7 +9,6 @@
             <div
                 class="flex flex-wrap items-center mb-4 border-b pb-2"
                 v-for="(item, productId, index) in items"
-                v-if="!item.parent_item_id"
             >
                 <div class="w-1/6 sm:w-1/12 pr-3">
                     <a :href="item.url" class="block">
