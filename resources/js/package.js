@@ -6,6 +6,7 @@ if (!window.process) {
     window.process = {}
 }
 
+import './polyfills'
 import { useLocalStorage, StorageSerializers } from '@vueuse/core'
 import useCart from './stores/useCart'
 import useUser from './stores/useUser'
@@ -118,7 +119,18 @@ function init() {
     })
 
     if (window.debug) {
-        window.app.$on('notification-message', console.debug)
+        window.app.$on('notification-message', function (message, type, params, link) {
+            switch (type) {
+                case 'error':
+                    console.error(...arguments)
+                case 'warning':
+                    console.warn(...arguments)
+                case 'success':
+                case 'info':
+                default:
+                    console.log(...arguments)
+            }
+        })
     }
 }
 

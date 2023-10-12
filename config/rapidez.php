@@ -19,6 +19,11 @@ return [
     // Magento crypt key.
     'crypt_key' => env('CRYPT_KEY'),
 
+    'jwt' => [
+        // What magento signs the JWT with, visible under `configuration > Services > Magento Web API > JWT Authentication`
+        'signed_with' => \Lcobucci\JWT\Signer\Hmac\Sha256::class,
+    ],
+
     // The variables which should be exposed to the frontend.
     'exposed' => [
         'store',
@@ -81,7 +86,10 @@ return [
         'attribute'                 => Rapidez\Core\Models\Attribute::class,
         'product'                   => Rapidez\Core\Models\Product::class,
         'category'                  => Rapidez\Core\Models\Category::class,
+        'category_product'          => Rapidez\Core\Models\CategoryProduct::class,
+        'customer'                  => Rapidez\Core\Models\Customer::class,
         'config'                    => Rapidez\Core\Models\Config::class,
+        'oauth_token'               => Rapidez\Core\Models\OauthToken::class,
         'option_swatch'             => Rapidez\Core\Models\OptionSwatch::class,
         'option_value'              => Rapidez\Core\Models\OptionValue::class,
         'product_image'             => Rapidez\Core\Models\ProductImage::class,
@@ -150,5 +158,14 @@ return [
     // with, for example, the type of "Text", you can specify the attribute code here.
     'additional_filters' => [
         // Attribute codes
+    ],
+
+    'healthcheck' => [
+        // Authenticate using the function passed, if null we will check ips.
+        'auth'        => null,
+        'allowed_ips' => [
+            '127.0.0.1/8',
+            ...explode(',', env('HEALTHCHECK_ALLOWED_IPS', '')),
+        ],
     ],
 ];

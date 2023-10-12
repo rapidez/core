@@ -21,9 +21,11 @@ export const refresh = async function () {
 
     try {
         isRefreshing = true
-        let response = await axios.get(window.url('/api/cart/' + (token.value ? token.value : mask.value))).finally(() => {
-            isRefreshing = false
-        })
+        let response = await axios
+            .get(window.url('/api/cart'), { headers: { Authorization: 'Bearer ' + (token.value || mask.value) } })
+            .finally(() => {
+                isRefreshing = false
+            })
         cartStorage.value = !mask.value && !token.value ? {} : response.data
         window.app.$emit('cart-refreshed')
     } catch (error) {
@@ -65,6 +67,6 @@ export const cart = computed({
 // If mask gets added, updated or removed we should update the cart.
 watch(mask, refresh)
 // refresh the cart on first pageload after a while
-window.setTimeout(() => window.requestIdleCallback(() => !hasRefreshed && refresh), 5000)
+window.setTimeout(() => window.requestIdleCallback(() => !hasRefreshed && refresh()), 5000)
 
 export default () => cart

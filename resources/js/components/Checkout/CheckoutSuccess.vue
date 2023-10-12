@@ -35,7 +35,9 @@ export default {
 
     methods: {
         refreshOrder() {
-            axios.get(window.url('/api/order/' + (this.token || this.mask))).then((response) => (this.order = response.data))
+            axios
+                .get(window.url('/api/order'), { headers: { Authorization: 'Bearer ' + (this.token || this.mask) } })
+                .then((response) => (this.order = response.data))
         },
     },
 }
