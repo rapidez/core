@@ -19,6 +19,7 @@ use Rapidez\Core\Commands\IndexProductsCommand;
 use Rapidez\Core\Commands\InstallCommand;
 use Rapidez\Core\Commands\InstallTestsCommand;
 use Rapidez\Core\Commands\ValidateCommand;
+use Rapidez\Core\Events\IndexBeforeEvent;
 use Rapidez\Core\Events\ProductViewEvent;
 use Rapidez\Core\Facades\Rapidez as RapidezFacade;
 use Rapidez\Core\Http\Controllers\Fallback\CmsPageController;
@@ -85,6 +86,10 @@ class RapidezServiceProvider extends ServiceProvider
             InstallCommand::class,
             InstallTestsCommand::class,
         ]);
+
+        Event::listen(IndexBeforeEvent::class, function ($event) {
+            $event->context->call('rapidez:index:categories');
+        });
 
         return $this;
     }

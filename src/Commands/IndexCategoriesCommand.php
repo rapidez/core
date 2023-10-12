@@ -25,7 +25,8 @@ class IndexCategoriesCommand extends ElasticsearchIndexCommand
 
     public function getCategories()
     {
-        return config('rapidez.models.category')::select((new (config('rapidez.models.category')))->qualifyColumns(['entity_id', 'name', 'url_path']))
+        return config('rapidez.models.category')::withEventyGlobalScopes('index.categories.scopes')
+            ->select((new (config('rapidez.models.category')))->qualifyColumns(['entity_id', 'name', 'url_path']))
             ->whereNotNull('url_key')
             ->whereNot('url_key', 'default-category')
             ->has('products')
