@@ -15,16 +15,6 @@
                     <div class="sticky top-5">
                         @include('rapidez::product.partials.images')
                     </div>
-    <div class="container">
-        @include('rapidez::product.partials.breadcrumbs')
-        <div itemtype="https://schema.org/Product" itemscope>
-            @include('rapidez::product.partials.microdata')
-            @include('rapidez::product.partials.opengraph')
-            <div class="relative flex flex-col gap-8 sm:flex-row">
-                <div class="sm:w-1/2">
-                    <div class="sticky top-5">
-                        @include('rapidez::product.partials.images')
-                    </div>
                 </div>
                 <div class="flex flex-col gap-5 sm:w-1/2">
                     @includeWhen($product->type_id == 'grouped', 'rapidez::product.partials.grouped')

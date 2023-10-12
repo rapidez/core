@@ -1,4 +1,4 @@
-@if(($product->options ?? false) && $product->options->count() > 0)
+@if($product->options->isNotEmpty())
     <div class="flex flex-col space-y-3">
         @foreach($product->options->sortBy('sort_order') as $option)
             <div>
