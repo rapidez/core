@@ -39,6 +39,7 @@ class RapidezServiceProvider extends ServiceProvider
         'jwt',
         'models',
         'routing',
+        'system',
     ];
 
     public function boot()
