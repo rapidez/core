@@ -3,6 +3,7 @@
 namespace Rapidez\Core;
 
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -12,11 +13,13 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
+use Rapidez\Core\Auth\MagentoCustomerTokenGuard;
 use Rapidez\Core\Commands\IndexCategoriesCommand;
 use Rapidez\Core\Commands\IndexProductsCommand;
 use Rapidez\Core\Commands\InstallCommand;
 use Rapidez\Core\Commands\InstallTestsCommand;
 use Rapidez\Core\Commands\ValidateCommand;
+use Rapidez\Core\Events\IndexBeforeEvent;
 use Rapidez\Core\Events\ProductViewEvent;
 use Rapidez\Core\Facades\Rapidez as RapidezFacade;
 use Rapidez\Core\Http\Controllers\Fallback\CmsPageController;
@@ -45,6 +48,7 @@ class RapidezServiceProvider extends ServiceProvider
     public function boot()
     {
         $this
+            ->bootAuth()
             ->bootCommands()
             ->bootPublishables()
             ->bootRoutes()
@@ -66,6 +70,22 @@ class RapidezServiceProvider extends ServiceProvider
             ->registerExceptionHandlers();
     }
 
+    protected function bootAuth(): self
+    {
+        auth()->extend('magento-customer', function (Application $app, string $name, array $config) {
+            return new MagentoCustomerTokenGuard(auth()->createUserProvider($config['provider']), request(), 'token', 'token');
+        });
+
+        config([
+            'auth.guards.magento-customer' => [
+                'driver'   => 'magento-customer',
+                'provider' => 'users',
+            ],
+        ]);
+
+        return $this;
+    }
+
     protected function bootCommands(): self
     {
         $this->commands([
@@ -75,6 +95,10 @@ class RapidezServiceProvider extends ServiceProvider
             InstallCommand::class,
             InstallTestsCommand::class,
         ]);
+
+        Event::listen(IndexBeforeEvent::class, function ($event) {
+            $event->context->call('rapidez:index:categories');
+        });
 
         return $this;
     }

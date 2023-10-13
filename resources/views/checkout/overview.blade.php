@@ -5,16 +5,18 @@
 @section('robots', 'NOINDEX,NOFOLLOW')
 
 @section('content')
-    <div class="container mx-auto">
+    <div class="container">
         <checkout v-cloak v-slot="{ checkout, cart, hasItems, save, goToStep }">
             <div>
-                @include('rapidez::checkout.partials.progressbar')
+                <template v-if="checkout.step !== 4">
+                    @include('rapidez::checkout.partials.progressbar')
+                </template>
                 <div v-if="checkout.step == 1 && hasItems">
                     @include('rapidez::checkout.steps.login')
                 </div>
 
-                <div v-if="[2, 3].includes(checkout.step)" class="md:flex -mx-2">
-                    <div class="w-full mb-5 md:w-2/3 lg:w-3/4 px-2">
+                <div v-if="[2, 3].includes(checkout.step)" class="-mx-2 lg:flex">
+                    <div class="mb-5 w-full px-2 lg:w-3/4">
                         <div v-if="checkout.step == 2">
                             @include('rapidez::checkout.steps.credentials')
                         </div>
@@ -23,7 +25,7 @@
                             @include('rapidez::checkout.steps.payment')
                         </div>
                     </div>
-                    <div class="md:w-1/3 lg:w-1/4 px-2 md:mt-20">
+                    <div class="w-full px-2 lg:mt-16 lg:w-1/4">
                         @include('rapidez::checkout.partials.sidebar')
                     </div>
                 </div>

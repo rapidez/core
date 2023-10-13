@@ -6,7 +6,10 @@ return [
     'attribute'                 => Rapidez\Core\Models\Attribute::class,
     'product'                   => Rapidez\Core\Models\Product::class,
     'category'                  => Rapidez\Core\Models\Category::class,
+    'category_product'          => Rapidez\Core\Models\CategoryProduct::class,
+    'customer'                  => Rapidez\Core\Models\Customer::class,
     'config'                    => Rapidez\Core\Models\Config::class,
+    'oauth_token'               => Rapidez\Core\Models\OauthToken::class,
     'option_swatch'             => Rapidez\Core\Models\OptionSwatch::class,
     'option_value'              => Rapidez\Core\Models\OptionValue::class,
     'product_image'             => Rapidez\Core\Models\ProductImage::class,
@@ -28,4 +31,5 @@ return [
     'sales_order_address'       => Rapidez\Core\Models\SalesOrderAddress::class,
     'sales_order_item'          => Rapidez\Core\Models\SalesOrderItem::class,
     'sales_order_payment'       => Rapidez\Core\Models\SalesOrderPayment::class,
+    'search_query'              => Rapidez\Core\Models\SearchQuery::class,
 ];
