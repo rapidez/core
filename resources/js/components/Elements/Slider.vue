@@ -73,7 +73,6 @@ export default {
 
             this.initAutoPlay()
         })
-
     },
     methods: {
         initSlider() {
@@ -120,8 +119,8 @@ export default {
 
         navigate(index, behavior = 'smooth') {
             this.vertical
-                ? this.slider.scrollTo({left: 0, top: this.slider.children[index]?.offsetTop, behavior: behavior})
-                : this.slider.scrollTo({left: this.slider.children[0]?.offsetWidth * index, top: 0, behavior: behavior})
+                ? this.slider.scrollTo({ left: 0, top: this.slider.children[index]?.offsetTop, behavior: behavior })
+                : this.slider.scrollTo({ left: this.slider.children[0]?.offsetWidth * index, top: 0, behavior: behavior })
         },
 
         handleLoop() {
