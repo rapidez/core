@@ -7,7 +7,7 @@
             @class([
                 'fixed inset-0 overflow-hidden',
                 'md:contents' => $mobileOnly,
-                config('rapidez.z-indexes.slideover'),
+                config('rapidez.frontend.z-indexes.slideover'),
             ])
             @if($mobileOnly)
                 :class="isOpen ? 'max-md:pointer-events-auto' : 'max-md:pointer-events-none'"

@@ -11,7 +11,7 @@ class WithProductGroupedScope implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
-        $stockQty = config('rapidez.expose_stock') ? '"qty", grouped_stock.qty,' : '';
+        $stockQty = config('rapidez.frontend.expose_stock') ? '"qty", grouped_stock.qty,' : '';
 
         $builder
             ->selectRaw('JSON_REMOVE(JSON_OBJECTAGG(IFNULL(grouped.entity_id, "null__"), JSON_OBJECT(

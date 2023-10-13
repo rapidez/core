@@ -33,7 +33,7 @@
                 slot-scope="{ downshiftProps: { isOpen }, data: suggestions }"
             >
                 <div
-                    class="{{ config('rapidez.z-indexes.header-dropdowns') }} absolute -inset-x-10 top-full max-h-[600px] overflow-auto rounded-b-xl border bg-white p-2 md:p-5 shadow-xl md:inset-x-0 md:w-full md:-translate-y-px"
+                    class="{{ config('rapidez.frontend.z-indexes.header-dropdowns') }} absolute -inset-x-10 top-full max-h-[600px] overflow-auto rounded-b-xl border bg-white p-2 md:p-5 shadow-xl md:inset-x-0 md:w-full md:-translate-y-px"
                     v-if="isOpen && (suggestions.length || results.count)"
                 >
                     <div class="flex gap-5 pb-5 my-2" v-if="results.categories && results.categories.hits.length">
