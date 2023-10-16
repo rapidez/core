@@ -5,8 +5,16 @@
             v-bind:value="method.code"
             v-bind:dusk="'method-'+index"
             v-model="checkout.payment_method"
+            class="[&+div]:flex-1"
         >
-            @{{ method.title }}
+            <div class="flex items-center">
+                <span>@{{ method.title }}</span>
+                <img
+                    class="ml-auto w-8 h-8"
+                    v-bind:src="method.icon"
+                    onerror="javascript:this.src=`/storage/payment-icons/${config.paymenticons.fallback}.svg`"
+                >
+            </div>
         </x-rapidez::radio>
     </div>
 

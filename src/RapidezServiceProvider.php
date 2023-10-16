@@ -41,6 +41,7 @@ class RapidezServiceProvider extends ServiceProvider
         'healthcheck',
         'jwt',
         'models',
+        'paymenticons',
         'routing',
         'system',
     ];
@@ -123,6 +124,10 @@ class RapidezServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__ . '/../resources/lang' => resource_path('lang/vendor/rapidez'),
             ], 'translations');
+
+            $this->publishes([
+                __DIR__.'/../resources/payment-icons' => resource_path('payment-icons'),
+            ], 'payment-icons');
         }
 
         return $this;

@@ -156,7 +156,11 @@ export default {
                     addressInformation: addressInformation,
                 })
 
-                this.checkout.payment_methods = response.data.payment_methods
+                this.checkout.payment_methods = response.data.payment_methods.map(
+                    method => Object.assign(method, {
+                        icon: `/storage/payment-icon/${this.matchPaymentIcon(method)}.svg`
+                    })
+                )
                 this.checkout.totals = response.data.totals
                 this.$root.$emit('checkout-credentials-saved')
                 return true
@@ -274,6 +278,20 @@ export default {
 
             history.replaceState(null, null, '#' + this.steps[this.checkout.step])
         },
+
+        matchPaymentIcon(method) {
+            let icons = '(' + config.paymenticons.icons.join('|') + ')'
+            for(let i = 0; i < config.paymenticons.regexes.length; i++) {
+                let regex = config.paymenticons.regexes[i].replace('@', icons)
+                let match = method.code.match(regex)
+                if(match) {
+                    // Return the last match to get the right capture group
+                    return match.at(-1)
+                }
+            }
+
+            return config.paymenticons.fallback
+        }
     },
 
     computed: {
