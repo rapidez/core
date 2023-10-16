@@ -126,7 +126,7 @@ class RapidezServiceProvider extends ServiceProvider
             ], 'translations');
 
             $this->publishes([
-                __DIR__.'/../resources/payment-icons' => resource_path('payment-icons'),
+                __DIR__ . '/../resources/payment-icons' => resource_path('payment-icons'),
             ], 'payment-icons');
         }
 

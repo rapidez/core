@@ -13,10 +13,10 @@ class PaymentIconsController extends Controller
     {
         $storagePath = Str::after($request->path(), 'storage/');
 
-        if(!$this->storage()->exists($storagePath)) {
+        if (! $this->storage()->exists($storagePath)) {
             $iconPath = resource_path('payment-icons/' . $icon);
 
-            if(!file_exists($iconPath)) {
+            if (! file_exists($iconPath)) {
                 // When the icons folder hasn't been published, fall back to here
                 $iconPath = __DIR__ . '/../../../resources/payment-icons/' . $icon;
             }
