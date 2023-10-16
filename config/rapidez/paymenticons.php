@@ -10,10 +10,17 @@ return [
 
     // The set of icons to use
     'icons' => [
+        'achteraf-betalen',
+        'apple-pay',
+        'bancontact',
         'bank-transfer',
+        'belfius',
         'creditcard',
+        'giropay',
         'ideal',
+        'kbc',
         'paypal',
+        'sofort',
         'visa',
         // ... Add extra icons here (and add the icons to your payment-icons folder)
     ],
