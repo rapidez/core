@@ -4,6 +4,7 @@
             <h1 class="font-bold text-4xl text-center mb-5">@lang('Checkout')</h1>
 
             <x-rapidez::input
+                class="w-full"
                 :label="false"
                 name="email"
                 type="email"
@@ -13,6 +14,7 @@
                 required
             />
             <x-rapidez::input
+                class="w-full"
                 v-if="!emailAvailable"
                 :label="false"
                 class="mt-3"

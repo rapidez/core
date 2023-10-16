@@ -28,7 +28,6 @@
                     </div>
                 </div>
                 <x-rapidez::select
-                    class="w-auto"
                     name="qty"
                     label="Quantity"
                     v-model="addToCartSlotProps.qty"

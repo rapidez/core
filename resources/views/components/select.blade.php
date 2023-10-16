@@ -1,17 +1,9 @@
-@props(['name', 'label', 'wrapperClass', 'labelClass'])
+@props(['name' => null])
 
-<div class="{{ $wrapperClass ?? '' }}">
-    @if(!isset($label) || (isset($label) && $label))
-        <x-rapidez::label for="{{ $name ?? '' }}" class="{{ $labelClass ?? '' }}">
-            @lang($label ?? ucfirst($name ?? ''))
-        </x-rapidez::label>
-    @endif
-    <select {{ $attributes->merge([
-        'id' => $name ?? null,
-        'name' => $name ?? null,
-        'dusk' => $attributes->get('v-bind:dusk') ? null : $name ?? null,
-        'class' => 'w-full py-2 pl-3 pr-8 border-gray-200 rounded focus:ring-neutral focus:border-neutral sm:text-sm'
-    ]) }}>
-        {{ $slot }}
-    </select>
-</div>
+<select {{ $attributes->merge([
+    'class' => 'peer rounded border border-border bg-white py-4 px-5 text-sm outline-none !ring-0 transition-all placeholder:text-inactive disabled:bg-gray-50 disabled:cursor-not-allowed font-medium',
+    'id' => $name,
+    'name' => $name,
+]) }}>
+    {{ $slot }}
+</select>

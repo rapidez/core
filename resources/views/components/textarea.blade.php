@@ -1,16 +1,9 @@
-@props(['name', 'label', 'wrapperClass'])
+@props(['name' => null])
 
-<div class="{{ $wrapperClass ?? '' }}">
-    @if (!isset($label) || (isset($label) && $label))
-        <x-rapidez::label for="{{ $name }}" class="{{ $labelClass ?? '' }} mb-2 block text-inactive">
-            @lang($label ?? ucfirst($name))
-        </x-rapidez::label>
-    @endif
-    <textarea {{ $attributes->merge([
-        'id' => $name,
-        'name' => $name,
-        'placeholder' => __($placeholder ?? ucfirst($name)),
-        'dusk' => $attributes->get('v-bind:dusk') ? null : $name,
-        'class' => 'w-full py-2 px-3 border-border rounded !ring-0 focus:!border-inactive sm:text-sm text-neutral',
-    ]) }}></textarea>
-</div>
+<textarea  {{ $attributes->merge([
+    'class' => 'peer rounded border border-border bg-white py-4 px-5 text-sm outline-none !ring-0 transition-all placeholder:text-inactive disabled:bg-gray-50 disabled:cursor-not-allowed font-medium',
+    'id' => $name,
+    'name' => $name,
+]) }}>
+    {{ $slot }}
+</textarea>
