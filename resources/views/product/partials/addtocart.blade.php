@@ -28,11 +28,10 @@
                     </div>
                 </div>
                 <x-rapidez::select
+                    class="w-auto"
                     name="qty"
                     label="Quantity"
                     v-model="addToCartSlotProps.qty"
-                    labelClass="flex items-center sr-only"
-                    wrapperClass="flex"
                 >
                     @for ($i = $product->qty_increments; $i <= $product->qty_increments * 10; $i += $product->qty_increments)
                         <option value="{{ $i }}">{{ $i }}</option>

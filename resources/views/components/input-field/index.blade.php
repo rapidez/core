@@ -7,7 +7,7 @@
         default => 'rapidez::input',
     };
     $labelClasses = match($type) {
-        'radio', 'checkbox' => '!flex-row',
+        'radio', 'checkbox' => 'flex-row',
         default => '',
     }
 @endphp

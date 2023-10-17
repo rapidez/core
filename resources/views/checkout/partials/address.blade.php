@@ -15,7 +15,7 @@
     </graphql>
 </div>
 
-<div class="contents [&>div>input]:w-full" v-if="!$root.loggedIn || !checkout.{{ $type }}_address.customer_address_id">
+<div class="contents" v-if="!$root.loggedIn || !checkout.{{ $type }}_address.customer_address_id">
     <div class="col-span-12 {{ Rapidez::config('customer/address/middlename_show', 0) ? 'sm:col-span-4' : 'sm:col-span-6' }}">
         <x-rapidez::input
             label="Firstname"
@@ -86,7 +86,6 @@
     </div>
     <div class="col-span-12 sm:col-span-6">
         <x-rapidez::country-select
-            class="w-full"
             name="{{ $type }}_country"
             label="Country"
             v-model="checkout.{{ $type }}_address.country_id"
