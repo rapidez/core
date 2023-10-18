@@ -31,7 +31,7 @@ class ProductController
             'tierPrices',
             'images',
             'url',
-            'min_sale_qty'
+            'min_sale_qty',
         ];
 
         $attributes = Eventy::filter('productpage.frontend.attributes', $attributes);
