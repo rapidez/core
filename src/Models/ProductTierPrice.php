@@ -2,9 +2,6 @@
 
 namespace Rapidez\Core\Models;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-
 class ProductTierPrice extends Model
 {
     protected $table = 'catalog_product_entity_tier_price';
