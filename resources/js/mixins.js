@@ -15,9 +15,7 @@ Vue.mixin({
         },
 
         includeTaxAt(location) {
-            return location === true || location === false
-                ? location
-                : (window.config.tax.display[location] ?? 0) >= 1
+            return location === true || location === false ? location : (window.config.tax.display[location] ?? 0) >= 1
         },
 
         decideTax(including, excluding, location) {

@@ -39,13 +39,11 @@ export default {
 
         calculatePrice(product, location, options = {}) {
             let special_price = options.special_price ?? false
-            let displayTax = this.$root.includeTaxAt(location);
+            let displayTax = this.$root.includeTaxAt(location)
 
-            let price = special_price
-                ? product.special_price ?? product.price ?? 0
-                : product.price ?? 0
+            let price = special_price ? product.special_price ?? product.price ?? 0 : product.price ?? 0
 
-            if(options.product_options) {
+            if (options.product_options) {
                 price += this.calculateOptionsValue(price, product, options.product_options)
             }
 
@@ -55,9 +53,7 @@ export default {
                 return price
             }
 
-            return displayTax
-                ? price * taxMultiplier
-                : price / taxMultiplier
+            return displayTax ? price * taxMultiplier : price / taxMultiplier
         },
 
         calculateOptionsValue(basePrice, product, customOptions) {
@@ -81,27 +77,27 @@ export default {
             })
 
             return addition
-        }
+        },
     },
 
     computed: {
         specialPrice() {
-            if(!this.mounted) {
-                return;
+            if (!this.mounted) {
+                return
             }
             return this.calculatePrice(this.product, this.type, Object.assign(this.options, { special_price: true }))
         },
 
         price() {
-            if(!this.mounted) {
-                return;
+            if (!this.mounted) {
+                return
             }
             return this.calculatePrice(this.product, this.type, this.options)
         },
 
         isDiscounted() {
-            if(!this.mounted) {
-                return false;
+            if (!this.mounted) {
+                return false
             }
 
             return this.specialPrice != this.price
@@ -112,8 +108,8 @@ export default {
                 return null
             }
 
-            let prices = Object.values(this.product.children).map(
-                (child) => this.calculatePrice(child, this.type, Object.assign(this.options, { special_price: true }))
+            let prices = Object.values(this.product.children).map((child) =>
+                this.calculatePrice(child, this.type, Object.assign(this.options, { special_price: true })),
             )
 
             return {
