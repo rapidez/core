@@ -19,7 +19,6 @@ class MagentoCustomerTokenGuard extends TokenGuard implements Guard
         return $token;
     }
 
-
     /**
      * Get the currently authenticated user.
      *
