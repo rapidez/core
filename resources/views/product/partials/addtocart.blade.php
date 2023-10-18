@@ -19,19 +19,16 @@
 
             @include('rapidez::product.partials.options')
             <div class="mt-5 flex flex-wrap items-center gap-3">
-                <price
-                    :product="simpleProduct"
-                    :options="{ product_options: customOptions }"
+                <x-rapidez::price
+                    class="text-2xl font-bold text-neutral flex-col items-start gap-0"
+                    product="simpleProduct"
+                    v-bind:options="{ product_options: customOptions }"
                 >
-                    <div slot-scope="{ specialPrice, price, isDiscounted }">
-                        <div class="text-2xl font-bold text-neutral" v-text="$options.filters.price(specialPrice || price)">
-                            {{ price($product->special_price ?: $product->price) }}
-                        </div>
-                        <div class="text-lg text-neutral line-through" v-if="isDiscounted" v-text="$options.filters.price(price)">
-                            {{ $product->special_price ? price($product->price) : '' }}
-                        </div>
-                    </div>
-                </price>
+                    {{ price($product->special_price ?: $product->price) }}
+                    <x-slot:special class="text-lg">
+                        {{ $product->special_price ? price($product->price) : '' }}
+                    </x-slot:special>
+                </x-rapidez::price>
                 <x-rapidez::select
                     class="w-auto"
                     name="qty"
