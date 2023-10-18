@@ -25,7 +25,7 @@ class ElasticsearchIndexer
         $this->elasticsearch->indices()->delete(['index' => $index]);
     }
 
-    public function index(iterable|object $data, callable|array|null $dataFilter, callable|string $id = 'id'): void
+    public function index(iterable|object $data, callable|array|null $dataFilter, callable|string $id = 'entity_id'): void
     {
         if (is_iterable($data)) {
             $this->indexItems($data, $dataFilter, $id);
@@ -34,14 +34,14 @@ class ElasticsearchIndexer
         }
     }
 
-    public function indexItems(iterable $items, callable|array|null $dataFilter, callable|string $id = 'id'): void
+    public function indexItems(iterable $items, callable|array|null $dataFilter, callable|string $id = 'entity_id'): void
     {
         foreach ($items as $item) {
             $this->indexItem($item, $dataFilter, $id);
         }
     }
 
-    public function indexItem(object $item, callable|array|null $dataFilter, callable|string $id = 'id'): void
+    public function indexItem(object $item, callable|array|null $dataFilter, callable|string $id = 'entity_id'): void
     {
         if (is_null($item)) {
             return;

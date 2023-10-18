@@ -11,10 +11,7 @@ export default {
     },
 
     render() {
-        return this.$scopedSlots.default({
-            hasResults: this.hasResults,
-            results: this.results,
-        })
+        return this.$scopedSlots.default(this)
     },
 
     data: () => ({

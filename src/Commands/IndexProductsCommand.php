@@ -45,7 +45,8 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
 
             try {
                 $productQuery = $productModel::selectOnlyIndexable()
-                    ->withEventyGlobalScopes('index.product.scopes');
+                    ->withEventyGlobalScopes('index.product.scopes')
+                    ->withExists('options AS has_options');
 
                 $bar = $this->output->createProgressBar($productQuery->getQuery()->getCountForPagination());
                 $bar->start();
@@ -58,6 +59,10 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
 
                 $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $categories, $showOutOfStock) {
                     $this->indexer->index($products, function ($product) use ($store, $categories, $showOutOfStock) {
+                        if ($product->visibility === 1) {
+                            return;
+                        }
+
                         if (! $showOutOfStock && ! $product->in_stock) {
                             return;
                         }

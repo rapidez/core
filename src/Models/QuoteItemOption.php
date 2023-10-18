@@ -25,10 +25,15 @@ class QuoteItemOption extends Model
         return Attribute::make(
             get: fn (string $value) => match ($this->code) {
                 'info_buyRequest' => json_decode($value),
+                'attributes'      => json_decode($value),
                 'option_ids'      => explode(',', $value),
                 default           => (function () use ($value) {
-                    if (in_array($this->option->type, ['drop_down'])) {
-                        return config('rapidez.models.product_option_type_value')::find($value)->titles->firstForCurrentStore()->title;
+                    if (! $this->option) {
+                        return;
+                    }
+
+                    if (in_array($this->option->type, ['drop_down', 'radio'])) {
+                        return config('rapidez.models.product_option_type_value')::find($value)->title;
                     }
 
                     if ($this->option->type == 'file') {
@@ -53,7 +58,7 @@ class QuoteItemOption extends Model
     protected function option(): Attribute
     {
         return Attribute::make(
-            get: fn () => config('rapidez.models.product_option')::find(explode('_', $this->code)[1])
+            get: fn () => config('rapidez.models.product_option')::find(explode('_', $this->code)[1] ?? $this->code)
         )->shouldCache();
     }
 }

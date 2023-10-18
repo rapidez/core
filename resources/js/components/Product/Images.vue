@@ -1,19 +1,16 @@
 <script>
+import { useEventListener } from '@vueuse/core'
+
 export default {
     data: () => ({
         images: config.product.images,
         active: 0,
         zoomed: false,
+        stopKeyUpListener: () => {},
     }),
 
     render() {
-        return this.$scopedSlots.default({
-            images: this.images,
-            active: this.active,
-            zoomed: this.zoomed,
-            toggleZoom: this.toggleZoom,
-            change: this.change,
-        })
+        return this.$scopedSlots.default(this)
     },
 
     created() {
@@ -35,20 +32,21 @@ export default {
             this.zoomed = !this.zoomed
 
             if (this.zoomed) {
-                document.addEventListener('keyup', this.keyPressed)
+                this.stopKeyUpListener = useEventListener('keyup', this.keyPressed, { passive: true })
             } else {
-                document.removeEventListener('keyup', this.keyPressed)
+                this.stopKeyUpListener()
+                this.stopKeyUpListener = () => {}
             }
         },
 
-        keyPressed() {
-            if (event.keyCode == 37 && this.active) {
+        keyPressed(e) {
+            if (e.key == 'ArrowLeft' && this.active) {
                 // left
                 this.active--
-            } else if (event.keyCode == 39 && this.active != this.images.length - 1) {
+            } else if (e.key == 'ArrowRight' && this.active != this.images.length - 1) {
                 // right
                 this.active++
-            } else if (event.keyCode == 27) {
+            } else if (e.key == 'Escape') {
                 // esc
                 this.toggleZoom()
             }

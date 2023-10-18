@@ -3,6 +3,9 @@ window.Vue = Vue
 
 import { directive as onClickaway } from 'vue-clickaway'
 Vue.directive('on-click-away', onClickaway)
+Vue.directive('blur', (el) => {
+    el.removeAttribute('v-blur')
+})
 
 /**
  * add getter/setter for ref with value.

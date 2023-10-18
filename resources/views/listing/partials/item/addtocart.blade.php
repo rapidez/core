@@ -8,10 +8,10 @@
         <p v-if="!item.in_stock" class="text-red-600 text-xs">@lang('Sorry! This product is currently out of stock.')</p>
         <div v-else>
             <div v-for="(superAttribute, superAttributeId) in item.super_attributes">
-                <x-rapidez::label v-bind:for="item.id+'_super_attribute_'+superAttributeId">@{{ superAttribute.label }}</x-rapidez::label>
+                <x-rapidez::label v-bind:for="item.entity_id+'_super_attribute_'+superAttributeId">@{{ superAttribute.label }}</x-rapidez::label>
                 <x-rapidez::select
                     label=""
-                    v-bind:id="item.id+'_super_attribute_'+superAttributeId"
+                    v-bind:id="item.entity_id+'_super_attribute_'+superAttributeId"
                     v-bind:name="superAttributeId"
                     v-model="options[superAttributeId]"
                     class="block mb-3"
@@ -28,7 +28,7 @@
 
             <x-rapidez::button class="flex items-center" v-on:click="add" dusk="add-to-cart">
                 <x-heroicon-o-shopping-cart class="h-5 w-5 mr-2" v-if="!adding && !added" />
-                <x-heroicon-o-refresh class="h-5 w-5 mr-2 animate-spin" v-if="adding" />
+                <x-heroicon-o-arrow-path class="h-5 w-5 mr-2 animate-spin" v-if="adding" />
                 <x-heroicon-o-check class="h-5 w-5 mr-2" v-if="added" />
                 <span v-if="!adding && !added">@lang('Add to cart')</span>
                 <span v-if="adding">@lang('Adding')...</span>
