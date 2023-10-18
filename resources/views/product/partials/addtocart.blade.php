@@ -1,5 +1,5 @@
 <add-to-cart :default-qty="{{ $product->min_sale_qty > $product->qty_increments ? $product->min_sale_qty : $product->qty_increments }}">
-    <form slot-scope="{ _renderProxy: addToCartSlotProps, options, customOptions, error, add, disabledOptions, simpleProduct, adding, added, price, specialPrice, setCustomOptionFile }" v-on:submit.prevent="add">
+    <form slot-scope="{ _renderProxy: addToCartSlotProps, options, customOptions, error, add, disabledOptions, simpleProduct, adding, added, setCustomOptionFile }" v-on:submit.prevent="add">
         <h1 class="mb-3 text-3xl font-bold" itemprop="name">{{ $product->name }}</h1>
         @if (!$product->in_stock)
             <p class="text-red-600">@lang('Sorry! This product is currently out of stock.')</p>
@@ -19,14 +19,19 @@
 
             @include('rapidez::product.partials.options')
             <div class="mt-5 flex flex-wrap items-center gap-3" v-blur>
-                <div>
-                    <div class="text-2xl font-bold text-neutral" v-text="$options.filters.price(specialPrice || price)">
-                        {{ price($product->special_price ?: $product->price) }}
+                <price
+                    :product="simpleProduct"
+                    :options="{ product_options: customOptions }"
+                >
+                    <div slot-scope="{ specialPrice, price, isDiscounted }">
+                        <div class="text-2xl font-bold text-neutral" v-text="$options.filters.price(specialPrice || price)">
+                            {{ price($product->special_price ?: $product->price) }}
+                        </div>
+                        <div class="text-lg text-neutral line-through" v-if="specialPrice" v-text="$options.filters.price(price)">
+                            {{ $product->special_price ? price($product->price) : '' }}
+                        </div>
                     </div>
-                    <div class="text-lg text-neutral line-through" v-if="specialPrice" v-text="$options.filters.price(price)">
-                        {{ $product->special_price ? price($product->price) : '' }}
-                    </div>
-                </div>
+                </price>
                 <x-rapidez::select
                     class="w-auto"
                     name="qty"

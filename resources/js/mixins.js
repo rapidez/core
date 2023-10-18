@@ -13,5 +13,15 @@ Vue.mixin({
                 return await magento[method]('guest-carts/' + localStorage.mask + '/' + endpoint, data)
             }
         },
+
+        includeTaxAt(location) {
+            return location === true || location === false
+                ? location
+                : (window.config.tax.display[location] ?? 0) >= 1
+        },
+
+        decideTax(including, excluding, location) {
+            return this.includeTaxAt(location) ? including : excluding
+        },
     },
 })

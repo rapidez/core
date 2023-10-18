@@ -147,29 +147,6 @@ export default {
             reader.onload = () => Vue.set(this.customOptions, optionId, 'FILE;' + file.name + ';' + reader.result)
             reader.readAsDataURL(file)
         },
-
-        priceAddition: function (basePrice) {
-            let addition = 0
-
-            Object.entries(this.customOptions).forEach(([key, val]) => {
-                if (!val) {
-                    return
-                }
-
-                let option = this.product.options.find((option) => option.option_id == key)
-                let optionPrice = ['drop_down', 'radio'].includes(option.type)
-                    ? option.values.find((value) => value.option_type_id == val).price
-                    : option.price
-
-                if (optionPrice.price_type == 'fixed') {
-                    addition += parseFloat(optionPrice.price)
-                } else {
-                    addition += (parseFloat(basePrice) * parseFloat(optionPrice.price)) / 100
-                }
-            })
-
-            return addition
-        },
     },
 
     computed: {

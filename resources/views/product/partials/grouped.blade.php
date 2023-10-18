@@ -4,10 +4,7 @@
             <div class="contents" slot-scope="{ _renderProxy: addToCartSlotProps, add, simpleProduct, adding, added }">
                 <div>
                     @{{ simpleProduct.name }}
-                    <div class="flex items-center space-x-3 font-bold">
-                        <div>@{{ (simpleProduct.special_price || simpleProduct.price) | price }}</div>
-                        <div class="line-through" v-if="simpleProduct.special_price">@{{ simpleProduct.price | price }}</div>
-                    </div>
+                    <x-rapidez::price product="simpleProduct"/>
                 </div>
 
                 <p class="col-span-2 self-center text-red-600" v-if="!simpleProduct.in_stock">

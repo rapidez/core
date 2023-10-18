@@ -27,6 +27,7 @@ class WithProductAttributesScope implements Scope
             $model->qualifyColumn('sku'),
             $model->qualifyColumn('visibility'),
             $model->qualifyColumn('type_id'),
+            $model->qualifyColumn('tax_class_id'),
             $model->getQualifiedCreatedAtColumn(),
         ]);
 
