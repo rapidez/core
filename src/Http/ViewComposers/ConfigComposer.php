@@ -65,31 +65,31 @@ class ConfigComposer
     public function getTaxConfiguration()
     {
         return [
-            'values' => (object) Rapidez::getTaxTable(),
-            'groups' => (object) Rapidez::getTaxGroups(),
+            'values'      => (object) Rapidez::getTaxTable(),
+            'groups'      => (object) Rapidez::getTaxGroups(),
             'calculation' => [
-                'price_includes_tax' => boolval(Rapidez::config('tax/calculation/price_includes_tax', 0)),
+                'price_includes_tax'               => boolval(Rapidez::config('tax/calculation/price_includes_tax', 0)),
                 'base_subtotal_should_include_tax' => boolval(Rapidez::config('tax/calculation/base_subtotal_should_include_tax', 1)),
-                'algorithm' => Rapidez::config('tax/calculation/algorithm', 'TOTAL_BASE_CALCULATION'),
-                'apply_after_discount' => boolval(Rapidez::config('tax/calculation/apply_after_discount', 1)),
-                'apply_tax_on' => Rapidez::config('tax/calculation/apply_tax_on', 0),
-                'based_on' => Rapidez::config('tax/calculation/based_on', 'shipping'),
-                'cross_border_trade_enabled' => boolval(Rapidez::config('tax/calculation/cross_border_trade_enabled', 0)),
-                'discount_tax' => boolval(Rapidez::config('tax/calculation/discount_tax', 0)),
-                'shipping_includes_tax' => boolval(Rapidez::config('tax/calculation/shipping_includes_tax', 0))
+                'algorithm'                        => Rapidez::config('tax/calculation/algorithm', 'TOTAL_BASE_CALCULATION'),
+                'apply_after_discount'             => boolval(Rapidez::config('tax/calculation/apply_after_discount', 1)),
+                'apply_tax_on'                     => Rapidez::config('tax/calculation/apply_tax_on', 0),
+                'based_on'                         => Rapidez::config('tax/calculation/based_on', 'shipping'),
+                'cross_border_trade_enabled'       => boolval(Rapidez::config('tax/calculation/cross_border_trade_enabled', 0)),
+                'discount_tax'                     => boolval(Rapidez::config('tax/calculation/discount_tax', 0)),
+                'shipping_includes_tax'            => boolval(Rapidez::config('tax/calculation/shipping_includes_tax', 0)),
             ],
             'display' => [
-                'catalog' => Rapidez::config('tax/display/type', 1),
-                'shipping' => Rapidez::config('tax/display/shipping', 1),
-                'cart_price' => Rapidez::config('tax/cart_display/price', 1),
+                'catalog'       => Rapidez::config('tax/display/type', 1),
+                'shipping'      => Rapidez::config('tax/display/shipping', 1),
+                'cart_price'    => Rapidez::config('tax/cart_display/price', 1),
                 'cart_shipping' => Rapidez::config('tax/cart_display/shipping', 1),
-                'cart_subtotal' => Rapidez::config('tax/cart_display/subtotal', 1)
+                'cart_subtotal' => Rapidez::config('tax/cart_display/subtotal', 1),
             ],
             'defaults' => [
-                'country' => Rapidez::config('tax/defaults/country', 'US'),
+                'country'  => Rapidez::config('tax/defaults/country', 'US'),
                 'postcode' => Rapidez::config('tax/defaults/postcode', null),
-                'region' => Rapidez::config('tax/defaults/region', 0)
-            ]
+                'region'   => Rapidez::config('tax/defaults/region', 0),
+            ],
         ];
     }
 }

@@ -168,7 +168,7 @@ class Product extends Model
 
     public function getTaxRatesAttribute(): object
     {
-        return (object)Rapidez::getTaxRates($this->tax_class_id);
+        return (object) Rapidez::getTaxRates($this->tax_class_id);
     }
 
     public function getUrlAttribute(): string

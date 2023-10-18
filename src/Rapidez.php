@@ -104,7 +104,7 @@ class Rapidez
 
     public function getTaxTable(): array
     {
-        return Cache::rememberForever('tax_'.config('rapidez.store'), function () {
+        return Cache::rememberForever('tax_' . config('rapidez.store'), function () {
             $table = [];
             $rates = DB::table('tax_class')
                 ->join('tax_calculation', 'tax_calculation.product_tax_class_id', '=', 'tax_class.class_id')
@@ -124,7 +124,7 @@ class Rapidez
 
     public function getTaxGroups(): array
     {
-        return Cache::rememberForever('tax_groups', function() {
+        return Cache::rememberForever('tax_groups', function () {
             return DB::table('customer_group')->pluck('tax_class_id', 'customer_group_id')->toArray();
         });
     }
