@@ -1,6 +1,6 @@
 <add-to-cart v-bind:product="item" v-cloak>
     <div class="px-2 pb-2" slot-scope="{ options, error, add, disabledOptions, simpleProduct, getOptions, adding, added }">
-        <x-rapidez::price product="simpleProduct"/>
+        <x-rapidez::price/>
 
         <p v-if="!item.in_stock" class="text-red-600 text-xs">@lang('Sorry! This product is currently out of stock.')</p>
         <div v-else>

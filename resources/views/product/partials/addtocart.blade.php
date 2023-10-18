@@ -21,7 +21,6 @@
             <div class="mt-5 flex flex-wrap items-center gap-3">
                 <x-rapidez::price
                     class="text-2xl font-bold text-neutral flex-col items-start gap-0"
-                    product="simpleProduct"
                     v-bind:options="{ product_options: customOptions }"
                 >
                     {{ price($product->special_price ?: $product->price) }}

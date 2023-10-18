@@ -4,7 +4,7 @@
             <div class="contents" slot-scope="{ _renderProxy: addToCartSlotProps, add, simpleProduct, adding, added }">
                 <div>
                     @{{ simpleProduct.name }}
-                    <x-rapidez::price product="simpleProduct"/>
+                    <x-rapidez::price/>
                 </div>
 
                 <p class="col-span-2 self-center text-red-600" v-if="!simpleProduct.in_stock">

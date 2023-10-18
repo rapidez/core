@@ -1,4 +1,4 @@
-@props(['product' => 'product', 'type' => 'catalog'])
+@props(['product' => 'simpleProduct', 'type' => 'catalog'])
 @slots(['special'])
 
 <price :product="{{ $product }}" type="{{ $type }}">
