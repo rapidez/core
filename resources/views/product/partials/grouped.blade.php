@@ -1,7 +1,7 @@
 <div class="grid grid-cols-3 gap-3 grid-cols-[auto_max-content_max-content]">
     <template v-for="product in config.product.grouped">
         <add-to-cart :product="product" v-cloak>
-            <div class="contents" slot-scope="{ self: addToCartSlotProps, add, simpleProduct, adding, added }">
+            <div class="contents" slot-scope="{ _renderProxy: addToCartSlotProps, add, simpleProduct, adding, added }">
                 <div>
                     @{{ simpleProduct.name }}
                     <x-rapidez::price product="simpleProduct"/>
@@ -27,7 +27,7 @@
 
                     <x-rapidez::button class="flex items-center" v-on:click="add" dusk="add-to-cart">
                         <x-heroicon-o-shopping-cart class="h-5 w-5 mr-2" v-if="!adding && !added" />
-                        <x-heroicon-o-refresh class="h-5 w-5 mr-2 animate-spin" v-if="adding" />
+                        <x-heroicon-o-arrow-path class="h-5 w-5 mr-2 animate-spin" v-if="adding" />
                         <x-heroicon-o-check class="h-5 w-5 mr-2" v-if="added" />
                         <span v-if="!adding && !added">@lang('Add to cart')</span>
                         <span v-if="adding">@lang('Adding')...</span>

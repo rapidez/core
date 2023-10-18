@@ -14,13 +14,13 @@ class UrlRewriteController
         }
 
         if ($rewrite->entity_type == 'category') {
-            $categoryController = config('rapidez.controllers.category');
+            $categoryController = config('rapidez.routing.controllers.category');
 
             return (new $categoryController)->show($rewrite->entity_id);
         }
 
         if ($rewrite->entity_type == 'product') {
-            $productController = config('rapidez.controllers.product');
+            $productController = config('rapidez.routing.controllers.product');
 
             return (new $productController)->show($rewrite->entity_id);
         }

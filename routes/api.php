@@ -20,15 +20,14 @@ Route::middleware('api')->prefix('api')->group(function () {
         return $optionswatchModel::getCachedSwatchValues();
     });
 
-    Route::get('order/{quoteIdMaskOrCustomerToken}', OrderController::class);
+    Route::get('order', OrderController::class);
 
-    Route::get('cart/{quoteIdMaskOrCustomerToken}', function ($quoteIdMaskOrCustomerToken) {
+    Route::get('cart', function (Request $request) {
+        abort_unless($request->bearerToken(), 401);
+
         $quoteModel = config('rapidez.models.quote');
 
-        return $quoteModel::where(function ($query) use ($quoteIdMaskOrCustomerToken) {
-            $query->where('masked_id', $quoteIdMaskOrCustomerToken)
-                  ->orWhere('token', $quoteIdMaskOrCustomerToken);
-        })->with('items2.options')->orderByDesc('quote.entity_id')->firstOrFail();
+        return $quoteModel::whereQuoteIdOrCustomerToken($request->bearerToken())->with('items2.options')->orderByDesc('quote.entity_id')->firstOrFail();
     });
 
     Route::prefix('admin')->middleware(VerifyAdminToken::class)->group(function () {

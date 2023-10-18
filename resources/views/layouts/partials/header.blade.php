@@ -1,29 +1,33 @@
-<header class="flex flex-wrap items-center mb-5 border-b shadow {{ Route::currentRouteName() == 'checkout' ? 'justify-between' : '' }}">
-    <div class="w-1/6 sm:w-3/12">
-        <div class="text-xl sm:text-3xl ml-3">
-            <a href="{{ url('/') }}" aria-label="@lang('Go to home')">
-                <span class="hidden sm:inline">
-                    <img src="https://raw.githubusercontent.com/rapidez/art/master/logo.svg" height="48" width="152" alt="">
-                </span>
-                <span class="inline sm:hidden">🚀</span>
-            </a>
+<header class="relative mb-5 border-b shadow">
+    <div class="container flex flex-wrap items-center max-sm:px-3">
+        <input id="navigation" class="peer hidden" type="checkbox" />
+        <div class="py-2">
+            <div class="mr-3 flex items-center text-xl sm:text-3xl">
+                <a href="{{ url('/') }}" aria-label="@lang('Go to home')">
+                    <span class="hidden sm:inline">
+                        <img src="https://raw.githubusercontent.com/rapidez/art/master/logo.svg" alt="Rapidez logo" height="48" width="152">
+                    </span>
+                    <span class="inline sm:hidden">
+                        <img src="https://raw.githubusercontent.com/rapidez/art/master/r.svg" alt="Rapidez logo" height="30" width="30">
+                    </span>
+                </a>
+                <label for="navigation" class="ml-3 cursor-pointer sm:hidden">
+                    <x-heroicon-o-bars-3 class="inline w-7" />
+                </label>
+            </div>
         </div>
-    </div>
-    @if(Route::currentRouteName() !== 'checkout')
-        <div class="w-6/12 h-12 flex items-center">
+        <div class="flex h-12 max-w-lg flex-1 items-center">
             @include('rapidez::layouts.partials.header.autocomplete')
         </div>
-    @endif
-    <div class="w-1/3 sm:w-1/4 flex justify-end pr-3">
-        @include('rapidez::layouts.partials.header.account')
-        @if(Route::currentRouteName() !== 'checkout')
+        <div class="ml-auto flex items-center justify-end pl-3">
+            @include('rapidez::layouts.partials.header.account')
             @include('rapidez::layouts.partials.header.minicart')
-        @endif
-    </div>
-    @if(Route::currentRouteName() !== 'checkout')
-        <nav class="w-full">
-            {{-- Because the lack of an @includeIf or @includeWhen equivalent for Blade components we're using a placeholder --}}
-            <x-dynamic-component :component="App::providerIsLoaded('Rapidez\Menu\MenuServiceProvider') ? 'menu' : 'placeholder'" />
+        </div>
+        <nav class="inset-x-0 top-full w-full bg-white max-md:absolute max-md:z-20 max-md:grid max-md:grid-rows-[0fr] max-md:border-b max-md:shadow max-md:transition-all max-md:peer-checked:grid-rows-[1fr]">
+            <div class="max-h-full overflow-hidden">
+                {{-- Because the lack of an @includeIf or @includeWhen equivalent for Blade components we're using a placeholder --}}
+                <x-dynamic-component :component="App::providerIsLoaded('Rapidez\Menu\MenuServiceProvider') ? 'menu' : 'placeholder'" />
+            </div>
         </nav>
-    @endif
+    </div>
 </header>

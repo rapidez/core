@@ -7,9 +7,7 @@ export default {
         notifications: [],
     }),
     render() {
-        return this.$scopedSlots.default({
-            notifications: this.notifications,
-        })
+        return this.$scopedSlots.default(this)
     },
     mounted() {
         this.$root.$on('notification-message', (message, type, params, link) => {

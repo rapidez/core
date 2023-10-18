@@ -15,14 +15,7 @@ export default {
     },
 
     render() {
-        return this.$scopedSlots.default({
-            hasItems: this.hasItems,
-            cart: this.cart,
-            checkout: this.checkout,
-            save: this.save,
-            goToStep: this.goToStep,
-            getTotalsInformation: this.getTotalsInformation,
-        })
+        return this.$scopedSlots.default(this)
     },
 
     created() {
@@ -198,7 +191,7 @@ export default {
                 Object.fromEntries(Object.entries(window.config.customer_fields_show).filter(([key, value]) => !value || value === 'opt')),
             )
             Object.entries(this.checkout.shipping_address).forEach(([key, val]) => {
-                if (!val && !['region_id', 'customer_address_id'].concat(optionalFields).includes(key)) {
+                if (!val && !['region_id', 'customer_address_id', 'same_as_billing'].concat(optionalFields).includes(key)) {
                     Notify(key + ' cannot be empty', 'warning')
                     validated = false
                 }
@@ -290,9 +283,7 @@ export default {
         shippingAddress: function () {
             let address = this.removeUnusedAddressInfo(this.$root.checkout.shipping_address)
 
-            if (this.checkout.hide_billing) {
-                address.same_as_billing = 1
-            }
+            address.same_as_billing = Number(this.checkout.hide_billing)
 
             return address
         },

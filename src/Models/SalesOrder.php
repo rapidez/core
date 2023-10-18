@@ -39,14 +39,13 @@ class SalesOrder extends Model
         return $this->hasMany(config('rapidez.models.sales_order_payment'), 'parent_id');
     }
 
-    public function scopeWhereQuoteIdOrCustomerToken(Builder $query, $quoteIdMaskOrCustomerToken)
+    public function scopeWhereQuoteIdOrCustomerToken(Builder $query, string $quoteIdMaskOrCustomerToken)
     {
         $query->whereHas(
             'quote',
             fn ($query) => $query
                 ->withoutGlobalScope(IsActiveScope::class)
-                ->where('quote_id_mask.masked_id', $quoteIdMaskOrCustomerToken)
-                ->orWhere('oauth_token.token', $quoteIdMaskOrCustomerToken)
+                ->whereQuoteIdOrCustomerToken($quoteIdMaskOrCustomerToken)
         );
     }
 }
