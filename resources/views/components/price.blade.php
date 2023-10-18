@@ -1,7 +1,7 @@
-@props(['product' => 'simpleProduct', 'type' => 'catalog'])
+@props(['product' => 'simpleProduct', 'type' => 'catalog', 'options' => '{}'])
 @slots(['special'])
 
-<price :product="{{ $product }}" type="{{ $type }}">
+<price :options="{{ $options }}" :product="{{ $product }}" type="{{ $type }}">
     <div
         {{ $attributes->twMerge('mt-1 flex items-center gap-2') }}
         slot-scope="{ price, specialPrice, isDiscounted, range }"

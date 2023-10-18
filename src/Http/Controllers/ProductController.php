@@ -13,9 +13,27 @@ class ProductController
         $product = $productModel::selectForProductPage()
             ->withEventyGlobalScopes('productpage.scopes')
             ->with('options')
+            ->with('tierPrices')
             ->findOrFail($productId);
 
-        $attributes = ['entity_id', 'name', 'sku', 'super_attributes', 'children', 'grouped', 'options', 'price', 'special_price', 'tax_class_id', 'tax_rates', 'images', 'url', 'min_sale_qty'];
+        $attributes = [
+            'entity_id',
+            'name',
+            'sku',
+            'super_attributes',
+            'children',
+            'grouped',
+            'options',
+            'price',
+            'special_price',
+            'tax_class_id',
+            'tax_rates',
+            'tierPrices',
+            'images',
+            'url',
+            'min_sale_qty'
+        ];
+
         $attributes = Eventy::filter('productpage.frontend.attributes', $attributes);
 
         foreach ($product->super_attributes ?: [] as $superAttribute) {

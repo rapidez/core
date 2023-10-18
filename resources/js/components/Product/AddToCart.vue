@@ -35,6 +35,7 @@ export default {
         options: {},
         customOptions: {},
         error: null,
+        tierPrice: null,
 
         adding: false,
         added: false,
@@ -137,6 +138,49 @@ export default {
             reader.onerror = (error) => alert(error)
             reader.onload = () => Vue.set(this.customOptions, optionId, 'FILE;' + file.name + ';' + reader.result)
             reader.readAsDataURL(file)
+        },
+
+        getTierPrice(qty) {
+            qty = parseInt(qty)
+            let match = null
+            let matchQty = 0
+            Object.entries(this.tierPrices).forEach(([id, tier]) => {
+                if (tier.qty > matchQty && tier.qty <= qty) {
+                    match = id
+                    matchQty = tier.qty
+                }
+            })
+
+            return match;
+        },
+
+        selectTier(id) {
+            this.tierPrice = id
+            let tierQty = this.tierPrices[this.tierPrice]?.qty ?? 1
+            this.qty = parseInt(tierQty)
+        },
+
+        tierPriceDiscount(price, discount) {
+            if (!discount) {
+                return price
+            }
+
+            // Calculate percentage value and return first!
+            // Magento2 will not clear the `value` column if you set a percentage, but it will clear the `percentage_value` column if you set a value.
+            if (discount.percentage_value > 0) {
+                return (price * (100 - discount.percentage_value)) / 100
+            }
+
+            if (discount.value > 0) {
+                return discount.value
+            }
+            return price
+        },
+    },
+
+    watch: {
+        qty() {
+            this.tierPrice = this.getTierPrice(this.qty)
         },
     },
 
@@ -270,6 +314,30 @@ export default {
             })
 
             return disabledOptions
+        },
+
+        tierPrices: function () {
+            if (!this.simpleProduct.tierPrices || this.simpleProduct.tierPrices.length == 0) {
+                return {}
+            }
+            let availableOptions = this.simpleProduct.tierPrices.filter(
+                (option) => option.all_groups || option.customer_group_id == this.$root.user?.group_id,
+            )
+            return Object.fromEntries(
+                availableOptions.map((option) => [
+                    option.value_id,
+                    {
+                        qty: option.qty,
+                        value: option.value,
+                        percentage_value: option.percentage_value,
+                        price: this.tierPriceDiscount(this.simpleProduct.price, option),
+                    },
+                ]),
+            )
+        },
+
+        currentTierPrice: function() {
+            return this.tierPrices[this.tierPrice] ?? null
         },
     },
 }

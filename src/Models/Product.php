@@ -93,14 +93,6 @@ class Product extends Model
         );
     }
 
-    public function views(): HasMany
-    {
-        return $this->hasMany(
-            config('rapidez.models.product_view'),
-            'product_id',
-        );
-    }
-
     public function options(): HasMany
     {
         return $this->hasMany(
@@ -115,6 +107,22 @@ class Product extends Model
             ->hasMany(config('rapidez.models.rewrite'), 'entity_id')
             ->withoutGlobalScope('store')
             ->where('entity_type', 'product');
+    }
+
+    public function tierPrices(): HasMany
+    {
+        return $this->hasMany(
+            config('rapidez.models.product_tier_price'),
+            'entity_id'
+        )->whereIn('website_id', [0, config('rapidez.website')]);
+    }
+
+    public function views(): HasMany
+    {
+        return $this->hasMany(
+            config('rapidez.models.product_view'),
+            'product_id',
+        );
     }
 
     public function scopeByIds(Builder $query, array $productIds): Builder

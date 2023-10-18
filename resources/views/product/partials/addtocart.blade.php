@@ -1,5 +1,5 @@
 <add-to-cart :default-qty="{{ $product->min_sale_qty > $product->qty_increments ? $product->min_sale_qty : $product->qty_increments }}">
-    <form slot-scope="{ _renderProxy: addToCartSlotProps, options, customOptions, error, add, disabledOptions, simpleProduct, adding, added, setCustomOptionFile }" v-on:submit.prevent="add">
+    <form slot-scope="{ _renderProxy: addToCartSlotProps, options, customOptions, tierPrices, currentTierPrice, error, add, disabledOptions, simpleProduct, adding, added, setCustomOptionFile }" v-on:submit.prevent="add">
         <h1 class="mb-3 text-3xl font-bold" itemprop="name">{{ $product->name }}</h1>
         @if (!$product->in_stock)
             <p class="text-red-600">@lang('Sorry! This product is currently out of stock.')</p>
@@ -18,10 +18,22 @@
             </div>
 
             @include('rapidez::product.partials.options')
+
+            <ul class="flex flex-col" v-if="tierPrices && Object.keys(tierPrices).length" v-cloak>
+                <li v-for="tier in tierPrices">
+                    @lang('Order :amount and pay :price per item', [
+                        'amount' => '@{{ Math.round(tier.qty) }}',
+                        'price' => '@{{ tier.price | price }}',
+                    ])
+                </li>
+            </ul>
             <div class="mt-5 flex flex-wrap items-center gap-3">
                 <x-rapidez::price
                     class="text-2xl font-bold text-neutral flex-col items-start gap-0"
-                    v-bind:options="{ product_options: customOptions }"
+                    options="{
+                        product_options: customOptions,
+                        tier_price: currentTierPrice,
+                    }"
                 >
                     {{ price($product->special_price ?: $product->price) }}
                     <x-slot:special class="text-lg">

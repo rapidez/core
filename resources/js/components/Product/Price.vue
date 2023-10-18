@@ -11,7 +11,7 @@ export default {
         },
         options: {
             type: Object,
-            default: {},
+            default: () => ({}),
         },
     },
 
@@ -20,22 +20,15 @@ export default {
     },
 
     methods: {
-        getTaxPercent(product) {
-            let taxClass = product.tax_class_id ?? product
-            let taxValues = product.tax_values ?? window.config.tax.values[taxClass] ?? {}
-
-            // TODO: Figure out where to get the tax rate calculation from
-            let groupId = this.$root.user?.group_id ?? 0 // 0 is always the NOT_LOGGED_IN group
-            let customerTaxClass = window.config.tax.groups[groupId] ?? 0
-
-            return taxValues[customerTaxClass] ?? 0
-        },
-
         calculatePrice(product, location, options = {}) {
             let special_price = options.special_price ?? false
             let displayTax = this.$root.includeTaxAt(location)
 
             let price = special_price ? product.special_price ?? product.price ?? 0 : product.price ?? 0
+
+            if (options.tier_price) {
+                price = options.tier_price.price
+            }
 
             if (options.product_options) {
                 price += this.calculateOptionsValue(price, product, options.product_options)
@@ -48,6 +41,17 @@ export default {
             }
 
             return displayTax ? price * taxMultiplier : price / taxMultiplier
+        },
+
+        getTaxPercent(product) {
+            let taxClass = product.tax_class_id ?? product
+            let taxValues = product.tax_values ?? window.config.tax.values[taxClass] ?? {}
+
+            // TODO: Figure out where to get the tax rate calculation from
+            let groupId = this.$root.user?.group_id ?? 0 // 0 is always the NOT_LOGGED_IN group
+            let customerTaxClass = window.config.tax.groups[groupId] ?? 0
+
+            return taxValues[customerTaxClass] ?? 0
         },
 
         calculateOptionsValue(basePrice, product, customOptions) {
@@ -76,7 +80,7 @@ export default {
 
     computed: {
         specialPrice() {
-            return this.calculatePrice(this.product, this.location, Object.assign(this.options, { special_price: true }))
+            return this.calculatePrice(this.product, this.location, Object.assign({ special_price: true }, this.options))
         },
 
         price() {
@@ -93,7 +97,7 @@ export default {
             }
 
             let prices = Object.values(this.product.children).map((child) =>
-                this.calculatePrice(child, this.location, Object.assign(this.options, { special_price: true })),
+                this.calculatePrice(child, this.location, Object.assign({ special_price: true }, this.options)),
             )
 
             return {
