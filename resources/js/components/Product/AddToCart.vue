@@ -187,13 +187,13 @@ export default {
         },
 
         tierPriceDiscount(price, tier) {
-            let discount = tier ?? this.tierPrices[this.tierPrice] ?? null;
-            if(!discount) {
+            let discount = tier ?? this.tierPrices[this.tierPrice] ?? null
+            if (!discount) {
                 return price
             }
 
             if (discount.percentage_value > 0) {
-                return price * (100 - discount.percentage_value) / 100
+                return (price * (100 - discount.percentage_value)) / 100
             }
 
             if (discount.value > 0) {
@@ -207,8 +207,8 @@ export default {
             this.tierPrice = id
 
             let tierQty = this.tierPrices[this.tierPrice]?.qty ?? 1
-            this.qty = parseInt(tierQty);
-        }
+            this.qty = parseInt(tierQty)
+        },
     },
 
     watch: {
@@ -250,25 +250,26 @@ export default {
             return product
         },
 
-        tierPrices: function ()  {
+        tierPrices: function () {
             if (!this.product.tierprices || this.product.tierprices.length == 0) {
                 return {}
             }
 
-            let availableOptions = this.product.tierprices.filter(option =>
-                option.all_groups ||
-                option.customer_group_id == this.$root.user?.group_id
+            let availableOptions = this.product.tierprices.filter(
+                (option) => option.all_groups || option.customer_group_id == this.$root.user?.group_id,
             )
 
-            return Object.fromEntries(availableOptions.map(option => [
-                option.value_id,
-                {
-                    qty: option.qty,
-                    value: option.value,
-                    percentage_value: option.percentage_value,
-                    price: this.tierPriceDiscount(this.basePrice, option)
-                }
-            ]))
+            return Object.fromEntries(
+                availableOptions.map((option) => [
+                    option.value_id,
+                    {
+                        qty: option.qty,
+                        value: option.value,
+                        percentage_value: option.percentage_value,
+                        price: this.tierPriceDiscount(this.basePrice, option),
+                    },
+                ]),
+            )
         },
 
         productOptions: function () {
@@ -369,7 +370,6 @@ export default {
 
             return disabledOptions
         },
-
 
         basePrice: function () {
             return parseFloat(this.simpleProduct.price) + this.priceAddition(this.simpleProduct.price)
