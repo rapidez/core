@@ -8,6 +8,18 @@ use Illuminate\Http\Request;
 
 class MagentoCustomerTokenGuard extends TokenGuard implements Guard
 {
+    public function getTokenForRequest()
+    {
+        $token = parent::getTokenForRequest();
+
+        if (empty($token)) {
+            $token = $_COOKIE[$this->inputKey] ?? null;
+        }
+
+        return $token;
+    }
+
+
     /**
      * Get the currently authenticated user.
      *

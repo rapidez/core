@@ -73,7 +73,7 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootAuth(): self
     {
         auth()->extend('magento-customer', function (Application $app, string $name, array $config) {
-            return new MagentoCustomerTokenGuard(auth()->createUserProvider($config['provider']), request(), 'token', 'token');
+            return new MagentoCustomerTokenGuard(auth()->createUserProvider($config['provider']), request(), 'customer_token', 'customer_token');
         });
 
         config([

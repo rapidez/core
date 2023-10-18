@@ -1,5 +1,6 @@
 <script>
 import GetCart from './../Cart/mixins/GetCart'
+import { token } from '../../stores/useUser'
 
 export default {
     mixins: [GetCart],
@@ -26,7 +27,7 @@ export default {
     },
 
     created() {
-        this.token ??= localStorage.token
+        this.token ??= token.value
         this.mask ??= localStorage.mask
 
         this.refreshOrder()

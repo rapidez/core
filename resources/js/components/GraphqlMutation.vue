@@ -1,5 +1,6 @@
 <script>
 import InteractWithUser from './User/mixins/InteractWithUser'
+import { token } from '../stores/useUser'
 
 export default {
     mixins: [InteractWithUser],
@@ -103,7 +104,7 @@ export default {
                 let options = { headers: {} }
 
                 if (this.$root.loggedIn) {
-                    options['headers']['Authorization'] = `Bearer ${localStorage.token}`
+                    options['headers']['Authorization'] = `Bearer ${token.value}`
                 }
 
                 if (this.recaptcha) {

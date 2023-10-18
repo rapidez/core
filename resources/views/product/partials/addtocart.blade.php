@@ -18,7 +18,6 @@
             </div>
 
             @include('rapidez::product.partials.options')
-
             <ul class="flex flex-col" v-if="tierPrices && Object.keys(tierPrices).length" v-cloak>
                 <li v-for="tier in tierPrices">
                     @lang('Order :amount and pay :price per item', [

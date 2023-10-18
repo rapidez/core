@@ -1,8 +1,21 @@
-import { useLocalStorage, useSessionStorage, StorageSerializers } from '@vueuse/core'
+import { useSessionStorage, StorageSerializers } from '@vueuse/core'
 import { clear as clearCart } from './useCart'
 import { computed, watch } from 'vue'
+import { useCookies } from '@vueuse/integrations/useCookies';
+const cookies = useCookies(['customer_token']);
 
-export const token = useLocalStorage('token', '')
+export const token = computed({
+    get() {
+        return cookies.get('customer_token');
+    },
+    set(value) {
+        if (value === null || value === undefined) {
+            cookies.remove('customer_token');
+        }
+
+        cookies.set('customer_token', value);
+    },
+})
 const userStorage = useSessionStorage('user', {}, { serializer: StorageSerializers.object })
 let isRefreshing = false
 

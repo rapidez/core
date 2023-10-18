@@ -24,17 +24,17 @@ export default {
             let special_price = options.special_price ?? false
             let displayTax = this.$root.includeTaxAt(location)
 
-            let price = special_price ? product.special_price ?? product.price ?? 0 : product.price ?? 0
+            let price = (special_price ? product.special_price ?? product.price ?? 0 : product.price ?? 0) * 1
 
             if (options.tier_price) {
-                price = options.tier_price.price
+                price = options.tier_price.price * 1
             }
 
             if (options.product_options) {
                 price += this.calculateOptionsValue(price, product, options.product_options)
             }
 
-            let taxMultiplier = this.getTaxPercent(product) + 1
+            let taxMultiplier = this.getTaxPercent(product) * 1 + 1
 
             if (window.config.tax.calculation.price_includes_tax == displayTax) {
                 return price
@@ -55,11 +55,9 @@ export default {
         },
 
         calculateOptionsValue(basePrice, product, customOptions) {
-            let addition = 0
-
-            Object.entries(customOptions).forEach(([key, val]) => {
+            return Object.entries(customOptions).reduce((priceAddition, [key, val]) => {
                 if (!val) {
-                    return
+                    return priceAddition
                 }
 
                 let option = product.options.find((option) => option.option_id == key)
@@ -68,13 +66,11 @@ export default {
                     : option.price
 
                 if (optionPrice.price_type == 'fixed') {
-                    addition += parseFloat(optionPrice.price)
-                } else {
-                    addition += (parseFloat(basePrice) * parseFloat(optionPrice.price)) / 100
+                    return (priceAddition * 1) + parseFloat(optionPrice.price)
                 }
-            })
 
-            return addition
+                return (priceAddition * 1) + (parseFloat(basePrice) * parseFloat(optionPrice.price)) / 100
+            }, 0)
         },
     },
 
