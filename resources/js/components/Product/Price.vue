@@ -5,7 +5,7 @@ export default {
             type: Object,
             default: () => config.product || {},
         },
-        type: {
+        location: {
             type: String,
             default: 'catalog',
         },
@@ -14,16 +14,9 @@ export default {
             default: {},
         },
     },
+
     render() {
-        return this.$scopedSlots.default(Object.assign(this, { self: this }))
-    },
-
-    data: () => ({
-        mounted: false,
-    }),
-
-    mounted() {
-        this.mounted = true
+        return this.$scopedSlots.default(this)
     },
 
     methods: {
@@ -31,6 +24,7 @@ export default {
             let taxClass = product.tax_class_id ?? product
             let taxValues = product.tax_values ?? window.config.tax.values[taxClass] ?? {}
 
+            // TODO: Figure out where to get the tax rate calculation from
             let groupId = this.$root.user?.group_id ?? 0 // 0 is always the NOT_LOGGED_IN group
             let customerTaxClass = window.config.tax.groups[groupId] ?? 0
 
@@ -82,24 +76,14 @@ export default {
 
     computed: {
         specialPrice() {
-            if (!this.mounted) {
-                return
-            }
-            return this.calculatePrice(this.product, this.type, Object.assign(this.options, { special_price: true }))
+            return this.calculatePrice(this.product, this.location, Object.assign(this.options, { special_price: true }))
         },
 
         price() {
-            if (!this.mounted) {
-                return
-            }
-            return this.calculatePrice(this.product, this.type, this.options)
+            return this.calculatePrice(this.product, this.location, this.options)
         },
 
         isDiscounted() {
-            if (!this.mounted) {
-                return false
-            }
-
             return this.specialPrice != this.price
         },
 
@@ -109,7 +93,7 @@ export default {
             }
 
             let prices = Object.values(this.product.children).map((child) =>
-                this.calculatePrice(child, this.type, Object.assign(this.options, { special_price: true })),
+                this.calculatePrice(child, this.location, Object.assign(this.options, { special_price: true })),
             )
 
             return {
@@ -119,7 +103,7 @@ export default {
         },
 
         includesTax() {
-            return this.$root.includeTaxAt(this.type)
+            return this.$root.includeTaxAt(this.location)
         },
     },
 }

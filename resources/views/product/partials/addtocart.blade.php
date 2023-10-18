@@ -18,7 +18,7 @@
             </div>
 
             @include('rapidez::product.partials.options')
-            <div class="mt-5 flex flex-wrap items-center gap-3" v-blur>
+            <div class="mt-5 flex flex-wrap items-center gap-3">
                 <price
                     :product="simpleProduct"
                     :options="{ product_options: customOptions }"
@@ -27,7 +27,7 @@
                         <div class="text-2xl font-bold text-neutral" v-text="$options.filters.price(specialPrice || price)">
                             {{ price($product->special_price ?: $product->price) }}
                         </div>
-                        <div class="text-lg text-neutral line-through" v-if="specialPrice" v-text="$options.filters.price(price)">
+                        <div class="text-lg text-neutral line-through" v-if="isDiscounted" v-text="$options.filters.price(price)">
                             {{ $product->special_price ? price($product->price) : '' }}
                         </div>
                     </div>
