@@ -17,6 +17,7 @@ use Rapidez\Core\Models\Scopes\Product\WithProductGroupedScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductRelationIdsScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductStockScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductSuperAttributesScope;
+use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
 use Rapidez\Core\Models\Traits\Product\CastMultiselectAttributes;
 use Rapidez\Core\Models\Traits\Product\CastSuperAttributes;
 use Rapidez\Core\Models\Traits\Product\SelectAttributeScopes;
@@ -27,6 +28,7 @@ class Product extends Model
     use CastSuperAttributes;
     use CastMultiselectAttributes;
     use SelectAttributeScopes;
+    use HasAlternatesThroughRewrites;
 
     public array $attributesToSelect = [];
 
