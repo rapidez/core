@@ -23,8 +23,7 @@ export default {
         calculatePrice(product, location, options = {}) {
             let special_price = options.special_price ?? false
             let displayTax = this.$root.includeTaxAt(location)
-
-            let price = (special_price ? product.special_price ?? product.price ?? 0 : product.price ?? 0) * 1
+            let price = options?.price || (special_price ? product.special_price ?? product.price ?? 0 : product.price ?? 0) * 1
 
             if (options.tier_price) {
                 price = options.tier_price.price * 1
@@ -34,7 +33,7 @@ export default {
                 price += this.calculateOptionsValue(price, product, options.product_options)
             }
 
-            let taxMultiplier = this.getTaxPercent(product) * 1 + 1
+            let taxMultiplier = this.getTaxPercent(product) + 1
 
             if (window.config.tax.calculation.price_includes_tax == displayTax) {
                 return price
@@ -44,14 +43,21 @@ export default {
         },
 
         getTaxPercent(product) {
-            let taxClass = product.tax_class_id ?? product
-            let taxValues = product.tax_values ?? window.config.tax.values[taxClass] ?? {}
+            let country_id = (window.app?.$data?.checkout?.billing_address?.country_id || window.config.tax.defaults.country_id);
+            let region_id = (window.app?.$data?.checkout?.billing_address?.region_id || window.config.tax.defaults.region_id) * 1;
+            let postcode = (window.app?.$data?.checkout?.billing_address?.postcode || window.config.tax.defaults.postcode);
 
-            // TODO: Figure out where to get the tax rate calculation from
-            let groupId = this.$root.user?.group_id ?? 0 // 0 is always the NOT_LOGGED_IN group
-            let customerTaxClass = window.config.tax.groups[groupId] ?? 0
+            let taxRate = window.config.tax.rates?.[product.tax_class_id]?.find((rate) =>
+                rate.tax_country_id === country_id
+                && rate.tax_region_id * 1 === region_id
+                && postcode.match('^' + rate.tax_postcode.replace('*', '.*') + '$')
+            )?.rate
 
-            return taxValues[customerTaxClass] ?? 0
+            if (taxRate === undefined || taxRate === null) {
+                console.debug("No tax rates found for", product, country_id, region_id, postcode);
+            }
+
+            return (taxRate ?? 0) / 100
         },
 
         calculateOptionsValue(basePrice, product, customOptions) {

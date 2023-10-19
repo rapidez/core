@@ -29,7 +29,7 @@ export const refresh = async function () {
         cartStorage.value = !mask.value && !token.value ? {} : response.data
         window.app.$emit('cart-refreshed')
     } catch (error) {
-        if (error.response.status == 404) {
+        if ([401, 403, 404].includes(error?.response?.status)) {
             mask.value = null
             return false
         }

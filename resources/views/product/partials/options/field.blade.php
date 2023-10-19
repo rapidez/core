@@ -1,5 +1,15 @@
 <x-rapidez::label for="option_{{ $option->option_id }}">
-    {{ $option->title }} {{ $option->price_label }}
+    <price :product="simpleProduct">
+        <template slot-scope="{ calculatePrice }">
+            {{ $option->title }}
+            @if($option->price->price_type !== 'percent')
+                + @{{ window.price(calculatePrice(simpleProduct, 'catalog', {price: @php echo $option->price->price @endphp } )) }}
+            @else
+                {{ $option->price_label }}
+            @endif
+            </x-rapidez::select>
+        </template>
+    </price>
 </x-rapidez::label>
 <x-rapidez::input
     :label="false"

@@ -35,7 +35,7 @@ class Product extends Model
 
     protected $primaryKey = 'entity_id';
 
-    protected $appends = ['url', 'tax_rates'];
+    protected $appends = ['url'];
 
     protected static function booting(): void
     {
@@ -172,11 +172,6 @@ class Product extends Model
 
             return true;
         })->min->special_price;
-    }
-
-    public function getTaxRatesAttribute(): object
-    {
-        return (object) Rapidez::getTaxRates($this->tax_class_id);
     }
 
     public function getUrlAttribute(): string

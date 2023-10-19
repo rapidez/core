@@ -2,6 +2,8 @@ import { useSessionStorage, StorageSerializers } from '@vueuse/core'
 import { clear as clearCart } from './useCart'
 import { computed, watch } from 'vue'
 import { useCookies } from '@vueuse/integrations/useCookies'
+import Jwt from '../jwt'
+
 const cookies = useCookies(['customer_token'])
 
 export const token = computed({
@@ -9,7 +11,7 @@ export const token = computed({
         return cookies.get('customer_token')
     },
     set(value) {
-        if (value === null || value === undefined) {
+        if (value === null || value === undefined || value === '') {
             cookies.remove('customer_token')
         }
 
@@ -22,6 +24,12 @@ let isRefreshing = false
 export const refresh = async function () {
     if (!token.value) {
         userStorage.value = {}
+        return false
+    }
+
+    if (Jwt.isJwt(token.value) && Jwt.decode(token.value)?.isExpired()) {
+        console.debug('Token has expired')
+        clear()
         return false
     }
 
@@ -58,6 +66,11 @@ export const clear = async function () {
 
 export const user = computed({
     get() {
+        if (!token.value && userStorage.value?.id) {
+            // Token has been removed externally
+            clear()
+        }
+
         if (token.value && !userStorage.value?.id) {
             refresh()
         }

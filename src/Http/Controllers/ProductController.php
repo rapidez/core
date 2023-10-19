@@ -27,7 +27,6 @@ class ProductController
             'price',
             'special_price',
             'tax_class_id',
-            'tax_rates',
             'tierPrices',
             'images',
             'url',

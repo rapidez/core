@@ -19,12 +19,14 @@
 
             @include('rapidez::product.partials.options')
             <ul class="flex flex-col" v-if="tierPrices && Object.keys(tierPrices).length" v-cloak>
-                <li v-for="tier in tierPrices">
-                    @lang('Order :amount and pay :price per item', [
-                        'amount' => '@{{ Math.round(tier.qty) }}',
-                        'price' => '@{{ tier.price | price }}',
-                    ])
-                </li>
+                <price :product="simpleProduct">
+                    <li v-for="tier in tierPrices" slot-scope="{ calculatePrice }">
+                        @lang('Order :amount and pay :price per item', [
+                            'amount' => '@{{ Math.round(tier.qty) }}',
+                            'price' => '@{{ calculatePrice(simpleProduct, "catalog", {price: tier.price}) | price }}',
+                        ])
+                    </li>
+                </price>
             </ul>
             <div class="mt-5 flex flex-wrap items-center gap-3">
                 <x-rapidez::price
@@ -47,7 +49,7 @@
                     labelClass="flex items-center sr-only"
                     wrapperClass="flex"
                 >
-                    @for ($i = $product->qty_increments; $i <= $product->qty_increments * 10; $i += $product->qty_increments)
+                    @for ($i = $product->qty_increments; $i <= $product->qty_increments * min(10, floor(($product->qty ?? $product->qty_increments * 10)/ $product->qty_increments)); $i += $product->qty_increments)
                         <option value="{{ $i }}">{{ $i }}</option>
                     @endfor
                 </x-rapidez::select>

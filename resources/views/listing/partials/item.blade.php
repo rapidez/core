@@ -18,10 +18,12 @@
                 <div class="px-2">
                     <div class="text-base font-medium text-gray-900">@{{ item.name }}</div>
                     @if (!Rapidez::config('catalog/frontend/show_swatches_in_product_list', 1))
-                        <div class="flex items-center space-x-2">
-                            <div class="font-semibold">@{{ (item.special_price || item.price) | price }}</div>
-                            <div class="text-sm line-through" v-if="item.special_price">@{{ item.price | price }}</div>
-                        </div>
+                        <x-rapidez::price
+                            class="flex items-center font-semibold"
+                            product="item"
+                        >
+                            <x-slot:special class="text-sm"></x-slot:special>
+                        </x-rapidez::price>
                     @endif
                 </div>
             </a>

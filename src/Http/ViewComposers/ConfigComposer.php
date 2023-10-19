@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Rapidez\Core\Facades\Rapidez;
+use Rapidez\Core\Models\TaxCalculation;
 
 class ConfigComposer
 {
@@ -64,9 +65,22 @@ class ConfigComposer
 
     public function getTaxConfiguration()
     {
+        $customerGroupId = auth('magento-customer')->user()?->group_id ?? 0;
+        $values = Cache::remember(
+            'tax-configuration-' . $customerGroupId,
+            3600,
+            fn () => TaxCalculation::select('tax_country_id', 'tax_region_id', 'tax_postcode', 'rate', 'product_tax_class_id')
+                ->whereHas(
+                    'customerGroups',
+                    fn($query) => $query
+                        ->where('customer_group_id', $customerGroupId)
+                )
+                ->get()
+                ->groupBy('product_tax_class_id')
+        );
+
         return [
-            'values'      => (object) Rapidez::getTaxTable(),
-            'groups'      => (object) Rapidez::getTaxGroups(),
+            'rates' => $values,
             'calculation' => [
                 'price_includes_tax'               => boolval(Rapidez::config('tax/calculation/price_includes_tax', 0)),
                 'base_subtotal_should_include_tax' => boolval(Rapidez::config('tax/calculation/base_subtotal_should_include_tax', 1)),
@@ -86,9 +100,9 @@ class ConfigComposer
                 'cart_subtotal' => Rapidez::config('tax/cart_display/subtotal', 1),
             ],
             'defaults' => [
-                'country'  => Rapidez::config('tax/defaults/country', 'US'),
+                'country_id'  => Rapidez::config('tax/defaults/country', 'US'),
                 'postcode' => Rapidez::config('tax/defaults/postcode', null),
-                'region'   => Rapidez::config('tax/defaults/region', 0),
+                'region_id'   => Rapidez::config('tax/defaults/region', 0),
             ],
         ];
     }
