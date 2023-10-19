@@ -43,18 +43,19 @@ export default {
         },
 
         getTaxPercent(product) {
-            let country_id = (window.app?.$data?.checkout?.billing_address?.country_id || window.config.tax.defaults.country_id);
-            let region_id = (window.app?.$data?.checkout?.billing_address?.region_id || window.config.tax.defaults.region_id) * 1;
-            let postcode = (window.app?.$data?.checkout?.billing_address?.postcode || window.config.tax.defaults.postcode);
+            let country_id = window.app?.$data?.checkout?.billing_address?.country_id || window.config.tax.defaults.country_id
+            let region_id = (window.app?.$data?.checkout?.billing_address?.region_id || window.config.tax.defaults.region_id) * 1
+            let postcode = window.app?.$data?.checkout?.billing_address?.postcode || window.config.tax.defaults.postcode
 
-            let taxRate = window.config.tax.rates?.[product.tax_class_id]?.find((rate) =>
-                rate.tax_country_id === country_id
-                && rate.tax_region_id * 1 === region_id
-                && postcode.match('^' + rate.tax_postcode.replace('*', '.*') + '$')
+            let taxRate = window.config.tax.rates?.[product.tax_class_id]?.find(
+                (rate) =>
+                    rate.tax_country_id === country_id &&
+                    rate.tax_region_id * 1 === region_id &&
+                    postcode.match('^' + rate.tax_postcode.replace('*', '.*') + '$'),
             )?.rate
 
             if (taxRate === undefined || taxRate === null) {
-                console.debug("No tax rates found for", product, country_id, region_id, postcode);
+                console.debug('No tax rates found for', product, country_id, region_id, postcode)
             }
 
             return (taxRate ?? 0) / 100
