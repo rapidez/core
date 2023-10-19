@@ -72,7 +72,7 @@ class ConfigComposer
             fn () => TaxCalculation::select('tax_country_id', 'tax_region_id', 'tax_postcode', 'rate', 'product_tax_class_id')
                 ->whereHas(
                     'customerGroups',
-                    fn($query) => $query
+                    fn ($query) => $query
                         ->where('customer_group_id', $customerGroupId)
                 )
                 ->get()
@@ -80,7 +80,7 @@ class ConfigComposer
         );
 
         return [
-            'rates' => $values,
+            'rates'       => $values,
             'calculation' => [
                 'price_includes_tax'               => boolval(Rapidez::config('tax/calculation/price_includes_tax', 0)),
                 'base_subtotal_should_include_tax' => boolval(Rapidez::config('tax/calculation/base_subtotal_should_include_tax', 1)),
@@ -100,9 +100,9 @@ class ConfigComposer
                 'cart_subtotal' => Rapidez::config('tax/cart_display/subtotal', 1),
             ],
             'defaults' => [
-                'country_id'  => Rapidez::config('tax/defaults/country', 'US'),
-                'postcode' => Rapidez::config('tax/defaults/postcode', null),
-                'region_id'   => Rapidez::config('tax/defaults/region', 0),
+                'country_id' => Rapidez::config('tax/defaults/country', 'US'),
+                'postcode'   => Rapidez::config('tax/defaults/postcode', null),
+                'region_id'  => Rapidez::config('tax/defaults/region', 0),
             ],
         ];
     }

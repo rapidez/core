@@ -10,7 +10,6 @@ use Rapidez\Core\Casts\Children;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
 use Rapidez\Core\Casts\DecodeHtmlEntities;
-use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Scopes\Product\WithProductAttributesScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductCategoryInfoScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductChildrenScope;
