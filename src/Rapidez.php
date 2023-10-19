@@ -5,8 +5,6 @@ namespace Rapidez\Core;
 use Illuminate\Routing\RouteAction;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use Rapidez\Core\Models\Store;
 
 class Rapidez

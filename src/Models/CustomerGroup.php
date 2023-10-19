@@ -2,14 +2,14 @@
 
 namespace Rapidez\Core\Models;
 
-
 class CustomerGroup extends Model
 {
-	protected $table = 'customer_group';
-	protected $primaryKey = 'customer_group_id';
-	public $timestamps = false;
+    protected $table = 'customer_group';
+    protected $primaryKey = 'customer_group_id';
 
-	protected $guarded = [];
+    public $timestamps = false;
+
+    protected $guarded = [];
 
     public function taxCalculations()
     {

@@ -57,8 +57,8 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
 
                 $showOutOfStock = (bool) Rapidez::config('cataloginventory/options/show_out_of_stock', 0);
 
-                $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $categories, $showOutOfStock) {
-                    $this->indexer->index($products, function ($product) use ($store, $categories, $showOutOfStock) {
+                $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $categories) {
+                    $this->indexer->index($products, function ($product) use ($store, $categories) {
                         // if ($product->visibility === 1) {
                         //     return;
                         // }
