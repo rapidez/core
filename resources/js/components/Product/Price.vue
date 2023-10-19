@@ -76,6 +76,7 @@ export default {
 
     computed: {
         specialPrice() {
+            JSON.stringify(this.options) // Hack: make vue recognize reactivity within the options object
             return this.calculatePrice(this.product, this.location, Object.assign({ special_price: true }, this.options))
         },
 
