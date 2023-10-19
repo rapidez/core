@@ -32,11 +32,6 @@ class Product extends Model
 
     protected $appends = ['url'];
 
-    public static function exist($productId): bool
-    {
-        return self::withoutGlobalScopes()->where('entity_id', $productId)->exists();
-    }
-
     protected static function booting(): void
     {
         static::addGlobalScope(new WithProductAttributesScope);
@@ -189,5 +184,10 @@ class Product extends Model
         return Category::whereIn($categoryTable . '.entity_id', $categoryIds)
             ->orderByRaw('FIELD(' . $categoryTable . '.entity_id,' . implode(',', $categoryIds) . ')')
             ->get();
+    }
+
+    public static function exist($productId): bool
+    {
+        return self::withoutGlobalScopes()->where('entity_id', $productId)->exists();
     }
 }
