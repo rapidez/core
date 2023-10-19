@@ -1,6 +1,63 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/0.95.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.0.0...master)
+## [1.0.0](https://github.com/rapidez/core/releases/tag/1.0.0) - 2023-10-19
+
+### Added
+
+- Improved frontend (#307, #359)
+- Custom product options (9b62a67, #282, 2f6dc83, e3e5d57, #318, a9c6ff6, 4e21f2e, 7c1d529, #327, ebd5b85)
+- Magento_JwtUserToken support (#338)
+- Categories index command (#280)
+- Categories in the autocomplete (#298, #364)
+- Alternate hreflang tags (#302)
+- Magento customer auth guard (#355)
+- Products relation from categories (#353)
+- Product view report support (c2f869d, 2e97a44)
+- Implement healthchecks (#341)
+- VAT field on addresses (#315)
+- Additional filters possibility (#326)
+
+### Changed
+
+- Implement VueUse (#183, #229, #231, #269, #290, #300, #330, #331, #340)
+- Move config to files in Rapidez folder (#356)
+- Heroicons v2 update (#304)
+- Generalized functionality for various indexer commands (#254)
+- Uniform model naming (e9825ed)
+- Remove column aliases and qualify columns (#296, eeb2e2e)
+- Expose entire Vue component through a scoped slot (#333)
+- Cleaner price fallback code (cf1f5bc, 6522163)
+- Html lang attribute from the Magento config (8ee136e)
+- Computed loggedIn (#271)
+- Renamed checkout form to address (c747391)
+
+### Fixed
+
+- Honor the cataloginventory/options/show_out_of_stock setting (b16ab18)
+- Wrap raw query parts (#352)
+- Make slidesTotal a computed property (#346)
+- Passive listeners and key instead of keyCode in product image component (#350)
+- Translatable cart title (7a6c533)
+- Translatable checkout title (2a68e8b)
+
+## [0.96.1](https://github.com/rapidez/core/releases/tag/0.96.1) - 2023-10-19
+
+### Fixed
+
+- Duster disabled method ordering (df8e8ba)
+- Revert "Apply fixes from Duster" (fd5eeaf)
+
+## [0.96.0](https://github.com/rapidez/core/releases/tag/0.96.0) - 2023-10-19
+
+### Added
+
+- Search term with redirects support (#347)
+
+### Fixed
+
+- Don't index not visible products (#344)
+
 ## [0.95.0](https://github.com/rapidez/core/releases/tag/0.95.0) - 2023-09-22
 
 ### Added
