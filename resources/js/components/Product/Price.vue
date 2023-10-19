@@ -66,10 +66,10 @@ export default {
                     : option.price
 
                 if (optionPrice.price_type == 'fixed') {
-                    return (priceAddition * 1) + parseFloat(optionPrice.price)
+                    return priceAddition * 1 + parseFloat(optionPrice.price)
                 }
 
-                return (priceAddition * 1) + (parseFloat(basePrice) * parseFloat(optionPrice.price)) / 100
+                return priceAddition * 1 + (parseFloat(basePrice) * parseFloat(optionPrice.price)) / 100
             }, 0)
         },
     },

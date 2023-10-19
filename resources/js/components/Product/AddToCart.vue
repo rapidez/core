@@ -151,7 +151,7 @@ export default {
                 }
             })
 
-            return match;
+            return match
         },
 
         selectTier(id) {
@@ -336,7 +336,7 @@ export default {
             )
         },
 
-        currentTierPrice: function() {
+        currentTierPrice: function () {
             return this.tierPrices[this.tierPrice] ?? null
         },
     },
