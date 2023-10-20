@@ -111,13 +111,13 @@ class Product extends Model
     public function tierPrices(): HasMany
     {
         return $this->hasMany(
-                config('rapidez.models.product_tier_price'),
-                'entity_id'
-            )
+            config('rapidez.models.product_tier_price'),
+            'entity_id'
+        )
             ->whereIn('website_id', [0, config('rapidez.website')])
-            ->where(fn($query) => $query
-                ->where('all_groups', 1)
-                ->orWhere('customer_group_id', auth('magento-customer')->user()?->group_id ?? 0)
+            ->where(fn ($query) => $query
+            ->where('all_groups', 1)
+            ->orWhere('customer_group_id', auth('magento-customer')->user()?->group_id ?? 0)
             );
     }
 
