@@ -18,16 +18,16 @@
             </div>
 
             @include('rapidez::product.partials.options')
-            <ul class="flex flex-col" v-if="tierPrices && Object.keys(tierPrices).length" v-cloak>
-                <price :product="simpleProduct">
-                    <li v-for="tier in tierPrices" slot-scope="{ calculatePrice }">
+            <price :product="simpleProduct" v-if="tierPrices && Object.keys(tierPrices).length" v-cloak>
+                <ul class="flex flex-col" slot-scope="{ calculatePrice }">
+                    <li v-for="tier in tierPrices">
                         @lang('Order :amount and pay :price per item', [
                             'amount' => '@{{ Math.round(tier.qty) }}',
-                            'price' => '@{{ calculatePrice(simpleProduct, "catalog", {price: tier.price}) | price }}',
+                            'price' => '@{{ calculatePrice({price: tier.price}) | price }}',
                         ])
                     </li>
-                </price>
-            </ul>
+                </ul>
+            </price>
             <div class="mt-5 flex flex-wrap items-center gap-3">
                 <x-rapidez::price
                     class="text-2xl font-bold text-neutral flex-col items-start gap-0"

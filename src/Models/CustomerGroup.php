@@ -13,6 +13,6 @@ class CustomerGroup extends Model
 
     public function taxCalculations()
     {
-        return $this->hasMany(TaxCalculation::class, 'customer_tax_class_id', 'tax_class_id');
+        return $this->hasMany(config('rapidez.models.tax_calculation'), 'customer_tax_class_id', 'tax_class_id');
     }
 }

@@ -20,7 +20,11 @@ export default {
     },
 
     methods: {
-        calculatePrice(product, location, options = {}) {
+        calculatePrice(options = null) {
+            options ??= this.options;
+            let product = options?.product || this.product;
+            let location = options?.location || this.location;
+
             let special_price = options.special_price ?? false
             let displayTax = this.$root.includeTaxAt(location)
             let price = options?.price || (special_price ? product.special_price ?? product.price ?? 0 : product.price ?? 0) * 1
@@ -35,22 +39,24 @@ export default {
 
             let taxMultiplier = this.getTaxPercent(product) + 1
 
-            if (window.config.tax.calculation.price_includes_tax == displayTax) {
-                return price
-            }
-
             return displayTax ? price * taxMultiplier : price / taxMultiplier
         },
 
         getTaxPercent(product) {
-            let country_id = window.app?.$data?.checkout?.billing_address?.country_id || window.config.tax.defaults.country_id
-            let region_id = (window.app?.$data?.checkout?.billing_address?.region_id || window.config.tax.defaults.region_id) * 1
-            let postcode = window.app?.$data?.checkout?.billing_address?.postcode || window.config.tax.defaults.postcode
+            let country_id = window.config.tax.defaults.country_id
+            let region_id = window.config.tax.defaults.region_id
+            let postcode = window.config.tax.defaults.postcode
+
+            if (['shipping', 'billing'].includes(window.config?.tax?.calculation.based_on)) {
+                country_id =  window.app?.$data?.checkout?.[window.config?.tax?.calculation.based_on + '_address']?.country_id || country_id
+                region_id =  window.app?.$data?.checkout?.[window.config?.tax?.calculation.based_on + '_address']?.region_id || region_id
+                postcode =  window.app?.$data?.checkout?.[window.config?.tax?.calculation.based_on + '_address']?.postcode || postcode
+            }
 
             let taxRate = window.config.tax.rates?.[product.tax_class_id]?.find(
                 (rate) =>
                     rate.tax_country_id === country_id &&
-                    rate.tax_region_id * 1 === region_id &&
+                    rate.tax_region_id * 1 === region_id * 1 &&
                     postcode.match('^' + rate.tax_postcode.replace('*', '.*') + '$'),
             )?.rate
 
@@ -84,11 +90,11 @@ export default {
     computed: {
         specialPrice() {
             JSON.stringify(this.options) // Hack: make vue recognize reactivity within the options object
-            return this.calculatePrice(this.product, this.location, Object.assign({ special_price: true }, this.options))
+            return this.calculatePrice({...this.options, ...{ special_price: true }})
         },
 
         price() {
-            return this.calculatePrice(this.product, this.location, this.options)
+            return this.calculatePrice(this.options)
         },
 
         isDiscounted() {
@@ -101,7 +107,7 @@ export default {
             }
 
             let prices = Object.values(this.product.children).map((child) =>
-                this.calculatePrice(child, this.location, Object.assign({ special_price: true }, this.options)),
+                this.calculatePrice({...this.option, ...{ special_price: true, product: child }}),
             )
 
             return {

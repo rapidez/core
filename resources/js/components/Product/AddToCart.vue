@@ -320,11 +320,9 @@ export default {
             if (!this.simpleProduct.tierPrices || this.simpleProduct.tierPrices.length == 0) {
                 return {}
             }
-            let availableOptions = this.simpleProduct.tierPrices.filter(
-                (option) => option.all_groups || option.customer_group_id == this.$root.user?.group_id,
-            )
+
             return Object.fromEntries(
-                availableOptions.map((option) => [
+                this.simpleProduct.tierPrices.map((option) => [
                     option.value_id,
                     {
                         qty: option.qty,

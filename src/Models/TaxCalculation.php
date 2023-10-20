@@ -27,11 +27,11 @@ class TaxCalculation extends Model
 
     public function customerGroups()
     {
-        return $this->hasOne(CustomerGroup::class, 'tax_class_id', 'customer_tax_class_id');
+        return $this->hasOne(config('rapidez.models.customer_group'), 'tax_class_id', 'customer_tax_class_id');
     }
 
     public function products()
     {
-        return $this->hasMany(Product::class, 'tax_class_id', 'product_tax_class_id');
+        return $this->hasMany(config('rapidez.models.product'), 'tax_class_id', 'product_tax_class_id');
     }
 }
