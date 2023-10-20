@@ -75,6 +75,9 @@ export default {
             return billing.at(-1)
         },
         items() {
+            if (!this.order?.sales_order_addresses) {
+                return []
+            }
             return this.order.sales_order_items.filter((item) => !item.parent_item_id)
         },
     },
