@@ -9,7 +9,7 @@ window.magento.defaults.baseURL = config.magento_url + '/rest/' + config.store_c
 
 window.magentoUser = axios.create()
 window.magentoUser.defaults.baseURL = config.magento_url + '/rest/' + config.store_code + '/V1/'
-window.magentoUser.defaults.headers.common['Authorization'] = `Bearer ${token.value}`
+window.magentoUser.defaults.headers.common['Authorization'] = `Bearer ${token.value||''}`
 
 // It's not possible to set global interceptors like headers
 // or the base url can; so we set them for all instances.
