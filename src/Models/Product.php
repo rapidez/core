@@ -115,7 +115,7 @@ class Product extends Model
             'entity_id'
         )
         ->whereIn('website_id', [0, config('rapidez.website')])
-        ->where(fn($query) => $query
+        ->where(fn ($query) => $query
             ->where('all_groups', 1)
             ->orWhere('customer_group_id', auth('magento-customer')->user()?->group_id ?? 0)
         );
