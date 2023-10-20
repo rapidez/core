@@ -21,9 +21,9 @@ export default {
 
     methods: {
         calculatePrice(options = null) {
-            options ??= this.options;
-            let product = options?.product || this.product;
-            let location = options?.location || this.location;
+            options ??= this.options
+            let product = options?.product || this.product
+            let location = options?.location || this.location
 
             let special_price = options.special_price ?? false
             let displayTax = this.$root.includeTaxAt(location)
@@ -48,9 +48,9 @@ export default {
             let postcode = window.config.tax.defaults.postcode
 
             if (['shipping', 'billing'].includes(window.config?.tax?.calculation.based_on)) {
-                country_id =  window.app?.$data?.checkout?.[window.config?.tax?.calculation.based_on + '_address']?.country_id || country_id
-                region_id =  window.app?.$data?.checkout?.[window.config?.tax?.calculation.based_on + '_address']?.region_id || region_id
-                postcode =  window.app?.$data?.checkout?.[window.config?.tax?.calculation.based_on + '_address']?.postcode || postcode
+                country_id = window.app?.$data?.checkout?.[window.config?.tax?.calculation.based_on + '_address']?.country_id || country_id
+                region_id = window.app?.$data?.checkout?.[window.config?.tax?.calculation.based_on + '_address']?.region_id || region_id
+                postcode = window.app?.$data?.checkout?.[window.config?.tax?.calculation.based_on + '_address']?.postcode || postcode
             }
 
             let taxRate = window.config.tax.rates?.[product.tax_class_id]?.find(
@@ -90,7 +90,7 @@ export default {
     computed: {
         specialPrice() {
             JSON.stringify(this.options) // Hack: make vue recognize reactivity within the options object
-            return this.calculatePrice({...this.options, ...{ special_price: true }})
+            return this.calculatePrice({ ...this.options, ...{ special_price: true } })
         },
 
         price() {
@@ -107,7 +107,7 @@ export default {
             }
 
             let prices = Object.values(this.product.children).map((child) =>
-                this.calculatePrice({...this.option, ...{ special_price: true, product: child }}),
+                this.calculatePrice({ ...this.option, ...{ special_price: true, product: child } }),
             )
 
             return {
