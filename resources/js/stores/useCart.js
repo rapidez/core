@@ -1,7 +1,7 @@
 import { useSessionStorage, StorageSerializers, useLocalStorage } from '@vueuse/core'
 import { computed, watch } from 'vue'
 import { mask, clear as clearMask } from './useMask'
-import { token } from './useUser'
+import { token, clear as clearUser } from './useUser'
 
 const cartStorage = useSessionStorage('cart', {}, { serializer: StorageSerializers.object })
 let hasRefreshed = false
@@ -29,6 +29,10 @@ export const refresh = async function () {
         cartStorage.value = !mask.value && !token.value ? {} : response.data
         window.app.$emit('cart-refreshed')
     } catch (error) {
+        if ([401, 403].includes(error?.response?.status) && token.value) {
+            clearUser()
+        }
+
         if ([401, 403, 404].includes(error?.response?.status)) {
             mask.value = null
             return false

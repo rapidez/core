@@ -3,7 +3,7 @@
         <template slot-scope="{ calculatePrice }">
             {{ $option->title }}
             @if($option->price->price_type !== 'percent')
-                + @{{ window.price(calculatePrice({price: @php echo $option->price->price @endphp } )) }}
+                + @{{ calculatePrice({price: @php echo $option->price->price @endphp } ) | price }}
             @else
                 {{ $option->price_label }}
             @endif

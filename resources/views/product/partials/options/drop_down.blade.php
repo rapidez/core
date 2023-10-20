@@ -14,7 +14,7 @@
                 <option value="{{ $value->option_type_id }}">
                     {{ $value->title }}
                     @if($value->price->price_type !== 'percent')
-                        + @{{ window.price(calculatePrice({price: @php echo $value->price->price @endphp } )) }}
+                        + @{{ calculatePrice({price: @php echo $value->price->price @endphp } ) | price }}
                     @else
                         {{ $value->price_label }}
                     @endif
