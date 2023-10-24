@@ -5,3 +5,4 @@
 composer.lock
 phpunit.dusk.xml
 phpunit.xml
+stats.html

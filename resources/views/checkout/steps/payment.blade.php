@@ -1,6 +1,6 @@
 <h1 class="font-bold text-4xl mb-5">@lang('Payment method')</h1>
-<form v-on:submit.prevent="save(['payment_method'], 4)">
-    <div class="my-2" v-for="(method, index) in checkout.payment_methods">
+<form class="bg-highlight p-8 rounded mt-6" v-on:submit.prevent="save(['payment_method'], 4)">
+    <div class="my-2 border bg-white p-4 rounded" v-for="(method, index) in checkout.payment_methods">
         <x-rapidez::radio
             v-bind:value="method.code"
             v-bind:dusk="'method-'+index"

@@ -3,10 +3,10 @@
     :component-id="filter.code"
     :data-field="filter.code+(filter.type != 'int' ? '.keyword' : '')"
     :inner-class="{
-        title: 'capitalize font-semibold',
+        title: 'capitalize text-sm font-medium text-gray-900',
         count: 'text-gray-400',
         list: '!max-h-full',
-        label: 'text-gray-600'
+        label: 'ml-1 text-sm text-gray-600'
     }"
     :title="filter.name.replace('_', ' ')"
     :react="{and: reactiveFilters}"
@@ -19,6 +19,6 @@
     >
         <template v-if="label">@lang('Yes')</template>
         <template v-else>@lang('No')</template>
-        <span class="text-gray-400">(@{{ count }})</span>
+        <span class="text-gray-600">(@{{ count }})</span>
     </span>
 </multi-list>

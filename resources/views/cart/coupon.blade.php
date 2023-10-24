@@ -1,4 +1,4 @@
-<div class="bg-white rounded-lg border sm:w-80 mb-3">
+<div class="bg-white rounded-lg border">
     <div class="p-3">
         <h3 class="text-lg leading-6 font-medium text-gray-900">
             @lang('Apply coupon code')
@@ -23,7 +23,7 @@
                 <div class="relative rounded-md" v-if="cart.discount_name && cart.discount_amount < 0">
                     <div class="flex items-center">
                         <button v-on:click="removeCoupon">
-                            <x-heroicon-s-x class="h-4 w-4 text-black-400"/>
+                            <x-heroicon-s-x-mark class="h-4 w-4 text-black-400"/>
                         </button>
                         @lang('Discount'): @{{ cart.discount_name }}
                     </div>
