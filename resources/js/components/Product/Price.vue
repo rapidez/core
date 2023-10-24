@@ -39,7 +39,19 @@ export default {
 
             let taxMultiplier = this.getTaxPercent(product) + 1
 
-            return displayTax ? price * taxMultiplier : price / taxMultiplier
+            if (window.config.tax.calculation.price_includes_tax) {
+                if (displayTax) {
+                    return price
+                } else {
+                    return price / taxMultiplier
+                }
+            } else {
+                if (displayTax) {
+                    return price * taxMultiplier
+                } else {
+                    return price
+                }
+            }
         },
 
         getTaxPercent(product) {

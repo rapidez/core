@@ -66,31 +66,18 @@ class ConfigComposer
     public function getTaxConfiguration()
     {
         $customerGroupId = auth('magento-customer')->user()?->group_id ?? 0;
-        $values = Cache::remember(
-            'tax-configuration-' . $customerGroupId,
-            3600,
-            fn () => TaxCalculation::select('tax_country_id', 'tax_region_id', 'tax_postcode', 'rate', 'product_tax_class_id')
-                ->whereHas(
-                    'customerGroups',
-                    fn ($query) => $query
-                        ->where('customer_group_id', $customerGroupId)
-                )
+        $values = Cache::remember('tax-configuration-' . $customerGroupId, 3600, function () use ($customerGroupId) {
+            return TaxCalculation::select('tax_country_id', 'tax_region_id', 'tax_postcode', 'rate', 'product_tax_class_id')
+                ->whereHas('customerGroups', fn ($query) => $query->where('customer_group_id', $customerGroupId))
                 ->get()
-                ->groupBy('product_tax_class_id')
-        );
+                ->groupBy('product_tax_class_id');
+        });
 
         return [
-            'rates'       => $values,
+            'rates' => $values,
             'calculation' => [
-                'price_includes_tax'               => boolval(Rapidez::config('tax/calculation/price_includes_tax', 0)),
-                'base_subtotal_should_include_tax' => boolval(Rapidez::config('tax/calculation/base_subtotal_should_include_tax', 1)),
-                'algorithm'                        => Rapidez::config('tax/calculation/algorithm', 'TOTAL_BASE_CALCULATION'),
-                'apply_after_discount'             => boolval(Rapidez::config('tax/calculation/apply_after_discount', 1)),
-                'apply_tax_on'                     => Rapidez::config('tax/calculation/apply_tax_on', 0),
-                'based_on'                         => Rapidez::config('tax/calculation/based_on', 'shipping'),
-                'cross_border_trade_enabled'       => boolval(Rapidez::config('tax/calculation/cross_border_trade_enabled', 0)),
-                'discount_tax'                     => boolval(Rapidez::config('tax/calculation/discount_tax', 0)),
-                'shipping_includes_tax'            => boolval(Rapidez::config('tax/calculation/shipping_includes_tax', 0)),
+                'price_includes_tax' => boolval(Rapidez::config('tax/calculation/price_includes_tax', 0)),
+                'based_on'           => Rapidez::config('tax/calculation/based_on', 'shipping'),
             ],
             'display' => [
                 'catalog'       => Rapidez::config('tax/display/type', 1),
