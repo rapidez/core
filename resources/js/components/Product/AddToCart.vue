@@ -145,9 +145,9 @@ export default {
             let match = null
             let matchQty = 0
             Object.entries(this.tierPrices).forEach(([id, tier]) => {
-                if (tier.qty > matchQty && tier.qty <= qty) {
+                if (+tier.qty > matchQty && +tier.qty <= qty) {
                     match = id
-                    matchQty = tier.qty
+                    matchQty = +tier.qty
                 }
             })
 
