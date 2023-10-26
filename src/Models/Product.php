@@ -10,6 +10,7 @@ use Rapidez\Core\Casts\Children;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
 use Rapidez\Core\Casts\DecodeHtmlEntities;
+use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Scopes\Product\WithProductAttributesScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductCategoryInfoScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductChildrenScope;
@@ -34,7 +35,7 @@ class Product extends Model
 
     protected $primaryKey = 'entity_id';
 
-    protected $appends = ['url'];
+    protected $appends = ['url', 'price_without_tax'];
 
     protected static function booting(): void
     {
@@ -134,17 +135,36 @@ class Product extends Model
         return $query->whereIn($this->getQualifiedKeyName(), $productIds);
     }
 
-    public function getPriceAttribute($price)
+    public function price(): Attribute
     {
-        if ($this->type_id == 'configurable') {
-            return collect($this->children)->min->price;
-        }
+        return Attribute::make(
+            get: function ($price) {
+                if ($this->type_id == 'configurable') {
+                    $price = collect($this->children)->min->price;
+                }
 
-        if ($this->type_id == 'grouped') {
-            return collect($this->grouped)->min->price;
-        }
+                if ($this->type_id == 'grouped') {
+                    $price = collect($this->grouped)->min->price;
+                }
 
-        return $price;
+                if (Rapidez::config('tax/calculation/price_includes_tax', 0)) {
+                    return $price;
+                }
+
+                // TODO: Get the tax from the settings.
+                return $price * 1.21;
+            }
+        );
+    }
+
+    public function priceWithoutTax(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                // TODO: Get the tax from the settings.
+                return $this->price / 1.21;
+            }
+        );
     }
 
     public function getSpecialPriceAttribute($specialPrice)

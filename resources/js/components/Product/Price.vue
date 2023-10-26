@@ -39,6 +39,9 @@ export default {
 
             let taxMultiplier = this.getTaxPercent(product) + 1
 
+            return price
+
+            // Tax calculation can be done from the backend right?
             if (window.config.tax.calculation.price_includes_tax) {
                 if (displayTax) {
                     return price
