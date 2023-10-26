@@ -2,7 +2,6 @@
 
 namespace Rapidez\Core\Tests;
 
-use Closure;
 use BladeUI\Heroicons\BladeHeroiconsServiceProvider;
 use BladeUI\Icons\BladeIconsServiceProvider;
 use Orchestra\Testbench\Dusk\TestCase as BaseTestCase;

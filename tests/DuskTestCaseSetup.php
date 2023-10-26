@@ -3,7 +3,6 @@
 namespace Rapidez\Core\Tests;
 
 use Closure;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Laravel\Dusk\Browser;
 use PHPUnit\Framework\Assert;
@@ -88,31 +87,31 @@ trait DuskTestCaseSetup
     {
         $taxRateDefaultId = DB::table('tax_calculation_rate')->insertGetId([
             'tax_country_id' => 'NL',
-            'tax_region_id' => 0,
-            'tax_postcode' => '*',
-            'code' => 'Default Tax Rate NL',
-            'rate' => 21,
+            'tax_region_id'  => 0,
+            'tax_postcode'   => '*',
+            'code'           => 'Default Tax Rate NL',
+            'rate'           => 21,
         ]);
 
         $taxRateNoneId = DB::table('tax_calculation_rate')->insertGetId([
             'tax_country_id' => 'NL',
-            'tax_region_id' => 0,
-            'tax_postcode' => '*',
-            'code' => 'No Tax Rate NL',
-            'rate' => 0,
+            'tax_region_id'  => 0,
+            'tax_postcode'   => '*',
+            'code'           => 'No Tax Rate NL',
+            'rate'           => 0,
         ]);
 
         $taxRuleDefaultId = DB::table('tax_calculation_rule')->insertGetId([
-            'code' => 'Default Tax Rate NL',
-            'priority' => 0,
-            'position' => 0,
+            'code'               => 'Default Tax Rate NL',
+            'priority'           => 0,
+            'position'           => 0,
             'calculate_subtotal' => 0,
         ]);
 
         $taxRuleNoneId = DB::table('tax_calculation_rule')->insertGetId([
-            'code' => 'No Tax Rate NL',
-            'priority' => 0,
-            'position' => 0,
+            'code'               => 'No Tax Rate NL',
+            'priority'           => 0,
+            'position'           => 0,
             'calculate_subtotal' => 0,
         ]);
 
@@ -120,7 +119,7 @@ trait DuskTestCaseSetup
 
         $noTaxClassId = DB::table('tax_class')->insertGetId([
             'class_name' => 'No Tax',
-            'class_type' => 'CUSTOMER'
+            'class_type' => 'CUSTOMER',
         ]);
 
         $productTaxClassId = DB::table('tax_class')->where('class_name', 'Taxable Goods')->pluck('class_id')->first();
@@ -129,36 +128,36 @@ trait DuskTestCaseSetup
             [
                 'tax_calculation_rate_id' => $taxRateDefaultId,
                 'tax_calculation_rule_id' => $taxRuleDefaultId,
-                'customer_tax_class_id' => $retailCustomerClassId,
-                'product_tax_class_id' => $productTaxClassId,
+                'customer_tax_class_id'   => $retailCustomerClassId,
+                'product_tax_class_id'    => $productTaxClassId,
             ],
             [
                 'tax_calculation_rate_id' => $taxRateNoneId,
                 'tax_calculation_rule_id' => $taxRuleNoneId,
-                'customer_tax_class_id' => $noTaxClassId,
-                'product_tax_class_id' => $productTaxClassId,
+                'customer_tax_class_id'   => $noTaxClassId,
+                'product_tax_class_id'    => $productTaxClassId,
             ],
         ]);
 
         DB::table('core_config_data')->upsert(
             [
                 [
-                    'scope' => 'default',
+                    'scope'    => 'default',
                     'scope_id' => 0,
-                    'path' => 'tax/defaults/country',
-                    'value' => 'NL',
+                    'path'     => 'tax/defaults/country',
+                    'value'    => 'NL',
                 ],
                 [
-                    'scope' => 'default',
+                    'scope'    => 'default',
                     'scope_id' => 0,
-                    'path' => 'tax/display/type',
-                    'value' => 2,
+                    'path'     => 'tax/display/type',
+                    'value'    => 2,
                 ],
                 [
-                    'scope' => 'default',
+                    'scope'    => 'default',
                     'scope_id' => 0,
-                    'path' => 'tax/display/shipping',
-                    'value' => 2,
+                    'path'     => 'tax/display/shipping',
+                    'value'    => 2,
                 ],
             ],
             ['scope', 'scope_id', 'path'],

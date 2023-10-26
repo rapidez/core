@@ -2,11 +2,7 @@
 
 namespace Rapidez\Core\Tests\Browser;
 
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
 use Laravel\Dusk\Browser;
-use Rapidez\Core\Facades\Rapidez;
-use Rapidez\Core\Models\Config;
 use Rapidez\Core\Tests\DuskTestCase;
 
 class PriceTest extends DuskTestCase
@@ -18,7 +14,7 @@ class PriceTest extends DuskTestCase
     {
         $this->browseWithConfigs([
             'tax/calculation/price_includes_tax' => 0,
-            'tax/display/type' => 1,
+            'tax/display/type'                   => 1,
         ], function (Browser $browser) {
             $browser
                 ->visit($this->testProduct->url)
@@ -33,7 +29,7 @@ class PriceTest extends DuskTestCase
     {
         $this->browseWithConfigs([
             'tax/calculation/price_includes_tax' => 0,
-            'tax/display/type' => 2,
+            'tax/display/type'                   => 2,
         ], function (Browser $browser) {
             $browser
                 ->visit($this->testProduct->url)
@@ -49,7 +45,7 @@ class PriceTest extends DuskTestCase
         dump($this->testProduct->price_without_tax);
         $this->browseWithConfigs([
             'tax/calculation/price_includes_tax' => 1,
-            'tax/display/type' => 1,
+            'tax/display/type'                   => 1,
         ], function (Browser $browser) {
             $browser
                 ->visit($this->testProduct->url)
@@ -64,7 +60,7 @@ class PriceTest extends DuskTestCase
     {
         $this->browseWithConfigs([
             'tax/calculation/price_includes_tax' => 1,
-            'tax/display/type' => 2,
+            'tax/display/type'                   => 2,
         ], function (Browser $browser) {
             $browser
                 ->visit($this->testProduct->url)
