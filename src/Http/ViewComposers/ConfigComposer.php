@@ -74,7 +74,7 @@ class ConfigComposer
         });
 
         return [
-            'rates' => $values,
+            'rates'       => $values,
             'calculation' => [
                 'price_includes_tax' => boolval(Rapidez::config('tax/calculation/price_includes_tax', 0)),
                 'based_on'           => Rapidez::config('tax/calculation/based_on', 'shipping'),
