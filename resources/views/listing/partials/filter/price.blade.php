@@ -8,5 +8,6 @@
     :inner-class="{
         title: 'capitalize text-sm font-medium text-gray-900',
     }"
+    :slider-options="{ dragOnClick: true, useKeyboard: false }"
     u-r-l-params
 ></dynamic-range-slider>
