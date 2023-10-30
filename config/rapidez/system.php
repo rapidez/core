@@ -22,6 +22,9 @@ return [
     // With this token you can run commands from an url.
     'admin_token' => env('RAPIDEZ_TOKEN', env('APP_KEY')),
 
+    // Whether or not to index products with visibility 1 into ElasticSearch
+    'index_invisible' => false,
+
     // Additional searchable attributes with the search weight.
     'searchable' => [
         // 'attribute' => 4.0,
