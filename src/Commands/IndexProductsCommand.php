@@ -60,7 +60,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
 
                 $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $categories, $showOutOfStock, $indexInvisible) {
                     $this->indexer->index($products, function ($product) use ($store, $categories, $showOutOfStock, $indexInvisible) {
-                        if ($product->visibility === 1 && !$indexInvisible) {
+                        if ($product->visibility === 1 && ! $indexInvisible) {
                             return;
                         }
 
