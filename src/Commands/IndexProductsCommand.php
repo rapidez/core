@@ -56,11 +56,11 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                     ->pluck('name', 'entity_id');
 
                 $showOutOfStock = (bool) Rapidez::config('cataloginventory/options/show_out_of_stock', 0);
-                $indexInvisible = config('rapidez.indexer.index_invisible');
+                $indexVisibility = config('rapidez.indexer.index_visibility');
 
-                $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $categories, $showOutOfStock, $indexInvisible) {
-                    $this->indexer->index($products, function ($product) use ($store, $categories, $showOutOfStock, $indexInvisible) {
-                        if ($product->visibility === 1 && ! $indexInvisible) {
+                $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $categories, $showOutOfStock, $indexVisibility) {
+                    $this->indexer->index($products, function ($product) use ($store, $categories, $showOutOfStock, $indexVisibility) {
+                        if (!in_array($product->visibility, $indexVisibility)) {
                             return;
                         }
 

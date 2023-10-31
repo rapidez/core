@@ -1,8 +1,8 @@
 <?php
 
 return [
-    // Whether or not to index products with visibility 1 into ElasticSearch
-    'index_invisible' => false,
+    // Which product visibilities should we limit the ElasticSearch product indexer to?
+    'index_visibility' => [2, 3, 4],
 
     // Additional searchable attributes with the search weight.
     'searchable' => [
