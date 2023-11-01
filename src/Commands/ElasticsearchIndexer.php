@@ -60,7 +60,7 @@ class ElasticsearchIndexer
 
         $currentId = is_callable($id)
             ? $id($item)
-            : $item[$id];
+            : data_get($item, $id);
 
         if (is_null($currentId)) {
             return;
