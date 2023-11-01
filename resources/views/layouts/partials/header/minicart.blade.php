@@ -1,6 +1,6 @@
-<cart v-cloak>
+<cart>
     <toggler slot-scope="{ cart, hasItems }">
-        <div class="relative" v-if="hasItems" v-on-click-away="close" slot-scope="{toggle, close, isOpen}">
+        <div class="relative" v-if="hasItems" v-on-click-away="close" slot-scope="{toggle, close, isOpen}" v-cloak>
             <button class="flex my-1 focus:outline-none" v-on:click="toggle">
                 <x-heroicon-o-shopping-cart class="h-6 w-6"/>
                 <span class="bg-neutral rounded-full w-6 h-6 text-white text-center" dusk="minicart-count">@{{ Math.round(cart.items_qty) }}</span>
