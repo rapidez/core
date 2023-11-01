@@ -1,6 +1,17 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.0.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.0.1...master)
+## [1.0.1](https://github.com/rapidez/core/releases/tag/1.0.1) - 2023-11-01
+
+### Fixed
+
+- Avoid error in console (#365)
+- Set mutating to false in a finally (#366)
+- Remove old button component (#367)
+- Use dragOnClick and disable keyboard for the price filter (#368)
+- Use data_get to allow both stdClass & arrays to be used (#370)
+- Update prices when super attribute option is changed (#371)
+
 ## [1.0.0](https://github.com/rapidez/core/releases/tag/1.0.0) - 2023-10-19
 
 ### Added
@@ -38,8 +49,7 @@
 - Wrap raw query parts (#352)
 - Make slidesTotal a computed property (#346)
 - Passive listeners and key instead of keyCode in product image component (#350)
-- Translatable cart title (7a6c533)
-- Translatable checkout title (2a68e8b)
+- Translatable cart + checkout title (7a6c533, 2a68e8b)
 
 ## [0.96.1](https://github.com/rapidez/core/releases/tag/0.96.1) - 2023-10-19
 
