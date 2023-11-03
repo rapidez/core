@@ -8,6 +8,11 @@ let hasRefreshed = false
 let isRefreshing = false
 
 export const refresh = async function () {
+    // TODO: We don't need this anymore as we're using the GraphQL responses
+    // but we still need some logic from here like clearing the addresses
+    console.log('TODO! /api/cart is removed')
+    return true
+
     hasRefreshed = true
     if (!mask.value && !token.value) {
         cartStorage.value = {}

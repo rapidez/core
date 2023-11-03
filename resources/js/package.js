@@ -10,6 +10,7 @@ import './polyfills'
 import { useLocalStorage, StorageSerializers } from '@vueuse/core'
 import useCart from './stores/useCart'
 import useUser from './stores/useUser'
+import useMask from './stores/useMask'
 import useSwatches from './stores/useSwatches'
 import './vue'
 import { computed } from 'vue'
@@ -61,6 +62,7 @@ function init() {
             loadAutocomplete: false,
             cart: useCart(),
             user: useUser(),
+            mask: useMask(),
             swatches: useSwatches(),
             checkout: {
                 step: 1,

@@ -1,3 +1,4 @@
+{{-- TODO: Also implement the GraphQL cart here --}}
 <cart>
     <toggler slot-scope="{ cart, hasItems }">
         <div class="relative" v-if="hasItems" v-on-click-away="close" slot-scope="{toggle, close, isOpen}" v-cloak>

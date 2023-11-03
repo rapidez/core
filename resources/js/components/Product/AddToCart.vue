@@ -1,4 +1,5 @@
 <script>
+// TODO: Should we also migrate this to GraphQL so we can use the cart response directly and do not need another request?
 import GetCart from './../Cart/mixins/GetCart'
 import InteractWithUser from './../User/mixins/InteractWithUser'
 

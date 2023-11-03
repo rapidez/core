@@ -27,6 +27,9 @@ export default {
         callback: {
             type: Function,
         },
+        rerunEvent: {
+            type: String,
+        },
     },
 
     data: () => ({
@@ -35,19 +38,26 @@ export default {
     }),
 
     render() {
-        return this.$scopedSlots.default({
-            data: this.data,
-            runQuery: this.runQuery,
-        })
+        return this.$scopedSlots.default(this)
     },
 
     created() {
-        if (!this.getCache()) {
-            this.runQuery()
+        if (this.rerunEvent) {
+            window.app.$on(this.rerunEvent, () => {
+                this.run()
+            })
         }
+
+        this.run()
     },
 
     methods: {
+        run() {
+            if (!this.getCache()) {
+                this.runQuery()
+            }
+        },
+
         getCache() {
             if (this.cache === undefined) {
                 return false

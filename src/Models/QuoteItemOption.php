@@ -5,6 +5,7 @@ namespace Rapidez\Core\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\DB;
 
+// TODO: Do we still need this model?
 class QuoteItemOption extends Model
 {
     protected $table = 'quote_item_option';

@@ -42,6 +42,7 @@ class ConfigComposer
         Config::set('frontend.customer_fields_show', $this->getCustomerFields());
         Config::set('frontend.grid_per_page', Rapidez::config('catalog/frontend/grid_per_page', 12));
         Config::set('frontend.grid_per_page_values', explode(',', Rapidez::config('catalog/frontend/grid_per_page_values', '12,24,36')));
+        Config::set('frontend.queries.cart', view('rapidez::cart.queries.cart')->renderOneliner());
     }
 
     public function getCustomerFields()

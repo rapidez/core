@@ -1,3 +1,4 @@
+// TODO: It should be possible to remove this whole file?
 import { useLocalStorage } from '@vueuse/core'
 import { cart, refresh as refreshCart, clear as clearCart } from '../../../stores/useCart'
 import { user } from '../../../stores/useUser'
@@ -29,6 +30,7 @@ export default {
             return mask.value
         },
 
+        // TODO: Test/implement this with GraphQL
         async linkUserToCart() {
             await magentoUser
                 .put('guest-carts/' + mask.value, {
@@ -44,6 +46,7 @@ export default {
         },
 
         expiredCartCheck(error) {
+            // TODO: Test/implement this with GraphQL
             if (error.response.data?.parameters?.fieldName == 'quoteId' || error.response.status === 404) {
                 clearCart()
                 Notify(window.config.translations.errors.cart_expired, 'error')

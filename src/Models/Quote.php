@@ -9,6 +9,7 @@ use Rapidez\Core\Casts\QuoteItems;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
 use TorMorten\Eventy\Facades\Eventy;
 
+// TODO: Do we still need this model?
 class Quote extends Model
 {
     protected $table = 'quote';
