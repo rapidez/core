@@ -6,7 +6,7 @@ return [
     // VISIBILITY_IN_CATALOG     = 2
     // VISIBILITY_IN_SEARCH      = 3
     // VISIBILITY_BOTH           = 4
-    'index_visibility' => [2, 3, 4],
+    'visibility' => [2, 3, 4],
 
     // Additional searchable attributes with the search weight.
     'searchable' => [
