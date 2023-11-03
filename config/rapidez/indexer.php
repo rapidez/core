@@ -1,7 +1,11 @@
 <?php
 
 return [
-    // Which product visibilities should we limit the ElasticSearch product indexer to?
+    // Which product visibilities should be indexed?
+    // VISIBILITY_NOT_VISIBLE    = 1
+    // VISIBILITY_IN_CATALOG     = 2
+    // VISIBILITY_IN_SEARCH      = 3
+    // VISIBILITY_BOTH           = 4
     'index_visibility' => [2, 3, 4],
 
     // Additional searchable attributes with the search weight.
