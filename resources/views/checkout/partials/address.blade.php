@@ -16,6 +16,25 @@
 </div>
 
 <div class="contents" v-if="!$root.loggedIn || !checkout.{{ $type }}_address.customer_address_id">
+    @if(Rapidez::config('customer/address/prefix_show', false) && strlen(Rapidez::config('customer/address/prefix_options', '')))
+        <div class="col-span-12">
+            <x-rapidez::select
+                name="{{ $type }}_prefix"
+                label="Prefix"
+                v-model="checkout.{{ $type }}_address.prefix"
+                :required="Rapidez::config('customer/address/prefix_show', 'opt') == 'req'"
+            >
+                @if(Rapidez::config('customer/address/prefix_show', false) === 'opt')
+                    <option value=""></option>
+                @endif
+                @foreach(explode(';', Rapidez::config('customer/address/prefix_options', '')) as $prefix)
+                    <option value="{{ $prefix }}">
+                        {{ __($prefix) }}
+                    </option>
+                @endforeach
+            </x-rapidez::select>
+        </div>
+    @endif
     <div class="col-span-12 {{ Rapidez::config('customer/address/middlename_show', 0) ? 'sm:col-span-4' : 'sm:col-span-6' }}">
         <x-rapidez::input
             label="Firstname"
@@ -41,6 +60,25 @@
             required
         />
     </div>
+    @if(Rapidez::config('customer/address/suffix_show', false) && strlen(Rapidez::config('customer/address/suffix_options', '')))
+        <div class="col-span-12">
+            <x-rapidez::select
+                name="{{ $type }}_suffix"
+                label="Suffix"
+                v-model="checkout.{{ $type }}_address.suffix"
+                :required="Rapidez::config('customer/address/suffix_show', 'opt') == 'req'"
+            >
+                @if(Rapidez::config('customer/address/suffix_show', false) === 'opt')
+                    <option value=""></option>
+                @endif
+                @foreach(explode(';', Rapidez::config('customer/address/suffix_options', '')) as $suffix)
+                    <option value="{{ $suffix }}">
+                        {{ __($suffix) }}
+                    </option>
+                @endforeach
+            </x-rapidez::select>
+        </div>
+    @endif
     <div class="col-span-6 sm:col-span-3">
         <x-rapidez::input
             name="{{ $type }}_postcode"
@@ -102,8 +140,18 @@
             />
         </div>
     @endif
-    @if(Rapidez::config('customer/address/company_show', 'opt'))
+    @if(Rapidez::config('customer/address/fax_show', false))
         <div class="col-span-12 sm:col-span-6">
+            <x-rapidez::input
+                name="{{ $type }}_fax"
+                label="Fax"
+                v-model.lazy="checkout.{{ $type }}_address.fax"
+                :required="Rapidez::config('customer/address/fax_show', false) === 'req'"
+            />
+        </div>
+    @endif
+    @if(Rapidez::config('customer/address/company_show', 'opt'))
+        <div class="col-span-12 sm:col-span-6 sm:col-start-1">
             <x-rapidez::input
                 name="{{ $type }}_company"
                 label="Company"

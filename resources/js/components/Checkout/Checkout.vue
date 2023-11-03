@@ -188,7 +188,7 @@ export default {
             }
 
             const optionalFields = Object.keys(
-                Object.fromEntries(Object.entries(window.config.customer_fields_show).filter(([key, value]) => !value || value === 'opt')),
+                Object.fromEntries(Object.entries(window.config.show_customer_address_fields).filter(([key, value]) => !value || value === 'opt')),
             )
             Object.entries(this.checkout.shipping_address).forEach(([key, val]) => {
                 if (!val && !['region_id', 'customer_address_id', 'same_as_billing'].concat(optionalFields).includes(key)) {
