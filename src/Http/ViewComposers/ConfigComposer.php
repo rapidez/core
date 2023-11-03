@@ -38,7 +38,7 @@ class ConfigComposer
         Config::set('frontend.show_swatches', (bool) Rapidez::config('catalog/frontend/show_swatches_in_product_list'));
         Config::set('frontend.translations', __('rapidez::frontend'));
         Config::set('frontend.recaptcha', Rapidez::config('recaptcha_frontend/type_recaptcha_v3/public_key', null, true));
-        Config::set('frontend.searchable', array_merge($searchableAttributes, config('rapidez.searchable')));
+        Config::set('frontend.searchable', array_merge($searchableAttributes, config('rapidez.indexer.searchable')));
         Config::set('frontend.customer_fields_show', $this->getCustomerFields());
         Config::set('frontend.grid_per_page', Rapidez::config('catalog/frontend/grid_per_page', 12));
         Config::set('frontend.grid_per_page_values', explode(',', Rapidez::config('catalog/frontend/grid_per_page_values', '12,24,36')));
