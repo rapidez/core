@@ -39,6 +39,7 @@ class RapidezServiceProvider extends ServiceProvider
     protected $configFiles = [
         'frontend',
         'healthcheck',
+        'indexer',
         'jwt',
         'models',
         'routing',
