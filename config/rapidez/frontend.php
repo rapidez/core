@@ -1,9 +1,6 @@
 <?php
 
 return [
-    // Should the stock qty be exposed and indexed within Elasticsearch?
-    'expose_stock' => false,
-
     // The variables which should be exposed to the frontend.
     'exposed' => [
         'store',
