@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.0.1...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.1.0...master)
+## [1.1.0](https://github.com/rapidez/core/releases/tag/1.1.0) - 2023-11-03
+
+### Changed
+
+- Indexer config with visibility option (#369)
+
 ## [1.0.1](https://github.com/rapidez/core/releases/tag/1.0.1) - 2023-11-01
 
 ### Fixed
