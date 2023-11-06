@@ -71,7 +71,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
 
         $data = array_merge(['store' => config('rapidez.store')], $product->toArray());
 
-        $categories = Cache::driver('array')->rememberForever(config('rapidez.store'), function() {
+        $categories = Cache::driver('array')->rememberForever('categories_' . config('rapidez.store'), function() {
             return Category::query()
                 ->where('catalog_category_flat_store_' . config('rapidez.store') . '.entity_id', '<>', Rapidez::config('catalog/category/root_id', 2))
                 ->pluck('name', 'entity_id');
