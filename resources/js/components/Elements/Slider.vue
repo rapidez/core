@@ -62,7 +62,7 @@ export default {
     },
     mounted() {
         this.initSlider()
-        useResizeObserver(this.slider, this.updateSpan)
+        useResizeObserver(this.slider, useThrottleFn(this.updateSpan, 150, true, true))
         useEventListener(this.slider, 'scroll', useThrottleFn(this.scroll, 150, true, true), { passive: true })
         this.$nextTick(() => {
             if (this.loop) {
