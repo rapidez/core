@@ -1,4 +1,4 @@
-@props(['name', 'label', 'type' => 'text', 'disabled' => false, 'required' => false, 'placeholder' => false, 'dusk' => null])
+@props(['label', 'type' => 'text'])
 @slots(['input', 'label'])
 
 @php
@@ -9,18 +9,16 @@
     $labelClasses = match($type) {
         'radio', 'checkbox' => 'flex-row',
         default => '',
-    }
+    };
+
+    $shifted = ['disabled', 'dusk', 'name', 'placeholder', 'required', 'type', 'v-model', 'v-model.lazy'];
 @endphp
 
-<x-rapidez::label :attributes="$attributes->class($labelClasses)" :$label>
-    <x-dynamic-component :component="$componentType" :attributes="$input->attributes->merge([
-        'name' => $name ?? null,
-        'type' => $type,
-        'placeholder' => $placeholder,
-        'dusk' => $dusk,
-        'disabled' => $disabled,
-        'required' => $required,
-    ])">
+<x-rapidez::label :attributes="$attributes->except($shifted)->class($labelClasses)" :$label>
+    <x-dynamic-component
+        :component="$componentType"
+        :attributes="$input->attributes->merge($attributes->only($shifted)->getAttributes())"
+    >
         {{ $input }}
     </x-dynamic-component>
     {{ $slot }}
