@@ -2,7 +2,6 @@
 
 namespace Rapidez\Core\Commands;
 
-use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -49,7 +48,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
             ->chunk(500)
             ->index(
                 indexName: 'products',
-                items: fn() => $productModel::selectOnlyIndexable()
+                items: fn () => $productModel::selectOnlyIndexable()
                     ->withEventyGlobalScopes('index.product.scopes')
                     ->withExists('options AS has_options'),
                 id: 'id',
@@ -65,13 +64,13 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
             return;
         }
 
-        if (!$product->in_stock && !(bool) Rapidez::config('cataloginventory/options/show_out_of_stock', 0)) {
+        if (! $product->in_stock && ! (bool) Rapidez::config('cataloginventory/options/show_out_of_stock', 0)) {
             return;
         }
 
         $data = array_merge(['store' => config('rapidez.store')], $product->toArray());
 
-        $categories = Cache::driver('array')->rememberForever(config('rapidez.store'), function() {
+        $categories = Cache::driver('array')->rememberForever(config('rapidez.store'), function () {
             return Category::query()
                 ->where('catalog_category_flat_store_' . config('rapidez.store') . '.entity_id', '<>', Rapidez::config('catalog/category/root_id', 2))
                 ->pluck('name', 'entity_id');

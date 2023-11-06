@@ -49,7 +49,7 @@ class ElasticsearchIndexer
             return;
         }
 
-        if (!$this->prepared) {
+        if (! $this->prepared) {
             throw new Exception('Attempted to index items without preparing the indexer first.');
         }
 
