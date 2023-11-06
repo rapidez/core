@@ -11,7 +11,7 @@
         default => '',
     };
 
-    $attributes->setAttributes(['type' => $type]);
+    $attributes->offsetSet('type', $type);
     $shifted = ['disabled', 'dusk', 'name', 'placeholder', 'required', 'type', 'v-model', 'v-model.lazy'];
 @endphp
 
