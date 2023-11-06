@@ -33,7 +33,7 @@ abstract class ElasticsearchIndexCommand extends Command
 
     public function onlyStores(callable|int|string|array|null $stores): static
     {
-        if(is_array($stores)) {
+        if (is_array($stores)) {
             $this->stores = $stores;
         } else {
             $this->stores = Rapidez::getStores($stores);
@@ -155,24 +155,26 @@ abstract class ElasticsearchIndexCommand extends Command
 
     public function indexPartialIterable(iterable $items, callable|string $id): void
     {
-        if($this->chunkSize < 1) {
+        if ($this->chunkSize < 1) {
             $this->indexPartial($items, $id);
+
             return;
         }
 
-        foreach (array_chunk((array)$items, $this->chunkSize) as $chunk) {
+        foreach (array_chunk((array) $items, $this->chunkSize) as $chunk) {
             $this->indexPartial($chunk, $id);
         }
     }
 
     public function indexPartialQuery(Builder $items, callable|string $id): void
     {
-        if($this->chunkSize < 1) {
+        if ($this->chunkSize < 1) {
             $this->indexPartial($items->get(), $id);
+
             return;
         }
 
-        $items->chunk($this->chunkSize, function($chunk) use ($id) {
+        $items->chunk($this->chunkSize, function ($chunk) use ($id) {
             $this->indexPartial($chunk, $id);
         });
     }
