@@ -49,16 +49,15 @@ export default {
     },
 
     render() {
-        return this.$scopedSlots.default(Object.assign(this, { self: this }))
+        return this.$scopedSlots.default(this)
     },
 
     methods: {
         async add() {
             if (
-                'children' in this.product &&
-                Object.values(this.product.children).length &&
                 window.location.pathname !== this.product.url &&
-                !config.show_swatches
+                (this.product?.has_options ||
+                    ('children' in this.product && Object.values(this.product.children).length && !config.show_swatches))
             ) {
                 Turbo.visit(window.url(this.product.url))
                 return
@@ -145,7 +144,7 @@ export default {
             let file = event.target.files[0]
             let reader = new FileReader()
             reader.onerror = (error) => alert(error)
-            reader.onload = () => (this.customOptions[optionId] = 'FILE;' + file.name + ';' + reader.result)
+            reader.onload = () => Vue.set(this.customOptions, optionId, 'FILE;' + file.name + ';' + reader.result)
             reader.readAsDataURL(file)
         },
 
@@ -308,6 +307,12 @@ export default {
 
     watch: {
         customOptions: {
+            handler() {
+                this.calculatePrices()
+            },
+            deep: true,
+        },
+        options: {
             handler() {
                 this.calculatePrices()
             },

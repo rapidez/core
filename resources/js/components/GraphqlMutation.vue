@@ -39,6 +39,9 @@ export default {
         callback: {
             type: Function,
         },
+        errorCallback: {
+            type: Function,
+        },
         beforeRequest: {
             type: Function,
         },
@@ -128,6 +131,11 @@ export default {
                 )
 
                 if (response.data.errors) {
+                    if (this.errorCallback) {
+                        await this.errorCallback(this.data, response)
+                        return
+                    }
+
                     if (response.data.errors[0]?.extensions?.category == 'graphql-authorization') {
                         this.logout(window.url('/login'))
                         return
@@ -155,7 +163,6 @@ export default {
                 }, 2500)
 
                 if (!this.redirect && this.notify.message) {
-                    this.mutating = false
                     Notify(this.notify.message, this.notify.type ?? 'success')
                 }
 
@@ -169,12 +176,12 @@ export default {
                             { once: true },
                         )
                     }
-                    this.mutating = false
                     Turbo.visit(window.url(this.redirect))
                 }
             } catch (e) {
-                this.mutating = false
                 Notify(window.config.translations.errors.wrong, 'warning')
+            } finally {
+                this.mutating = false
             }
         },
 

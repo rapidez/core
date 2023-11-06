@@ -49,7 +49,9 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
             ->chunk(500)
             ->index(
                 indexName: 'products',
-                items: fn() => $productModel::selectOnlyIndexable()->withEventyGlobalScopes('index.product.scopes'),
+                items: fn() => $productModel::selectOnlyIndexable()
+                    ->withEventyGlobalScopes('index.product.scopes')
+                    ->withExists('options AS has_options'),
                 id: 'id',
             );
 
@@ -59,6 +61,10 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
 
     public function productFilter($product)
     {
+        if (! in_array($product->visibility, config('rapidez.indexer.visibility'))) {
+            return;
+        }
+
         if (!$product->in_stock && !(bool) Rapidez::config('cataloginventory/options/show_out_of_stock', 0)) {
             return;
         }

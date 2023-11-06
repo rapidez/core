@@ -15,7 +15,7 @@ export default {
     },
 
     render() {
-        return this.$scopedSlots.default(Object.assign(this, { self: this }))
+        return this.$scopedSlots.default(this)
     },
 
     data() {
@@ -32,6 +32,10 @@ export default {
 
             this.results = { count: 0 }
 
+            let url = new URL(config.es_url)
+            let auth = `Basic ${btoa(`${url.username}:${url.password}`)}`
+            let baseUrl = url.origin
+
             Object.entries(this.additionals).forEach(([name, fields]) => {
                 let esQuery = {
                     query: {
@@ -44,9 +48,9 @@ export default {
                 }
 
                 axios({
-                    url: `${config.es_url}/${config.es_prefix}_${name}_${config.store}/_search`,
+                    url: `${baseUrl}/${config.es_prefix}_${name}_${config.store}/_search`,
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json', Authorization: auth },
                     data: JSON.stringify(esQuery),
                 }).then((response) => {
                     this.results[name] = response.data?.hits ?? []
