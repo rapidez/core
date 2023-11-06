@@ -12,7 +12,7 @@
     };
 
     $attributes->offsetSet('type', $type);
-    $shifted = ['disabled', 'dusk', 'name', 'placeholder', 'required', 'type', 'v-model', 'v-model.lazy'];
+    $shifted = ['disabled', 'dusk', 'name', 'placeholder', 'ref', 'required', 'type', 'v-model', 'v-model.lazy'];
 @endphp
 
 <x-rapidez::label :attributes="$attributes->except($shifted)->class($labelClasses)" :$label>
