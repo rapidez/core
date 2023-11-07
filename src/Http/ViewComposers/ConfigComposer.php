@@ -51,7 +51,7 @@ class ConfigComposer
             'firstname'   => 'req',
             'middlename'  => Rapidez::config('customer/address/middlename_show', 0) ? 'opt' : false,
             'lastname'    => 'req',
-            'suffix'      => strlen(Rapidez::config('customer/address/suffix_options', '')) ? Rapidez::config('customer/address/prefix_show', 'opt') : 'opt',
+            'suffix'      => strlen(Rapidez::config('customer/address/suffix_options', '')) ? Rapidez::config('customer/address/suffix_show', 'opt') : 'opt',
             'postcode'    => 'req',
             'housenumber' => Rapidez::config('customer/address/street_lines', 3) >= 2 ? 'req' : false,
             'addition'    => Rapidez::config('customer/address/street_lines', 3) >= 3 ? 'opt' : false,
