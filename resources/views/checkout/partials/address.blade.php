@@ -29,7 +29,7 @@
                 @endif
                 @foreach(explode(';', Rapidez::config('customer/address/prefix_options', '')) as $prefix)
                     <option value="{{ $prefix }}">
-                        {{ __($prefix) }}
+                        @lang($prefix)
                     </option>
                 @endforeach
             </x-rapidez::select>
@@ -73,7 +73,7 @@
                 @endif
                 @foreach(explode(';', Rapidez::config('customer/address/suffix_options', '')) as $suffix)
                     <option value="{{ $suffix }}">
-                        {{ __($suffix) }}
+                        @lang($suffix)
                     </option>
                 @endforeach
             </x-rapidez::select>
