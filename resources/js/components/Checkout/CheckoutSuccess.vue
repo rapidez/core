@@ -1,4 +1,6 @@
 <script>
+import { mask as useMask } from '../../stores/useMask'
+import { token as useToken } from '../../stores/useUser'
 import GetCart from './../Cart/mixins/GetCart'
 
 export default {
@@ -7,11 +9,11 @@ export default {
     props: {
         token: {
             type: String,
-            default: null,
+            default: useToken.value,
         },
         mask: {
             type: String,
-            default: null,
+            default: useMask.value,
         },
     },
 
@@ -26,9 +28,6 @@ export default {
     },
 
     created() {
-        this.token ??= localStorage.token
-        this.mask ??= localStorage.mask
-
         this.refreshOrder()
         this.clearCart()
     },
