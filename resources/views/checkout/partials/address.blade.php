@@ -16,7 +16,7 @@
 </div>
 
 <div class="contents" v-if="!$root.loggedIn || !checkout.{{ $type }}_address.customer_address_id">
-    @if(Rapidez::config('customer/address/prefix_show', false) && strlen(Rapidez::config('customer/address/prefix_options', '')))
+    @if(Rapidez::config('customer/address/prefix_show', '') && strlen(Rapidez::config('customer/address/prefix_options', '')))
         <div class="col-span-12">
             <x-rapidez::select
                 name="{{ $type }}_prefix"
@@ -24,7 +24,7 @@
                 v-model="checkout.{{ $type }}_address.prefix"
                 :required="Rapidez::config('customer/address/prefix_show', 'opt') == 'req'"
             >
-                @if(Rapidez::config('customer/address/prefix_show', false) === 'opt')
+                @if(Rapidez::config('customer/address/prefix_show', '') === 'opt')
                     <option value=""></option>
                 @endif
                 @foreach(explode(';', Rapidez::config('customer/address/prefix_options', '')) as $prefix)
@@ -60,7 +60,7 @@
             required
         />
     </div>
-    @if(Rapidez::config('customer/address/suffix_show', false) && strlen(Rapidez::config('customer/address/suffix_options', '')))
+    @if(Rapidez::config('customer/address/suffix_show', '') && strlen(Rapidez::config('customer/address/suffix_options', '')))
         <div class="col-span-12">
             <x-rapidez::select
                 name="{{ $type }}_suffix"
@@ -68,7 +68,7 @@
                 v-model="checkout.{{ $type }}_address.suffix"
                 :required="Rapidez::config('customer/address/suffix_show', 'opt') == 'req'"
             >
-                @if(Rapidez::config('customer/address/suffix_show', false) === 'opt')
+                @if(Rapidez::config('customer/address/suffix_show', '') === 'opt')
                     <option value=""></option>
                 @endif
                 @foreach(explode(';', Rapidez::config('customer/address/suffix_options', '')) as $suffix)
