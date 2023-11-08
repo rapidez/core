@@ -30,7 +30,7 @@ class ProductOption extends Model
     protected function title(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->titles->firstForCurrentStore()->title,
+            get: fn () => $this->titles->firstForCurrentStore()?->title,
         )->shouldCache();
     }
 
