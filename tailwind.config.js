@@ -8,8 +8,8 @@ module.exports = {
         './vendor/rapidez/**/*.css',
         './vendor/rapidez/**/*.vue',
 
-        './config/rapidez.php',
-        './vendor/rapidez/core/config/rapidez.php',
+        './config/rapidez/frontend.php',
+        './vendor/rapidez/core/config/rapidez/frontend.php',
         './vendor/rapidez/menu/config/menu.php',
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/tailwind.blade.php',
     ],

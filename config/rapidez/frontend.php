@@ -11,7 +11,7 @@ return [
         'notifications',
         'checkout_steps',
         'flushable_localstorage_keys',
-        'customer_fields_show',
+        'show_customer_address_fields',
     ],
 
     // The checkout steps which are used to name the steps
