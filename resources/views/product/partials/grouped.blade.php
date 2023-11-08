@@ -15,18 +15,18 @@
                 </p>
 
                 <template v-else>
-                    <x-rapidez::select
+                    <x-rapidez::input-field.select
                         name="qty"
                         label="Quantity"
                         v-model="addToCartSlotProps.qty"
-                        class="w-auto"
-                        labelClass="flex items-center mr-3 sr-only"
-                        wrapperClass="flex"
                     >
-                        <option v-for="index in 10" :value="index * simpleProduct.qty_increments">
-                            @{{ index * simpleProduct.qty_increments }}
-                        </option>
-                    </x-rapidez::select>
+                        <x-slot:input>
+                            <option v-for="index in 10" :value="index * simpleProduct.qty_increments">
+                                @{{ index * simpleProduct.qty_increments }}
+                            </option>
+                        </x-slot:input>
+                        <x-slot:label class="sr-only"></x-slot:label>
+                    </x-rapidez::input-field.select>
 
                     <x-rapidez::button class="flex items-center" v-on:click="add" dusk="add-to-cart">
                         <x-heroicon-o-shopping-cart class="h-5 w-5 mr-2" v-if="!adding && !added" />

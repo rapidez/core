@@ -5,16 +5,25 @@
             <p class="text-red-600">@lang('Sorry! This product is currently out of stock.')</p>
         @else
             <div v-cloak v-for="(superAttribute, superAttributeId) in config.product.super_attributes">
-                <x-rapidez::label v-bind:for="'super_attribute_'+superAttributeId">@{{ superAttribute.label }}</x-rapidez::label>
-                <x-rapidez::select required label="" v-bind:id="'super_attribute_'+superAttributeId" v-bind:name="superAttributeId" v-model="options[superAttributeId]" class="mb-3 block w-64">
-                    <option disabled selected hidden :value="undefined">@lang('Select') @{{ superAttribute.label.toLowerCase() }}</option>
-                    <option
-                        v-for="option in Object.values(config.product['super_'+superAttribute.code]).sort((a, b) => a.sort_order - b.sort_order)"
-                        v-text="option.label"
-                        :value="option.value"
-                        :disabled="disabledOptions['super_'+superAttribute.code].includes(option.value)"
-                    />
-                </x-rapidez::select>
+                <x-rapidez::input-field.select
+                    required
+                    class="mb-3 w-64 gap-y-0"
+                    v-model="options[superAttributeId]"
+                >
+                    <x-slot:label>@{{ superAttribute.label }}</x-slot:label>
+                    <x-slot:input
+                        v-bind:id="'super_attribute_'+superAttributeId"
+                        v-bind:name="superAttributeId"
+                    >
+                        <option disabled selected hidden :value="undefined">@lang('Select') @{{ superAttribute.label.toLowerCase() }}</option>
+                        <option
+                            v-for="option in Object.values(config.product['super_'+superAttribute.code]).sort((a, b) => a.sort_order - b.sort_order)"
+                            v-text="option.label"
+                            :value="option.value"
+                            :disabled="disabledOptions['super_'+superAttribute.code].includes(option.value)"
+                        >
+                    </x-slot:input>
+                </x-rapidez::input-field.select>
             </div>
 
             @include('rapidez::product.partials.options')
@@ -27,16 +36,18 @@
                         {{ $product->special_price ? price($product->price) : '' }}
                     </div>
                 </div>
-                <x-rapidez::select
+                <x-rapidez::input-field.select
                     class="w-auto"
                     name="qty"
-                    label="Quantity"
+                    label="Quantity" sr-only-label
                     v-model="addToCartSlotProps.qty"
                 >
-                    @for ($i = $product->qty_increments; $i <= $product->qty_increments * 10; $i += $product->qty_increments)
-                        <option value="{{ $i }}">{{ $i }}</option>
-                    @endfor
-                </x-rapidez::select>
+                    <x-slot:input>
+                        @for ($i = $product->qty_increments; $i <= $product->qty_increments * 10; $i += $product->qty_increments)
+                            <option value="{{ $i }}">{{ $i }}</option>
+                        @endfor
+                    </x-slot:input>
+                </x-rapidez::input-field.select>
                 <x-rapidez::button type="submit" class="flex items-center" dusk="add-to-cart">
                     <x-heroicon-o-shopping-cart class="mr-2 h-5 w-5" v-if="!adding && !added" />
                     <x-heroicon-o-arrow-path class="mr-2 h-5 w-5 animate-spin" v-if="adding" />

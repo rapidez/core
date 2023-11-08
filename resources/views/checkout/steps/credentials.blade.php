@@ -9,9 +9,10 @@
             @include('rapidez::checkout.partials.address', ['type' => 'shipping'])
         </div>
         <div class="col-span-12 my-5">
-            <x-rapidez::checkbox v-model="checkout.hide_billing">
-                @lang('My billing and shipping address are the same')
-            </x-rapidez::checkbox>
+            <x-rapidez::input-field.checkbox
+                :label="__('My billing and shipping address are the same')"
+                v-model="checkout.hide_billing"
+            />
         </div>
         <div v-if="!checkout.hide_billing" class="grid grid-cols-12 gap-4">
             <p class="col-span-12 text-2xl font-bold">
@@ -21,13 +22,18 @@
         </div>
     </div>
 
-    <div v-for="(method, index in checkout.shipping_methods" class="flex flex-col gap-4">
+    <div v-for="(method, index) in checkout.shipping_methods" class="flex flex-col gap-4">
         <p class="text-2xl font-bold">
             @lang('Shipping method')
         </p>
-        <x-rapidez::radio v-model="checkout.shipping_method" v-bind:value="method.carrier_code+'_'+method.method_code" v-bind:dusk="'method-'+index">
-            @{{ method.method_title }}
-        </x-rapidez::radio>
+        <x-rapidez::input-field.radio>
+            <x-slot:input
+                v-model="checkout.shipping_method"
+                v-bind:value="method.carrier_code+'_'+method.method_code"
+                v-bind:dusk="'method-'+index"
+            ></x-slot:input>
+            <x-slot:label>@{{ method.method_title }}</x-slot:label>
+        </x-rapidez::input-field.radio>
     </div>
     <div class="flex flex-col gap-4">
         <p class="text-2xl font-bold">

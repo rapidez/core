@@ -2,22 +2,27 @@
 @slots(['input', 'label'])
 
 @php
-    $shifted = ['disabled', 'dusk', 'name', 'placeholder', 'ref', 'required', 'type', 'v-model', 'v-model.lazy'];
+    $shifted = ['disabled', 'dusk', 'id', 'name', 'placeholder', 'ref', 'required', 'type', 'v-model', 'v-model.lazy'];
     $attributes->offsetSet('type', $type);
     $componentType = match($type) {
-        'select', 'textarea', 'checkbox' => 'rapidez::' . $type,
+        'select', 'textarea', 'checkbox', 'radio' => 'rapidez::' . $type,
         default => 'rapidez::input',
-    };
-    $labelClasses = match($type) {
-        'radio', 'checkbox' => 'flex-row',
-        default => '',
     };
 @endphp
 
-<x-rapidez::label :attributes="$attributes->except($shifted)->class($labelClasses)" :$label :$srOnlyLabel>
+<x-rapidez::label
+    :attributes="$attributes
+        ->except($shifted)
+        ->whereDoesntStartWith('v-bind:')
+        ->twMerge(in_array($type, ['radio', 'checkbox']) ? 'flex-row' : '')"
+    :$label
+    :$srOnlyLabel
+>
     <x-dynamic-component
         :component="$componentType"
-        :attributes="$input->attributes->merge($attributes->only($shifted)->getAttributes())"
+        :attributes="$inputAttributes = $input->attributes
+            ->merge($attributes->only($shifted)->getAttributes(), false)
+            ->merge($attributes->whereStartsWith('v-bind:')->getAttributes(), false)"
     >
         {{ $input }}
     </x-dynamic-component>

@@ -3,26 +3,25 @@
         <form class="p-8 w-[400px]" v-on:submit.prevent="go()">
             <h1 class="font-bold text-4xl text-center mb-5">@lang('Checkout')</h1>
 
-            <x-rapidez::input
-                :label="false"
+            <x-rapidez::input-field
                 name="email"
                 type="email"
                 placeholder="Email"
-                v-bind:value="email"
-                v-on:input="loginInputChange"
                 required
-            />
-            <x-rapidez::input
+            >
+                <x-slot:input v-bind:value="email" v-on:input="loginInputChange"></x-slot:input>
+            </x-rapidez::input-field>
+            <x-rapidez::input-field
                 v-if="!emailAvailable"
-                :label="false"
                 class="mt-3"
                 name="password"
                 type="password"
                 placeholder="Password"
                 ref="password"
-                v-on:input="loginInputChange"
                 required
-            />
+            >
+                <x-slot:input v-on:input="loginInputChange"></x-slot:input>
+            </x-rapidez::input-field>
 
             <x-rapidez::button type="submit" class="w-full mt-5" dusk="continue">
                 @lang('Continue')

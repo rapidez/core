@@ -9,21 +9,23 @@
         <div v-else>
             <div v-for="(superAttribute, superAttributeId) in item.super_attributes">
                 <x-rapidez::label v-bind:for="item.entity_id+'_super_attribute_'+superAttributeId">@{{ superAttribute.label }}</x-rapidez::label>
-                <x-rapidez::select
-                    label=""
-                    v-bind:id="item.entity_id+'_super_attribute_'+superAttributeId"
-                    v-bind:name="superAttributeId"
-                    v-model="options[superAttributeId]"
+                <x-rapidez::input-field.select
                     class="block mb-3"
+                    v-model="options[superAttributeId]"
                 >
-                    <option disabled selected hidden :value="undefined">@lang('Select') @{{ superAttribute.label.toLowerCase() }}</option>
-                    <option
-                        v-for="(option, optionId) in getOptions(superAttribute.code)"
-                        v-text="option.label"
-                        :value="optionId"
-                        :disabled="disabledOptions['super_'+superAttribute.code].includes(optionId)"
-                    />
-                </x-rapidez::select>
+                    <x-slot:input
+                        v-bind:id="item.entity_id+'_super_attribute_'+superAttributeId"
+                        v-bind:name="superAttributeId"
+                    >
+                        <option disabled selected hidden :value="undefined">@lang('Select') @{{ superAttribute.label.toLowerCase() }}</option>
+                        <option
+                            v-for="(option, optionId) in getOptions(superAttribute.code)"
+                            v-text="option.label"
+                            :value="optionId"
+                            :disabled="disabledOptions['super_'+superAttribute.code].includes(optionId)"
+                        />
+                    </x-slot:input>
+                </x-rapidez::input-field.select>
             </div>
 
             <x-rapidez::button class="flex items-center" v-on:click="add" dusk="add-to-cart">

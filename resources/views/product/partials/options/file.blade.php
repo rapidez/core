@@ -1,11 +1,7 @@
-<x-rapidez::label for="option_{{ $option->option_id }}">
-    {{ $option->title }} {{ $option->price_label }}
-</x-rapidez::label>
-<x-rapidez::input
+<x-rapidez::input-field.input
     type="file"
-    :label="false"
-    :name="false"
-    id="option_{{ $option->option_id }}"
+    label="{{ $option->title }} {{ $option->price_label }}"
+    name="option_{{ $option->option_id }}"
     :required="$option->is_require"
     v-on:change="setCustomOptionFile($event, {{ $option->option_id }})"
     class="px-0"

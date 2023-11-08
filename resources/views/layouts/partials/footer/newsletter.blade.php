@@ -10,18 +10,18 @@
                     </p>
                     <div v-else>
                         <form class="mt-4 sm:flex sm:max-w-md items-center" v-on:submit.prevent="mutate">
-                            <x-rapidez::input
-                                :label="false"
+                            <x-rapidez::input-field
                                 name="email"
                                 type="email"
                                 v-model="variables.email"
-                                class="w-full min-w-0 appearance-none rounded-md border h-10 border-text-inactive bg-white py-2 px-4 text-base text-gray-900 placeholder-text-neutral shadow-sm focus:border-indigo-500 focus:placeholder-gray-400 focus:outline-none focus:ring-indigo-500"
-                                wrapperClass="flex-grow"
+                                class="flex-grow"
                                 dusk="newsletter-email"
                                 autocomplete="email"
                                 placeholder="Enter your email"
                                 required
-                            />
+                            >
+                                <x-slot:input class="w-full min-w-0 appearance-none rounded-md border h-10 border-text-inactive bg-white py-2 px-4 text-base text-gray-900 placeholder-text-neutral shadow-sm focus:border-indigo-500 focus:placeholder-gray-400 focus:outline-none focus:ring-indigo-500"></x-slot:input>
+                            </x-rapidez::input-field>
                             <div class="mt-3 rounded-md sm:mt-0 sm:ml-3 sm:flex-shrink-0">
                                 <x-rapidez::button
                                     type="submit"
