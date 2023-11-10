@@ -4,6 +4,7 @@ namespace Rapidez\Core\Commands;
 
 use Exception;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Builder;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Store;
@@ -17,9 +18,12 @@ abstract class ElasticsearchIndexCommand extends Command
     public string $indexName;
     public mixed $dataFilter = null;
     public bool $progressBar = true;
+    public int $chunkSize = 0;
+
     public array $mapping = [];
     public array $settings = [];
-    public int $chunkSize = 0;
+    public array $synonymsFor = [];
+    public array $extraSynonyms = [];
 
     public Builder $query;
     public ProgressBar $bar;
@@ -58,14 +62,28 @@ abstract class ElasticsearchIndexCommand extends Command
 
     public function useMapping(array $mapping): static
     {
-        $this->mapping = $mapping;
+        $this->mapping = array_merge_recursive($this->mapping, $mapping);
+
+        return $this;
+    }
+
+    public function mapping(string $path, mixed $mapping, bool $overwrite = false): static
+    {
+        data_set($this->mapping, $path, $mapping, $overwrite);
 
         return $this;
     }
 
     public function useSettings(array $settings): static
     {
-        $this->settings = $settings;
+        $this->settings = array_merge_recursive($this->settings, $settings);
+
+        return $this;
+    }
+
+    public function setting(string $path, mixed $setting, bool $overwrite = false): static
+    {
+        data_set($this->settings, $path, $setting, $overwrite);
 
         return $this;
     }
@@ -80,6 +98,24 @@ abstract class ElasticsearchIndexCommand extends Command
     public function withoutProgressBar()
     {
         $this->progressBar = false;
+
+        return $this;
+    }
+
+    public function withSynonymsFor(array $for)
+    {
+        if (count($for)) {
+            $this->synonymsFor = array_merge($this->synonymsFor, $for);
+        }
+
+        return $this;
+    }
+
+    public function withExtraSynonyms(array $synonyms)
+    {
+        if (count($synonyms)) {
+            $this->extraSynonyms = array_merge($this->extraSynonyms, $synonyms);
+        }
 
         return $this;
     }
@@ -100,7 +136,7 @@ abstract class ElasticsearchIndexCommand extends Command
     {
         $storeName = $store['name'] ?? $store['code'] ?? reset($store);
         $this->line('Indexing `' . $indexName . '` for store ' . $storeName);
-        $this->prepareIndexerWithStore($store, $indexName, $this->mapping, $this->settings);
+        $this->prepareIndexerWithStore($store, $indexName);
     }
 
     public function beforeIndex(int $totalCount)
@@ -161,7 +197,8 @@ abstract class ElasticsearchIndexCommand extends Command
             return;
         }
 
-        foreach (array_chunk((array) $items, $this->chunkSize) as $chunk) {
+        $arrItems = $items instanceof Arrayable ? $items->toArray() : (array) $items;
+        foreach (array_chunk($arrItems, $this->chunkSize) as $chunk) {
             $this->indexPartial($chunk, $id);
         }
     }
@@ -187,10 +224,32 @@ abstract class ElasticsearchIndexCommand extends Command
         }
     }
 
-    public function prepareIndexerWithStore(Store|array $store, string $indexName, array|null $mapping, array|null $settings): void
+    public function prepareIndexerWithStore(Store|array $store, string $indexName): void
     {
         Rapidez::setStore($store);
-        $this->indexer->prepare(config('rapidez.es_prefix') . '_' . $indexName . '_' . $store['store_id'], $mapping ?? $this->mapping, $settings ?? $this->settings);
+        $this->prepareSynonyms();
+        $this->indexer->prepare(config('rapidez.es_prefix') . '_' . $indexName . '_' . $store['store_id'], $this->mapping, $this->settings);
+    }
+
+    public function prepareSynonyms(): void
+    {
+        if(count($this->synonymsFor)) {
+            $synonyms = config('rapidez.models.search_synonym')
+                ::whereIn('store_id', [0, config('rapidez.store')])
+                ->get()
+                ->map(fn($synonym) => $synonym->synonyms)
+                ->toArray();
+
+            $synonyms = array_merge($synonyms, $this->extraSynonyms);
+
+            $this->setting('index.analysis.filter.synonym', ['type' => 'synonym', 'synonyms' => $synonyms]);
+            $this->setting('index.analysis.analyzer.synonym', ['tokenizer' => 'whitespace', 'filter' => ['synonym']]);
+
+            foreach ($this->synonymsFor as $property) {
+                $this->mapping('properties.' . $property . '.type', 'text');
+                $this->mapping('properties.' . $property . '.analyzer', 'synonym');
+            }
+        }
     }
 
     public function dataFrom(mixed $data)

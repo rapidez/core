@@ -32,4 +32,5 @@ return [
     'sales_order_item'          => Rapidez\Core\Models\SalesOrderItem::class,
     'sales_order_payment'       => Rapidez\Core\Models\SalesOrderPayment::class,
     'search_query'              => Rapidez\Core\Models\SearchQuery::class,
+    'search_synonym'            => Rapidez\Core\Models\SearchSynonym::class,
 ];

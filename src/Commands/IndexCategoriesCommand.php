@@ -15,6 +15,7 @@ class IndexCategoriesCommand extends ElasticsearchIndexCommand
         $this->onlyStores($this->argument('store'))
             ->withFilter(fn ($data) => Eventy::filter('index.category.data', $data))
             ->chunk(25)
+            ->withSynonymsFor(['name'])
             ->index(
                 indexName: 'categories',
                 items: $this->getCategories(...),
@@ -29,7 +30,6 @@ class IndexCategoriesCommand extends ElasticsearchIndexCommand
             ->select((new (config('rapidez.models.category')))->qualifyColumns(['entity_id', 'name', 'url_path']))
             ->whereNotNull('url_key')
             ->whereNot('url_key', 'default-category')
-            ->has('products')
-            ->get() ?? [];
+            ->has('products');
     }
 }

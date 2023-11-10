@@ -43,7 +43,7 @@ class ElasticsearchIndexer
         }
     }
 
-    public function indexItem(object $item, callable|array|null $dataFilter = null, callable|string $id): void
+    public function indexItem(mixed $item, callable|array|null $dataFilter = null, callable|string $id): void
     {
         if (is_null($item)) {
             return;

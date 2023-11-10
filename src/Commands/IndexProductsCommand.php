@@ -45,13 +45,13 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
             ->useMapping($mapping)
             ->useSettings($settings)
             ->withFilter($this->productFilter(...))
+            ->withSynonymsFor(['name'])
             ->chunk(500)
             ->index(
                 indexName: 'products',
                 items: fn () => $productModel::selectOnlyIndexable()
                     ->withEventyGlobalScopes('index.product.scopes')
                     ->withExists('options AS has_options'),
-                id: 'id',
             );
 
         IndexAfterEvent::dispatch($this);
