@@ -3,7 +3,6 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Rapidez\Core\Models\Scopes\ForCurrentStoreScope;
 
 class SearchSynonym extends Model
 {
