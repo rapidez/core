@@ -1,6 +1,16 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.1.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.2.0...master)
+## [1.2.0](https://github.com/rapidez/core/releases/tag/1.2.0) - 2023-11-07
+
+### Added
+
+- Implemented customer address prefix, suffix, vat_id and fax (#373)
+
+### Fixed
+
+- Use new config path (#375)
+
 ## [1.1.0](https://github.com/rapidez/core/releases/tag/1.1.0) - 2023-11-03
 
 ### Changed
