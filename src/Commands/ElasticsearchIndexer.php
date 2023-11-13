@@ -3,7 +3,7 @@
 namespace Rapidez\Core\Commands;
 
 use Carbon\Carbon;
-use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
+use MailerLite\LaravelElasticsearch\Manager as Elasticsearch;
 use Exception;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
