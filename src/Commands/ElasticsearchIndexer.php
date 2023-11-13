@@ -3,10 +3,10 @@
 namespace Rapidez\Core\Commands;
 
 use Carbon\Carbon;
-use MailerLite\LaravelElasticsearch\Manager as Elasticsearch;
 use Exception;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
+use MailerLite\LaravelElasticsearch\Manager as Elasticsearch;
 use Rapidez\Core\Jobs\IndexJob;
 
 class ElasticsearchIndexer
