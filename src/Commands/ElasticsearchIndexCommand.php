@@ -233,11 +233,10 @@ abstract class ElasticsearchIndexCommand extends Command
 
     public function prepareSynonyms(): void
     {
-        if(count($this->synonymsFor)) {
-            $synonyms = config('rapidez.models.search_synonym')
-                ::whereIn('store_id', [0, config('rapidez.store')])
+        if (count($this->synonymsFor)) {
+            $synonyms = config('rapidez.models.search_synonym')::whereIn('store_id', [0, config('rapidez.store')])
                 ->get()
-                ->map(fn($synonym) => $synonym->synonyms)
+                ->map(fn ($synonym) => $synonym->synonyms)
                 ->toArray();
 
             $synonyms = array_merge($synonyms, $this->extraSynonyms);
