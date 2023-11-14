@@ -112,6 +112,10 @@ function init() {
             loggedIn() {
                 return Boolean(this.user?.id)
             },
+
+            hasCart() {
+                return this.cart?.id && this.cart.items.length
+            },
         },
         watch: {
             loadingCount: function (count) {
@@ -125,8 +129,10 @@ function init() {
             switch (type) {
                 case 'error':
                     console.error(...arguments)
+                    break
                 case 'warning':
                     console.warn(...arguments)
+                    break
                 case 'success':
                 case 'info':
                 default:

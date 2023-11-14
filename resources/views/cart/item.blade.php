@@ -1,5 +1,5 @@
 {{-- TODO: Refactor to a table just like the checkout theme as things don't always line up as it should --}}
-<div v-for="(item, index) in data.cart.items" class="relative flex gap-5 border-b py-3 max-lg:flex-col lg:items-center">
+<div v-for="(item, index) in cart.items" class="relative flex gap-5 border-b py-3 max-lg:flex-col lg:items-center">
     <div class="flex flex-1 items-center gap-5">
         <a class="w-20" :href="item.product.url_key + item.product.url_suffix | url">
             <img class="mx-auto" :alt="item.product.name" :src="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento' + item.product.image.url.replace(config.media_url, '') + '.webp'" height="80" />

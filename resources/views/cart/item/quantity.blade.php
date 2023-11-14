@@ -2,7 +2,6 @@
     :query="'mutation ($cart_id: String!, $cart_item_id: Int, $quantity: Float) { updateCartItems(input: { cart_id: $cart_id, cart_items: [{ cart_item_id: $cart_item_id, quantity: $quantity }] }) { cart { ' + config.queries.cart + ' } } }'"
     :variables="{ cart_id: window.app.mask, cart_item_id: item.id, quantity: item.quantity }"
     :callback="refreshCart"
-    :watch="false"
     v-slot="{ mutate, variables }"
 >
     <form v-on:submit.prevent="mutate" class="flex items-center gap-1">

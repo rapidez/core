@@ -27,9 +27,6 @@ export default {
         callback: {
             type: Function,
         },
-        rerunEvent: {
-            type: String,
-        },
     },
 
     data: () => ({
@@ -42,22 +39,12 @@ export default {
     },
 
     created() {
-        if (this.rerunEvent) {
-            window.app.$on(this.rerunEvent, () => {
-                this.run()
-            })
+        if (!this.getCache()) {
+            this.runQuery()
         }
-
-        this.run()
     },
 
     methods: {
-        run() {
-            if (!this.getCache()) {
-                this.runQuery()
-            }
-        },
-
         getCache() {
             if (this.cache === undefined) {
                 return false
@@ -104,7 +91,7 @@ export default {
                     }
                 }
 
-                this.data = this.callback ? await this.callback(response) : response.data.data
+                this.data = this.callback ? await this.callback(this.data, response) : response.data.data
 
                 if (this.cache) {
                     useLocalStorage(this.cachePrefix + this.cache, null, { serializer: StorageSerializers.object }).value = this.data

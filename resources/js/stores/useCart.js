@@ -1,48 +1,13 @@
-import { useSessionStorage, StorageSerializers, useLocalStorage } from '@vueuse/core'
+import { StorageSerializers, useLocalStorage } from '@vueuse/core'
 import { computed, watch } from 'vue'
 import { mask, clear as clearMask } from './useMask'
 import { token } from './useUser'
 
-const cartStorage = useSessionStorage('cart', {}, { serializer: StorageSerializers.object })
-let hasRefreshed = false
-let isRefreshing = false
+const cartStorage = useLocalStorage('cart', {}, { serializer: StorageSerializers.object })
 
 export const refresh = async function () {
-    // TODO: We don't need this anymore as we're using the GraphQL responses
-    // but we still need some logic from here like clearing the addresses
-    console.log('TODO! /api/cart is removed')
-    return true
-
-    hasRefreshed = true
     if (!mask.value && !token.value) {
         cartStorage.value = {}
-        return false
-    }
-
-    if (isRefreshing) {
-        console.debug('Refresh canceled, request already in progress...')
-        return
-    }
-
-    try {
-        isRefreshing = true
-        let response = await axios
-            .get(window.url('/api/cart'), { headers: { Authorization: 'Bearer ' + (token.value || mask.value) } })
-            .finally(() => {
-                isRefreshing = false
-            })
-        cartStorage.value = !mask.value && !token.value ? {} : response.data
-        window.app.$emit('cart-refreshed')
-    } catch (error) {
-        if (error.response.status == 404) {
-            mask.value = null
-            return false
-        }
-
-        Notify(window.config.translations.errors.wrong, 'warning')
-        console.error(error)
-
-        return false
     }
 }
 
@@ -59,7 +24,7 @@ export const clearAddresses = async function () {
 
 export const cart = computed({
     get() {
-        if (!cartStorage.value?.entity_id && mask.value) {
+        if (!cartStorage.value?.id && mask.value) {
             refresh()
         }
         return cartStorage.value
@@ -71,7 +36,5 @@ export const cart = computed({
 
 // If mask gets added, updated or removed we should update the cart.
 watch(mask, refresh)
-// refresh the cart on first pageload after a while
-window.setTimeout(() => window.requestIdleCallback(() => !hasRefreshed && refresh()), 5000)
 
 export default () => cart

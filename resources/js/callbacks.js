@@ -9,9 +9,9 @@ Vue.prototype.scrollToElement = (selector) => {
 }
 
 Vue.prototype.refreshCart = async function (data, response) {
-    useLocalStorage('graphql_cart', null, { serializer: StorageSerializers.object }).value = Object.values(response.data.data)[0]
-    window.app.$emit('cart-refreshed')
-    // TODO: This refresh is to late and uses the old data? Should we somehow
-    // async "wait" for it? Or should we use a reactive global store like
-    // before with "window.app.cart"?
+    window.app.cart = 'cart' in Object.values(response.data.data)[0]
+        ? Object.values(response.data.data)[0].cart
+        : Object.values(response.data.data)[0]
+
+    return response.data.data
 }
