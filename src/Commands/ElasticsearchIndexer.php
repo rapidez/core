@@ -3,7 +3,8 @@
 namespace Rapidez\Core\Commands;
 
 use Carbon\Carbon;
-use Exception;
+use Elasticsearch\Common\Exceptions\BadMethodCallException;
+use ;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use MailerLite\LaravelElasticsearch\Manager as Elasticsearch;
@@ -50,7 +51,7 @@ class ElasticsearchIndexer
         }
 
         if (! $this->prepared) {
-            throw new Exception('Attempted to index items without preparing the indexer first.');
+            throw new BadMethodCallException('Attempted to index items without preparing the indexer first.');
         }
 
         $arrItem = $item instanceof Arrayable ? $item->toArray() : (array) $item;
