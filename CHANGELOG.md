@@ -1,6 +1,16 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.2.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.3.0...master)
+## [1.3.0](https://github.com/rapidez/core/releases/tag/1.3.0) - 2023-11-14
+
+### Added
+
+- Added special price and priceValidUntil to microdata (#380)
+
+### Fixed
+
+- Support MSP way of saving method_title (#379)
+
 ## [1.2.0](https://github.com/rapidez/core/releases/tag/1.2.0) - 2023-11-07
 
 ### Added
