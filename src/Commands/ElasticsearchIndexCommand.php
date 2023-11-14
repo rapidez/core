@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core\Commands;
 
+use Elasticsearch\Common\Exceptions\UnexpectedValueException;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Support\Arrayable;
@@ -164,7 +165,7 @@ abstract class ElasticsearchIndexCommand extends Command
         if (is_null($fullItems)) {
             $this->indexer->abort();
 
-            throw new Exception('Items cannot be null.');
+            throw new UnexpectedValueException('Items cannot be null.');
         }
 
         $count = is_iterable($fullItems) ? count($fullItems) : $fullItems->getQuery()->getCountForPagination();
