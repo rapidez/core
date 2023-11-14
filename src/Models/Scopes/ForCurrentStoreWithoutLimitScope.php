@@ -29,8 +29,8 @@ class ForCurrentStoreWithoutLimitScope implements Scope
             ->where(fn ($query) => $query
                 // Remove values where we already have values in the current store.
                 ->whereNotIn($query->qualifyColumn($this->uniquePerStoreKey), fn ($query) => $query
-                    ->from($model->getTable())
                     ->select($model->qualifyColumn($this->uniquePerStoreKey))
+                    ->from($model->getTable())
                     ->whereColumn($model->qualifyColumn($this->uniquePerStoreKey), $model->qualifyColumn($this->uniquePerStoreKey))
                     ->where($model->qualifyColumn($this->storeIdColumn), config('rapidez.store'))
                 )
