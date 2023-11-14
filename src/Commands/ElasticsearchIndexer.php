@@ -4,7 +4,6 @@ namespace Rapidez\Core\Commands;
 
 use Carbon\Carbon;
 use Elasticsearch\Common\Exceptions\BadMethodCallException;
-use ;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use MailerLite\LaravelElasticsearch\Manager as Elasticsearch;
