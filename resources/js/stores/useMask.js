@@ -5,6 +5,7 @@ export const mask = useLocalStorage('mask', '')
 
 export const refresh = async function () {
     try {
+        // TOOD: Are we also going to migrate this to GraphQL?
         var response = user?.value?.id ? await magentoUser.post('carts/mine') : await magento.post('guest-carts')
     } catch (error) {
         Notify(window.config.translations.errors.wrong, 'error')

@@ -1,5 +1,4 @@
 <script>
-// TODO: Should we also migrate this to GraphQL so we can use the cart response directly and do not need another request?
 import GetCart from './../Cart/mixins/GetCart'
 import InteractWithUser from './../User/mixins/InteractWithUser'
 
@@ -68,54 +67,61 @@ export default {
             this.adding = true
             await this.getMask()
 
-            this.magentoCart('post', 'items', {
-                cartItem: {
-                    sku: this.product.sku,
-                    quote_id: localStorage.mask,
+            // TODO: Maybe make this generic? See: https://github.com/rapidez/core/pull/376
+            // TODO: Check why configurable products are added as simple product. See: https://github.com/magento/devdocs/issues/9493
+            axios.post(config.magento_url + '/graphql', {
+                query: `mutation ($cartId: String!, $sku: String!, $parent_sku: String, $quantity: Float!) {
+                    addProductsToCart(cartId: $cartId, cartItems: [
+                        { sku: $sku, parent_sku: $parent_sku, quantity: $quantity }
+                    ]) { cart { ` + config.queries.cart + ` } }
+                }`,
+                variables: {
+                    sku: this.simpleProduct.sku,
+                    parent_sku: this.product.sku,
+                    cartId: localStorage.mask,
+                    quantity: this.qty,
+                    // TODO: implement: product_option: this.productOptions,
+                }
+            }).then(async (response) => {
+                this.error = null
+                await this.refreshCart({}, response)
+                this.added = true
+                setTimeout(() => {
+                    this.added = false
+                }, this.addedDuration)
+                if (this.callback) {
+                    await this.callback(this.product, this.qty)
+                }
+                this.$root.$emit('cart-add', {
+                    product: this.product,
                     qty: this.qty,
-                    product_option: this.productOptions,
-                },
+                })
+                if (this.notifySuccess) {
+                    Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success', [], window.url('/cart'))
+                }
+                if (config.redirect_cart) {
+                    Turbo.visit(window.url('/cart'))
+                }
             })
-                .then(async (response) => {
-                    this.error = null
-                    await this.refreshCart()
-                    this.added = true
-                    setTimeout(() => {
-                        this.added = false
-                    }, this.addedDuration)
-                    if (this.callback) {
-                        await this.callback(this.product, this.qty)
-                    }
-                    this.$root.$emit('cart-add', {
-                        product: this.product,
-                        qty: this.qty,
-                    })
-                    if (this.notifySuccess) {
-                        Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success', [], window.url('/cart'))
-                    }
-                    if (config.redirect_cart) {
-                        Turbo.visit(window.url('/cart'))
-                    }
-                })
-                .catch((error) => {
-                    if (error.response.status == 401) {
-                        Notify(window.config.translations.errors.session_expired, 'error', error.response.data?.parameters)
-                        this.logout(window.url('/login'))
-                    }
+            .catch((error) => {
+                if (error.response.status == 401) {
+                    Notify(window.config.translations.errors.session_expired, 'error', error.response.data?.parameters)
+                    this.logout(window.url('/login'))
+                }
 
-                    if (this.expiredCartCheck(error)) {
-                        return
-                    }
+                if (this.expiredCartCheck(error)) {
+                    return
+                }
 
-                    if (this.notifyError) {
-                        Notify(error.response.data.message, 'error', error.response.data?.parameters)
-                    }
+                if (this.notifyError) {
+                    Notify(error.response.data.message, 'error', error.response.data?.parameters)
+                }
 
-                    this.error = error.response.data.message
-                })
-                .then(() => {
-                    this.adding = false
-                })
+                this.error = error.response.data.message
+            })
+            .then(() => {
+                this.adding = false
+            })
         },
 
         calculatePrices: function () {
@@ -207,15 +213,7 @@ export default {
         },
 
         productOptions: function () {
-            let options = []
             let customOptions = []
-
-            Object.entries(this.options).forEach(([key, val]) => {
-                options.push({
-                    option_id: key,
-                    option_value: val,
-                })
-            })
 
             Object.entries(this.customOptions).forEach(([key, val]) => {
                 if (typeof val === 'string' && val.startsWith('FILE;')) {
@@ -248,7 +246,6 @@ export default {
 
             return {
                 extension_attributes: {
-                    configurable_item_options: options,
                     custom_options: customOptions,
                 },
             }

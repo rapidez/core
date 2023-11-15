@@ -18,10 +18,6 @@ export default {
             })
         },
 
-        async refreshCart() {
-            return await refreshCart()
-        },
-
         async getMask() {
             if (mask.value) {
                 return mask.value

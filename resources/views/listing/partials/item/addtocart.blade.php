@@ -1,3 +1,4 @@
+{{-- TODO: Also this one :) --}}
 <add-to-cart v-bind:product="item" v-cloak>
     <div class="px-2 pb-2" slot-scope="{ options, error, add, disabledOptions, simpleProduct, getOptions, adding, added }">
         <div class="flex items-center space-x-2 mb-2">
