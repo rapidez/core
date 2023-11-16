@@ -69,6 +69,8 @@ export default {
             await this.getMask()
 
             // TODO: Maybe make this generic? See: https://github.com/rapidez/core/pull/376
+            // TODO: Use await instead of this chain?
+            // TODO: Maybe migrate to fetch? We don't need axios anymore?
             // TODO: Check why configurable products are added as simple product. See: https://github.com/magento/devdocs/issues/9493
             // There is also an alternative way: https://developer.adobe.com/commerce/webapi/graphql/schema/cart/mutations/add-products/#specify-the-sku-with-selected-options
             // But then we need the encoded values
@@ -95,7 +97,7 @@ export default {
                     selected_options: this.selectedOptions,
                     entered_options: this.enteredOptions,
                 }
-            }).then(async (response) => {
+            }, { headers: { Authorization: `Bearer ${localStorage.token}` } }).then(async (response) => {
                 if ('errors' in response.data) {
                     throw new Error(response.data.errors[0].message)
                 }

@@ -1,8 +1,8 @@
 // TODO: It should be possible to remove this whole file?
 import { useLocalStorage } from '@vueuse/core'
-import { cart, refresh as refreshCart, clear as clearCart } from '../../../stores/useCart'
+import { cart, clear as clearCart } from '../../../stores/useCart'
 import { user } from '../../../stores/useUser'
-import { mask, refresh as retrieveMask } from '../../../stores/useMask'
+import { mask, refreshMask } from '../../../stores/useMask'
 
 export default {
     methods: {
@@ -22,7 +22,7 @@ export default {
             if (mask.value) {
                 return mask.value
             }
-            await retrieveMask()
+            await refreshMask()
             return mask.value
         },
 

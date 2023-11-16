@@ -1,6 +1,6 @@
 import { StorageSerializers, useLocalStorage } from '@vueuse/core'
 import { computed, watch } from 'vue'
-import { mask, clear as clearMask } from './useMask'
+import { mask, clearMask } from './useMask'
 import { token } from './useUser'
 
 const cartStorage = useLocalStorage('cart', {}, { serializer: StorageSerializers.object })
