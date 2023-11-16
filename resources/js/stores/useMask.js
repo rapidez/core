@@ -9,7 +9,7 @@ export const refreshMask = async function () {
         // TODO: Maybe migrate to fetch? We don't need axios anymore?
         let response = await axios.post(config.magento_url + '/graphql', {
             query: 'mutation { createEmptyCart }'
-        }, { headers: { Authorization: `Bearer ${localStorage.token}` } })
+        }, { headers: { Authorization: `Bearer ${localStorage.token}`, Store: config.store_code } })
 
         mask.value = response.data.data.createEmptyCart
     } catch (error) {

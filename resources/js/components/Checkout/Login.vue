@@ -44,10 +44,11 @@ export default {
             if (this.email && this.password) {
                 let self = this
                 await this.login(this.email, this.password, async () => {
-                    if (self.$root.cart?.entity_id) {
+                    if (self.$root.cart?.id) {
                         await self.linkUserToCart()
                     } else {
-                        await self.refreshCart()
+                        // TODO: Get the cart with the "customerCart" query?
+                        // await self.refreshCart()
                     }
 
                     this.successfulLogin()

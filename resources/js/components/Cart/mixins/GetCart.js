@@ -26,19 +26,17 @@ export default {
             return mask.value
         },
 
-        // TODO: Test/implement this with GraphQL
         async linkUserToCart() {
-            await magentoUser
-                .put('guest-carts/' + mask.value, {
-                    customerId: user.value?.id,
-                    storeId: config.store,
-                })
-                .then(() => {
-                    mask.value = cart.entity_id
-                })
-                .catch((error) => {
-                    Notify(error.response.data.message, 'warning')
-                })
+            try {
+                // TODO: Maybe make this generic? See: https://github.com/rapidez/core/pull/376
+                // TODO: Maybe migrate to fetch? We don't need axios anymore?
+                let response = await axios.post(config.magento_url + '/graphql', {
+                    query: 'mutation ($cart_id: String!) { assignCustomerToGuestCart (cart_id: $cart_id) }',
+                    variables: { $cart_id: mask.value }
+                }, { headers: { Authorization: `Bearer ${localStorage.token}`, Store: config.store_code } })
+            } catch(error) {
+                Notify(error.response.data.message, 'warning')
+            }
         },
 
         expiredCartCheck(error) {
