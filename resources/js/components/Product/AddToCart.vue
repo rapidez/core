@@ -34,6 +34,7 @@ export default {
         qty: 1,
         options: {},
         customOptions: {},
+        customSelectedOptions: {},
         error: null,
 
         adding: false,
@@ -69,20 +70,40 @@ export default {
 
             // TODO: Maybe make this generic? See: https://github.com/rapidez/core/pull/376
             // TODO: Check why configurable products are added as simple product. See: https://github.com/magento/devdocs/issues/9493
+            // There is also an alternative way: https://developer.adobe.com/commerce/webapi/graphql/schema/cart/mutations/add-products/#specify-the-sku-with-selected-options
+            // But then we need the encoded values
             axios.post(config.magento_url + '/graphql', {
-                query: `mutation ($cartId: String!, $sku: String!, $parent_sku: String, $quantity: Float!) {
-                    addProductsToCart(cartId: $cartId, cartItems: [
-                        { sku: $sku, parent_sku: $parent_sku, quantity: $quantity }
-                    ]) { cart { ` + config.queries.cart + ` } }
-                }`,
+                query: `mutation (
+                    $cartId: String!,
+                    $sku: String!,
+                    $parent_sku: String,
+                    $quantity: Float!,
+                    $selected_options: [ID!],
+                    $entered_options: [EnteredOptionInput]
+                ) { addProductsToCart(cartId: $cartId, cartItems: [{
+                    sku: $sku,
+                    parent_sku: $parent_sku,
+                    quantity: $quantity,
+                    selected_options: $selected_options,
+                    entered_options: $entered_options
+                }]) { cart { ` + config.queries.cart + ` } user_errors { code message } } }`,
                 variables: {
                     sku: this.simpleProduct.sku,
                     parent_sku: this.product.sku,
                     cartId: localStorage.mask,
                     quantity: this.qty,
-                    // TODO: implement: product_option: this.productOptions,
+                    selected_options: this.selectedOptions,
+                    entered_options: this.enteredOptions,
                 }
             }).then(async (response) => {
+                if ('errors' in response.data) {
+                    throw new Error(response.data.errors[0].message)
+                }
+
+                if (response.data.data.addProductsToCart.user_errors.length) {
+                    throw new Error(response.data.data.addProductsToCart.user_errors[0].message)
+                }
+
                 this.error = null
                 await this.refreshCart({}, response)
                 this.added = true
@@ -104,6 +125,15 @@ export default {
                 }
             })
             .catch((error) => {
+                if (!axios.isAxiosError(error)) {
+                    if (this.notifyError) {
+                        Notify(error.message, 'error')
+                    }
+
+                    this.error = error.message
+                    return
+                }
+
                 if (error.response.status == 401) {
                     Notify(window.config.translations.errors.session_expired, 'error', error.response.data?.parameters)
                     this.logout(window.url('/login'))
@@ -212,10 +242,22 @@ export default {
             return product
         },
 
-        productOptions: function () {
-            let customOptions = []
+        selectedOptions: function () {
+            let selectedOptions = []
+
+            Object.entries(this.customSelectedOptions).forEach(([optionId, optionValue]) => {
+                selectedOptions.push(btoa('custom-option/'+optionId+'/'+optionValue))
+            })
+
+            return selectedOptions
+        },
+
+        enteredOptions: function () {
+            let enteredOptions = []
 
             Object.entries(this.customOptions).forEach(([key, val]) => {
+                // TODO: Figure out how this should be send/uploaded with GraphQL.
+                // Maybe we can directly set the correct string in setCustomOptionFile so we don't need this here.
                 if (typeof val === 'string' && val.startsWith('FILE;')) {
                     let [prefix, name, type, data] = val.split(';', 4)
 
@@ -223,32 +265,28 @@ export default {
                         return
                     }
 
-                    customOptions.push({
-                        option_id: key,
-                        option_value: 'file',
-                        extension_attributes: {
-                            file_info: {
-                                base64_encoded_data: data.replace('base64,', ''),
-                                type: type.replace('data:', ''),
-                                name: name,
-                            },
-                        },
+                    enteredOptions.push({
+                        uid: btoa('custom-option/'+key),
+                        value: data.replace('base64,', ''),
+                        // value: {
+                        //     file_info: {
+                        //         base64_encoded_data: data.replace('base64,', ''),
+                        //         type: type.replace('data:', ''),
+                        //         name: name,
+                        //     },
+                        // },
                     })
 
                     return
                 }
 
-                customOptions.push({
-                    option_id: key,
-                    option_value: val,
+                enteredOptions.push({
+                    uid: btoa('custom-option/'+key),
+                    value: val,
                 })
             })
 
-            return {
-                extension_attributes: {
-                    custom_options: customOptions,
-                },
-            }
+            return enteredOptions
         },
 
         disabledOptions: function () {
