@@ -88,7 +88,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                         $data['positions'] = $product->categoryProducts
                             ->pluck('position', 'category_id')
                             // Turn all positions positive
-                            ->mapWithKeys(fn($position, $category_id) => [$category_id => (($position * -1) + $maxPositions[$category_id])]);
+                            ->mapWithKeys(fn ($position, $category_id) => [$category_id => (($position * -1) + $maxPositions[$category_id])]);
 
                         return Eventy::filter('index.product.data', $data, $product);
                     });
