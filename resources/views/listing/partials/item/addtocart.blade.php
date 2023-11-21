@@ -9,18 +9,13 @@
             </div>
         </div>
 
-        <p v-if="!item.in_stock" class="text-red-600 text-xs">@lang('Sorry! This product is currently out of stock.')</p>
+        <p v-if="!item.in_stock" class="text-red-600 text-xs">
+            @lang('Sorry! This product is currently out of stock.')
+        </p>
         <div v-else>
             @include('rapidez::listing.partials.item.super_attributes')
 
-            <x-rapidez::button type="submit" class="flex items-center" dusk="add-to-cart">
-                <x-heroicon-o-shopping-cart class="h-5 w-5 mr-2" v-if="!addToCart.adding && !addToCart.added" />
-                <x-heroicon-o-arrow-path class="h-5 w-5 mr-2 animate-spin" v-if="addToCart.adding" />
-                <x-heroicon-o-check class="h-5 w-5 mr-2" v-if="addToCart.added" />
-                <span v-if="!addToCart.adding && !addToCart.added">@lang('Add to cart')</span>
-                <span v-if="addToCart.adding">@lang('Adding')...</span>
-                <span v-if="addToCart.added">@lang('Added')</span>
-            </x-rapidez::button>
+            <x-rapidez::button.cart/>
         </div>
     </form>
 </add-to-cart>
