@@ -17,18 +17,7 @@
                         @lang('Sorry! This product is currently out of stock.')
                     </p>
                 @else
-                    <x-rapidez::select
-                        name="qty"
-                        label="Quantity"
-                        v-model="addToCart.qty"
-                        class="w-auto"
-                        labelClass="flex items-center mr-3 sr-only"
-                        wrapperClass="flex"
-                    >
-                        @for ($i = $groupedProduct->qty_increments; $i <= $groupedProduct->qty_increments * 10; $i += $groupedProduct->qty_increments)
-                            <option value="{{ $i }}">{{ $i }}</option>
-                        @endfor
-                    </x-rapidez::select>
+                    @include('rapidez::product.partials.quantity', ['product' => $groupedProduct])
 
                     <x-rapidez::button.cart/>
                 @endif
