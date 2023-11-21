@@ -1,16 +1,16 @@
 <div class="grid grid-cols-3 gap-3 grid-cols-[auto_max-content_max-content]">
     <template v-for="product in config.product.grouped">
-        <add-to-cart :product="product" v-cloak>
-            <div class="contents" slot-scope="{ _renderProxy: addToCartSlotProps, add, simpleProduct, adding, added }">
+        <add-to-cart :product="product" v-slot="addToCart" v-cloak>
+            <form v-on:submit.prevent="addToCart.add" class="contents">
                 <div>
-                    @{{ simpleProduct.name }}
+                    @{{ addToCart.simpleProduct.name }}
                     <div class="flex items-center space-x-3 font-bold">
-                        <div>@{{ (simpleProduct.special_price || simpleProduct.price) | price }}</div>
-                        <div class="line-through" v-if="simpleProduct.special_price">@{{ simpleProduct.price | price }}</div>
+                        <div>@{{ (addToCart.simpleProduct.special_price || addToCart.simpleProduct.price) | price }}</div>
+                        <div class="line-through" v-if="addToCart.simpleProduct.special_price">@{{ addToCart.simpleProduct.price | price }}</div>
                     </div>
                 </div>
 
-                <p class="col-span-2 self-center text-red-600" v-if="!simpleProduct.in_stock">
+                <p class="col-span-2 self-center text-red-600" v-if="!addToCart.simpleProduct.in_stock">
                     @lang('Sorry! This product is currently out of stock.')
                 </p>
 
@@ -18,26 +18,26 @@
                     <x-rapidez::select
                         name="qty"
                         label="Quantity"
-                        v-model="addToCartSlotProps.qty"
+                        v-model="addToCart.qty"
                         class="w-auto"
                         labelClass="flex items-center mr-3 sr-only"
                         wrapperClass="flex"
                     >
-                        <option v-for="index in 10" :value="index * simpleProduct.qty_increments">
-                            @{{ index * simpleProduct.qty_increments }}
+                        <option v-for="index in 10" :value="index * addToCart.simpleProduct.qty_increments">
+                            @{{ index * addToCart.simpleProduct.qty_increments }}
                         </option>
                     </x-rapidez::select>
 
-                    <x-rapidez::button class="flex items-center" v-on:click="add" dusk="add-to-cart">
-                        <x-heroicon-o-shopping-cart class="h-5 w-5 mr-2" v-if="!adding && !added" />
-                        <x-heroicon-o-arrow-path class="h-5 w-5 mr-2 animate-spin" v-if="adding" />
-                        <x-heroicon-o-check class="h-5 w-5 mr-2" v-if="added" />
-                        <span v-if="!adding && !added">@lang('Add to cart')</span>
-                        <span v-if="adding">@lang('Adding')...</span>
-                        <span v-if="added">@lang('Added')</span>
+                    <x-rapidez::button type="submit" class="flex items-center" dusk="add-to-cart">
+                        <x-heroicon-o-shopping-cart class="h-5 w-5 mr-2" v-if="!addToCart.adding && !addToCart.added" />
+                        <x-heroicon-o-arrow-path class="h-5 w-5 mr-2 animate-spin" v-if="addToCart.adding" />
+                        <x-heroicon-o-check class="h-5 w-5 mr-2" v-if="addToCart.added" />
+                        <span v-if="!addToCart.adding && !addToCart.added">@lang('Add to cart')</span>
+                        <span v-if="addToCart.adding">@lang('Adding')...</span>
+                        <span v-if="addToCart.added">@lang('Added')</span>
                     </x-rapidez::button>
                 </template>
-            </div>
+            </form>
         </add-to-cart>
     </template>
 </div>

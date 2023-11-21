@@ -7,7 +7,7 @@
             id="super_attribute_{{ $superAttributeId }}"
             name="{{ $superAttributeId }}"
             label=""
-            v-model="options[{{ $superAttributeId }}]"
+            v-model="addToCart.options[{{ $superAttributeId }}]"
             class="!w-64"
             required
         >
@@ -18,7 +18,7 @@
                 v-for="option in Object.values(config.product.super_{{ $superAttribute->code }}).sort((a, b) => a.sort_order - b.sort_order)"
                 v-text="option.label"
                 :value="option.value"
-                :disabled="disabledOptions.super_{{ $superAttribute->code }}.includes(option.value)"
+                :disabled="addToCart.disabledOptions.super_{{ $superAttribute->code }}.includes(option.value)"
             />
         </x-rapidez::select>
     </div>
