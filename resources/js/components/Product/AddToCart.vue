@@ -35,17 +35,14 @@ export default {
         options: {},
         customOptions: {},
         error: null,
+        tierPrice: null,
 
         adding: false,
         added: false,
-
-        price: 0,
-        specialPrice: 0,
     }),
 
     mounted() {
         this.qty = this.defaultQty
-        this.calculatePrices()
     },
 
     render() {
@@ -117,11 +114,6 @@ export default {
                 })
         },
 
-        calculatePrices: function () {
-            this.price = parseFloat(this.simpleProduct.price) + this.priceAddition(this.simpleProduct.price)
-            this.specialPrice = parseFloat(this.simpleProduct.special_price) + this.priceAddition(this.simpleProduct.special_price)
-        },
-
         getOptions: function (superAttributeCode) {
             if (this.$root.swatches.hasOwnProperty(superAttributeCode)) {
                 let swatchOptions = this.$root.swatches[superAttributeCode].options
@@ -148,27 +140,47 @@ export default {
             reader.readAsDataURL(file)
         },
 
-        priceAddition: function (basePrice) {
-            let addition = 0
-
-            Object.entries(this.customOptions).forEach(([key, val]) => {
-                if (!val) {
-                    return
-                }
-
-                let option = this.product.options.find((option) => option.option_id == key)
-                let optionPrice = ['drop_down', 'radio'].includes(option.type)
-                    ? option.values.find((value) => value.option_type_id == val).price
-                    : option.price
-
-                if (optionPrice.price_type == 'fixed') {
-                    addition += parseFloat(optionPrice.price)
-                } else {
-                    addition += (parseFloat(basePrice) * parseFloat(optionPrice.price)) / 100
+        getTierPrice(qty) {
+            qty = parseInt(qty)
+            let match = null
+            let matchQty = 0
+            Object.entries(this.tierPrices).forEach(([id, tier]) => {
+                if (+tier.qty > matchQty && +tier.qty <= qty) {
+                    match = id
+                    matchQty = +tier.qty
                 }
             })
 
-            return addition
+            return match
+        },
+
+        selectTier(id) {
+            this.tierPrice = id
+            let tierQty = this.tierPrices[this.tierPrice]?.qty ?? 1
+            this.qty = parseInt(tierQty)
+        },
+
+        tierPriceDiscount(price, discount) {
+            if (!discount) {
+                return price
+            }
+
+            // Calculate percentage value and return first!
+            // Magento2 will not clear the `value` column if you set a percentage, but it will clear the `percentage_value` column if you set a value.
+            if (discount.percentage_value > 0) {
+                return (price * (100 - discount.percentage_value)) / 100
+            }
+
+            if (discount.value > 0) {
+                return discount.value
+            }
+            return price
+        },
+    },
+
+    watch: {
+        qty() {
+            this.tierPrice = this.getTierPrice(this.qty)
         },
     },
 
@@ -303,14 +315,27 @@ export default {
 
             return disabledOptions
         },
-    },
 
-    watch: {
-        customOptions: {
-            handler() {
-                this.calculatePrices()
-            },
-            deep: true,
+        tierPrices: function () {
+            if (!this.simpleProduct.tierPrices || this.simpleProduct.tierPrices.length == 0) {
+                return {}
+            }
+
+            return Object.fromEntries(
+                this.simpleProduct.tierPrices.map((option) => [
+                    option.value_id,
+                    {
+                        qty: option.qty,
+                        value: option.value,
+                        percentage_value: option.percentage_value,
+                        price: this.tierPriceDiscount(this.simpleProduct.price, option),
+                    },
+                ]),
+            )
+        },
+
+        currentTierPrice: function () {
+            return this.tierPrices[this.tierPrice] ?? null
         },
         options: {
             handler() {

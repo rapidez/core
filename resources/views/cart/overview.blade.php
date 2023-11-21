@@ -30,14 +30,14 @@
                                 </div>
                             </div>
                             <div class="flex items-center justify-between gap-5">
-                                @{{ item.price | price }}
+                                @{{ $root.decideTax(item.price, item.price_excl_tax, 'cart_price') | price }}
                                 <div class="flex items-center gap-1">
                                     <x-rapidez::input v-model="item.qty" v-bind:dusk="'qty-'+index" name="qty" class="w-14 px-1 text-center" type="number" :label="false" ::min="item.min_sale_qty > item.qty_increments ? item.min_sale_qty : item.qty_increments" ::step="item.qty_increments" />
                                     <x-rapidez::button v-on:click="changeQty(item)" v-bind:dusk="'item-update-'+index" class="ml-1" :title="__('Update')">
                                         <x-heroicon-s-arrow-path class="h-4 w-4" />
                                     </x-rapidez::button>
                                 </div>
-                                @{{ item.total | price }}
+                                @{{ $root.decideTax(item.total, item.total_excl_tax, 'cart_price') | price }}
                             </div>
                         </div>
                         <div class="mt-5 self-start">
@@ -48,11 +48,11 @@
                     <div class="flex w-full flex-wrap justify-end self-baseline lg:max-w-xs">
                         <dl class="mb-5 flex w-full flex-wrap rounded-lg border p-3 [&>dd:nth-last-of-type(-n+2)]:border-none [&>dd]:w-1/2 [&>dd]:border-b [&>dd]:py-3">
                             <dd>@lang('Subtotal')</dd>
-                            <dd class="text-right">@{{ cart.subtotal | price }}</dd>
+                            <dd class="text-right">@{{ $root.decideTax(cart.subtotal, cart.subtotal_excl_tax, 'cart_subtotal') | price }}</dd>
                             <dd v-if="cart.tax > 0">@lang('Tax')</dd>
                             <dd v-if="cart.tax > 0" class="text-right">@{{ cart.tax | price }}</dd>
                             <dd v-if="cart.shipping_amount > 0">@lang('Shipping')<br><small>@{{ cart.shipping_description }}</small></dd>
-                            <dd v-if="cart.shipping_amount > 0" class="text-right">@{{ cart.shipping_amount | price }}</dd>
+                            <dd v-if="cart.shipping_amount > 0" class="text-right">@{{ $root.decideTax(cart.shipping_amount, cart.shipping_amount_excl_tax, 'cart_shipping') | price }}</dd>
                             <dd v-if="cart.discount_name && cart.discount_amount < 0">@lang('Discount'): @{{ cart.discount_name }}</dd>
                             <dd v-if="!cart.discount_name && cart.discount_amount < 0">@lang('Discount')</dd>
                             <dd v-if="cart.discount_amount < 0" class="text-right">@{{ cart.discount_amount | price }}</dd>

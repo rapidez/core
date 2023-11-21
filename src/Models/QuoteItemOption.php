@@ -48,7 +48,7 @@ class QuoteItemOption extends Model
     protected function label(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->option?->titles->firstForCurrentStore()->title
+            get: fn () => $this->option?->titles->firstForCurrentStore()->title ?? null
         )->shouldCache();
     }
 

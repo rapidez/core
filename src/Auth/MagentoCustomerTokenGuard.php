@@ -4,10 +4,21 @@ namespace Rapidez\Core\Auth;
 
 use Illuminate\Auth\TokenGuard;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Http\Request;
+use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
 
 class MagentoCustomerTokenGuard extends TokenGuard implements Guard
 {
+    public function getTokenForRequest()
+    {
+        $token = parent::getTokenForRequest();
+
+        if (empty($token)) {
+            $token = $_COOKIE[$this->inputKey] ?? null;
+        }
+
+        return $token;
+    }
+
     /**
      * Get the currently authenticated user.
      *
@@ -43,6 +54,15 @@ class MagentoCustomerTokenGuard extends TokenGuard implements Guard
 
     protected function retrieveByToken($token)
     {
-        return config('rapidez.models.customer')::whereToken($token)->first();
+        try {
+            return config('rapidez.models.customer')::whereToken($token)->first();
+        } catch (RequiredConstraintsViolated $e) {
+            // Token is expired or invalid by incorrect signature.
+            if (isset($_COOKIE[$this->inputKey])) {
+                unset($_COOKIE[$this->inputKey]);
+            }
+        }
+
+        return null;
     }
 }

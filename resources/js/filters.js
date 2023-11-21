@@ -6,12 +6,14 @@ Vue.filter('truncate', function (value, limit) {
     return value
 })
 
-Vue.filter('price', function (value) {
+window.price = function (value) {
     return new Intl.NumberFormat(config.locale.replace('_', '-'), {
         style: 'currency',
         currency: config.currency,
     }).format(value)
-})
+}
+
+Vue.filter('price', window.price)
 
 window.url = function (path = '') {
     // Transform urls starting with / into url with domain

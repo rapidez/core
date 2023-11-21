@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Rapidez\Core\Facades\Rapidez;
+use Rapidez\Core\Models\TaxCalculation;
 
 class ConfigComposer
 {
@@ -42,6 +43,7 @@ class ConfigComposer
         Config::set('frontend.show_customer_address_fields', $this->getCustomerAddressFields());
         Config::set('frontend.grid_per_page', Rapidez::config('catalog/frontend/grid_per_page', 12));
         Config::set('frontend.grid_per_page_values', explode(',', Rapidez::config('catalog/frontend/grid_per_page_values', '12,24,36')));
+        Config::set('frontend.tax', $this->getTaxConfiguration());
     }
 
     public function getCustomerAddressFields()
@@ -62,6 +64,37 @@ class ConfigComposer
             'company'     => Rapidez::config('customer/address/company_show', 'opt'),
             'vat_id'      => Rapidez::config('customer/address/taxvat_show', 'opt'),
             'fax'         => Rapidez::config('customer/address/fax_show', 'opt'),
+        ];
+    }
+
+    public function getTaxConfiguration()
+    {
+        $customerGroupId = auth('magento-customer')->user()?->group_id ?? 0;
+        $values = Cache::remember('tax-configuration-' . $customerGroupId, 3600, function () use ($customerGroupId) {
+            return TaxCalculation::select('tax_country_id', 'tax_region_id', 'tax_postcode', 'rate', 'product_tax_class_id')
+                ->whereHas('customerGroups', fn ($query) => $query->where('customer_group_id', $customerGroupId))
+                ->get()
+                ->groupBy('product_tax_class_id');
+        });
+
+        return [
+            'rates'       => $values,
+            'calculation' => [
+                'price_includes_tax' => boolval(Rapidez::config('tax/calculation/price_includes_tax', 0)),
+                'based_on'           => Rapidez::config('tax/calculation/based_on', 'shipping'),
+            ],
+            'display' => [
+                'catalog'       => Rapidez::config('tax/display/type', 1),
+                'shipping'      => Rapidez::config('tax/display/shipping', 1),
+                'cart_price'    => Rapidez::config('tax/cart_display/price', 1),
+                'cart_shipping' => Rapidez::config('tax/cart_display/shipping', 1),
+                'cart_subtotal' => Rapidez::config('tax/cart_display/subtotal', 1),
+            ],
+            'defaults' => [
+                'country_id' => Rapidez::config('tax/defaults/country', 'US'),
+                'postcode'   => Rapidez::config('tax/defaults/postcode', null),
+                'region_id'  => Rapidez::config('tax/defaults/region', 0),
+            ],
         ];
     }
 }

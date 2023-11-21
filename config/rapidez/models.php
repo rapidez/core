@@ -8,6 +8,7 @@ return [
     'category'                  => Rapidez\Core\Models\Category::class,
     'category_product'          => Rapidez\Core\Models\CategoryProduct::class,
     'customer'                  => Rapidez\Core\Models\Customer::class,
+    'customer_group'            => Rapidez\Core\Models\CustomerGroup::class,
     'config'                    => Rapidez\Core\Models\Config::class,
     'oauth_token'               => Rapidez\Core\Models\OauthToken::class,
     'option_swatch'             => Rapidez\Core\Models\OptionSwatch::class,
@@ -21,6 +22,7 @@ return [
     'product_option_type_title' => Rapidez\Core\Models\ProductOptionTypeTitle::class,
     'product_option_type_price' => Rapidez\Core\Models\ProductOptionTypePrice::class,
     'product_option_type_value' => Rapidez\Core\Models\ProductOptionTypeValue::class,
+    'product_tier_price'        => Rapidez\Core\Models\ProductTierPrice::class,
     'quote'                     => Rapidez\Core\Models\Quote::class,
     'quote_item'                => Rapidez\Core\Models\QuoteItem::class,
     'quote_item_option'         => Rapidez\Core\Models\QuoteItemOption::class,
@@ -33,4 +35,5 @@ return [
     'sales_order_item'          => Rapidez\Core\Models\SalesOrderItem::class,
     'sales_order_payment'       => Rapidez\Core\Models\SalesOrderPayment::class,
     'search_query'              => Rapidez\Core\Models\SearchQuery::class,
+    'tax_calculation'           => Rapidez\Core\Models\TaxCalculation::class,
 ];
