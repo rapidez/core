@@ -1,20 +1,22 @@
 <div class="grid grid-cols-3 gap-3 grid-cols-[auto_max-content_max-content]">
-    <template v-for="product in config.product.grouped">
-        <add-to-cart :product="product" v-slot="addToCart" v-cloak>
+    @foreach($product->grouped as $groupedProduct)
+        <add-to-cart :product="config.product.grouped[{{ $groupedProduct->id }}]" v-slot="addToCart" class="contents">
             <form v-on:submit.prevent="addToCart.add" class="contents">
                 <div>
-                    @{{ addToCart.simpleProduct.name }}
+                    {{ $groupedProduct->name }}
                     <div class="flex items-center space-x-3 font-bold">
-                        <div>@{{ (addToCart.simpleProduct.special_price || addToCart.simpleProduct.price) | price }}</div>
-                        <div class="line-through" v-if="addToCart.simpleProduct.special_price">@{{ addToCart.simpleProduct.price | price }}</div>
+                        <div>{{ price($groupedProduct->special_price ?: $groupedProduct->price) }}</div>
+                        @if($groupedProduct->special_price)
+                            <div class="line-through">{{ price($groupedProduct->price) }}</div>
+                        @endif
                     </div>
                 </div>
 
-                <p class="col-span-2 self-center text-red-600" v-if="!addToCart.simpleProduct.in_stock">
-                    @lang('Sorry! This product is currently out of stock.')
-                </p>
-
-                <template v-else>
+                @if(!$groupedProduct->in_stock)
+                    <p class="col-span-2 self-center text-red-600">
+                        @lang('Sorry! This product is currently out of stock.')
+                    </p>
+                @else
                     <x-rapidez::select
                         name="qty"
                         label="Quantity"
@@ -23,14 +25,14 @@
                         labelClass="flex items-center mr-3 sr-only"
                         wrapperClass="flex"
                     >
-                        <option v-for="index in 10" :value="index * addToCart.simpleProduct.qty_increments">
-                            @{{ index * addToCart.simpleProduct.qty_increments }}
-                        </option>
+                        @for ($i = $groupedProduct->qty_increments; $i <= $groupedProduct->qty_increments * 10; $i += $groupedProduct->qty_increments)
+                            <option value="{{ $i }}">{{ $i }}</option>
+                        @endfor
                     </x-rapidez::select>
 
                     <x-rapidez::button.cart/>
-                </template>
+                @endif
             </form>
         </add-to-cart>
-    </template>
+    @endforeach
 </div>
