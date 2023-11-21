@@ -1,8 +1,8 @@
 // TODO: It should be possible to remove this whole file?
 import { useLocalStorage } from '@vueuse/core'
 import { cart, clear as clearCart } from '../../../stores/useCart'
-import { user } from '../../../stores/useUser'
 import { mask, refreshMask } from '../../../stores/useMask'
+import { token, refresh as refreshUser } from '../../../stores/useUser'
 
 export default {
     methods: {
@@ -33,18 +33,9 @@ export default {
                 let response = await axios.post(config.magento_url + '/graphql', {
                     query: 'mutation ($cart_id: String!) { assignCustomerToGuestCart (cart_id: $cart_id) }',
                     variables: { $cart_id: mask.value }
-                }, { headers: { Authorization: `Bearer ${localStorage.token}`, Store: config.store_code } })
+                }, { headers: { Authorization: `Bearer ${token.value}`, Store: config.store_code } })
             } catch(error) {
                 Notify(error.response.data.message, 'warning')
-            }
-        },
-
-        expiredCartCheck(error) {
-            // TODO: Test/implement this with GraphQL
-            if (error.response.data?.parameters?.fieldName == 'quoteId' || error.response.status === 404) {
-                clearCart()
-                Notify(window.config.translations.errors.cart_expired, 'error')
-                return true
             }
         },
     },

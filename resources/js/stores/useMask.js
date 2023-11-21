@@ -1,5 +1,5 @@
 import { useLocalStorage } from '@vueuse/core'
-import { user } from './useUser'
+import { token, user } from './useUser'
 
 export const mask = useLocalStorage('mask', '')
 
@@ -9,7 +9,7 @@ export const refreshMask = async function () {
         // TODO: Maybe migrate to fetch? We don't need axios anymore?
         let response = await axios.post(config.magento_url + '/graphql', {
             query: 'mutation { createEmptyCart }'
-        }, { headers: { Authorization: `Bearer ${localStorage.token}`, Store: config.store_code } })
+        }, { headers: { Authorization: `Bearer ${token.value}`, Store: config.store_code } })
 
         mask.value = response.data.data.createEmptyCart
     } catch (error) {

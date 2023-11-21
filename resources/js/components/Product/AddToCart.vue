@@ -1,4 +1,7 @@
 <script>
+import { checkResponseForExpiredCart } from '../../stores/useCart'
+import { mask } from '../../stores/useMask'
+import { token } from '../../stores/useUser'
 import GetCart from './../Cart/mixins/GetCart'
 import InteractWithUser from './../User/mixins/InteractWithUser'
 
@@ -92,16 +95,20 @@ export default {
                 variables: {
                     sku: this.simpleProduct.sku,
                     parent_sku: this.product.sku,
-                    cartId: localStorage.mask,
+                    cartId: mask.value,
                     quantity: this.qty,
                     selected_options: this.selectedOptions,
                     entered_options: this.enteredOptions,
                 }
-            }, { headers: { Authorization: `Bearer ${localStorage.token}` } }).then(async (response) => {
+            }, { headers: { Authorization: `Bearer ${token.value}` } })
+            .then(async (response) => {
                 if ('errors' in response.data) {
-                    throw new Error(response.data.errors[0].message)
+                    throw new axios.AxiosError('Graphql Errors', null, response.config, response.request, response)
                 }
 
+                return response;
+            })
+            .then(async (response) => {
                 if (response.data.data.addProductsToCart.user_errors.length) {
                     throw new Error(response.data.data.addProductsToCart.user_errors[0].message)
                 }
@@ -126,7 +133,7 @@ export default {
                     Turbo.visit(window.url('/cart'))
                 }
             })
-            .catch((error) => {
+            .catch(async (error) => {
                 if (!axios.isAxiosError(error)) {
                     if (this.notifyError) {
                         Notify(error.message, 'error')
@@ -141,15 +148,23 @@ export default {
                     this.logout(window.url('/login'))
                 }
 
-                if (this.expiredCartCheck(error)) {
+                if (await checkResponseForExpiredCart(error.response)) {
                     return
                 }
 
                 if (this.notifyError) {
-                    Notify(error.response.data.message, 'error', error.response.data?.parameters)
+                    if (error?.response?.data?.message) {
+                        Notify(error.response.data.message, 'error', error.response.data?.parameters)
+                    }
+
+                    if (error?.response?.data?.errors) {
+                        error.response.data.errors.map(error => {
+                            Notify(error.message, 'error')
+                        })
+                    }
                 }
 
-                this.error = error.response.data.message
+                this.error = error.response.data?.message || error.response.data.errors.map(error => error.message).join('\n');
             })
             .then(() => {
                 this.adding = false

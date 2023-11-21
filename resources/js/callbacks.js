@@ -1,4 +1,4 @@
-import { useLocalStorage, StorageSerializers } from '@vueuse/core'
+import { cart } from './stores/useCart'
 
 Vue.prototype.scrollToElement = (selector) => {
     let el = window.document.querySelector(selector)
@@ -9,7 +9,7 @@ Vue.prototype.scrollToElement = (selector) => {
 }
 
 Vue.prototype.refreshCart = async function (data, response) {
-    window.app.cart = 'cart' in Object.values(response.data.data)[0]
+    cart.value = 'cart' in Object.values(response.data.data)[0]
         ? Object.values(response.data.data)[0].cart
         : Object.values(response.data.data)[0]
 

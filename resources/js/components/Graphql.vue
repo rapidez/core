@@ -2,6 +2,7 @@
 import InteractWithUser from './User/mixins/InteractWithUser'
 import { useLocalStorage, StorageSerializers } from '@vueuse/core'
 import { token } from '../stores/useUser'
+import { checkResponseForExpiredCart } from '../stores/useCart'
 
 export default {
     mixins: [InteractWithUser],
@@ -73,16 +74,26 @@ export default {
                         variables: this.variables,
                     },
                     options,
-                )
-
-                if (response.data.errors) {
-                    if (response.data.errors[0].extensions.category == 'graphql-authorization') {
-                        this.logout(window.url('/login'))
-                    } else {
-                        Notify(response.data.errors[0].message, 'error')
+                ).then((response) => {
+                    if (!response.data?.errors?.length) {
+                        return response;
                     }
-                    return
-                }
+
+                    throw new axios.AxiosError('Graphql Errors', null, response.config, response.request, response)
+                }).catch(async (error) => {
+                    if (await checkResponseForExpiredCart(error.response)) {
+                        return;
+                    }
+
+                    error.response.data.errors.map(error => {
+                        Notify(error.message, 'error')
+
+                        if (error.extensions.category === 'graphql-authorization') {
+                            this.logout(window.url('/login'))
+                        }
+                    })
+
+                })
 
                 if (this.check) {
                     if (!eval('response.data.' + this.check)) {
