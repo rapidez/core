@@ -1,6 +1,17 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.3.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.4.0...master)
+## [1.4.0](https://github.com/rapidez/core/releases/tag/1.4.0) - 2023-11-22
+
+### Added
+
+- Support for image disabled option (#381)
+- Position per category support (#382)
+
+### Fixed
+
+- Clear cart storage when not found (#383)
+
 ## [1.3.0](https://github.com/rapidez/core/releases/tag/1.3.0) - 2023-11-14
 
 ### Added
