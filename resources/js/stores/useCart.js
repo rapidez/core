@@ -46,7 +46,6 @@ export const clear = async function () {
     await clearAddresses()
     await clearMask()
     await refresh()
-    cartStorage.value = {}
 }
 
 export const clearAddresses = async function () {
