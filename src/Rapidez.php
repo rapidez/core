@@ -117,9 +117,9 @@ class Rapidez
 
     public function checkCompadreVesion($version = '0.0.1', $operator = '>=')
     {
-        $compadreVersion = Cache::rememberForever('compadre-version', fn() => DB::table('setup_module')->where('module', 'Rapidez_Compadre')->value('schema_version') ?? false);
+        $compadreVersion = Cache::rememberForever('compadre-version', fn () => DB::table('setup_module')->where('module', 'Rapidez_Compadre')->value('schema_version') ?? false);
 
-        if (!$compadreVersion) {
+        if (! $compadreVersion) {
             return false;
         }
 
