@@ -2,6 +2,7 @@ import { computedAsync, useLocalStorage } from '@vueuse/core'
 
 export const swatchesStorage = useLocalStorage('swatches', {})
 let isRefreshing = false
+let hasFetched = false;
 
 export const refresh = async function () {
     if (isRefreshing) {
@@ -25,6 +26,7 @@ export const refresh = async function () {
         return false
     }
 
+    hasFetched = true
     swatchesStorage.value = response.data
 
     return true
@@ -32,11 +34,12 @@ export const refresh = async function () {
 
 export const clear = async function () {
     swatchesStorage.value = {}
+    hasFetched = false;
 }
 
 export const swatches = computedAsync(
     async () => {
-        if (Object.keys(swatchesStorage.value).length === 0) {
+        if (!hasFetched && Object.keys(swatchesStorage.value).length === 0) {
             await refresh()
         }
 
