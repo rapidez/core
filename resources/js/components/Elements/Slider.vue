@@ -69,15 +69,15 @@ export default {
             this.slider = this.$scopedSlots.default()[0].context.$refs[this.reference]
         },
         initLoop() {
-            if(!this.loop) {
-                return;
+            if (!this.loop) {
+                return
             }
 
             const slides = Array.from(this.slides)
             if (!slides.length) {
-                return;
+                return
             }
-            let firstChild = this.slider.firstChild;
+            let firstChild = this.slider.firstChild
 
             for (let slide of slides) {
                 let startClone = this.slider.insertBefore(slide.cloneNode(true), firstChild)
@@ -111,11 +111,11 @@ export default {
             this.showRight = this.loop || this.slider.offsetWidth + this.position < this.slider.scrollWidth - 1
         },
         scrollend(event) {
-            let scrollPosition = this.vertical ? event.target.scrollTop : event.target.scrollLeft;
+            let scrollPosition = this.vertical ? event.target.scrollTop : event.target.scrollLeft
             if (scrollPosition < this.sliderStart) {
-                this.slider.scrollTo({[this.vertical ? 'top' : 'left']: scrollPosition + this.sliderStart, behavior: 'instant'})
+                this.slider.scrollTo({ [this.vertical ? 'top' : 'left']: scrollPosition + this.sliderStart, behavior: 'instant' })
             } else if (scrollPosition > this.sliderEnd) {
-                this.slider.scrollTo({[this.vertical ? 'top' : 'left']: scrollPosition - this.sliderStart, behavior: 'instant'})
+                this.slider.scrollTo({ [this.vertical ? 'top' : 'left']: scrollPosition - this.sliderStart, behavior: 'instant' })
             }
         },
         autoScroll() {
@@ -134,7 +134,7 @@ export default {
             this.navigate(next)
         },
         navigate(index) {
-            index = this.loop ? index + this.slides.length : index;
+            index = this.loop ? index + this.slides.length : index
 
             this.vertical
                 ? this.slider.scrollTo(0, this.slider.children[index]?.offsetTop)
@@ -158,7 +158,7 @@ export default {
             if (!this.mounted) {
                 return 0
             }
-            return Math.round(this.position / this.childSpan) % this.slides.length;
+            return Math.round(this.position / this.childSpan) % this.slides.length
         },
         slidesVisible() {
             if (!this.mounted) {
@@ -190,24 +190,21 @@ export default {
 
             return (this.slides?.length ?? 1) - (this.loop ? 0 : this.slidesVisible - 1)
         },
-        slides()
-        {
+        slides() {
             return this.slider.querySelectorAll(':scope > :not([data-clone=true])')
         },
-        sliderStart()
-        {
+        sliderStart() {
             return this.vertical ? this.slides[0].offsetTop : this.slides[0].offsetLeft
         },
-        sliderEnd()
-        {
-            let lastChild = this.slides[this.slides.length - 1];
+        sliderEnd() {
+            let lastChild = this.slides[this.slides.length - 1]
 
             if (this.vertical) {
-                return lastChild.offsetTop + lastChild.offsetHeight;
+                return lastChild.offsetTop + lastChild.offsetHeight
             }
 
-            return lastChild.offsetLeft + lastChild.offsetWidth;
-        }
+            return lastChild.offsetLeft + lastChild.offsetWidth
+        },
     },
 }
 </script>
