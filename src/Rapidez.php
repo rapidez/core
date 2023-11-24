@@ -5,12 +5,13 @@ namespace Rapidez\Core;
 use Illuminate\Routing\RouteAction;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Rapidez\Core\Models\Store;
 
 class Rapidez
 {
+    protected string|bool|null $compadreVersion;
+
     public function __construct(protected Collection $routes)
     {
     }
@@ -115,14 +116,14 @@ class Rapidez
         return $result;
     }
 
-    public function checkCompadreVesion($version = '0.0.1', $operator = '>=')
+    public function checkcompadreVersion($version = '0.0.1', $operator = '>=')
     {
-        $compadreVersion = Cache::rememberForever('compadre-version', fn() => DB::table('setup_module')->where('module', 'Rapidez_Compadre')->value('schema_version') ?? false);
+        $this->compadreVersion ??= (DB::table('setup_module')->where('module', 'Rapidez_Compadre')->value('schema_version') ?? false);
 
-        if (!$compadreVersion) {
+        if (!$this->compadreVersion) {
             return false;
         }
 
-        return version_compare($compadreVersion, $version, $operator);
+        return version_compare($this->compadreVersion, $version, $operator);
     }
 }
