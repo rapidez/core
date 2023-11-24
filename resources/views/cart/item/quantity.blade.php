@@ -13,9 +13,10 @@
             v-bind:dusk="'qty-'+index"
             {{-- TODO: We don't need these importants with Tailwind merge and center isn't really center with type number --}}
             class="!w-14 !px-1 text-center"
-            {{-- TODO: We can't get these values with GraphQL --}}
-            {{-- ::min="item.min_sale_qty > item.qty_increments ? item.min_sale_qty : item.qty_increments" --}}
-            {{-- ::step="item.qty_increments" --}}
+
+            ::min="Math.max(item.product.stock_item?.min_sale_qty, item.product.stock_item?.qty_increments) || null"
+            ::max="item.product.stock_item?.max_sale_qty"
+            ::step="item.product.stock_item?.qty_increments"
         />
         <x-rapidez::button type="submit" v-bind:dusk="'item-update-'+index" :title="__('Update')">
             <x-heroicon-s-arrow-path class="h-4 w-4" />

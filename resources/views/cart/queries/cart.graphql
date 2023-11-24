@@ -16,6 +16,13 @@ items {
         crosssell_products {
             id
         }
+        @if (Rapidez::checkCompadreVesion('0.0.1'))
+            stock_item {
+                max_sale_qty
+                min_sale_qty
+                qty_increments
+            }
+        @endif
     }
     prices {
         price {
