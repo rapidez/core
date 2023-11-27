@@ -5,8 +5,8 @@ namespace Rapidez\Core\Commands;
 use Elasticsearch\Common\Exceptions\UnexpectedValueException;
 use Exception;
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\LazyCollection;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Store;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -18,16 +18,16 @@ abstract class ElasticsearchIndexCommand extends Command
     public array $stores;
     public string $indexName;
     public mixed $dataFilter = null;
-    public bool $progressBar = true;
     public int $chunkSize = 0;
+    public bool $progressBar = true;
 
     public array $mapping = [];
     public array $settings = [];
     public array $synonymsFor = [];
     public array $extraSynonyms = [];
 
-    public Builder $query;
     public ProgressBar $bar;
+    public LazyCollection $generator;
 
     public function __construct(ElasticsearchIndexer $indexer)
     {
@@ -96,13 +96,6 @@ abstract class ElasticsearchIndexCommand extends Command
         return $this;
     }
 
-    public function withoutProgressBar()
-    {
-        $this->progressBar = false;
-
-        return $this;
-    }
-
     public function withSynonymsFor(array $for)
     {
         if (count($for)) {
@@ -121,7 +114,14 @@ abstract class ElasticsearchIndexCommand extends Command
         return $this;
     }
 
-    public function index(string $indexName, callable|iterable|Builder $items, callable|string $id = 'entity_id'): void
+    public function withoutProgressBar()
+    {
+        $this->progressBar = false;
+
+        return $this;
+    }
+
+    public function index(string $indexName, callable|iterable|Builder|LazyCollection $items, callable|string $id = 'entity_id'): void
     {
         foreach ($this->stores as $store) {
             $this->indexStore(
@@ -140,24 +140,30 @@ abstract class ElasticsearchIndexCommand extends Command
         $this->prepareIndexerWithStore($store, $indexName);
     }
 
-    public function beforeIndex(int $totalCount)
+    public function beforeIndex()
     {
         if ($this->progressBar) {
-            $this->bar = $this->output->createProgressBar($totalCount);
+            $this->bar = $this->output->createProgressBar(count($this->generator));
             $this->bar->start();
+
+            $this->generator = $this->generator->map(function ($value) {
+                $this->bar->advance();
+                return $value;
+            });
         }
     }
 
     public function afterIndex()
     {
         $this->indexer->finish();
+
         if ($this->progressBar) {
             $this->bar->finish();
             $this->line('');
         }
     }
 
-    public function indexStore(Store|array $store, string $indexName, callable|iterable|Builder $items, callable|string $id): void
+    public function indexStore(Store|array $store, string $indexName, callable|iterable|Builder|LazyCollection $items, callable|string $id): void
     {
         $this->initIndex($store, $indexName);
         $fullItems = $this->dataFrom($items);
@@ -168,61 +174,38 @@ abstract class ElasticsearchIndexCommand extends Command
             throw new UnexpectedValueException('Items cannot be null.');
         }
 
-        $count = is_iterable($fullItems) ? count($fullItems) : $fullItems->getQuery()->getCountForPagination();
+        $this->generator = $this->generatorFrom($fullItems);
 
-        $this->beforeIndex($count);
-        $this->tryIndexItems($fullItems, $id);
+        $this->beforeIndex();
+        $this->tryIndex($id);
         $this->afterIndex();
     }
 
-    public function tryIndexItems(iterable|Builder $items, callable|string $id): void
+    public function tryIndex(callable|string $id): void
     {
         try {
-            if (is_iterable($items)) {
-                $this->indexPartialIterable($items, $id);
-            } else {
-                $this->indexPartialQuery($items, $id);
-            }
+            $this->indexer->index($this->generator, $this->dataFilter, $id);
         } catch (Exception $e) {
             $this->indexer->abort();
-
             throw $e;
         }
     }
 
-    public function indexPartialIterable(iterable $items, callable|string $id): void
+    public function generatorFrom(iterable|Builder|LazyCollection $items): LazyCollection
     {
-        if ($this->chunkSize < 1) {
-            $this->indexPartial($items, $id);
-
-            return;
+        if ($items instanceof LazyCollection) {
+            return $items;
         }
 
-        $arrItems = $items instanceof Arrayable ? $items->toArray() : (array) $items;
-        foreach (array_chunk($arrItems, $this->chunkSize) as $chunk) {
-            $this->indexPartial($chunk, $id);
-        }
-    }
+        if ($items instanceof Builder) {
+            if ($this->chunkSize < 1) {
+                return LazyCollection::wrap($items->get());
+            }
 
-    public function indexPartialQuery(Builder $items, callable|string $id): void
-    {
-        if ($this->chunkSize < 1) {
-            $this->indexPartial($items->get(), $id);
-
-            return;
+            return $items->lazy($this->chunkSize);
         }
 
-        $items->chunk($this->chunkSize, function ($chunk) use ($id) {
-            $this->indexPartial($chunk, $id);
-        });
-    }
-
-    public function indexPartial(iterable $items, callable|string $id): void
-    {
-        $this->indexer->index($items, $this->dataFilter, $id);
-        if ($this->progressBar) {
-            $this->bar->advance(count($items));
-        }
+        return LazyCollection::wrap($items);
     }
 
     public function prepareIndexerWithStore(Store|array $store, string $indexName): void

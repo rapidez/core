@@ -14,7 +14,6 @@ class IndexCategoriesCommand extends ElasticsearchIndexCommand
     {
         $this->onlyStores($this->argument('store'))
             ->withFilter(fn ($data) => Eventy::filter('index.category.data', $data))
-            ->chunk(25)
             ->withSynonymsFor(['name'])
             ->index(
                 indexName: 'categories',

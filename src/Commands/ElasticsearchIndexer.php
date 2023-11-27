@@ -4,8 +4,10 @@ namespace Rapidez\Core\Commands;
 
 use Carbon\Carbon;
 use Elasticsearch\Common\Exceptions\BadMethodCallException;
+use Generator;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
+use Illuminate\Support\LazyCollection;
 use MailerLite\LaravelElasticsearch\Manager as Elasticsearch;
 use Rapidez\Core\Jobs\IndexJob;
 
@@ -27,16 +29,16 @@ class ElasticsearchIndexer
         $this->elasticsearch->indices()->delete(['index' => $index]);
     }
 
-    public function index(iterable|object $data, callable|array|null $dataFilter = null, callable|string $id): void
+    public function index(mixed $data, callable|array|null $dataFilter = null, callable|string $id): void
     {
-        if (is_iterable($data)) {
+        if (is_iterable($data) || $data instanceof LazyCollection) {
             $this->indexItems($data, $dataFilter, $id);
         } else {
             $this->indexItem($data, $dataFilter, $id);
         }
     }
 
-    public function indexItems(iterable $items, callable|array|null $dataFilter = null, callable|string $id): void
+    public function indexItems(iterable|LazyCollection $items, callable|array|null $dataFilter = null, callable|string $id): void
     {
         foreach ($items as $item) {
             $this->indexItem($item, $dataFilter, $id);
