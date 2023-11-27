@@ -22,12 +22,11 @@ abstract class ElasticsearchIndexCommand extends Command
     {
         parent::__construct();
         $this->indexer = $indexer;
-
     }
 
     public function index(callable|iterable|Builder|LazyCollection $items, ElasticsearchIndexParameters $params = null): void
     {
-        if(!$params) {
+        if (! $params) {
             $this->params = new ElasticsearchIndexParameters('items');
         } else {
             $this->params = $params;
@@ -109,7 +108,7 @@ abstract class ElasticsearchIndexCommand extends Command
         }
 
         if ($items instanceof Builder) {
-            if (!$this->params->chunkSize) {
+            if (! $this->params->chunkSize) {
                 return LazyCollection::wrap($items->get());
             }
 

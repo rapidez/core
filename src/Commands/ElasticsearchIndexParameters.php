@@ -20,9 +20,8 @@ class ElasticsearchIndexParameters
         public array $settings = [],
         public array $synonymsFor = [],
         public array $extraSynonyms = [],
-    )
-    {
-        if(!$stores) {
+    ) {
+        if (! $stores) {
             $this->setStores(null);
         }
     }
