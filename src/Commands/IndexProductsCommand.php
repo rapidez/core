@@ -9,6 +9,7 @@ use Rapidez\Core\Events\IndexAfterEvent;
 use Rapidez\Core\Events\IndexBeforeEvent;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Category;
+use Rapidez\Core\Models\CategoryProduct;
 use TorMorten\Eventy\Facades\Eventy;
 
 class IndexProductsCommand extends ElasticsearchIndexCommand
@@ -50,6 +51,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
             ->index(
                 indexName: 'products',
                 items: fn () => $productModel::selectOnlyIndexable()
+                    ->with('categoryProducts')
                     ->withEventyGlobalScopes('index.product.scopes')
                     ->withExists('options AS has_options'),
             );
@@ -70,25 +72,38 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
 
         $data = array_merge(['store' => config('rapidez.store')], $product->toArray());
 
-        $categories = Cache::driver('array')->rememberForever('categories_' . config('rapidez.store'), function () {
-            return Category::query()
-                ->where('catalog_category_flat_store_' . config('rapidez.store') . '.entity_id', '<>', Rapidez::config('catalog/category/root_id', 2))
-                ->pluck('name', 'entity_id');
-        });
-
         foreach ($product->super_attributes ?: [] as $superAttribute) {
             $data['super_' . $superAttribute->code] = $superAttribute->text_swatch || $superAttribute->visual_swatch
                 ? array_keys((array) $product->{'super_' . $superAttribute->code})
                 : Arr::pluck($product->{'super_' . $superAttribute->code} ?: [], 'label');
         }
 
-        $data = $this->withCategories($data, $categories);
+        $data = $this->withCategories($data);
+
+        $maxPositions = Cache::driver('array')->rememberForever('maxPositions_' . config('rapidez.store'), function () {
+            return CategoryProduct::query()
+                    ->selectRaw('GREATEST(MAX(position), 0) as position')
+                    ->addSelect('category_id')
+                    ->groupBy('category_id')
+                    ->pluck('position', 'category_id');
+        });
+
+        $data['positions'] = $product->categoryProducts
+            ->pluck('position', 'category_id')
+            // Turn all positions positive
+            ->mapWithKeys(fn ($position, $category_id) => [$category_id => $maxPositions[$category_id] - $position]);
 
         return Eventy::filter('index.product.data', $data, $product);
     }
 
-    public function withCategories(array $data, Collection $categories): array
+    public function withCategories(array $data): array
     {
+        $categories = Cache::driver('array')->rememberForever('categories_' . config('rapidez.store'), function () {
+            return Category::query()
+                ->where('catalog_category_flat_store_' . config('rapidez.store') . '.entity_id', '<>', Rapidez::config('catalog/category/root_id', 2))
+                ->pluck('name', 'entity_id');
+        });
+
         foreach ($data['category_paths'] as $categoryPath) {
             $category = [];
             foreach (explode('/', $categoryPath) as $categoryId) {

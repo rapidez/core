@@ -10,7 +10,7 @@
 
 <div class="min-h-screen">
     <listing
-        :additional-filters="{!! isset($query) ? "['query-filter', 'category']" : "['category']" !!}"
+        :additional-filters="{!! isset($query) ? "['query-filter', 'category', 'score-position']" : "['category', 'score-position']" !!}"
         :additional-sorting="[{
             label: window.config.translations.newest,
             dataField: 'created_at',
@@ -27,6 +27,26 @@
                         :show-filter="false"
                     ></reactive-component>
                 @endisset
+                <reactive-component
+                    component-id="score-position"
+                    :custom-query="function () {
+                        if (!window.config.category?.entity_id) {
+                            return;
+                        }
+
+                        return {
+                            query: {
+                                function_score: {
+                                    field_value_factor: {
+                                        field: 'positions.'+window.config.category.entity_id,
+                                        missing: 0
+                                    }
+                                }
+                            }
+                        }
+                    }"
+                    :show-filter="false"
+                ></reactive-component>
 
                 {{ $before ?? '' }}
                 @if ($slot->isEmpty())
