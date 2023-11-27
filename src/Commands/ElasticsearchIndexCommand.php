@@ -148,6 +148,7 @@ abstract class ElasticsearchIndexCommand extends Command
 
             $this->generator = $this->generator->map(function ($value) {
                 $this->bar->advance();
+
                 return $value;
             });
         }

@@ -4,7 +4,6 @@ namespace Rapidez\Core\Commands;
 
 use Carbon\Carbon;
 use Elasticsearch\Common\Exceptions\BadMethodCallException;
-use Generator;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\LazyCollection;
