@@ -27,51 +27,67 @@ class ElasticsearchIndexParameters
         }
     }
 
-    public function addMapping(string $path, mixed $mapping, bool $overwrite = false): void
+    public function addMapping(string $path, mixed $mapping, bool $overwrite = false): static
     {
         data_set($this->mapping, $path, $mapping, $overwrite);
+
+        return $this;
     }
 
-    public function addMappings(array $mapping): void
+    public function addMappings(array $mapping): static
     {
         $this->mapping = array_merge_recursive($this->mapping, $mapping);
+
+        return $this;
     }
 
-    public function addSetting(string $path, mixed $setting, bool $overwrite = false): void
+    public function addSetting(string $path, mixed $setting, bool $overwrite = false): static
     {
         data_set($this->settings, $path, $setting, $overwrite);
+
+        return $this;
     }
 
-    public function addSettings(array $settings): void
+    public function addSettings(array $settings): static
     {
         $this->settings = array_merge_recursive($this->settings, $settings);
+
+        return $this;
     }
 
-    public function addSynonymsFor(array $for)
+    public function addSynonymsFor(array $for): static
     {
         if (count($for)) {
             $this->synonymsFor = array_merge($this->synonymsFor, $for);
         }
+
+        return $this;
     }
 
-    public function addExtraSynonyms(array $synonyms)
+    public function addExtraSynonyms(array $synonyms): static
     {
         if (count($synonyms)) {
             $this->extraSynonyms = array_merge($this->extraSynonyms, $synonyms);
         }
+
+        return $this;
     }
 
-    public function setStores(callable|int|string|array|null $stores): void
+    public function setStores(callable|int|string|array|null $stores): static
     {
         if (is_array($stores)) {
             $this->stores = $stores;
         } else {
             $this->stores = Rapidez::getStores($stores);
         }
+
+        return $this;
     }
 
-    public function setStore(Store|array $store): void
+    public function setStore(Store|array $store): static
     {
         $this->stores = [$store];
+
+        return $this;
     }
 }
