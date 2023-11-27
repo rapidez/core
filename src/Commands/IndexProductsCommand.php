@@ -41,19 +41,23 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
 
         $settings = Eventy::filter('index.product.settings', []);
 
-        $this->onlyStores($this->argument('store'))
-            ->useMapping($mapping)
-            ->useSettings($settings)
-            ->withFilter($this->productFilter(...))
-            ->withSynonymsFor(['name'])
-            ->chunk(500)
-            ->index(
-                indexName: 'products',
-                items: fn () => $productModel::selectOnlyIndexable()
-                    ->with('categoryProducts')
-                    ->withEventyGlobalScopes('index.product.scopes')
-                    ->withExists('options AS has_options'),
-            );
+        $params = new ElasticsearchIndexParameters(
+            chunkSize: 500,
+            dataFilter: $this->productFilter(...),
+            indexName: 'products',
+            mapping: $mapping,
+            settings: $settings,
+            stores: $this->argument('store'),
+            synonymsFor: ['name'],
+        );
+
+        $this->index(
+            items: fn () => $productModel::selectOnlyIndexable()
+                ->with('categoryProducts')
+                ->withEventyGlobalScopes('index.product.scopes')
+                ->withExists('options AS has_options'),
+            params: $params,
+        );
 
         IndexAfterEvent::dispatch($this);
         $this->info('Done!');

@@ -12,13 +12,14 @@ class IndexCategoriesCommand extends ElasticsearchIndexCommand
 
     public function handle(): int
     {
-        $this->onlyStores($this->argument('store'))
-            ->withFilter(fn ($data) => Eventy::filter('index.category.data', $data))
-            ->withSynonymsFor(['name'])
-            ->index(
-                indexName: 'categories',
-                items: $this->getCategories(...),
-            );
+        $params = new ElasticsearchIndexParameters(
+            dataFilter: fn ($data) => Eventy::filter('index.category.data', $data),
+            indexName: 'categories',
+            stores: $this->argument('store'),
+            synonymsFor: ['name'],
+        );
+
+        $this->index($this->getCategories(...), $params);
 
         return 0;
     }
