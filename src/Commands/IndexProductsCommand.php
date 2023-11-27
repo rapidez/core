@@ -3,7 +3,6 @@
 namespace Rapidez\Core\Commands;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Events\IndexAfterEvent;
 use Rapidez\Core\Events\IndexBeforeEvent;
