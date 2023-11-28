@@ -71,8 +71,6 @@ class ElasticsearchIndexer
 
     public function prepare(string $indexName, array $mapping = [], array $settings = [], array $synonymsFor = []): void
     {
-        $this->createAlias($indexName);
-
         if (count($synonymsFor)) {
             $synonyms = config('rapidez.models.search_synonym')::whereIn('store_id', [0, config('rapidez.store')])
                 ->get()
@@ -88,6 +86,7 @@ class ElasticsearchIndexer
             }
         }
 
+        $this->createAlias($indexName);
         $this->createIndex($this->index, $mapping, $settings);
     }
 
