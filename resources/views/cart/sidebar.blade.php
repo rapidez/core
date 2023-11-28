@@ -7,7 +7,7 @@
         <dt>@lang('Tax')</dt>
         <dd>@{{ cart.prices.applied_taxes[0].amount.value | price }}</dd>
     </div>
-    <div v-if="cart.shipping_addresses.length">
+    <div v-if="cart.shipping_addresses.length && cart.shipping_addresses[0].selected_shipping_method">
         <dt>
             @lang('Shipping')<br>
             <small>@{{ cart.shipping_addresses[0].selected_shipping_method.carrier_title }} - @{{ cart.shipping_addresses[0].selected_shipping_method.method_title }}</small>

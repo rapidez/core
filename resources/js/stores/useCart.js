@@ -62,7 +62,7 @@ export const checkResponseForExpiredCart = async function(response) {
     if (
         response?.data?.parameters?.fieldName == 'quoteId' ||
         response?.status === 404 ||
-        response.data.errors.some(error =>
+        response.data.errors?.some(error =>
             error.extensions.category === 'graphql-no-such-entity' &&
             error.path.some(path => ['cart', 'customerCart', 'assignCustomerToGuestCart', 'mergeCarts', 'addProductsToCart', 'removeItemFromCart', 'updateCartItems'].includes(path))
         )

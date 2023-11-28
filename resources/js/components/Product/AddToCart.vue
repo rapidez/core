@@ -164,7 +164,7 @@ export default {
                     }
                 }
 
-                this.error = error.response.data?.message || error.response.data.errors.map(error => error.message).join('\n');
+                this.error = error.response.data?.message || error.response.data.errors?.map(error => error.message).join('\n');
             })
             .then(() => {
                 this.adding = false
