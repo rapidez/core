@@ -120,7 +120,7 @@ class Rapidez
     {
         $this->compadreVersion ??= (DB::table('setup_module')->where('module', 'Rapidez_Compadre')->value('schema_version') ?? false);
 
-        if (!$this->compadreVersion) {
+        if (! $this->compadreVersion) {
             return false;
         }
 
