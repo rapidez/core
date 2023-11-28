@@ -69,9 +69,25 @@ class ElasticsearchIndexer
         IndexJob::dispatch($this->index, $currentId, $currentValues);
     }
 
-    public function prepare(string $indexName, array $mapping = [], array $settings = []): void
+    public function prepare(string $indexName, array $mapping = [], array $settings = [], array $synonymsFor = []): void
     {
         $this->createAlias($indexName);
+
+        if (count($synonymsFor)) {
+            $synonyms = config('rapidez.models.search_synonym')::whereIn('store_id', [0, config('rapidez.store')])
+                ->get()
+                ->map(fn ($synonym) => $synonym->synonyms)
+                ->toArray();
+
+            data_set($settings, 'index.analysis.filter.synonym', ['type' => 'synonym', 'synonyms' => $synonyms]);
+            data_set($settings, 'index.analysis.analyzer.synonym', ['tokenizer' => 'whitespace', 'filter' => ['synonym']]);
+
+            foreach ($synonymsFor as $property) {
+                data_set($mapping, 'properties.' . $property . '.type', 'text');
+                data_set($mapping, 'properties.' . $property . '.analyzer', 'synonym');
+            }
+        }
+
         $this->createIndex($this->index, $mapping, $settings);
     }
 
