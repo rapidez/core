@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.4.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.4.1...master)
+## [1.4.1](https://github.com/rapidez/core/releases/tag/1.4.1) - 2023-11-24
+
+### Fixed
+
+- Swatches fetch loop bug (#385)
+- Improve slider performance (#384)
+- Throw exception when the store is not found (#386)
+
 ## [1.4.0](https://github.com/rapidez/core/releases/tag/1.4.0) - 2023-11-22
 
 ### Added

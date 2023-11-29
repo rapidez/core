@@ -13,6 +13,8 @@ class IndexCategoriesCommand extends ElasticsearchIndexCommand
 
     public function handle(): int
     {
+        $this->synonymsFor = ['name'];
+
         $this->indexStores(
             stores: Rapidez::getStores($this->argument('store')),
             indexName: 'categories',

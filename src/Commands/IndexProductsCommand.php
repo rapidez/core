@@ -42,7 +42,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                         'type' => 'flattened',
                     ],
                 ],
-            ]), Eventy::filter('index.product.settings', []));
+            ]), Eventy::filter('index.product.settings', []), ['name']);
             try {
                 $maxPositions = CategoryProduct::query()
                     ->selectRaw('GREATEST(MAX(position), 0) as position')
