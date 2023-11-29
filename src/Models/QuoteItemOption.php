@@ -5,7 +5,6 @@ namespace Rapidez\Core\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\DB;
 
-// TODO: Do we still need this model?
 class QuoteItemOption extends Model
 {
     protected $table = 'quote_item_option';
@@ -55,7 +54,6 @@ class QuoteItemOption extends Model
 
     // It would be nice if we could make a HasMany relation from this so it's possible
     // to eager load it but DB::raw() to do the explode within SQL can't be used.
-    // But; this isn't needed when we migrate the cart to GraphQL so keep it.
     protected function option(): Attribute
     {
         return Attribute::make(
