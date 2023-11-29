@@ -78,13 +78,11 @@ export default {
                 query: `mutation (
                     $cartId: String!,
                     $sku: String!,
-                    $parent_sku: String,
                     $quantity: Float!,
                     $selected_options: [ID!],
                     $entered_options: [EnteredOptionInput]
                 ) { addProductsToCart(cartId: $cartId, cartItems: [{
                     sku: $sku,
-                    parent_sku: $parent_sku,
                     quantity: $quantity,
                     selected_options: $selected_options,
                     entered_options: $entered_options
