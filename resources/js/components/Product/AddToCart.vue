@@ -1,4 +1,7 @@
 <script>
+import { checkResponseForExpiredCart } from '../../stores/useCart'
+import { mask } from '../../stores/useMask'
+import { token } from '../../stores/useUser'
 import GetCart from './../Cart/mixins/GetCart'
 import InteractWithUser from './../User/mixins/InteractWithUser'
 
@@ -34,6 +37,7 @@ export default {
         qty: 1,
         options: {},
         customOptions: {},
+        customSelectedOptions: {},
         error: null,
 
         adding: false,
@@ -67,54 +71,98 @@ export default {
             this.adding = true
             await this.getMask()
 
-            this.magentoCart('post', 'items', {
-                cartItem: {
+            // TODO: Maybe make this generic? See: https://github.com/rapidez/core/pull/376
+            // TODO: Use await instead of this chain?
+            // TODO: Maybe migrate to fetch? We don't need axios anymore?
+            axios.post(config.magento_url + '/graphql', {
+                query: `mutation (
+                    $cartId: String!,
+                    $sku: String!,
+                    $quantity: Float!,
+                    $selected_options: [ID!],
+                    $entered_options: [EnteredOptionInput]
+                ) { addProductsToCart(cartId: $cartId, cartItems: [{
+                    sku: $sku,
+                    quantity: $quantity,
+                    selected_options: $selected_options,
+                    entered_options: $entered_options
+                }]) { cart { ` + config.queries.cart + ` } user_errors { code message } } }`,
+                variables: {
                     sku: this.product.sku,
-                    quote_id: localStorage.mask,
-                    qty: this.qty,
-                    product_option: this.productOptions,
-                },
+                    cartId: mask.value,
+                    quantity: this.qty,
+                    selected_options: this.selectedOptions,
+                    entered_options: this.enteredOptions,
+                }
+            }, { headers: { Authorization: `Bearer ${token.value}` } })
+            .then(async (response) => {
+                if ('errors' in response.data) {
+                    throw new axios.AxiosError('Graphql Errors', null, response.config, response.request, response)
+                }
+
+                return response;
             })
-                .then(async (response) => {
-                    this.error = null
-                    await this.refreshCart()
-                    this.added = true
-                    setTimeout(() => {
-                        this.added = false
-                    }, this.addedDuration)
-                    if (this.callback) {
-                        await this.callback(this.product, this.qty)
-                    }
-                    this.$root.$emit('cart-add', {
-                        product: this.product,
-                        qty: this.qty,
-                    })
-                    if (this.notifySuccess) {
-                        Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success', [], window.url('/cart'))
-                    }
-                    if (config.redirect_cart) {
-                        Turbo.visit(window.url('/cart'))
-                    }
+            .then(async (response) => {
+                if (response.data.data.addProductsToCart.user_errors.length) {
+                    throw new Error(response.data.data.addProductsToCart.user_errors[0].message)
+                }
+
+                this.error = null
+                await this.refreshCart({}, response)
+                this.added = true
+                setTimeout(() => {
+                    this.added = false
+                }, this.addedDuration)
+                if (this.callback) {
+                    await this.callback(this.product, this.qty)
+                }
+                this.$root.$emit('cart-add', {
+                    product: this.product,
+                    qty: this.qty,
                 })
-                .catch((error) => {
-                    if (error.response.status == 401) {
-                        Notify(window.config.translations.errors.session_expired, 'error', error.response.data?.parameters)
-                        this.logout(window.url('/login'))
-                    }
-
-                    if (this.expiredCartCheck(error)) {
-                        return
-                    }
-
+                if (this.notifySuccess) {
+                    Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success', [], window.url('/cart'))
+                }
+                if (config.redirect_cart) {
+                    Turbo.visit(window.url('/cart'))
+                }
+            })
+            .catch(async (error) => {
+                if (!axios.isAxiosError(error)) {
                     if (this.notifyError) {
+                        Notify(error.message, 'error')
+                    }
+
+                    this.error = error.message
+                    return
+                }
+
+                if (error.response.status == 401) {
+                    Notify(window.config.translations.errors.session_expired, 'error', error.response.data?.parameters)
+                    this.logout(window.url('/login'))
+                }
+
+                if (await checkResponseForExpiredCart(error.response)) {
+                    return
+                }
+
+                if (this.notifyError) {
+                    if (error?.response?.data?.message) {
                         Notify(error.response.data.message, 'error', error.response.data?.parameters)
                     }
 
-                    this.error = error.response.data.message
-                })
-                .then(() => {
-                    this.adding = false
-                })
+                    if (error?.response?.data?.errors) {
+                        error.response.data.errors.map(error => {
+                            Notify(error.message, 'error')
+                        })
+                    }
+                }
+
+                this.error = error.response.data?.message || error.response.data.errors?.map(error => error.message).join('\n');
+            })
+            .then(() => {
+                this.adding = false
+            })
         },
 
         calculatePrices: function () {
@@ -205,18 +253,26 @@ export default {
             return product
         },
 
-        productOptions: function () {
-            let options = []
-            let customOptions = []
+        selectedOptions: function () {
+            let selectedOptions = []
 
-            Object.entries(this.options).forEach(([key, val]) => {
-                options.push({
-                    option_id: key,
-                    option_value: val,
-                })
+            Object.entries(this.options).forEach(([optionId, optionValue]) => {
+                selectedOptions.push(btoa('configurable/'+optionId+'/'+optionValue))
             })
 
+            Object.entries(this.customSelectedOptions).forEach(([optionId, optionValue]) => {
+                selectedOptions.push(btoa('custom-option/'+optionId+'/'+optionValue))
+            })
+
+            return selectedOptions
+        },
+
+        enteredOptions: function () {
+            let enteredOptions = []
+
             Object.entries(this.customOptions).forEach(([key, val]) => {
+                // TODO: Figure out how this should be send/uploaded with GraphQL.
+                // Maybe we can directly set the correct string in setCustomOptionFile so we don't need this here.
                 if (typeof val === 'string' && val.startsWith('FILE;')) {
                     let [prefix, name, type, data] = val.split(';', 4)
 
@@ -224,33 +280,28 @@ export default {
                         return
                     }
 
-                    customOptions.push({
-                        option_id: key,
-                        option_value: 'file',
-                        extension_attributes: {
-                            file_info: {
-                                base64_encoded_data: data.replace('base64,', ''),
-                                type: type.replace('data:', ''),
-                                name: name,
-                            },
-                        },
+                    enteredOptions.push({
+                        uid: btoa('custom-option/'+key),
+                        value: data.replace('base64,', ''),
+                        // value: {
+                        //     file_info: {
+                        //         base64_encoded_data: data.replace('base64,', ''),
+                        //         type: type.replace('data:', ''),
+                        //         name: name,
+                        //     },
+                        // },
                     })
 
                     return
                 }
 
-                customOptions.push({
-                    option_id: key,
-                    option_value: val,
+                enteredOptions.push({
+                    uid: btoa('custom-option/'+key),
+                    value: val,
                 })
             })
 
-            return {
-                extension_attributes: {
-                    configurable_item_options: options,
-                    custom_options: customOptions,
-                },
-            }
+            return enteredOptions
         },
 
         disabledOptions: function () {

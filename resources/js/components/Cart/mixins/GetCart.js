@@ -1,7 +1,8 @@
+// TODO: It should be possible to remove this whole file?
 import { useLocalStorage } from '@vueuse/core'
-import { cart, refresh as refreshCart, clear as clearCart } from '../../../stores/useCart'
-import { user } from '../../../stores/useUser'
-import { mask, refresh as retrieveMask } from '../../../stores/useMask'
+import { cart, clear as clearCart } from '../../../stores/useCart'
+import { mask, refreshMask } from '../../../stores/useMask'
+import { token, refresh as refreshUser } from '../../../stores/useUser'
 
 export default {
     methods: {
@@ -17,37 +18,24 @@ export default {
             })
         },
 
-        async refreshCart() {
-            return await refreshCart()
-        },
-
         async getMask() {
             if (mask.value) {
                 return mask.value
             }
-            await retrieveMask()
+            await refreshMask()
             return mask.value
         },
 
         async linkUserToCart() {
-            await magentoUser
-                .put('guest-carts/' + mask.value, {
-                    customerId: user.value?.id,
-                    storeId: config.store,
-                })
-                .then(() => {
-                    mask.value = cart.entity_id
-                })
-                .catch((error) => {
-                    Notify(error.response.data.message, 'warning')
-                })
-        },
-
-        expiredCartCheck(error) {
-            if (error.response.data?.parameters?.fieldName == 'quoteId' || error.response.status === 404) {
-                clearCart()
-                Notify(window.config.translations.errors.cart_expired, 'error')
-                return true
+            try {
+                // TODO: Maybe make this generic? See: https://github.com/rapidez/core/pull/376
+                // TODO: Maybe migrate to fetch? We don't need axios anymore?
+                let response = await axios.post(config.magento_url + '/graphql', {
+                    query: 'mutation ($cart_id: String!) { assignCustomerToGuestCart (cart_id: $cart_id) }',
+                    variables: { $cart_id: mask.value }
+                }, { headers: { Authorization: `Bearer ${token.value}`, Store: config.store_code } })
+            } catch(error) {
+                Notify(error.response.data.message, 'warning')
             }
         },
     },

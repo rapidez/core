@@ -1,6 +1,7 @@
 import { useLocalStorage, useSessionStorage, StorageSerializers } from '@vueuse/core'
 import { clear as clearCart } from './useCart'
 import { computed, watch } from 'vue'
+import Jwt from '../jwt'
 
 export const token = useLocalStorage('token', '')
 const userStorage = useSessionStorage('user', {}, { serializer: StorageSerializers.object })
@@ -17,6 +18,13 @@ export const refresh = async function () {
         return
     }
 
+    if (Jwt.isJwt(token.value) && Jwt.decode(token.value)?.isExpired()) {
+        Notify(window.config.translations.errors.session_expired, 'error')
+        await clear()
+
+        return false
+    }
+
     try {
         isRefreshing = true
         window.magentoUser.defaults.headers.common['Authorization'] = `Bearer ${token.value}`
@@ -26,7 +34,9 @@ export const refresh = async function () {
         userStorage.value = !token.value ? {} : response.data
     } catch (error) {
         if (error.response.status == 401) {
-            token.value = ''
+            Notify(window.config.translations.errors.session_expired, 'error')
+            await clear()
+
             return false
         }
 

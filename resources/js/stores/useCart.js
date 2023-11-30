@@ -1,45 +1,50 @@
-import { useSessionStorage, StorageSerializers, useLocalStorage } from '@vueuse/core'
+import { StorageSerializers, useLocalStorage } from '@vueuse/core'
 import { computed, watch } from 'vue'
-import { mask, clear as clearMask } from './useMask'
-import { token } from './useUser'
+import { mask, clearMask } from './useMask'
+import { token, refresh as refreshUser } from './useUser'
 
-const cartStorage = useSessionStorage('cart', {}, { serializer: StorageSerializers.object })
-let hasRefreshed = false
-let isRefreshing = false
+const cartStorage = useLocalStorage('cart', {}, { serializer: StorageSerializers.object })
+export let age = 0;
 
-export const refresh = async function () {
-    hasRefreshed = true
-    if (!mask.value && !token.value) {
+export const refresh = async function (force = false) {
+    if (!mask.value) {
         cartStorage.value = {}
-        return false
+        return false;
     }
 
-    if (isRefreshing) {
-        console.debug('Refresh canceled, request already in progress...')
-        return
+    if (!force && Date.now() - age < 5000) {
+        // The latest cart info is 5 seconds old, we do not need to refresh.
+        return;
     }
 
-    try {
-        isRefreshing = true
-        let response = await axios
-            .get(window.url('/api/cart'), { headers: { Authorization: 'Bearer ' + (token.value || mask.value) } })
-            .finally(() => {
-                isRefreshing = false
-            })
-        cartStorage.value = !mask.value && !token.value ? {} : response.data
-        window.app.$emit('cart-refreshed')
-    } catch (error) {
-        if (error.response.status == 404) {
-            mask.value = null
-            cartStorage.value = {}
-            return false
+    age = Date.now();
+
+    await axios.post(config.magento_url + '/graphql', {
+        query: `query getCart($cart_id: String!) { cart (cart_id: $cart_id) { ${config.queries.cart} } }`,
+        variables: {
+            cart_id: mask.value,
         }
+    }, { headers: { Authorization: `Bearer ${token.value}` } })
+        .then(async (response) => {
+            if ('errors' in response.data) {
+                throw new axios.AxiosError('Graphql Errors', null, response.config, response.request, response)
+            }
 
-        Notify(window.config.translations.errors.wrong, 'warning')
-        console.error(error)
+            return response;
+        })
+        .then(async (response) => {
+            cart.value = Object.values(response.data.data)[0];
+        })
+        .catch((error) => {
+            if (!error?.response) {
+                return error
+            }
 
-        return false
-    }
+            checkResponseForExpiredCart(error.response);
+            return error
+        })
+
+    return true;
 }
 
 export const clear = async function () {
@@ -53,21 +58,43 @@ export const clearAddresses = async function () {
     useLocalStorage('shipping_address').value = null
 }
 
+export const checkResponseForExpiredCart = async function(response) {
+    if (
+        response?.data?.parameters?.fieldName == 'quoteId' ||
+        response?.status === 404 ||
+        response.data.errors?.some(error =>
+            error.extensions.category === 'graphql-no-such-entity' &&
+            error.path.some(path => ['cart', 'customerCart', 'assignCustomerToGuestCart', 'mergeCarts', 'addProductsToCart', 'removeItemFromCart', 'updateCartItems'].includes(path))
+        )
+     ) {
+         Notify(window.config.translations.errors.cart_expired, 'error')
+         clear()
+         if (token.value !== undefined) {
+             // If the cart has expired, check if the session is not expired
+             refreshUser()
+         }
+
+         return true
+     }
+
+     return false;
+}
+
 export const cart = computed({
     get() {
-        if (!cartStorage.value?.entity_id && mask.value) {
+        if (!cartStorage.value?.id && mask.value) {
             refresh()
         }
+
         return cartStorage.value
     },
     set(value) {
         cartStorage.value = value
+        age = Date.now();
     },
 })
 
 // If mask gets added, updated or removed we should update the cart.
 watch(mask, refresh)
-// refresh the cart on first pageload after a while
-window.setTimeout(() => window.requestIdleCallback(() => !hasRefreshed && refresh()), 5000)
 
 export default () => cart

@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+// TODO: Anyone a better name for this?
+use Illuminate\View\View as ViewView;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
 use Rapidez\Core\Auth\MagentoCustomerTokenGuard;
 use Rapidez\Core\Commands\IndexCategoriesCommand;
@@ -242,6 +244,10 @@ class RapidezServiceProvider extends ServiceProvider
             return $this->filter(function ($value) {
                 return in_array($value->store_id, [config('rapidez.store'), 0]);
             })->sortByDesc('store_id')->first();
+        });
+
+        ViewView::macro('renderOneliner', function () {
+            return trim(preg_replace('/\s+/', ' ', $this->render()));
         });
 
         return $this;

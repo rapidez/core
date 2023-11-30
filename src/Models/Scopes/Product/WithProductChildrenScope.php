@@ -30,6 +30,7 @@ class WithProductChildrenScope implements Scope
         $builder
             ->selectRaw('JSON_REMOVE(JSON_OBJECTAGG(IFNULL(children.entity_id, "null__"), JSON_OBJECT(
                 ' . Eventy::filter('product.children.select', <<<QUERY
+                    "sku", children.sku,
                     "price", children.price,
                     "special_price", children.special_price,
                     "special_from_date", DATE(children.special_from_date),
