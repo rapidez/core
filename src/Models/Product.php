@@ -108,6 +108,15 @@ class Product extends Model
         );
     }
 
+    public function categoryProducts(): HasMany
+    {
+        return $this
+            ->hasMany(
+                config('rapidez.models.category_product'),
+                'product_id',
+            );
+    }
+
     public function rewrites(): HasMany
     {
         return $this

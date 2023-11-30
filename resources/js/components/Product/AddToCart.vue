@@ -74,27 +74,21 @@ export default {
             // TODO: Maybe make this generic? See: https://github.com/rapidez/core/pull/376
             // TODO: Use await instead of this chain?
             // TODO: Maybe migrate to fetch? We don't need axios anymore?
-            // TODO: Check why configurable products are added as simple product. See: https://github.com/magento/devdocs/issues/9493
-            // There is also an alternative way: https://developer.adobe.com/commerce/webapi/graphql/schema/cart/mutations/add-products/#specify-the-sku-with-selected-options
-            // But then we need the encoded values
             axios.post(config.magento_url + '/graphql', {
                 query: `mutation (
                     $cartId: String!,
                     $sku: String!,
-                    $parent_sku: String,
                     $quantity: Float!,
                     $selected_options: [ID!],
                     $entered_options: [EnteredOptionInput]
                 ) { addProductsToCart(cartId: $cartId, cartItems: [{
                     sku: $sku,
-                    parent_sku: $parent_sku,
                     quantity: $quantity,
                     selected_options: $selected_options,
                     entered_options: $entered_options
                 }]) { cart { ` + config.queries.cart + ` } user_errors { code message } } }`,
                 variables: {
-                    sku: this.simpleProduct.sku,
-                    parent_sku: this.product.sku,
+                    sku: this.product.sku,
                     cartId: mask.value,
                     quantity: this.qty,
                     selected_options: this.selectedOptions,
@@ -262,6 +256,10 @@ export default {
         selectedOptions: function () {
             let selectedOptions = []
 
+            Object.entries(this.options).forEach(([optionId, optionValue]) => {
+                selectedOptions.push(btoa('configurable/'+optionId+'/'+optionValue))
+            })
+
             Object.entries(this.customSelectedOptions).forEach(([optionId, optionValue]) => {
                 selectedOptions.push(btoa('custom-option/'+optionId+'/'+optionValue))
             })
@@ -360,6 +358,12 @@ export default {
 
     watch: {
         customOptions: {
+            handler() {
+                this.calculatePrices()
+            },
+            deep: true,
+        },
+        options: {
             handler() {
                 this.calculatePrices()
             },

@@ -1,9 +1,6 @@
 <?php
 
 return [
-    // Should the stock qty be exposed and indexed within Elasticsearch?
-    'expose_stock' => false,
-
     // The variables which should be exposed to the frontend.
     'exposed' => [
         'store',
@@ -14,7 +11,7 @@ return [
         'notifications',
         'checkout_steps',
         'flushable_localstorage_keys',
-        'customer_fields_show',
+        'show_customer_address_fields',
     ],
 
     // The attribute codes of product attributes used in the cart, used to fetch option values

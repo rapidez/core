@@ -2,7 +2,6 @@
 
 namespace Rapidez\Core\Models;
 
-// TODO: Do we still need this model?
 class QuoteItem extends Model
 {
     protected $table = 'quote_item';

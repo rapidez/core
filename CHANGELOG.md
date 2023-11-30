@@ -1,6 +1,62 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.0.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.4.1...master)
+## [1.4.1](https://github.com/rapidez/core/releases/tag/1.4.1) - 2023-11-24
+
+### Fixed
+
+- Swatches fetch loop bug (#385)
+- Improve slider performance (#384)
+- Throw exception when the store is not found (#386)
+
+## [1.4.0](https://github.com/rapidez/core/releases/tag/1.4.0) - 2023-11-22
+
+### Added
+
+- Support for image disabled option (#381)
+- Position per category support (#382)
+
+### Fixed
+
+- Clear cart storage when not found (#383)
+
+## [1.3.0](https://github.com/rapidez/core/releases/tag/1.3.0) - 2023-11-14
+
+### Added
+
+- Added special price and priceValidUntil to microdata (#380)
+
+### Fixed
+
+- Support MSP way of saving method_title (#379)
+
+## [1.2.0](https://github.com/rapidez/core/releases/tag/1.2.0) - 2023-11-07
+
+### Added
+
+- Implemented customer address prefix, suffix, vat_id and fax (#373)
+
+### Fixed
+
+- Use new config path (#375)
+
+## [1.1.0](https://github.com/rapidez/core/releases/tag/1.1.0) - 2023-11-03
+
+### Changed
+
+- Indexer config with visibility option (#369)
+
+## [1.0.1](https://github.com/rapidez/core/releases/tag/1.0.1) - 2023-11-01
+
+### Fixed
+
+- Avoid error in console (#365)
+- Set mutating to false in a finally (#366)
+- Remove old button component (#367)
+- Use dragOnClick and disable keyboard for the price filter (#368)
+- Use data_get to allow both stdClass & arrays to be used (#370)
+- Update prices when super attribute option is changed (#371)
+
 ## [1.0.0](https://github.com/rapidez/core/releases/tag/1.0.0) - 2023-10-19
 
 ### Added
@@ -38,8 +94,7 @@
 - Wrap raw query parts (#352)
 - Make slidesTotal a computed property (#346)
 - Passive listeners and key instead of keyCode in product image component (#350)
-- Translatable cart title (7a6c533)
-- Translatable checkout title (2a68e8b)
+- Translatable cart + checkout title (7a6c533, 2a68e8b)
 
 ## [0.96.1](https://github.com/rapidez/core/releases/tag/0.96.1) - 2023-10-19
 

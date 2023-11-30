@@ -67,7 +67,7 @@
             </div>
             <div class="w-full p-8 bg-highlight rounded border-l-2 border-neutral mt-4 md:mt-0 md:w-1/2">
                 <p class="text-neutral font-lg font-bold mb-2">@lang('Payment method')</p>
-                <p v-for="method in order.sales_order_payments">@{{ method.additional_information.method_title }}</p>
+                <p v-for="method in order.sales_order_payments">@{{ method.additional_information.method_title || method.additional_information.raw_details_info.method_title }}</p>
             </div>
         </div>
     </div>
