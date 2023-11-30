@@ -108,6 +108,7 @@ export default {
                     useLocalStorage(this.cachePrefix + this.cache, null, { serializer: StorageSerializers.object }).value = this.data
                 }
             } catch (e) {
+                console.error(e);
                 Notify(window.config.translations.errors.wrong, 'warning')
             }
         },
