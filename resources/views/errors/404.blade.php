@@ -6,6 +6,14 @@
 @section('title', $page->meta_title ?: $page->title)
 @section('description', $page->meta_description)
 
+@push('head')
+    <script>
+        document.addEventListener('turbo:load', function() {
+            window.Turbo.session.drive = false;
+        });
+    </script>
+@endpush
+
 @section('content')
     <div class="container">
         <h1 class="mb-5 text-4xl font-bold">{{ $page->content_heading }}</h1>

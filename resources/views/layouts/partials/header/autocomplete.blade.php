@@ -12,6 +12,7 @@
     v-if="$root.loadAutocomplete"
     v-cloak
     :additionals="{ categories: ['name^3', 'meta_description^1'] }"
+    class="w-full"
 >
     <x-rapidez::reactive-base slot-scope="{ results, searchAdditionals, additionals }">
         <data-search
@@ -19,7 +20,9 @@
             v-on:value-selected="search"
             component-id="autocomplete"
             :inner-class="{ input: '{{ $inputClasses }}' }"
-            class="[&_*]:!m-0 [&_[isclearicon=]]:!mr-2"
+            {{-- These classes are only used when you come from a page with a product listing, --}}
+            {{-- click on a link that leads to a 404 page and try to use the search there --}}
+            class="relative [&_*]:!m-0 [&_[isclearicon=]]:!mr-2 [&_.cancel-icon]:!fill-[#595959] [&_[groupposition=right]]:!absolute [&_[groupposition=right]]:!top-2/4 [&_[groupposition=right]]:!right-0 [&_[groupposition=right]]:!-translate-y-2/4"
             :data-field="Object.keys(config.searchable)"
             :field-weights="Object.values(config.searchable)"
             :show-icon="false"

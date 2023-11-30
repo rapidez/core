@@ -38,19 +38,21 @@ class ConfigComposer
         Config::set('frontend.show_swatches', (bool) Rapidez::config('catalog/frontend/show_swatches_in_product_list'));
         Config::set('frontend.translations', __('rapidez::frontend'));
         Config::set('frontend.recaptcha', Rapidez::config('recaptcha_frontend/type_recaptcha_v3/public_key', null, true));
-        Config::set('frontend.searchable', array_merge($searchableAttributes, config('rapidez.searchable')));
-        Config::set('frontend.customer_fields_show', $this->getCustomerFields());
+        Config::set('frontend.searchable', array_merge($searchableAttributes, config('rapidez.indexer.searchable')));
+        Config::set('frontend.show_customer_address_fields', $this->getCustomerAddressFields());
         Config::set('frontend.grid_per_page', Rapidez::config('catalog/frontend/grid_per_page', 12));
         Config::set('frontend.grid_per_page_values', explode(',', Rapidez::config('catalog/frontend/grid_per_page_values', '12,24,36')));
         Config::set('frontend.queries.cart', view('rapidez::cart.queries.cart')->renderOneliner());
     }
 
-    public function getCustomerFields()
+    public function getCustomerAddressFields()
     {
         return [
+            'prefix'      => strlen(Rapidez::config('customer/address/prefix_options', '')) ? Rapidez::config('customer/address/prefix_show', 'opt') : 'opt',
             'firstname'   => 'req',
             'middlename'  => Rapidez::config('customer/address/middlename_show', 0) ? 'opt' : false,
             'lastname'    => 'req',
+            'suffix'      => strlen(Rapidez::config('customer/address/suffix_options', '')) ? Rapidez::config('customer/address/suffix_show', 'opt') : 'opt',
             'postcode'    => 'req',
             'housenumber' => Rapidez::config('customer/address/street_lines', 3) >= 2 ? 'req' : false,
             'addition'    => Rapidez::config('customer/address/street_lines', 3) >= 3 ? 'opt' : false,
@@ -59,6 +61,8 @@ class ConfigComposer
             'country_id'  => 'req',
             'telephone'   => Rapidez::config('customer/address/telephone_show', 'req'),
             'company'     => Rapidez::config('customer/address/company_show', 'opt'),
+            'vat_id'      => Rapidez::config('customer/address/taxvat_show', 'opt'),
+            'fax'         => Rapidez::config('customer/address/fax_show', 'opt'),
         ];
     }
 }
