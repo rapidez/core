@@ -14,6 +14,12 @@ return [
         'show_customer_address_fields',
     ],
 
+    // The attribute codes of product attributes used in the cart, used to fetch option values
+    'cart_attributes' => [
+        // 'manufacturer',
+        // 'color',
+    ],
+
     // The checkout steps which are used to name the steps
     // in the url and in the progressbar on steps. You can
     // add different steps for different stores. Keep
