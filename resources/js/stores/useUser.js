@@ -27,24 +27,17 @@ export const refresh = async function () {
 
     try {
         isRefreshing = true
-        window.magentoUser.defaults.headers.common['Authorization'] = `Bearer ${token.value}`
-        let response = await magentoUser.get('customers/me').finally(() => {
-            isRefreshing = false
-        })
-        userStorage.value = !token.value ? {} : response.data
+        // TODO: Migrate to GraphQL?
+        userStorage.value = await window.magentoAPI('customers/me', 'GET', {}, {}, false) || {}
+        isRefreshing = false
     } catch (error) {
-        if (error.response.status == 401) {
-            Notify(window.config.translations.errors.session_expired, 'error')
-            await clear()
-
-            return false
-        }
-
         console.error(error)
-        return false
-    }
+        Notify(error.message, 'error')
 
-    return true
+        if (error instanceof SessionExpired) {
+            await clear()
+        }
+    }
 }
 
 export const clear = async function () {

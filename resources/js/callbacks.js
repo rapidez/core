@@ -9,9 +9,9 @@ Vue.prototype.scrollToElement = (selector) => {
 }
 
 Vue.prototype.refreshCart = async function (data, response) {
-    cart.value = 'cart' in Object.values(response.data.data)[0]
-        ? Object.values(response.data.data)[0].cart
-        : Object.values(response.data.data)[0]
+    cart.value = 'cart' in Object.values(response.data)[0]
+        ? Object.values(response.data)[0].cart
+        : Object.values(response.data)[0]
 
-    return response.data.data
+    return response.data
 }

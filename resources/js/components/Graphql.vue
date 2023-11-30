@@ -57,43 +57,12 @@ export default {
 
         async runQuery() {
             try {
-                let options = { headers: {} }
+                let response = await window.magentoGraphQL(this.query, this.variables)
 
-                if (token.value) {
-                    options['headers']['Authorization'] = `Bearer ${token.value}`
-                }
-
-                if (window.config.store_code) {
-                    options['headers']['Store'] = window.config.store_code
-                }
-
-                let response = await axios.post(
-                    config.magento_url + '/graphql',
-                    {
-                        query: this.query,
-                        variables: this.variables,
-                    },
-                    options,
-                ).then((response) => {
-                    if (!response.data?.errors?.length) {
-                        return response;
-                    }
-
-                    throw new axios.AxiosError('Graphql Errors', null, response.config, response.request, response)
-                }).catch(async (error) => {
-                    if (await checkResponseForExpiredCart(error.response)) {
-                        return;
-                    }
-
-                    error.response.data.errors.map(error => {
-                        Notify(error.message, 'error')
-
-                        if (error.extensions.category === 'graphql-authorization') {
-                            this.logout(window.url('/login'))
-                        }
-                    })
-
-                })
+                // TODO: Check this, still useful? Is this where we should handle this?
+                // if (await checkResponseForExpiredCart(error.response)) {
+                //     return;
+                // }
 
                 if (this.check) {
                     if (!eval('response.data.' + this.check)) {
@@ -107,7 +76,8 @@ export default {
                 if (this.cache) {
                     useLocalStorage(this.cachePrefix + this.cache, null, { serializer: StorageSerializers.object }).value = this.data
                 }
-            } catch (e) {
+            } catch (error) {
+                console.error(error)
                 Notify(window.config.translations.errors.wrong, 'warning')
             }
         },

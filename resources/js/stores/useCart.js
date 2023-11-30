@@ -19,32 +19,23 @@ export const refresh = async function (force = false) {
 
     age = Date.now();
 
-    await axios.post(config.magento_url + '/graphql', {
-        query: `query getCart($cart_id: String!) { cart (cart_id: $cart_id) { ${config.queries.cart} } }`,
-        variables: {
-            cart_id: mask.value,
+    try {
+        let response = await window.magentoGraphQL(
+            `query getCart($cart_id: String!) { cart (cart_id: $cart_id) { ${config.queries.cart} } }`,
+            { cart_id: mask.value }
+        )
+
+        if ('errors' in response.data) {
+            // TODO: Double check
+            throw new Error('Graphql Errors', null, response.config, response.request, response)
         }
-    }, { headers: { Authorization: `Bearer ${token.value}` } })
-        .then(async (response) => {
-            if ('errors' in response.data) {
-                throw new axios.AxiosError('Graphql Errors', null, response.config, response.request, response)
-            }
 
-            return response;
-        })
-        .then(async (response) => {
-            cart.value = Object.values(response.data.data)[0];
-        })
-        .catch((error) => {
-            if (!error?.response) {
-                return error
-            }
-
-            checkResponseForExpiredCart(error.response);
-            return error
-        })
-
-    return true;
+        cart.value = Object.values(response.data)[0];
+    } catch (error) {
+        // TODO: Double check
+        checkResponseForExpiredCart(error.response);
+        console.error(error)
+    }
 }
 
 export const clear = async function () {
@@ -58,6 +49,7 @@ export const clearAddresses = async function () {
     useLocalStorage('shipping_address').value = null
 }
 
+// TODO: Check, is this the way to go? And the place where this should be checked?
 export const checkResponseForExpiredCart = async function(response) {
     if (
         response?.data?.parameters?.fieldName == 'quoteId' ||
@@ -83,7 +75,8 @@ export const checkResponseForExpiredCart = async function(response) {
 export const cart = computed({
     get() {
         if (!cartStorage.value?.id && mask.value) {
-            refresh()
+            // TODO: Check as we don't want this all the time.
+            // refresh()
         }
 
         return cartStorage.value
@@ -94,7 +87,8 @@ export const cart = computed({
     },
 })
 
+// TODO: Check as we don't want this all the time.
 // If mask gets added, updated or removed we should update the cart.
-watch(mask, refresh)
+// watch(mask, refresh)
 
 export default () => cart

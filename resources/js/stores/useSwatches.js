@@ -1,3 +1,4 @@
+// TODO: In this file there is a lot of duplication compared to useAttributes. Can we improve that?
 import { computedAsync, useLocalStorage } from '@vueuse/core'
 
 export const swatchesStorage = useLocalStorage('swatches', {})
@@ -12,24 +13,13 @@ export const refresh = async function () {
 
     try {
         isRefreshing = true
-        var response = await axios.get(window.url('/api/swatches')).finally(() => {
-            isRefreshing = false
-        })
+        swatchesStorage.value = await window.rapidezAPI('swatches') || {}
+        isRefreshing = false
+        hasFetched = true
     } catch (error) {
         console.error(error)
         Notify(window.config.translations.errors.wrong, 'error')
-
-        return false
     }
-
-    if (response === undefined || !response.data) {
-        return false
-    }
-
-    hasFetched = true
-    swatchesStorage.value = response.data
-
-    return true
 }
 
 export const clear = async function () {

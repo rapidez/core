@@ -100,18 +100,10 @@ export default {
             this.error = false
 
             try {
-                let options = { headers: {} }
-
-                if (this.$root.loggedIn) {
-                    options['headers']['Authorization'] = `Bearer ${localStorage.token}`
-                }
+                let headers = {}
 
                 if (this.recaptcha) {
-                    options['headers']['X-ReCaptcha'] = await this.getReCaptchaToken()
-                }
-
-                if (window.config.store_code) {
-                    options['headers']['Store'] = window.config.store_code
+                    headers['X-ReCaptcha'] = await this.getReCaptchaToken()
                 }
 
                 let variables = this.data,
@@ -121,27 +113,17 @@ export default {
                     ;[query, variables, options] = await this.beforeRequest(this.query, this.variables, options)
                 }
 
-                let response = await axios.post(
-                    config.magento_url + '/graphql',
-                    {
-                        query: query,
-                        variables: variables,
-                    },
-                    options,
-                )
+                let response = await magentoGraphQL(query, variables, headers)
 
+                // TODO: Not sure where this is used, we should check that.
                 if (response.data.errors) {
                     if (this.errorCallback) {
                         await this.errorCallback(this.data, response)
                         return
                     }
 
-                    if (response.data.errors[0]?.extensions?.category == 'graphql-authorization') {
-                        this.logout(window.url('/login'))
-                        return
-                    }
-
                     this.error = response.data.errors[0].message
+
                     if (this.alert) {
                         Notify(response.data.errors[0].message, 'error')
                     }
@@ -178,7 +160,9 @@ export default {
                     }
                     Turbo.visit(window.url(this.redirect))
                 }
-            } catch (e) {
+            } catch (error) {
+                console.error(error)
+                this.error = error.message
                 Notify(window.config.translations.errors.wrong, 'warning')
             } finally {
                 this.mutating = false

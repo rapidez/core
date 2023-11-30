@@ -69,100 +69,82 @@ export default {
 
             this.added = false
             this.adding = true
+            this.error = null
             await this.getMask()
 
-            // TODO: Maybe make this generic? See: https://github.com/rapidez/core/pull/376
-            // TODO: Use await instead of this chain?
-            // TODO: Maybe migrate to fetch? We don't need axios anymore?
-            axios.post(config.magento_url + '/graphql', {
-                query: `mutation (
-                    $cartId: String!,
-                    $sku: String!,
-                    $quantity: Float!,
-                    $selected_options: [ID!],
-                    $entered_options: [EnteredOptionInput]
-                ) { addProductsToCart(cartId: $cartId, cartItems: [{
-                    sku: $sku,
-                    quantity: $quantity,
-                    selected_options: $selected_options,
-                    entered_options: $entered_options
-                }]) { cart { ` + config.queries.cart + ` } user_errors { code message } } }`,
-                variables: {
-                    sku: this.product.sku,
-                    cartId: mask.value,
-                    quantity: this.qty,
-                    selected_options: this.selectedOptions,
-                    entered_options: this.enteredOptions,
-                }
-            }, { headers: { Authorization: `Bearer ${token.value}` } })
-            .then(async (response) => {
-                if ('errors' in response.data) {
-                    throw new axios.AxiosError('Graphql Errors', null, response.config, response.request, response)
+            try {
+                let response = await window.magentoGraphQL(
+                    `mutation (
+                        $cartId: String!,
+                        $sku: String!,
+                        $quantity: Float!,
+                        $selected_options: [ID!],
+                        $entered_options: [EnteredOptionInput]
+                    ) { addProductsToCart(cartId: $cartId, cartItems: [{
+                        sku: $sku,
+                        quantity: $quantity,
+                        selected_options: $selected_options,
+                        entered_options: $entered_options
+                    }]) { cart { ` + config.queries.cart + ` } user_errors { code message } } }`,
+                    {
+                        sku: this.product.sku,
+                        cartId: mask.value,
+                        quantity: this.qty,
+                        selected_options: this.selectedOptions,
+                        entered_options: this.enteredOptions,
+                    }
+                )
+
+                if (response.data.addProductsToCart.user_errors.length) {
+                    throw new Error(response.data.addProductsToCart.user_errors[0].message)
                 }
 
-                return response;
-            })
-            .then(async (response) => {
-                if (response.data.data.addProductsToCart.user_errors.length) {
-                    throw new Error(response.data.data.addProductsToCart.user_errors[0].message)
-                }
-
-                this.error = null
                 await this.refreshCart({}, response)
+
                 this.added = true
-                setTimeout(() => {
-                    this.added = false
-                }, this.addedDuration)
+                setTimeout(() => { this.added = false }, this.addedDuration)
+
                 if (this.callback) {
                     await this.callback(this.product, this.qty)
                 }
-                this.$root.$emit('cart-add', {
-                    product: this.product,
-                    qty: this.qty,
-                })
+
+                this.$root.$emit('cart-add', { product: this.product, qty: this.qty })
+
                 if (this.notifySuccess) {
                     Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success', [], window.url('/cart'))
                 }
+
                 if (config.redirect_cart) {
                     Turbo.visit(window.url('/cart'))
                 }
-            })
-            .catch(async (error) => {
-                if (!axios.isAxiosError(error)) {
-                    if (this.notifyError) {
-                        Notify(error.message, 'error')
-                    }
-
-                    this.error = error.message
-                    return
-                }
-
-                if (error.response.status == 401) {
-                    Notify(window.config.translations.errors.session_expired, 'error', error.response.data?.parameters)
-                    this.logout(window.url('/login'))
-                }
-
-                if (await checkResponseForExpiredCart(error.response)) {
-                    return
-                }
+            } catch (error) {
+                console.error(error)
+                this.error = error.message
 
                 if (this.notifyError) {
-                    if (error?.response?.data?.message) {
-                        Notify(error.response.data.message, 'error', error.response.data?.parameters)
-                    }
-
-                    if (error?.response?.data?.errors) {
-                        error.response.data.errors.map(error => {
-                            Notify(error.message, 'error')
-                        })
-                    }
+                    Notify(error.message, 'error')
                 }
 
-                this.error = error.response.data?.message || error.response.data.errors?.map(error => error.message).join('\n');
-            })
-            .then(() => {
-                this.adding = false
-            })
+                // TODO: Which of these error checks are still relevant?
+
+                // if (error?.response?.data?.message) {
+                //     Notify(error.response.data.message, 'error', error.response.data?.parameters)
+                // }
+
+                // if (error?.response?.data?.errors) {
+                //     error.response.data.errors.map(error => {
+                //         Notify(error.message, 'error')
+                //     })
+                // }
+
+                // if (await checkResponseForExpiredCart(error.response)) {
+                //     return
+                // }
+
+                // this.error = error.response.data?.message || error.response.data.errors?.map(error => error.message).join('\n');
+            }
+
+            this.adding = false
         },
 
         calculatePrices: function () {
