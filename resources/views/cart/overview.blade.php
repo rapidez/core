@@ -13,7 +13,8 @@
             v-if="window.app.mask"
             :query="'query getCart($cart_id: String!) { cart (cart_id: $cart_id) { ' + config.queries.cart + ' } }'"
             :variables="{ cart_id: window.app.mask }"
-            :callback="refreshCart"
+            :callback="updateCart"
+            :error-callback="checkResponseForExpiredCart"
             v-cloak
         >
             <div>
@@ -37,8 +38,9 @@
                             @include('rapidez::cart.sidebar')
                         </div>
                     </div>
+
                     <x-rapidez::productlist
-                        value="[...new Set(cart.items.map((item) => item.product.crosssell_products.map((crosssell) => crosssell.id)).flat())]"
+                        value="cart.items.flatMap((item) => item.product.crosssell_products.map((crosssell) => crosssell.id))"
                         title="More choices to go with your product"
                         field="id"
                     />

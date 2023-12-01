@@ -1,8 +1,6 @@
 <script>
 import InteractWithUser from './User/mixins/InteractWithUser'
 import { useLocalStorage, StorageSerializers } from '@vueuse/core'
-import { token } from '../stores/useUser'
-import { checkResponseForExpiredCart } from '../stores/useCart'
 
 export default {
     mixins: [InteractWithUser],
@@ -27,6 +25,10 @@ export default {
         },
         callback: {
             type: Function,
+        },
+        errorCallback: {
+            type: Function,
+            default: (error) => Notify(window.config.translations.errors.wrong, 'warning')
         },
     },
 
@@ -78,7 +80,7 @@ export default {
                 }
             } catch (error) {
                 console.error(error)
-                Notify(window.config.translations.errors.wrong, 'warning')
+                this.errorCallback(error);
             }
         },
     },

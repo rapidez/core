@@ -15,6 +15,7 @@ export const refresh = async function () {
         attributesStorage.value = await window.rapidezAPI('attributes') || {}
         isRefreshing = false
     } catch (error) {
+        isRefreshing = false
         console.error(error)
         Notify(window.config.translations.errors.wrong, 'error')
     }
