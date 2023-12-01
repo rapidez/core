@@ -35,50 +35,28 @@ export default {
 
     methods: {
         async getShippingMethods() {
-            try {
-                let response = await this.magentoCart('post', 'estimate-shipping-methods', {
-                    address: {
-                        country_id: this.checkout.shipping_address.country_id,
-                    },
-                })
-                this.checkout.shipping_methods = response.data
+            let responseData = await this.magentoCart('post', 'estimate-shipping-methods', {
+                address: {
+                    country_id: this.checkout.shipping_address.country_id,
+                },
+            })
+            this.checkout.shipping_methods = responseData
 
-                if (response.data.length === 1) {
-                    this.checkout.shipping_method = response.data[0].carrier_code + '_' + response.data[0].method_code
-                }
-
-                return true
-            } catch (error) {
-                if ([401, 404].includes(error.response.status)) {
-                    this.logout(window.url('/login'))
-                } else {
-                    Notify(error.response.data.message, 'error', error.response.data?.parameters)
-                }
-                return false
+            if (responseData.length === 1) {
+                this.checkout.shipping_method = responseData[0].carrier_code + '_' + responseData[0].method_code
             }
         },
 
         async getTotalsInformation() {
-            try {
-                let response = await this.magentoCart('post', 'totals-information', {
-                    addressInformation: {
-                        address: {
-                            countryId: this.checkout.shipping_address.country_id,
-                        },
+            let responseData = await this.magentoCart('post', 'totals-information', {
+                addressInformation: {
+                    address: {
+                        countryId: this.checkout.shipping_address.country_id,
                     },
-                })
+                },
+            })
 
-                this.checkout.totals = response.data
-
-                return true
-            } catch (error) {
-                if ([401, 404].includes(error.response.status)) {
-                    this.logout(window.url('/login'))
-                } else {
-                    Notify(error.response.data.message, 'error', error.response.data?.parameters)
-                }
-                return false
-            }
+            this.checkout.totals = responseData
         },
 
         async save(savedItems, targetStep) {
@@ -152,21 +130,16 @@ export default {
                     })
                 }
 
-                let response = await this.magentoCart('post', 'shipping-information', {
+                let responseData = await this.magentoCart('post', 'shipping-information', {
                     addressInformation: addressInformation,
                 })
 
-                this.checkout.payment_methods = response.data.payment_methods
-                this.checkout.totals = response.data.totals
+                this.checkout.payment_methods = responseData.payment_methods
+                this.checkout.totals = responseData.totals
                 this.$root.$emit('checkout-credentials-saved')
                 return true
             } catch (error) {
                 console.error(error)
-                Notify(
-                    error?.response?.data?.message ?? window.config.translations.errors.wrong,
-                    'error',
-                    error?.response?.data?.parameters,
-                )
                 return false
             }
         },
@@ -203,7 +176,7 @@ export default {
         },
 
         async selectShippingMethod() {
-            let response = await this.magentoCart('post', 'shipping-information', {
+            let responseData = await this.magentoCart('post', 'shipping-information', {
                 addressInformation: {
                     shipping_address: this.shippingAddress,
                     billing_address: this.billingAddress,
@@ -211,7 +184,7 @@ export default {
                     shipping_method_code: this.currentShippingMethod.method_code,
                 },
             })
-            this.checkout.totals = response.data.totals
+            this.checkout.totals = responseData.totals
         },
 
         async selectPaymentMethod() {

@@ -28,14 +28,13 @@ export const refresh = async function () {
     try {
         isRefreshing = true
         // TODO: Migrate to GraphQL?
-        userStorage.value = await window.magentoAPI('customers/me', 'GET', {}, {}, false) || {}
+        userStorage.value = await window.magentoAPI('GET', 'customers/me', {}, { redirectOnExpiration: false }) || {}
         isRefreshing = false
     } catch (error) {
-        console.error(error)
-        Notify(error.message, 'error')
-
         if (error instanceof SessionExpired) {
             await clear()
+        } else {
+            throw error
         }
     }
 }

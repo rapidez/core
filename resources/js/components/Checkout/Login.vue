@@ -63,21 +63,18 @@ export default {
         },
 
         checkEmailAvailability() {
-            magento
-                .post('customers/isEmailAvailable', {
-                    customerEmail: this.email,
+            let responseData = window.magentoAPI('post', 'customers/isEmailAvailable', {
+                customerEmail: this.email,
+            })
+
+            if ((this.emailAvailable = responseData)) {
+                this.$root.guestEmail = this.email
+                this.$root.checkout.step = 2
+            } else {
+                this.$nextTick(function () {
+                    this.$scopedSlots.default()[0].context.$refs.password.focus()
                 })
-                .then((response) => {
-                    if ((this.emailAvailable = response.data)) {
-                        this.$root.guestEmail = this.email
-                        this.$root.checkout.step = 2
-                    } else {
-                        this.$nextTick(function () {
-                            this.$scopedSlots.default()[0].context.$refs.password.focus()
-                        })
-                    }
-                })
-                .catch((error) => Notify(error.response.data.message, 'error', error.response.data?.parameters))
+            }
         },
 
         loginInputChange(e) {

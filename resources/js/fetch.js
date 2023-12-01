@@ -1,4 +1,4 @@
-// TODO: Search and replace: axios, magento and magentoUser
+// TODO: Search and replace: axios, magento, magentoUser and magentoCart
 // And migrate them all to rapidezAPI, magentoGraphQL and magentoAPI
 
 class SessionExpired extends Error {
@@ -45,12 +45,12 @@ window.magentoGraphQL = async (query, variables = {}, headers = {}, redirectOnEx
         throw new Error(window.config.translations.errors.wrong)
     }
 
-    response = await response.json()
+    let data = await response.json()
 
-    if (response.errors) {
-        console.error(response.errors)
+    if (data.errors) {
+        console.error(data.errors)
 
-        if (response.errors[0]?.extensions?.category === 'graphql-authorization') {
+        if (data.errors[0]?.extensions?.category === 'graphql-authorization') {
             if (redirectOnExpiration) {
                 this.logout(window.url('/login'))
             } else {
@@ -58,37 +58,49 @@ window.magentoGraphQL = async (query, variables = {}, headers = {}, redirectOnEx
             }
         }
 
-        throw new Error(response.errors[0].message)
+        throw new Error(data.errors[0].message)
     }
 
-    return response
+    return data
 }
 
-window.magentoAPI = async (endpoint, method = 'GET', data = {}, headers = {}, redirectOnExpiration = true) => {
+window.magentoAPI = async (method, endpoint, data = {}, options = {
+    headers: {},
+    redirectOnExpiration: true,
+    notifyOnError: true,
+}) => {
     let response = await rapidezFetch(config.magento_url + '/rest/' + window.config.store_code + '/V1/' + endpoint, {
-        method: method,
+        method: method.toUpperCase(),
         headers: {
             'Authorization': window.app.loggedIn ? `Bearer ${localStorage.token}` : null,
             'Content-Type': 'application/json',
-            ...headers
+            ...(options?.headers || {})
         },
         body: JSON.stringify(data)
     })
 
-    response = await response.json()
-
     if (!response.ok) {
-        if (response.status == 401) {
-            if (redirectOnExpiration) {
+        if ([401, 404].includes(response.status)) {
+            if (options?.notifyOnError || true) {
+                Notify(window.config.translations.errors.session_expired)
+            }
+
+            if (options?.redirectOnExpiration || true) {
                 this.logout(window.url('/login'))
             } else {
                 throw new SessionExpired(window.config.translations.errors.session_expired)
             }
+        }
+
+        if (options?.notifyOnError || true) {
+            Notify(window.config.translations.errors.wrong)
         }
 
         throw new Error(window.config.translations.errors.wrong)
     }
 
-    return response
+    let responseData = await response.json()
+
+    return responseData
 }
 
