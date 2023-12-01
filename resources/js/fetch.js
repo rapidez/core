@@ -1,6 +1,3 @@
-// TODO: Search and replace: axios, magento, magentoUser and magentoCart
-// And migrate them all to rapidezAPI, magentoGraphQL and magentoAPI
-
 class SessionExpired extends Error {
     constructor(message) {
         super(message);
@@ -26,14 +23,18 @@ window.rapidezAPI = async(endpoint) => {
     return await response.json()
 }
 
-window.magentoGraphQL = async (query, variables = {}, headers = {}, redirectOnExpiration = true) => {
+window.magentoGraphQL = async (query, variables = {}, options = {
+    headers: {},
+    redirectOnExpiration: true,
+    notifyOnError: true,
+}) => {
     let response = await rapidezFetch(config.magento_url + '/graphql', {
         method: 'POST',
         headers: {
             'Store': window.config.store_code,
             'Authorization': window.app.loggedIn ? `Bearer ${localStorage.token}` : null,
             'Content-Type': 'application/json',
-            ...headers
+            ...(options?.headers || {})
         },
         body: JSON.stringify({
             query: query,
@@ -51,7 +52,11 @@ window.magentoGraphQL = async (query, variables = {}, headers = {}, redirectOnEx
         console.error(data.errors)
 
         if (data.errors[0]?.extensions?.category === 'graphql-authorization') {
-            if (redirectOnExpiration) {
+            if (options?.notifyOnError || true) {
+                Notify(window.config.translations.errors.session_expired)
+            }
+
+            if (options?.redirectOnExpiration || true) {
                 this.logout(window.url('/login'))
             } else {
                 throw new SessionExpired(window.config.translations.errors.session_expired)

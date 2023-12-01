@@ -100,10 +100,10 @@ export default {
             this.error = false
 
             try {
-                let headers = {}
+                let options = { headers: {} }
 
                 if (this.recaptcha) {
-                    headers['X-ReCaptcha'] = await this.getReCaptchaToken()
+                    options['headers']['Authorization'] = await this.getReCaptchaToken()
                 }
 
                 let variables = this.data,
@@ -113,7 +113,7 @@ export default {
                     ;[query, variables, options] = await this.beforeRequest(this.query, this.variables, options)
                 }
 
-                let response = await magentoGraphQL(query, variables, headers)
+                let response = await magentoGraphQL(query, variables, options)
 
                 // TODO: Not sure where this is used, we should check that.
                 if (response.data.errors) {

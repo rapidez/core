@@ -47,6 +47,7 @@ export default {
                     },
                 }
 
+                // TODO: Use replace Axios with Fetch, are we also going to create a wrapper for this?
                 axios({
                     url: `${baseUrl}/${config.es_prefix}_${name}_${config.store}/_search`,
                     method: 'POST',

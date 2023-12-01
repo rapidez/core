@@ -34,10 +34,8 @@ export default {
     },
 
     methods: {
-        refreshOrder() {
-            axios
-                .get(window.url('/api/order'), { headers: { Authorization: 'Bearer ' + (this.token || this.mask) } })
-                .then((response) => (this.order = response.data))
+        async refreshOrder() {
+            this.order = await window.rapidezAPI('order')
         },
 
         serialize(address) {

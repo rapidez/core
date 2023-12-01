@@ -57,7 +57,7 @@ export default {
 
         async createCustomer(customer) {
             try {
-                let response = await magentoUser.post('customers', {
+                return await window.magentoAPI('post', 'customers', {
                     customer: {
                         email: customer.email,
                         firstname: customer.firstname,
@@ -66,11 +66,7 @@ export default {
                     },
                     password: customer.password,
                 })
-                return response.data
             } catch (error) {
-                Notify(error.response.data.message, 'error', error.response.data?.parameters)
-                console.error(error)
-
                 return false
             }
         },
