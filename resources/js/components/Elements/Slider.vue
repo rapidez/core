@@ -1,5 +1,5 @@
 <script>
-import { useElementHover, useIntervalFn, useEventListener, useThrottleFn } from '@vueuse/core'
+import { useElementHover, useIntervalFn, useEventListener, useThrottleFn, useResizeObserver } from '@vueuse/core'
 
 export default {
     render() {
@@ -55,10 +55,14 @@ export default {
             chunk: '',
             pause: () => {},
             resume: () => {},
+
+            childSpan: 0,
+            sliderSpan: 0,
         }
     },
     mounted() {
         this.initSlider()
+        useResizeObserver(this.slider, useThrottleFn(this.updateSpan, 150, true, true))
         useEventListener(this.slider, 'scroll', useThrottleFn(this.scroll, 150, true, true), { passive: true })
         this.$nextTick(() => {
             if (this.loop) {
@@ -113,10 +117,10 @@ export default {
             this.navigate(next)
         },
 
-        navigate(index) {
+        navigate(index, behavior = 'smooth') {
             this.vertical
-                ? this.slider.scrollTo(0, this.slider.children[index]?.offsetTop)
-                : this.slider.scrollTo(this.slider.children[0]?.offsetWidth * index, 0)
+                ? this.slider.scrollTo({ left: 0, top: this.slider.children[index]?.offsetTop, behavior: behavior })
+                : this.slider.scrollTo({ left: this.slider.children[0]?.offsetWidth * index, top: 0, behavior: behavior })
         },
 
         handleLoop() {
@@ -130,6 +134,18 @@ export default {
                     this.slider.insertBefore(child.cloneNode(true), this.slider.firstChild)
                 })
             }
+        },
+
+        updateSpan() {
+            let slide = this.childSpan == 0 ? 0 : this.currentSlide
+
+            this.childSpan = this.vertical
+                ? this.slider.children[0]?.offsetHeight ?? this.slider.offsetHeight
+                : this.slider.children[0]?.offsetWidth ?? this.slider.offsetWidth
+
+            this.navigate(slide, 'instant')
+
+            this.sliderSpan = this.vertical ? this.slider.offsetHeight : this.slider.offsetWidth
         },
     },
     watch: {
@@ -156,18 +172,6 @@ export default {
         slidesVisible() {
             if (this.mounted) {
                 return Math.round(this.sliderSpan / this.childSpan)
-            }
-        },
-        childSpan() {
-            if (this.mounted) {
-                return this.vertical
-                    ? this.slider.children[0]?.offsetHeight ?? this.slider.offsetHeight
-                    : this.slider.children[0]?.offsetWidth ?? this.slider.offsetWidth
-            }
-        },
-        sliderSpan() {
-            if (this.mounted) {
-                return this.vertical ? this.slider.offsetHeight : this.slider.offsetWidth
             }
         },
     },
