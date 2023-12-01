@@ -15,11 +15,20 @@ window.rapidezFetch = (originalFetch => {
     };
 })(fetch);
 
-window.rapidezAPI = async(endpoint) => {
-    let response = await rapidezFetch(window.url('/api/' + endpoint))
+window.rapidezAPI = async(method, endpoint, data = {}, options = {}) => {
+    let response = await rapidezFetch(window.url('/api/' + endpoint), {
+        method: method.toUpperCase(),
+        headers: {
+            'Content-Type': 'application/json',
+            ...(options?.headers || {})
+        },
+        body: Object.keys(data).length ? JSON.stringify(data) : null,
+    })
+
     if (!response.ok) {
         throw new Error(window.config.translations.errors.wrong)
     }
+
     return await response.json()
 }
 
@@ -57,7 +66,7 @@ window.magentoGraphQL = async (query, variables = {}, options = {
             }
 
             if (options?.redirectOnExpiration || true) {
-                this.logout(window.url('/login'))
+                window.app.$emit('logout', { redirect: '/login' })
             } else {
                 throw new SessionExpired(window.config.translations.errors.session_expired)
             }
@@ -81,7 +90,7 @@ window.magentoAPI = async (method, endpoint, data = {}, options = {
             'Content-Type': 'application/json',
             ...(options?.headers || {})
         },
-        body: JSON.stringify(data)
+        body: Object.keys(data).length ? JSON.stringify(data) : null,
     })
 
     if (!response.ok) {
@@ -91,7 +100,7 @@ window.magentoAPI = async (method, endpoint, data = {}, options = {
             }
 
             if (options?.redirectOnExpiration || true) {
-                this.logout(window.url('/login'))
+                window.app.$emit('logout', { redirect: '/login' })
             } else {
                 throw new SessionExpired(window.config.translations.errors.session_expired)
             }
