@@ -25,14 +25,8 @@ export const refresh = async function (force = false) {
             { cart_id: mask.value }
         )
 
-        if ('errors' in response.data) {
-            // TODO: Double check
-            throw new Error('Graphql Errors', null, response.config, response.request, response)
-        }
-
         cart.value = Object.values(response.data)[0];
     } catch (error) {
-        // TODO: Double check
         checkResponseForExpiredCart(error.response);
         console.error(error)
     }
@@ -47,29 +41,6 @@ export const clear = async function () {
 export const clearAddresses = async function () {
     useLocalStorage('billing_address').value = null
     useLocalStorage('shipping_address').value = null
-}
-
-// TODO: Check, is this the way to go? And the place where this should be checked?
-export const checkResponseForExpiredCart = async function(response) {
-    if (
-        response?.data?.parameters?.fieldName == 'quoteId' ||
-        response?.status === 404 ||
-        response.data.errors?.some(error =>
-            error.extensions.category === 'graphql-no-such-entity' &&
-            error.path.some(path => ['cart', 'customerCart', 'assignCustomerToGuestCart', 'mergeCarts', 'addProductsToCart', 'removeItemFromCart', 'updateCartItems'].includes(path))
-        )
-     ) {
-         Notify(window.config.translations.errors.cart_expired, 'error')
-         clear()
-         if (token.value !== undefined) {
-             // If the cart has expired, check if the session is not expired
-             refreshUser()
-         }
-
-         return true
-     }
-
-     return false;
 }
 
 export const cart = computed({

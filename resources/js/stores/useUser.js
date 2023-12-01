@@ -31,6 +31,8 @@ export const refresh = async function () {
         userStorage.value = await window.magentoAPI('GET', 'customers/me', {}, { redirectOnExpiration: false }) || {}
         isRefreshing = false
     } catch (error) {
+        isRefreshing = false
+
         if (error instanceof SessionExpired) {
             await clear()
         } else {

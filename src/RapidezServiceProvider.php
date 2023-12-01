@@ -12,8 +12,8 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
-// TODO: Anyone a better name for this?
-use Illuminate\View\View as ViewView;
+use Illuminate\Support\Str;
+use Illuminate\View\View as ViewComponent;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
 use Rapidez\Core\Auth\MagentoCustomerTokenGuard;
 use Rapidez\Core\Commands\IndexCategoriesCommand;
@@ -241,13 +241,15 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootMacros(): self
     {
         Collection::macro('firstForCurrentStore', function () {
+            /** @var Collection $this */
             return $this->filter(function ($value) {
                 return in_array($value->store_id, [config('rapidez.store'), 0]);
             })->sortByDesc('store_id')->first();
         });
 
-        ViewView::macro('renderOneliner', function () {
-            return trim(preg_replace('/\s+/', ' ', $this->render()));
+        ViewComponent::macro('renderOneliner', function () {
+            /** @var ViewComponent $this */
+            return Str::squish($this->render());
         });
 
         return $this;

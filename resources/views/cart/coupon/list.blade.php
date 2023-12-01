@@ -2,7 +2,8 @@
     <graphql-mutation
         :query="'mutation ($cart_id: String!) { removeCouponFromCart(input: { cart_id: $cart_id }) { cart { ' + config.queries.cart + ' } } }'"
         :variables="{ cart_id: window.app.mask }"
-        :callback="refreshCart"
+        :callback="updateCart"
+        :error-callback="checkResponseForExpiredCart"
         v-slot="{ mutate }"
     >
         <div class="flex">

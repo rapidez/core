@@ -1,6 +1,16 @@
-class SessionExpired extends Error {
-    constructor(message) {
+import { token } from "./stores/useUser";
+
+class FetchError extends Error {
+    constructor(message, response) {
         super(message);
+        this.response = response;
+        this.name = this.constructor.name;
+    }
+}
+
+class SessionExpired extends FetchError {
+    constructor(message, response) {
+        super(message, response);
         this.name = this.constructor.name;
     }
 }
@@ -26,7 +36,7 @@ window.rapidezAPI = async(method, endpoint, data = {}, options = {}) => {
     })
 
     if (!response.ok) {
-        throw new Error(window.config.translations.errors.wrong)
+        throw new FetchError(window.config.translations.errors.wrong, response)
     }
 
     return await response.json()
@@ -41,7 +51,7 @@ window.magentoGraphQL = async (query, variables = {}, options = {
         method: 'POST',
         headers: {
             'Store': window.config.store_code,
-            'Authorization': window.app.loggedIn ? `Bearer ${localStorage.token}` : null,
+            'Authorization': window.app.loggedIn ? `Bearer ${token.value}` : null,
             'Content-Type': 'application/json',
             ...(options?.headers || {})
         },
@@ -52,27 +62,29 @@ window.magentoGraphQL = async (query, variables = {}, options = {
     })
 
     if (!response.ok) {
-        throw new Error(window.config.translations.errors.wrong)
+        throw new FetchError(window.config.translations.errors.wrong, response)
     }
 
+    // You can't call response.json() twice, in case of errors we pass our clone instead which hasn't been read.
+    let responseClone = response.clone();
     let data = await response.json()
 
     if (data.errors) {
         console.error(data.errors)
 
         if (data.errors[0]?.extensions?.category === 'graphql-authorization') {
-            if (options?.notifyOnError || true) {
+            if (options?.notifyOnError ?? true) {
                 Notify(window.config.translations.errors.session_expired)
             }
 
-            if (options?.redirectOnExpiration || true) {
+            if (options?.redirectOnExpiration ?? true) {
                 window.app.$emit('logout', { redirect: '/login' })
             } else {
-                throw new SessionExpired(window.config.translations.errors.session_expired)
+                throw new SessionExpired(window.config.translations.errors.session_expired, responseClone)
             }
         }
 
-        throw new Error(data.errors[0].message)
+        throw new FetchError(data.errors[0].message, responseClone)
     }
 
     return data
@@ -86,7 +98,7 @@ window.magentoAPI = async (method, endpoint, data = {}, options = {
     let response = await rapidezFetch(config.magento_url + '/rest/' + window.config.store_code + '/V1/' + endpoint, {
         method: method.toUpperCase(),
         headers: {
-            'Authorization': window.app.loggedIn ? `Bearer ${localStorage.token}` : null,
+            'Authorization': window.app.loggedIn ? `Bearer ${token.value}` : null,
             'Content-Type': 'application/json',
             ...(options?.headers || {})
         },
@@ -95,26 +107,25 @@ window.magentoAPI = async (method, endpoint, data = {}, options = {
 
     if (!response.ok) {
         if ([401, 404].includes(response.status)) {
-            if (options?.notifyOnError || true) {
+            if (options?.notifyOnError ?? true) {
                 Notify(window.config.translations.errors.session_expired)
             }
 
-            if (options?.redirectOnExpiration || true) {
+            if (options?.redirectOnExpiration ?? true) {
                 window.app.$emit('logout', { redirect: '/login' })
             } else {
-                throw new SessionExpired(window.config.translations.errors.session_expired)
+                throw new SessionExpired(window.config.translations.errors.session_expired, response)
             }
         }
 
-        if (options?.notifyOnError || true) {
+        if (options?.notifyOnError ?? true) {
             Notify(window.config.translations.errors.wrong)
         }
 
-        throw new Error(window.config.translations.errors.wrong)
+        throw new FetchError(window.config.translations.errors.wrong, response)
     }
 
     let responseData = await response.json()
 
     return responseData
 }
-

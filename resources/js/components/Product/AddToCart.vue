@@ -1,7 +1,5 @@
 <script>
-import { checkResponseForExpiredCart } from '../../stores/useCart'
 import { mask } from '../../stores/useMask'
-import { token } from '../../stores/useUser'
 import GetCart from './../Cart/mixins/GetCart'
 import InteractWithUser from './../User/mixins/InteractWithUser'
 
@@ -99,7 +97,7 @@ export default {
                     throw new Error(response.data.addProductsToCart.user_errors[0].message)
                 }
 
-                await this.refreshCart({}, response)
+                await this.updateCart({}, response)
 
                 this.added = true
                 setTimeout(() => { this.added = false }, this.addedDuration)
@@ -137,11 +135,7 @@ export default {
                 //     })
                 // }
 
-                // if (await checkResponseForExpiredCart(error.response)) {
-                //     return
-                // }
-
-                // this.error = error.response.data?.message || error.response.data.errors?.map(error => error.message).join('\n');
+                error?.response && await this.checkResponseForExpiredCart(error.response)
             }
 
             this.adding = false

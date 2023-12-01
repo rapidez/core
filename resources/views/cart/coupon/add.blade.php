@@ -4,7 +4,8 @@
     :notify="{ message: config.translations.cart.coupon.applied }"
     :clear="true"
     :watch="false"
-    :callback="refreshCart"
+    :callback="updateCart"
+    :error-callback="checkResponseForExpiredCart"
     v-slot="{ mutate, variables }"
 >
     <form v-on:submit.prevent="mutate" class="flex gap-3">
