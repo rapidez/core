@@ -85,14 +85,16 @@ export default {
                         quantity: $quantity,
                         selected_options: $selected_options,
                         entered_options: $entered_options
-                    }]) { cart { ` + config.queries.cart + ` } user_errors { code message } } }`,
+                    }]) { cart { ` +
+                        config.queries.cart +
+                        ` } user_errors { code message } } }`,
                     {
                         sku: this.product.sku,
                         cartId: mask.value,
                         quantity: this.qty,
                         selected_options: this.selectedOptions,
                         entered_options: this.enteredOptions,
-                    }
+                    },
                 )
 
                 if (response.data.addProductsToCart.user_errors.length) {
@@ -102,7 +104,9 @@ export default {
                 await this.updateCart({}, response)
 
                 this.added = true
-                setTimeout(() => { this.added = false }, this.addedDuration)
+                setTimeout(() => {
+                    this.added = false
+                }, this.addedDuration)
 
                 if (this.callback) {
                     await this.callback(this.product, this.qty)
@@ -125,7 +129,7 @@ export default {
                     Notify(error.message, 'error')
                 }
 
-                error?.response && await this.checkResponseForExpiredCart(error.response)
+                error?.response && (await this.checkResponseForExpiredCart(error.response))
             }
 
             this.adding = false
@@ -223,11 +227,11 @@ export default {
             let selectedOptions = []
 
             Object.entries(this.options).forEach(([optionId, optionValue]) => {
-                selectedOptions.push(btoa('configurable/'+optionId+'/'+optionValue))
+                selectedOptions.push(btoa('configurable/' + optionId + '/' + optionValue))
             })
 
             Object.entries(this.customSelectedOptions).forEach(([optionId, optionValue]) => {
-                selectedOptions.push(btoa('custom-option/'+optionId+'/'+optionValue))
+                selectedOptions.push(btoa('custom-option/' + optionId + '/' + optionValue))
             })
 
             return selectedOptions
@@ -247,7 +251,7 @@ export default {
                     }
 
                     enteredOptions.push({
-                        uid: btoa('custom-option/'+key),
+                        uid: btoa('custom-option/' + key),
                         value: data.replace('base64,', ''),
                         // value: {
                         //     file_info: {
@@ -262,7 +266,7 @@ export default {
                 }
 
                 enteredOptions.push({
-                    uid: btoa('custom-option/'+key),
+                    uid: btoa('custom-option/' + key),
                     value: val,
                 })
             })

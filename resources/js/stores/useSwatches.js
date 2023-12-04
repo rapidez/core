@@ -13,7 +13,7 @@ export const refresh = async function () {
 
     try {
         isRefreshing = true
-        swatchesStorage.value = await window.rapidezAPI('get', 'swatches') || {}
+        swatchesStorage.value = (await window.rapidezAPI('get', 'swatches')) || {}
         isRefreshing = false
         hasFetched = true
     } catch (error) {

@@ -49,7 +49,7 @@ export default {
                         await linkUserToCart()
                     } else {
                         // TODO: Get the cart with the "customerCart" query?
-                        await refreshMask();
+                        await refreshMask()
                     }
 
                     this.successfulLogin()

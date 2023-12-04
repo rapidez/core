@@ -1,4 +1,4 @@
-import { mask } from "./stores/useMask"
+import { mask } from './stores/useMask'
 
 Vue.mixin({
     methods: {

@@ -33,9 +33,14 @@ export default {
 
     methods: {
         async refreshOrder() {
-            this.order = await window.rapidezAPI('get', 'order', {}, {
-                headers: { Authorization: 'Bearer ' + (this.token || this.mask) }
-            })
+            this.order = await window.rapidezAPI(
+                'get',
+                'order',
+                {},
+                {
+                    headers: { Authorization: 'Bearer ' + (this.token || this.mask) },
+                },
+            )
         },
 
         serialize(address) {

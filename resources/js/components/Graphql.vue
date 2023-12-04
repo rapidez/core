@@ -28,7 +28,7 @@ export default {
         },
         errorCallback: {
             type: Function,
-            default: (error) => Notify(window.config.translations.errors.wrong, 'warning')
+            default: (error) => Notify(window.config.translations.errors.wrong, 'warning'),
         },
     },
 
@@ -75,7 +75,7 @@ export default {
                 }
             } catch (error) {
                 console.error(error)
-                this.errorCallback(error);
+                this.errorCallback(error)
             }
         },
     },
