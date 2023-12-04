@@ -8,7 +8,6 @@
     <div class="container">
         <h1 class="mb-5 text-4xl font-bold">@lang('Cart')</h1>
 
-        {{-- TODO: Test the whole thing when a user is logged in --}}
         <graphql
             v-if="window.app.mask"
             :query="'query getCart($cart_id: String!) { cart (cart_id: $cart_id) { ' + config.queries.cart + ' } }'"

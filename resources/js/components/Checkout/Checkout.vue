@@ -1,11 +1,11 @@
 <script>
-import GetCart from './../Cart/mixins/GetCart'
 import InteractWithUser from './../User/mixins/InteractWithUser'
 import { useEventListener, useLocalStorage } from '@vueuse/core'
 import useMask from '../../stores/useMask'
+import { cart, hasOnlyVirtualItems, virtualItems, linkUserToCart } from '../../stores/useCart'
 
 export default {
-    mixins: [GetCart, InteractWithUser],
+    mixins: [InteractWithUser],
 
     data() {
         return {
@@ -19,12 +19,11 @@ export default {
     },
 
     created() {
-        if (!this.hasItems) {
+        if (!cart.value?.total_quantity) {
             window.location.replace(window.url('/'))
             return
         }
 
-        this.checkout.hasVirtualItems = this.hasVirtualItems
         this.steps = this.config.checkout_steps[window.config.store_code] ?? this.config.checkout_steps['default']
         this.setupHistory()
         this.setCheckoutCredentialsFromDefaultUserAddresses()
@@ -105,7 +104,7 @@ export default {
                     billing_address: this.billingAddress,
                 }
 
-                if (!this.hasOnlyVirtualItems) {
+                if (!hasOnlyVirtualItems.value) {
                     addressInformation.shipping_carrier_code = this.currentShippingMethod.carrier_code
                     addressInformation.shipping_method_code = this.currentShippingMethod.method_code
                 }
@@ -123,7 +122,7 @@ export default {
                     let self = this
                     await this.login(customer.email, this.checkout.password, async () => {
                         if (self.$root.cart?.entity_id) {
-                            await self.linkUserToCart()
+                            await linkUserToCart()
                             let mask = useMask('mask')
                             mask.value = self.$root.cart.entity_id
                         }
@@ -146,7 +145,7 @@ export default {
 
         validateCredentials() {
             let validated = true
-            if (!this.checkout.shipping_method && !this.hasOnlyVirtualItems) {
+            if (!this.checkout.shipping_method && !hasOnlyVirtualItems.value) {
                 Notify(window.config.translations.checkout.no_shipping_method, 'warning')
                 validated = false
             }
@@ -156,7 +155,7 @@ export default {
                 validated = false
             }
 
-            if (!this.checkout.shipping_method && this.hasOnlyVirtualItems && validated) {
+            if (!this.checkout.shipping_method && hasOnlyVirtualItems.value && validated) {
                 return true
             }
 
@@ -232,7 +231,7 @@ export default {
         },
 
         removeUnusedAddressInfo(address) {
-            ;['id', 'region', 'region_id', 'customer_id', 'default_shipping', 'default_billing'].forEach((key) => delete address[key])
+            ['id', 'region', 'region_id', 'customer_id', 'default_shipping', 'default_billing'].forEach((key) => delete address[key])
 
             if (!address.customer_address_id) {
                 address.save_in_address_book = 1
@@ -254,6 +253,9 @@ export default {
     computed: {
         checkout: function () {
             return this.$root.checkout
+        },
+        forceAccount: function () {
+            return !virtualItems.value
         },
         shippingAddress: function () {
             let address = this.removeUnusedAddressInfo(this.$root.checkout.shipping_address)

@@ -1,10 +1,9 @@
 <script>
-import { mask } from '../../stores/useMask'
-import GetCart from './../Cart/mixins/GetCart'
+import { mask, refreshMask } from '../../stores/useMask'
 import InteractWithUser from './../User/mixins/InteractWithUser'
 
 export default {
-    mixins: [GetCart, InteractWithUser],
+    mixins: [InteractWithUser],
     props: {
         product: {
             type: Object,
@@ -68,7 +67,10 @@ export default {
             this.added = false
             this.adding = true
             this.error = null
-            await this.getMask()
+
+            if (!mask.value) {
+                await refreshMask()
+            }
 
             try {
                 let response = await window.magentoGraphQL(
@@ -122,18 +124,6 @@ export default {
                 if (this.notifyError) {
                     Notify(error.message, 'error')
                 }
-
-                // TODO: Which of these error checks are still relevant?
-
-                // if (error?.response?.data?.message) {
-                //     Notify(error.response.data.message, 'error', error.response.data?.parameters)
-                // }
-
-                // if (error?.response?.data?.errors) {
-                //     error.response.data.errors.map(error => {
-                //         Notify(error.message, 'error')
-                //     })
-                // }
 
                 error?.response && await this.checkResponseForExpiredCart(error.response)
             }

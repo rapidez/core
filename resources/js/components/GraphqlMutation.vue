@@ -115,7 +115,6 @@ export default {
 
                 let response = await magentoGraphQL(query, variables, options)
 
-                // TODO: Not sure where this is used, we should check that.
                 if (response.data.errors) {
                     if (this.errorCallback) {
                         await this.errorCallback(this.data, response)

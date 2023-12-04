@@ -3,7 +3,7 @@ import { computed, watch } from 'vue'
 import { mask, clearMask } from './useMask'
 
 const cartStorage = useLocalStorage('cart', {}, { serializer: StorageSerializers.object })
-export let age = 0;
+let age = 0;
 
 export const refresh = async function (force = false) {
     if (!mask.value) {
@@ -26,8 +26,8 @@ export const refresh = async function (force = false) {
 
         cart.value = Object.values(response.data)[0];
     } catch (error) {
-        checkResponseForExpiredCart(error.response);
         console.error(error)
+        Vue.prototype.checkResponseForExpiredCart(error);
     }
 }
 
@@ -42,29 +42,41 @@ export const clearAddresses = async function () {
     useLocalStorage('shipping_address').value = null
 }
 
+export const linkUserToCart = async function () {
+    await window.magentoGraphQL(
+        `mutation ($cart_id: String!) { assignCustomerToGuestCart (cart_id: $cart_id) { ${config.queries.cart} } }`,
+        { cart_id: mask.value }
+    ).then((response) => Vue.prototype.updateCart([], response))
+}
+
 export const cart = computed({
     get() {
         if (!cartStorage.value?.id && mask.value) {
-            // TODO: Check as we don't want this all the time.
-            // refresh()
+            refresh()
         }
+
+        cartStorage.value.virtualItems = virtualItems;
+        cartStorage.value.hasOnlyVirtualItems = hasOnlyVirtualItems;
 
         return cartStorage.value
     },
     set(value) {
         cartStorage.value = value
+        age = Date.now();
 
         if (value.id && value.id !== mask.value) {
             // Linking user to cart will create a new mask, it will be returned in the id field.
             mask.value = value.id
         }
-
-        age = Date.now();
     },
 })
 
-// TODO: Check as we don't want this all the time.
-// If mask gets added, updated or removed we should update the cart.
-// watch(mask, refresh)
+export const virtualItems = computed(() => {
+    return cart.value?.items?.filter((item) => item.product.type_id == 'downloadable')
+})
+
+export const hasOnlyVirtualItems = computed(() => {
+    return cart.value.total_quantity === virtualItems.value.length
+})
 
 export default () => cart

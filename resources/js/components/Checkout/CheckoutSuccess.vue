@@ -1,9 +1,7 @@
 <script>
-import GetCart from './../Cart/mixins/GetCart'
+import { clear as clearCart } from '../../stores/useCart'
 
 export default {
-    mixins: [GetCart],
-
     props: {
         token: {
             type: String,
@@ -30,7 +28,7 @@ export default {
         this.mask ??= localStorage.mask
 
         this.refreshOrder()
-        this.clearCart()
+        clearCart()
     },
 
     methods: {

@@ -1,12 +1,11 @@
 <script>
-import { refresh as refreshCart } from '../../stores/useCart'
+import { cart, refresh as refreshCart, linkUserToCart } from '../../stores/useCart'
 import { refreshMask } from '../../stores/useMask'
-import GetCart from './../Cart/mixins/GetCart'
 import InteractWithUser from './../User/mixins/InteractWithUser'
 import { useLocalStorage } from '@vueuse/core'
 
 export default {
-    mixins: [GetCart, InteractWithUser],
+    mixins: [InteractWithUser],
 
     props: {
         checkoutLogin: {
@@ -47,7 +46,7 @@ export default {
                 let self = this
                 await this.login(this.email, this.password, async () => {
                     if (self.$root.cart?.id) {
-                        await self.linkUserToCart()
+                        await linkUserToCart()
                     } else {
                         // TODO: Get the cart with the "customerCart" query?
                         await refreshMask();
