@@ -28,9 +28,9 @@ export default {
 
         async linkUserToCart() {
             await window.magentoGraphQL(
-                'mutation ($cart_id: String!) { assignCustomerToGuestCart (cart_id: $cart_id) }',
-                { $cart_id: mask.value }
-            )
+                'mutation ($cart_id: String!) { assignCustomerToGuestCart (cart_id: $cart_id) { ' + config.queries.cart + ' } }',
+                { cart_id: mask.value }
+            ).then((response) => this.updateCart([], response))
         },
     },
 

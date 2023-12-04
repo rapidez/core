@@ -21,7 +21,13 @@ window.rapidezFetch = (originalFetch => {
             window.app.$data.loadingCount++
         }
         const result = originalFetch.apply(this, args);
-        return result.then(window.app.$data.loadingCount--);
+        return result.finally((...args) => {
+            if (window.app.$data) {
+                window.app.$data.loadingCount--
+            }
+
+            return args;
+        });
     };
 })(fetch);
 
@@ -51,7 +57,7 @@ window.magentoGraphQL = async (query, variables = {}, options = {
         method: 'POST',
         headers: {
             'Store': window.config.store_code,
-            'Authorization': window.app.loggedIn ? `Bearer ${token.value}` : null,
+            'Authorization': token.value ? `Bearer ${token.value}` : null,
             'Content-Type': 'application/json',
             ...(options?.headers || {})
         },
@@ -98,7 +104,7 @@ window.magentoAPI = async (method, endpoint, data = {}, options = {
     let response = await rapidezFetch(config.magento_url + '/rest/' + window.config.store_code + '/V1/' + endpoint, {
         method: method.toUpperCase(),
         headers: {
-            'Authorization': window.app.loggedIn ? `Bearer ${token.value}` : null,
+            'Authorization': token.value ? `Bearer ${token.value}` : null,
             'Content-Type': 'application/json',
             ...(options?.headers || {})
         },

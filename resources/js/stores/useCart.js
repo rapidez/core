@@ -1,7 +1,6 @@
 import { StorageSerializers, useLocalStorage } from '@vueuse/core'
 import { computed, watch } from 'vue'
 import { mask, clearMask } from './useMask'
-import { token, refresh as refreshUser } from './useUser'
 
 const cartStorage = useLocalStorage('cart', {}, { serializer: StorageSerializers.object })
 export let age = 0;
@@ -54,6 +53,12 @@ export const cart = computed({
     },
     set(value) {
         cartStorage.value = value
+
+        if (value.id && value.id !== mask.value) {
+            // Linking user to cart will create a new mask, it will be returned in the id field.
+            mask.value = value.id
+        }
+
         age = Date.now();
     },
 })

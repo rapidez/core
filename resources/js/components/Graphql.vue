@@ -61,11 +61,6 @@ export default {
             try {
                 let response = await window.magentoGraphQL(this.query, this.variables)
 
-                // TODO: Check this, still useful? Is this where we should handle this?
-                // if (await checkResponseForExpiredCart(error.response)) {
-                //     return;
-                // }
-
                 if (this.check) {
                     if (!eval('response.data.' + this.check)) {
                         Turbo.visit(window.url(this.redirect))

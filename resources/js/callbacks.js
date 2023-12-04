@@ -1,5 +1,6 @@
 import { cart, clear as clearCart} from './stores/useCart'
-import { refresh as refreshUser} from './stores/useUser'
+import { mask } from './stores/useMask'
+import { refresh as refreshUser, token} from './stores/useUser'
 
 Vue.prototype.scrollToElement = (selector) => {
     let el = window.document.querySelector(selector)
@@ -18,7 +19,7 @@ Vue.prototype.updateCart = async function (data, response) {
 }
 
 Vue.prototype.checkResponseForExpiredCart = async function (error) {
-    let responseData = await response.json()
+    let responseData = await error.response.json()
 
     if (
         responseData.errors?.some(error =>
