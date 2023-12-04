@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.4.1...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.4.2...master)
+## [1.4.2](https://github.com/rapidez/core/releases/tag/1.4.2) - 2023-12-04
+
+### Fixed
+
+- Fix slider reactivity when resized (#349)
+
 ## [1.4.1](https://github.com/rapidez/core/releases/tag/1.4.1) - 2023-11-24
 
 ### Fixed
