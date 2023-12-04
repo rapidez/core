@@ -19,4 +19,9 @@ return [
     'additional_filters' => [
         // eav_attribute attribute_code. e.g. brand
     ],
+
+    // Index the positions per category
+    // This option enables the magento functionality where products are sortable per category.
+    // You might want to disable this if you have a lot of categories, as each category results in a new mapping being created.
+    'category_positions' => true,
 ];

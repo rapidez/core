@@ -85,10 +85,12 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
 
                         $data = $this->withCategories($data, $categories);
 
-                        $data['positions'] = $product->categoryProducts
-                            ->pluck('position', 'category_id')
-                            // Turn all positions positive
-                            ->mapWithKeys(fn ($position, $category_id) => [$category_id => $maxPositions[$category_id] - $position]);
+                        if (config('rapidez.indexer.category_positions')) {
+                            $data['positions'] = $product->categoryProducts
+                                ->pluck('position', 'category_id')
+                                // Turn all positions positive
+                                ->mapWithKeys(fn ($position, $category_id) => [$category_id => $maxPositions[$category_id] - $position]);
+                        }
 
                         return Eventy::filter('index.product.data', $data, $product);
                     });
