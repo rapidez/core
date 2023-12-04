@@ -1,5 +1,5 @@
 <script>
-import { useElementHover, useIntervalFn, useEventListener, useThrottleFn } from '@vueuse/core'
+import { useElementHover, useIntervalFn, useEventListener, useThrottleFn, useResizeObserver } from '@vueuse/core'
 
 export default {
     render() {
@@ -46,10 +46,14 @@ export default {
             direction: 1,
             pause: () => {},
             resume: () => {},
+
+            childSpan: 0,
+            sliderSpan: 0,
         }
     },
     mounted() {
         this.initSlider()
+        useResizeObserver(this.slider, useThrottleFn(this.updateSpan, 150, true, true))
         useEventListener(this.slider, 'scroll', useThrottleFn(this.scroll, 150, true, true), { passive: true })
         if (this.loop) {
             useEventListener(this.slider, 'scrollend', this.scrollend, { passive: true })
@@ -63,6 +67,8 @@ export default {
 
             this.initAutoPlay()
         })
+
+        this.updateSpan()
     },
     methods: {
         initSlider() {
@@ -133,12 +139,35 @@ export default {
             }
             this.navigate(next)
         },
-        navigate(index) {
+        navigate(index, behavior = 'smooth') {
             index = this.loop ? index + this.slides.length : index
 
             this.vertical
                 ? this.slider.scrollTo(0, this.slider.children[index]?.offsetTop)
                 : this.slider.scrollTo(this.slider.children[index]?.offsetLeft, 0)
+        },
+        handleLoop() {
+            if (this.currentSlide + 1 === this.slidesTotal - 1) {
+                Array.from(this.chunk.children).forEach((child) => {
+                    this.slider.appendChild(child.cloneNode(true))
+                })
+            }
+            if (this.currentSlide < 1) {
+                Array.from(this.chunk.children).forEach((child) => {
+                    this.slider.insertBefore(child.cloneNode(true), this.slider.firstChild)
+                })
+            }
+        },
+        updateSpan() {
+            let slide = this.childSpan == 0 ? 0 : this.currentSlide
+
+            this.childSpan = this.vertical
+                ? this.slider.children[0]?.offsetHeight ?? this.slider.offsetHeight
+                : this.slider.children[0]?.offsetWidth ?? this.slider.offsetWidth
+
+            this.navigate(slide, 'instant')
+
+            this.sliderSpan = this.vertical ? this.slider.offsetHeight : this.slider.offsetWidth
         },
     },
     watch: {
@@ -166,22 +195,6 @@ export default {
             }
 
             return Math.round(this.sliderSpan / this.childSpan)
-        },
-        childSpan() {
-            if (!this.mounted) {
-                return 0
-            }
-
-            return this.vertical
-                ? this.slider.children[0]?.offsetHeight ?? this.slider.offsetHeight
-                : this.slider.children[0]?.offsetWidth ?? this.slider.offsetWidth
-        },
-        sliderSpan() {
-            if (!this.mounted) {
-                return 0
-            }
-
-            return this.vertical ? this.slider.offsetHeight : this.slider.offsetWidth
         },
         slidesTotal() {
             if (!this.mounted) {
