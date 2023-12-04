@@ -14,12 +14,12 @@ class DialogTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/?show-cookie-notice')
-                    ->waitUntilIdle()
-                    ->assertSee('Accept cookies')
-                    ->waitForReload(function (Browser $browser) {
-                        $browser->press('Accept cookies');
-                    })
-                    ->assertScript("window.localStorage['cookie-notice']");
+                ->waitUntilIdle()
+                ->assertSee('Accept cookies')
+                ->waitForReload(function (Browser $browser) {
+                    $browser->press('Accept cookies');
+                })
+                ->assertScript("window.localStorage['cookie-notice']");
         });
     }
 }

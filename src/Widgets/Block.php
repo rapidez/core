@@ -6,7 +6,7 @@ use Rapidez\Core\Facades\Rapidez;
 
 class Block
 {
-    public String $blockId;
+    public string $blockId;
 
     public function __construct($vars)
     {

@@ -171,7 +171,7 @@ class RapidezServiceProvider extends ServiceProvider
 
         View::addExtension('graphql', 'blade');
 
-        Vite::useScriptTagAttributes(fn (string $src, string $url, array|null $chunk, array|null $manifest) => [
+        Vite::useScriptTagAttributes(fn (string $src, string $url, ?array $chunk, ?array $manifest) => [
             'data-turbo-track' => str_contains($url, 'app') ? 'reload' : false,
             'defer'            => true,
         ]);

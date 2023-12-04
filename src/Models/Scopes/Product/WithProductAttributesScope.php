@@ -51,20 +51,20 @@ class WithProductAttributesScope implements Scope
                             'catalog_product_entity_' . $attribute->type . ' AS ' . $attribute->code,
                             function ($join) use ($builder, $attribute) {
                                 $join->on($attribute->code . '.entity_id', '=', $builder->getQuery()->from . '.entity_id')
-                                     ->where($attribute->code . '.attribute_id', $attribute->id)
-                                     ->where($attribute->code . '.store_id', 0);
+                                    ->where($attribute->code . '.attribute_id', $attribute->id)
+                                    ->where($attribute->code . '.store_id', 0);
                             }
                         )->leftJoin(
                             'eav_attribute_option_value AS ' . $attribute->code . '_option_value_' . config('rapidez.store'),
                             function ($join) use ($attribute) {
                                 $join->on($attribute->code . '_option_value_' . config('rapidez.store') . '.option_id', '=', $attribute->code . '.value')
-                                     ->where($attribute->code . '_option_value_' . config('rapidez.store') . '.store_id', config('rapidez.store'));
+                                    ->where($attribute->code . '_option_value_' . config('rapidez.store') . '.store_id', config('rapidez.store'));
                             }
                         )->leftJoin(
                             'eav_attribute_option_value AS ' . $attribute->code . '_option_value_0',
                             function ($join) use ($attribute) {
                                 $join->on($attribute->code . '_option_value_0.option_id', '=', $attribute->code . '.value')
-                                     ->where($attribute->code . '_option_value_0.store_id', 0);
+                                    ->where($attribute->code . '_option_value_0.store_id', 0);
                             }
                         );
                 } else {
@@ -74,15 +74,15 @@ class WithProductAttributesScope implements Scope
                             'catalog_product_entity_' . $attribute->type . ' AS ' . $attribute->code . '_' . config('rapidez.store'),
                             function ($join) use ($builder, $attribute) {
                                 $join->on($attribute->code . '_' . config('rapidez.store') . '.entity_id', '=', $builder->getQuery()->from . '.entity_id')
-                                     ->where($attribute->code . '_' . config('rapidez.store') . '.attribute_id', $attribute->id)
-                                     ->where($attribute->code . '_' . config('rapidez.store') . '.store_id', config('rapidez.store'));
+                                    ->where($attribute->code . '_' . config('rapidez.store') . '.attribute_id', $attribute->id)
+                                    ->where($attribute->code . '_' . config('rapidez.store') . '.store_id', config('rapidez.store'));
                             }
                         )->leftJoin(
                             'catalog_product_entity_' . $attribute->type . ' AS ' . $attribute->code . '_0',
                             function ($join) use ($builder, $attribute) {
                                 $join->on($attribute->code . '_0.entity_id', '=', $builder->getQuery()->from . '.entity_id')
-                                     ->where($attribute->code . '_0.attribute_id', $attribute->id)
-                                     ->where($attribute->code . '_0.store_id', 0);
+                                    ->where($attribute->code . '_0.attribute_id', $attribute->id)
+                                    ->where($attribute->code . '_0.store_id', 0);
                             }
                         );
                 }

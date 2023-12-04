@@ -25,10 +25,10 @@ use TorMorten\Eventy\Facades\Eventy;
 
 class Product extends Model
 {
-    use CastSuperAttributes;
     use CastMultiselectAttributes;
-    use SelectAttributeScopes;
+    use CastSuperAttributes;
     use HasAlternatesThroughRewrites;
+    use SelectAttributeScopes;
 
     public array $attributesToSelect = [];
 

@@ -39,11 +39,11 @@ class CartTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/cart')
-                    ->waitUntilIdle()
-                    ->type('@qty-0', 5)
-                    ->click('@item-update-0')
-                    ->waitUntilIdle()
-                    ->assertSee($this->testProduct->price * 5);
+                ->waitUntilIdle()
+                ->type('@qty-0', 5)
+                ->click('@item-update-0')
+                ->waitUntilIdle()
+                ->assertSee($this->testProduct->price * 5);
         });
     }
 
@@ -54,10 +54,10 @@ class CartTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/cart')
-                    ->waitUntilIdle()
-                    ->click('@item-delete-0')
-                    ->waitUntilIdle()
-                    ->assertDontSee('@cart-item-name');
+                ->waitUntilIdle()
+                ->click('@item-delete-0')
+                ->waitUntilIdle()
+                ->assertDontSee('@cart-item-name');
         });
     }
 

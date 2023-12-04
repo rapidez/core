@@ -1,4 +1,4 @@
-@foreach($product->super_attributes ?: [] as $superAttributeId => $superAttribute)
+@foreach ($product->super_attributes ?: [] as $superAttributeId => $superAttribute)
     <div>
         <x-rapidez::label for="super_attribute_{{ $superAttributeId }}">
             {{ $superAttribute->label }}
