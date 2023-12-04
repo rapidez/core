@@ -18,9 +18,9 @@ export default {
         async login(username, password, loginCallback = false) {
             // TODO: Migrate to the "generateCustomerToken" mutation
             await magentoAPI('post', 'integration/customer/token', {
-                    username: username,
-                    password: password,
-                })
+                username: username,
+                password: password,
+            })
                 .then(async (response) => {
                     token.value = response
 

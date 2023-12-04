@@ -28,7 +28,7 @@ export const refresh = async function () {
     try {
         isRefreshing = true
         // TODO: Migrate to GraphQL?
-        userStorage.value = await window.magentoAPI('GET', 'customers/me', {}, { redirectOnExpiration: false }) || {}
+        userStorage.value = (await window.magentoAPI('GET', 'customers/me', {}, { redirectOnExpiration: false })) || {}
         isRefreshing = false
     } catch (error) {
         isRefreshing = false

@@ -231,7 +231,7 @@ export default {
         },
 
         removeUnusedAddressInfo(address) {
-            ['id', 'region', 'region_id', 'customer_id', 'default_shipping', 'default_billing'].forEach((key) => delete address[key])
+            ;['id', 'region', 'region_id', 'customer_id', 'default_shipping', 'default_billing'].forEach((key) => delete address[key])
 
             if (!address.customer_address_id) {
                 address.save_in_address_book = 1

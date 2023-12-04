@@ -12,7 +12,7 @@ export const refresh = async function () {
 
     try {
         isRefreshing = true
-        attributesStorage.value = await window.rapidezAPI('get', 'attributes') || {}
+        attributesStorage.value = (await window.rapidezAPI('get', 'attributes')) || {}
         isRefreshing = false
     } catch (error) {
         isRefreshing = false
