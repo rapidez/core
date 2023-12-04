@@ -3,6 +3,7 @@
 namespace Rapidez\Core;
 
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -12,11 +13,13 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
+use Rapidez\Core\Auth\MagentoCustomerTokenGuard;
 use Rapidez\Core\Commands\IndexCategoriesCommand;
 use Rapidez\Core\Commands\IndexProductsCommand;
 use Rapidez\Core\Commands\InstallCommand;
 use Rapidez\Core\Commands\InstallTestsCommand;
 use Rapidez\Core\Commands\ValidateCommand;
+use Rapidez\Core\Events\IndexBeforeEvent;
 use Rapidez\Core\Events\ProductViewEvent;
 use Rapidez\Core\Facades\Rapidez as RapidezFacade;
 use Rapidez\Core\Http\Controllers\Fallback\CmsPageController;
@@ -33,9 +36,20 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class RapidezServiceProvider extends ServiceProvider
 {
+    protected $configFiles = [
+        'frontend',
+        'healthcheck',
+        'indexer',
+        'jwt',
+        'models',
+        'routing',
+        'system',
+    ];
+
     public function boot()
     {
         $this
+            ->bootAuth()
             ->bootCommands()
             ->bootPublishables()
             ->bootRoutes()
@@ -57,6 +71,22 @@ class RapidezServiceProvider extends ServiceProvider
             ->registerExceptionHandlers();
     }
 
+    protected function bootAuth(): self
+    {
+        auth()->extend('magento-customer', function (Application $app, string $name, array $config) {
+            return new MagentoCustomerTokenGuard(auth()->createUserProvider($config['provider']), request(), 'token', 'token');
+        });
+
+        config([
+            'auth.guards.magento-customer' => [
+                'driver'   => 'magento-customer',
+                'provider' => 'users',
+            ],
+        ]);
+
+        return $this;
+    }
+
     protected function bootCommands(): self
     {
         $this->commands([
@@ -67,6 +97,10 @@ class RapidezServiceProvider extends ServiceProvider
             InstallTestsCommand::class,
         ]);
 
+        Event::listen(IndexBeforeEvent::class, function ($event) {
+            $event->context->call('rapidez:index:categories');
+        });
+
         return $this;
     }
 
@@ -76,6 +110,12 @@ class RapidezServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__ . '/../config/rapidez.php' => config_path('rapidez.php'),
             ], 'config');
+
+            foreach ($this->configFiles as $configFile) {
+                $this->publishes([
+                    __DIR__ . '/../config/rapidez/' . $configFile . '.php' => config_path('rapidez/' . $configFile . '.php'),
+                ], 'config');
+            }
 
             $this->publishes([
                 __DIR__ . '/../resources/views' => resource_path('views/vendor/rapidez'),
@@ -91,7 +131,7 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function bootRoutes(): self
     {
-        if (config('rapidez.routes')) {
+        if (config('rapidez.routing.enabled')) {
             $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
             $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
         }
@@ -105,7 +145,7 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function registerThemes(): self
     {
-        $path = config('rapidez.themes.' . request()->server('MAGE_RUN_CODE', request()->has('_store') && ! app()->isProduction() ? request()->get('_store') : 'default'), false);
+        $path = config('rapidez.frontend.themes.' . request()->server('MAGE_RUN_CODE', request()->has('_store') && ! app()->isProduction() ? request()->get('_store') : 'default'), false);
 
         if (! $path) {
             return $this;
@@ -210,6 +250,9 @@ class RapidezServiceProvider extends ServiceProvider
     protected function registerConfigs(): self
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/rapidez.php', 'rapidez');
+        foreach ($this->configFiles as $configFile) {
+            $this->mergeConfigFrom(__DIR__ . '/../config/rapidez/' . $configFile . '.php', 'rapidez.' . $configFile);
+        }
 
         return $this;
     }

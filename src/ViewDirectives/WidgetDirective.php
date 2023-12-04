@@ -27,7 +27,7 @@ class WidgetDirective
                 }
 
                 foreach ($widgets->get() as $widget) {
-                    $widgetClass = config('rapidez.widgets.' . $widget->instance_type);
+                    $widgetClass = config('rapidez.frontend.widgets.' . $widget->instance_type);
 
                     if (! class_exists($widgetClass)) {
                         if (is_null($widgetClass)) {
@@ -37,7 +37,7 @@ class WidgetDirective
                         } else {
                             // When the widgetClass is not a class instance we handle it as a view name
                             $viewName = $widgetClass;
-                            $widgetClass = config('rapidez.view_only_widget');
+                            $widgetClass = config('rapidez.frontend.view_only_widget');
 
                             $html .= (new $widgetClass($widget->widget_parameters))->render($viewName);
                         }

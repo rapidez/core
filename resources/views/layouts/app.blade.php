@@ -24,13 +24,15 @@
 
     @stack('head')
 </head>
-<body class="bg-white antialiased">
-    <div id="app">
-        @include('rapidez::layouts.partials.header')
-        <main class="mx-5">
+<body class="text-neutral antialiased">
+    <div id="app" class="flex flex-col min-h-screen">
+        @includeWhen(!request()->is('checkout'), 'rapidez::layouts.partials.header')
+        @includeWhen(request()->is('checkout'), 'rapidez::layouts.checkout.header')
+        <main>
             @yield('content')
         </main>
-        @include('rapidez::layouts.partials.footer')
+        @includeWhen(!request()->is('checkout'), 'rapidez::layouts.partials.footer')
+        @includeWhen(request()->is('checkout'), 'rapidez::layouts.checkout.footer')
         @stack('page_end')
     </div>
 

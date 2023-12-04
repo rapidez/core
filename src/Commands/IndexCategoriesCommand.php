@@ -13,6 +13,8 @@ class IndexCategoriesCommand extends ElasticsearchIndexCommand
 
     public function handle(): int
     {
+        $this->synonymsFor = ['name'];
+
         $this->indexStores(
             stores: Rapidez::getStores($this->argument('store')),
             indexName: 'categories',
@@ -25,11 +27,11 @@ class IndexCategoriesCommand extends ElasticsearchIndexCommand
 
     public function getCategories()
     {
-        return config('rapidez.models.category')::query()
-            ->select((new (config('rapidez.models.category')))->qualifyColumns(['entity_id', 'name', 'url_path', 'children_count']))
+        return config('rapidez.models.category')::withEventyGlobalScopes('index.categories.scopes')
+            ->select((new (config('rapidez.models.category')))->qualifyColumns(['entity_id', 'name', 'url_path']))
             ->whereNotNull('url_key')
             ->whereNot('url_key', 'default-category')
-            ->where('children_count', '>', 0)
+            ->has('products')
             ->get() ?? [];
     }
 }

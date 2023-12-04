@@ -10,7 +10,7 @@ class CmsPageController
     {
         $pageModel = config('rapidez.models.page');
         if ($page = $pageModel::where('identifier', $request->path() == '/' ? 'home' : $request->path())->first()) {
-            $pageController = config('rapidez.controllers.page');
+            $pageController = config('rapidez.routing.controllers.page');
 
             return (new $pageController)->show($page);
         }

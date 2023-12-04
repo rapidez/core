@@ -43,7 +43,7 @@ class Rapidez
 
     public function content($content)
     {
-        foreach (config('rapidez.content-variables') as $parser) {
+        foreach (config('rapidez.frontend.content_variables') as $parser) {
             $content = (new $parser)($content);
         }
 
@@ -81,7 +81,15 @@ class Rapidez
 
     public function getStore(callable|int|string $store): array
     {
-        return Arr::first($this->getStores($store));
+        $stores = $this->getStores($store);
+
+        throw_if(
+            empty($stores),
+            StoreNotFoundException::class,
+            'Store not found.'
+        );
+
+        return Arr::first($stores);
     }
 
     public function setStore(Store|array|callable|int|string $store): void

@@ -18,7 +18,7 @@ class Widget
                 return '';
             }
 
-            $widgetClass = config('rapidez.widgets.' . $type);
+            $widgetClass = config('rapidez.frontend.widgets.' . $type);
 
             if (class_exists($widgetClass)) {
                 return (new $widgetClass((object) $options))->render();
@@ -32,7 +32,7 @@ class Widget
 
             // When the widgetClass is not a class instance we handle it as a view name
             $viewName = $widgetClass;
-            $widgetClass = config('rapidez.view_only_widget');
+            $widgetClass = config('rapidez.frontend.view_only_widget');
 
             return (new $widgetClass((object) $options))->render($viewName);
         }, $content);
