@@ -66,7 +66,7 @@ export default {
             this.initAutoPlay()
         })
 
-        this.updateSpan();
+        this.updateSpan()
     },
     methods: {
         initSlider() {
