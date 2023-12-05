@@ -1,5 +1,5 @@
 <script>
-import { cart, refresh as refreshCart, linkUserToCart } from '../../stores/useCart'
+import { linkUserToCart, fetchCustomerCart } from '../../stores/useCart'
 import { refreshMask } from '../../stores/useMask'
 import InteractWithUser from './../User/mixins/InteractWithUser'
 import { useLocalStorage } from '@vueuse/core'
@@ -48,8 +48,7 @@ export default {
                     if (self.$root.cart?.id) {
                         await linkUserToCart()
                     } else {
-                        // TODO: Get the cart with the "customerCart" query?
-                        await refreshMask()
+                        await fetchCustomerCart()
                     }
 
                     this.successfulLogin()

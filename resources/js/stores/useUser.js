@@ -47,6 +47,25 @@ export const clear = async function () {
     await clearCart()
 }
 
+export const login = async function (email, password) {
+    return magentoGraphQL(
+        'mutation generateCustomerToken ($email: String!, $password: String!) { generateCustomerToken (email: $email, password: $password) { token } }',
+        {
+            email: email,
+            password: password,
+        }
+    ).then(async (response) => {
+        token.value = response.data.generateCustomerToken.token
+
+        return response;
+    })
+}
+
+export const logout = async function () {
+    await magentoGraphQL('mutation { revokeCustomerToken { result } }')
+        .finally(async () => await clear())
+}
+
 export const user = computed({
     get() {
         if (token.value && !userStorage.value?.id) {

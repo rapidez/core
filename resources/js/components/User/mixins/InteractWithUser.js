@@ -1,5 +1,5 @@
 import { useLocalStorage } from '@vueuse/core'
-import { user, token, refresh as refreshUser, clear as clearUser } from '../../../stores/useUser'
+import { user, refresh as refreshUser, login, logout } from '../../../stores/useUser'
 
 export default {
     methods: {
@@ -16,14 +16,8 @@ export default {
         },
 
         async login(username, password, loginCallback = false) {
-            // TODO: Migrate to the "generateCustomerToken" mutation
-            await magentoAPI('post', 'integration/customer/token', {
-                username: username,
-                password: password,
-            })
+            return await login(username, password)
                 .then(async (response) => {
-                    token.value = response
-
                     await this.refreshUser(false)
 
                     this.setCheckoutCredentialsFromDefaultUserAddresses()
@@ -45,7 +39,7 @@ export default {
         },
 
         async onLogout(data = {}) {
-            await clearUser()
+            await logout()
             useLocalStorage('email', '').value = ''
             Turbo.cache.clear()
 

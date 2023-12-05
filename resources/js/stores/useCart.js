@@ -50,6 +50,12 @@ export const linkUserToCart = async function () {
         .then((response) => Vue.prototype.updateCart([], response))
 }
 
+export const fetchCustomerCart = async function () {
+    await window
+        .magentoGraphQL(`query { customerCart { ${config.queries.cart} } }`)
+        .then((response) => Vue.prototype.updateCart([], response))
+}
+
 export const cart = computed({
     get() {
         if (!cartStorage.value?.id && mask.value) {

@@ -47,14 +47,14 @@ export default {
                     },
                 }
 
-                // TODO: Use replace Axios with Fetch, are we also going to create a wrapper for this?
-                axios({
-                    url: `${baseUrl}/${config.es_prefix}_${name}_${config.store}/_search`,
+                rapidezFetch(`${baseUrl}/${config.es_prefix}_${name}_${config.store}/_search`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', Authorization: auth },
                     data: JSON.stringify(esQuery),
-                }).then((response) => {
-                    this.results[name] = response.data?.hits ?? []
+                }).then(async (response) => {
+                    const responseData = await response.json();
+
+                    this.results[name] = responseData?.hits ?? []
                     this.results.count += this.results[name]?.hits?.length ?? 0
                 })
             })
