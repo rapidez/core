@@ -22,6 +22,16 @@ class Quote extends Model
         return $this->belongsTo(config('rapidez.models.store'));
     }
 
+    public function quote_id_masks()
+    {
+        return $this->hasMany(config('rapidez.models.quote_id_mask'), 'quote_id');
+    }
+
+    public function oauth_tokens()
+    {
+        return $this->hasMany(config('rapidez.models.oauth_token'), 'customer_id');
+    }
+
     public function sales_order()
     {
         return $this->belongsTo(config('rapidez.models.sales_order'));
@@ -44,8 +54,11 @@ class Quote extends Model
                         ->get('uid')
                 ),
             fn (Builder $query) => $query
-                ->where('masked_id', $quoteIdMaskOrCustomerToken)
-                ->orWhere('token', $quoteIdMaskOrCustomerToken)
+                ->whereHas('quote_id_masks', fn (Builder $query) => $query
+                    ->where('masked_id', $quoteIdMaskOrCustomerToken)
+                )->orWhereHas('oauth_tokens', fn (Builder $query) => $query
+                    ->where('token', $quoteIdMaskOrCustomerToken)
+                )
         );
     }
 }

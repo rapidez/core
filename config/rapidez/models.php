@@ -22,6 +22,7 @@ return [
     'product_option_type_price' => Rapidez\Core\Models\ProductOptionTypePrice::class,
     'product_option_type_value' => Rapidez\Core\Models\ProductOptionTypeValue::class,
     'quote'                     => Rapidez\Core\Models\Quote::class,
+    'quote_id_mask'             => Rapidez\Core\Models\QuoteIdMask::class,
     'quote_item'                => Rapidez\Core\Models\QuoteItem::class,
     'quote_item_option'         => Rapidez\Core\Models\QuoteItemOption::class,
     'rewrite'                   => Rapidez\Core\Models\Rewrite::class,
