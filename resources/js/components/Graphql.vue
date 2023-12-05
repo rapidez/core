@@ -68,7 +68,7 @@ export default {
                     }
                 }
 
-                this.data = this.callback ? await this.callback(this.data, response) : response.data.data
+                this.data = this.callback ? await this.callback(this.data, response) : response.data
 
                 if (this.cache) {
                     useLocalStorage(this.cachePrefix + this.cache, null, { serializer: StorageSerializers.object }).value = this.data
