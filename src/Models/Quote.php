@@ -57,7 +57,7 @@ class Quote extends Model
                 ->whereHas('quote_id_masks', fn (Builder $query) => $query
                     ->where('masked_id', $quoteIdMaskOrCustomerToken)
                 )->orWhereHas('oauth_tokens', fn (Builder $query) => $query
-                    ->where('token', $quoteIdMaskOrCustomerToken)
+                ->where('token', $quoteIdMaskOrCustomerToken)
                 )
         );
     }

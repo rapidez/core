@@ -2,9 +2,6 @@
 
 namespace Rapidez\Core\Models;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Support\Facades\DB;
-
 class QuoteIdMask extends Model
 {
     protected $table = 'quote_id_mask';
