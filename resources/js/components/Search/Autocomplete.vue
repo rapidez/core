@@ -52,7 +52,7 @@ export default {
                     headers: { 'Content-Type': 'application/json', Authorization: auth },
                     data: JSON.stringify(esQuery),
                 }).then(async (response) => {
-                    const responseData = await response.json();
+                    const responseData = await response.json()
 
                     this.results[name] = responseData?.hits ?? []
                     this.results.count += this.results[name]?.hits?.length ?? 0

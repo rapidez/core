@@ -53,17 +53,16 @@ export const login = async function (email, password) {
         {
             email: email,
             password: password,
-        }
+        },
     ).then(async (response) => {
         token.value = response.data.generateCustomerToken.token
 
-        return response;
+        return response
     })
 }
 
 export const logout = async function () {
-    await magentoGraphQL('mutation { revokeCustomerToken { result } }')
-        .finally(async () => await clear())
+    await magentoGraphQL('mutation { revokeCustomerToken { result } }').finally(async () => await clear())
 }
 
 export const user = computed({
