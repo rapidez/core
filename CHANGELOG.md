@@ -1,6 +1,17 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.4.1...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.5.0...master)
+## [1.5.0](https://github.com/rapidez/core/releases/tag/1.5.0) - 2023-12-05
+
+### Added
+
+- Search synonyms support (#387)
+
+### Fixed
+
+- Turbo update and workaround for 404 pages (#388)
+- Fix slider reactivity when resized (#349)
+
 ## [1.4.1](https://github.com/rapidez/core/releases/tag/1.4.1) - 2023-11-24
 
 ### Fixed
