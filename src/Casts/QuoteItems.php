@@ -14,7 +14,7 @@ class QuoteItems implements CastsAttributes
         // which joins the catalog_product_super_attribute_label table.
         $attributeModel = config('rapidez.models.attribute');
         $superAttributes = Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {
-            return $attribute['super'];
+            return $attribute['super'] && $attribute['flat'];
         }), 'name', 'id');
 
         $items = json_decode($value);
