@@ -10,7 +10,7 @@ trait CastSuperAttributes
     {
         $attributeModel = config('rapidez.models.attribute');
         $superAttributes = Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {
-            return $attribute['super'];
+            return $attribute['super'] && $attribute['flat'];
         }), 'code');
 
         foreach ($superAttributes as $superAttribute) {
