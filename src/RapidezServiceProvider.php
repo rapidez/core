@@ -25,6 +25,7 @@ use Rapidez\Core\Facades\Rapidez as RapidezFacade;
 use Rapidez\Core\Http\Controllers\Fallback\CmsPageController;
 use Rapidez\Core\Http\Controllers\Fallback\LegacyFallbackController;
 use Rapidez\Core\Http\Controllers\Fallback\UrlRewriteController;
+use Rapidez\Core\Http\Middleware\CheckStoreCode;
 use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
 use Rapidez\Core\Http\ViewComposers\ConfigComposer;
 use Rapidez\Core\Listeners\ElasticsearchHealthcheck;
@@ -216,6 +217,8 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootMiddleware(): self
     {
         $this->app->make(Kernel::class)->pushMiddleware(DetermineAndSetShop::class);
+
+        $this->app['router']->aliasMiddleware('store_code' , CheckStoreCode::class);
 
         return $this;
     }
