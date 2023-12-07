@@ -1,6 +1,17 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.5.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.6.0...master)
+## [1.6.0](https://github.com/rapidez/core/releases/tag/1.6.0) - 2023-12-07
+
+### Added
+
+- Store code route middleware (#394)
+
+### Fixed
+
+- Correct cross-sells field (#392)
+- Only add super attributes if they're also in the flat table (#393)
+
 ## [1.5.0](https://github.com/rapidez/core/releases/tag/1.5.0) - 2023-12-05
 
 ### Added
