@@ -15,7 +15,7 @@ export default {
     },
 
     mounted() {
-        this.$nextTick(() => this.$emit('mounted'));
+        this.$nextTick(() => this.$emit('mounted'))
     },
 
     render() {
