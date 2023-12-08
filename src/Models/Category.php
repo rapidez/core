@@ -63,7 +63,7 @@ class Category extends Model
 
     public function subcategories()
     {
-        return $this->hasMany(self::class, 'parent_id', 'entity_id');
+        return $this->hasMany(config('rapidez.models.category'), 'parent_id', 'entity_id');
     }
 
     public function products(): HasManyThrough
