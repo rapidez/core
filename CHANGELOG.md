@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.6.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.6.1...master)
+## [1.6.1](https://github.com/rapidez/core/releases/tag/1.6.1) - 2023-12-08
+
+### Fixed
+
+- Use configured category model for subcategories (#396)
+
 ## [1.6.0](https://github.com/rapidez/core/releases/tag/1.6.0) - 2023-12-07
 
 ### Added
