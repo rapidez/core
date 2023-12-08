@@ -14,6 +14,10 @@ export default {
         },
     },
 
+    mounted() {
+        this.$emit('mounted')
+    },
+
     render() {
         return this.$scopedSlots.default(Object.assign(this, { self: this }))
     },
