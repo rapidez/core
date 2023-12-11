@@ -1,8 +1,8 @@
 @props(['value', 'title' => false, 'field' => 'sku.keyword'])
 
 @if($value)
-    <lazy v-slot="{ intersected }">
-        <listing v-if="intersected">
+    <lazy v-slot="{ loaded }">
+        <listing v-if="loaded">
             <x-rapidez::reactive-base>
                 <reactive-list
                     component-id="{{ md5(serialize($value)) }}"

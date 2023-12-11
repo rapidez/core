@@ -5,8 +5,8 @@
         :class="[
             'v-lazy-component',
             {
-                'v-lazy-component--loading': !state.isIntersected,
-                'v-lazy-component--loaded': state.isIntersected,
+                'v-lazy-component--loading': !state.isLoaded,
+                'v-lazy-component--loaded': state.isLoaded,
             },
         ]"
         :style="{
@@ -14,9 +14,9 @@
             minHeight: '1px',
         }"
     >
-        <slot v-if="state.isIntersected" :intersected="state.isIntersected" />
+        <slot v-if="state.isLoaded" :loaded="state.isLoaded" :intersected="state.isIntersected" />
         <!-- Content that is loaded as a placeholder until it comes into view -->
-        <slot v-if="!state.isIntersected" name="placeholder" />
+        <slot v-if="!state.isLoaded" name="placeholder" />
     </component>
 </template>
 
@@ -29,6 +29,11 @@ export default {
             default: 'div',
         },
         isIntersected: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+        isLoaded: {
             type: Boolean,
             required: false,
             default: false,
@@ -60,6 +65,7 @@ export default {
             state: {
                 wrapperTag: this.wrapperTag,
                 isIntersected: this.isIntersected,
+                isLoaded: this.isIntersected || this.isLoaded,
                 idle: this.idle,
                 rootMargin: this.rootMargin,
                 threshold: this.threshold,
@@ -71,11 +77,22 @@ export default {
         isIntersected(value) {
             if (value) {
                 this.state.isIntersected = true
+                this.state.isLoaded = true
+            }
+        },
+        isLoaded(value) {
+            if (value) {
+                this.state.isLoaded = true
             }
         },
         'state.isIntersected'(value) {
             if (value) {
                 this.$emit('intersected', this.$el)
+            }
+        },
+        'state.isLoaded'(value) {
+            if (value) {
+                this.$emit('loaded', this.$el)
             }
         },
     },
@@ -87,11 +104,15 @@ export default {
         }
 
         this.onIdle(() => {
-            this.state.isIntersected = true
+            this.state.isLoaded = true
         })
 
         if (this.state.isIntersected) {
             this.$emit('intersected', this.$el)
+        }
+
+        if (this.state.isLoaded) {
+            this.$emit('loaded', this.$el)
         }
     },
     beforeDestroy() {
@@ -113,7 +134,8 @@ export default {
         },
         onIntersection(entries) {
             this.state.isIntersected = entries.some((entry) => entry.intersectionRatio > 0)
-            if (this.state.isIntersected) {
+            this.state.isLoaded = this.state.isIntersected
+            if (this.state.isLoaded) {
                 this.unobserve()
             }
         },
