@@ -43,6 +43,11 @@ export default {
             required: false,
             default: false,
         },
+        idleTimeout: {
+            type: Number,
+            required: false,
+            default: 3000,
+        },
         /**
          * See IntersectionOberserver rootMargin [docs](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API#Intersection_observer_options)
          */
@@ -122,9 +127,11 @@ export default {
     },
     methods: {
         onIdle(callback) {
-            setTimeout(() => {
-                this.$nextTick(callback)
-            }, 3000)
+            if (this.idleTimeout && this.idleTimeout > 0) {
+                setTimeout(() => {
+                    this.$nextTick(callback)
+                }, this.idleTimeout)
+            }
         },
         observe() {
             const { rootMargin, threshold } = this.state
