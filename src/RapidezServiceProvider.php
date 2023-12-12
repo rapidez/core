@@ -125,6 +125,10 @@ class RapidezServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__ . '/../resources/lang' => resource_path('lang/vendor/rapidez'),
             ], 'translations');
+
+            $this->publishes([
+                __DIR__ . '/../resources/payment-icons' => public_path('payment-icons'),
+            ], 'payment-icons');
         }
 
         return $this;
