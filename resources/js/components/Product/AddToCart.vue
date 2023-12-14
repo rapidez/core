@@ -162,7 +162,21 @@ export default {
             let file = event.target.files[0]
             let reader = new FileReader()
             reader.onerror = (error) => alert(error)
-            reader.onload = () => Vue.set(this.customOptions, optionId, 'FILE;' + file.name + ';' + reader.result)
+            reader.onload = () => {
+                let [type, data] = reader.result.split(';', 4)
+
+                if (!data) {
+                    Vue.set(this.customOptions, optionId, undefined)
+                    return
+                }
+
+                let value = {
+                    base64_encoded_data: data.replace('base64,', ''),
+                    type: type.replace('data:', ''),
+                    name: file.name,
+                }
+                Vue.set(this.customOptions, optionId, JSON.stringify(value))
+            }
             reader.readAsDataURL(file)
         },
 
@@ -241,30 +255,6 @@ export default {
             let enteredOptions = []
 
             Object.entries(this.customOptions).forEach(([key, val]) => {
-                // TODO: Figure out how this should be send/uploaded with GraphQL.
-                // Maybe we can directly set the correct string in setCustomOptionFile so we don't need this here.
-                if (typeof val === 'string' && val.startsWith('FILE;')) {
-                    let [prefix, name, type, data] = val.split(';', 4)
-
-                    if (!data) {
-                        return
-                    }
-
-                    enteredOptions.push({
-                        uid: btoa('custom-option/' + key),
-                        value: data.replace('base64,', ''),
-                        // value: {
-                        //     file_info: {
-                        //         base64_encoded_data: data.replace('base64,', ''),
-                        //         type: type.replace('data:', ''),
-                        //         name: name,
-                        //     },
-                        // },
-                    })
-
-                    return
-                }
-
                 enteredOptions.push({
                     uid: btoa('custom-option/' + key),
                     value: val,
@@ -302,7 +292,7 @@ export default {
 
             // Here we cross reference the attributes with each other
             // keeping in mind the products we have with the current
-            // selected attribute values.
+            // selected attribute values. (see: https://github.com/rapidez/core/pull/7#issue-796718297)
             Object.entries(valuesPerAttribute).forEach(([attributeId, productsPerValue]) => {
                 Object.entries(valuesPerAttribute).forEach(([attributeId2, productsPerValue2]) => {
                     if (attributeId === attributeId2) return
