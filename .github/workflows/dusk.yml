@@ -13,15 +13,15 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - magento-version: 2.4.5-p2
-            magento-php-version: php81-fpm
-            rapidez-php-version: 8.1
-          - magento-version: 2.4.5-p2
-            magento-php-version: php81-fpm
-            rapidez-php-version: 8.2
-          - magento-version: 2.4.6
-            magento-php-version: php81-fpm
-            rapidez-php-version: 8.1
+          # - magento-version: 2.4.5-p2
+          #   magento-php-version: php81-fpm
+          #   rapidez-php-version: 8.1
+          # - magento-version: 2.4.5-p2
+          #   magento-php-version: php81-fpm
+          #   rapidez-php-version: 8.2
+          # - magento-version: 2.4.6
+          #   magento-php-version: php81-fpm
+          #   rapidez-php-version: 8.1
           - magento-version: 2.4.6
             magento-php-version: php82-fpm
             rapidez-php-version: 8.2
@@ -73,7 +73,7 @@ jobs:
       - name: Dump magento logs
         if: failure()
         run: |
-          mkdir -p magento/var/log
+          mkdir -p magento/var
           docker cp ${{ job.services.magento.id }}:/data/var/log magento/var/log
       - name: Upload Artifact
         if: failure()

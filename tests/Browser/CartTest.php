@@ -14,10 +14,15 @@ class CartTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $this->addProduct($browser, $this->testProduct->url)
+                ->screenshot('addSimpleProduct-1')
                 ->visit('/cart')
+                ->screenshot('addSimpleProduct-2')
                 ->waitUntilIdle()
+                ->screenshot('addSimpleProduct-3')
                 ->waitFor('@cart-content', 15)
+                ->screenshot('addSimpleProduct-4')
                 ->waitUntilIdle()
+                ->screenshot('addSimpleProduct-5')
                 ->assertSee($this->testProduct->name);
         });
     }
