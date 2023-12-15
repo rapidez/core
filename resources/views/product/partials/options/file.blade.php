@@ -1,4 +1,4 @@
-@if(Rapidez::checkcompadreVersion(/** TODO: Version TBD */))
+@if (Rapidez::checkcompadreVersion(/** TODO: Version TBD */))
     <x-rapidez::label for="option_{{ $option->option_id }}">
         {{ $option->title }} {{ $option->price_label }}
     </x-rapidez::label>
