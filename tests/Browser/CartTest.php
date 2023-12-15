@@ -16,7 +16,7 @@ class CartTest extends DuskTestCase
             $this->addProduct($browser, $this->testProduct->url)
                 ->visit('/cart')
                 ->waitUntilIdle()
-                ->waitFor('@cart-content', 60)
+                ->waitFor('@cart-content', 15)
                 ->waitUntilIdle()
                 ->assertSee($this->testProduct->name);
         });
@@ -43,7 +43,7 @@ class CartTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit('/cart')
                 ->waitUntilIdle()
-                ->waitFor('@cart-content', 60)
+                ->waitFor('@cart-content', 15)
                 ->waitUntilIdle()
                 ->type('@qty-0', 5)
                 ->pressAndWaitFor('@item-update-0')
@@ -60,7 +60,7 @@ class CartTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit('/cart')
                 ->waitUntilIdle()
-                ->waitFor('@cart-content', 60)
+                ->waitFor('@cart-content', 15)
                 ->waitUntilIdle()
                 ->click('@item-delete-0')
                 ->waitUntilIdle()

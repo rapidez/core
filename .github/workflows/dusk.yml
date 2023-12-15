@@ -34,6 +34,7 @@ jobs:
           FLAT_TABLES: true
         ports:
           - 3307:3306
+          - 9200:9200
           - 1234:80
 
     name: P${{ matrix.rapidez-php-version }} - M${{matrix.magento-version}} on ${{matrix.magento-php-version}}
