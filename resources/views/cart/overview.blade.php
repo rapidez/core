@@ -14,7 +14,6 @@
             :variables="{ cart_id: window.app.mask }"
             :callback="updateCart"
             :error-callback="checkResponseForExpiredCart"
-            v-cloak
         >
             <div>
                 <div v-if="hasCart">
