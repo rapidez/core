@@ -1,6 +1,4 @@
 <script>
-import { linkUserToCart, fetchCustomerCart } from '../../stores/useCart'
-import { refreshMask } from '../../stores/useMask'
 import InteractWithUser from './../User/mixins/InteractWithUser'
 import { useLocalStorage } from '@vueuse/core'
 

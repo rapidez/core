@@ -71,21 +71,21 @@ class CheckoutTest extends DuskTestCase
                 ->waitUntilIdle()
                 ->click('@continue') // login
                 ->waitUntilIdle();
-        } else {
-            $browser
-                ->waitFor('@shipping_country', 15)
-                ->type('@shipping_firstname', 'Bruce')
-                ->type('@shipping_lastname', 'Wayne')
-                ->type('@shipping_postcode', '72000')
-                ->type('@shipping_housenumber', '1007')
-                ->type('@shipping_street', 'Mountain Drive')
-                ->type('@shipping_city', 'Gotham')
-                ->select('@shipping_country', 'NL')
-                ->type('@shipping_telephone', '530-7972')
-                ->waitUntilIdle()
-                ->assertFormValid('form')
-                ->waitUntilIdle();
         }
+
+        $browser
+            ->waitFor('@shipping_country', 15)
+            ->type('@shipping_firstname', 'Bruce')
+            ->type('@shipping_lastname', 'Wayne')
+            ->type('@shipping_postcode', '72000')
+            ->type('@shipping_housenumber', '1007')
+            ->type('@shipping_street', 'Mountain Drive')
+            ->type('@shipping_city', 'Gotham')
+            ->select('@shipping_country', 'NL')
+            ->type('@shipping_telephone', '530-7972')
+            ->waitUntilIdle()
+            ->assertFormValid('form')
+            ->waitUntilIdle();
 
         if ($password && $register) {
             $browser->click('@create_account')
