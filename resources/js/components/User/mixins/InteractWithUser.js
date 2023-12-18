@@ -61,9 +61,9 @@ export default {
                 })
             } catch (error) {
                 if (!error?.response) {
-                    return false;
+                    return false
                 }
-                const responseData = await error.response.json();
+                const responseData = await error.response.json()
                 if (responseData?.message) {
                     Notify(responseData.message, 'error', responseData?.parameters)
                 }

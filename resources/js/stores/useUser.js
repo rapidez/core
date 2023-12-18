@@ -55,18 +55,20 @@ export const login = async function (email, password) {
             email: email,
             password: password,
         },
-    ).then(async (response) => {
-        token.value = response.data.generateCustomerToken.token
+    )
+        .then(async (response) => {
+            token.value = response.data.generateCustomerToken.token
 
-        return response
-    }).then(async (response) => {
-        if (mask.value) {
-            await linkUserToCart();
-        } else {
-            await fetchCustomerCart();
-        }
-        return response
-    })
+            return response
+        })
+        .then(async (response) => {
+            if (mask.value) {
+                await linkUserToCart()
+            } else {
+                await fetchCustomerCart()
+            }
+            return response
+        })
 }
 
 export const logout = async function () {
