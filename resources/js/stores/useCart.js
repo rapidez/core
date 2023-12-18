@@ -69,6 +69,7 @@ export const cart = computed({
     },
     set(value) {
         cartStorage.value = value
+        console.warn('cartStorage', JSON.stringify(cartStorage.value))
         age = Date.now()
 
         if (value.id && value.id !== mask.value) {
