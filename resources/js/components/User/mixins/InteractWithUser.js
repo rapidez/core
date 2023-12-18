@@ -60,6 +60,14 @@ export default {
                     password: customer.password,
                 })
             } catch (error) {
+                if (!error?.response) {
+                    return false;
+                }
+                const responseData = await error.response.json();
+                if (responseData?.message) {
+                    Notify(responseData.message, 'error', responseData?.parameters)
+                }
+
                 return false
             }
         },

@@ -1,7 +1,8 @@
 import { useLocalStorage, useSessionStorage, StorageSerializers } from '@vueuse/core'
-import { clear as clearCart } from './useCart'
+import { clear as clearCart, linkUserToCart } from './useCart'
 import { computed, watch } from 'vue'
 import Jwt from '../jwt'
+import { mask } from './useMask'
 
 export const token = useLocalStorage('token', '')
 const userStorage = useSessionStorage('user', {}, { serializer: StorageSerializers.object })
@@ -57,6 +58,13 @@ export const login = async function (email, password) {
     ).then(async (response) => {
         token.value = response.data.generateCustomerToken.token
 
+        return response
+    }).then(async (response) => {
+        if (mask.value) {
+            await linkUserToCart();
+        } else {
+            await fetchCustomerCart();
+        }
         return response
     })
 }

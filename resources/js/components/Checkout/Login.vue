@@ -45,23 +45,17 @@ export default {
             if (this.email && this.password) {
                 let self = this
                 await this.login(this.email, this.password, async () => {
-                    if (self.$root.cart?.id) {
-                        await linkUserToCart()
-                    } else {
-                        await fetchCustomerCart()
-                    }
-
                     this.successfulLogin()
                 })
             } else if (this.email) {
-                this.checkEmailAvailability()
+                await this.checkEmailAvailability()
             } else {
                 Notify(window.config.translations.account.email, 'error')
             }
         },
 
-        checkEmailAvailability() {
-            let responseData = window.magentoAPI('post', 'customers/isEmailAvailable', {
+        async checkEmailAvailability() {
+            let responseData = await window.magentoAPI('post', 'customers/isEmailAvailable', {
                 customerEmail: this.email,
             })
 
