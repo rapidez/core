@@ -1,5 +1,6 @@
 <checkout-success>
     <template slot-scope="{ order, hideBilling, shipping, billing, items }">
+        @{{ order || 'No Order' }}
         <div dusk="checkout-success" v-cloak v-if="order">
             <h1 class="font-bold text-4xl mb-5">@lang('Order placed succesfully')</h1>
             <div class="bg-highlight rounded p-8">

@@ -55,7 +55,7 @@ jobs:
         run: composer install --prefer-dist --no-interaction
 
       - name: Publish icons
-        run: php ./vendor/bin/testbench vendor:publish --tag="payment-icons"
+        run: php ./vendor/bin/testbench-dusk vendor:publish --tag="payment-icons"
 
       - name: Prepare Laravel Dusk
         run: composer run dusk:prepare
