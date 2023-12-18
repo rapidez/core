@@ -1,10 +1,32 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.4.2...master)
-## [1.4.2](https://github.com/rapidez/core/releases/tag/1.4.2) - 2023-12-04
+[Unreleased changes](https://github.com/rapidez/core/compare/1.6.1...master)
+## [1.6.1](https://github.com/rapidez/core/releases/tag/1.6.1) - 2023-12-08
 
 ### Fixed
 
+- Use configured category model for subcategories (#396)
+
+## [1.6.0](https://github.com/rapidez/core/releases/tag/1.6.0) - 2023-12-07
+
+### Added
+
+- Store code route middleware (#394)
+
+### Fixed
+
+- Correct cross-sells field (#392)
+- Only add super attributes if they're also in the flat table (#393)
+
+## [1.5.0](https://github.com/rapidez/core/releases/tag/1.5.0) - 2023-12-05
+
+### Added
+
+- Search synonyms support (#387)
+
+### Fixed
+
+- Turbo update and workaround for 404 pages (#388)
 - Fix slider reactivity when resized (#349)
 
 ## [1.4.1](https://github.com/rapidez/core/releases/tag/1.4.1) - 2023-11-24

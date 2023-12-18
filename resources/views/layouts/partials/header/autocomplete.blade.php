@@ -5,11 +5,12 @@
     id="autocomplete-input"
     placeholder="@lang('Search')"
     class="{{ $inputClasses }}"
-    v-on:focus="$root.loadAutocomplete = true; window.setTimeout(() => window.document.getElementById('autocomplete-input').focus(), 200)"
+    v-on:focus="$root.loadAutocomplete = true"
     v-if="!$root.loadAutocomplete">
 
 <autocomplete
     v-if="$root.loadAutocomplete"
+    v-on:mounted="() => window.document.getElementById('autocomplete-input').focus()"
     v-cloak
     :additionals="{ categories: ['name^3', 'meta_description^1'] }"
     class="w-full"

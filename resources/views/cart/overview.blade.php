@@ -39,7 +39,7 @@
             <x-rapidez::productlist
                 value="cart.items.flatMap((item) => item.product.crosssell_products.map((crosssell) => crosssell.id))"
                 title="More choices to go with your product"
-                field="id"
+                field="entity_id"
             />
         </div>
 
