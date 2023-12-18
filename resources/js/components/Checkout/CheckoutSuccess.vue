@@ -27,8 +27,9 @@ export default {
         this.token ??= localStorage.token
         this.mask ??= localStorage.mask
 
-        this.refreshOrder()
-        clearCart()
+        this.refreshOrder().then(() => {
+            clearCart()
+        })
     },
 
     methods: {
