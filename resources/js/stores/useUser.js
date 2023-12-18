@@ -72,7 +72,7 @@ export const login = async function (email, password) {
 }
 
 export const logout = async function () {
-    await magentoGraphQL('mutation { revokeCustomerToken { result } }').finally(async () => await clear())
+    await magentoGraphQL('mutation { revokeCustomerToken { result } }', {}, {notifyOnError: false, redirectOnExpiration: false}).finally(async () => await clear())
 }
 
 export const user = computed({

@@ -7,6 +7,7 @@ class FetchError extends Error {
         this.name = this.constructor.name
     }
 }
+window.FetchError = FetchError
 
 class SessionExpired extends FetchError {
     constructor(message, response) {
@@ -14,6 +15,7 @@ class SessionExpired extends FetchError {
         this.name = this.constructor.name
     }
 }
+window.SessionExpired = SessionExpired
 
 window.rapidezFetch = ((originalFetch) => {
     return (...args) => {
