@@ -224,7 +224,7 @@ class RapidezServiceProvider extends ServiceProvider
     {
         $this->app->make(Kernel::class)->pushMiddleware(DetermineAndSetShop::class);
 
-        $this->app['router']->aliasMiddleware('store_code' , CheckStoreCode::class);
+        $this->app['router']->aliasMiddleware('store_code', CheckStoreCode::class);
 
         return $this;
     }
