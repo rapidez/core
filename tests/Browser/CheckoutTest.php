@@ -37,7 +37,8 @@ class CheckoutTest extends DuskTestCase
                 ->waitUntilIdle()
                 ->waitFor('@account_menu')
                 ->click('@account_menu')
-                ->click('@logout');
+                ->click('@logout')
+                ->waitUntilIdle();
             $this->addProductToCart($browser);
             $this->doCheckout($browser, $email, 'IronManSucks.91939', false);
         });

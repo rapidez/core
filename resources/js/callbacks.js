@@ -17,10 +17,10 @@ Vue.prototype.updateCart = async function (data, response) {
 }
 
 Vue.prototype.checkResponseForExpiredCart = async function (error) {
-    let responseData = await error.response.json()
+    let responseData = await error.response?.json()
 
     if (
-        responseData.errors?.some(
+        responseData?.errors?.some(
             (error) =>
                 error.extensions.category === 'graphql-no-such-entity' &&
                 error.path.some((path) =>
