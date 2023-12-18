@@ -109,6 +109,7 @@ class CheckoutTest extends DuskTestCase
             ->waitUntilIdle()
             ->click('@continue') // place order
             ->waitUntilIdle()
+            ->waitFor('@checkout-success', 15)
             ->assertPresent('@checkout-success');
 
         return $browser;
