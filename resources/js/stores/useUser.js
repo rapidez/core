@@ -1,5 +1,5 @@
 import { useLocalStorage, useSessionStorage, StorageSerializers } from '@vueuse/core'
-import { clear as clearCart, linkUserToCart } from './useCart'
+import { clear as clearCart, fetchCustomerCart, linkUserToCart } from './useCart'
 import { computed, watch } from 'vue'
 import Jwt from '../jwt'
 import { mask } from './useMask'

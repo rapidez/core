@@ -20,7 +20,8 @@ export const decode = function (token) {
     )
 
     let jwt = JSON.parse(jsonPayload)
-    jwt.isExpired = () => this.exp * 1000 < Date.now()
+    jwt.expDate = new Date(jwt.exp * 1000);
+    jwt.isExpired = () => this.expDate < new Date()
 
     return jwt
 }
