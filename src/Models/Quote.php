@@ -29,7 +29,7 @@ class Quote extends Model
 
     public function oauth_tokens()
     {
-        return $this->hasMany(config('rapidez.models.oauth_token'), 'customer_id');
+        return $this->hasMany(config('rapidez.models.oauth_token'), 'customer_id', 'customer_id');
     }
 
     public function sales_order()
