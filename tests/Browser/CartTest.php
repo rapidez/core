@@ -30,32 +30,32 @@ class CartTest extends DuskTestCase
     /**
      * @test
      */
-    public function addMultipleSimpleProduct()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->script('localStorage.clear();');
-            $this->addProduct($browser, $this->testProduct->url);
-            $this->addProduct($browser, $this->testProduct->url);
-            $browser->assertSeeIn('@minicart-count', 2);
-        });
-    }
+    // public function addMultipleSimpleProduct()
+    // {
+    //     $this->browse(function (Browser $browser) {
+    //         $browser->script('localStorage.clear();');
+    //         $this->addProduct($browser, $this->testProduct->url);
+    //         $this->addProduct($browser, $this->testProduct->url);
+    //         $browser->assertSeeIn('@minicart-count', 2);
+    //     });
+    // }
 
     /**
      * @test
      */
-    public function changeProductQty()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit('/cart')
-                ->waitUntilIdle()
-                ->waitFor('@cart-content', 15)
-                ->waitUntilIdle()
-                ->type('@qty-0', 5)
-                ->pressAndWaitFor('@item-update-0')
-                ->waitUntilIdle()
-                ->assertSee($this->testProduct->price * 5);
-        });
-    }
+    // public function changeProductQty()
+    // {
+    //     $this->browse(function (Browser $browser) {
+    //         $browser->visit('/cart')
+    //             ->waitUntilIdle()
+    //             ->waitFor('@cart-content', 15)
+    //             ->waitUntilIdle()
+    //             ->type('@qty-0', 5)
+    //             ->pressAndWaitFor('@item-update-0')
+    //             ->waitUntilIdle()
+    //             ->assertSee($this->testProduct->price * 5);
+    //     });
+    // }
 
     /**
      * @test

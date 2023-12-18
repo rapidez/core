@@ -7,7 +7,8 @@
 @section('content')
     <div class="container">
         <h1 class="mb-5 text-4xl font-bold">@lang('Cart')</h1>
-        @{{ window.app.mask }}
+        @{{ mask || 'no mask' }}
+        @{{ window.app.mask || 'no mask' }}
         <graphql
             v-if="window.app.mask"
             :query="'query getCart($cart_id: String!) { cart (cart_id: $cart_id) { ' + config.queries.cart + ' } }'"
