@@ -1,7 +1,5 @@
 <checkout-success>
     <template slot-scope="{ order, hideBilling, shipping, billing, items }">
-        <div>
-        @{{ order || 'No Order' }}
         <div dusk="checkout-success" v-cloak v-if="order">
             <h1 class="font-bold text-4xl mb-5">@lang('Order placed succesfully')</h1>
             <div class="bg-highlight rounded p-8">
@@ -73,7 +71,6 @@
                     <p v-for="method in order.sales_order_payments">@{{ method.additional_information.method_title || method.additional_information.raw_details_info.method_title }}</p>
                 </div>
             </div>
-        </div>
         </div>
     </template>
 </checkout-success>
