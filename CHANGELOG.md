@@ -1,6 +1,19 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.6.1...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.7.0...master)
+## [1.7.0](https://github.com/rapidez/core/releases/tag/1.7.0) - 2024-01-04
+
+### Added
+
+- Payment icons (#374)
+- Store set event (#398)
+- Product review summary model (#399)
+- GraphQL components store prop (#400)
+
+### Fixed
+
+- Trigger mounted event for autocomplete to remove timing dependency (#395)
+
 ## [1.6.1](https://github.com/rapidez/core/releases/tag/1.6.1) - 2023-12-08
 
 ### Fixed
