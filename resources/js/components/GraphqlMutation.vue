@@ -53,6 +53,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        store: {
+            type: String,
+            default: window.config.store_code,
+        },
     },
 
     data: () => ({
@@ -110,8 +114,8 @@ export default {
                     options['headers']['X-ReCaptcha'] = await this.getReCaptchaToken()
                 }
 
-                if (window.config.store_code) {
-                    options['headers']['Store'] = window.config.store_code
+                if (this.store) {
+                    options['headers']['Store'] = this.store
                 }
 
                 let variables = this.data,
