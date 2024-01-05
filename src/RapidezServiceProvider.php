@@ -150,6 +150,10 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function registerThemes(): self
     {
+        if(app()->runningInConsole()) {
+            return $this;
+        }
+        
         $path = config('rapidez.frontend.themes.' . request()->server('MAGE_RUN_CODE', request()->has('_store') && ! app()->isProduction() ? request()->get('_store') : 'default'), false);
 
         if (! $path) {
