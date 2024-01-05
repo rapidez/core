@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.7.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.7.1...master)
+## [1.7.1](https://github.com/rapidez/core/releases/tag/1.7.1) - 2024-01-05
+
+### Fixed
+
+- Exclude register themes when running from console (#401)
+
 ## [1.7.0](https://github.com/rapidez/core/releases/tag/1.7.0) - 2024-01-04
 
 ### Added
