@@ -29,6 +29,11 @@ export default {
         this.token ??= localStorage.token
         this.mask ??= localStorage.mask
 
+        let successStep = this.$root.config.checkout_steps[config.store_code]?.indexOf('success')
+        if (successStep > 0) {
+            this.$root.checkout.step = successStep
+        }
+
         this.refreshOrder()
         this.clearCart()
     },
