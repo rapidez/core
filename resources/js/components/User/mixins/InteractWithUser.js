@@ -76,8 +76,8 @@ export default {
 
         setCheckoutCredentialsFromDefaultUserAddresses() {
             if (this.$root && this.$root.loggedIn) {
-                this.setCustomerAddressByAddressId('shipping', this.$root.user.default_shipping)
-                this.setCustomerAddressByAddressId('billing', this.$root.user.default_billing)
+                this.setCustomerAddressByAddressId('shipping', this.$root.user.default_shipping ?? this.$root.user.default_billing)
+                this.setCustomerAddressByAddressId('billing', this.$root.user.default_billing ?? this.$root.user.default_shipping)
             }
         },
 
