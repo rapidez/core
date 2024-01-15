@@ -14,40 +14,38 @@ Vue.prototype.updateCart = async function (data, response) {
 
     getAttributeValues().then((response) => {
         if (!response?.data?.customAttributeMetadata?.items) {
-            return;
+            return
         }
 
         const mapping = Object.fromEntries(
-            response.data.customAttributeMetadata.items.map(
-                (attribute) => [
-                    attribute.attribute_code,
-                    Object.fromEntries(attribute.attribute_options.map((value) => [value.value, value.label]))
-                ]
-            )
-        );
+            response.data.customAttributeMetadata.items.map((attribute) => [
+                attribute.attribute_code,
+                Object.fromEntries(attribute.attribute_options.map((value) => [value.value, value.label])),
+            ]),
+        )
 
-        cart.value.items = cart.value.items.map((cartItem => {
-            cartItem.product.attribute_values = {};
+        cart.value.items = cart.value.items.map((cartItem) => {
+            cartItem.product.attribute_values = {}
 
             for (const key in mapping) {
-                cartItem.product.attribute_values[key] = cartItem.product[key];
+                cartItem.product.attribute_values[key] = cartItem.product[key]
                 if (cartItem.product.attribute_values[key] === null) {
-                    continue;
+                    continue
                 }
 
                 if (typeof cartItem.product.attribute_values[key] === 'string') {
-                    cartItem.product.attribute_values[key] = cartItem.product.attribute_values[key].split(',');
+                    cartItem.product.attribute_values[key] = cartItem.product.attribute_values[key].split(',')
                 }
 
                 if (typeof cartItem.product.attribute_values[key] !== 'object') {
-                    cartItem.product.attribute_values[key] = [cartItem.product.attribute_values[key]];
+                    cartItem.product.attribute_values[key] = [cartItem.product.attribute_values[key]]
                 }
 
                 cartItem.product.attribute_values[key] = cartItem.product.attribute_values[key].map((value) => mapping[key][value] || value)
             }
 
             return cartItem
-        }))
+        })
     })
 
     return response.data
