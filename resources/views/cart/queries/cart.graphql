@@ -4,12 +4,16 @@ items {
     id
     quantity
     product {
-        id
-        sku
-        name
-        type_id
-        url_key
-        url_suffix
+        @foreach(collect([
+            'id',
+            'sku',
+            'name',
+            'type_id',
+            'url_key',
+            'url_suffix',
+        ])->merge(config('rapidez.frontend.cart_attributes'))->unique() as $attribute)
+            {{ $attribute }}
+        @endforeach
         image {
             url
         }

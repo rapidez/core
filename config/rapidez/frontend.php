@@ -12,12 +12,13 @@ return [
         'checkout_steps',
         'flushable_localstorage_keys',
         'show_customer_address_fields',
+        'cart_attributes',
     ],
 
     // The attribute codes of product attributes used in the cart, used to fetch option values
     'cart_attributes' => [
         // 'manufacturer',
-        // 'color',
+        // 'material',
     ],
 
     // The checkout steps which are used to name the steps

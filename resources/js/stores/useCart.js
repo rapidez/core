@@ -1,4 +1,4 @@
-import { StorageSerializers, useLocalStorage } from '@vueuse/core'
+import { StorageSerializers, asyncComputed, useLocalStorage, useMemoize } from '@vueuse/core'
 import { computed, watch } from 'vue'
 import { mask, clearMask } from './useMask'
 
@@ -55,6 +55,34 @@ export const fetchCustomerCart = async function () {
         .magentoGraphQL(`query { customerCart { ${config.queries.cart} } }`)
         .then((response) => Vue.prototype.updateCart([], response))
 }
+
+export const fetchAttributeValues = async function (attributes = []) {
+    if (!attributes.length) {
+        return {"data": {"customAttributeMetadata": {"items": null}}};
+    }
+
+    return await window
+        .magentoGraphQL(`
+            query attributeValues($attributes: [AttributeInput!]!) {
+                customAttributeMetadata(attributes: $attributes) {
+                    items {
+                        attribute_code
+                        attribute_options {
+                            label
+                            value
+                        }
+                    }
+                }
+            }
+        `, {attributes: attributes.map(attribute_code => {return {attribute_code: attribute_code, entity_type: 'catalog_product'}})})
+}
+
+const fetchAttributeValuesMemo = useMemoize(fetchAttributeValues);
+
+export const getAttributeValues = async function () {
+    return await fetchAttributeValuesMemo(window.config.cart_attributes)
+}
+
 
 export const cart = computed({
     get() {

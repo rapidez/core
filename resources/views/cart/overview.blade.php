@@ -17,19 +17,13 @@
         </graphql>
         <div v-if="hasCart" v-cloak>
             <div class="flex flex-col gap-x-10 lg:flex-row">
-                <graphql
-                    query="@include('rapidez::product.queries.attributeValues')"
-                    :variables='@json(['attributes' => array_map(fn ($attribute) => ['attribute_code' => $attribute, 'entity_type' => 'catalog_product'], config('rapidez.frontend.cart_attributes'))])'
-                    :callback="(data, response) => Object.fromEntries(response.data?.data?.customAttributeMetadata?.items?.map((item) => [item.attribute_code, Object.fromEntries(item.attribute_options.map((option) => [option.value, option.label]))]) || [])"
-                >
-                    <div class="flex w-full flex-col" slot-scope="{ data : attrributeValues }" dusk="cart-content">
-                        @include('rapidez::cart.item')
+                <div class="flex w-full flex-col" dusk="cart-content">
+                    @include('rapidez::cart.item')
 
-                        <div class="mt-5 self-start">
-                            @include('rapidez::cart.coupon')
-                        </div>
+                    <div class="mt-5 self-start">
+                        @include('rapidez::cart.coupon')
                     </div>
-                </graphql>
+                </div>
 
                 <div class="flex w-full flex-wrap justify-end self-baseline lg:max-w-xs">
                     @include('rapidez::cart.sidebar')
