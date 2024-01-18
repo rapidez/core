@@ -137,7 +137,7 @@ class Product extends Model
 
     public function parentLink(): HasOne
     {
-        return $this->hasOne(ProductLink::class, 'product_id');
+        return $this->hasOne(config('rapidez.models.product_link'), 'product_id');
     }
 
     public function parent(): BelongsTo
