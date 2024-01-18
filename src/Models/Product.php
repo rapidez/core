@@ -4,6 +4,7 @@ namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -132,6 +133,16 @@ class Product extends Model
             ->hasMany(config('rapidez.models.rewrite'), 'entity_id')
             ->withoutGlobalScope('store')
             ->where('entity_type', 'product');
+    }
+
+    public function parentLink(): HasOne
+    {
+        return $this->hasOne(ProductLink::class, 'product_id');
+    }
+
+    public function parent(): BelongsTo
+    {
+        return $this->parentLink->belongsTo(config('rapidez.models.product'), 'parent_id')->withoutGlobalScopes();
     }
 
     public function scopeByIds(Builder $query, array $productIds): Builder
