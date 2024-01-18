@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Rapidez\Core\Casts\Children;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
@@ -135,14 +136,14 @@ class Product extends Model
             ->where('entity_type', 'product');
     }
 
-    public function parentLink(): HasOne
+    public function parent(): HasOneThrough
     {
-        return $this->hasOne(config('rapidez.models.product_link'), 'product_id');
-    }
-
-    public function parent(): BelongsTo
-    {
-        return $this->parentLink->belongsTo(config('rapidez.models.product'), 'parent_id')->withoutGlobalScopes();
+        return $this->hasOneThrough(
+            config('rapidez.models.product'),
+            config('rapidez.models.product_link'),
+            'product_id', 'entity_id',
+            'entity_id', 'parent_id'
+        )->withoutGlobalScopes();
     }
 
     public function scopeByIds(Builder $query, array $productIds): Builder
