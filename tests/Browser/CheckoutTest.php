@@ -105,6 +105,7 @@ class CheckoutTest extends DuskTestCase
             ->click('@continue') // go to payment step
             ->waitUntilIdle()
             ->waitForText(__('Payment method'))
+            ->pause(1000)
             ->click('@method-0') // select payment method
             ->waitUntilIdle()
             ->click('@continue') // place order
