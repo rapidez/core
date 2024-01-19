@@ -221,6 +221,11 @@ export default {
                     method: this.checkout.payment_method,
                 },
             })
+
+            this.$root.$emit('checkout-payment-selected', {
+                method: this.checkout.payment_method
+            })
+
             this.getTotalsInformation()
         },
 
@@ -231,22 +236,31 @@ export default {
             }
 
             try {
-                let response = await this.magentoCart('post', 'payment-information', {
-                    billingAddress: this.billingAddress,
-                    shippingAddress: this.shippingAddress,
-                    email: this.user?.email ? this.user.email : this.$root.guestEmail,
-                    paymentMethod: {
-                        method: this.checkout.payment_method,
-                        extension_attributes: {
-                            agreement_ids: this.checkout.agreement_ids,
-                        },
+                this.$root.$emit('before-checkout-payment-saved', {
+                    order: {
+                        payment_method_code: this.checkout.payment_method,
                     },
                 })
+
+                let response = {};
+                if (!window.app.checkout?.preventOrder) {
+                    response = await this.magentoCart('post', 'payment-information', {
+                        billingAddress: this.billingAddress,
+                        shippingAddress: this.shippingAddress,
+                        email: this.user?.email ? this.user.email : this.$root.guestEmail,
+                        paymentMethod: {
+                            method: this.checkout.payment_method,
+                            extension_attributes: {
+                                agreement_ids: this.checkout.agreement_ids,
+                            },
+                        },
+                    })
+                }
                 // response.data = orderId
 
                 this.$root.$emit('checkout-payment-saved', {
                     order: {
-                        id: response.data,
+                        id: response?.data,
                         payment_method_code: this.checkout.payment_method,
                     },
                 })
