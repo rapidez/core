@@ -223,7 +223,7 @@ export default {
             })
 
             this.$root.$emit('checkout-payment-selected', {
-                method: this.checkout.payment_method
+                method: this.checkout.payment_method,
             })
 
             this.getTotalsInformation()
@@ -242,7 +242,7 @@ export default {
                     },
                 })
 
-                let response = {};
+                let response = {}
                 if (!window.app.checkout?.preventOrder) {
                     response = await this.magentoCart('post', 'payment-information', {
                         billingAddress: this.billingAddress,
