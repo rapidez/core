@@ -12,7 +12,7 @@
                 <img
                     class="ml-auto w-8 h-8"
                     v-bind:src="`/payment-icons/${method.code}.svg`"
-                    onerror="javascript:this.src=`/payment-icons/default.svg`"
+                    onerror="this.onerror=null; this.src=`/payment-icons/default.svg`"
                 >
             </div>
         </x-rapidez::radio>
