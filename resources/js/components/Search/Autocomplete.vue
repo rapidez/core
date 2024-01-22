@@ -45,7 +45,7 @@ export default {
             }
 
             // Initialize with empty data to preserve additionals order
-            self.results = Object.fromEntries(Object.keys(self.additionals).map((e) => [e, []]))
+            self.results = Object.fromEntries(Object.keys(self.additionals).map(e => [e, []]))
             self.resultsCount = 0
 
             let url = new URL(config.es_url)
@@ -75,6 +75,12 @@ export default {
                             minimum_should_match: 1,
                         },
                     },
+                    highlight: {
+                        pre_tags: ['<mark>'],
+                        post_tags: ['</mark>'],
+                        fields: Object.fromEntries(fields.map(e => [e.split('^')[0], {}])),
+                        require_field_match: false
+                    },
                 }
 
                 axios({
@@ -88,6 +94,14 @@ export default {
                 })
             })
         }, self.debounce)
+    },
+
+    methods: {
+        highlight(hit, field) {
+            let source = hit._source ?? hit.source
+            let highlight = hit.highlight ?? hit.source.highlight
+            return highlight?.[field]?.[0] ?? source?.[field] ?? ''
+        }
     },
 }
 </script>

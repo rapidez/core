@@ -5,7 +5,7 @@
     <ul class="flex flex-col gap-1">
         <li v-for="hit in resultsData.hits" class="w-full">
             <a :href="hit._source.url" class="w-full hover:text-primary flex gap-1">
-                <span class="ml-2">@{{ hit._source.name }}</span>
+                <span class="ml-2" v-html="highlight(hit, 'name')"></span>
             </a>
         </li>
     </ul>
