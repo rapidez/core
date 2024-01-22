@@ -45,7 +45,7 @@ export default {
             }
 
             // Initialize with empty data to preserve additionals order
-            self.results = Object.fromEntries(Object.keys(self.additionals).map(e => [e, []]))
+            self.results = Object.fromEntries(Object.keys(self.additionals).map((e) => [e, []]))
             self.resultsCount = 0
 
             let url = new URL(config.es_url)
