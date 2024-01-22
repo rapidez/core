@@ -18,8 +18,8 @@ export default {
         },
         multiMatchTypes: {
             type: Array,
-            default: () => ['best_fields', 'phrase', 'phrase_prefix']
-        }
+            default: () => ['best_fields', 'phrase', 'phrase_prefix'],
+        },
     },
 
     render() {
@@ -28,7 +28,7 @@ export default {
 
     data() {
         return {
-            results: { },
+            results: {},
             resultsCount: 0,
             searchAdditionals: () => null,
         }
@@ -44,7 +44,7 @@ export default {
                 return
             }
 
-            self.results = { }
+            self.results = {}
             self.resultsCount = 0
 
             let url = new URL(config.es_url)
@@ -56,12 +56,14 @@ export default {
                 let limit = data['limit'] ?? self.limit ?? undefined
                 let sort = data['sort'] ?? undefined
 
-                let multimatch = self.multiMatchTypes.map((type) => ({ multi_match: {
-                    query: query,
-                    type: type,
-                    fields: fields,
-                    fuzziness: type.includes('phrase') ? undefined : 'AUTO',
-                }}))
+                let multimatch = self.multiMatchTypes.map((type) => ({
+                    multi_match: {
+                        query: query,
+                        type: type,
+                        fields: fields,
+                        fuzziness: type.includes('phrase') ? undefined : 'AUTO',
+                    },
+                }))
 
                 let esQuery = {
                     size: limit,
