@@ -45,7 +45,7 @@ export default {
             }
 
             // Initialize with empty data to preserve additionals order
-            self.results = Object.fromEntries(Object.keys(self.additionals).map(e => [e, []]))
+            self.results = Object.fromEntries(Object.keys(self.additionals).map(indexName => [indexName, []]))
             self.resultsCount = 0
 
             let url = new URL(config.es_url)
@@ -78,7 +78,7 @@ export default {
                     highlight: {
                         pre_tags: ['<mark>'],
                         post_tags: ['</mark>'],
-                        fields: Object.fromEntries(fields.map(e => [e.split('^')[0], {}])),
+                        fields: Object.fromEntries(fields.map(field => [field.split('^')[0], {}])),
                         require_field_match: false
                     },
                 }
