@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.8.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.9.0...master)
+## [1.9.0](https://github.com/rapidez/core/releases/tag/1.9.0) - 2024-01-24
+
+### Changed
+
+- Use the configured locale from Magento (#409)
+
 ## [1.8.0](https://github.com/rapidez/core/releases/tag/1.8.0) - 2024-01-23
 
 ### Added
