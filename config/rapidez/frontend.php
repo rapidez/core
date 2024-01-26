@@ -22,12 +22,15 @@ return [
         'default' => ['cart', 'login', 'credentials', 'payment', 'success'],
     ],
 
-    // Attach additional indexes to the autocomplete
-    // Uses the views in rapidez::layouts.partials.header.autocomplete
     'autocomplete' => [
+        // Attach additional indexes to the autocomplete
+        // Uses the views in rapidez::layouts.partials.header.autocomplete
         'additionals' => [
             'categories' => ['name^3', 'description'],
         ],
+
+        'debounce' => 100,
+        'limit' => 10,
     ],
 
     // Link store codes to theme folders
