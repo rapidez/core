@@ -22,7 +22,8 @@ return [
         'default' => ['cart', 'login', 'credentials', 'payment', 'success'],
     ],
 
-    //
+    // Attach additional indexes to the autocomplete
+    // Uses the views in rapidez::layouts.partials.header.autocomplete
     'autocomplete' => [
         'additionals' => [
             'categories' => ['name^3', 'description'],
