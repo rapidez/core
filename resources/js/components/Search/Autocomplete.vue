@@ -79,7 +79,7 @@ export default {
                         pre_tags: ['<mark>'],
                         post_tags: ['</mark>'],
                         fields: Object.fromEntries(fields.map((field) => [field.split('^')[0], {}])),
-                        require_field_match: false
+                        require_field_match: false,
                     },
                 }
 
