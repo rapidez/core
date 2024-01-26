@@ -12,7 +12,7 @@
 <autocomplete
     v-if="$root.loadAutocomplete"
     v-on:mounted="() => window.document.getElementById('autocomplete-input').focus()"
-    v-bind:additionals="{ categories: ['name^3', 'meta_description^1'] }"
+    v-bind:additionals="{{ json_encode(config('rapidez.frontend.autocomplete.additionals')) }}"
     class="w-full"
     v-cloak
 >
@@ -42,7 +42,9 @@
                     v-if="isOpen && (suggestions.length || resultsCount)"
                 >
                     <template v-for="(resultsData, resultsType) in results ?? {}" v-if="resultsData?.hits?.length">
-                        @include('rapidez::layouts.partials.header.autocomplete.categories')
+                        @foreach (config('rapidez.frontend.autocomplete.additionals') as $key => $fields)
+                            @includeIf('rapidez::layouts.partials.header.autocomplete.' . $key)
+                        @endforeach
                     </template>
 
                     @include('rapidez::layouts.partials.header.autocomplete.products')

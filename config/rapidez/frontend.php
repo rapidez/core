@@ -22,6 +22,13 @@ return [
         'default' => ['cart', 'login', 'credentials', 'payment', 'success'],
     ],
 
+    //
+    'autocomplete' => [
+        'additionals' => [
+            'categories' => ['name^3', 'description'],
+        ],
+    ],
+
     // Link store codes to theme folders
     // The structure is `'store_code' => 'folder_path'`
     'themes' => [
