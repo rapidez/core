@@ -66,7 +66,7 @@ class Rapidez
         return json_decode(str_replace(array_values($mapping), array_keys($mapping), $encodedString));
     }
 
-    public function getStores(callable|int|string $store = null): array
+    public function getStores(callable|int|string|null $store = null): array
     {
         $storeModel = config('rapidez.models.store');
 
