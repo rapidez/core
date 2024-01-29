@@ -1,6 +1,24 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.9.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.10.0...master)
+## [1.10.0](https://github.com/rapidez/core/releases/tag/1.10.0) - 2024-01-29
+
+### Added
+
+ - Add new storecode if directive (https://github.com/rapidez/core/pull/411)
+ - Add product parent (https://github.com/rapidez/core/pull/404)
+ - Improve flexibility of additional search queries in autocomplete (https://github.com/rapidez/core/pull/407)
+
+### Changed
+
+- Always set step in checkout success to success step (https://github.com/rapidez/core/pull/403)
+- Refresh user before retrieving addresses (https://github.com/rapidez/core/pull/345)
+
+### Fixed
+
+ - Fix usage of whitespace tokenizer (https://github.com/rapidez/core/pull/410)
+
+
 ## [1.9.0](https://github.com/rapidez/core/releases/tag/1.9.0) - 2024-01-24
 
 ### Changed
