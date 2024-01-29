@@ -60,7 +60,7 @@ class ElasticsearchIndexer
 
         $currentId = is_callable($id)
             ? $id($item)
-            : $item[$id];
+            : data_get($item, $id);
 
         if (is_null($currentId)) {
             return;
@@ -69,8 +69,23 @@ class ElasticsearchIndexer
         IndexJob::dispatch($this->index, $currentId, $currentValues);
     }
 
-    public function prepare(string $indexName, array $mapping = [], array $settings = []): void
+    public function prepare(string $indexName, array $mapping = [], array $settings = [], array $synonymsFor = []): void
     {
+        if (count($synonymsFor)) {
+            $synonyms = config('rapidez.models.search_synonym')::whereIn('store_id', [0, config('rapidez.store')])
+                ->get()
+                ->map(fn ($synonym) => $synonym->synonyms)
+                ->toArray();
+
+            data_set($settings, 'index.analysis.filter.synonym', ['type' => 'synonym', 'synonyms' => $synonyms]);
+            data_set($settings, 'index.analysis.analyzer.synonym', ['tokenizer' => 'whitespace', 'filter' => ['synonym']]);
+
+            foreach ($synonymsFor as $property) {
+                data_set($mapping, 'properties.' . $property . '.type', 'text');
+                data_set($mapping, 'properties.' . $property . '.analyzer', 'synonym');
+            }
+        }
+
         $this->createAlias($indexName);
         $this->createIndex($this->index, $mapping, $settings);
     }

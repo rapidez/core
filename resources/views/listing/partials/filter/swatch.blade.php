@@ -3,7 +3,7 @@
     :component-id="filter.code"
     :data-field="filter.code"
     :inner-class="{
-        title: 'capitalize font-semibold',
+        title: 'capitalize text-sm font-medium text-gray-900',
         list: '!max-h-full flex flex-wrap',
     }"
     :title="filter.name.replace('_', ' ')"

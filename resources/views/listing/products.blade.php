@@ -1,16 +1,16 @@
-@php $dropdownClasses = '!outline-none !rounded shadow focus:ring focus:ring-green-500 h-[32px] pr-[25px] pl-[10px] pb-0 pt-0 text-[0.82rem]'; @endphp
+@php $dropdownClasses = '!h-auto !border-solid !border !border-border !rounded !py-2 !ring-0 focus:!border-inactive !text-sm !text-neutral !outline-none ' @endphp
 <reactive-list
     id="products"
     component-id="products"
     data-field="name.keyword"
-    list-class="flex flex-wrap mt-5 -mx-1 overflow-hidden"
+    list-class="flex flex-wrap mt-5 -mx-4 sm:-mx-1 overflow-hidden"
     :pagination="true"
     v-on:page-click="scrollToElement('#products')"
     :size="isNaN(parseInt(listingSlotProps.pageSize)) ? 10000 : parseInt(listingSlotProps.pageSize)"
     :react="{and: reactiveFilters}"
     :sort-options="sortOptions"
     :inner-class="{
-        button: '!bg-primary disabled:!bg-secondary',
+        button: '!bg-inactive disabled:!bg-opacity-60 !text-white [&.active]:!bg-neutral',
         sortOptions: '{{ $dropdownClasses }}'
     }"
     prev-label="@lang('Prev')"

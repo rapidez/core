@@ -16,7 +16,7 @@ class AuthenticateHealthCheck
      */
     public function handle($request, $next)
     {
-        $auth = config('rapidez.health_check.auth', [static::class, 'auth']);
+        $auth = config('rapidez.healthcheck.auth', [static::class, 'auth']);
         abort_unless($auth($request), 403);
 
         return $next($request);
@@ -24,6 +24,6 @@ class AuthenticateHealthCheck
 
     public static function auth($request)
     {
-        return IpUtils::checkIp($request->ip(), config('rapidez.health_check.allowed_ips', ['127.0.0.1/8']));
+        return IpUtils::checkIp($request->ip(), config('rapidez.healthcheck.allowed_ips', ['127.0.0.1/8']));
     }
 }

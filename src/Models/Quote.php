@@ -15,6 +15,8 @@ class Quote extends Model
 
     protected $primaryKey = 'entity_id';
 
+    protected $guarded = [];
+
     protected $casts = [
         'items'       => QuoteItems::class,
         'cross_sells' => CommaSeparatedToIntegerArray::class,
@@ -48,7 +50,7 @@ class Quote extends Model
                         "item_id", quote_item.item_id,
                         "product_id", quote_item.product_id,
                         "sku", quote_item.sku,
-                        "name", quote_item.name,
+                        "name", quote_item.`name`,
                         "image", product.thumbnail,
                         "url_key", product.url_key,
                         "qty", quote_item.qty,

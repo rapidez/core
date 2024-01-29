@@ -11,6 +11,10 @@ abstract class ElasticsearchIndexCommand extends Command
 {
     public ElasticsearchIndexer $indexer;
 
+    public array $mapping = [];
+    public array $settings = [];
+    public array $synonymsFor = [];
+
     public function __construct(ElasticsearchIndexer $indexer)
     {
         parent::__construct();
@@ -35,7 +39,7 @@ abstract class ElasticsearchIndexCommand extends Command
         $this->line('Indexing `' . $indexName . '` for store ' . $storeName);
 
         try {
-            $this->prepareIndexerWithStore($store, $indexName);
+            $this->prepareIndexerWithStore($store, $indexName, $this->mapping, $this->settings, $this->synonymsFor);
             $this->indexer->index($this->dataFrom($items), $dataFilter, $id);
             $this->indexer->finish();
         } catch (Exception $e) {
@@ -45,10 +49,10 @@ abstract class ElasticsearchIndexCommand extends Command
         }
     }
 
-    public function prepareIndexerWithStore(Store|array $store, string $indexName, array $mapping = [], array $settings = []): void
+    public function prepareIndexerWithStore(Store|array $store, string $indexName, array $mapping = [], array $settings = [], array $synonymsFor = []): void
     {
         Rapidez::setStore($store);
-        $this->indexer->prepare(config('rapidez.es_prefix') . '_' . $indexName . '_' . $store['store_id'], $mapping, $settings);
+        $this->indexer->prepare(config('rapidez.es_prefix') . '_' . $indexName . '_' . $store['store_id'], $mapping, $settings, $synonymsFor);
     }
 
     public function dataFrom(callable|iterable $items)

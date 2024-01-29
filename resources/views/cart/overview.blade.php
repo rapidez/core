@@ -5,93 +5,71 @@
 @section('robots', 'NOINDEX,NOFOLLOW')
 
 @section('content')
-    <h1 class="font-bold text-4xl mb-5">@lang('Cart')</h1>
+    <div class="container">
+        <h1 class="mb-5 text-4xl font-bold">@lang('Cart')</h1>
+        <cart v-cloak>
+            <div v-if="hasItems" slot-scope="{ cart, hasItems, changeQty, remove }">
+                <div class="flex flex-col gap-x-10 lg:flex-row">
+                    <div class="flex w-full flex-col">
+                        <div v-for="(item, itemId, index) in cart.items" class="relative flex gap-5 border-b py-3 max-lg:flex-col lg:items-center">
+                            <div class="flex flex-1 items-center gap-5">
+                                <a class="w-20":href="item.url | url">
+                                    <img class="mx-auto" :alt="item.name" :src="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product' + item.image + '.webp'" height="100" />
+                                </a>
+                                <div class="flex flex-col items-start gap-1">
+                                    <a class="font-bold" :href="item.url | url" dusk="cart-item-name">@{{ item.name }}</a>
+                                    <div v-for="(optionValue, option) in item.options">
+                                        @{{ option }}: @{{ optionValue }}
+                                    </div>
+                                    <div v-for="option in cart.items2.find((item) => item.item_id == itemId).options.filter((option) => !['info_buyRequest', 'option_ids'].includes(option.code) && option.label)">
+                                        @{{ option.label }}: @{{ option.value.title || option.value }}
+                                    </div>
+                                    <button v-on:click="remove(item)" v-bind:dusk="'item-delete-' + index" class="cursor-pointer hover:underline" title="@lang('Remove')">
+                                        @lang('Remove')
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between gap-5">
+                                @{{ item.price | price }}
+                                <div class="flex items-center gap-1">
+                                    <x-rapidez::input v-model="item.qty" v-bind:dusk="'qty-'+index" name="qty" class="w-14 px-1 text-center" type="number" :label="false" ::min="item.min_sale_qty > item.qty_increments ? item.min_sale_qty : item.qty_increments" ::step="item.qty_increments" />
+                                    <x-rapidez::button v-on:click="changeQty(item)" v-bind:dusk="'item-update-'+index" class="ml-1" :title="__('Update')">
+                                        <x-heroicon-s-arrow-path class="h-4 w-4" />
+                                    </x-rapidez::button>
+                                </div>
+                                @{{ item.total | price }}
+                            </div>
+                        </div>
+                        <div class="mt-5 self-start">
+                            @include('rapidez::cart.coupon')
+                        </div>
+                    </div>
 
-    <cart v-cloak>
-        <div v-if="hasItems" slot-scope="{ cart, hasItems, changeQty, remove }">
-            <div class="flex flex-wrap items-center border-b pb-2 mb-2" v-for="(item, itemId, index) in cart.items">
-                <div class="w-1/6 sm:w-1/12 pr-3">
-                    <a :href="item.url | url" class="block">
-                        <picture>
-                            <source :srcset="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product' + item.image + '.webp'" type="image/webp">
-                            <img
-                                :alt="item.name"
-                                :src="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product' + item.image"
-                                height="100"
-                                class="mx-auto"
-                            />
-                        </picture>
-                    </a>
-                </div>
-                <div class="w-5/6 sm:w-5/12 lg:w-8/12">
-                    <a :href="item.url | url" dusk="cart-item-name" class="font-bold">@{{ item.name }}</a>
-                    <div v-for="(optionValue, option) in item.options">
-                        @{{ option }}: @{{ optionValue }}
-                    </div>
-                    <div v-for="option in cart.items2.find((item) => item.item_id == itemId).options.filter((option) => !['info_buyRequest', 'option_ids'].includes(option.code) && option.label)">
-                        @{{ option.label }}: @{{ option.value.title || option.value }}
-                    </div>
-                </div>
-                <div class="w-2/6 sm:w-1/6 lg:w-1/12 text-right pr-5">
-                    @{{ item.price | price }}
-                </div>
-                <div class="w-2/6 sm:w-1/6 lg:w-1/12">
-                    <div class="inline-flex">
-                        <x-rapidez::input
-                            :label="false"
-                            class="text-right"
-                            type="number"
-                            name="qty"
-                            v-model="item.qty"
-                            v-bind:dusk="'qty-'+index"
-                            ::min="item.min_sale_qty > item.qty_increments ? item.min_sale_qty : item.qty_increments"
-                            ::step="item.qty_increments"
-                        />
-                        <x-rapidez::button
-                            class="ml-1"
-                            :title="__('Update')"
-                            v-on:click="changeQty(item)"
-                            v-bind:dusk="'item-update-'+index"
-                        >
-                            <x-heroicon-s-refresh class="w-4 h-4"/>
+                    <div class="flex w-full flex-wrap justify-end self-baseline lg:max-w-xs">
+                        <dl class="mb-5 flex w-full flex-wrap rounded-lg border p-3 [&>dd:nth-last-of-type(-n+2)]:border-none [&>dd]:w-1/2 [&>dd]:border-b [&>dd]:py-3">
+                            <dd>@lang('Subtotal')</dd>
+                            <dd class="text-right">@{{ cart.subtotal | price }}</dd>
+                            <dd v-if="cart.tax > 0">@lang('Tax')</dd>
+                            <dd v-if="cart.tax > 0" class="text-right">@{{ cart.tax | price }}</dd>
+                            <dd v-if="cart.shipping_amount > 0">@lang('Shipping')<br><small>@{{ cart.shipping_description }}</small></dd>
+                            <dd v-if="cart.shipping_amount > 0" class="text-right">@{{ cart.shipping_amount | price }}</dd>
+                            <dd v-if="cart.discount_name && cart.discount_amount < 0">@lang('Discount'): @{{ cart.discount_name }}</dd>
+                            <dd v-if="!cart.discount_name && cart.discount_amount < 0">@lang('Discount')</dd>
+                            <dd v-if="cart.discount_amount < 0" class="text-right">@{{ cart.discount_amount | price }}</dd>
+                            <dd class="font-bold">@lang('Total')</dd>
+                            <dd class="text-right font-bold">@{{ cart.total | price }}</dd>
+                        </dl>
+                        <x-rapidez::button href="{{ route('checkout') }}" dusk="checkout" class="w-full text-center">
+                            @lang('Checkout')
                         </x-rapidez::button>
                     </div>
                 </div>
-                <div class="w-2/6 sm:w-1/6 lg:w-1/12 flex justify-end items-center text-right">
-                    @{{ item.total | price }}
-                    <a href="#" @click.prevent="remove(item)" class="ml-2" title="@lang('Remove')" :dusk="'item-delete-'+index">
-                        <x-heroicon-s-x class="w-4 h-4"/>
-                    </a>
-                </div>
+
+                <x-rapidez::productlist value="cart.cross_sells" title="More choices to go with your product" field="entity_id" />
             </div>
-
-            <div class="sm:flex sm:justify-between sm:items-start mt-5">
-                @include('rapidez::cart.coupon')
-                <div class="flex flex-wrap justify-end sm:w-64">
-                    <div class="flex flex-wrap w-full p-3 mb-5 bg-secondary rounded-lg">
-                        <div class="w-1/2">@lang('Subtotal')</div>
-                        <div class="w-1/2 text-right">@{{ cart.subtotal | price }}</div>
-                        <div class="w-1/2" v-if="cart.tax > 0">@lang('Tax')</div>
-                        <div class="w-1/2 text-right" v-if="cart.tax > 0">@{{ cart.tax | price }}</div>
-                        <div class="w-1/2" v-if="cart.shipping_amount > 0">@lang('Shipping')<br><small>@{{ cart.shipping_description }}</small></div>
-                        <div class="w-1/2 text-right" v-if="cart.shipping_amount > 0">@{{ cart.shipping_amount | price }}</div>
-                        <div class="w-1/2" v-if="cart.discount_name && cart.discount_amount < 0">@lang('Discount'): @{{ cart.discount_name }}</div>
-                        <div class="w-1/2" v-if="!cart.discount_name && cart.discount_amount < 0">@lang('Discount')</div>
-                        <div class="w-1/2 text-right" v-if="cart.discount_amount < 0">@{{ cart.discount_amount | price }}</div>
-                        <div class="w-1/2 font-bold">@lang('Total')</div>
-                        <div class="w-1/2 text-right font-bold">@{{ cart.total | price }}</div>
-                    </div>
-
-                    <x-rapidez::button href="{{ route('checkout') }}" dusk="checkout">
-                        @lang('Checkout')
-                    </x-rapidez::button>
-                </div>
+            <div v-else>
+                @lang('You don\'t have anything in your cart.')
             </div>
-
-            <x-rapidez::productlist title="More choices to go with your product" field="id" value="cart.cross_sells"/>
-        </div>
-        <div v-else>
-            @lang('You don\'t have anything in your cart.')
-        </div>
-    </cart>
+        </cart>
+    </div>
 @endsection

@@ -54,7 +54,7 @@ class MagentoSettingsHealthcheck
             ];
         }
 
-        $superAttributesCount = count($attributeModel::getCachedWhere(fn ($attribute) => $attribute['super']));
+        $superAttributesCount = count($attributeModel::getCachedWhere(fn ($attribute) => $attribute['super'] && $attribute['flat']));
         $joinCount = ($superAttributesCount * 2) + (count($nonFlatAttributes) * 3) + 4;
 
         if ($joinCount > 58) {

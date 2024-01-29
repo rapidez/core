@@ -1,28 +1,24 @@
-<x-rapidez::slideover v-on-click-away="close" :mobile-only="true">
-    <x-slot name="button">
-        <x-rapidez::button class="md:hidden w-full mb-3" v-on:click="toggle">
+<x-rapidez::slideover :mobile-only="true">
+    <x-slot:button>
+        <x-rapidez::button v-on:click="toggle" class="mb-3 w-full md:hidden">
             @lang('Filters')
         </x-rapidez::button>
-    </x-slot>
-
-    <x-slot name="title">
+    </x-slot:button>
+    <x-slot:title>
         @lang('Filters')
-    </x-slot>
+    </x-slot:title>
     {{-- On mobile the filters aren't immedately visible so we should defer loading --}}
     <lazy>
-        <template>
-            @include('rapidez::listing.partials.filter.selected')
-            @include('rapidez::listing.partials.filter.category')
-
-            <template v-for="filter in filters">
-                @include('rapidez::listing.partials.filter.price')
-                @include('rapidez::listing.partials.filter.swatch')
-                @include('rapidez::listing.partials.filter.boolean')
-                @include('rapidez::listing.partials.filter.select')
-            </template>
+        @include('rapidez::listing.partials.filter.selected')
+        @include('rapidez::listing.partials.filter.category')
+        <template v-for="filter in filters">
+            @include('rapidez::listing.partials.filter.price')
+            @include('rapidez::listing.partials.filter.swatch')
+            @include('rapidez::listing.partials.filter.boolean')
+            @include('rapidez::listing.partials.filter.select')
         </template>
     </lazy>
-    <x-rapidez::button class="md:hidden w-full text-sm" v-on:click="toggle">
+    <x-rapidez::button v-on:click="toggle" class="w-full text-sm md:hidden">
         @lang('Show results')
     </x-rapidez::button>
 </x-rapidez::slideover>

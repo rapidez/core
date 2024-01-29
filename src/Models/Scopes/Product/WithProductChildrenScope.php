@@ -16,15 +16,16 @@ class WithProductChildrenScope implements Scope
         $attributeModel = config('rapidez.models.attribute');
 
         $superAttributes = Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {
-            return $attribute['super'];
+            return $attribute['super'] && $attribute['flat'];
         }), 'code');
 
+        $grammar = $builder->getQuery()->getGrammar();
         $superAttributesSelect = '';
         foreach ($superAttributes as $superAttribute) {
-            $superAttributesSelect .= '"' . $superAttribute . '", children.' . $superAttribute . ',';
+            $superAttributesSelect .= '"' . $superAttribute . '", ' . $grammar->wrap('children.' . $superAttribute) . ',';
         }
 
-        $stockQty = config('rapidez.expose_stock') ? '"qty", children_stock.qty,' : '';
+        $stockQty = config('rapidez.system.expose_stock') ? '"qty", children_stock.qty,' : '';
 
         $builder
             ->selectRaw('JSON_REMOVE(JSON_OBJECTAGG(IFNULL(children.entity_id, "null__"), JSON_OBJECT(

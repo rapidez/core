@@ -1,5 +1,5 @@
 <script>
-import { useElementHover, useIntervalFn, useEventListener, useThrottleFn } from '@vueuse/core'
+import { useElementHover, useIntervalFn, useEventListener, useThrottleFn, useResizeObserver } from '@vueuse/core'
 
 export default {
     render() {
@@ -38,35 +38,64 @@ export default {
     data: () => {
         return {
             slider: '',
-            slidesTotal: 0,
             position: 0,
             showLeft: false,
             showRight: false,
             mounted: false,
             hover: false,
             direction: 1,
-            chunk: '',
             pause: () => {},
             resume: () => {},
+
+            childSpan: 0,
+            sliderSpan: 0,
         }
     },
     mounted() {
         this.initSlider()
+        useResizeObserver(this.slider, useThrottleFn(this.updateSpan, 150, true, true))
         useEventListener(this.slider, 'scroll', useThrottleFn(this.scroll, 150, true, true), { passive: true })
+        if (this.loop) {
+            useEventListener(this.slider, 'scrollend', this.scrollend, { passive: true })
+        }
         this.$nextTick(() => {
             if (this.loop) {
-                this.chunk = this.slider.cloneNode(true)
+                this.initLoop()
             }
             this.slider.dispatchEvent(new CustomEvent('scroll'))
             this.mounted = true
 
             this.initAutoPlay()
         })
+
+        this.updateSpan()
     },
     methods: {
         initSlider() {
             this.slider = this.$scopedSlots.default()[0].context.$refs[this.reference]
-            this.slidesTotal = (this.slider.children?.length ?? 1) - this.slidesVisible + 1
+        },
+        initLoop() {
+            if (!this.loop) {
+                return
+            }
+
+            const slides = Array.from(this.slides)
+            if (!slides.length) {
+                return
+            }
+            let firstChild = this.slider.firstChild
+
+            for (let slide of slides) {
+                let startClone = this.slider.insertBefore(slide.cloneNode(true), firstChild)
+                startClone.dataset.clone = true
+                startClone.dataset.position = 'start'
+
+                let endClone = this.slider.appendChild(slide.cloneNode(true))
+                endClone.dataset.clone = true
+                endClone.dataset.position = 'end'
+            }
+
+            this.slider.dispatchEvent(new CustomEvent('scrollend'))
         },
         initAutoPlay() {
             if (!this.autoplay) {
@@ -87,12 +116,20 @@ export default {
             this.showLeft = this.loop || this.position
             this.showRight = this.loop || this.slider.offsetWidth + this.position < this.slider.scrollWidth - 1
         },
+        scrollend(event) {
+            let scrollPosition = this.vertical ? event.target.scrollTop : event.target.scrollLeft
+            if (scrollPosition < this.sliderStart) {
+                this.slider.scrollTo({ [this.vertical ? 'top' : 'left']: scrollPosition + this.sliderStart, behavior: 'instant' })
+            } else if (scrollPosition > this.sliderEnd) {
+                this.slider.scrollTo({ [this.vertical ? 'top' : 'left']: scrollPosition - this.sliderStart, behavior: 'instant' })
+            }
+        },
         autoScroll() {
             if (this.slidesTotal == 1) {
                 return
             }
             let next = this.currentSlide + this.direction
-            if (next >= this.slidesTotal || next < 0) {
+            if ((next >= this.slidesTotal && !this.loop) || next < 0) {
                 if (this.bounce) {
                     this.direction = -this.direction
                     next = this.currentSlide + this.direction
@@ -102,10 +139,12 @@ export default {
             }
             this.navigate(next)
         },
-        navigate(index) {
+        navigate(index, behavior = 'smooth') {
+            index = this.loop ? index + this.slides.length : index
+
             this.vertical
                 ? this.slider.scrollTo(0, this.slider.children[index]?.offsetTop)
-                : this.slider.scrollTo(this.slider.children[0]?.offsetWidth * index, 0)
+                : this.slider.scrollTo(this.slider.children[index]?.offsetLeft, 0)
         },
         handleLoop() {
             if (this.currentSlide + 1 === this.slidesTotal - 1) {
@@ -119,6 +158,17 @@ export default {
                 })
             }
         },
+        updateSpan() {
+            let slide = this.childSpan == 0 ? 0 : this.currentSlide
+
+            this.childSpan = this.vertical
+                ? this.slider.children[0]?.offsetHeight ?? this.slider.offsetHeight
+                : this.slider.children[0]?.offsetWidth ?? this.slider.offsetWidth
+
+            this.navigate(slide, 'instant')
+
+            this.sliderSpan = this.vertical ? this.slider.offsetHeight : this.slider.offsetWidth
+        },
     },
     watch: {
         hover(isHovering) {
@@ -130,9 +180,6 @@ export default {
         },
         currentSlide() {
             this.initSlider()
-            if (this.loop) {
-                this.handleLoop()
-            }
         },
     },
     computed: {
@@ -140,8 +187,7 @@ export default {
             if (!this.mounted) {
                 return 0
             }
-
-            return Math.round(this.position / this.childSpan)
+            return Math.round(this.position / this.childSpan) % this.slides.length
         },
         slidesVisible() {
             if (!this.mounted) {
@@ -150,21 +196,27 @@ export default {
 
             return Math.round(this.sliderSpan / this.childSpan)
         },
-        childSpan() {
+        slidesTotal() {
             if (!this.mounted) {
                 return 0
             }
 
-            return this.vertical
-                ? this.slider.children[0]?.offsetHeight ?? this.slider.offsetHeight
-                : this.slider.children[0]?.offsetWidth ?? this.slider.offsetWidth
+            return (this.slides?.length ?? 1) - (this.loop ? 0 : this.slidesVisible - 1)
         },
-        sliderSpan() {
-            if (!this.mounted) {
-                return 0
+        slides() {
+            return this.slider.querySelectorAll(':scope > :not([data-clone=true])')
+        },
+        sliderStart() {
+            return this.vertical ? this.slides[0].offsetTop : this.slides[0].offsetLeft
+        },
+        sliderEnd() {
+            let lastChild = this.slides[this.slides.length - 1]
+
+            if (this.vertical) {
+                return lastChild.offsetTop + lastChild.offsetHeight
             }
 
-            return this.vertical ? this.slider.offsetHeight : this.slider.offsetWidth
+            return lastChild.offsetLeft + lastChild.offsetWidth
         },
     },
 }

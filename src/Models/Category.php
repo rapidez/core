@@ -4,6 +4,7 @@ namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
 use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
 
@@ -62,7 +63,22 @@ class Category extends Model
 
     public function subcategories()
     {
-        return $this->hasMany(self::class, 'parent_id', 'entity_id');
+        return $this->hasMany(config('rapidez.models.category'), 'parent_id', 'entity_id');
+    }
+
+    public function products(): HasManyThrough
+    {
+        return $this
+            ->hasManyThrough(
+                config('rapidez.models.product'),
+                config('rapidez.models.category_product'),
+                'category_id',
+                'entity_id',
+                'entity_id',
+                'product_id'
+            )
+            ->withoutGlobalScopes()
+            ->whereIn((new(config('rapidez.models.category_product')))->qualifyColumn('visibility'), [2, 4]);
     }
 
     public function rewrites(): HasMany

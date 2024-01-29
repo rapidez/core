@@ -5,6 +5,8 @@ namespace Rapidez\Core;
 use Illuminate\Routing\RouteAction;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Event;
 use Rapidez\Core\Models\Store;
 
 class Rapidez
@@ -43,7 +45,7 @@ class Rapidez
 
     public function content($content)
     {
-        foreach (config('rapidez.content-variables') as $parser) {
+        foreach (config('rapidez.frontend.content_variables') as $parser) {
             $content = (new $parser)($content);
         }
 
@@ -81,7 +83,15 @@ class Rapidez
 
     public function getStore(callable|int|string $store): array
     {
-        return Arr::first($this->getStores($store));
+        $stores = $this->getStores($store);
+
+        throw_if(
+            empty($stores),
+            StoreNotFoundException::class,
+            'Store not found.'
+        );
+
+        return Arr::first($stores);
     }
 
     public function setStore(Store|array|callable|int|string $store): void
@@ -98,6 +108,11 @@ class Rapidez
         config()->set('rapidez.website_code', $store['website_code']);
         config()->set('rapidez.group', $store['group_id']);
         config()->set('rapidez.root_category_id', $store['root_category_id']);
+        config()->set('frontend.base_url', url('/'));
+
+        App::setLocale(strtok(Rapidez::config('general/locale/code', 'en_US'), '_'));
+
+        Event::dispatch('rapidez:store-set', [$store]);
     }
 
     public function withStore(Store|array|callable|int|string $store, callable $callback, ...$args)

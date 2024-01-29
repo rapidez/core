@@ -14,16 +14,17 @@ class WithProductSuperAttributesScope implements Scope
     {
         $attributeModel = config('rapidez.models.attribute');
         $superAttributes = Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {
-            return $attribute['super'];
+            return $attribute['super'] && $attribute['flat'];
         }), 'code', 'id');
 
+        $grammar = $builder->getQuery()->getGrammar();
         foreach ($superAttributes as $superAttributeId => $superAttribute) {
             $query = DB::table('catalog_product_super_link')
-                ->selectRaw('JSON_OBJECTAGG(' . $superAttribute . ', JSON_OBJECT(
-                    "sort_order", option.sort_order,
-                    "label", ' . $superAttribute . '_value,
-                    "value", ' . $superAttribute . '
-                )) AS ' . $superAttribute)
+                ->selectRaw('JSON_OBJECTAGG(' . $grammar->wrap($superAttribute) . ', JSON_OBJECT(
+                    "sort_order", `option`.`sort_order`,
+                    "label", ' . $grammar->wrap($superAttribute . '_value') . ',
+                    "value", ' . $grammar->wrap($superAttribute) . '
+                )) AS ' . $grammar->wrap($superAttribute))
                 ->join($model->getTable() . ' AS children', 'children.entity_id', '=', 'catalog_product_super_link.product_id')
                 ->join('catalog_product_super_attribute', function ($join) use ($superAttributeId) {
                     $join->on('catalog_product_super_attribute.product_id', '=', 'catalog_product_super_link.parent_id')
@@ -38,12 +39,12 @@ class WithProductSuperAttributesScope implements Scope
 
         $query = DB::table('catalog_product_super_attribute')
             ->selectRaw('JSON_OBJECTAGG(eav_attribute.attribute_id, JSON_OBJECT(
-                "code", attribute_code,
-                "label", COALESCE(NULLIF(value, ""), frontend_label),
+                "code", `attribute_code`,
+                "label", COALESCE(NULLIF(`value`, ""), `frontend_label`),
                 "text_swatch", additional_data->>"$.swatch_input_type" = "text",
                 "visual_swatch", additional_data->>"$.swatch_input_type" = "visual",
                 "update_image", additional_data->>"$.update_product_preview_image" = 1
-            )) AS super_attributes')
+            )) AS `super_attributes`')
             ->join('eav_attribute', 'eav_attribute.attribute_id', '=', 'catalog_product_super_attribute.attribute_id')
             ->join('catalog_eav_attribute', 'catalog_eav_attribute.attribute_id', '=', 'catalog_product_super_attribute.attribute_id')
             ->leftJoin('catalog_product_super_attribute_label', function ($join) {

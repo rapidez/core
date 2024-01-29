@@ -312,6 +312,12 @@ export default {
             },
             deep: true,
         },
+        options: {
+            handler() {
+                this.calculatePrices()
+            },
+            deep: true,
+        },
     },
 }
 </script>

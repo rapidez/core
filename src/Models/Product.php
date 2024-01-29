@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Rapidez\Core\Casts\Children;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
@@ -105,6 +106,23 @@ class Product extends Model
         return $this->hasMany(
             config('rapidez.models.product_option'),
             'product_id',
+        );
+    }
+
+    public function categoryProducts(): HasMany
+    {
+        return $this
+            ->hasMany(
+                config('rapidez.models.category_product'),
+                'product_id',
+            );
+    }
+
+    public function reviewSummary(): HasOne
+    {
+        return $this->hasOne(
+            config('rapidez.models.product_review_summary', Rapidez\Core\Models\ProductReviewSummary::class),
+            'entity_pk_value'
         );
     }
 
