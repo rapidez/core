@@ -30,7 +30,7 @@ return [
         ],
 
         'debounce' => 100,
-        'limit' => 10,
+        'size' => 10,
     ],
 
     // Link store codes to theme folders

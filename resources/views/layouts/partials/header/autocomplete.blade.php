@@ -14,7 +14,7 @@
     v-on:mounted="() => window.document.getElementById('autocomplete-input').focus()"
     v-bind:additionals="{{ json_encode(config('rapidez.frontend.autocomplete.additionals')) }}"
     v-bind:debounce="{{ config('rapidez.frontend.autocomplete.debounce') }}"
-    v-bind:limit="{{ config('rapidez.frontend.autocomplete.limit') }}"
+    v-bind:size="{{ config('rapidez.frontend.autocomplete.size') }}"
     class="w-full"
     v-cloak
 >
@@ -32,7 +32,7 @@
             :show-icon="false"
             fuzziness="AUTO"
             :debounce="debounce"
-            :size="limit"
+            :size="size"
             v-on:value-change="searchAdditionals($event)"
         >
             <div

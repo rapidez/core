@@ -12,7 +12,7 @@ export default {
             type: Number,
             default: 100,
         },
-        limit: {
+        size: {
             type: Number,
             default: 10,
         },
@@ -54,7 +54,7 @@ export default {
 
             Object.entries(self.additionals).forEach(([name, data]) => {
                 let fields = data['fields'] ?? data
-                let limit = data['limit'] ?? self.limit ?? undefined
+                let size = data['size'] ?? self.size ?? undefined
                 let sort = data['sort'] ?? undefined
 
                 let multimatch = self.multiMatchTypes.map((type) => ({
@@ -67,7 +67,7 @@ export default {
                 }))
 
                 let esQuery = {
-                    size: limit,
+                    size: size,
                     sort: sort,
                     query: {
                         bool: {
