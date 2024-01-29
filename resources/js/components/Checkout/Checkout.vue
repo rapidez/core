@@ -27,13 +27,20 @@ export default {
         this.checkout.hasVirtualItems = this.hasVirtualItems
         this.steps = this.config.checkout_steps[window.config.store_code] ?? this.config.checkout_steps['default']
         this.setupHistory()
-        this.setCheckoutCredentialsFromDefaultUserAddresses()
-        this.getShippingMethods()
-        this.getTotalsInformation()
-        this.$root.$emit('checkout-step', 1)
+        this.setupCheckout()
     },
 
     methods: {
+        async setupCheckout() {
+            await this.refreshUser(false)
+
+            this.setCheckoutCredentialsFromDefaultUserAddresses()
+            this.getShippingMethods()
+            this.getTotalsInformation()
+
+            this.$root.$emit('checkout-step', 1)
+        },
+
         async getShippingMethods() {
             try {
                 let response = await this.magentoCart('post', 'estimate-shipping-methods', {
