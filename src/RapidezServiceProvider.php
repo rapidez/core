@@ -150,7 +150,7 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function registerThemes(): self
     {
-        if(app()->runningInConsole()) {
+        if (app()->runningInConsole()) {
             return $this;
         }
 
@@ -178,7 +178,7 @@ class RapidezServiceProvider extends ServiceProvider
 
         View::addExtension('graphql', 'blade');
 
-        Vite::useScriptTagAttributes(fn (string $src, string $url, array|null $chunk, array|null $manifest) => [
+        Vite::useScriptTagAttributes(fn (string $src, string $url, ?array $chunk, ?array $manifest) => [
             'data-turbo-track' => str_contains($url, 'app') ? 'reload' : false,
             'defer'            => true,
         ]);
@@ -232,7 +232,7 @@ class RapidezServiceProvider extends ServiceProvider
     {
         $this->app->make(Kernel::class)->pushMiddleware(DetermineAndSetShop::class);
 
-        $this->app['router']->aliasMiddleware('store_code' , CheckStoreCode::class);
+        $this->app['router']->aliasMiddleware('store_code', CheckStoreCode::class);
 
         return $this;
     }

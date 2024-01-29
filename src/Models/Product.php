@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Rapidez\Core\Casts\Children;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
@@ -26,10 +27,10 @@ use TorMorten\Eventy\Facades\Eventy;
 
 class Product extends Model
 {
-    use CastSuperAttributes;
     use CastMultiselectAttributes;
-    use SelectAttributeScopes;
+    use CastSuperAttributes;
     use HasAlternatesThroughRewrites;
+    use SelectAttributeScopes;
 
     public array $attributesToSelect = [];
 
@@ -132,6 +133,16 @@ class Product extends Model
             ->hasMany(config('rapidez.models.rewrite'), 'entity_id')
             ->withoutGlobalScope('store')
             ->where('entity_type', 'product');
+    }
+
+    public function parent(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            config('rapidez.models.product'),
+            config('rapidez.models.product_link'),
+            'product_id', 'entity_id',
+            'entity_id', 'parent_id'
+        )->withoutGlobalScopes();
     }
 
     public function scopeByIds(Builder $query, array $productIds): Builder

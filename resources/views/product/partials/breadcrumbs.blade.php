@@ -1,5 +1,5 @@
 <x-rapidez::breadcrumbs>
-    @foreach($product->breadcrumb_categories as $category)
+    @foreach ($product->breadcrumb_categories as $category)
         <x-rapidez::breadcrumb :url="url($category->url)" :position="$loop->iteration + 1">
             {{ $category->name }}
         </x-rapidez::breadcrumb>

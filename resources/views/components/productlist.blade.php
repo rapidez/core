@@ -1,6 +1,6 @@
 @props(['value', 'title' => false, 'field' => 'sku.keyword'])
 
-@if($value)
+@if ($value)
     <lazy v-slot="{ intersected }">
         <listing v-if="intersected">
             <x-rapidez::reactive-base>
@@ -14,7 +14,7 @@
                             : $value
                     !!} } } } }"
                 >
-                    @if($title)
+                    @if ($title)
                         <strong class="font-bold text-2xl mt-5" slot="renderResultStats">
                             @lang($title)
                         </strong>
