@@ -32,7 +32,7 @@ export default {
 
     methods: {
         async setupCheckout() {
-            await this.refreshUser()
+            await this.refreshUser(false)
 
             this.setCheckoutCredentialsFromDefaultUserAddresses()
             this.getShippingMethods()
