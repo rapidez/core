@@ -5,6 +5,7 @@ namespace Rapidez\Core;
 use Illuminate\Routing\RouteAction;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Event;
 use Rapidez\Core\Models\Store;
 
@@ -108,6 +109,8 @@ class Rapidez
         config()->set('rapidez.group', $store['group_id']);
         config()->set('rapidez.root_category_id', $store['root_category_id']);
         config()->set('frontend.base_url', url('/'));
+
+        App::setLocale(strtok(Rapidez::config('general/locale/code', 'en_US'), '_'));
 
         Event::dispatch('rapidez:store-set', [$store]);
     }

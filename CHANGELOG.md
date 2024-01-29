@@ -1,6 +1,24 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.7.1...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.9.0...master)
+## [1.9.0](https://github.com/rapidez/core/releases/tag/1.9.0) - 2024-01-24
+
+### Changed
+
+- Use the configured locale from Magento (#409)
+
+## [1.8.0](https://github.com/rapidez/core/releases/tag/1.8.0) - 2024-01-23
+
+### Added
+
+- New payment events (#406)
+- Robots.txt from Magento config (#408)
+
+### Fixed
+
+- Use stores to get the token and mask on checkout success (#377)
+- Fix dusk tests (#405)
+
 ## [1.7.1](https://github.com/rapidez/core/releases/tag/1.7.1) - 2024-01-05
 
 ### Fixed
