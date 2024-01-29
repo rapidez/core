@@ -32,11 +32,11 @@ export default {
 
     methods: {
         async setupCheckout() {
-            await this.refreshUser()
-
-            this.setCheckoutCredentialsFromDefaultUserAddresses()
             this.getShippingMethods()
             this.getTotalsInformation()
+
+            await this.refreshUser()
+            this.setCheckoutCredentialsFromDefaultUserAddresses()
 
             this.$root.$emit('checkout-step', 1)
         },
