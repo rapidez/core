@@ -27,10 +27,8 @@ class MagentoSettingsHealthcheck
         }
 
         $configModel = config('rapidez.models.config');
-        $attributeModel = config('rapidez.models.attribute');
-        if (! $configModel::getCachedByPath('catalog/frontend/flat_catalog_category', 0) || ! $configModel::getCachedByPath('catalog/frontend/flat_catalog_product', 0)) {
-            $response['healthy'] = false;
-            $response['messages'][] = ['type' => 'error', 'value' => __('The flat tables are disabled!')];
+        if (! $configModel::getCachedByPath('catalog/frontend/flat_catalog_product', 0)) {
+            $response['messages'][] = ['type' => 'error', 'value' => __('The product flat tables are disabled!')];
         }
 
         $productModel = config('rapidez.models.product');
@@ -40,6 +38,18 @@ class MagentoSettingsHealthcheck
             $response['messages'][] = ['type' => 'error', 'value' => __('Flat table ":flatTable" is missing! Don\'t forget to run bin/magento indexer:reindex', ['flatTable' => $flatTable])];
         }
 
+        if (! $configModel::getCachedByPath('catalog/frontend/flat_catalog_category', 0)) {
+            $response['messages'][] = ['type' => 'error', 'value' => __('The category flat tables are disabled!')];
+        }
+
+        $categoryModel = config('rapidez.models.category');
+        $flatTable = (new $categoryModel)->getTable();
+        if (! DB::getSchemaBuilder()->hasTable($flatTable)) {
+            $response['healthy'] = false;
+            $response['messages'][] = ['type' => 'error', 'value' => __('Flat table ":flatTable" is missing! Don\'t forget to run bin/magento indexer:reindex', ['flatTable' => $flatTable])];
+        }
+
+        $attributeModel = config('rapidez.models.attribute');
         $nonFlatAttributes = Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {
             return ! $attribute['flat'] && ($attribute['listing'] || $attribute['filter'] || $attribute['productpage']);
         }), 'code');
@@ -63,7 +73,7 @@ class MagentoSettingsHealthcheck
         }
 
         if (! $response['healthy']) {
-            $response['messages'][] = ['type' => 'info', 'value' => __('The of Magento settings have been checked, there were some errors; fix them before you continue. See: https://rapidez.io/docs/0.x/installation#flat-tables')];
+            $response['messages'][] = ['type' => 'info', 'value' => __('The Magento settings have been checked, there were some errors; fix them before you continue. See: https://rapidez.io/docs/0.x/installation#flat-tables')];
         }
 
         return $response;
