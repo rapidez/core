@@ -58,11 +58,11 @@ export const fetchCustomerCart = async function () {
 
 export const fetchAttributeValues = async function (attributes = []) {
     if (!attributes.length) {
-        return {"data": {"customAttributeMetadata": {"items": null}}};
+        return { data: { customAttributeMetadata: { items: null } } }
     }
 
-    return await window
-        .magentoGraphQL(`
+    return await window.magentoGraphQL(
+        `
             query attributeValues($attributes: [AttributeInput!]!) {
                 customAttributeMetadata(attributes: $attributes) {
                     items {
@@ -74,15 +74,20 @@ export const fetchAttributeValues = async function (attributes = []) {
                     }
                 }
             }
-        `, {attributes: attributes.map(attribute_code => {return {attribute_code: attribute_code, entity_type: 'catalog_product'}})})
+        `,
+        {
+            attributes: attributes.map((attribute_code) => {
+                return { attribute_code: attribute_code, entity_type: 'catalog_product' }
+            }),
+        },
+    )
 }
 
-const fetchAttributeValuesMemo = useMemoize(fetchAttributeValues);
+const fetchAttributeValuesMemo = useMemoize(fetchAttributeValues)
 
 export const getAttributeValues = async function () {
     return await fetchAttributeValuesMemo(window.config.cart_attributes)
 }
-
 
 export const cart = computed({
     get() {
