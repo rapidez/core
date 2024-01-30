@@ -152,6 +152,10 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function registerThemes(): self
     {
+        if (app()->runningInConsole()) {
+            return $this;
+        }
+
         $path = config('rapidez.frontend.themes.' . request()->server('MAGE_RUN_CODE', request()->has('_store') && ! app()->isProduction() ? request()->get('_store') : 'default'), false);
 
         if (! $path) {
@@ -215,6 +219,12 @@ class RapidezServiceProvider extends ServiceProvider
             $configModel = config('rapidez.models.config');
 
             return "<?php echo {$configModel}::getCachedByPath({$expression}) ?>";
+        });
+
+        Blade::if('storecode', function ($value) {
+            $value = is_array($value) ? $value : func_get_args();
+
+            return in_array(config('rapidez.store_code'), $value);
         });
 
         return $this;

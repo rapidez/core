@@ -30,6 +30,10 @@ export default {
             type: Function,
             default: (error) => Notify(window.config.translations.errors.wrong, 'warning'),
         },
+        store: {
+            type: String,
+            default: window.config.store_code,
+        },
     },
 
     data: () => ({
@@ -59,7 +63,17 @@ export default {
 
         async runQuery() {
             try {
-                let response = await window.magentoGraphQL(this.query, this.variables)
+                let options = {
+                    headers: {},
+                    redirectOnExpiration: true,
+                    notifyOnError: true,
+                }
+
+                if (this.store) {
+                    options['headers']['Store'] = this.store
+                }
+
+                let response = await window.magentoGraphQL(this.query, this.variables, options)
 
                 if (this.check) {
                     if (!eval('response.data.' + this.check)) {

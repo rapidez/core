@@ -78,7 +78,7 @@ class ElasticsearchIndexer
                 ->toArray();
 
             data_set($settings, 'index.analysis.filter.synonym', ['type' => 'synonym', 'synonyms' => $synonyms]);
-            data_set($settings, 'index.analysis.analyzer.synonym', ['tokenizer' => 'whitespace', 'filter' => ['synonym']]);
+            data_set($settings, 'index.analysis.analyzer.synonym', ['tokenizer' => 'standard', 'filter' => ['synonym']]);
 
             foreach ($synonymsFor as $property) {
                 data_set($mapping, 'properties.' . $property . '.type', 'text');

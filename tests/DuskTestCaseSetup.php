@@ -64,9 +64,8 @@ trait DuskTestCaseSetup
             'url_key',
         ])->firstWhere(
             $this->flat . '.sku',
-            // phpcs:disable
+            // phpcs:ignore
             env('TEST_PRODUCT', '24-WB02')
-            // phpcs:enable
         );
     }
 }

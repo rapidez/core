@@ -1,15 +1,17 @@
 <script>
+import { mask as useMask } from '../../stores/useMask'
+import { token as useToken } from '../../stores/useUser'
 import { clear as clearCart } from '../../stores/useCart'
 
 export default {
     props: {
         token: {
             type: String,
-            default: null,
+            default: useToken.value,
         },
         mask: {
             type: String,
-            default: null,
+            default: useMask.value,
         },
     },
 
@@ -24,8 +26,10 @@ export default {
     },
 
     created() {
-        this.token ??= localStorage.token
-        this.mask ??= localStorage.mask
+        let successStep = this.$root.config.checkout_steps[this.$root.config.store_code]?.indexOf('success')
+        if (successStep > 0) {
+            this.$root.checkout.step = successStep
+        }
 
         this.refreshOrder().then(() => {
             clearCart()
