@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.10.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.10.1...master)
+## [1.10.1](https://github.com/rapidez/core/releases/tag/1.10.1) - 2024-01-30
+
+### Fixed
+
+ - Fix slot scope "limit" to "size" (https://github.com/rapidez/core/pull/412)
+
 ## [1.10.0](https://github.com/rapidez/core/releases/tag/1.10.0) - 2024-01-29
 
 ### Added
