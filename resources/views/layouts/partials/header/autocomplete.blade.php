@@ -18,7 +18,7 @@
     class="w-full"
     v-cloak
 >
-    <x-rapidez::reactive-base slot-scope="{ results, resultsCount, searchAdditionals, debounce, limit, highlight }">
+    <x-rapidez::reactive-base slot-scope="{ results, resultsCount, searchAdditionals, debounce, size, highlight }">
         <data-search
             placeholder="@lang('Search')"
             v-on:value-selected="search"
