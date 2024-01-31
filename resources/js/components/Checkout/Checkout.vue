@@ -331,7 +331,7 @@ export default {
         'checkout.billing_address.customer_address_id': function (customerAddressId) {
             this.setCustomerAddressByAddressId('billing', customerAddressId)
         },
-        'currentShippingMethod': function () {
+        currentShippingMethod: function () {
             this.selectShippingMethod()
         },
         'checkout.payment_method': function () {
