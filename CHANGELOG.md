@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.10.1...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.10.2...master)
+## [1.10.2](https://github.com/rapidez/core/releases/tag/1.10.2) - 2024-01-31
+
+### Fixed
+ - Watch currentShippingMethod instead of shipping_method (https://github.com/rapidez/core/pull/414)
+
+
 ## [1.10.1](https://github.com/rapidez/core/releases/tag/1.10.1) - 2024-01-30
 
 ### Fixed
