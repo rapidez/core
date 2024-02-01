@@ -91,6 +91,12 @@ class ElasticsearchIndexer
             foreach ($synonymsFor as $property) {
                 data_set($mapping, 'properties.' . $property . '.type', 'text');
                 data_set($mapping, 'properties.' . $property . '.analyzer', 'synonym');
+                data_set($mapping, 'properties.' . $property . '.fields', [
+                    'keyword' => [
+                        'type' => 'keyword',
+                        'ignore_above' => 256,
+                    ]
+                ]);
             }
         }
 
