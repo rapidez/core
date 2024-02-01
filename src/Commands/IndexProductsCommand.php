@@ -41,6 +41,9 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                     'grouped' => [
                         'type' => 'flattened',
                     ],
+                    'positions' => [
+                        'type' => 'flattened',
+                    ],
                 ],
             ]), Eventy::filter('index.product.settings', []), ['name']);
             try {
