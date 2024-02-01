@@ -71,6 +71,11 @@ class ElasticsearchIndexer
 
     public function prepare(string $indexName, array $mapping = [], array $settings = [], array $synonymsFor = []): void
     {
+        data_set($settings, 'index.analysis.analyzer.default', [
+            'filter' => ['lowercase', 'asciifolding'],
+            'tokenizer' => 'standard',
+        ]);
+
         if (count($synonymsFor)) {
             $synonyms = config('rapidez.models.search_synonym')::whereIn('store_id', [0, config('rapidez.store')])
                 ->get()
@@ -78,7 +83,10 @@ class ElasticsearchIndexer
                 ->toArray();
 
             data_set($settings, 'index.analysis.filter.synonym', ['type' => 'synonym', 'synonyms' => $synonyms]);
-            data_set($settings, 'index.analysis.analyzer.synonym', ['tokenizer' => 'standard', 'filter' => ['synonym']]);
+            data_set($settings, 'index.analysis.analyzer.synonym', [
+                'filter' => ['lowercase', 'asciifolding', 'synonym'],
+                'tokenizer' => 'standard',
+            ]);
 
             foreach ($synonymsFor as $property) {
                 data_set($mapping, 'properties.' . $property . '.type', 'text');
