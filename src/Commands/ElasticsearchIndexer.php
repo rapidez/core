@@ -72,7 +72,7 @@ class ElasticsearchIndexer
     public function prepare(string $indexName, array $mapping = [], array $settings = [], array $synonymsFor = []): void
     {
         data_set($settings, 'index.analysis.analyzer.default', [
-            'filter' => ['lowercase', 'asciifolding'],
+            'filter'    => ['lowercase', 'asciifolding'],
             'tokenizer' => 'standard',
         ]);
 
@@ -84,7 +84,7 @@ class ElasticsearchIndexer
 
             data_set($settings, 'index.analysis.filter.synonym', ['type' => 'synonym', 'synonyms' => $synonyms]);
             data_set($settings, 'index.analysis.analyzer.synonym', [
-                'filter' => ['lowercase', 'asciifolding', 'synonym'],
+                'filter'    => ['lowercase', 'asciifolding', 'synonym'],
                 'tokenizer' => 'standard',
             ]);
 
