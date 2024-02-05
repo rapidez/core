@@ -73,7 +73,7 @@ class MagentoSettingsHealthcheck
         }
 
         if (! $response['healthy']) {
-            $response['messages'][] = ['type' => 'info', 'value' => __('The Magento settings have been checked, there were some errors; fix them before you continue. See: https://rapidez.io/docs/0.x/installation#flat-tables')];
+            $response['messages'][] = ['type' => 'info', 'value' => __('The Magento settings have been checked, there were some errors; fix them before you continue. See: https://docs.rapidez.io/1.x/installation.html#flat-tables')];
         }
 
         return $response;
