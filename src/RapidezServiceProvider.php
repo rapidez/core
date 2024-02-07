@@ -6,6 +6,7 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
@@ -220,9 +221,7 @@ class RapidezServiceProvider extends ServiceProvider
         });
 
         Blade::if('storecode', function ($value) {
-            $value = is_array($value) ? $value : func_get_args();
-
-            return in_array(config('rapidez.store_code'), $value);
+            return in_array(config('rapidez.store_code'), Arr::wrap($value));
         });
 
         return $this;
