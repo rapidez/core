@@ -54,7 +54,7 @@ export default {
 
             Object.entries(self.additionals).forEach(([name, data]) => {
                 let stores = data['stores'] ?? null
-                if(stores && !stores.includes(window.config.store_code)) {
+                if (stores && !stores.includes(window.config.store_code)) {
                     return
                 }
 
