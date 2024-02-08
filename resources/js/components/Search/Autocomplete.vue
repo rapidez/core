@@ -53,6 +53,11 @@ export default {
             let baseUrl = url.origin
 
             Object.entries(self.additionals).forEach(([name, data]) => {
+                let stores = data['stores'] ?? null
+                if(stores && !stores.includes(window.config.store_code)) {
+                    return
+                }
+
                 let fields = data['fields'] ?? data
                 let size = data['size'] ?? self.size ?? undefined
                 let sort = data['sort'] ?? undefined
@@ -88,6 +93,7 @@ export default {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', Authorization: auth },
                     data: JSON.stringify(esQuery),
+                    validateStatus: false,
                 }).then((response) => {
                     self.results[name] = response.data?.hits ?? []
                     self.resultsCount += self.results[name]?.hits?.length ?? 0
