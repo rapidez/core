@@ -13,7 +13,7 @@ Route::get('robots.txt', fn () => response(Rapidez::config('design/search_engine
 Route::middleware('web')->group(function () {
     Route::get('catalog/product/view/id/{productId}', [config('rapidez.routing.controllers.product'), 'show']);
     Route::get('catalog/category/view/id/{categoryId}', [config('rapidez.routing.controllers.category'), 'show']);
-    
+
     Route::view('cart', 'rapidez::cart.overview')->name('cart');
     Route::view('checkout', 'rapidez::checkout.overview')->name('checkout');
     Route::get('search', SearchController::class)->name('search');
