@@ -18,7 +18,6 @@ class DetermineAndSetShop
         $store = Rapidez::getStore($storeCode ?: config('rapidez.store'));
 
         Rapidez::setStore($store);
-        config()->set('frontend.base_url', url('/'));
 
         return $next($request);
     }

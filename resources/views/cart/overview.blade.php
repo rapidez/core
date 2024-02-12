@@ -75,7 +75,7 @@
                     </div>
                 </div>
 
-                <x-rapidez::productlist value="cart.cross_sells" title="More choices to go with your product" field="id" />
+                <x-rapidez::productlist value="cart.cross_sells" title="More choices to go with your product" field="entity_id" />
             </div>
             <div v-else>
                 @lang('You don\'t have anything in your cart.')

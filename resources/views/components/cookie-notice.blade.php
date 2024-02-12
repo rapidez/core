@@ -1,4 +1,4 @@
-@if(!App::runningUnitTests() || request()->has('show-cookie-notice'))
+@if (!App::runningUnitTests() || request()->has('show-cookie-notice'))
     <popup
         name="cookie-notice"
         :callback="() => {

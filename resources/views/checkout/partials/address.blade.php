@@ -18,7 +18,7 @@
 </div>
 
 <div class="contents" v-if="!$root.loggedIn || !checkout.{{ $type }}_address.customer_address_id">
-    @if(Rapidez::config('customer/address/prefix_show', '') && strlen(Rapidez::config('customer/address/prefix_options', '')))
+    @if (Rapidez::config('customer/address/prefix_show', '') && strlen(Rapidez::config('customer/address/prefix_options', '')))
         <div class="col-span-12">
             <x-rapidez::select
                 name="{{ $type }}_prefix"
@@ -26,10 +26,10 @@
                 v-model="checkout.{{ $type }}_address.prefix"
                 :required="Rapidez::config('customer/address/prefix_show', 'opt') == 'req'"
             >
-                @if(Rapidez::config('customer/address/prefix_show', '') === 'opt')
+                @if (Rapidez::config('customer/address/prefix_show', '') === 'opt')
                     <option value=""></option>
                 @endif
-                @foreach(explode(';', Rapidez::config('customer/address/prefix_options', '')) as $prefix)
+                @foreach (explode(';', Rapidez::config('customer/address/prefix_options', '')) as $prefix)
                     <option value="{{ $prefix }}">
                         @lang($prefix)
                     </option>
@@ -45,7 +45,7 @@
             required
         />
     </div>
-    @if(Rapidez::config('customer/address/middlename_show', 0))
+    @if (Rapidez::config('customer/address/middlename_show', 0))
         <div class="col-span-12 sm:col-span-4">
             <x-rapidez::input-field
                 name="{{ $type }}_middlename"
@@ -62,7 +62,7 @@
             required
         />
     </div>
-    @if(Rapidez::config('customer/address/suffix_show', '') && strlen(Rapidez::config('customer/address/suffix_options', '')))
+    @if (Rapidez::config('customer/address/suffix_show', '') && strlen(Rapidez::config('customer/address/suffix_options', '')))
         <div class="col-span-12">
             <x-rapidez::select
                 name="{{ $type }}_suffix"
@@ -70,10 +70,10 @@
                 v-model="checkout.{{ $type }}_address.suffix"
                 :required="Rapidez::config('customer/address/suffix_show', 'opt') == 'req'"
             >
-                @if(Rapidez::config('customer/address/suffix_show', '') === 'opt')
+                @if (Rapidez::config('customer/address/suffix_show', '') === 'opt')
                     <option value=""></option>
                 @endif
-                @foreach(explode(';', Rapidez::config('customer/address/suffix_options', '')) as $suffix)
+                @foreach (explode(';', Rapidez::config('customer/address/suffix_options', '')) as $suffix)
                     <option value="{{ $suffix }}">
                         @lang($suffix)
                     </option>
@@ -89,7 +89,7 @@
             required
         />
     </div>
-    @if(Rapidez::config('customer/address/street_lines', 3) >= 2)
+    @if (Rapidez::config('customer/address/street_lines', 3) >= 2)
         <div class="col-span-6 sm:col-span-3">
             <x-rapidez::input-field
                 name="{{ $type }}_housenumber"
@@ -99,7 +99,7 @@
             />
         </div>
     @endif
-    @if(Rapidez::config('customer/address/street_lines', 3) >= 3)
+    @if (Rapidez::config('customer/address/street_lines', 3) >= 3)
         <div class="col-span-6 sm:col-span-3">
             <x-rapidez::input-field
                 name="{{ $type }}_addition"
@@ -132,7 +132,7 @@
             required
         />
     </div>
-    @if(Rapidez::config('customer/address/telephone_show', 'req'))
+    @if (Rapidez::config('customer/address/telephone_show', 'req'))
         <div class="col-span-12 sm:col-span-6 sm:col-start-1">
             <x-rapidez::input-field
                 name="{{ $type }}_telephone"
@@ -142,7 +142,7 @@
             />
         </div>
     @endif
-    @if(Rapidez::config('customer/address/fax_show', false))
+    @if (Rapidez::config('customer/address/fax_show', false))
         <div class="col-span-12 sm:col-span-6">
             <x-rapidez::input-field
                 name="{{ $type }}_fax"
@@ -152,7 +152,7 @@
             />
         </div>
     @endif
-    @if(Rapidez::config('customer/address/company_show', 'opt'))
+    @if (Rapidez::config('customer/address/company_show', 'opt'))
         <div class="col-span-12 sm:col-span-6 sm:col-start-1">
             <x-rapidez::input-field
                 name="{{ $type }}_company"
@@ -163,7 +163,7 @@
             />
         </div>
     @endif
-    @if(Rapidez::config('customer/address/taxvat_show', 0))
+    @if (Rapidez::config('customer/address/taxvat_show', 0))
         <div class="col-span-12 sm:col-span-6">
             <x-rapidez::input-field
                 name="{{ $type }}_vat_id"

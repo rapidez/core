@@ -9,7 +9,7 @@
                 'md:contents' => $mobileOnly,
                 config('rapidez.frontend.z-indexes.slideover'),
             ])
-            @if($mobileOnly)
+            @if ($mobileOnly)
                 :class="isOpen ? 'max-md:pointer-events-auto' : 'max-md:pointer-events-none'"
             @else
                 :class="isOpen ? 'pointer-events-auto' : 'pointer-events-none'"

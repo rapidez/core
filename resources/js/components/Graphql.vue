@@ -27,6 +27,10 @@ export default {
         callback: {
             type: Function,
         },
+        store: {
+            type: String,
+            default: window.config.store_code,
+        },
     },
 
     data: () => ({
@@ -65,8 +69,8 @@ export default {
                     options['headers']['Authorization'] = `Bearer ${token.value}`
                 }
 
-                if (window.config.store_code) {
-                    options['headers']['Store'] = window.config.store_code
+                if (this.store) {
+                    options['headers']['Store'] = this.store
                 }
 
                 let response = await axios.post(

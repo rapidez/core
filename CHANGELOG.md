@@ -1,6 +1,139 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.2.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.11.0...master)
+## [1.11.0](https://github.com/rapidez/core/releases/tag/1.11.0) - 2024-02-05
+
+### Changed
+
+-  Make positions flattened (https://github.com/rapidez/core/pull/415)
+- Use lowercase & asciifolding filters in default analyzer & in synonym analyzer (https://github.com/rapidez/core/pull/416)
+- Seperate check whether flat tables are active, and if they exist (https://github.com/rapidez/core/pull/413)
+
+
+## [1.10.2](https://github.com/rapidez/core/releases/tag/1.10.2) - 2024-01-31
+
+### Fixed
+ - Watch currentShippingMethod instead of shipping_method (https://github.com/rapidez/core/pull/414)
+
+
+## [1.10.1](https://github.com/rapidez/core/releases/tag/1.10.1) - 2024-01-30
+
+### Fixed
+
+ - Fix slot scope "limit" to "size" (https://github.com/rapidez/core/pull/412)
+
+## [1.10.0](https://github.com/rapidez/core/releases/tag/1.10.0) - 2024-01-29
+
+### Added
+
+ - Add new storecode if directive (https://github.com/rapidez/core/pull/411)
+ - Add product parent (https://github.com/rapidez/core/pull/404)
+ - Improve flexibility of additional search queries in autocomplete (https://github.com/rapidez/core/pull/407)
+
+### Changed
+
+- Always set step in checkout success to success step (https://github.com/rapidez/core/pull/403)
+- Refresh user before retrieving addresses (https://github.com/rapidez/core/pull/345)
+
+### Fixed
+
+ - Fix usage of whitespace tokenizer (https://github.com/rapidez/core/pull/410)
+
+
+## [1.9.0](https://github.com/rapidez/core/releases/tag/1.9.0) - 2024-01-24
+
+### Changed
+
+- Use the configured locale from Magento (#409)
+
+## [1.8.0](https://github.com/rapidez/core/releases/tag/1.8.0) - 2024-01-23
+
+### Added
+
+- New payment events (#406)
+- Robots.txt from Magento config (#408)
+
+### Fixed
+
+- Use stores to get the token and mask on checkout success (#377)
+- Fix dusk tests (#405)
+
+## [1.7.1](https://github.com/rapidez/core/releases/tag/1.7.1) - 2024-01-05
+
+### Fixed
+
+- Exclude register themes when running from console (#401)
+
+## [1.7.0](https://github.com/rapidez/core/releases/tag/1.7.0) - 2024-01-04
+
+### Added
+
+- Payment icons (#374)
+- Store set event (#398)
+- Product review summary model (#399)
+- GraphQL components store prop (#400)
+
+### Fixed
+
+- Trigger mounted event for autocomplete to remove timing dependency (#395)
+
+## [1.6.1](https://github.com/rapidez/core/releases/tag/1.6.1) - 2023-12-08
+
+### Fixed
+
+- Use configured category model for subcategories (#396)
+
+## [1.6.0](https://github.com/rapidez/core/releases/tag/1.6.0) - 2023-12-07
+
+### Added
+
+- Store code route middleware (#394)
+
+### Fixed
+
+- Correct cross-sells field (#392)
+- Only add super attributes if they're also in the flat table (#393)
+
+## [1.5.0](https://github.com/rapidez/core/releases/tag/1.5.0) - 2023-12-05
+
+### Added
+
+- Search synonyms support (#387)
+
+### Fixed
+
+- Turbo update and workaround for 404 pages (#388)
+- Fix slider reactivity when resized (#349)
+
+## [1.4.1](https://github.com/rapidez/core/releases/tag/1.4.1) - 2023-11-24
+
+### Fixed
+
+- Swatches fetch loop bug (#385)
+- Improve slider performance (#384)
+- Throw exception when the store is not found (#386)
+
+## [1.4.0](https://github.com/rapidez/core/releases/tag/1.4.0) - 2023-11-22
+
+### Added
+
+- Support for image disabled option (#381)
+- Position per category support (#382)
+
+### Fixed
+
+- Clear cart storage when not found (#383)
+
+## [1.3.0](https://github.com/rapidez/core/releases/tag/1.3.0) - 2023-11-14
+
+### Added
+
+- Added special price and priceValidUntil to microdata (#380)
+
+### Fixed
+
+- Support MSP way of saving method_title (#379)
+
 ## [1.2.0](https://github.com/rapidez/core/releases/tag/1.2.0) - 2023-11-07
 
 ### Added

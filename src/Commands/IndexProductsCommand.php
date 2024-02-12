@@ -9,6 +9,7 @@ use Rapidez\Core\Events\IndexAfterEvent;
 use Rapidez\Core\Events\IndexBeforeEvent;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Category;
+use Rapidez\Core\Models\CategoryProduct;
 use TorMorten\Eventy\Facades\Eventy;
 
 class IndexProductsCommand extends ElasticsearchIndexCommand
@@ -40,11 +41,20 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                     'grouped' => [
                         'type' => 'flattened',
                     ],
+                    'positions' => [
+                        'type' => 'flattened',
+                    ],
                 ],
-            ]), Eventy::filter('index.product.settings', []));
-
+            ]), Eventy::filter('index.product.settings', []), ['name']);
             try {
+                $maxPositions = CategoryProduct::query()
+                    ->selectRaw('GREATEST(MAX(position), 0) as position')
+                    ->addSelect('category_id')
+                    ->groupBy('category_id')
+                    ->pluck('position', 'category_id');
+
                 $productQuery = $productModel::selectOnlyIndexable()
+                    ->with(['categoryProducts', 'reviewSummary'])
                     ->withEventyGlobalScopes('index.product.scopes')
                     ->withExists('options AS has_options');
 
@@ -58,8 +68,8 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                 $showOutOfStock = (bool) Rapidez::config('cataloginventory/options/show_out_of_stock', 0);
                 $indexVisibility = config('rapidez.indexer.visibility');
 
-                $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $categories, $showOutOfStock, $indexVisibility) {
-                    $this->indexer->index($products, function ($product) use ($store, $categories, $showOutOfStock, $indexVisibility) {
+                $productQuery->chunk($this->chunkSize, function ($products) use ($store, $bar, $categories, $showOutOfStock, $indexVisibility, $maxPositions) {
+                    $this->indexer->index($products, function ($product) use ($store, $categories, $showOutOfStock, $indexVisibility, $maxPositions) {
                         if (! in_array($product->visibility, $indexVisibility)) {
                             return;
                         }
@@ -77,6 +87,11 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                         }
 
                         $data = $this->withCategories($data, $categories);
+
+                        $data['positions'] = $product->categoryProducts
+                            ->pluck('position', 'category_id')
+                            // Turn all positions positive
+                            ->mapWithKeys(fn ($position, $category_id) => [$category_id => $maxPositions[$category_id] - $position]);
 
                         return Eventy::filter('index.product.data', $data, $product);
                     });

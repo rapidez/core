@@ -69,8 +69,37 @@ class ElasticsearchIndexer
         IndexJob::dispatch($this->index, $currentId, $currentValues);
     }
 
-    public function prepare(string $indexName, array $mapping = [], array $settings = []): void
+    public function prepare(string $indexName, array $mapping = [], array $settings = [], array $synonymsFor = []): void
     {
+        data_set($settings, 'index.analysis.analyzer.default', [
+            'filter'    => ['lowercase', 'asciifolding'],
+            'tokenizer' => 'standard',
+        ]);
+
+        if (count($synonymsFor)) {
+            $synonyms = config('rapidez.models.search_synonym')::whereIn('store_id', [0, config('rapidez.store')])
+                ->get()
+                ->map(fn ($synonym) => $synonym->synonyms)
+                ->toArray();
+
+            data_set($settings, 'index.analysis.filter.synonym', ['type' => 'synonym', 'synonyms' => $synonyms]);
+            data_set($settings, 'index.analysis.analyzer.synonym', [
+                'filter'    => ['lowercase', 'asciifolding', 'synonym'],
+                'tokenizer' => 'standard',
+            ]);
+
+            foreach ($synonymsFor as $property) {
+                data_set($mapping, 'properties.' . $property . '.type', 'text');
+                data_set($mapping, 'properties.' . $property . '.analyzer', 'synonym');
+                data_set($mapping, 'properties.' . $property . '.fields', [
+                    'keyword' => [
+                        'type'         => 'keyword',
+                        'ignore_above' => 256,
+                    ],
+                ]);
+            }
+        }
+
         $this->createAlias($indexName);
         $this->createIndex($this->index, $mapping, $settings);
     }
