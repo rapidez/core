@@ -91,7 +91,7 @@ return [
             'required',
             'type',
             'v-model',
-            'v-model.lazy'
+            'v-model.lazy',
         ],
     ],
 ];
