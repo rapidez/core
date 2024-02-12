@@ -98,7 +98,7 @@ export default {
         },
         nextStep: function () {
             return this.loginStep + 1
-        }
-    }
+        },
+    },
 }
 </script>
