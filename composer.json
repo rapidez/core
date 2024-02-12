@@ -19,7 +19,7 @@
         "php": "^8.1|^8.2",
         "blade-ui-kit/blade-heroicons": "^2.0",
         "cviebrock/laravel-elasticsearch": "^9.0|^10.0",
-        "gehrisandro/tailwind-merge-laravel": "^1.0",
+        "gehrisandro/tailwind-merge-laravel": "^0.2.1",
         "illuminate/database": "^9.0|^10.0",
         "illuminate/events": "^9.0|^10.0",
         "illuminate/queue": "^9.0|^10.0",
