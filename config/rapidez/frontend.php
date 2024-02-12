@@ -78,4 +78,20 @@ return [
         'notification'     => 'z-20',
         'slideover'        => 'z-50',
     ],
+
+    'input-field' => [
+        // The attributes of the input field that automatically get shifted to the input slot
+        'shifted' => [
+            'disabled',
+            'dusk',
+            'id',
+            'name',
+            'placeholder',
+            'ref',
+            'required',
+            'type',
+            'v-model',
+            'v-model.lazy'
+        ],
+    ],
 ];
