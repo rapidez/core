@@ -134,7 +134,7 @@ export default {
                     billing_address: this.billingAddress,
                 }
 
-                if (!this.hasOnlyVirtualItems) {
+                if (!this.hasOnlyVirtualItems && this.currentShippingMethod) {
                     addressInformation.shipping_carrier_code = this.currentShippingMethod.carrier_code
                     addressInformation.shipping_method_code = this.currentShippingMethod.method_code
                 }
@@ -210,6 +210,9 @@ export default {
         },
 
         async selectShippingMethod() {
+            if (!this.currentShippingMethod) {
+                return
+            }
             let response = await this.magentoCart('post', 'shipping-information', {
                 addressInformation: {
                     shipping_address: this.shippingAddress,
