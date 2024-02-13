@@ -3,7 +3,7 @@
 
 @php
     $shifted = config('rapidez.frontend.input-field.shifted');
-    $attributes->offsetSet('type', $type);
+    $attributes['type'] = $type;
     $componentType = match($type) {
         'select', 'textarea', 'checkbox', 'radio' => 'rapidez::' . $type,
         default => 'rapidez::input',
