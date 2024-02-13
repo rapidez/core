@@ -22,7 +22,8 @@
         :component="$componentType"
         :attributes="$inputAttributes = $input->attributes
             ->merge($attributes->only($shifted)->getAttributes(), false)
-            ->merge($attributes->whereStartsWith('v-bind:')->getAttributes(), false)"
+            ->merge($attributes->whereStartsWith('v-bind:')->getAttributes(), false)
+            ->merge(['dusk' => ($attributes->get('v-bind:dusk') ?: $input->attributes->get('v-bind:dusk')) ? null : $name])"
     >
         {{ $input }}
     </x-dynamic-component>
