@@ -5,9 +5,9 @@
 
 ### Changed
 
--  Make positions flattened (https://github.com/rapidez/core/pull/415)
-- Use lowercase & asciifolding filters in default analyzer & in synonym analyzer (https://github.com/rapidez/core/pull/416)
-- Seperate check whether flat tables are active, and if they exist (https://github.com/rapidez/core/pull/413)
+-  Make positions flattened (#415)
+- Use lowercase & asciifolding filters in default analyzer & in synonym analyzer (#416)
+- Seperate check whether flat tables are active, and if they exist (#413)
 
 
 ## [1.10.2](https://github.com/rapidez/core/releases/tag/1.10.2) - 2024-01-31
