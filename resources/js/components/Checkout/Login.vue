@@ -94,7 +94,7 @@ export default {
     },
     computed: {
         loginStep: function () {
-            return config.checkout_steps[config.store_code]?.indexOf('login')
+            return this.$root.getCheckoutStep('login')
         },
         nextStep: function () {
             return this.loginStep + 1
