@@ -5,7 +5,7 @@
 
 ### Changed
 
--  Make positions flattened (#415)
+- Make positions flattened (#415)
 - Use lowercase & asciifolding filters in default analyzer & in synonym analyzer (#416)
 - Seperate check whether flat tables are active, and if they exist (#413)
 
