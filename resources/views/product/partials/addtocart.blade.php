@@ -14,6 +14,7 @@
                     <x-slot:input
                         v-bind:id="'super_attribute_'+superAttributeId"
                         v-bind:name="superAttributeId"
+                        v-bind:dusk="'super_attribute_'+superAttributeId"
                     >
                         <option disabled selected hidden :value="undefined">@lang('Select') @{{ superAttribute.label.toLowerCase() }}</option>
                         <option
@@ -39,6 +40,7 @@
                 <x-rapidez::input-field.select
                     class="w-auto"
                     name="qty"
+                    dusk="qty"
                     label="Quantity" sr-only-label
                     v-model="addToCartSlotProps.qty"
                 >

@@ -16,6 +16,7 @@
                     <x-slot:input
                         v-bind:id="item.entity_id+'_super_attribute_'+superAttributeId"
                         v-bind:name="superAttributeId"
+                        v-bind:dusk="item.entity_id+'_super_attribute_'+superAttributeId"
                     >
                         <option disabled selected hidden :value="undefined">@lang('Select') @{{ superAttribute.label.toLowerCase() }}</option>
                         <option

@@ -8,10 +8,10 @@
             />
         </div>
         <div class="col-span-12 sm:col-span-6" v-if="checkout.create_account || checkout.hasVirtualItems">
-            <x-rapidez::input-field name="password" type="password" v-model="checkout.password" required />
+            <x-rapidez::input-field name="password" dusk="password" type="password" v-model="checkout.password" required />
         </div>
         <div class="col-span-12 sm:col-span-6" v-if="checkout.create_account || checkout.hasVirtualItems">
-            <x-rapidez::input-field label="Repeat password" name="password_repeat" type="password" v-model="checkout.password_repeat" required />
+            <x-rapidez::input-field label="Repeat password" name="password_repeat" dusk="password_repeat" type="password" v-model="checkout.password_repeat" required />
         </div>
     </div>
 </div>

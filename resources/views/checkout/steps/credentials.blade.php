@@ -26,12 +26,11 @@
         <p class="text-2xl font-bold">
             @lang('Shipping method')
         </p>
-        <x-rapidez::input-field.radio>
-            <x-slot:input
-                v-model="checkout.shipping_method"
-                v-bind:value="method.carrier_code+'_'+method.method_code"
-                v-bind:dusk="'method-'+index"
-            ></x-slot:input>
+        <x-rapidez::input-field.radio
+            v-model="checkout.shipping_method"
+            v-bind:value="method.carrier_code+'_'+method.method_code"
+            v-bind:dusk="'method-'+index"
+        >
             <x-slot:label>@{{ method.method_title }}</x-slot:label>
         </x-rapidez::input-field.radio>
     </div>

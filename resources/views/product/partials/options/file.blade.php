@@ -2,6 +2,7 @@
     type="file"
     label="{{ $option->title }} {{ $option->price_label }}"
     name="option_{{ $option->option_id }}"
+    dusk="option_{{ $option->option_id }}"
     :required="$option->is_require"
     v-on:change="setCustomOptionFile($event, {{ $option->option_id }})"
     class="px-0"

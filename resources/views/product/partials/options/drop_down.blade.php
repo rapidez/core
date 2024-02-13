@@ -1,6 +1,7 @@
 <x-rapidez::input-field.select
     :label="$option->title"
     name="option_{{ $option->option_id }}"
+    dusk="option_{{ $option->option_id }}"
     :required="$option->is_require"
     v-model="customOptions[{{ $option->option_id }}]"
 >

@@ -17,7 +17,8 @@
                 <template v-else>
                     <x-rapidez::input-field.select
                         name="qty"
-                        label="Quantity"
+                        dusk="qty"
+                        label="Quantity" sr-only-label
                         v-model="addToCartSlotProps.qty"
                     >
                         <x-slot:input>
@@ -25,7 +26,6 @@
                                 @{{ index * simpleProduct.qty_increments }}
                             </option>
                         </x-slot:input>
-                        <x-slot:label class="sr-only"></x-slot:label>
                     </x-rapidez::input-field.select>
 
                     <x-rapidez::button class="flex items-center" v-on:click="add" dusk="add-to-cart">

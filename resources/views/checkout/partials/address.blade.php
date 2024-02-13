@@ -22,6 +22,7 @@
         <div class="col-span-12">
             <x-rapidez::input-field.select
                 name="{{ $type }}_prefix"
+                dusk="{{ $type }}_prefix"
                 label="Prefix"
                 v-model="checkout.{{ $type }}_address.prefix"
                 :required="Rapidez::config('customer/address/prefix_show', 'opt') == 'req'"
@@ -43,6 +44,7 @@
         <x-rapidez::input-field
             label="Firstname"
             name="{{ $type }}_firstname"
+            dusk="{{ $type }}_firstname"
             v-model.lazy="checkout.{{ $type }}_address.firstname"
             required
         />
@@ -51,6 +53,7 @@
         <div class="col-span-12 sm:col-span-4">
             <x-rapidez::input-field
                 name="{{ $type }}_middlename"
+                dusk="{{ $type }}_middlename"
                 label="Middlename"
                 v-model.lazy="checkout.{{ $type }}_address.middlename"
             />
@@ -59,6 +62,7 @@
     <div class="col-span-12 {{ Rapidez::config('customer/address/middlename_show', 0) ? 'sm:col-span-4' : 'sm:col-span-6' }}">
         <x-rapidez::input-field
             name="{{ $type }}_lastname"
+            dusk="{{ $type }}_lastname"
             label="Lastname"
             v-model.lazy="checkout.{{ $type }}_address.lastname"
             required
@@ -68,6 +72,7 @@
         <div class="col-span-12">
             <x-rapidez::input-field.select
                 name="{{ $type }}_suffix"
+                dusk="{{ $type }}_suffix"
                 label="Suffix"
                 v-model="checkout.{{ $type }}_address.suffix"
                 :required="Rapidez::config('customer/address/suffix_show', 'opt') == 'req'"
@@ -88,6 +93,7 @@
     <div class="col-span-6 sm:col-span-3">
         <x-rapidez::input-field
             name="{{ $type }}_postcode"
+            dusk="{{ $type }}_postcode"
             label="Postcode"
             v-model.lazy="checkout.{{ $type }}_address.postcode"
             required
@@ -97,6 +103,7 @@
         <div class="col-span-6 sm:col-span-3">
             <x-rapidez::input-field
                 name="{{ $type }}_housenumber"
+                dusk="{{ $type }}_housenumber"
                 label="Housenumber"
                 v-model.lazy="checkout.{{ $type }}_address.street[1]"
                 required
@@ -107,6 +114,7 @@
         <div class="col-span-6 sm:col-span-3">
             <x-rapidez::input-field
                 name="{{ $type }}_addition"
+                dusk="{{ $type }}_addition"
                 label="Addition"
                 v-model.lazy="checkout.{{ $type }}_address.street[2]"
             />
@@ -115,6 +123,7 @@
     <div class="col-span-6 sm:col-span-3">
         <x-rapidez::input-field
             name="{{ $type }}_street"
+            dusk="{{ $type }}_street"
             label="Street"
             v-model.lazy="checkout.{{ $type }}_address.street[0]"
             required
@@ -123,6 +132,7 @@
     <div class="col-span-12 sm:col-span-6 sm:col-start-1">
         <x-rapidez::input-field
             name="{{ $type }}_city"
+            dusk="{{ $type }}_city"
             label="City"
             v-model.lazy="checkout.{{ $type }}_address.city"
             required
@@ -131,6 +141,7 @@
     <div class="col-span-12 sm:col-span-6">
         <x-rapidez::country-select
             name="{{ $type }}_country"
+            dusk="{{ $type }}_country"
             label="Country"
             v-model="checkout.{{ $type }}_address.country_id"
             required
@@ -140,6 +151,7 @@
         <div class="col-span-12 sm:col-span-6 sm:col-start-1">
             <x-rapidez::input-field
                 name="{{ $type }}_telephone"
+                dusk="{{ $type }}_telephone"
                 label="Telephone"
                 v-model.lazy="checkout.{{ $type }}_address.telephone"
                 :required="Rapidez::config('customer/address/telephone_show', 'req') == 'req'"
@@ -150,6 +162,7 @@
         <div class="col-span-12 sm:col-span-6">
             <x-rapidez::input-field
                 name="{{ $type }}_fax"
+                dusk="{{ $type }}_fax"
                 label="Fax"
                 v-model.lazy="checkout.{{ $type }}_address.fax"
                 :required="Rapidez::config('customer/address/fax_show', false) === 'req'"
@@ -160,6 +173,7 @@
         <div class="col-span-12 sm:col-span-6 sm:col-start-1">
             <x-rapidez::input-field
                 name="{{ $type }}_company"
+                dusk="{{ $type }}_company"
                 label="Company"
                 placeholder=""
                 v-model.lazy="checkout.{{ $type }}_address.company"
@@ -171,6 +185,7 @@
         <div class="col-span-12 sm:col-span-6">
             <x-rapidez::input-field
                 name="{{ $type }}_vat_id"
+                dusk="{{ $type }}_vat_id"
                 label="Tax ID"
                 placeholder=""
                 v-model.lazy="checkout.{{ $type }}_address.vat_id"

@@ -8,6 +8,7 @@
                 <form class="mt-5 flex" @submit.prevent="applyCoupon">
                     <x-rapidez::input-field
                         name="couponCode"
+                        dusk="couponCode"
                         placeholder="Coupon code"
                         v-on="inputEvents"
                         v-bind:value="couponCode"

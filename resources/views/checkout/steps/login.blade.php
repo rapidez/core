@@ -5,6 +5,7 @@
 
             <x-rapidez::input-field
                 name="email"
+                dusk="email"
                 type="email"
                 placeholder="Email"
                 required
@@ -15,6 +16,7 @@
                 v-if="!emailAvailable"
                 class="mt-3"
                 name="password"
+                dusk="password"
                 type="password"
                 placeholder="Password"
                 ref="password"
