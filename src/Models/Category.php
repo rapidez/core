@@ -58,7 +58,7 @@ class Category extends Model
 
     public function getUrlAttribute(): string
     {
-        return '/' . $this->url_path;
+        return '/' . ($this->url_path ? $this->url_path : 'catalog/category/view/id/' . $this->entity_id);
     }
 
     public function subcategories()
