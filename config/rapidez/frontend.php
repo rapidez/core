@@ -81,7 +81,7 @@ return [
 
     'input-field' => [
         // The attributes of the input field that automatically get shifted to the input slot
-        'shifted' => [
+        'shifted-input-attributes' => [
             'disabled',
             'dusk',
             'id',

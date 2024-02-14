@@ -2,7 +2,7 @@
 @slots(['input', 'label'])
 
 @php
-    $shifted = config('rapidez.frontend.input-field.shifted');
+    $shifted = config('rapidez.frontend.input-field.shifted-input-attributes');
     $attributes['type'] = $type;
     $componentType = match($type) {
         'select', 'textarea', 'checkbox', 'radio' => 'rapidez::' . $type,
