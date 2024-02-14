@@ -59,7 +59,7 @@ export default {
 
             if ((this.emailAvailable = responseData)) {
                 this.$root.guestEmail = this.email
-                this.$root.checkout.step = 2
+                this.$root.checkout.step = this.nextStep
             } else {
                 this.$nextTick(function () {
                     this.$scopedSlots.default()[0].context.$refs.password.focus()
@@ -76,10 +76,18 @@ export default {
 
         successfulLogin() {
             if (this.checkoutLogin) {
-                this.$root.checkout.step = 2
+                this.$root.checkout.step = this.nextStep
             } else if (this.redirect) {
                 Turbo.visit(window.url(this.redirect))
             }
+        },
+    },
+    computed: {
+        loginStep: function () {
+            return this.$root.getCheckoutStep('login')
+        },
+        nextStep: function () {
+            return this.loginStep + 1
         },
     },
 }

@@ -26,7 +26,7 @@ export default {
     },
 
     created() {
-        let successStep = this.$root.config.checkout_steps[this.$root.config.store_code]?.indexOf('success')
+        let successStep = this.$root.getCheckoutStep('success')
         if (successStep > 0) {
             this.$root.checkout.step = successStep
         }

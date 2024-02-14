@@ -9,6 +9,10 @@ Vue.prototype.scrollToElement = (selector) => {
     })
 }
 
+Vue.prototype.getCheckoutStep = (stepName) => {
+    return config.checkout_steps[config.store_code]?.indexOf(stepName)
+}
+
 Vue.prototype.updateCart = async function (data, response) {
     cart.value = 'cart' in Object.values(response.data)[0] ? Object.values(response.data)[0].cart : Object.values(response.data)[0]
 

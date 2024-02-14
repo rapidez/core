@@ -1,28 +1,44 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.10.1...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.11.0...master)
+## [1.11.0](https://github.com/rapidez/core/releases/tag/1.11.0) - 2024-02-05
+
+### Changed
+
+- Make positions flattened (#415)
+- Use lowercase & asciifolding filters in default analyzer & in synonym analyzer (#416)
+- Seperate check whether flat tables are active, and if they exist (#413)
+
+
+## [1.10.2](https://github.com/rapidez/core/releases/tag/1.10.2) - 2024-01-31
+
+### Fixed
+
+ - Watch currentShippingMethod instead of shipping_method (#414)
+
+
 ## [1.10.1](https://github.com/rapidez/core/releases/tag/1.10.1) - 2024-01-30
 
 ### Fixed
 
- - Fix slot scope "limit" to "size" (https://github.com/rapidez/core/pull/412)
+ - Fix slot scope "limit" to "size" (#412)
 
 ## [1.10.0](https://github.com/rapidez/core/releases/tag/1.10.0) - 2024-01-29
 
 ### Added
 
- - Add new storecode if directive (https://github.com/rapidez/core/pull/411)
- - Add product parent (https://github.com/rapidez/core/pull/404)
- - Improve flexibility of additional search queries in autocomplete (https://github.com/rapidez/core/pull/407)
+ - Add new storecode if directive (#411)
+ - Add product parent (#404)
+ - Improve flexibility of additional search queries in autocomplete (#407)
 
 ### Changed
 
-- Always set step in checkout success to success step (https://github.com/rapidez/core/pull/403)
-- Refresh user before retrieving addresses (https://github.com/rapidez/core/pull/345)
+- Always set step in checkout success to success step (#403)
+- Refresh user before retrieving addresses (#345)
 
 ### Fixed
 
- - Fix usage of whitespace tokenizer (https://github.com/rapidez/core/pull/410)
+ - Fix usage of whitespace tokenizer (#410)
 
 
 ## [1.9.0](https://github.com/rapidez/core/releases/tag/1.9.0) - 2024-01-24
