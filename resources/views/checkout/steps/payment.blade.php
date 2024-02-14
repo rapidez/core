@@ -26,7 +26,7 @@
                         <a class="text-gray-700" href="#" v-on:click.prevent="toggle" v-if="agreement.mode == 'AUTO'">
                             @{{ agreement.checkbox_text }}
                         </a>
-                        <div v-else>he
+                        <div v-else>
                             <x-rapidez::input-field.checkbox
                                 name="agreement_ids[]"
                                 v-bind:value="agreement.agreement_id"
