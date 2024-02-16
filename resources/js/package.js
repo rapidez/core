@@ -119,11 +119,11 @@ function init() {
         },
     })
 
-    const lastStoreCode = useLocalStorage('last_store_code', window.config.store_code);
-    if(lastStoreCode.value !== window.config.store_code) {
-        clearAttributes();
-        clearSwatches();
-        lastStoreCode.value = window.config.store_code;
+    const lastStoreCode = useLocalStorage('last_store_code', window.config.store_code)
+    if (lastStoreCode.value !== window.config.store_code) {
+        clearAttributes()
+        clearSwatches()
+        lastStoreCode.value = window.config.store_code
     }
 
     if (window.debug) {
