@@ -1,6 +1,17 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.11.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.12.0...master)
+## [1.12.0](https://github.com/rapidez/core/releases/tag/1.12.0) - 2024-02-16
+
+### Added
+
+- Catalog urls for products and categories (#419)
+- Select cataloginventory_stock_item.manage_stock (#423)
+
+### Changed
+
+- Removed hardcoded checkout step numbers (#420)
+
 ## [1.11.0](https://github.com/rapidez/core/releases/tag/1.11.0) - 2024-02-05
 
 ### Changed
