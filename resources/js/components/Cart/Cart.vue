@@ -40,7 +40,7 @@ export default {
                 return 0
             }
             return this.$root.cart.items2.reduce((sum, item) => sum + +item.weee_tax_applied_amount ?? 0, 0)
-        }
+        },
     },
     created() {
         this.$root.$on('refresh-cart', this.refreshCart)
