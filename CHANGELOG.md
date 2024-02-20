@@ -1,6 +1,17 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.12.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.13.0...master)
+## [1.13.0](https://github.com/rapidez/core/releases/tag/1.13.0) - 2024-02-20
+
+### Changed
+
+- Upgrade Turbo for link preloading, show progressbar quicker (#426)
+
+### Fixed
+
+- Clear swatches & attributes on store change (#424)
+- Use hasAny in button base Blade component (#425)
+
 ## [1.12.0](https://github.com/rapidez/core/releases/tag/1.12.0) - 2024-02-16
 
 ### Added
