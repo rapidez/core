@@ -10,7 +10,8 @@ import './polyfills'
 import { useLocalStorage, StorageSerializers } from '@vueuse/core'
 import useCart from './stores/useCart'
 import useUser from './stores/useUser'
-import useSwatches from './stores/useSwatches'
+import { swatches, clear as clearSwatches } from './stores/useSwatches'
+import { clear as clearAttributes } from './stores/useAttributes.js'
 import './vue'
 import { computed } from 'vue'
 import './axios'
@@ -61,7 +62,7 @@ function init() {
             loadAutocomplete: false,
             cart: useCart(),
             user: useUser(),
-            swatches: useSwatches(),
+            swatches: swatches,
             checkout: {
                 step: 1,
                 totals: {},
@@ -117,6 +118,13 @@ function init() {
             },
         },
     })
+
+    const lastStoreCode = useLocalStorage('last_store_code', window.config.store_code)
+    if (lastStoreCode.value !== window.config.store_code) {
+        clearAttributes()
+        clearSwatches()
+        lastStoreCode.value = window.config.store_code
+    }
 
     if (window.debug) {
         window.app.$on('notification-message', function (message, type, params, link) {
