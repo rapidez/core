@@ -1,6 +1,28 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.11.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.13.0...master)
+## [1.13.0](https://github.com/rapidez/core/releases/tag/1.13.0) - 2024-02-20
+
+### Changed
+
+- Upgrade Turbo for link preloading, show progressbar quicker (#426)
+
+### Fixed
+
+- Clear swatches & attributes on store change (#424)
+- Use hasAny in button base Blade component (#425)
+
+## [1.12.0](https://github.com/rapidez/core/releases/tag/1.12.0) - 2024-02-16
+
+### Added
+
+- Catalog urls for products and categories (#419)
+- Select cataloginventory_stock_item.manage_stock (#423)
+
+### Changed
+
+- Removed hardcoded checkout step numbers (#420)
+
 ## [1.11.0](https://github.com/rapidez/core/releases/tag/1.11.0) - 2024-02-05
 
 ### Changed

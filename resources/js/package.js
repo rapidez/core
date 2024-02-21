@@ -11,7 +11,8 @@ import { useLocalStorage, StorageSerializers } from '@vueuse/core'
 import useCart from './stores/useCart'
 import useUser from './stores/useUser'
 import useMask from './stores/useMask'
-import useSwatches from './stores/useSwatches'
+import { swatches, clear as clearSwatches } from './stores/useSwatches'
+import { clear as clearAttributes } from './stores/useAttributes.js'
 import './vue'
 import { computed } from 'vue'
 import './fetch'
@@ -63,7 +64,7 @@ function init() {
             cart: useCart(),
             user: useUser(),
             mask: useMask(),
-            swatches: useSwatches(),
+            swatches: swatches,
             checkout: {
                 step: 1,
                 totals: {},
@@ -123,6 +124,13 @@ function init() {
             },
         },
     })
+
+    const lastStoreCode = useLocalStorage('last_store_code', window.config.store_code)
+    if (lastStoreCode.value !== window.config.store_code) {
+        clearAttributes()
+        clearSwatches()
+        lastStoreCode.value = window.config.store_code
+    }
 
     if (window.debug) {
         window.app.$on('notification-message', function (message, type, params, link) {
