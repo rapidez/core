@@ -10,11 +10,12 @@ import './polyfills'
 import { useLocalStorage, StorageSerializers } from '@vueuse/core'
 import useCart from './stores/useCart'
 import useUser from './stores/useUser'
+import useMask from './stores/useMask'
 import { swatches, clear as clearSwatches } from './stores/useSwatches'
 import { clear as clearAttributes } from './stores/useAttributes.js'
 import './vue'
 import { computed } from 'vue'
-import './axios'
+import './fetch'
 import './filters'
 import './mixins'
 import './turbolinks'
@@ -62,6 +63,7 @@ function init() {
             loadAutocomplete: false,
             cart: useCart(),
             user: useUser(),
+            mask: useMask(),
             swatches: swatches,
             checkout: {
                 step: 1,
@@ -111,6 +113,10 @@ function init() {
             loggedIn() {
                 return Boolean(this.user?.id)
             },
+
+            hasCart() {
+                return this.cart?.id && this.cart.items.length
+            },
         },
         watch: {
             loadingCount: function (count) {
@@ -131,8 +137,10 @@ function init() {
             switch (type) {
                 case 'error':
                     console.error(...arguments)
+                    break
                 case 'warning':
                     console.warn(...arguments)
+                    break
                 case 'success':
                 case 'info':
                 default:

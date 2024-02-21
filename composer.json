@@ -30,8 +30,8 @@
     },
     "require-dev": {
         "laravel/dusk": "^7.9",
-        "orchestra/testbench": "^7.28|^8.8",
-        "orchestra/testbench-dusk": "^7.28|^8.8",
+        "orchestra/testbench": "^8.8",
+        "orchestra/testbench-dusk": "^8.8",
         "phpunit/phpunit": "^9.5.10|^10.0"
     },
     "autoload": {

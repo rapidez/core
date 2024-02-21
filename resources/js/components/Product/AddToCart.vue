@@ -1,9 +1,9 @@
 <script>
-import GetCart from './../Cart/mixins/GetCart'
+import { mask, refreshMask } from '../../stores/useMask'
 import InteractWithUser from './../User/mixins/InteractWithUser'
 
 export default {
-    mixins: [GetCart, InteractWithUser],
+    mixins: [InteractWithUser],
     props: {
         product: {
             type: Object,
@@ -34,6 +34,7 @@ export default {
         qty: 1,
         options: {},
         customOptions: {},
+        customSelectedOptions: {},
         error: null,
 
         adding: false,
@@ -65,56 +66,73 @@ export default {
 
             this.added = false
             this.adding = true
-            await this.getMask()
+            this.error = null
 
-            this.magentoCart('post', 'items', {
-                cartItem: {
-                    sku: this.product.sku,
-                    quote_id: localStorage.mask,
-                    qty: this.qty,
-                    product_option: this.productOptions,
-                },
-            })
-                .then(async (response) => {
-                    this.error = null
-                    await this.refreshCart()
-                    this.added = true
-                    setTimeout(() => {
-                        this.added = false
-                    }, this.addedDuration)
-                    if (this.callback) {
-                        await this.callback(this.product, this.qty)
-                    }
-                    this.$root.$emit('cart-add', {
-                        product: this.product,
-                        qty: this.qty,
-                    })
-                    if (this.notifySuccess) {
-                        Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success', [], window.url('/cart'))
-                    }
-                    if (config.redirect_cart) {
-                        Turbo.visit(window.url('/cart'))
-                    }
-                })
-                .catch((error) => {
-                    if (error.response.status == 401) {
-                        Notify(window.config.translations.errors.session_expired, 'error', error.response.data?.parameters)
-                        this.logout(window.url('/login'))
-                    }
+            if (!mask.value) {
+                await refreshMask()
+            }
 
-                    if (this.expiredCartCheck(error)) {
-                        return
-                    }
+            try {
+                let response = await window.magentoGraphQL(
+                    `mutation (
+                        $cartId: String!,
+                        $sku: String!,
+                        $quantity: Float!,
+                        $selected_options: [ID!],
+                        $entered_options: [EnteredOptionInput]
+                    ) { addProductsToCart(cartId: $cartId, cartItems: [{
+                        sku: $sku,
+                        quantity: $quantity,
+                        selected_options: $selected_options,
+                        entered_options: $entered_options
+                    }]) { cart { ` +
+                        config.queries.cart +
+                        ` } user_errors { code message } } }`,
+                    {
+                        sku: this.product.sku,
+                        cartId: mask.value,
+                        quantity: this.qty,
+                        selected_options: this.selectedOptions,
+                        entered_options: this.enteredOptions,
+                    },
+                )
 
-                    if (this.notifyError) {
-                        Notify(error.response.data.message, 'error', error.response.data?.parameters)
-                    }
+                if (response.data.addProductsToCart.user_errors.length) {
+                    throw new Error(response.data.addProductsToCart.user_errors[0].message)
+                }
 
-                    this.error = error.response.data.message
-                })
-                .then(() => {
-                    this.adding = false
-                })
+                await this.updateCart({}, response)
+
+                this.added = true
+                setTimeout(() => {
+                    this.added = false
+                }, this.addedDuration)
+
+                if (this.callback) {
+                    await this.callback(this.product, this.qty)
+                }
+
+                this.$root.$emit('cart-add', { product: this.product, qty: this.qty })
+
+                if (this.notifySuccess) {
+                    Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success', [], window.url('/cart'))
+                }
+
+                if (config.redirect_cart) {
+                    Turbo.visit(window.url('/cart'))
+                }
+            } catch (error) {
+                console.error(error)
+                this.error = error.message
+
+                if (this.notifyError) {
+                    Notify(error.message, 'error')
+                }
+
+                error?.response && (await this.checkResponseForExpiredCart(error.response))
+            }
+
+            this.adding = false
         },
 
         calculatePrices: function () {
@@ -144,7 +162,21 @@ export default {
             let file = event.target.files[0]
             let reader = new FileReader()
             reader.onerror = (error) => alert(error)
-            reader.onload = () => Vue.set(this.customOptions, optionId, 'FILE;' + file.name + ';' + reader.result)
+            reader.onload = () => {
+                let [type, data] = reader.result.split(';', 4)
+
+                if (!data) {
+                    Vue.set(this.customOptions, optionId, undefined)
+                    return
+                }
+
+                let value = {
+                    base64_encoded_data: data.replace('base64,', ''),
+                    type: type.replace('data:', ''),
+                    name: file.name,
+                }
+                Vue.set(this.customOptions, optionId, JSON.stringify(value))
+            }
             reader.readAsDataURL(file)
         },
 
@@ -205,52 +237,31 @@ export default {
             return product
         },
 
-        productOptions: function () {
-            let options = []
-            let customOptions = []
+        selectedOptions: function () {
+            let selectedOptions = []
 
-            Object.entries(this.options).forEach(([key, val]) => {
-                options.push({
-                    option_id: key,
-                    option_value: val,
-                })
+            Object.entries(this.options).forEach(([optionId, optionValue]) => {
+                selectedOptions.push(btoa('configurable/' + optionId + '/' + optionValue))
             })
+
+            Object.entries(this.customSelectedOptions).forEach(([optionId, optionValue]) => {
+                selectedOptions.push(btoa('custom-option/' + optionId + '/' + optionValue))
+            })
+
+            return selectedOptions
+        },
+
+        enteredOptions: function () {
+            let enteredOptions = []
 
             Object.entries(this.customOptions).forEach(([key, val]) => {
-                if (typeof val === 'string' && val.startsWith('FILE;')) {
-                    let [prefix, name, type, data] = val.split(';', 4)
-
-                    if (!data) {
-                        return
-                    }
-
-                    customOptions.push({
-                        option_id: key,
-                        option_value: 'file',
-                        extension_attributes: {
-                            file_info: {
-                                base64_encoded_data: data.replace('base64,', ''),
-                                type: type.replace('data:', ''),
-                                name: name,
-                            },
-                        },
-                    })
-
-                    return
-                }
-
-                customOptions.push({
-                    option_id: key,
-                    option_value: val,
+                enteredOptions.push({
+                    uid: btoa('custom-option/' + key),
+                    value: val,
                 })
             })
 
-            return {
-                extension_attributes: {
-                    configurable_item_options: options,
-                    custom_options: customOptions,
-                },
-            }
+            return enteredOptions
         },
 
         disabledOptions: function () {
@@ -281,7 +292,7 @@ export default {
 
             // Here we cross reference the attributes with each other
             // keeping in mind the products we have with the current
-            // selected attribute values.
+            // selected attribute values. (see: https://github.com/rapidez/core/pull/7#issue-796718297)
             Object.entries(valuesPerAttribute).forEach(([attributeId, productsPerValue]) => {
                 Object.entries(valuesPerAttribute).forEach(([attributeId2, productsPerValue2]) => {
                     if (attributeId === attributeId2) return

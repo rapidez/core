@@ -1,11 +1,11 @@
 <script>
-import GetCart from './../Cart/mixins/GetCart'
 import InteractWithUser from './../User/mixins/InteractWithUser'
 import { useEventListener, useLocalStorage } from '@vueuse/core'
 import useMask from '../../stores/useMask'
+import { cart, hasOnlyVirtualItems, virtualItems, linkUserToCart } from '../../stores/useCart'
 
 export default {
-    mixins: [GetCart, InteractWithUser],
+    mixins: [InteractWithUser],
 
     data() {
         return {
@@ -19,12 +19,11 @@ export default {
     },
 
     created() {
-        if (!this.hasItems) {
+        if (!cart.value?.total_quantity) {
             window.location.replace(window.url('/'))
             return
         }
 
-        this.checkout.hasVirtualItems = this.hasVirtualItems
         this.steps = this.config.checkout_steps[window.config.store_code] ?? this.config.checkout_steps['default']
         this.setupHistory()
         this.setupCheckout()
@@ -42,50 +41,28 @@ export default {
         },
 
         async getShippingMethods() {
-            try {
-                let response = await this.magentoCart('post', 'estimate-shipping-methods', {
-                    address: {
-                        country_id: this.checkout.shipping_address.country_id,
-                    },
-                })
-                this.checkout.shipping_methods = response.data
+            let responseData = await this.magentoCart('post', 'estimate-shipping-methods', {
+                address: {
+                    country_id: this.checkout.shipping_address.country_id,
+                },
+            })
+            this.checkout.shipping_methods = responseData
 
-                if (response.data.length === 1) {
-                    this.checkout.shipping_method = response.data[0].carrier_code + '_' + response.data[0].method_code
-                }
-
-                return true
-            } catch (error) {
-                if ([401, 404].includes(error.response.status)) {
-                    this.logout(window.url('/login'))
-                } else {
-                    Notify(error.response.data.message, 'error', error.response.data?.parameters)
-                }
-                return false
+            if (responseData.length === 1) {
+                this.checkout.shipping_method = responseData[0].carrier_code + '_' + responseData[0].method_code
             }
         },
 
         async getTotalsInformation() {
-            try {
-                let response = await this.magentoCart('post', 'totals-information', {
-                    addressInformation: {
-                        address: {
-                            countryId: this.checkout.shipping_address.country_id,
-                        },
+            let responseData = await this.magentoCart('post', 'totals-information', {
+                addressInformation: {
+                    address: {
+                        countryId: this.checkout.shipping_address.country_id,
                     },
-                })
+                },
+            })
 
-                this.checkout.totals = response.data
-
-                return true
-            } catch (error) {
-                if ([401, 404].includes(error.response.status)) {
-                    this.logout(window.url('/login'))
-                } else {
-                    Notify(error.response.data.message, 'error', error.response.data?.parameters)
-                }
-                return false
-            }
+            this.checkout.totals = responseData
         },
 
         async save(savedItems, targetStep) {
@@ -134,7 +111,7 @@ export default {
                     billing_address: this.billingAddress,
                 }
 
-                if (!this.hasOnlyVirtualItems) {
+                if (!hasOnlyVirtualItems.value) {
                     addressInformation.shipping_carrier_code = this.currentShippingMethod.carrier_code
                     addressInformation.shipping_method_code = this.currentShippingMethod.method_code
                 }
@@ -152,35 +129,30 @@ export default {
                     let self = this
                     await this.login(customer.email, this.checkout.password, async () => {
                         if (self.$root.cart?.entity_id) {
-                            await self.linkUserToCart()
+                            await linkUserToCart()
                             let mask = useMask('mask')
                             mask.value = self.$root.cart.entity_id
                         }
                     })
                 }
 
-                let response = await this.magentoCart('post', 'shipping-information', {
+                let responseData = await this.magentoCart('post', 'shipping-information', {
                     addressInformation: addressInformation,
                 })
 
-                this.checkout.payment_methods = response.data.payment_methods
-                this.checkout.totals = response.data.totals
+                this.checkout.payment_methods = responseData.payment_methods
+                this.checkout.totals = responseData.totals
                 this.$root.$emit('checkout-credentials-saved')
                 return true
             } catch (error) {
                 console.error(error)
-                Notify(
-                    error?.response?.data?.message ?? window.config.translations.errors.wrong,
-                    'error',
-                    error?.response?.data?.parameters,
-                )
                 return false
             }
         },
 
         validateCredentials() {
             let validated = true
-            if (!this.checkout.shipping_method && !this.hasOnlyVirtualItems) {
+            if (!this.checkout.shipping_method && !hasOnlyVirtualItems.value) {
                 Notify(window.config.translations.checkout.no_shipping_method, 'warning')
                 validated = false
             }
@@ -190,7 +162,7 @@ export default {
                 validated = false
             }
 
-            if (!this.checkout.shipping_method && this.hasOnlyVirtualItems && validated) {
+            if (!this.checkout.shipping_method && hasOnlyVirtualItems.value && validated) {
                 return true
             }
 
@@ -210,7 +182,7 @@ export default {
         },
 
         async selectShippingMethod() {
-            let response = await this.magentoCart('post', 'shipping-information', {
+            let responseData = await this.magentoCart('post', 'shipping-information', {
                 addressInformation: {
                     shipping_address: this.shippingAddress,
                     billing_address: this.billingAddress,
@@ -218,7 +190,7 @@ export default {
                     shipping_method_code: this.currentShippingMethod.method_code,
                 },
             })
-            this.checkout.totals = response.data.totals
+            this.checkout.totals = responseData.totals
         },
 
         async selectPaymentMethod() {
@@ -302,6 +274,9 @@ export default {
     computed: {
         checkout: function () {
             return this.$root.checkout
+        },
+        forceAccount: function () {
+            return !virtualItems.value
         },
         shippingAddress: function () {
             let address = this.removeUnusedAddressInfo(this.$root.checkout.shipping_address)

@@ -1,6 +1,8 @@
 import { useLocalStorage, useSessionStorage, StorageSerializers } from '@vueuse/core'
-import { clear as clearCart } from './useCart'
+import { clear as clearCart, fetchCustomerCart, linkUserToCart } from './useCart'
 import { computed, watch } from 'vue'
+import Jwt from '../jwt'
+import { mask } from './useMask'
 
 export const token = useLocalStorage('token', '')
 const userStorage = useSessionStorage('user', {}, { serializer: StorageSerializers.object })
@@ -17,30 +19,62 @@ export const refresh = async function () {
         return
     }
 
-    try {
-        isRefreshing = true
-        window.magentoUser.defaults.headers.common['Authorization'] = `Bearer ${token.value}`
-        let response = await magentoUser.get('customers/me').finally(() => {
-            isRefreshing = false
-        })
-        userStorage.value = !token.value ? {} : response.data
-    } catch (error) {
-        if (error.response.status == 401) {
-            token.value = ''
-            return false
-        }
+    if (Jwt.isJwt(token.value) && Jwt.decode(token.value)?.isExpired()) {
+        Notify(window.config.translations.errors.session_expired, 'error')
+        await clear()
 
-        console.error(error)
         return false
     }
 
-    return true
+    try {
+        isRefreshing = true
+        // TODO: Migrate to GraphQL?
+        userStorage.value = (await window.magentoAPI('GET', 'customers/me', {}, { redirectOnExpiration: false })) || {}
+        isRefreshing = false
+    } catch (error) {
+        isRefreshing = false
+
+        if (error instanceof SessionExpired) {
+            await clear()
+        } else {
+            throw error
+        }
+    }
 }
 
 export const clear = async function () {
     token.value = ''
     userStorage.value = {}
     await clearCart()
+}
+
+export const login = async function (email, password) {
+    return magentoGraphQL(
+        'mutation generateCustomerToken ($email: String!, $password: String!) { generateCustomerToken (email: $email, password: $password) { token } }',
+        {
+            email: email,
+            password: password,
+        },
+    )
+        .then(async (response) => {
+            token.value = response.data.generateCustomerToken.token
+
+            return response
+        })
+        .then(async (response) => {
+            if (mask.value) {
+                await linkUserToCart()
+            } else {
+                await fetchCustomerCart()
+            }
+            return response
+        })
+}
+
+export const logout = async function () {
+    await magentoGraphQL('mutation { revokeCustomerToken { result } }', {}, { notifyOnError: false, redirectOnExpiration: false }).finally(
+        async () => await clear(),
+    )
 }
 
 export const user = computed({

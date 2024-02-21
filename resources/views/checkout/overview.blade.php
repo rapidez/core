@@ -6,12 +6,12 @@
 
 @section('content')
     <div class="container">
-        <checkout v-cloak v-slot="{ checkout, cart, hasItems, save, goToStep }">
+        <checkout v-cloak v-slot="{ checkout, cart, save, goToStep, forceAccount }">
             <div>
                 <template v-if="checkout.step < getCheckoutStep('success')">
                     @include('rapidez::checkout.partials.progressbar')
                 </template>
-                <div v-if="checkout.step == 1 && hasItems">
+                <div v-if="checkout.step == 1 && window.app.cart.total_quantity">
                     @include('rapidez::checkout.steps.login')
                 </div>
 

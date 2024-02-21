@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
+use Illuminate\View\View as ViewComponent;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
 use Rapidez\Core\Auth\MagentoCustomerTokenGuard;
 use Rapidez\Core\Commands\IndexCategoriesCommand;
@@ -256,9 +258,15 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootMacros(): self
     {
         Collection::macro('firstForCurrentStore', function () {
+            /** @var Collection $this */
             return $this->filter(function ($value) {
                 return in_array($value->store_id, [config('rapidez.store'), 0]);
             })->sortByDesc('store_id')->first();
+        });
+
+        ViewComponent::macro('renderOneliner', function () {
+            /** @var ViewComponent $this */
+            return Str::squish($this->render());
         });
 
         return $this;

@@ -1,11 +1,9 @@
 <script>
 import { mask as useMask } from '../../stores/useMask'
 import { token as useToken } from '../../stores/useUser'
-import GetCart from './../Cart/mixins/GetCart'
+import { clear as clearCart } from '../../stores/useCart'
 
 export default {
-    mixins: [GetCart],
-
     props: {
         token: {
             type: String,
@@ -33,15 +31,21 @@ export default {
             this.$root.checkout.step = successStep
         }
 
-        this.refreshOrder()
-        this.clearCart()
+        this.refreshOrder().then(() => {
+            clearCart()
+        })
     },
 
     methods: {
-        refreshOrder() {
-            axios
-                .get(window.url('/api/order'), { headers: { Authorization: 'Bearer ' + (this.token || this.mask) } })
-                .then((response) => (this.order = response.data))
+        async refreshOrder() {
+            this.order = await window.rapidezAPI(
+                'get',
+                'order',
+                {},
+                {
+                    headers: { Authorization: 'Bearer ' + (this.token || this.mask) },
+                },
+            )
         },
 
         serialize(address) {

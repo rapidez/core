@@ -1,0 +1,7 @@
+customizable_options {
+    label
+    values {
+        label
+        value
+    }
+}
