@@ -1,6 +1,34 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.13.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.0.0...master)
+## [2.0.0](https://github.com/rapidez/core/releases/tag/2.0.0) - 2024-02-21
+
+In this release we refactored the cart from the Magento API to GraphQL! You should review all changes!
+- Dropped support for Magento 2.4.4, Laravel 9 and PHP 8.0
+- Axios is removed and you should remove it from your project and migrate to fetch, we've added some helpers you could use:
+    - `rapidezAPI(method, endpoint, data = {}, options = {})`
+    - `magentoGraphQL(query, variables = {}, options = { headers: {}, redirectOnExpiration: true, notifyOnError: true })`
+    - `magentoAPI(method, endpoint, data = {}, options = { headers: {}, redirectOnExpiration: true, notifyOnError: true })`
+- `cart_attributes` option is added to `config/rapidez/frontend.php` if you like to add some extra attributes on the cart items
+- `Cart.vue` and `GetCart.js` removed; if you did override this you should refactor it to the new cart store; you can just use `cart` or `$root.cart`
+- `Coupon.vue` is removed and migrated to the GraphQL mutation component
+- GraphQL component callback parameters changed; the first parameter is now the data and the second the response to keep it inline with the GraphQL mutation component.
+- You should review all template changes
+- If you're using product option file uploads you need to install https://github.com/rapidez/magento2-compadre in Magento
+
+### Added
+
+- Output design/head/includes (#428)
+
+### Changed
+
+- Migrated the cart from the Magento API to GraphQL (#372)
+- Drop Laravel 9 and PHP 8.0 support (#429)
+
+### Fixed
+
+- Properly set slide behavior in slider (#430)
+
 ## [1.13.0](https://github.com/rapidez/core/releases/tag/1.13.0) - 2024-02-20
 
 ### Changed
