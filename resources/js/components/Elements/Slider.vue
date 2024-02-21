@@ -143,8 +143,8 @@ export default {
             index = this.loop ? index + this.slides.length : index
 
             this.vertical
-                ? this.slider.scrollTo({top: this.slider.children[index]?.offsetTop, behavior: behavior})
-                : this.slider.scrollTo({left: this.slider.children[index]?.offsetLeft, behavior: behavior})
+                ? this.slider.scrollTo({ top: this.slider.children[index]?.offsetTop, behavior: behavior })
+                : this.slider.scrollTo({ left: this.slider.children[index]?.offsetLeft, behavior: behavior })
         },
         handleLoop() {
             if (this.currentSlide + 1 === this.slidesTotal - 1) {
