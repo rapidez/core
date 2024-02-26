@@ -28,7 +28,7 @@ export default {
                 })
                 .catch((error) => {
                     console.error(error)
-                    Notify(error.response.data.message, 'error', error.response.data?.parameters)
+                    Notify(error.message, 'error')
 
                     return false
                 })
