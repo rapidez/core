@@ -37,6 +37,8 @@ window.rapidezAPI = async (method, endpoint, data = {}, options = {}) => {
     let response = await rapidezFetch(window.url('/api/' + endpoint), {
         method: method.toUpperCase(),
         headers: {
+            Store: window.config.store_code,
+            Authorization: token.value ? `Bearer ${token.value}` : null,
             'Content-Type': 'application/json',
             ...(options?.headers || {}),
         },
