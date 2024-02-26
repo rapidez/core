@@ -27,7 +27,6 @@ export default {
                     }
                 })
                 .catch((error) => {
-                    console.error(error)
                     Notify(error.message, 'error')
 
                     return false
