@@ -36,12 +36,11 @@ window.rapidezFetch = ((originalFetch) => {
 window.rapidezAPI = async (method, endpoint, data = {}, options = {}) => {
     let response = await rapidezFetch(window.url('/api/' + endpoint), {
         method: method.toUpperCase(),
-        headers: {
+        headers: Object.assign({
             Store: window.config.store_code,
             Authorization: token.value ? `Bearer ${token.value}` : null,
             'Content-Type': 'application/json',
-            ...(options?.headers || {}),
-        },
+        }, options?.headers || {}),
         body: Object.keys(data).length ? JSON.stringify(data) : null,
     })
 
