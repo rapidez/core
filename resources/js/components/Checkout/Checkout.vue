@@ -112,8 +112,8 @@ export default {
                 }
 
                 if (!hasOnlyVirtualItems.value) {
-                    addressInformation.shipping_carrier_code = this.currentShippingMethod.carrier_code
-                    addressInformation.shipping_method_code = this.currentShippingMethod.method_code
+                    addressInformation.shipping_carrier_code = this.currentShippingMethod?.carrier_code
+                    addressInformation.shipping_method_code = this.currentShippingMethod?.method_code
                 }
 
                 if (this.checkout.create_account && this.checkout.password) {
@@ -186,8 +186,8 @@ export default {
                 addressInformation: {
                     shipping_address: this.shippingAddress,
                     billing_address: this.billingAddress,
-                    shipping_carrier_code: this.currentShippingMethod.carrier_code,
-                    shipping_method_code: this.currentShippingMethod.method_code,
+                    shipping_carrier_code: this.currentShippingMethod?.carrier_code,
+                    shipping_method_code: this.currentShippingMethod?.method_code,
                 },
             })
             this.checkout.totals = responseData.totals
