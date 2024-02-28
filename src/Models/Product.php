@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Rapidez\Core\Casts\Children;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
@@ -25,10 +27,10 @@ use TorMorten\Eventy\Facades\Eventy;
 
 class Product extends Model
 {
-    use CastSuperAttributes;
     use CastMultiselectAttributes;
-    use SelectAttributeScopes;
+    use CastSuperAttributes;
     use HasAlternatesThroughRewrites;
+    use SelectAttributeScopes;
 
     public array $attributesToSelect = [];
 
@@ -117,12 +119,30 @@ class Product extends Model
             );
     }
 
+    public function reviewSummary(): HasOne
+    {
+        return $this->hasOne(
+            config('rapidez.models.product_review_summary', Rapidez\Core\Models\ProductReviewSummary::class),
+            'entity_pk_value'
+        );
+    }
+
     public function rewrites(): HasMany
     {
         return $this
             ->hasMany(config('rapidez.models.rewrite'), 'entity_id')
             ->withoutGlobalScope('store')
             ->where('entity_type', 'product');
+    }
+
+    public function parent(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            config('rapidez.models.product'),
+            config('rapidez.models.product_link'),
+            'product_id', 'entity_id',
+            'entity_id', 'parent_id'
+        )->withoutGlobalScopes();
     }
 
     public function scopeByIds(Builder $query, array $productIds): Builder
@@ -178,7 +198,7 @@ class Product extends Model
     {
         $configModel = config('rapidez.models.config');
 
-        return '/' . $this->url_key . $configModel::getCachedByPath('catalog/seo/product_url_suffix', '.html');
+        return '/' . ($this->url_key ? $this->url_key . $configModel::getCachedByPath('catalog/seo/product_url_suffix', '.html') : 'catalog/product/view/id/' . $this->entity_id);
     }
 
     public function getImagesAttribute(): array

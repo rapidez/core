@@ -1,44 +1,33 @@
-import { useSessionStorage, StorageSerializers, useLocalStorage } from '@vueuse/core'
+import { StorageSerializers, asyncComputed, useLocalStorage, useMemoize } from '@vueuse/core'
 import { computed, watch } from 'vue'
-import { mask, clear as clearMask } from './useMask'
-import { token } from './useUser'
+import { mask, clearMask } from './useMask'
 
-const cartStorage = useSessionStorage('cart', {}, { serializer: StorageSerializers.object })
-let hasRefreshed = false
-let isRefreshing = false
+const cartStorage = useLocalStorage('cart', {}, { serializer: StorageSerializers.object })
+let age = 0
 
-export const refresh = async function () {
-    hasRefreshed = true
-    if (!mask.value && !token.value) {
+export const refresh = async function (force = false) {
+    if (!mask.value) {
         cartStorage.value = {}
         return false
     }
 
-    if (isRefreshing) {
-        console.debug('Refresh canceled, request already in progress...')
+    if (!force && Date.now() - age < 5000) {
+        // The latest cart info is 5 seconds old, we do not need to refresh.
         return
     }
 
+    age = Date.now()
+
     try {
-        isRefreshing = true
-        let response = await axios
-            .get(window.url('/api/cart'), { headers: { Authorization: 'Bearer ' + (token.value || mask.value) } })
-            .finally(() => {
-                isRefreshing = false
-            })
-        cartStorage.value = !mask.value && !token.value ? {} : response.data
-        window.app.$emit('cart-refreshed')
+        let response = await window.magentoGraphQL(
+            `query getCart($cart_id: String!) { cart (cart_id: $cart_id) { ${config.queries.cart} } }`,
+            { cart_id: mask.value },
+        )
+
+        cart.value = Object.values(response.data)[0]
     } catch (error) {
-        if (error.response.status == 404) {
-            mask.value = null
-            cartStorage.value = {}
-            return false
-        }
-
-        Notify(window.config.translations.errors.wrong, 'warning')
         console.error(error)
-
-        return false
+        Vue.prototype.checkResponseForExpiredCart(error)
     }
 }
 
@@ -53,21 +42,81 @@ export const clearAddresses = async function () {
     useLocalStorage('shipping_address').value = null
 }
 
+export const linkUserToCart = async function () {
+    await window
+        .magentoGraphQL(`mutation ($cart_id: String!) { assignCustomerToGuestCart (cart_id: $cart_id) { ${config.queries.cart} } }`, {
+            cart_id: mask.value,
+        })
+        .then((response) => Vue.prototype.updateCart([], response))
+}
+
+export const fetchCustomerCart = async function () {
+    await window
+        .magentoGraphQL(`query { customerCart { ${config.queries.cart} } }`)
+        .then((response) => Vue.prototype.updateCart([], response))
+}
+
+export const fetchAttributeValues = async function (attributes = []) {
+    if (!attributes.length) {
+        return { data: { customAttributeMetadata: { items: null } } }
+    }
+
+    return await window.magentoGraphQL(
+        `
+            query attributeValues($attributes: [AttributeInput!]!) {
+                customAttributeMetadata(attributes: $attributes) {
+                    items {
+                        attribute_code
+                        attribute_options {
+                            label
+                            value
+                        }
+                    }
+                }
+            }
+        `,
+        {
+            attributes: attributes.map((attribute_code) => {
+                return { attribute_code: attribute_code, entity_type: 'catalog_product' }
+            }),
+        },
+    )
+}
+
+const fetchAttributeValuesMemo = useMemoize(fetchAttributeValues)
+
+export const getAttributeValues = async function () {
+    return await fetchAttributeValuesMemo(window.config.cart_attributes)
+}
+
 export const cart = computed({
     get() {
-        if (!cartStorage.value?.entity_id && mask.value) {
+        if (!cartStorage.value?.id && mask.value) {
             refresh()
         }
+
+        cartStorage.value.virtualItems = virtualItems
+        cartStorage.value.hasOnlyVirtualItems = hasOnlyVirtualItems
+
         return cartStorage.value
     },
     set(value) {
         cartStorage.value = value
+        age = Date.now()
+
+        if (value.id && value.id !== mask.value) {
+            // Linking user to cart will create a new mask, it will be returned in the id field.
+            mask.value = value.id
+        }
     },
 })
 
-// If mask gets added, updated or removed we should update the cart.
-watch(mask, refresh)
-// refresh the cart on first pageload after a while
-window.setTimeout(() => window.requestIdleCallback(() => !hasRefreshed && refresh()), 5000)
+export const virtualItems = computed(() => {
+    return cart.value?.items?.filter((item) => item.product.type_id == 'downloadable')
+})
+
+export const hasOnlyVirtualItems = computed(() => {
+    return cart.value.total_quantity === virtualItems.value.length
+})
 
 export default () => cart

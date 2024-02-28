@@ -2,6 +2,7 @@
 
 @section('title', $category->meta_title ?: $category->name)
 @section('description', $category->meta_description)
+@section('canonical', url($category->url))
 @include('rapidez::layouts.partials.head.hreflang', ['alternates' => $category->alternates])
 
 @section('content')

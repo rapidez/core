@@ -58,12 +58,12 @@ class Category extends Model
 
     public function getUrlAttribute(): string
     {
-        return '/' . $this->url_path;
+        return '/' . ($this->url_path ? $this->url_path : 'catalog/category/view/id/' . $this->entity_id);
     }
 
     public function subcategories()
     {
-        return $this->hasMany(self::class, 'parent_id', 'entity_id');
+        return $this->hasMany(config('rapidez.models.category'), 'parent_id', 'entity_id');
     }
 
     public function products(): HasManyThrough
@@ -78,7 +78,7 @@ class Category extends Model
                 'product_id'
             )
             ->withoutGlobalScopes()
-            ->whereIn((new(config('rapidez.models.category_product')))->qualifyColumn('visibility'), [2, 4]);
+            ->whereIn((new (config('rapidez.models.category_product')))->qualifyColumn('visibility'), [2, 4]);
     }
 
     public function rewrites(): HasMany

@@ -22,14 +22,6 @@ Route::middleware('api')->prefix('api')->group(function () {
 
     Route::get('order', OrderController::class);
 
-    Route::get('cart', function (Request $request) {
-        abort_unless($request->bearerToken(), 401);
-
-        $quoteModel = config('rapidez.models.quote');
-
-        return $quoteModel::whereQuoteIdOrCustomerToken($request->bearerToken())->with('items2.options')->orderByDesc('quote.entity_id')->firstOrFail();
-    });
-
     Route::prefix('admin')->middleware(VerifyAdminToken::class)->group(function () {
         Route::match(['get', 'post'], 'cache/clear', fn () => Artisan::call('cache:clear'));
         Route::match(['get', 'post'], 'index/products', function (Request $request) {

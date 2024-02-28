@@ -1,5 +1,5 @@
 import { useLocalStorage } from '@vueuse/core'
-import { user, token, refresh as refreshUser, clear as clearUser } from '../../../stores/useUser'
+import { user, refresh as refreshUser, login, logout } from '../../../stores/useUser'
 
 export default {
     methods: {
@@ -16,14 +16,8 @@ export default {
         },
 
         async login(username, password, loginCallback = false) {
-            await magento
-                .post('integration/customer/token', {
-                    username: username,
-                    password: password,
-                })
+            return await login(username, password)
                 .then(async (response) => {
-                    token.value = response.data
-
                     await this.refreshUser(false)
 
                     this.setCheckoutCredentialsFromDefaultUserAddresses()
@@ -33,8 +27,7 @@ export default {
                     }
                 })
                 .catch((error) => {
-                    Notify(error.response.data.message, 'error', error.response.data?.parameters)
-                    console.error(error)
+                    Notify(error.message, 'error')
 
                     return false
                 })
@@ -45,7 +38,7 @@ export default {
         },
 
         async onLogout(data = {}) {
-            await clearUser()
+            await logout()
             useLocalStorage('email', '').value = ''
             Turbo.cache.clear()
 
@@ -56,7 +49,7 @@ export default {
 
         async createCustomer(customer) {
             try {
-                let response = await magentoUser.post('customers', {
+                return await window.magentoAPI('post', 'customers', {
                     customer: {
                         email: customer.email,
                         firstname: customer.firstname,
@@ -65,10 +58,14 @@ export default {
                     },
                     password: customer.password,
                 })
-                return response.data
             } catch (error) {
-                Notify(error.response.data.message, 'error', error.response.data?.parameters)
-                console.error(error)
+                if (!error?.response) {
+                    return false
+                }
+                const responseData = await error.response.json()
+                if (responseData?.message) {
+                    Notify(responseData.message, 'error', responseData?.parameters)
+                }
 
                 return false
             }

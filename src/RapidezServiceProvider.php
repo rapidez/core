@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
+use Illuminate\View\View as ViewComponent;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
 use Rapidez\Core\Auth\MagentoCustomerTokenGuard;
 use Rapidez\Core\Commands\IndexCategoriesCommand;
@@ -25,6 +27,7 @@ use Rapidez\Core\Facades\Rapidez as RapidezFacade;
 use Rapidez\Core\Http\Controllers\Fallback\CmsPageController;
 use Rapidez\Core\Http\Controllers\Fallback\LegacyFallbackController;
 use Rapidez\Core\Http\Controllers\Fallback\UrlRewriteController;
+use Rapidez\Core\Http\Middleware\CheckStoreCode;
 use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
 use Rapidez\Core\Http\ViewComposers\ConfigComposer;
 use Rapidez\Core\Listeners\ElasticsearchHealthcheck;
@@ -124,6 +127,10 @@ class RapidezServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__ . '/../resources/lang' => resource_path('lang/vendor/rapidez'),
             ], 'translations');
+
+            $this->publishes([
+                __DIR__ . '/../resources/payment-icons' => public_path('payment-icons'),
+            ], 'payment-icons');
         }
 
         return $this;
@@ -145,6 +152,10 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function registerThemes(): self
     {
+        if (app()->runningInConsole()) {
+            return $this;
+        }
+
         $path = config('rapidez.frontend.themes.' . request()->server('MAGE_RUN_CODE', request()->has('_store') && ! app()->isProduction() ? request()->get('_store') : 'default'), false);
 
         if (! $path) {
@@ -169,7 +180,7 @@ class RapidezServiceProvider extends ServiceProvider
 
         View::addExtension('graphql', 'blade');
 
-        Vite::useScriptTagAttributes(fn (string $src, string $url, array|null $chunk, array|null $manifest) => [
+        Vite::useScriptTagAttributes(fn (string $src, string $url, ?array $chunk, ?array $manifest) => [
             'data-turbo-track' => str_contains($url, 'app') ? 'reload' : false,
             'defer'            => true,
         ]);
@@ -210,12 +221,20 @@ class RapidezServiceProvider extends ServiceProvider
             return "<?php echo {$configModel}::getCachedByPath({$expression}) ?>";
         });
 
+        Blade::if('storecode', function ($value) {
+            $value = is_array($value) ? $value : func_get_args();
+
+            return in_array(config('rapidez.store_code'), $value);
+        });
+
         return $this;
     }
 
     protected function bootMiddleware(): self
     {
         $this->app->make(Kernel::class)->pushMiddleware(DetermineAndSetShop::class);
+
+        $this->app['router']->aliasMiddleware('store_code', CheckStoreCode::class);
 
         return $this;
     }
@@ -239,9 +258,15 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootMacros(): self
     {
         Collection::macro('firstForCurrentStore', function () {
+            /** @var Collection $this */
             return $this->filter(function ($value) {
                 return in_array($value->store_id, [config('rapidez.store'), 0]);
             })->sortByDesc('store_id')->first();
+        });
+
+        ViewComponent::macro('renderOneliner', function () {
+            /** @var ViewComponent $this */
+            return Str::squish($this->render());
         });
 
         return $this;

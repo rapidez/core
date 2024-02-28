@@ -10,10 +10,12 @@ import './polyfills'
 import { useLocalStorage, StorageSerializers } from '@vueuse/core'
 import useCart from './stores/useCart'
 import useUser from './stores/useUser'
-import useSwatches from './stores/useSwatches'
+import useMask from './stores/useMask'
+import { swatches, clear as clearSwatches } from './stores/useSwatches'
+import { clear as clearAttributes } from './stores/useAttributes.js'
 import './vue'
 import { computed } from 'vue'
-import './axios'
+import './fetch'
 import './filters'
 import './mixins'
 import './turbolinks'
@@ -61,7 +63,8 @@ function init() {
             loadAutocomplete: false,
             cart: useCart(),
             user: useUser(),
-            swatches: useSwatches(),
+            mask: useMask(),
+            swatches: swatches,
             checkout: {
                 step: 1,
                 totals: {},
@@ -110,6 +113,10 @@ function init() {
             loggedIn() {
                 return Boolean(this.user?.id)
             },
+
+            hasCart() {
+                return this.cart?.id && this.cart.items.length
+            },
         },
         watch: {
             loadingCount: function (count) {
@@ -118,13 +125,22 @@ function init() {
         },
     })
 
+    const lastStoreCode = useLocalStorage('last_store_code', window.config.store_code)
+    if (lastStoreCode.value !== window.config.store_code) {
+        clearAttributes()
+        clearSwatches()
+        lastStoreCode.value = window.config.store_code
+    }
+
     if (window.debug) {
         window.app.$on('notification-message', function (message, type, params, link) {
             switch (type) {
                 case 'error':
                     console.error(...arguments)
+                    break
                 case 'warning':
                     console.warn(...arguments)
+                    break
                 case 'success':
                 case 'info':
                 default:
