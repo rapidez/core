@@ -61,6 +61,7 @@ jobs:
         run: composer run dusk:prepare
 
       - name: Compile assets
+        uses: actions/setup-node@v4
         run: composer run dusk:assets
 
       - name: Wait for index to finish
