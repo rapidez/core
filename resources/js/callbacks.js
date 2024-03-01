@@ -7,5 +7,5 @@ Vue.prototype.scrollToElement = (selector) => {
 }
 
 Vue.prototype.getCheckoutStep = (stepName) => {
-    return (config.checkout_steps[config.store_code] ?? config.checkout_steps['default'])?.indexOf(stepName)?.indexOf(stepName)
+    return (config.checkout_steps[config.store_code] ?? config.checkout_steps['default'])?.indexOf(stepName)
 }
