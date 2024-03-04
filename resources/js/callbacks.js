@@ -5,3 +5,7 @@ Vue.prototype.scrollToElement = (selector) => {
         behavior: 'smooth',
     })
 }
+
+Vue.prototype.getCheckoutStep = (stepName) => {
+    return (config.checkout_steps[config.store_code] ?? config.checkout_steps['default'])?.indexOf(stepName)
+}

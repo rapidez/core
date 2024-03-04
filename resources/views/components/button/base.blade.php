@@ -1,7 +1,7 @@
 @props(['disableWhenLoading' => true])
 
 @php
-    $tag = $attributes->has('href', ':href', 'v-bind:href') ? 'a' : 'button';
+    $tag = $attributes->hasAny('href', ':href', 'v-bind:href') ? 'a' : 'button';
     $tag = $attributes->has('for') ? 'label' : $tag;
 @endphp
 
