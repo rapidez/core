@@ -6,9 +6,9 @@
         <coupon v-slot="{ cart, removeCoupon, couponCode, inputEvents, applyCoupon }">
             <div>
                 <form class="mt-5 flex" @submit.prevent="applyCoupon">
-                    <x-rapidez::input
-                        :label="false"
+                    <x-rapidez::input-field
                         name="couponCode"
+                        dusk="couponCode"
                         placeholder="Coupon code"
                         v-on="inputEvents"
                         v-bind:value="couponCode"

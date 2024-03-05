@@ -8,6 +8,7 @@ use Orchestra\Testbench\Dusk\TestCase as BaseTestCase;
 use Rapidez\BladeDirectives\BladeDirectivesServiceProvider;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\RapidezServiceProvider;
+use TailwindMerge\Laravel\TailwindMergeServiceProvider;
 use TorMorten\Eventy\EventServiceProvider;
 
 abstract class DuskTestCase extends BaseTestCase
@@ -22,6 +23,7 @@ abstract class DuskTestCase extends BaseTestCase
             BladeIconsServiceProvider::class,
             BladeHeroiconsServiceProvider::class,
             BladeDirectivesServiceProvider::class,
+            TailwindMergeServiceProvider::class,
         ];
     }
 

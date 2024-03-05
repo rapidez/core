@@ -13,7 +13,7 @@
                     <div class="flex w-full flex-col">
                         <div v-for="(item, itemId, index) in cart.items" class="relative flex gap-5 border-b py-3 max-lg:flex-col lg:items-center">
                             <div class="flex flex-1 items-center gap-5">
-                                <a class="w-20":href="item.url | url">
+                                <a class="w-20" :href="item.url | url">
                                     <img class="mx-auto" :alt="item.name" :src="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product' + item.image + '.webp'" height="100" />
                                 </a>
                                 <div class="flex flex-col items-start gap-1">
@@ -32,7 +32,17 @@
                             <div class="flex items-center justify-between gap-5">
                                 @{{ item.price | price }}
                                 <div class="flex items-center gap-1">
-                                    <x-rapidez::input v-model="item.qty" v-bind:dusk="'qty-'+index" name="qty" class="w-14 px-1 text-center" type="number" :label="false" ::min="item.min_sale_qty > item.qty_increments ? item.min_sale_qty : item.qty_increments" ::step="item.qty_increments" />
+                                    <x-rapidez::input-field
+                                        v-bind:dusk="'qty-'+index"
+                                        name="qty"
+                                        class="w-16 px-1 text-center"
+                                        type="number"
+                                        v-model="item.qty"
+                                        v-bind:min="item.min_sale_qty > item.qty_increments ? item.min_sale_qty : item.qty_increments"
+                                        v-bind:step="item.qty_increments"
+                                    >
+                                        <x-slot:input class="px-2"></x-slot:input>
+                                    </x-rapidez::input-field>
                                     <x-rapidez::button v-on:click="changeQty(item)" v-bind:dusk="'item-update-'+index" class="ml-1" :title="__('Update')">
                                         <x-heroicon-s-arrow-path class="h-4 w-4" />
                                     </x-rapidez::button>
