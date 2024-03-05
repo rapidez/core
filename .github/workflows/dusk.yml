@@ -44,6 +44,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Setup Yarn cache
+        uses: actions/setup-node@v4
+        
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
