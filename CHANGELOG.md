@@ -4,13 +4,16 @@
 ## [1.14.0](https://github.com/rapidez/core/releases/tag/1.14.0) - 2024-03-01
 
 ### Added
+
  - Output design/head/includes (#428)
 
 ### Changed
- - Update automated tests & dependencies to php8.1/8.2 and L10 (#429)
- - Use forked reactivesearch (#436)
+
+ - Drop Laravel 9 and PHP 8.0 support (#429)
+ - Use ReactiveSearch fork with fixes (#435)
 
 ### Fixed
+
  - Properly set slide behavior in slider (#430)
  - Fallback to default checkout_steps (#440)
 
