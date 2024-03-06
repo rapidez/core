@@ -2,7 +2,7 @@
 
 namespace Rapidez\Core\Jobs;
 
-use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
+use MailerLite\LaravelElasticsearch\Manager as Elasticsearch;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Foundation\Bus\Dispatchable;
 
