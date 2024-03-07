@@ -1,6 +1,41 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.0.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.1.0...master)
+## [2.1.0](https://github.com/rapidez/core/releases/tag/2.1.0) - 2024-03-06
+
+### Changed
+
+- Use ReactiveSearch fork with fixes (#435)
+- Replaced cviebrock/laravel-elasticsearch with mailerlite/laravel-elasticsearch (#445)
+
+### Fixed
+
+- Allow shipping method to be empty (#432)
+- Store and authorization header by default on Rapidez API calls (#433)
+- Notify correctly in interactWithUser (#434)
+- Fallback on default checkout_steps (#439)
+- Send full address to check shipping methods (#441)
+- Cache yarn dependencies with Dusk tests (#442)
+- Move resizeobserver to nextTick function (#444)
+
+## [1.14.0](https://github.com/rapidez/core/releases/tag/1.14.0) - 2024-03-01
+
+### Added
+
+ - Output design/head/includes (#428)
+
+### Changed
+
+ - Drop Laravel 9 and PHP 8.0 support (#429)
+ - Use ReactiveSearch fork with fixes (#435)
+
+### Fixed
+
+ - Properly set slide behavior in slider (#430)
+ - Fallback to default checkout_steps (#440)
+
+
+
 ## [2.0.0](https://github.com/rapidez/core/releases/tag/2.0.0) - 2024-02-21
 
 In this release we refactored the cart from the Magento API to GraphQL! You should review all changes!
