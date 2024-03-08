@@ -8,11 +8,11 @@
 
     <title>
         @hasSection('title')
-            {{ Rapidez::config('design/head/title_prefix') }}
+            @config('design/head/title_prefix')
             @yield('title')
-            {{ Rapidez::config('design/head/title_suffix') }}
+            @config('design/head/title_suffix')
         @else
-            {{ Rapidez::config('design/head/default_title') }}
+            @config('design/head/default_title')
         @endif
     </title>
 
@@ -23,6 +23,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     @stack('head')
+    @config('design/head/includes')
 </head>
 <body class="text-neutral antialiased">
     <div id="app" class="flex flex-col min-h-screen">

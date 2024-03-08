@@ -1,3 +1,5 @@
+import { mask } from './stores/useMask'
+
 Vue.mixin({
     methods: {
         async asyncForEach(array, callback) {
@@ -8,9 +10,9 @@ Vue.mixin({
 
         async magentoCart(method, endpoint, data) {
             if (this.$root.loggedIn) {
-                return await magentoUser[method]('carts/mine/' + endpoint, data)
+                return await window.magentoAPI(method, 'carts/mine/' + endpoint, data)
             } else {
-                return await magento[method]('guest-carts/' + localStorage.mask + '/' + endpoint, data)
+                return await window.magentoAPI(method, 'guest-carts/' + mask.value + '/' + endpoint, data)
             }
         },
     },

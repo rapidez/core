@@ -6,11 +6,14 @@ use Illuminate\Routing\RouteAction;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Rapidez\Core\Models\Store;
 
 class Rapidez
 {
+    protected string|bool|null $compadreVersion;
+
     public function __construct(protected Collection $routes)
     {
     }
@@ -126,5 +129,16 @@ class Rapidez
         }
 
         return $result;
+    }
+
+    public function checkcompadreVersion($version = '0.0.1', $operator = '>=')
+    {
+        $this->compadreVersion ??= (DB::table('setup_module')->where('module', 'Rapidez_Compadre')->value('schema_version') ?? false);
+
+        if (! $this->compadreVersion) {
+            return false;
+        }
+
+        return version_compare($this->compadreVersion, $version, $operator);
     }
 }

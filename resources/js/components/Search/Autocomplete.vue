@@ -88,15 +88,16 @@ export default {
                     },
                 }
 
-                axios({
-                    url: `${baseUrl}/${config.es_prefix}_${name}_${config.store}/_search`,
+                rapidezFetch(`${baseUrl}/${config.es_prefix}_${name}_${config.store}/_search`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', Authorization: auth },
                     data: JSON.stringify(esQuery),
                     validateStatus: false,
-                }).then((response) => {
-                    self.results[name] = response.data?.hits ?? []
-                    self.resultsCount += self.results[name]?.hits?.length ?? 0
+                }).then(async (response) => {
+                    const responseData = await response.json()
+
+                    self.results[name] = responseData?.hits ?? []
+                    self.results.count += self.results[name]?.hits?.length ?? 
                 })
             })
         }, self.debounce)

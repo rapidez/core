@@ -1,43 +1,129 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.11.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.1.0...master)
+## [2.1.0](https://github.com/rapidez/core/releases/tag/2.1.0) - 2024-03-06
+
+### Changed
+
+- Use ReactiveSearch fork with fixes (#435)
+- Replaced cviebrock/laravel-elasticsearch with mailerlite/laravel-elasticsearch (#445)
+
+### Fixed
+
+- Allow shipping method to be empty (#432)
+- Store and authorization header by default on Rapidez API calls (#433)
+- Notify correctly in interactWithUser (#434)
+- Fallback on default checkout_steps (#439)
+- Send full address to check shipping methods (#441)
+- Cache yarn dependencies with Dusk tests (#442)
+- Move resizeobserver to nextTick function (#444)
+
+## [1.14.0](https://github.com/rapidez/core/releases/tag/1.14.0) - 2024-03-01
+
+### Added
+
+ - Output design/head/includes (#428)
+
+### Changed
+
+ - Drop Laravel 9 and PHP 8.0 support (#429)
+ - Use ReactiveSearch fork with fixes (#435)
+
+### Fixed
+
+ - Properly set slide behavior in slider (#430)
+ - Fallback to default checkout_steps (#440)
+
+
+
+## [2.0.0](https://github.com/rapidez/core/releases/tag/2.0.0) - 2024-02-21
+
+In this release we refactored the cart from the Magento API to GraphQL! You should review all changes!
+- Dropped support for Magento 2.4.4, Laravel 9 and PHP 8.0
+- Axios is removed and you should remove it from your project and migrate to fetch, we've added some helpers you could use:
+    - `rapidezAPI(method, endpoint, data = {}, options = {})`
+    - `magentoGraphQL(query, variables = {}, options = { headers: {}, redirectOnExpiration: true, notifyOnError: true })`
+    - `magentoAPI(method, endpoint, data = {}, options = { headers: {}, redirectOnExpiration: true, notifyOnError: true })`
+- `cart_attributes` option is added to `config/rapidez/frontend.php` if you like to add some extra attributes on the cart items
+- `Cart.vue` and `GetCart.js` removed; if you did override this you should refactor it to the new cart store; you can just use `cart` or `$root.cart`
+- `Coupon.vue` is removed and migrated to the GraphQL mutation component
+- GraphQL component callback parameters changed; the first parameter is now the data and the second the response to keep it inline with the GraphQL mutation component.
+- You should review all template changes
+- If you're using product option file uploads you need to install https://github.com/rapidez/magento2-compadre in Magento
+
+### Added
+
+- Output design/head/includes (#428)
+
+### Changed
+
+- Migrated the cart from the Magento API to GraphQL (#372)
+- Drop Laravel 9 and PHP 8.0 support (#429)
+
+### Fixed
+
+- Properly set slide behavior in slider (#430)
+
+## [1.13.0](https://github.com/rapidez/core/releases/tag/1.13.0) - 2024-02-20
+
+### Changed
+
+- Upgrade Turbo for link preloading, show progressbar quicker (#426)
+
+### Fixed
+
+- Clear swatches & attributes on store change (#424)
+- Use hasAny in button base Blade component (#425)
+
+## [1.12.0](https://github.com/rapidez/core/releases/tag/1.12.0) - 2024-02-16
+
+### Added
+
+- Catalog urls for products and categories (#419)
+- Select cataloginventory_stock_item.manage_stock (#423)
+
+### Changed
+
+- Removed hardcoded checkout step numbers (#420)
+
 ## [1.11.0](https://github.com/rapidez/core/releases/tag/1.11.0) - 2024-02-05
 
 ### Changed
 
--  Make positions flattened (https://github.com/rapidez/core/pull/415)
-- Use lowercase & asciifolding filters in default analyzer & in synonym analyzer (https://github.com/rapidez/core/pull/416)
-- Seperate check whether flat tables are active, and if they exist (https://github.com/rapidez/core/pull/413)
+- Make positions flattened (#415)
+- Use lowercase & asciifolding filters in default analyzer & in synonym analyzer (#416)
+- Seperate check whether flat tables are active, and if they exist (#413)
 
 
 ## [1.10.2](https://github.com/rapidez/core/releases/tag/1.10.2) - 2024-01-31
 
 ### Fixed
- - Watch currentShippingMethod instead of shipping_method (https://github.com/rapidez/core/pull/414)
+
+ - Watch currentShippingMethod instead of shipping_method (#414)
 
 
 ## [1.10.1](https://github.com/rapidez/core/releases/tag/1.10.1) - 2024-01-30
 
 ### Fixed
 
- - Fix slot scope "limit" to "size" (https://github.com/rapidez/core/pull/412)
+ - Fix slot scope "limit" to "size" (#412)
 
 ## [1.10.0](https://github.com/rapidez/core/releases/tag/1.10.0) - 2024-01-29
 
 ### Added
 
- - Add new storecode if directive (https://github.com/rapidez/core/pull/411)
- - Add product parent (https://github.com/rapidez/core/pull/404)
- - Improve flexibility of additional search queries in autocomplete (https://github.com/rapidez/core/pull/407)
+ - Add new storecode if directive (#411)
+ - Add product parent (#404)
+ - Improve flexibility of additional search queries in autocomplete (#407)
 
 ### Changed
 
-- Always set step in checkout success to success step (https://github.com/rapidez/core/pull/403)
-- Refresh user before retrieving addresses (https://github.com/rapidez/core/pull/345)
+- Always set step in checkout success to success step (#403)
+- Refresh user before retrieving addresses (#345)
 
 ### Fixed
 
- - Fix usage of whitespace tokenizer (https://github.com/rapidez/core/pull/410)
+ - Fix usage of whitespace tokenizer (#410)
 
 
 ## [1.9.0](https://github.com/rapidez/core/releases/tag/1.9.0) - 2024-01-24

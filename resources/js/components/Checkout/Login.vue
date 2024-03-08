@@ -1,10 +1,9 @@
 <script>
-import GetCart from './../Cart/mixins/GetCart'
 import InteractWithUser from './../User/mixins/InteractWithUser'
 import { useLocalStorage } from '@vueuse/core'
 
 export default {
-    mixins: [GetCart, InteractWithUser],
+    mixins: [InteractWithUser],
 
     props: {
         checkoutLogin: {
@@ -44,37 +43,28 @@ export default {
             if (this.email && this.password) {
                 let self = this
                 await this.login(this.email, this.password, async () => {
-                    if (self.$root.cart?.entity_id) {
-                        await self.linkUserToCart()
-                    } else {
-                        await self.refreshCart()
-                    }
-
                     this.successfulLogin()
                 })
             } else if (this.email) {
-                this.checkEmailAvailability()
+                await this.checkEmailAvailability()
             } else {
                 Notify(window.config.translations.account.email, 'error')
             }
         },
 
-        checkEmailAvailability() {
-            magento
-                .post('customers/isEmailAvailable', {
-                    customerEmail: this.email,
+        async checkEmailAvailability() {
+            let responseData = await window.magentoAPI('post', 'customers/isEmailAvailable', {
+                customerEmail: this.email,
+            })
+
+            if ((this.emailAvailable = responseData)) {
+                this.$root.guestEmail = this.email
+                this.$root.checkout.step = this.nextStep
+            } else {
+                this.$nextTick(function () {
+                    this.$scopedSlots.default()[0].context.$refs.password.focus()
                 })
-                .then((response) => {
-                    if ((this.emailAvailable = response.data)) {
-                        this.$root.guestEmail = this.email
-                        this.$root.checkout.step = 2
-                    } else {
-                        this.$nextTick(function () {
-                            this.$scopedSlots.default()[0].context.$refs.password.focus()
-                        })
-                    }
-                })
-                .catch((error) => Notify(error.response.data.message, 'error', error.response.data?.parameters))
+            }
         },
 
         loginInputChange(e) {
@@ -86,10 +76,18 @@ export default {
 
         successfulLogin() {
             if (this.checkoutLogin) {
-                this.$root.checkout.step = 2
+                this.$root.checkout.step = this.nextStep
             } else if (this.redirect) {
                 Turbo.visit(window.url(this.redirect))
             }
+        },
+    },
+    computed: {
+        loginStep: function () {
+            return this.$root.getCheckoutStep('login')
+        },
+        nextStep: function () {
+            return this.loginStep + 1
         },
     },
 }

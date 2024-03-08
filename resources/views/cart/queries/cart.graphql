@@ -1,0 +1,103 @@
+id
+total_quantity
+items {
+    id
+    quantity
+    product {
+        @foreach(collect([
+            'id',
+            'sku',
+            'name',
+            'type_id',
+            'url_key',
+            'url_suffix',
+        ])->merge(config('rapidez.frontend.cart_attributes'))->unique() as $attribute)
+            {{ $attribute }}
+        @endforeach
+        image {
+            url
+        }
+        crosssell_products {
+            id
+        }
+        @if (Rapidez::checkcompadreVersion('0.0.1'))
+            stock_item {
+                max_sale_qty
+                min_sale_qty
+                qty_increments
+            }
+        @endif
+    }
+    prices {
+        price {
+            value
+        }
+        price_including_tax {
+            value
+        }
+        row_total {
+            value
+        }
+        row_total_including_tax {
+            value
+        }
+    }
+    ... on SimpleCartItem {
+        @include('rapidez::cart.queries.partials.customizable_options')
+    }
+    ... on VirtualCartItem {
+        @include('rapidez::cart.queries.partials.customizable_options')
+    }
+    ... on DownloadableCartItem {
+        @include('rapidez::cart.queries.partials.customizable_options')
+    }
+    ... on ConfigurableCartItem {
+        @include('rapidez::cart.queries.partials.customizable_options')
+        configurable_options {
+            id
+            option_label
+            value_label
+        }
+    }
+    ... on BundleCartItem {
+        @include('rapidez::cart.queries.partials.customizable_options')
+    }
+}
+applied_coupons {
+    code
+}
+shipping_addresses {
+    selected_shipping_method {
+        carrier_title
+        method_title
+        amount {
+            value
+        }
+    }
+}
+prices {
+    subtotal_excluding_tax {
+        value
+    }
+    subtotal_including_tax {
+        value
+    }
+    discounts {
+        label
+        amount {
+            value
+        }
+    }
+    subtotal_with_discount_excluding_tax {
+        value
+    }
+    applied_taxes {
+        label
+        amount {
+            value
+        }
+    }
+    grand_total {
+        value
+    }
+}

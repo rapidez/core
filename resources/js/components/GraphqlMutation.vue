@@ -106,12 +106,8 @@ export default {
             try {
                 let options = { headers: {} }
 
-                if (this.$root.loggedIn) {
-                    options['headers']['Authorization'] = `Bearer ${localStorage.token}`
-                }
-
                 if (this.recaptcha) {
-                    options['headers']['X-ReCaptcha'] = await this.getReCaptchaToken()
+                    options['headers']['Authorization'] = await this.getReCaptchaToken()
                 }
 
                 if (this.store) {
@@ -125,14 +121,7 @@ export default {
                     ;[query, variables, options] = await this.beforeRequest(this.query, this.variables, options)
                 }
 
-                let response = await axios.post(
-                    config.magento_url + '/graphql',
-                    {
-                        query: query,
-                        variables: variables,
-                    },
-                    options,
-                )
+                let response = await magentoGraphQL(query, variables, options)
 
                 if (response.data.errors) {
                     if (this.errorCallback) {
@@ -140,12 +129,8 @@ export default {
                         return
                     }
 
-                    if (response.data.errors[0]?.extensions?.category == 'graphql-authorization') {
-                        this.logout(window.url('/login'))
-                        return
-                    }
-
                     this.error = response.data.errors[0].message
+
                     if (this.alert) {
                         Notify(response.data.errors[0].message, 'error')
                     }
@@ -182,7 +167,9 @@ export default {
                     }
                     Turbo.visit(window.url(this.redirect))
                 }
-            } catch (e) {
+            } catch (error) {
+                console.error(error)
+                this.error = error.message
                 Notify(window.config.translations.errors.wrong, 'warning')
             } finally {
                 this.mutating = false

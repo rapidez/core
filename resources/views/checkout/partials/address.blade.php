@@ -125,6 +125,7 @@
     <div class="col-span-12 sm:col-span-6">
         <x-rapidez::country-select
             name="{{ $type }}_country"
+            dusk="{{ $type }}_country"
             label="Country"
             v-model="checkout.{{ $type }}_address.country_id"
             required

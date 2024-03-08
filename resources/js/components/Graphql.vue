@@ -1,7 +1,6 @@
 <script>
 import InteractWithUser from './User/mixins/InteractWithUser'
 import { useLocalStorage, StorageSerializers } from '@vueuse/core'
-import { token } from '../stores/useUser'
 
 export default {
     mixins: [InteractWithUser],
@@ -27,6 +26,10 @@ export default {
         callback: {
             type: Function,
         },
+        errorCallback: {
+            type: Function,
+            default: (error) => Notify(window.config.translations.errors.wrong, 'warning'),
+        },
         store: {
             type: String,
             default: window.config.store_code,
@@ -39,10 +42,7 @@ export default {
     }),
 
     render() {
-        return this.$scopedSlots.default({
-            data: this.data,
-            runQuery: this.runQuery,
-        })
+        return this.$scopedSlots.default(this)
     },
 
     created() {
@@ -63,33 +63,17 @@ export default {
 
         async runQuery() {
             try {
-                let options = { headers: {} }
-
-                if (token.value) {
-                    options['headers']['Authorization'] = `Bearer ${token.value}`
+                let options = {
+                    headers: {},
+                    redirectOnExpiration: true,
+                    notifyOnError: true,
                 }
 
                 if (this.store) {
                     options['headers']['Store'] = this.store
                 }
 
-                let response = await axios.post(
-                    config.magento_url + '/graphql',
-                    {
-                        query: this.query,
-                        variables: this.variables,
-                    },
-                    options,
-                )
-
-                if (response.data.errors) {
-                    if (response.data.errors[0].extensions.category == 'graphql-authorization') {
-                        this.logout(window.url('/login'))
-                    } else {
-                        Notify(response.data.errors[0].message, 'error')
-                    }
-                    return
-                }
+                let response = await window.magentoGraphQL(this.query, this.variables, options)
 
                 if (this.check) {
                     if (!eval('response.data.' + this.check)) {
@@ -98,13 +82,14 @@ export default {
                     }
                 }
 
-                this.data = this.callback ? await this.callback(response) : response.data.data
+                this.data = this.callback ? await this.callback(this.data, response) : response.data
 
                 if (this.cache) {
                     useLocalStorage(this.cachePrefix + this.cache, null, { serializer: StorageSerializers.object }).value = this.data
                 }
-            } catch (e) {
-                Notify(window.config.translations.errors.wrong, 'warning')
+            } catch (error) {
+                console.error(error)
+                this.errorCallback(error)
             }
         },
     },

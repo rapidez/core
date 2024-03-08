@@ -21,7 +21,7 @@ jobs:
       - name: "Duster Fix"
         uses: tighten/duster-action@v2
         with:
-          args: fix
+          args: fix -vvv
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         id: auto_commit_action
