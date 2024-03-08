@@ -12,6 +12,13 @@ return [
         'checkout_steps',
         'flushable_localstorage_keys',
         'show_customer_address_fields',
+        'cart_attributes',
+    ],
+
+    // The attribute codes of product attributes used in the cart, used to fetch option values
+    'cart_attributes' => [
+        // 'manufacturer',
+        // 'material',
     ],
 
     // The checkout steps which are used to name the steps
@@ -20,6 +27,17 @@ return [
     // them lowercase and do not include any spaces.
     'checkout_steps' => [
         'default' => ['cart', 'login', 'credentials', 'payment', 'success'],
+    ],
+
+    'autocomplete' => [
+        // Attach additional indexes to the autocomplete
+        // Uses the views in rapidez::layouts.partials.header.autocomplete
+        'additionals' => [
+            'categories' => ['name^3', 'description'],
+        ],
+
+        'debounce' => 100,
+        'size'     => 10,
     ],
 
     // Link store codes to theme folders

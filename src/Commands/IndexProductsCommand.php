@@ -41,6 +41,9 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                     'grouped' => [
                         'type' => 'flattened',
                     ],
+                    'positions' => [
+                        'type' => 'flattened',
+                    ],
                 ],
             ]), Eventy::filter('index.product.settings', []), ['name']);
             try {
@@ -51,7 +54,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                     ->pluck('position', 'category_id');
 
                 $productQuery = $productModel::selectOnlyIndexable()
-                    ->with('categoryProducts')
+                    ->with(['categoryProducts', 'reviewSummary'])
                     ->withEventyGlobalScopes('index.product.scopes')
                     ->withExists('options AS has_options');
 

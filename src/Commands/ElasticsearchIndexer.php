@@ -3,7 +3,7 @@
 namespace Rapidez\Core\Commands;
 
 use Carbon\Carbon;
-use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
+use MailerLite\LaravelElasticsearch\Manager as Elasticsearch;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Rapidez\Core\Jobs\IndexJob;
@@ -71,6 +71,11 @@ class ElasticsearchIndexer
 
     public function prepare(string $indexName, array $mapping = [], array $settings = [], array $synonymsFor = []): void
     {
+        data_set($settings, 'index.analysis.analyzer.default', [
+            'filter'    => ['lowercase', 'asciifolding'],
+            'tokenizer' => 'standard',
+        ]);
+
         if (count($synonymsFor)) {
             $synonyms = config('rapidez.models.search_synonym')::whereIn('store_id', [0, config('rapidez.store')])
                 ->get()
@@ -78,11 +83,20 @@ class ElasticsearchIndexer
                 ->toArray();
 
             data_set($settings, 'index.analysis.filter.synonym', ['type' => 'synonym', 'synonyms' => $synonyms]);
-            data_set($settings, 'index.analysis.analyzer.synonym', ['tokenizer' => 'whitespace', 'filter' => ['synonym']]);
+            data_set($settings, 'index.analysis.analyzer.synonym', [
+                'filter'    => ['lowercase', 'asciifolding', 'synonym'],
+                'tokenizer' => 'standard',
+            ]);
 
             foreach ($synonymsFor as $property) {
                 data_set($mapping, 'properties.' . $property . '.type', 'text');
                 data_set($mapping, 'properties.' . $property . '.analyzer', 'synonym');
+                data_set($mapping, 'properties.' . $property . '.fields', [
+                    'keyword' => [
+                        'type'         => 'keyword',
+                        'ignore_above' => 256,
+                    ],
+                ]);
             }
         }
 

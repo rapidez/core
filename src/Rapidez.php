@@ -5,10 +5,15 @@ namespace Rapidez\Core;
 use Illuminate\Routing\RouteAction;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Rapidez\Core\Models\Store;
 
 class Rapidez
 {
+    protected string|bool|null $compadreVersion;
+
     public function __construct(protected Collection $routes)
     {
     }
@@ -64,7 +69,7 @@ class Rapidez
         return json_decode(str_replace(array_values($mapping), array_keys($mapping), $encodedString));
     }
 
-    public function getStores(callable|int|string $store = null): array
+    public function getStores(callable|int|string|null $store = null): array
     {
         $storeModel = config('rapidez.models.store');
 
@@ -106,6 +111,11 @@ class Rapidez
         config()->set('rapidez.website_code', $store['website_code']);
         config()->set('rapidez.group', $store['group_id']);
         config()->set('rapidez.root_category_id', $store['root_category_id']);
+        config()->set('frontend.base_url', url('/'));
+
+        App::setLocale(strtok(Rapidez::config('general/locale/code', 'en_US'), '_'));
+
+        Event::dispatch('rapidez:store-set', [$store]);
     }
 
     public function withStore(Store|array|callable|int|string $store, callable $callback, ...$args)
@@ -119,5 +129,16 @@ class Rapidez
         }
 
         return $result;
+    }
+
+    public function checkcompadreVersion($version = '0.0.1', $operator = '>=')
+    {
+        $this->compadreVersion ??= (DB::table('setup_module')->where('module', 'Rapidez_Compadre')->value('schema_version') ?? false);
+
+        if (! $this->compadreVersion) {
+            return false;
+        }
+
+        return version_compare($this->compadreVersion, $version, $operator);
     }
 }

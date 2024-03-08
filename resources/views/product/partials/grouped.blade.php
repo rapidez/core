@@ -1,43 +1,27 @@
 <div class="grid grid-cols-3 gap-3 grid-cols-[auto_max-content_max-content]">
-    <template v-for="product in config.product.grouped">
-        <add-to-cart :product="product" v-cloak>
-            <div class="contents" slot-scope="{ _renderProxy: addToCartSlotProps, add, simpleProduct, adding, added }">
+    @foreach ($product->grouped as $groupedProduct)
+        <add-to-cart :product="config.product.grouped[{{ $groupedProduct->id }}]" v-slot="addToCart" class="contents">
+            <form v-on:submit.prevent="addToCart.add" class="contents">
                 <div>
-                    @{{ simpleProduct.name }}
+                    {{ $groupedProduct->name }}
                     <div class="flex items-center space-x-3 font-bold">
-                        <div>@{{ (simpleProduct.special_price || simpleProduct.price) | price }}</div>
-                        <div class="line-through" v-if="simpleProduct.special_price">@{{ simpleProduct.price | price }}</div>
+                        <div>{{ price($groupedProduct->special_price ?: $groupedProduct->price) }}</div>
+                        @if ($groupedProduct->special_price)
+                            <div class="line-through">{{ price($groupedProduct->price) }}</div>
+                        @endif
                     </div>
                 </div>
 
-                <p class="col-span-2 self-center text-red-600" v-if="!simpleProduct.in_stock">
-                    @lang('Sorry! This product is currently out of stock.')
-                </p>
+                @if (!$groupedProduct->in_stock)
+                    <p class="col-span-2 self-center text-red-600">
+                        @lang('Sorry! This product is currently out of stock.')
+                    </p>
+                @else
+                    @include('rapidez::product.partials.quantity', ['product' => $groupedProduct])
 
-                <template v-else>
-                    <x-rapidez::select
-                        name="qty"
-                        label="Quantity"
-                        v-model="addToCartSlotProps.qty"
-                        class="w-auto"
-                        labelClass="flex items-center mr-3 sr-only"
-                        wrapperClass="flex"
-                    >
-                        <option v-for="index in 10" :value="index * simpleProduct.qty_increments">
-                            @{{ index * simpleProduct.qty_increments }}
-                        </option>
-                    </x-rapidez::select>
-
-                    <x-rapidez::button class="flex items-center" v-on:click="add" dusk="add-to-cart">
-                        <x-heroicon-o-shopping-cart class="h-5 w-5 mr-2" v-if="!adding && !added" />
-                        <x-heroicon-o-arrow-path class="h-5 w-5 mr-2 animate-spin" v-if="adding" />
-                        <x-heroicon-o-check class="h-5 w-5 mr-2" v-if="added" />
-                        <span v-if="!adding && !added">@lang('Add to cart')</span>
-                        <span v-if="adding">@lang('Adding')...</span>
-                        <span v-if="added">@lang('Added')</span>
-                    </x-rapidez::button>
-                </template>
-            </div>
+                    <x-rapidez::button.cart/>
+                @endif
+            </form>
         </add-to-cart>
-    </template>
+    @endforeach
 </div>
