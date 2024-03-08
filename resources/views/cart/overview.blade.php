@@ -8,7 +8,7 @@
     <div class="container">
         <h1 class="mb-5 text-4xl font-bold">@lang('Cart')</h1>
         <cart v-cloak>
-            <div v-if="hasItems" slot-scope="{ cart, hasItems, changeQty, remove }">
+            <div v-if="hasItems" slot-scope="{ cart, hasItems, changeQty, remove, weeeTax }">
                 <div class="flex flex-col gap-x-10 lg:flex-row">
                     <div class="flex w-full flex-col">
                         <div v-for="(item, itemId, index) in cart.items" class="relative flex gap-5 border-b py-3 max-lg:flex-col lg:items-center">
