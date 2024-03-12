@@ -5,8 +5,8 @@ namespace Rapidez\Core;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Http\Kernel;
-use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
@@ -267,13 +267,13 @@ class RapidezServiceProvider extends ServiceProvider
         QueryBuilder::macro('getCachedForever', function (...$args) {
             $cacheKey = 'query-cache:' . md5($this->toRawSql());
 
-            return Cache::rememberForever($cacheKey, fn() => $this->get(...$args));
+            return Cache::rememberForever($cacheKey, fn () => $this->get(...$args));
         });
 
         EloquentBuilder::macro('getCachedForever', function (...$args) {
             $cacheKey = 'query-cache:' . md5($this->toRawSql());
 
-            return Cache::rememberForever($cacheKey, fn() => $this->get(...$args));
+            return Cache::rememberForever($cacheKey, fn () => $this->get(...$args));
         });
 
         return $this;
