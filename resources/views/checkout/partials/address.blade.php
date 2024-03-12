@@ -84,6 +84,7 @@
             name="{{ $type }}_postcode"
             label="Postcode"
             v-model.lazy="checkout.{{ $type }}_address.postcode"
+            v-on:change="$root.$nextTick(() => window.app.$emit('postcode-change', checkout.{{ $type }}_address))"
             required
         />
     </div>
@@ -93,6 +94,7 @@
                 name="{{ $type }}_housenumber"
                 label="Housenumber"
                 v-model.lazy="checkout.{{ $type }}_address.street[1]"
+                v-on:change="$root.$nextTick(() => window.app.$emit('postcode-change', checkout.{{ $type }}_address))"
                 required
             />
         </div>
@@ -128,6 +130,7 @@
             dusk="{{ $type }}_country"
             label="Country"
             v-model="checkout.{{ $type }}_address.country_id"
+            v-on:change="$root.$nextTick(() => window.app.$emit('postcode-change', checkout.{{ $type }}_address))"
             required
         />
     </div>
