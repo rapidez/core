@@ -7,12 +7,13 @@ use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Exceptions\DecryptionException;
 use Rapidez\Core\Facades\Rapidez;
 
+enum ConfigScopes {
+    case SCOPE_STORE;
+    case SCOPE_WEBSITE;
+    case SCOPE_DEFAULT;
+}
 class Config extends Model
 {
-    public const SCOPE_STORE   = 'store';
-    public const SCOPE_WEBSITE = 'website';
-    public const SCOPE_DEFAULT = 'default';
-
     protected $table = 'core_config_data';
 
     protected $primaryKey = 'config_id';
@@ -65,23 +66,23 @@ class Config extends Model
     */
     public static function getValue(
         string $path,
-        #[ExpectedValues([self::SCOPE_STORE, self::SCOPE_WEBSITE, self::SCOPE_DEFAULT])] string $scope = self::SCOPE_STORE,
+        ConfigScopes $scope = ConfigScopes::SCOPE_STORE,
         ?int $scopeId = null,
         array $options = ['cache' => true, 'decrypt' => false]
     ) : mixed {
         $scopeId ??= match($scope) {
-            static::SCOPE_WEBSITE => config('rapidez.website') ?? Rapidez::getStore(config('rapidez.store'))['website_id'],
-            static::SCOPE_STORE => config('rapidez.store'),
+            ConfigScopes::SCOPE_WEBSITE => config('rapidez.website') ?? Rapidez::getStore(config('rapidez.store'))['website_id'],
+            ConfigScopes::SCOPE_STORE => config('rapidez.store'),
             default => 0
         };
-        $websiteId = $scope === static::SCOPE_STORE ? Rapidez::getStore($scopeId)['website_id'] : $scopeId;
+        $websiteId = $scope === ConfigScopes::SCOPE_STORE ? Rapidez::getStore($scopeId)['website_id'] : $scopeId;
 
         $query = static::query()
             ->withoutGlobalScope('scope-fallback')
             ->where('path', $path)
             ->where(fn ($query) => $query
-                ->when($scope === static::SCOPE_STORE, fn($query) => $query->whereStore($scopeId))
-                ->when($scope !== static::SCOPE_DEFAULT, fn($query) => $query->orWhere(fn($query) => $query->whereWebsite($websiteId)))
+                ->when($scope === ConfigScopes::SCOPE_STORE, fn($query) => $query->whereStore($scopeId))
+                ->when($scope !== ConfigScopes::SCOPE_DEFAULT, fn($query) => $query->orWhere(fn($query) => $query->whereWebsite($websiteId)))
                 ->orWhere(fn ($query) => $query->whereDefault())
             )
             ->limit(1);

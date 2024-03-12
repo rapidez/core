@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Event;
 use Rapidez\Core\Models\Config;
+use Rapidez\Core\Models\ConfigScopes;
 use Rapidez\Core\Models\Store;
 
 class Rapidez
@@ -112,7 +113,7 @@ class Rapidez
         config()->set('frontend.base_url', url('/'));
 
         $magentoUrl = trim(
-            Config::getValue('web/secure/base_url', Config::SCOPE_WEBSITE) ?? config()->get('rapidez.magento_url'),
+            Config::getValue('web/secure/base_url', ConfigScopes::SCOPE_WEBSITE) ?? config()->get('rapidez.magento_url'),
             '/'
         );
         if ($magentoUrl !== url('/')) {
@@ -123,7 +124,7 @@ class Rapidez
             str_replace(
                 ['{{secure_base_url}}', '{{unsecure_base_url}}'],
                 config()->get('rapidez.magento_url') . '/',
-                Config::getValue('web/secure/base_media_url', Config::SCOPE_WEBSITE) ?? config()->get('rapidez.media_url')
+                Config::getValue('web/secure/base_media_url', ConfigScopes::SCOPE_WEBSITE) ?? config()->get('rapidez.media_url')
             ),
             '/'
         );
