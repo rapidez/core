@@ -5,29 +5,46 @@ namespace Rapidez\Core\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Exceptions\DecryptionException;
+use Rapidez\Core\Facades\Rapidez;
 
 class Config extends Model
 {
+    public const SCOPE_STORE   = 'store';
+    public const SCOPE_WEBSITE = 'website';
+    public const SCOPE_DEFAULT = 'default';
+
     protected $table = 'core_config_data';
 
     protected $primaryKey = 'config_id';
 
     protected static function booting()
     {
+        static::addGlobalScope('scope-default-sorting', function (Builder $builder) {
+            $builder
+                ->orderByRaw('FIELD(scope, "stores", "websites", "default") ASC');
+        });
+
         static::addGlobalScope('scope-fallback', function (Builder $builder) {
             $builder
-                ->where(function ($query) {
-                    $query->where(function ($query) {
-                        $query->where('scope', 'stores')->where('scope_id', config('rapidez.store'));
-                    })->orWhere(function ($query) {
-                        $query->where('scope', 'websites')->where('scope_id', config('rapidez.website'));
-                    })->orWhere(function ($query) {
-                        $query->where('scope', 'default')->where('scope_id', 0);
-                    });
-                })
-                ->orderByRaw('FIELD(scope, "stores", "websites", "default") ASC')
+                ->where(fn ($query) => $query
+                    ->where(fn ($query) =>   $query->whereStore(config('rapidez.store')))
+                    ->orWhere(fn ($query) => $query->whereWebsite(config('rapidez.website')))
+                    ->orWhere(fn ($query) => $query->whereDefault())
+                )
                 ->limit(1);
         });
+    }
+
+    public function scopeWhereStore(Builder $query, ?int $storeId) : void {
+        $query->where('scope', 'stores')->where('scope_id', $storeId);
+    }
+
+    public function scopeWhereWebsite(Builder $query, ?int $websiteId) : void {
+        $query->where('scope', 'websites')->where('scope_id', $websiteId);
+    }
+
+    public function scopeWhereDefault(Builder $query) : void {
+        $query->where('scope', 'default')->where('scope_id', 0);
     }
 
     public static function getCachedByPath(string $path, $default = false, bool $sensitive = false): string|bool
@@ -41,6 +58,37 @@ class Config extends Model
         });
 
         return $sensitive && $value ? self::decrypt($value) : $value;
+    }
+
+   /**
+    * Magento compatible Config getValue method.
+    */
+    public static function getValue(
+        string $path,
+        #[ExpectedValues([self::SCOPE_STORE, self::SCOPE_WEBSITE, self::SCOPE_DEFAULT])] string $scope = self::SCOPE_STORE,
+        ?int $scopeId = null,
+        array $options = ['cache' => true, 'decrypt' => false]
+    ) : mixed {
+        $scopeId ??= match($scope) {
+            static::SCOPE_WEBSITE => config('rapidez.website') ?? Rapidez::getStore(config('rapidez.store'))['website_id'],
+            static::SCOPE_STORE => config('rapidez.store'),
+            default => 0
+        };
+        $websiteId = $scope === static::SCOPE_STORE ? Rapidez::getStore($scopeId)['website_id'] : $scopeId;
+
+        $query = static::query()
+            ->withoutGlobalScope('scope-fallback')
+            ->where('path', $path)
+            ->where(fn ($query) => $query
+                ->when($scope === static::SCOPE_STORE, fn($query) => $query->whereStore($scopeId))
+                ->when($scope !== static::SCOPE_DEFAULT, fn($query) => $query->orWhere(fn($query) => $query->whereWebsite($websiteId)))
+                ->orWhere(fn ($query) => $query->whereDefault())
+            )
+            ->limit(1);
+
+        $result = ((bool)$options['cache'] ? $query->getCachedForever() : $query->get())->value('value');
+
+        return (bool)$options['decrypt'] && is_string($result) ? static::decrypt($result) : $result;
     }
 
     public static function decrypt(string $value): string
