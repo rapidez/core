@@ -53,7 +53,7 @@
                             <dd v-if="cart.tax > 0" class="text-right">@{{ cart.tax | price }}</dd>
                             <dd v-if="cart.shipping_amount > 0">@lang('Shipping')<br><small>@{{ cart.shipping_description }}</small></dd>
                             <dd v-if="cart.shipping_amount > 0" class="text-right">@{{ cart.shipping_amount | price }}</dd>
-                            <dd v-if="weeeTax">@lang('Disposal fee')</dd>
+                            <dd v-if="weeeTax">@lang('Fixed product tax')</dd>
                             <dd v-if="weeeTax" class="text-right">@{{ weeeTax | price }}</dd>
                             <dd v-if="cart.discount_name && cart.discount_amount < 0">@lang('Discount'): @{{ cart.discount_name }}</dd>
                             <dd v-if="!cart.discount_name && cart.discount_amount < 0">@lang('Discount')</dd>
