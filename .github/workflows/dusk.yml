@@ -76,7 +76,7 @@ jobs:
         run: composer run dusk:test
 
       - name: Percy snapshots
-        run: npx percy snapshot tests/Browser/screenshots
+        run: npx percy upload tests/Browser/screenshots
         env:
           PERCY_TOKEN: $
 
