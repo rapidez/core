@@ -26,7 +26,7 @@
                         @endif
                     @endif
                     <div>
-                        <div class="border-t pt-5 text-lg font-bold">@lang('Description')</div>
+                        <div class="border-t pt-5 text-xl font-bold">@lang('Description')</div>
                         <div class="prose text-inactive" itemprop="description">
                             {!! $product->description !!}
                         </div>
