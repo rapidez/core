@@ -3,9 +3,9 @@
 namespace Rapidez\Core\Commands;
 
 use Carbon\Carbon;
-use Cviebrock\LaravelElasticsearch\Manager as Elasticsearch;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
+use MailerLite\LaravelElasticsearch\Manager as Elasticsearch;
 use Rapidez\Core\Jobs\IndexJob;
 
 class ElasticsearchIndexer
