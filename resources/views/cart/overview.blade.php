@@ -8,7 +8,7 @@
     <div class="container">
         <h1 class="mb-5 text-4xl font-bold">@lang('Cart')</h1>
         <cart v-cloak>
-            <div v-if="hasItems" slot-scope="{ cart, hasItems, changeQty, remove }">
+            <div v-if="hasItems" slot-scope="{ cart, hasItems, changeQty, remove, weeeTax }">
                 <div class="flex flex-col gap-x-10 lg:flex-row">
                     <div class="flex w-full flex-col">
                         <div v-for="(item, itemId, index) in cart.items" class="relative flex gap-5 border-b py-3 max-lg:flex-col lg:items-center">
@@ -53,6 +53,8 @@
                             <dd v-if="cart.tax > 0" class="text-right">@{{ cart.tax | price }}</dd>
                             <dd v-if="cart.shipping_amount > 0">@lang('Shipping')<br><small>@{{ cart.shipping_description }}</small></dd>
                             <dd v-if="cart.shipping_amount > 0" class="text-right">@{{ cart.shipping_amount | price }}</dd>
+                            <dd v-if="weeeTax">@lang('Fixed product tax')</dd>
+                            <dd v-if="weeeTax" class="text-right">@{{ weeeTax | price }}</dd>
                             <dd v-if="cart.discount_name && cart.discount_amount < 0">@lang('Discount'): @{{ cart.discount_name }}</dd>
                             <dd v-if="!cart.discount_name && cart.discount_amount < 0">@lang('Discount')</dd>
                             <dd v-if="cart.discount_amount < 0" class="text-right">@{{ cart.discount_amount | price }}</dd>
