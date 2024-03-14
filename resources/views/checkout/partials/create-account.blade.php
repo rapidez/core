@@ -6,10 +6,16 @@
             </x-rapidez::checkbox>
         </div>
         <div class="col-span-12 sm:col-span-6" v-if="checkout.create_account || forceAccount">
-            <x-rapidez::input name="password" type="password" v-model="checkout.password" required />
+            <label>
+                <x-rapidez::label>@lang('Password')</x-rapidez::label>
+                <x-rapidez::input name="password" type="password" v-model="checkout.password" required/>
+            </label>
         </div>
         <div class="col-span-12 sm:col-span-6" v-if="checkout.create_account || forceAccount">
-            <x-rapidez::input label="Repeat password" name="password_repeat" type="password" v-model="checkout.password_repeat" required />
+            <label>
+                <x-rapidez::label>@lang('Repeat password')</x-rapidez::label>
+                <x-rapidez::input name="password_repeat" type="password" v-model="checkout.password_repeat" required/>
+            </label>
         </div>
     </div>
 </div>

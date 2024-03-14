@@ -10,7 +10,6 @@
 >
     <form v-on:submit.prevent="mutate" class="flex gap-3">
         <x-rapidez::input
-            :label="false"
             name="couponCode"
             placeholder="Coupon code"
             v-model="variables.coupon_code"
