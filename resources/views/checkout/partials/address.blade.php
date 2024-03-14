@@ -95,6 +95,7 @@
             <x-rapidez::input
                 name="{{ $type }}_postcode"
                 v-model.lazy="checkout.{{ $type }}_address.postcode"
+                v-on:change="$root.$nextTick(() => window.app.$emit('postcode-change', checkout.{{ $type }}_address))"
                 required
             />
         </label>
@@ -106,6 +107,7 @@
                 <x-rapidez::input
                     name="{{ $type }}_housenumber"
                     v-model.lazy="checkout.{{ $type }}_address.street[1]"
+                    v-on:change="$root.$nextTick(() => window.app.$emit('postcode-change', checkout.{{ $type }}_address))"
                     required
                 />
             </label>
@@ -149,6 +151,7 @@
                 name="{{ $type }}_country"
                 dusk="{{ $type }}_country"
                 v-model="checkout.{{ $type }}_address.country_id"
+                v-on:change="$root.$nextTick(() => window.app.$emit('postcode-change', checkout.{{ $type }}_address))"
                 required
             />
         </label>

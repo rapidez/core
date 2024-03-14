@@ -2,9 +2,9 @@
 
 namespace Rapidez\Core\Jobs;
 
-use MailerLite\LaravelElasticsearch\Manager as Elasticsearch;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Foundation\Bus\Dispatchable;
+use MailerLite\LaravelElasticsearch\Manager as Elasticsearch;
 
 class IndexJob
 {
