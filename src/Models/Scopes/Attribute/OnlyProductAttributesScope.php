@@ -48,7 +48,7 @@ class OnlyProductAttributesScope implements Scope
                 $join->on('eav_attribute.attribute_id', '=', 'eav_attribute_label.attribute_id')
                     ->where('eav_attribute_label.store_id', config('rapidez.store'));
             })
-            ->leftJoin('information_schema.columns', function(JoinClause $join) use ($productTable, $databaseName) {
+            ->leftJoin('information_schema.columns', function (JoinClause $join) use ($productTable, $databaseName) {
                 $join->on('eav_attribute.attribute_code', '=', 'column_name')
                     ->where('table_name', $productTable)
                     ->where('table_schema', $databaseName);
