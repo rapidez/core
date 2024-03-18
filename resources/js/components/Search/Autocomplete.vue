@@ -97,7 +97,7 @@ export default {
                     const responseData = await response.json()
 
                     self.results[name] = responseData?.hits ?? []
-                    self.results.count += self.results[name]?.hits?.length ?? 
+                    self.results.count += self.results[name]?.hits?.length ?? 0
                 })
             })
         }, self.debounce)
