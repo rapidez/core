@@ -50,8 +50,13 @@ export const clear = async function () {
 const clearStorage = function () {
     token.value = ''
     userStorage.value = {}
-    useLocalStorage('shipping_address', window.address_defaults).value = window.address_defaults
-    useLocalStorage('billing_address', window.address_defaults).value = window.address_defaults
+    
+    let addressTypes = ['billing_address', 'shipping_address']
+    addressTypes.forEach(varName => {
+        if (window.app.checkout?.[varName]?.customer_id || window.app.checkout?.[varName]?.customer_address_id) {
+            window.app.checkout[varName] = window.address_defaults
+        }
+    });
 }
 
 export const user = computed({
