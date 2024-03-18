@@ -8,7 +8,7 @@ let isRefreshing = false
 
 export const refresh = async function () {
     if (!token.value) {
-        userStorage.value = {}
+        clearStorage()
         return false
     }
 
@@ -23,10 +23,15 @@ export const refresh = async function () {
         let response = await magentoUser.get('customers/me').finally(() => {
             isRefreshing = false
         })
-        userStorage.value = !token.value ? {} : response.data
+        if(!token.value) {
+            clearStorage()
+            return false
+        }
+
+        userStorage.value = response.data
     } catch (error) {
         if (error.response.status == 401) {
-            token.value = ''
+            clearStorage()
             return false
         }
 
@@ -38,9 +43,15 @@ export const refresh = async function () {
 }
 
 export const clear = async function () {
+    clearStorage()
+    await clearCart()
+}
+
+const clearStorage = function () {
     token.value = ''
     userStorage.value = {}
-    await clearCart()
+    useLocalStorage('shipping_address', window.address_defaults).value = window.address_defaults
+    useLocalStorage('billing_address', window.address_defaults).value = window.address_defaults
 }
 
 export const user = computed({
