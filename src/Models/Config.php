@@ -3,7 +3,6 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Exceptions\DecryptionException;
 use Rapidez\Core\Facades\Rapidez;
 
