@@ -53,17 +53,12 @@ class Config extends Model
         $query->where('scope', 'default')->where('scope_id', 0);
     }
 
+    /**
+     * @deprecated see: static::getValue
+     */
     public static function getCachedByPath(string $path, $default = false, bool $sensitive = false): string|bool
     {
-        $cacheKey = 'config.' . config('rapidez.store') . '.' . str_replace('/', '.', $path);
-
-        $value = Cache::rememberForever($cacheKey, function () use ($path, $default) {
-            $value = ($config = self::where('path', $path)->first('value')) ? $config->value : $default;
-
-            return ! is_null($value) ? $value : false;
-        });
-
-        return $sensitive && $value ? self::decrypt($value) : $value;
+        return static::getValue($path, options: ['cache' => true, 'decrypt' => $sensitive]) ?? $default;
     }
 
     /**
