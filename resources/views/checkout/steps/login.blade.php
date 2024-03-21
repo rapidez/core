@@ -4,7 +4,6 @@
             <h1 class="font-bold text-4xl text-center mb-5">@lang('Checkout')</h1>
 
             <x-rapidez::input
-                :label="false"
                 name="email"
                 type="email"
                 placeholder="Email"
@@ -14,7 +13,6 @@
             />
             <x-rapidez::input
                 v-if="!emailAvailable"
-                :label="false"
                 class="mt-3"
                 name="password"
                 type="password"

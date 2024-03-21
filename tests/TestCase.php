@@ -2,14 +2,19 @@
 
 namespace Rapidez\Core\Tests;
 
+use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as BaseTestCase;
+use Rapidez\BladeDirectives\BladeDirectivesServiceProvider;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\RapidezServiceProvider;
+use TailwindMerge\Laravel\TailwindMergeServiceProvider;
 use TorMorten\Eventy\EventServiceProvider;
 
 class TestCase extends BaseTestCase
 {
+    use InteractsWithViews;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -22,6 +27,8 @@ class TestCase extends BaseTestCase
         return [
             EventServiceProvider::class,
             RapidezServiceProvider::class,
+            TailwindMergeServiceProvider::class,
+            BladeDirectivesServiceProvider::class,
         ];
     }
 
@@ -34,7 +41,7 @@ class TestCase extends BaseTestCase
 
     protected function setUpDatabase($app)
     {
-        if (Schema::hasTable('yotpo_sync')) {
+        if (Schema::hasTable('wishlist_item_option')) {
             return;
         }
 

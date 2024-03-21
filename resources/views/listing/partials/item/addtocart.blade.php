@@ -12,10 +12,10 @@
         <p v-if="!item.in_stock" class="text-red-600 text-xs">
             @lang('Sorry! This product is currently out of stock.')
         </p>
-        <div v-else>
+        <div v-else class="flex flex-col gap-3">
             @include('rapidez::listing.partials.item.super_attributes')
 
-            <x-rapidez::button.cart/>
+            <x-rapidez::button.cart class="self-start"/>
         </div>
     </form>
 </add-to-cart>

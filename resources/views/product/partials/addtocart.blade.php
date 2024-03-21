@@ -1,5 +1,5 @@
 <add-to-cart :default-qty="{{ $product->min_sale_qty > $product->qty_increments ? $product->min_sale_qty : $product->qty_increments }}" v-slot="addToCart">
-    <form v-on:submit.prevent="addToCart.add" class="flex flex-col gap-5">
+    <form v-on:submit.prevent="addToCart.add" class="flex flex-col items-start gap-5">
         <h1 class="text-3xl font-bold" itemprop="name">{{ $product->name }}</h1>
         @if (!$product->in_stock)
             <p class="text-red-600">@lang('Sorry! This product is currently out of stock.')</p>
@@ -17,9 +17,10 @@
                     </div>
                 </div>
 
-                @include('rapidez::product.partials.quantity')
-
-                <x-rapidez::button.cart/>
+                <div class="flex gap-3">
+                    @include('rapidez::product.partials.quantity')
+                    <x-rapidez::button.cart/>
+                </div>
             </div>
         @endif
     </form>
