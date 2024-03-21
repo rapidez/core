@@ -1,6 +1,36 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.14.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.15.0...master)
+## [1.15.0](https://github.com/rapidez/core/releases/tag/1.15.0) - 2024-03-21
+
+### Added
+
+- Fire postcode change event in checkout (#446)
+- Show weee tax in cart (#422)
+
+### Fixed
+
+- Move resizeobserver to nextTick function (#443)
+- Check flat attributes by checking the table schema (#454)
+- Fix entity_id in grouped products (#455)
+
+## [2.1.0](https://github.com/rapidez/core/releases/tag/2.1.0) - 2024-03-06
+
+### Changed
+
+- Use ReactiveSearch fork with fixes (#435)
+- Replaced cviebrock/laravel-elasticsearch with mailerlite/laravel-elasticsearch (#445)
+
+### Fixed
+
+- Allow shipping method to be empty (#432)
+- Store and authorization header by default on Rapidez API calls (#433)
+- Notify correctly in interactWithUser (#434)
+- Fallback on default checkout_steps (#439)
+- Send full address to check shipping methods (#441)
+- Cache yarn dependencies with Dusk tests (#442)
+- Move resizeobserver to nextTick function (#444)
+
 ## [1.14.0](https://github.com/rapidez/core/releases/tag/1.14.0) - 2024-03-01
 
 ### Added
