@@ -16,7 +16,7 @@ class WithProductGroupedScope implements Scope
         $builder
             ->selectRaw('JSON_REMOVE(JSON_OBJECTAGG(IFNULL(grouped.entity_id, "null__"), JSON_OBJECT(
                 ' . Eventy::filter('product.grouped.select', <<<QUERY
-                    "id", grouped.entity_id,
+                    "entity_id", grouped.entity_id,
                     "sku", grouped.sku,
                     "name", grouped.name,
                     "price", grouped.price,
