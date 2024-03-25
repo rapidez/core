@@ -131,7 +131,7 @@ class Rapidez
         return $result;
     }
 
-    public function checkcompadreVersion($version = '0.0.1', $operator = '>=')
+    public function checkCompadreVersion($version = '0.0.1', $operator = '>=')
     {
         $this->compadreVersion ??= (DB::table('setup_module')->where('module', 'Rapidez_Compadre')->value('schema_version') ?? false);
 
