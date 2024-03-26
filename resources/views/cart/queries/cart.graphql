@@ -41,6 +41,12 @@ items {
         row_total_including_tax {
             value
         }
+        fixed_product_taxes {
+            label
+            amount {
+                value
+            }
+        }
     }
     ... on SimpleCartItem {
         @include('rapidez::cart.queries.partials.customizable_options')

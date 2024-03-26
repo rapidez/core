@@ -3,6 +3,10 @@
         <dt>@lang('Subtotal')</dt>
         <dd>@{{ cart.prices.subtotal_including_tax.value | price }}</dd>
     </div>
+    <div v-for="tax, label in $root.fixedProductTaxes">
+        <dt>@{{ label }}</dt>
+        <dd>@{{ tax | price }}</dd>
+    </div>
     <div v-if="cart.prices.applied_taxes.length">
         <dt>@lang('Tax')</dt>
         <dd>@{{ cart.prices.applied_taxes[0].amount.value | price }}</dd>
