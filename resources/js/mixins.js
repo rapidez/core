@@ -20,9 +20,9 @@ Vue.mixin({
     computed: {
         fixedProductTaxes() {
             let taxes = {}
-            this.$root.cart.items.forEach(item => {
-                item.prices.fixed_product_taxes.forEach(tax => {
-                    if(tax.label in taxes) {
+            this.$root.cart.items.forEach((item) => {
+                item.prices.fixed_product_taxes.forEach((tax) => {
+                    if (tax.label in taxes) {
                         taxes[tax.label] += tax.amount.value
                     } else {
                         taxes[tax.label] = tax.amount.value
@@ -30,6 +30,6 @@ Vue.mixin({
                 })
             })
             return taxes
-        }
-    }
+        },
+    },
 })
