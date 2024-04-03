@@ -29,6 +29,7 @@ class OptionSwatch extends Model
                     "label", COALESCE(`eav_attribute_option_value_store`.`value`, `eav_attribute_option_value`.`value`),
                     "sort_order", `eav_attribute_option`.`sort_order`,
                     "value", `eav_attribute_option_value`.`option_id`,
+                    "type", `eav_attribute_option_swatch`.`type`,
                     "swatch", `eav_attribute_option_swatch`.`value`
                 )) as `options`')
                 ->join('eav_attribute_option', function ($query) use ($swatchAttributes) {
