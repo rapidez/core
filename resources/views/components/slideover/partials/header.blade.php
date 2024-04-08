@@ -5,7 +5,7 @@
                 <label class="absolute left-0 top-1/2 -translate-y-1/2 cursor-pointer text-white" for="{{ $id }}">
                     <x-heroicon-o-arrow-left class="size-6" />
                 </label>
-            @elseif($headerbutton->isNotEmpty())
+            @elseif ($headerbutton->isNotEmpty())
                 {{ $headerbutton }}
             @endif
             @if ($title)
