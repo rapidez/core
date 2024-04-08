@@ -19,33 +19,33 @@
     </div>
 
     <graphql query="{ checkoutAgreements { agreement_id name checkbox_text content is_html mode } }">
-        <div v-if="data" slot-scope="{ data }" class="mt-5">
-            <div v-for="agreement in data.checkoutAgreements">
-                <x-rapidez::slideover>
-                    <x-slot name="button">
-                        <a class="text-gray-700" href="#" v-on:click.prevent="toggle" v-if="agreement.mode == 'AUTO'">
-                            @{{ agreement.checkbox_text }}
-                        </a>
-                        <div v-else>
-                            <x-rapidez::checkbox
-                                name="agreement_ids[]"
-                                v-bind:value="agreement.agreement_id"
-                                v-model="checkout.agreement_ids"
-                                dusk="agreements"
-                                required
-                            >
-                                <a href="#" v-on:click.prevent="toggle">@{{ agreement.checkbox_text }}</a>
-                            </x-rapidez::checkbox>
-                        </div>
-                    </x-slot>
-
-                    <x-slot name="title">
-                        @{{ agreement.name }}
-                    </x-slot>
-
-                    <div v-if="agreement.is_html" v-html="agreement.content"></div>
-                    <div v-else v-text="agreement.content" class="whitespace-pre-line"></div>
+        <div slot-scope="{ data }" v-if="data" class="mt-5">
+            <template v-if="$root?.custom?.openAgreement">
+                <x-rapidez::slideover right id="checkoutAgreement">
+                    <x-slot:title>
+                        @{{ $root.custom.openAgreement.name }}
+                    </x-slot:title>
+                    <div v-if="$root.custom.openAgreement.is_html" v-html="$root.custom.openAgreement.content"></div>
+                    <div v-else v-text="$root.custom.openAgreement.content" class="whitespace-pre-line"></div>
                 </x-rapidez::slideover>
+            </template>
+            <div v-for="agreement in data.checkoutAgreements" :key="agreement.agreement_id">
+                <label class="text-gray-700 cursor-pointer underline hover:no-underline" for="checkoutAgreement" v-if="agreement.mode == 'AUTO'" v-on:click="window.Vue.set($root.custom, 'openAgreement', agreement)">
+                    @{{ agreement.checkbox_text }}
+                </label>
+                <div v-else>
+                    <x-rapidez::checkbox
+                        name="agreement_ids[]"
+                        v-bind:value="agreement.agreement_id"
+                        v-model="checkout.agreement_ids"
+                        dusk="agreements"
+                        required
+                    >
+                        <label class="text-gray-700 cursor-pointer underline hover:no-underline" for="checkoutAgreement" v-on:click="window.Vue.set($root.custom, 'openAgreement', agreement)">
+                            @{{ agreement.checkbox_text }}
+                        </label>
+                    </x-rapidez::checkbox>
+                </div>
             </div>
         </div>
     </graphql>
