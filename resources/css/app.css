@@ -15,7 +15,7 @@
     -webkit-tap-highlight-color: transparant;
 }
 listing {
-/*  Reset browser added styling causing unexpected behavior */
+    /*  Reset browser added styling causing unexpected behavior */
     display: contents;
     font-family: unset;
     unicode-bidi: unset;
