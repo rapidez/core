@@ -7,7 +7,7 @@ if (!window.process) {
 }
 
 import './polyfills'
-import { useLocalStorage, StorageSerializers } from '@vueuse/core'
+import { useLocalStorage, StorageSerializers, useScrollLock } from '@vueuse/core'
 import useCart from './stores/useCart'
 import useUser from './stores/useUser'
 import useMask from './stores/useMask'
@@ -65,6 +65,7 @@ function init() {
             user: useUser(),
             mask: useMask(),
             swatches: swatches,
+            scrollLock: useScrollLock(document.body),
             checkout: {
                 step: 1,
                 totals: {},
@@ -103,10 +104,13 @@ function init() {
             setSearchParams(url) {
                 window.history.pushState(window.history.state, '', new URL(url))
             },
-            toggleScroll(bool) {
-                document.body.classList.toggle('overflow-hidden', bool)
-                document.body.classList.toggle('h-full', bool)
-            },
+            toggleScroll(bool = null) {
+                if(bool === null) {
+                    this.scrollLock = !this.scrollLock
+                } else {
+                    this.scrollLock = bool
+                }
+            }
         },
         computed: {
             // Wrap the local storage in getter and setter functions so you do not have to interact using .value
