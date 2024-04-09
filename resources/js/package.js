@@ -105,12 +105,12 @@ function init() {
                 window.history.pushState(window.history.state, '', new URL(url))
             },
             toggleScroll(bool = null) {
-                if(bool === null) {
+                if (bool === null) {
                     this.scrollLock = !this.scrollLock
                 } else {
                     this.scrollLock = bool
                 }
-            }
+            },
         },
         computed: {
             // Wrap the local storage in getter and setter functions so you do not have to interact using .value
