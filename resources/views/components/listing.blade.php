@@ -18,7 +18,7 @@
         }]"
         v-cloak
     >
-        <div slot-scope="{ loaded, filters, sortOptions, reactiveFilters, _renderProxy: listingSlotProps }">
+        <div slot-scope="{ loaded, filters, sortOptions, reactiveFilters, _renderProxy: listingSlotProps, getPositionsQuery }">
             <x-rapidez::reactive-base v-if="loaded">
                 @isset($query)
                     <reactive-component
@@ -29,23 +29,7 @@
                 @endisset
                 <reactive-component
                     component-id="score-position"
-                    :custom-query="function () {
-                        if (!window.config.category?.entity_id) {
-                            return;
-                        }
-
-                        return {
-                            query: {
-                                function_score: {
-                                    script_score: {
-                                        script: {
-                                            source: 'Integer.parseInt(doc[\'positions.'+(window.config.category.entity_id)+'\'].empty ? \'0\' : doc[\'positions.'+(window.config.category.entity_id)+'\'].value)',
-                                        },
-                                    }
-                                }
-                            }
-                        }
-                    }"
+                    :custom-query="getPositionsQuery"
                     :show-filter="false"
                 ></reactive-component>
 
@@ -60,7 +44,7 @@
                         </div>
                     </div>
                 @else
-                     {{ $slot }}
+                    {{ $slot }}
                 @endif
                 {{ $after ?? '' }}
             </x-rapidez::reactive-base>

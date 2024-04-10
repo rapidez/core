@@ -96,5 +96,24 @@ export default {
             window.history.pushState(window.history.state, '', url)
         },
     },
+
+    methods: {
+        getPositionsQuery() {
+            if (!window.config.category?.entity_id) {
+                return;
+            }
+
+            return {
+                query: {
+                    function_score: {
+                        field_value_factor: {
+                            field: 'positions.'+window.config.category.entity_id,
+                            missing: 0
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 </script>
