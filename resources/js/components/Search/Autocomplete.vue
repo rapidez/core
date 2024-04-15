@@ -100,7 +100,7 @@ export default {
     methods: {
         highlight(hit, field) {
             let source = hit._source ?? hit.source
-            let highlight = hit.highlight ?? hit.source.highlight
+            let highlight = hit.highlight ?? source.highlight
             return highlight?.[field]?.[0] ?? source?.[field] ?? ''
         },
     },
