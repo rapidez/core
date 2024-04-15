@@ -47,11 +47,10 @@ class ElasticsearchIndexer
             return;
         }
 
-        $arrItem = $item instanceof Arrayable ? $item->toArray() : (array) $item;
         $currentValues = match (true) {
             is_callable($dataFilter) => $dataFilter($item),
-            is_null($dataFilter)     => $arrItem,
-            default                  => Arr::only($arrItem, $dataFilter),
+            is_null($dataFilter)     => $this->makeArray($item),
+            default                  => Arr::only($this->makeArray($item), $dataFilter),
         };
 
         if (is_null($currentValues)) {
@@ -67,6 +66,11 @@ class ElasticsearchIndexer
         }
 
         IndexJob::dispatch($this->index, $currentId, $currentValues);
+    }
+
+    public function makeArray(object $item): array
+    {
+        return $item instanceof Arrayable ? $item->toArray() : (array) $item;
     }
 
     public function prepare(string $indexName, array $mapping = [], array $settings = [], array $synonymsFor = []): void
