@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.15.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.15.1...master)
+## [1.15.1](https://github.com/rapidez/core/releases/tag/1.15.1) - 2024-04-15
+
+### Fixed
+ - Fix highlight retrieval (https://github.com/rapidez/core/pull/469)
+
+
 ## [1.15.0](https://github.com/rapidez/core/releases/tag/1.15.0) - 2024-03-21
 
 ### Added
