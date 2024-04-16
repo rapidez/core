@@ -1,0 +1,40 @@
+.pop-category {
+    @apply text-inactive text-sm;
+    ul {
+        @apply pl-3 relative;
+        li {
+            @apply my-2 last:mb-0;
+
+            label {
+                @apply relative;
+                &::before {
+                    content: '';
+                    @apply absolute top-2.5 h-px w-2 -left-3 bg-inactive-110;
+                }
+                &::after {
+                    content: '';
+                    @apply absolute w-px bottom-2 -left-3 top-0 bg-inactive-110;
+                }
+            }
+            & + li {
+                &::after {
+                    content: '';
+                    @apply absolute w-px bottom-2.5 left-0 top-0 bg-inactive-110;
+                }
+            }
+        }
+    }
+
+    > li > label {
+        @apply text-neutral text-base font-semibold;
+    }
+    .active {
+        @apply font-bold text-neutral;
+    }
+    small {
+        @apply text-xs ml-1;
+    }
+    label {
+        @apply cursor-pointer;
+    }
+}
