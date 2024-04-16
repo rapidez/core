@@ -1,4 +1,4 @@
-.pop-category {
+.filter-category {
     @apply text-inactive text-sm;
     ul {
         @apply pl-3 relative;

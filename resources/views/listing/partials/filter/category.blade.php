@@ -10,7 +10,9 @@
     <div slot-scope="{ aggregations, setQuery, value }">
         <category-filter :aggregations="aggregations" :value="value" :set-query="setQuery">
             <div slot-scope="{ hasResults, results }">
-                <ul class="pop-category">
+                <strong v-if="hasResults">@lang('Category')</strong>
+                <input class="hidden" type="radio" name="category" value="" :checked="!value" v-on:change="setQuery({})"/>
+                <ul class="filter-category">
                     <category-filter-category
                         v-for="category in results"
                         v-bind:key="category.key"
