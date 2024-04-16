@@ -306,11 +306,11 @@ export default {
                             return
                         }
 
-                        disabledOptions['super_' + attributeCode].push(valueId)
+                        disabledOptions['super_' + attributeCode].push(parseInt(valueId))
                     })
                 })
             })
-
+        console.log(disabledOptions)
             return disabledOptions
         },
     },
