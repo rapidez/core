@@ -3,7 +3,7 @@
 }
 
 .pagination-button {
-    @apply !font-semibold !font-sans !border !border-border !rounded !bg-highlight !text-neutral !shadow;
+    @apply !font-semibold !font-sans !border !border-border !rounded !bg-highlight !text-neutral !shadow disabled:opacity-40;
 }
 
 .pagination-button.active {
@@ -25,8 +25,4 @@
 .pagination-button:first-child,
 .pagination-button:last-child {
     @apply h-14 px-6 max-md:!m-0;
-}
-
-.pagination-button[disabled] {
-    @apply opacity-40;
 }
