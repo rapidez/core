@@ -304,13 +304,14 @@ export default {
 
                         if (products.length && (!selectedValueId || !productsPerValue[selectedValueId] || productsPerValue[selectedValueId].some((val) => products.includes(val)))) {
                             return
+
                         }
 
                         disabledOptions['super_' + attributeCode].push(parseInt(valueId))
                     })
                 })
             })
-        console.log(disabledOptions)
+        
             return disabledOptions
         },
     },
