@@ -302,16 +302,20 @@ export default {
                         // If there is no product that intersects for this attribute value
                         // there will be no product available for this attribute value
 
-                        if (products.length && (!selectedValueId || !productsPerValue[selectedValueId] || productsPerValue[selectedValueId].some((val) => products.includes(val)))) {
+                        if (
+                            products.length &&
+                            (!selectedValueId ||
+                                !productsPerValue[selectedValueId] ||
+                                productsPerValue[selectedValueId].some((val) => products.includes(val)))
+                        ) {
                             return
-
                         }
 
                         disabledOptions['super_' + attributeCode].push(parseInt(valueId))
                     })
                 })
             })
-        
+
             return disabledOptions
         },
     },
