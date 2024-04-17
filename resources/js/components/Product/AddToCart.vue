@@ -275,15 +275,14 @@ export default {
             Object.entries(this.product.super_attributes).forEach(([attributeId, attribute]) => {
                 disabledOptions['super_' + attribute.code] = []
                 valuesPerAttribute[attributeId] = {}
-
                 // Fill list with products per attribute value
                 Object.entries(this.product.children).forEach(([productId, option]) => {
-                    if (!option.in_stock) {
-                        return
-                    }
-
                     if (!valuesPerAttribute[attributeId][option[attribute.code]]) {
                         valuesPerAttribute[attributeId][option[attribute.code]] = []
+                    }
+
+                    if (!option.in_stock) {
+                        return
                     }
 
                     valuesPerAttribute[attributeId][option[attribute.code]].push(productId)
@@ -297,17 +296,22 @@ export default {
                 Object.entries(valuesPerAttribute).forEach(([attributeId2, productsPerValue2]) => {
                     if (attributeId === attributeId2) return
                     var selectedValueId = this.options[attributeId]
-                    if (!selectedValueId) return
                     var attributeCode = this.product.super_attributes[attributeId2].code
 
                     Object.entries(productsPerValue2).forEach(([valueId, products]) => {
                         // If there is no product that intersects for this attribute value
                         // there will be no product available for this attribute value
-                        if (!productsPerValue[selectedValueId] || productsPerValue[selectedValueId].some((val) => products.includes(val))) {
+
+                        if (
+                            products.length &&
+                            (!selectedValueId ||
+                                !productsPerValue[selectedValueId] ||
+                                productsPerValue[selectedValueId].some((val) => products.includes(val)))
+                        ) {
                             return
                         }
 
-                        disabledOptions['super_' + attributeCode].push(valueId)
+                        disabledOptions['super_' + attributeCode].push(parseInt(valueId))
                     })
                 })
             })
