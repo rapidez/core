@@ -16,7 +16,7 @@
         'fixed inset-y-0 transition-all bg-white z-40 flex flex-col max-w-md w-full',
         $right ? '-right-full peer-checked:right-0' : '-left-full peer-checked:left-0',
     ]) }}>
-        @include('components.slideover.partials.header')
+        @include('rapidez::components.slideover.partials.header')
         <div class="flex flex-1 flex-col items-start overflow-y-auto bg-inactive-100">
             {{ $slot }}
         </div>
