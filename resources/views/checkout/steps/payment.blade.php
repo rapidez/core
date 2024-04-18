@@ -30,7 +30,7 @@
                 </x-rapidez::slideover>
             </template>
             <div v-for="agreement in data.checkoutAgreements" :key="agreement.agreement_id">
-                <label class="text-gray-700 cursor-pointer underline hover:no-underline" for="checkoutAgreement" v-if="agreement.mode == 'AUTO'" v-on:click="window.Vue.set($root.custom, 'openAgreement', agreement)">
+                <label class="text-gray-700 cursor-pointer underline hover:no-underline" for="checkoutAgreement" v-if="agreement.mode == 'AUTO'" v-on:click="$root.custom.openAgreement = agreement">
                     @{{ agreement.checkbox_text }}
                 </label>
                 <div v-else>
@@ -41,7 +41,7 @@
                         dusk="agreements"
                         required
                     >
-                        <label class="text-gray-700 cursor-pointer underline hover:no-underline" for="checkoutAgreement" v-on:click="window.Vue.set($root.custom, 'openAgreement', agreement)">
+                        <label class="text-gray-700 cursor-pointer underline hover:no-underline" for="checkoutAgreement" v-on:click="$root.custom.openAgreement = agreement">
                             @{{ agreement.checkbox_text }}
                         </label>
                     </x-rapidez::checkbox>
