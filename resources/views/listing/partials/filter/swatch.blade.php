@@ -1,7 +1,7 @@
 <multi-list
     v-else-if="filter.text_swatch || filter.visual_swatch"
     :component-id="filter.code"
-    :data-field="filter.code"
+    :data-field="filter.super ? 'super_' + filter.code : filter.code"
     :inner-class="{
         title: 'capitalize text-sm font-medium text-gray-900',
         list: '!max-h-full flex flex-wrap',
