@@ -52,7 +52,7 @@ class OptionSwatch extends Model
                 ->get()
                 ->keyBy('attribute_code')
                 ->map(function (self $optionSwatch) {
-                    $optionSwatch->options = $optionSwatch->options->sortBy('sort_order')->values();
+                    $optionSwatch->options = $optionSwatch->options->sortBy('sort_order')->keyBy('value');
 
                     return $optionSwatch;
                 })
