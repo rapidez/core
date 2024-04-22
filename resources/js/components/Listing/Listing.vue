@@ -106,9 +106,10 @@ export default {
             return {
                 query: {
                     function_score: {
-                        field_value_factor: {
-                            field: 'positions.'+window.config.category.entity_id,
-                            missing: 0
+                        script_score: {
+                            script: {
+                                source: Integer.parseInt(doc['positions.' + (window.config.category.entity_id)].empty ? '0' : doc['positions.' + (window.config.category.entity_id) + ''].value),
+                            }
                         }
                     }
                 }
