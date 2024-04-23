@@ -96,5 +96,29 @@ export default {
             window.history.pushState(window.history.state, '', url)
         },
     },
+
+    methods: {
+        getQuery() {
+            if (!window.config.category?.entity_id) {
+                return;
+            }
+
+            return {
+                query: {
+                    function_score: {
+                        script_score: {
+                            script: {
+                                source: Integer.parseInt(
+                                    doc['positions.' + window.config.category.entity_id].empty
+                                        ? '0'
+                                        : doc['positions.' + window.config.category.entity_id + ''].value,
+                                ),
+                            },
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 </script>
