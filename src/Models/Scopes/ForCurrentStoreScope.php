@@ -5,6 +5,7 @@ namespace Rapidez\Core\Models\Scopes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
+use Illuminate\Support\Facades\DB;
 
 class ForCurrentStoreScope implements Scope
 {
@@ -19,14 +20,12 @@ class ForCurrentStoreScope implements Scope
     {
         $currentTable = $builder->getQuery()->from;
         $joinTable = $this->joinTable ?: $currentTable . '_store';
-        $primaryKey = $model->getKeyName();
 
-        $builder
-            ->leftJoin($joinTable, function ($join) use ($currentTable, $primaryKey, $joinTable) {
-                $join->on($currentTable . '.' . $primaryKey, '=', $joinTable . '.' . $primaryKey);
-            })
+        $storeQuery = DB::table($joinTable)
             ->whereIn('store_id', [0, config('rapidez.store')])
-            ->orderByDesc('store_id')
+            ->orderBy('store_id')
             ->limit(1);
+
+        $builder->leftJoinLateral($storeQuery, $joinTable);
     }
 }
