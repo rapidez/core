@@ -18,7 +18,7 @@
         }]"
         v-cloak
     >
-        <div slot-scope="{ loaded, filters, sortOptions, reactiveFilters, _renderProxy: listingSlotProps, getPositionsQuery }">
+        <div slot-scope="{ loaded, filters, sortOptions, reactiveFilters, getQuery, _renderProxy: listingSlotProps }">
             <x-rapidez::reactive-base v-if="loaded">
                 @isset($query)
                     <reactive-component
@@ -29,7 +29,7 @@
                 @endisset
                 <reactive-component
                     component-id="score-position"
-                    :custom-query="getPositionsQuery"
+                    :custom-query="getQuery"
                     :show-filter="false"
                 ></reactive-component>
 
