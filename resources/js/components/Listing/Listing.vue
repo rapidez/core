@@ -98,7 +98,7 @@ export default {
     },
 
     methods: {
-        getPositionsQuery() {
+        getQuery() {
             if (!window.config.category?.entity_id) {
                 return;
             }
