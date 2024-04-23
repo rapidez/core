@@ -21,12 +21,13 @@ class ForCurrentStoreScope implements Scope
         $joinTable = $this->joinTable ?: $currentTable . '_store';
         $primaryKey = $model->getKeyName();
 
-        $builder
-            ->leftJoin($joinTable, function ($join) use ($currentTable, $primaryKey, $joinTable) {
-                $join->on($currentTable . '.' . $primaryKey, '=', $joinTable . '.' . $primaryKey);
-            })
+        $storeQuery = DB::table($joinTable)
+            ->select('agreement_id')
             ->whereIn('store_id', [0, config('rapidez.store')])
-            ->orderByDesc('store_id')
-            ->limit(1);
+            ->groupBy('agreement_id');
+
+        $builder->leftJoinSub($storeQuery, $joinTable, function ($join) use ($currentTable, $primaryKey, $joinTable) {
+            $join->on($currentTable . '.' . $primaryKey, '=', $joinTable . '.' . $primaryKey);
+        });
     }
 }
