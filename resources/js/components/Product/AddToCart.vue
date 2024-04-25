@@ -137,7 +137,9 @@ export default {
 
         calculatePrices: function () {
             this.price = Math.round((parseFloat(this.simpleProduct.price) + this.priceAddition(this.simpleProduct.price)) * 100) / 100
-            this.specialPrice = Math.round((parseFloat(this.simpleProduct.special_price) + this.priceAddition(this.simpleProduct.special_price)) * 100) / 100
+            this.specialPrice =
+                Math.round((parseFloat(this.simpleProduct.special_price) + this.priceAddition(this.simpleProduct.special_price)) * 100) /
+                100
         },
 
         getOptions: function (superAttributeCode) {
