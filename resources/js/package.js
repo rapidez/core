@@ -56,7 +56,7 @@ function init() {
     window.app = new Vue({
         el: '#app',
         data: {
-            custom: { },
+            custom: {},
             config: window.config,
             loadingCount: 0,
             loading: false,
