@@ -56,11 +56,12 @@ function init() {
     window.app = new Vue({
         el: '#app',
         data: {
-            custom: { openAgreement: null },
+            custom: { },
             config: window.config,
             loadingCount: 0,
             loading: false,
             loadAutocomplete: false,
+            openAgreement: null,
             cart: useCart(),
             user: useUser(),
             mask: useMask(),
