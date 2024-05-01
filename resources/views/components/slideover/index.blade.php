@@ -1,5 +1,5 @@
 {{--
-    This is a slideover component using pure CSS, by making use of checkboxes, and potentially form reset logic for nested slideovers.
+    This is a slideover component using pure CSS by making use of checkboxes and potentially form reset logic for nested slideovers.
 
     Properties:
         has-parent:     Used for nested slideovers. Set this to true when this slideover is a child of another slideover.
@@ -12,6 +12,9 @@
     Slots:
         headerbutton:   This slot can be defined if you want a custom button placed in the header instead of the left arrow.
         title:          A title that gets put into the header. Can be a slot or a property.
+
+    If you want to nest different slideovers, the parent slideover should have its tag set to `form`, and all child slideovers should be divs with has-parent set.
+    This allows for the form reset logic to be used and makes sure the toggleScroll and dark background work correctly.
 --}}
 @props(['id' => uniqid('slideover-'), 'title', 'hasParent' => false, 'position' => 'left', 'tag' => 'div', 'open' => false])
 @slots(['title', 'headerbutton'])
