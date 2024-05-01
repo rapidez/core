@@ -1,6 +1,5 @@
 {{--
-    This is a slideover component using pure CSS, by making use of checkboxes, and
-    potentially form reset logic for nested slideovers.
+    This is a slideover component using pure CSS, by making use of checkboxes, and potentially form reset logic for nested slideovers.
 
     Properties:
         has-parent:     Used for nested slideovers. Set this to true when this slideover is a child of another slideover.
