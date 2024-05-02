@@ -245,7 +245,7 @@ export default {
             })
 
             Object.entries(this.customSelectedOptions).forEach(([optionId, optionValues]) => {
-                [optionValues].flat().forEach((optionValue) => {
+                ;[optionValues].flat().forEach((optionValue) => {
                     selectedOptions.push(btoa('custom-option/' + optionId + '/' + optionValue))
                 })
             })
