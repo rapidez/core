@@ -244,8 +244,10 @@ export default {
                 selectedOptions.push(btoa('configurable/' + optionId + '/' + optionValue))
             })
 
-            Object.entries(this.customSelectedOptions).forEach(([optionId, optionValue]) => {
-                selectedOptions.push(btoa('custom-option/' + optionId + '/' + optionValue))
+            Object.entries(this.customSelectedOptions).forEach(([optionId, optionValues]) => {
+                [optionValues].flat().forEach((optionValue) => {
+                    selectedOptions.push(btoa('custom-option/' + optionId + '/' + optionValue))
+                })
             })
 
             return selectedOptions
