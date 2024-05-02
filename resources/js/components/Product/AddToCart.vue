@@ -183,21 +183,24 @@ export default {
         priceAddition: function (basePrice) {
             let addition = 0
 
-            Object.entries(this.customOptions).forEach(([key, val]) => {
-                if (!val) {
-                    return
-                }
+            let optionEntries = Object.entries(this.customOptions)
+            let selectedOptionEntries = Object.entries(this.customSelectedOptions)
 
-                let option = this.product.options.find((option) => option.option_id == key)
-                let optionPrice = ['drop_down', 'radio'].includes(option.type)
-                    ? option.values.find((value) => value.option_type_id == val).price
-                    : option.price
+            ;[...optionEntries, ...selectedOptionEntries].forEach(([key, vals]) => {
+                ;[vals].flat().forEach((val) => {
+                    if (!val) {
+                        return
+                    }
 
-                if (optionPrice.price_type == 'fixed') {
-                    addition += parseFloat(optionPrice.price)
-                } else {
-                    addition += (parseFloat(basePrice) * parseFloat(optionPrice.price)) / 100
-                }
+                    let option = this.product.options.find((option) => option.option_id == key)
+                    let optionPrice = option.price || option.values?.find((value) => value.option_type_id == val)?.price
+
+                    if (optionPrice.price_type == 'fixed') {
+                        addition += parseFloat(optionPrice.price)
+                    } else {
+                        addition += (parseFloat(basePrice) * parseFloat(optionPrice.price)) / 100
+                    }
+                })
             })
 
             return addition
@@ -324,6 +327,12 @@ export default {
 
     watch: {
         customOptions: {
+            handler() {
+                this.calculatePrices()
+            },
+            deep: true,
+        },
+        customSelectedOptions: {
             handler() {
                 this.calculatePrices()
             },
