@@ -183,17 +183,17 @@ export default {
         priceAddition: function (basePrice) {
             let addition = 0
 
-            let optionEntries = Object.entries(this.customOptions);
-            let selectedOptionEntries = Object.entries(this.customSelectedOptions);
+            let optionEntries = Object.entries(this.customOptions)
+            let selectedOptionEntries = Object.entries(this.customSelectedOptions)
 
-            [...optionEntries, ...selectedOptionEntries].forEach(([key, vals]) => {
+            ;[...optionEntries, ...selectedOptionEntries].forEach(([key, vals]) => {
                 ;[vals].flat().forEach((val) => {
                     if (!val) {
                         return
                     }
 
                     let option = this.product.options.find((option) => option.option_id == key)
-                    let optionPrice = option.price || option.values?.find((value) => value.option_type_id == val)?.price;
+                    let optionPrice = option.price || option.values?.find((value) => value.option_type_id == val)?.price
 
                     if (optionPrice.price_type == 'fixed') {
                         addition += parseFloat(optionPrice.price)
