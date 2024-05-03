@@ -89,7 +89,7 @@ export default {
                         config.queries.cart +
                         ` } user_errors { code message } } }`,
                     {
-                        sku: this.simpleProduct.sku,
+                        sku: this.product.sku,
                         cartId: mask.value,
                         quantity: this.qty,
                         selected_options: this.selectedOptions,
