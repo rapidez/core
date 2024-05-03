@@ -3,7 +3,6 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
 
 class SalesOrder extends Model
