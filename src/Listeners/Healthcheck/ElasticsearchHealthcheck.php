@@ -2,8 +2,6 @@
 
 namespace Rapidez\Core\Listeners\Healthcheck;
 
-use Illuminate\Support\Facades\Event;
-
 class ElasticsearchHealthcheck extends Base
 {
     protected $esVersion = '7.6';
