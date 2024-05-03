@@ -1,10 +1,10 @@
 <?php
 
-namespace Rapidez\Core\Listeners;
+namespace Rapidez\Core\Listeners\Healthcheck;
 
 use Illuminate\Support\Facades\Event;
 
-class ElasticsearchHealthcheck
+class ElasticsearchHealthcheck extends Base
 {
     protected $esVersion = '7.6';
 
@@ -37,10 +37,5 @@ class ElasticsearchHealthcheck
         }
 
         return $response;
-    }
-
-    public static function register()
-    {
-        Event::listen('rapidez:health-check', static::class);
     }
 }
