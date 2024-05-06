@@ -1,6 +1,20 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.2.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.3.0...master)
+## [2.3.0](https://github.com/rapidez/core/releases/tag/2.3.0) - 2024-04-30
+
+### Changed
+
+- Use script to get the positions from the flattened type (#459)
+- Do not index the search overview page (#481)
+
+### Fixed
+
+- Fixes for swatch filter (#477)
+- Allow dataFilter null in the indexer (#470)
+- Correct key in autocomplete products loop (#465)
+- Only allow certain types to be searchable in autocomplete (#476)
+
 ## [2.2.0](https://github.com/rapidez/core/releases/tag/2.2.0) - 2024-04-16
 
 ### Added

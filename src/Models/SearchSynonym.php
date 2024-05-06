@@ -2,8 +2,6 @@
 
 namespace Rapidez\Core\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 class SearchSynonym extends Model
 {
     const CREATED_AT = null;

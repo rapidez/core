@@ -2,7 +2,6 @@
 
 namespace Rapidez\Core\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 
