@@ -20,6 +20,18 @@ class ProductView extends Model
             $productView->store_id = config('rapidez.store');
         });
 
+        static::created(function (ProductView $productView) {
+            $reportEventModel = config('rapidez.models.report_event');
+
+            $reportEventModel::create([
+                'store_id'      => config('rapidez.store'),
+                'event_type_id' => 1, // Product Viewed
+                'object_id'     => $productView->product_id,
+                'subtype'       => 0,
+                'subject_id'    => 0,
+            ]);
+        });
+
         static::addGlobalScope('store', function (Builder $builder) {
             $builder->where('store_id', config('rapidez.store'));
         });
