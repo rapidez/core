@@ -27,6 +27,7 @@ return [
     'quote_id_mask'             => Rapidez\Core\Models\QuoteIdMask::class,
     'quote_item'                => Rapidez\Core\Models\QuoteItem::class,
     'quote_item_option'         => Rapidez\Core\Models\QuoteItemOption::class,
+    'report_event'              => Rapidez\Core\Models\ReportEvent::class,
     'rewrite'                   => Rapidez\Core\Models\Rewrite::class,
     'store'                     => Rapidez\Core\Models\Store::class,
     'widget'                    => Rapidez\Core\Models\Widget::class,
