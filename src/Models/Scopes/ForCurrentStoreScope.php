@@ -20,12 +20,14 @@ class ForCurrentStoreScope implements Scope
     {
         $currentTable = $builder->getQuery()->from;
         $joinTable = $this->joinTable ?: $currentTable . '_store';
+        $primaryKey = $model->getKeyName();
 
         $storeQuery = DB::table($joinTable)
+            ->where($builder->qualifyColumn($primaryKey), DB::raw($joinTable . '.' . $primaryKey))
             ->whereIn('store_id', [0, config('rapidez.store')])
             ->orderByDesc('store_id')
             ->limit(1);
 
-        $builder->leftJoinLateral($storeQuery, $joinTable);
+        $builder->joinLateral($storeQuery, $joinTable);
     }
 }
