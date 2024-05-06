@@ -48,7 +48,7 @@
                         {{ $agreement->name }}
                     </x-slot>
 
-                    @if($agreement->is_html)
+                    @if ($agreement->is_html)
                         <div>
                             {!! $agreement->content !!}
                         </div>
