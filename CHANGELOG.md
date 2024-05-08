@@ -1,6 +1,57 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.1.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.3.0...master)
+## [2.3.0](https://github.com/rapidez/core/releases/tag/2.3.0) - 2024-04-30
+
+### Changed
+
+- Use script to get the positions from the flattened type (#459)
+- Do not index the search overview page (#481)
+
+### Fixed
+
+- Fixes for swatch filter (#477)
+- Allow dataFilter null in the indexer (#470)
+- Correct key in autocomplete products loop (#465)
+- Only allow certain types to be searchable in autocomplete (#476)
+
+## [2.2.0](https://github.com/rapidez/core/releases/tag/2.2.0) - 2024-04-16
+
+### Added
+- Fire postcode change event in checkout (https://github.com/rapidez/core/pull/447)
+
+### Fixed
+- Find flat attributes by checking the actual table schema (https://github.com/rapidez/core/pull/452)
+- Fix entity_id in grouped products (https://github.com/rapidez/core/pull/456)
+- Capitalize checkCompadreVersion function properly (https://github.com/rapidez/core/pull/457)
+- Fix adding configurable product to cart (https://github.com/rapidez/core/pull/461)
+- Fix highlight retrieval (https://github.com/rapidez/core/pull/468)
+- Fix autocomplete fetch (https://github.com/rapidez/core/pull/472)
+- Fixed disabled options when no options are available (https://github.com/rapidez/core/pull/475)
+
+### Removed
+- Remove unnecessary toArray calls in product indexer (https://github.com/rapidez/core/pull/471)
+
+
+## [1.15.1](https://github.com/rapidez/core/releases/tag/1.15.1) - 2024-04-15
+
+### Fixed
+ - Fix highlight retrieval (https://github.com/rapidez/core/pull/469)
+
+
+## [1.15.0](https://github.com/rapidez/core/releases/tag/1.15.0) - 2024-03-21
+
+### Added
+
+- Fire postcode change event in checkout (#446)
+- Show weee tax in cart (#422)
+
+### Fixed
+
+- Move resizeobserver to nextTick function (#443)
+- Check flat attributes by checking the table schema (#454)
+- Fix entity_id in grouped products (#455)
+
 ## [2.1.0](https://github.com/rapidez/core/releases/tag/2.1.0) - 2024-03-06
 
 ### Changed

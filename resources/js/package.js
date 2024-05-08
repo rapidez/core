@@ -29,8 +29,6 @@ function init() {
     Vue.prototype.window = window
     Vue.prototype.config = window.config
 
-    let swatches = useLocalStorage('swatches', {})
-
     // Check if the localstorage needs a flush.
     let cachekey = useLocalStorage('cachekey')
     if (cachekey.value !== window.config.cachekey) {

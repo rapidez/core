@@ -30,8 +30,9 @@ use Rapidez\Core\Http\Controllers\Fallback\UrlRewriteController;
 use Rapidez\Core\Http\Middleware\CheckStoreCode;
 use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
 use Rapidez\Core\Http\ViewComposers\ConfigComposer;
-use Rapidez\Core\Listeners\ElasticsearchHealthcheck;
-use Rapidez\Core\Listeners\MagentoSettingsHealthcheck;
+use Rapidez\Core\Listeners\Healthcheck\ElasticsearchHealthcheck;
+use Rapidez\Core\Listeners\Healthcheck\MagentoSettingsHealthcheck;
+use Rapidez\Core\Listeners\Healthcheck\ModelsHealthcheck;
 use Rapidez\Core\Listeners\ReportProductView;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
@@ -249,6 +250,7 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootListeners(): self
     {
         Event::listen(ProductViewEvent::class, ReportProductView::class);
+        ModelsHealthcheck::register();
         MagentoSettingsHealthcheck::register();
         ElasticsearchHealthcheck::register();
 

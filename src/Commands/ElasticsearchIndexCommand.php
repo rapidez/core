@@ -21,19 +21,19 @@ abstract class ElasticsearchIndexCommand extends Command
         $this->indexer = $indexer;
     }
 
-    public function indexAllStores(string $indexName, callable|iterable $items, callable|array|null $dataFilter, callable|string $id = 'entity_id'): void
+    public function indexAllStores(string $indexName, callable|iterable $items, callable|array|null $dataFilter = null, callable|string $id = 'entity_id'): void
     {
         $this->indexStores(Rapidez::getStores(), $indexName, $items, $dataFilter, $id);
     }
 
-    public function indexStores(array $stores, string $indexName, callable|iterable $items, callable|array|null $dataFilter, callable|string $id = 'entity_id'): void
+    public function indexStores(array $stores, string $indexName, callable|iterable $items, callable|array|null $dataFilter = null, callable|string $id = 'entity_id'): void
     {
         foreach ($stores as $store) {
             $this->indexStore($store, $indexName, $items, $dataFilter, $id);
         }
     }
 
-    public function indexStore(Store|array $store, string $indexName, callable|iterable $items, callable|array $dataFilter, callable|string $id = 'entity_id'): void
+    public function indexStore(Store|array $store, string $indexName, callable|iterable $items, callable|array|null $dataFilter = null, callable|string $id = 'entity_id'): void
     {
         $storeName = $store['name'] ?? $store['code'] ?? reset($store);
         $this->line('Indexing `' . $indexName . '` for store ' . $storeName);
