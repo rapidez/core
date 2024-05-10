@@ -1,7 +1,7 @@
 <add-to-cart :default-qty="{{ $product->min_sale_qty > $product->qty_increments ? $product->min_sale_qty : $product->qty_increments }}">
     <form slot-scope="{ _renderProxy: addToCartSlotProps, options, customOptions, error, add, disabledOptions, simpleProduct, adding, added, price, specialPrice, setCustomOptionFile }" v-on:submit.prevent="add">
         <h1 class="mb-3 text-3xl font-bold" itemprop="name">{{ $product->name }}</h1>
-        @if (!$product->in_stock)
+        @if (!$product->in_stock && Rapidez::config('cataloginventory/item_options/backorders', 0) == 0)
             <p class="text-red-600">@lang('Sorry! This product is currently out of stock.')</p>
         @else
             <div v-cloak v-for="(superAttribute, superAttributeId) in config.product.super_attributes">
@@ -18,6 +18,14 @@
             </div>
 
             @include('rapidez::product.partials.options')
+
+            @if ($product->qty <= 0 && Rapidez::config('cataloginventory/item_options/backorders', 0) == 2)
+                <div class="flex gap-2">
+                    <x-heroicon-o-exclamation-circle class="mt-px w-5" />
+                    <span>@lang('This product will be backordered')</span>
+                </div>
+            @endif
+
             <div class="mt-5 flex flex-wrap items-center gap-3" v-blur>
                 <div>
                     <div class="text-2xl font-bold text-neutral" v-text="$options.filters.price(specialPrice || price)">
