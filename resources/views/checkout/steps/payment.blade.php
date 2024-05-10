@@ -18,21 +18,22 @@
         </x-rapidez::radio>
     </div>
 
-    <graphql query="{ checkoutAgreements { agreement_id name checkbox_text content is_html mode } }">
+    <graphql query="{ checkoutAgreements { agreement_id name checkbox_text content is_html mode } }" cache="ca">
         <div slot-scope="{ data }" v-if="data" class="mt-5">
-            <template v-if="$root?.openAgreement">
-                <x-rapidez::slideover position="right" id="checkoutAgreement">
-                    <x-slot:title>
-                        @{{ $root.openAgreement.name }}
-                    </x-slot:title>
-                    <div v-if="$root.openAgreement.is_html" v-html="$root.openAgreement.content"></div>
-                    <div v-else v-text="$root.openAgreement.content" class="whitespace-pre-line"></div>
-                </x-rapidez::slideover>
-            </template>
             <div v-for="agreement in data.checkoutAgreements" :key="agreement.agreement_id">
-                <label class="text-gray-700 cursor-pointer underline hover:no-underline" for="checkoutAgreement" v-if="agreement.mode == 'AUTO'" v-on:click="$root.openAgreement = agreement">
-                    @{{ agreement.checkbox_text }}
-                </label>
+                <x-rapidez::slideover position="right" v-bind:id="agreement.agreement_id + '_agreement'">
+                    <x-slot:title>
+                        @{{ agreement.name }}
+                    </x-slot:title>
+                    <div v-if="agreement.is_html" v-html="agreement.content"></div>
+                    <div v-else v-text="agreement.content" class="whitespace-pre-line"></div>
+                </x-rapidez::slideover>
+
+                <template v-if="agreement.mode == 'AUTO'">
+                    <label class="text-gray-700 cursor-pointer underline hover:no-underline" v-bind:for="agreement.agreement_id + '_agreement'">
+                        @{{ agreement.checkbox_text }}
+                    </label>
+                </template>
                 <div v-else>
                     <x-rapidez::checkbox
                         name="agreement_ids[]"
@@ -41,7 +42,7 @@
                         dusk="agreements"
                         required
                     >
-                        <label class="text-gray-700 cursor-pointer underline hover:no-underline" for="checkoutAgreement" v-on:click="$root.openAgreement = agreement">
+                        <label class="text-gray-700 cursor-pointer underline hover:no-underline" v-bind:for="agreement.agreement_id + '_agreement'">
                             @{{ agreement.checkbox_text }}
                         </label>
                     </x-rapidez::checkbox>

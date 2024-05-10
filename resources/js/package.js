@@ -61,7 +61,6 @@ function init() {
             loadingCount: 0,
             loading: false,
             loadAutocomplete: false,
-            openAgreement: null,
             cart: useCart(),
             user: useUser(),
             mask: useMask(),
