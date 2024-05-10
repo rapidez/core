@@ -43,7 +43,7 @@ class SalesOrder extends Model
         $query->whereHas(
             'quote',
             fn ($query) => $query
-                ->withoutGlobalScope(IsActiveScope::class)
+                ->withoutGlobalScopes()
                 ->whereQuoteIdOrCustomerToken($quoteIdMaskOrCustomerToken)
         );
     }
