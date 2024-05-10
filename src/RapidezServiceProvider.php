@@ -112,6 +112,7 @@ class RapidezServiceProvider extends ServiceProvider
         if (RapidezFacade::config('cataloginventory/item_options/backorders', 0) == 2) {
             Eventy::addFilter('quote.items.select', function ($query) {
                 $query .= PHP_EOL . ',"backorder_count", GREATEST(0, quote_item.qty - stock.qty)';
+
                 return $query;
             });
         }
