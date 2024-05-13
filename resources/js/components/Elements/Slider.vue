@@ -78,9 +78,7 @@ export default {
     methods: {
         initSlider() {
             this.slider = this.$scopedSlots.default()[0].context.$refs[this.reference]
-            this.container = this.containerReference
-                ? this.$scopedSlots.default()[0].context.$refs[this.containerReference]
-                : this.slider
+            this.container = this.containerReference ? this.$scopedSlots.default()[0].context.$refs[this.containerReference] : this.slider
         },
         initLoop() {
             if (!this.loop) {
