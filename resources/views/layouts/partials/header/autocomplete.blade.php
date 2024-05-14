@@ -33,6 +33,7 @@
             fuzziness="AUTO"
             :debounce="debounce"
             :size="size"
+            :highlight="true"
             v-on:value-change="searchAdditionals($event)"
         >
             <div
