@@ -18,7 +18,7 @@
         </x-rapidez::radio>
     </div>
 
-    <graphql query="{ checkoutAgreements { agreement_id name checkbox_text content is_html mode } }" cache="ca">
+    <graphql query="{ checkoutAgreements { agreement_id name checkbox_text content is_html mode } }" cache="checkout.agreements">
         <div slot-scope="{ data }" v-if="data" class="mt-5">
             <div v-for="agreement in data.checkoutAgreements" :key="agreement.agreement_id">
                 <x-rapidez::slideover position="right" v-bind:id="agreement.agreement_id + '_agreement'">
