@@ -53,6 +53,6 @@ class OnlyProductAttributesScope implements Scope
                     ->where('table_name', $productTable)
                     ->where('table_schema', $databaseName);
             })
-            ->where('entity_type_id', 4); // catalog_product
+            ->where('eav_attribute.entity_type_id', 4); // catalog_product
     }
 }
