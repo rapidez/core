@@ -1,6 +1,33 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.3.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.4.0...master)
+## [2.4.0](https://github.com/rapidez/core/releases/tag/2.4.0) - 2024-05-15
+
+### Added
+
+- Macroable models (#483)
+- Multiselect product option support (#484)
+- Rapidez model health check (#489)
+
+### Changed
+
+- Use lateral join in ForCurrentStoreScope (#478)
+- Rearranged the button classes (#460)
+- Refactored the slideover component (#464)
+- Allow for separate slider & child containers (#495)
+- Checkout agreements from the database instead of GraphQL (#492)
+- Enable product autocomplete highlighting (#496)
+
+### Fixed
+
+- Also calculate product price on selected product option changes (#485)
+- Reverted "Fix adding configurable product to cart (#461)" (#486)
+- Let the OptionSwatch extend the Rapidez base model (#487)
+- Use Rapidez base model for all models (#488)
+- Also save product views in the report_event table (#490)
+- Prevent ambiguous error when overwriting models (#498)
+- Don't use global scopes for quote existence check (#493)
+
 ## [2.3.0](https://github.com/rapidez/core/releases/tag/2.3.0) - 2024-04-30
 
 ### Changed
