@@ -45,20 +45,22 @@
 ## [2.2.0](https://github.com/rapidez/core/releases/tag/2.2.0) - 2024-04-16
 
 ### Added
-- Fire postcode change event in checkout (https://github.com/rapidez/core/pull/447)
+
+- Fire postcode change event in checkout (#447)
 
 ### Fixed
-- Find flat attributes by checking the actual table schema (https://github.com/rapidez/core/pull/452)
-- Fix entity_id in grouped products (https://github.com/rapidez/core/pull/456)
-- Capitalize checkCompadreVersion function properly (https://github.com/rapidez/core/pull/457)
-- Fix adding configurable product to cart (https://github.com/rapidez/core/pull/461)
-- Fix highlight retrieval (https://github.com/rapidez/core/pull/468)
-- Fix autocomplete fetch (https://github.com/rapidez/core/pull/472)
-- Fixed disabled options when no options are available (https://github.com/rapidez/core/pull/475)
+
+- Find flat attributes by checking the actual table schema (#452)
+- Fix entity_id in grouped products (#456)
+- Capitalize checkCompadreVersion function properly (#457)
+- Fix adding configurable product to cart (#461)
+- Fix highlight retrieval (#468)
+- Fix autocomplete fetch (#472)
+- Fixed disabled options when no options are available (#475)
 
 ### Removed
-- Remove unnecessary toArray calls in product indexer (https://github.com/rapidez/core/pull/471)
 
+- Remove unnecessary toArray calls in product indexer (#471)
 
 ## [1.15.1](https://github.com/rapidez/core/releases/tag/1.15.1) - 2024-04-15
 
