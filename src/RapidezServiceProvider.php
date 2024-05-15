@@ -34,7 +34,6 @@ use Rapidez\Core\Listeners\ReportProductView;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use TorMorten\Eventy\Facades\Eventy;
 
 class RapidezServiceProvider extends ServiceProvider
 {
@@ -53,7 +52,6 @@ class RapidezServiceProvider extends ServiceProvider
         $this
             ->bootAuth()
             ->bootCommands()
-            ->bootFilters()
             ->bootPublishables()
             ->bootRoutes()
             ->bootViews()
@@ -103,23 +101,6 @@ class RapidezServiceProvider extends ServiceProvider
         Event::listen(IndexBeforeEvent::class, function ($event) {
             $event->context->call('rapidez:index:categories');
         });
-
-        return $this;
-    }
-
-    protected function bootFilters(): static
-    {
-        if (app()->runningInConsole()) {
-            return $this;
-        }
-
-        if (RapidezFacade::config('cataloginventory/item_options/backorders', 0) == 2) {
-            Eventy::addFilter('quote.items.select', function ($query) {
-                $query .= PHP_EOL . ',"backorder_count", GREATEST(0, quote_item.qty - stock.qty)';
-
-                return $query;
-            });
-        }
 
         return $this;
     }
