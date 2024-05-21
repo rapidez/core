@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Rapidez\Core\Actions\DecodeJwt;
 use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
 use Rapidez\Core\Casts\QuoteItems;
+use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
 use TorMorten\Eventy\Facades\Eventy;
 
@@ -26,6 +27,7 @@ class Quote extends Model
     {
         static::addGlobalScope(new IsActiveScope);
         static::addGlobalScope('with-all-information', function (Builder $builder) {
+            $configBackorder = Rapidez::config('cataloginventory/item_options/backorders', 0);
             $builder
                 ->addSelect($builder->qualifyColumns([
                     'entity_id',
@@ -62,8 +64,9 @@ class Quote extends Model
                         "total_excl_tax", quote_item.row_total,
                         "attributes", quote_item_option.value,
                         "type", quote_item.product_type
-                    QUERY) . '
-                )), "$.null__") AS items')
+                    QUERY
+                        . '"backorder_count", IF(IF(stock.use_config_backorders, ' . $configBackorder . ', stock.backorders) = 2, GREATEST(0, quote_item.qty - stock.qty), 0)'
+                ) . ')), "$.null__") AS items')
                 ->leftJoin('quote_id_mask', 'quote_id_mask.quote_id', '=', $builder->getModel()->getQualifiedKeyName())
                 ->leftJoin('oauth_token', 'oauth_token.customer_id', '=', $builder->qualifyColumn('customer_id'))
                 ->leftJoin('quote_address', function ($join) use ($builder) {
