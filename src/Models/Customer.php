@@ -38,7 +38,7 @@ class Customer extends Model implements AuthenticatableContract
             DecodeJwt::isJwt($token),
             fn (Builder $query) => $query
                 ->where(
-                    $this->qualifyColumn('customer_id'),
+                    $this->getQualifiedKeyName(),
                     DecodeJwt::decode($token)
                         ->claims()
                         ->get('uid')
