@@ -1,6 +1,24 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.4.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.16.0...master)
+## [1.16.0](https://github.com/rapidez/core/releases/tag/1.16.0) - 2024-05-22
+
+### Added
+
+- Macroable models (#482)
+- Backorders support (#494)
+
+### Changed
+
+- Use script to get the positions from the flattened type (#467)
+
+### Fixed
+
+- Correct key in autocomplete products loop (#466)
+- Also save product views in the report_event table (#491)
+- Prevent ambiguous error when overwriting models (#497)
+- Sort images in gallery by position in Magento (#501)
+
 ## [2.4.0](https://github.com/rapidez/core/releases/tag/2.4.0) - 2024-05-15
 
 ### Added
