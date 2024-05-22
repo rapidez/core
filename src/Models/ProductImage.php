@@ -10,6 +10,8 @@ class ProductImage extends Model
 
     protected $primaryKey = 'value_id';
 
+    protected $with = ['productImageValue'];
+
     protected static function booted(): void
     {
         static::addGlobalScope(
@@ -20,7 +22,7 @@ class ProductImage extends Model
                     'productImageValue',
                     fn ($query) => $query
                         ->where($query->qualifyColumn('disabled'), 0)
-                )->with('productImageValue')
+                )
         );
     }
 
