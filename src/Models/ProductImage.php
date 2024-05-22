@@ -10,6 +10,8 @@ class ProductImage extends Model
 
     protected $primaryKey = 'value_id';
 
+    protected $with = ['productImageValue'];
+
     protected static function booted(): void
     {
         static::addGlobalScope(
