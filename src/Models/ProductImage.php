@@ -20,7 +20,7 @@ class ProductImage extends Model
                     'productImageValue',
                     fn ($query) => $query
                         ->where($query->qualifyColumn('disabled'), 0)
-                )
+                )->with('productImageValue')
         );
     }
 
