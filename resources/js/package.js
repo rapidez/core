@@ -41,13 +41,16 @@ function init() {
 
     window.address_defaults = {
         customer_address_id: null,
+        same_as_shipping: true,
         firstname: window.debug ? 'Bruce' : '',
         lastname: window.debug ? 'Wayne' : '',
         postcode: window.debug ? '72000' : '',
-        street: window.debug ? ['Mountain Drive', 1007, ''] : ['', '', ''],
+        // TODO: This should listen to the "customer/address/street_lines" config
+        // street: window.debug ? ['Mountain Drive', 1007, ''] : ['', '', ''],
+        street: window.debug ? ['Mountain Drive', 1007] : ['', ''],
         city: window.debug ? 'Gotham' : '',
         telephone: window.debug ? '530-7972' : '',
-        country_id: window.debug ? 'NL' : window.config.default_country,
+        country_code: window.debug ? 'NL' : window.config.default_country,
         custom_attributes: [],
     }
 
@@ -64,6 +67,8 @@ function init() {
             mask: useMask(),
             swatches: swatches,
             scrollLock: useScrollLock(document.body),
+            /*
+            TODO: Remove? As we're using the cart store for everything now.
             checkout: {
                 step: 1,
                 totals: {},
@@ -92,6 +97,7 @@ function init() {
                 // implement payment providers.
                 doNotGoToTheNextStep: false,
             },
+            */
         },
         methods: {
             search(value) {

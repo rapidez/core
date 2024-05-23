@@ -1,4 +1,6 @@
 id
+# TODO: Check if virtual orders are working
+is_virtual
 total_quantity
 items {
     id
@@ -66,14 +68,77 @@ items {
 applied_coupons {
     code
 }
+email
 shipping_addresses {
+    uid
+    company
+    prefix
+    firstname
+    middlename
+    lastname
+    suffix
+    street
+    city
+    region {
+        code
+        label
+    }
+    postcode
+    telephone
+    country {
+        code
+        label
+    }
     selected_shipping_method {
         carrier_title
+        carrier_code
+        method_code
         method_title
         amount {
             value
         }
     }
+    available_shipping_methods {
+        carrier_title
+        carrier_code
+        method_code
+        method_title
+        amount {
+            value
+        }
+        available
+    }
+}
+billing_address {
+    uid
+    company
+    prefix
+    firstname
+    middlename
+    lastname
+    suffix
+    street
+    city
+    region {
+        code
+        label
+    }
+    postcode
+    telephone
+    country {
+        code
+        label
+    }
+}
+selected_payment_method {
+    code
+    title
+    purchase_order_number
+}
+available_payment_methods {
+    code
+    title
+    is_deferred
 }
 prices {
     subtotal_excluding_tax {

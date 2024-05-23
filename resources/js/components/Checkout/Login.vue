@@ -1,3 +1,4 @@
+<!-- TODO: Check if we can delete this and refactor it to the GraphQL mutation component -->
 <script>
 import InteractWithUser from './../User/mixins/InteractWithUser'
 import { useLocalStorage } from '@vueuse/core'
@@ -53,13 +54,15 @@ export default {
         },
 
         async checkEmailAvailability() {
+            // TODO: If we still need this Vue component it would
+            // be nice if it's also going to be a GraphQL call.
             let responseData = await window.magentoAPI('post', 'customers/isEmailAvailable', {
                 customerEmail: this.email,
             })
 
             if ((this.emailAvailable = responseData)) {
                 this.$root.guestEmail = this.email
-                this.$root.checkout.step = this.nextStep
+                Turbo.visit(window.url(this.redirect))
             } else {
                 this.$nextTick(function () {
                     this.$scopedSlots.default()[0].context.$refs.password.focus()
@@ -75,11 +78,7 @@ export default {
         },
 
         successfulLogin() {
-            if (this.checkoutLogin) {
-                this.$root.checkout.step = this.nextStep
-            } else if (this.redirect) {
-                Turbo.visit(window.url(this.redirect))
-            }
+            Turbo.visit(window.url(this.redirect))
         },
     },
     computed: {

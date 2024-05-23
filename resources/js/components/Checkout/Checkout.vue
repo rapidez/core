@@ -1,3 +1,4 @@
+<!-- TODO: This whole file should be deleted but currently still here as reference -->
 <script>
 import InteractWithUser from './../User/mixins/InteractWithUser'
 import { useEventListener, useLocalStorage } from '@vueuse/core'

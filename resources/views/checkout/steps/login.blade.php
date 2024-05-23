@@ -1,4 +1,4 @@
-<login v-slot="{ email, password, go, loginInputChange, emailAvailable }">
+<login v-slot="{ email, password, go, loginInputChange, emailAvailable }" redirect="checkout/credentials">
     <div class="flex justify-center">
         <form class="p-8 w-[400px]" v-on:submit.prevent="go()">
             <h1 class="font-bold text-4xl text-center mb-5">@lang('Checkout')</h1>

@@ -62,17 +62,9 @@ Vue.prototype.checkResponseForExpiredCart = async function (error) {
         responseData?.errors?.some(
             (error) =>
                 error.extensions.category === 'graphql-no-such-entity' &&
-                error.path.some((path) =>
-                    [
-                        'cart',
-                        'customerCart',
-                        'assignCustomerToGuestCart',
-                        'mergeCarts',
-                        'addProductsToCart',
-                        'removeItemFromCart',
-                        'updateCartItems',
-                    ].includes(path),
-                ),
+                // Untested, but something like this is maybe a better idea as
+                // we're using a lot of different mutations in the checkout.
+                error.path.some((path) => path.toLowerCase().includes('cart')),
         )
     ) {
         Notify(window.config.translations.errors.cart_expired, 'error')

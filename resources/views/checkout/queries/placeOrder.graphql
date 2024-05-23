@@ -1,0 +1,74 @@
+mutation (
+    $cart_id: String!,
+) {
+    placeOrder(input: {
+        cart_id: $cart_id,
+    }) {
+        orderV2 {
+            id
+            number
+            email
+            carrier
+            shipping_method
+            payment_methods {
+                name
+                type
+            }
+            billing_address {
+                prefix
+                firstname
+                middlename
+                lastname
+                suffix
+                company
+                street
+                city
+                postcode
+                telephone
+                fax
+                country_code
+            }
+            shipping_address {
+                prefix
+                firstname
+                middlename
+                lastname
+                suffix
+                company
+                street
+                city
+                postcode
+                telephone
+                fax
+                country_code
+            }
+            items {
+                product_name
+                product_sku
+                product {
+                    image {
+                        url
+                    }
+                }
+            }
+            total {
+                subtotal {
+                    value
+                }
+                total_shipping {
+                    value
+                }
+                total_tax {
+                    value
+                }
+                grand_total {
+                    value
+                }
+            }
+        }
+        errors {
+            code
+            message
+        }
+    }
+}

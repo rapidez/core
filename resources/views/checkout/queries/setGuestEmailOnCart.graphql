@@ -1,0 +1,11 @@
+mutation (
+    $cart_id: String!,
+    $email: String!,
+) {
+    setGuestEmailOnCart(input: {
+        cart_id: $cart_id,
+        email: $email
+    }) {
+        cart { @include('rapidez::cart.queries.cart') }
+    }
+}
