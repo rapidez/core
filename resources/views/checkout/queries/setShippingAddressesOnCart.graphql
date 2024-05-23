@@ -1,43 +1,43 @@
 mutation (
-	$cart_id: String!,
-	$prefix: String,
-	$firstname: String!,
-	$middlename: String,
-	$lastname: String!,
-	$suffix: String,
-	$postcode: String,
-	$street: [String]!,
-	$city: String!,
-	$country_code: String!,
-	$telephone: String,
-	$fax: String,
-	$company: String,
-	$vat_id: String,
+    $cart_id: String!,
+    $prefix: String,
+    $firstname: String!,
+    $middlename: String,
+    $lastname: String!,
+    $suffix: String,
+    $postcode: String,
+    $street: [String]!,
+    $city: String!,
+    $country_code: String!,
+    $telephone: String,
+    $fax: String,
+    $company: String,
+    $vat_id: String,
 ) {
-	setShippingAddressesOnCart(input: {
-		cart_id: $cart_id,
-		shipping_addresses: [
-			{
-				# customer_address_id: $customer_address_id,
-				address: {
-					prefix: $prefix,
-					firstname: $firstname,
-					middlename: $middlename,
-					lastname: $lastname,
-					suffix: $suffix,
-					postcode: $postcode,
-					street: $street,
-					city: $city,
-					country_code: $country_code,
-					telephone: $telephone,
-					fax: $fax,
-					company: $company,
-					vat_id: $vat_id,
-					save_in_address_book: true,
-				}
-			}
-		]
-	}) {
-		cart { @include('rapidez::cart.queries.cart') }
-	}
+    setShippingAddressesOnCart(input: {
+        cart_id: $cart_id,
+        shipping_addresses: [
+            {
+                # customer_address_id: $customer_address_id,
+                address: {
+                    prefix: $prefix,
+                    firstname: $firstname,
+                    middlename: $middlename,
+                    lastname: $lastname,
+                    suffix: $suffix,
+                    postcode: $postcode,
+                    street: $street,
+                    city: $city,
+                    country_code: $country_code,
+                    telephone: $telephone,
+                    fax: $fax,
+                    company: $company,
+                    vat_id: $vat_id,
+                    save_in_address_book: true,
+                }
+            }
+        ]
+    }) {
+        cart { @include('rapidez::cart.queries.cart') }
+    }
 }
