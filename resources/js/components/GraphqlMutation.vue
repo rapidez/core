@@ -92,9 +92,9 @@ export default {
 
     mounted() {
         if (this.mutateEvent) {
-            window.app.$on(this.mutateEvent, () => {
+            this.$nextTick(() => window.app.$on(this.mutateEvent, () => {
                 this.mutate()
-            })
+            }))
         }
     },
 

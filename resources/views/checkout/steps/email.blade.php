@@ -11,13 +11,14 @@ should also check for account existence here!
     }"
     :callback="updateCart"
     :error-callback="checkResponseForExpiredCart"
+    mutate-event="setGuestEmailOnCart"
     v-slot="{ mutate, variables }"
 >
     <x-rapidez::input
         label="Email"
         name="email"
+        type="email"
         v-model="variables.email"
-        v-on:change="mutate"
         required
     />
 </graphql-mutation>

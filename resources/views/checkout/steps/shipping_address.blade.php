@@ -10,12 +10,8 @@
     :error-callback="checkResponseForExpiredCart"
     mutate-event="setShippingAddressesOnCart"
     v-slot="{ mutate, variables }"
-    {{--
-    TODO: Create a "mutate on safe" prop so we don't need forms here and have one wrapping everything?
-    Or we should run the validation of all forms when clicking on the next button?
-    --}}
 >
-    <form v-on:change="mutate">
+    <div>
         @include('rapidez::checkout.partials.address', ['type' => 'shipping'])
-    </form>
+    </div>
 </graphql-mutation>

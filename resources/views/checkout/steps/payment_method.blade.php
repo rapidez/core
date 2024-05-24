@@ -6,15 +6,18 @@
     }"
     :callback="updateCart"
     :error-callback="checkResponseForExpiredCart"
+    mutate-event="setPaymentMethodOnCart"
     v-slot="{ mutate, variables }"
 >
     <div>
         <template v-for="(method, index) in cart.available_payment_methods">
             <x-rapidez::radio
+                name="payment_method"
                 v-model="variables.code"
                 v-bind:value="method.code"
                 v-bind:dusk="'method-'+index"
                 v-on:change="mutate"
+                required
             >
                 @{{ method.title }}
             </x-rapidez::radio>

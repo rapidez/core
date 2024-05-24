@@ -9,19 +9,28 @@
         <div v-if="hasCart" v-cloak>
             <div class="flex gap-5">
                 <div class="w-3/4">
-                    @include('rapidez::checkout.steps.shipping_address')
-                    @include('rapidez::checkout.steps.billing_address')
-                    @include('rapidez::checkout.steps.shipping_method')
+                    <form v-on:submit.prevent="() => {
+                        // Not sure yet if this is the best idea but seems like
+                        // it gives a lot of flexibility on how you arrange
+                        // all checkout steps. But.. no validation; yet.
+                        // How can we know the event was successful?
+                        window.app.$emit('setShippingAddressesOnCart');
+                        window.app.$emit('setBillingAddressOnCart');
+                        window.Turbo.visit(window.url('{{ route('checkout', ['step' => 'payment']) }}'));
+                    }" v-on:change="window.app.$emit('setShippingAddressesOnCart')" class="flex flex-col gap-5">
+                        <h2 class="text-xl font-bold">@lang('Shipping address')</h2>
+                        @include('rapidez::checkout.steps.shipping_address')
 
-                    {{--
-                    TODO: Run:
-                    - setShippingAddressesOnCart
-                    - setBillingAddressOnCart
-                    With something like: `this.$root.$emit('eventName')`
-                    --}}
-                    <x-rapidez::button href="{{ route('checkout', ['step' => 'payment']) }}">
-                        @lang('Next')
-                    </x-rapidez::button>
+                        <h2 class="text-xl font-bold">@lang('Billing address')</h2>
+                        @include('rapidez::checkout.steps.billing_address')
+
+                        <h2 class="text-xl font-bold">@lang('Shipping method')</h2>
+                        @include('rapidez::checkout.steps.shipping_method')
+
+                        <x-rapidez::button type="submit">
+                            @lang('Next')
+                        </x-rapidez::button>
+                    </form>
                 </div>
                 <div class="w-1/4">
                     @include('rapidez::checkout.partials.sidebar')

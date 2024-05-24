@@ -11,8 +11,11 @@
     mutate-event="setBillingAddressOnCart"
     v-slot="{ mutate, variables }"
 >
-    <form v-on:change="mutate">
-        {{-- TODO: Same problem as in the sidebar; how do we know it was previously selected? --}}
+    <div>
+        {{--
+        TODO: Same problem as in the sidebar; how do we know it was previously selected?
+        As we're not getting this back from GraphQL...
+        --}}
         <x-rapidez::checkbox v-model="variables.same_as_shipping">
             @lang('My billing and shipping address are the same')
         </x-rapidez::checkbox>
@@ -20,5 +23,5 @@
         <div v-if="!variables.same_as_shipping">
             @include('rapidez::checkout.partials.address', ['type' => 'billing'])
         </div>
-    </form>
+    </div>
 </graphql-mutation>
