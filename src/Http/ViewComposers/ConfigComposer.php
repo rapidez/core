@@ -48,13 +48,13 @@ class ConfigComposer
         // it harder to override if there was already something set from a
         // package or project? Not sure what the order will be.
         Config::set('frontend.queries', [
-            'cart' => view('rapidez::cart.queries.cart')->renderOneliner(),
-            'setGuestEmailOnCart' => view('rapidez::checkout.queries.setGuestEmailOnCart')->renderOneliner(),
+            'cart'                       => view('rapidez::cart.queries.cart')->renderOneliner(),
+            'setGuestEmailOnCart'        => view('rapidez::checkout.queries.setGuestEmailOnCart')->renderOneliner(),
             'setShippingAddressesOnCart' => view('rapidez::checkout.queries.setShippingAddressesOnCart')->renderOneliner(),
-            'setBillingAddressOnCart' => view('rapidez::checkout.queries.setBillingAddressOnCart')->renderOneliner(),
-            'setShippingMethodsOnCart' => view('rapidez::checkout.queries.setShippingMethodsOnCart')->renderOneliner(),
-            'setPaymentMethodOnCart' => view('rapidez::checkout.queries.setPaymentMethodOnCart')->renderOneliner(),
-            'placeOrder' => view('rapidez::checkout.queries.placeOrder')->renderOneliner(),
+            'setBillingAddressOnCart'    => view('rapidez::checkout.queries.setBillingAddressOnCart')->renderOneliner(),
+            'setShippingMethodsOnCart'   => view('rapidez::checkout.queries.setShippingMethodsOnCart')->renderOneliner(),
+            'setPaymentMethodOnCart'     => view('rapidez::checkout.queries.setPaymentMethodOnCart')->renderOneliner(),
+            'placeOrder'                 => view('rapidez::checkout.queries.placeOrder')->renderOneliner(),
         ]);
     }
 
