@@ -8,7 +8,7 @@
 - Revert "Rearranged the button classes (#460)" (#499)
 - Round prices before multiplying by qty (#480)
 - Sort images in gallery by position in Magento (#500)
-- Correct rapidez/menu config path location
+- Correct rapidez/menu config path location (8e67b22)
 - Check correct customer id when jwt is used (#502)
 
 ## [1.16.0](https://github.com/rapidez/core/releases/tag/1.16.0) - 2024-05-22
