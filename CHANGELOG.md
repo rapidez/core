@@ -1,6 +1,34 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.4.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.4.1...master)
+## [2.4.1](https://github.com/rapidez/core/releases/tag/2.4.1) - 2024-05-22
+
+### Fixed
+
+- Revert "Rearranged the button classes (#460)" (#499)
+- Round prices before multiplying by qty (#480)
+- Sort images in gallery by position in Magento (#500)
+- Correct rapidez/menu config path location
+- Check correct customer id when jwt is used (#502)
+
+## [1.16.0](https://github.com/rapidez/core/releases/tag/1.16.0) - 2024-05-22
+
+### Added
+
+- Macroable models (#482)
+- Backorders support (#494)
+
+### Changed
+
+- Use script to get the positions from the flattened type (#467)
+
+### Fixed
+
+- Correct key in autocomplete products loop (#466)
+- Also save product views in the report_event table (#491)
+- Prevent ambiguous error when overwriting models (#497)
+- Sort images in gallery by position in Magento (#501)
+
 ## [2.4.0](https://github.com/rapidez/core/releases/tag/2.4.0) - 2024-05-15
 
 ### Added
@@ -65,7 +93,8 @@
 ## [1.15.1](https://github.com/rapidez/core/releases/tag/1.15.1) - 2024-04-15
 
 ### Fixed
- - Fix highlight retrieval (https://github.com/rapidez/core/pull/469)
+
+ - Fix highlight retrieval (#469)
 
 
 ## [1.15.0](https://github.com/rapidez/core/releases/tag/1.15.0) - 2024-03-21
