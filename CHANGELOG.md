@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.4.1...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.5.0...master)
+## [2.5.0](https://github.com/rapidez/core/releases/tag/2.5.0) - 2024-05-28
+
+### Added
+
+- Laravel 11 support (#504)
+
 ## [2.4.1](https://github.com/rapidez/core/releases/tag/2.4.1) - 2024-05-22
 
 ### Fixed
