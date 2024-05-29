@@ -63,7 +63,7 @@ class Quote extends Model
                         "total", quote_item.row_total_incl_tax,
                         "total_excl_tax", quote_item.row_total,
                         "attributes", quote_item_option.value,
-                        "type", quote_item.product_type
+                        "type", quote_item.product_type,
                     QUERY
                         . '"backorder_count", IF(IF(stock.use_config_backorders, ' . $configBackorder . ', stock.backorders) = 2, GREATEST(0, quote_item.qty - stock.qty), 0)'
                 ) . ')), "$.null__") AS items')
