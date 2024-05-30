@@ -31,9 +31,9 @@ export default {
             this.$root.checkout.step = successStep
             this.$root.$emit('checkout-step', successStep)
         }
-        this.$root.$emit('checkout-success')
 
         this.refreshOrder().then(() => {
+            this.$root.$emit('checkout-success', this.order)
             clearCart()
         })
     },
