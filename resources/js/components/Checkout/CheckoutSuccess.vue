@@ -31,7 +31,9 @@ export default {
         let successStep = this.$root.getCheckoutStep('success')
         if (successStep > 0) {
             this.$root.checkout.step = successStep
+            this.$root.$emit('checkout-step', successStep)
         }
+        this.$root.$emit('checkout-success')
 
         this.refreshOrder()
         this.clearCart()
