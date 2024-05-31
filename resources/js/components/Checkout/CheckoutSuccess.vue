@@ -31,15 +31,18 @@ export default {
         let successStep = this.$root.getCheckoutStep('success')
         if (successStep > 0) {
             this.$root.checkout.step = successStep
+            this.$root.$emit('checkout-step', successStep)
         }
 
-        this.refreshOrder()
-        this.clearCart()
+        this.refreshOrder().then(() => {
+            this.$root.$emit('checkout-success', this.order)
+            this.clearCart()
+        })
     },
 
     methods: {
-        refreshOrder() {
-            axios
+        async refreshOrder() {
+            return axios
                 .get(window.url('/api/order'), { headers: { Authorization: 'Bearer ' + (this.token || this.mask) } })
                 .then((response) => (this.order = response.data))
         },
