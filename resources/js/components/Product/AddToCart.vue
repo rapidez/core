@@ -128,7 +128,7 @@ export default {
                 let values = {}
 
                 Object.entries(this.product['super_' + superAttributeCode]).forEach(([key, val]) => {
-                    let swatch = swatchOptions.find((swatch) => swatch.value === val)
+                    let swatch = Object.values(swatchOptions).find((swatch) => swatch.value === val)
                     if (swatch) {
                         values[val] = swatch
                     }
