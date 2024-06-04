@@ -1,6 +1,121 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.1.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.5.0...master)
+## [2.5.0](https://github.com/rapidez/core/releases/tag/2.5.0) - 2024-05-28
+
+### Added
+
+- Laravel 11 support (#504)
+
+## [2.4.1](https://github.com/rapidez/core/releases/tag/2.4.1) - 2024-05-22
+
+### Fixed
+
+- Revert "Rearranged the button classes (#460)" (#499)
+- Round prices before multiplying by qty (#480)
+- Sort images in gallery by position in Magento (#500)
+- Correct rapidez/menu config path location (8e67b22)
+- Check correct customer id when jwt is used (#502)
+
+## [1.16.0](https://github.com/rapidez/core/releases/tag/1.16.0) - 2024-05-22
+
+### Added
+
+- Macroable models (#482)
+- Backorders support (#494)
+
+### Changed
+
+- Use script to get the positions from the flattened type (#467)
+
+### Fixed
+
+- Correct key in autocomplete products loop (#466)
+- Also save product views in the report_event table (#491)
+- Prevent ambiguous error when overwriting models (#497)
+- Sort images in gallery by position in Magento (#501)
+
+## [2.4.0](https://github.com/rapidez/core/releases/tag/2.4.0) - 2024-05-15
+
+### Added
+
+- Macroable models (#483)
+- Multiselect product option support (#484)
+- Rapidez model health check (#489)
+
+### Changed
+
+- Use lateral join in ForCurrentStoreScope (#478)
+- Rearranged the button classes (#460)
+- Refactored the slideover component (#464)
+- Allow for separate slider & child containers (#495)
+- Checkout agreements from the database instead of GraphQL (#492)
+- Enable product autocomplete highlighting (#496)
+
+### Fixed
+
+- Also calculate product price on selected product option changes (#485)
+- Reverted "Fix adding configurable product to cart (#461)" (#486)
+- Let the OptionSwatch extend the Rapidez base model (#487)
+- Use Rapidez base model for all models (#488)
+- Also save product views in the report_event table (#490)
+- Prevent ambiguous error when overwriting models (#498)
+- Don't use global scopes for quote existence check (#493)
+
+## [2.3.0](https://github.com/rapidez/core/releases/tag/2.3.0) - 2024-04-30
+
+### Changed
+
+- Use script to get the positions from the flattened type (#459)
+- Do not index the search overview page (#481)
+
+### Fixed
+
+- Fixes for swatch filter (#477)
+- Allow dataFilter null in the indexer (#470)
+- Correct key in autocomplete products loop (#465)
+- Only allow certain types to be searchable in autocomplete (#476)
+
+## [2.2.0](https://github.com/rapidez/core/releases/tag/2.2.0) - 2024-04-16
+
+### Added
+
+- Fire postcode change event in checkout (#447)
+
+### Fixed
+
+- Find flat attributes by checking the actual table schema (#452)
+- Fix entity_id in grouped products (#456)
+- Capitalize checkCompadreVersion function properly (#457)
+- Fix adding configurable product to cart (#461)
+- Fix highlight retrieval (#468)
+- Fix autocomplete fetch (#472)
+- Fixed disabled options when no options are available (#475)
+
+### Removed
+
+- Remove unnecessary toArray calls in product indexer (#471)
+
+## [1.15.1](https://github.com/rapidez/core/releases/tag/1.15.1) - 2024-04-15
+
+### Fixed
+
+ - Fix highlight retrieval (#469)
+
+
+## [1.15.0](https://github.com/rapidez/core/releases/tag/1.15.0) - 2024-03-21
+
+### Added
+
+- Fire postcode change event in checkout (#446)
+- Show weee tax in cart (#422)
+
+### Fixed
+
+- Move resizeobserver to nextTick function (#443)
+- Check flat attributes by checking the table schema (#454)
+- Fix entity_id in grouped products (#455)
+
 ## [2.1.0](https://github.com/rapidez/core/releases/tag/2.1.0) - 2024-03-06
 
 ### Changed

@@ -7,7 +7,7 @@ if (!window.process) {
 }
 
 import './polyfills'
-import { useLocalStorage, StorageSerializers } from '@vueuse/core'
+import { useLocalStorage, StorageSerializers, useScrollLock } from '@vueuse/core'
 import useCart from './stores/useCart'
 import useUser from './stores/useUser'
 import useMask from './stores/useMask'
@@ -28,8 +28,6 @@ function init() {
     Vue.config.performance = import.meta.env.VITE_PERFORMANCE == 'true'
     Vue.prototype.window = window
     Vue.prototype.config = window.config
-
-    let swatches = useLocalStorage('swatches', {})
 
     // Check if the localstorage needs a flush.
     let cachekey = useLocalStorage('cachekey')
@@ -65,6 +63,7 @@ function init() {
             user: useUser(),
             mask: useMask(),
             swatches: swatches,
+            scrollLock: useScrollLock(document.body),
             checkout: {
                 step: 1,
                 totals: {},
@@ -102,6 +101,13 @@ function init() {
             },
             setSearchParams(url) {
                 window.history.pushState(window.history.state, '', new URL(url))
+            },
+            toggleScroll(bool = null) {
+                if (bool === null) {
+                    this.scrollLock = !this.scrollLock
+                } else {
+                    this.scrollLock = bool
+                }
             },
         },
         computed: {

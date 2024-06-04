@@ -25,7 +25,8 @@ class ConfigComposer
 
         $attributeModel = config('rapidez.models.attribute');
         $searchableAttributes = Arr::pluck(
-            $attributeModel::getCachedWhere(fn ($attribute) => $attribute['search']),
+            $attributeModel::getCachedWhere(fn ($attribute) => $attribute['search'] && in_array($attribute['type'], ['text', 'varchar', 'static'])
+            ),
             'search_weight',
             'code'
         );

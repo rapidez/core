@@ -2,7 +2,6 @@
 
 namespace Rapidez\Core\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 
@@ -52,7 +51,7 @@ class OptionSwatch extends Model
                 ->get()
                 ->keyBy('attribute_code')
                 ->map(function (self $optionSwatch) {
-                    $optionSwatch->options = $optionSwatch->options->sortBy('sort_order')->values();
+                    $optionSwatch->options = $optionSwatch->options->sortBy('sort_order')->keyBy('value');
 
                     return $optionSwatch;
                 })

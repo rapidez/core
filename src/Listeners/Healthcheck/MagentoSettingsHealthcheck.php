@@ -1,13 +1,12 @@
 <?php
 
-namespace Rapidez\Core\Listeners;
+namespace Rapidez\Core\Listeners\Healthcheck;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Event;
 use PDOException;
 
-class MagentoSettingsHealthcheck
+class MagentoSettingsHealthcheck extends Base
 {
     public function handle()
     {
@@ -77,10 +76,5 @@ class MagentoSettingsHealthcheck
         }
 
         return $response;
-    }
-
-    public static function register()
-    {
-        Event::listen('rapidez:health-check', static::class);
     }
 }

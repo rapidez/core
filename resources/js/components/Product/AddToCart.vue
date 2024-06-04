@@ -89,7 +89,7 @@ export default {
                         config.queries.cart +
                         ` } user_errors { code message } } }`,
                     {
-                        sku: this.simpleProduct.sku,
+                        sku: this.product.sku,
                         cartId: mask.value,
                         quantity: this.qty,
                         selected_options: this.selectedOptions,
@@ -136,8 +136,10 @@ export default {
         },
 
         calculatePrices: function () {
-            this.price = parseFloat(this.simpleProduct.price) + this.priceAddition(this.simpleProduct.price)
-            this.specialPrice = parseFloat(this.simpleProduct.special_price) + this.priceAddition(this.simpleProduct.special_price)
+            this.price = Math.round((parseFloat(this.simpleProduct.price) + this.priceAddition(this.simpleProduct.price)) * 100) / 100
+            this.specialPrice =
+                Math.round((parseFloat(this.simpleProduct.special_price) + this.priceAddition(this.simpleProduct.special_price)) * 100) /
+                100
         },
 
         getOptions: function (superAttributeCode) {
@@ -183,21 +185,24 @@ export default {
         priceAddition: function (basePrice) {
             let addition = 0
 
-            Object.entries(this.customOptions).forEach(([key, val]) => {
-                if (!val) {
-                    return
-                }
+            let optionEntries = Object.entries(this.customOptions)
+            let selectedOptionEntries = Object.entries(this.customSelectedOptions)
 
-                let option = this.product.options.find((option) => option.option_id == key)
-                let optionPrice = ['drop_down', 'radio'].includes(option.type)
-                    ? option.values.find((value) => value.option_type_id == val).price
-                    : option.price
+            ;[...optionEntries, ...selectedOptionEntries].forEach(([key, vals]) => {
+                ;[vals].flat().forEach((val) => {
+                    if (!val) {
+                        return
+                    }
 
-                if (optionPrice.price_type == 'fixed') {
-                    addition += parseFloat(optionPrice.price)
-                } else {
-                    addition += (parseFloat(basePrice) * parseFloat(optionPrice.price)) / 100
-                }
+                    let option = this.product.options.find((option) => option.option_id == key)
+                    let optionPrice = option.price || option.values?.find((value) => value.option_type_id == val)?.price
+
+                    if (optionPrice.price_type == 'fixed') {
+                        addition += parseFloat(optionPrice.price)
+                    } else {
+                        addition += (parseFloat(basePrice) * parseFloat(optionPrice.price)) / 100
+                    }
+                })
             })
 
             return addition
@@ -244,8 +249,10 @@ export default {
                 selectedOptions.push(btoa('configurable/' + optionId + '/' + optionValue))
             })
 
-            Object.entries(this.customSelectedOptions).forEach(([optionId, optionValue]) => {
-                selectedOptions.push(btoa('custom-option/' + optionId + '/' + optionValue))
+            Object.entries(this.customSelectedOptions).forEach(([optionId, optionValues]) => {
+                ;[optionValues].flat().forEach((optionValue) => {
+                    selectedOptions.push(btoa('custom-option/' + optionId + '/' + optionValue))
+                })
             })
 
             return selectedOptions
@@ -275,15 +282,14 @@ export default {
             Object.entries(this.product.super_attributes).forEach(([attributeId, attribute]) => {
                 disabledOptions['super_' + attribute.code] = []
                 valuesPerAttribute[attributeId] = {}
-
                 // Fill list with products per attribute value
                 Object.entries(this.product.children).forEach(([productId, option]) => {
-                    if (!option.in_stock) {
-                        return
-                    }
-
                     if (!valuesPerAttribute[attributeId][option[attribute.code]]) {
                         valuesPerAttribute[attributeId][option[attribute.code]] = []
+                    }
+
+                    if (!option.in_stock) {
+                        return
                     }
 
                     valuesPerAttribute[attributeId][option[attribute.code]].push(productId)
@@ -297,17 +303,22 @@ export default {
                 Object.entries(valuesPerAttribute).forEach(([attributeId2, productsPerValue2]) => {
                     if (attributeId === attributeId2) return
                     var selectedValueId = this.options[attributeId]
-                    if (!selectedValueId) return
                     var attributeCode = this.product.super_attributes[attributeId2].code
 
                     Object.entries(productsPerValue2).forEach(([valueId, products]) => {
                         // If there is no product that intersects for this attribute value
                         // there will be no product available for this attribute value
-                        if (!productsPerValue[selectedValueId] || productsPerValue[selectedValueId].some((val) => products.includes(val))) {
+
+                        if (
+                            products.length &&
+                            (!selectedValueId ||
+                                !productsPerValue[selectedValueId] ||
+                                productsPerValue[selectedValueId].some((val) => products.includes(val)))
+                        ) {
                             return
                         }
 
-                        disabledOptions['super_' + attributeCode].push(valueId)
+                        disabledOptions['super_' + attributeCode].push(parseInt(valueId))
                     })
                 })
             })
@@ -318,6 +329,12 @@ export default {
 
     watch: {
         customOptions: {
+            handler() {
+                this.calculatePrices()
+            },
+            deep: true,
+        },
+        customSelectedOptions: {
             handler() {
                 this.calculatePrices()
             },

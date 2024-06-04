@@ -2,8 +2,6 @@
 
 namespace Rapidez\Core\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 class SalesOrderItem extends Model
 {
     protected $table = 'sales_order_item';
