@@ -1,4 +1,5 @@
 <script>
+import { GraphQLError } from '../../fetch';
 import { mask, refreshMask } from '../../stores/useMask'
 import InteractWithUser from './../User/mixins/InteractWithUser'
 
@@ -97,11 +98,12 @@ export default {
                     },
                 )
 
+                // If there are user errors we may still get a newly updated cart back.
+                await this.updateCart({}, response)
+
                 if (response.data.addProductsToCart.user_errors.length) {
                     throw new Error(response.data.addProductsToCart.user_errors[0].message)
                 }
-
-                await this.updateCart({}, response)
 
                 this.added = true
                 setTimeout(() => {
@@ -129,7 +131,12 @@ export default {
                     Notify(error.message, 'error')
                 }
 
-                error?.response && (await this.checkResponseForExpiredCart(error.response))
+                if (error?.response) {
+                    if(!await this.checkResponseForExpiredCart(error.response) && GraphQLError.prototype.isPrototypeOf(error)) {
+                        // If there are errors we may still get a newly updated cart back.
+                        await this.updateCart({}, await error.response.json())
+                    }
+                }
             }
 
             this.adding = false
