@@ -127,9 +127,9 @@ export default {
                         if(!GraphQLError.prototype.isPrototypeOf(err)) {
                             throw error
                         }
-
+                        const errorResponse = error.response.json();
                         if (this.errorCallback) {
-                            await this.errorCallback(this.data, error.response)
+                            await this.errorCallback(this.data, errorResponse)
                         }
 
                         if (this.alert) {
@@ -138,7 +138,7 @@ export default {
                             });
                         }
 
-                        return error.response;
+                        return errorResponse;
                     })
 
                 if (response.data.errors) {
