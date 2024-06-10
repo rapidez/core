@@ -1,5 +1,5 @@
 <script>
-import { GraphQLError, magentoGraphQL } from '../fetch';
+import { GraphQLError, magentoGraphQL } from '../fetch'
 import InteractWithUser from './User/mixins/InteractWithUser'
 
 export default {
@@ -132,14 +132,14 @@ export default {
                             await this.errorCallback(this.data, errorResponse)
                         }
 
-                        if (this.alert) {
-                            error.errors.forEach(error => {
-                                Notify(error.message, 'error')
-                            });
-                        }
+                    if (this.alert) {
+                        error.errors.forEach((error) => {
+                            Notify(error.message, 'error')
+                        })
+                    }
 
-                        return errorResponse;
-                    })
+                    return errorResponse;
+                })
 
                 if (response.data.errors) {
                     return

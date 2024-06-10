@@ -1,5 +1,5 @@
 <script>
-import { GraphQLError } from '../../fetch';
+import { GraphQLError } from '../../fetch'
 import { mask, refreshMask } from '../../stores/useMask'
 import InteractWithUser from './../User/mixins/InteractWithUser'
 
@@ -132,7 +132,7 @@ export default {
                 }
 
                 if (error?.response) {
-                    if(!await this.checkResponseForExpiredCart(error.response) && GraphQLError.prototype.isPrototypeOf(error)) {
+                    if (!(await this.checkResponseForExpiredCart(error.response)) && GraphQLError.prototype.isPrototypeOf(error)) {
                         // If there are errors we may still get a newly updated cart back.
                         await this.updateCart({}, await error.response.json())
                     }
