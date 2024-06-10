@@ -122,15 +122,14 @@ export default {
                     ;[query, variables, options] = await this.beforeRequest(this.query, this.variables, options)
                 }
 
-                let response = await magentoGraphQL(query, variables, options)
-                    .catch(async (error) => {
-                        if(!GraphQLError.prototype.isPrototypeOf(err)) {
-                            throw error
-                        }
-                        const errorResponse = error.response.json();
-                        if (this.errorCallback) {
-                            await this.errorCallback(this.data, errorResponse)
-                        }
+                let response = await magentoGraphQL(query, variables, options).catch(async (error) => {
+                    if (!GraphQLError.prototype.isPrototypeOf(err)) {
+                        throw error
+                    }
+                    const errorResponse = error.response.json()
+                    if (this.errorCallback) {
+                        await this.errorCallback(this.data, errorResponse)
+                    }
 
                     if (this.alert) {
                         error.errors.forEach((error) => {
@@ -138,7 +137,7 @@ export default {
                         })
                     }
 
-                    return errorResponse;
+                    return errorResponse
                 })
 
                 if (response.data.errors) {
