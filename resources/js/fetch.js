@@ -25,7 +25,7 @@ export class SessionExpired extends FetchError {
 }
 window.SessionExpired = SessionExpired
 
-export const rapidezFetch = window.rapidezFetch = ((originalFetch) => {
+export const rapidezFetch = (window.rapidezFetch = ((originalFetch) => {
     return (...args) => {
         if (window.app.$data) {
             window.app.$data.loadingCount++
@@ -39,9 +39,9 @@ export const rapidezFetch = window.rapidezFetch = ((originalFetch) => {
             return args
         })
     }
-})(fetch)
+})(fetch))
 
-export const rapidezAPI = window.rapidezAPI = async (method, endpoint, data = {}, options = {}) => {
+export const rapidezAPI = (window.rapidezAPI = async (method, endpoint, data = {}, options = {}) => {
     let response = await rapidezFetch(window.url('/api/' + endpoint), {
         method: method.toUpperCase(),
         headers: Object.assign(
@@ -60,9 +60,9 @@ export const rapidezAPI = window.rapidezAPI = async (method, endpoint, data = {}
     }
 
     return await response.json()
-}
+})
 
-export const magentoGraphQL = window.magentoGraphQL = async (
+export const magentoGraphQL = (window.magentoGraphQL = async (
     query,
     variables = {},
     options = {
@@ -84,8 +84,6 @@ export const magentoGraphQL = window.magentoGraphQL = async (
             variables: variables,
         }),
     })
-    ;
-
     // You can't call response.json() twice, in case of errors we pass our clone instead which hasn't been read.
     let responseClone = response.clone()
 
@@ -98,9 +96,9 @@ export const magentoGraphQL = window.magentoGraphQL = async (
     if (data?.errors) {
         console.error(data.errors)
 
-        data?.errors?.forEach(error => {
+        data?.errors?.forEach((error) => {
             if (error?.extensions?.category !== 'graphql-authorization') {
-                return;
+                return
             }
 
             if (options?.notifyOnError ?? true) {
@@ -112,7 +110,7 @@ export const magentoGraphQL = window.magentoGraphQL = async (
             } else {
                 throw new SessionExpired(window.config.translations.errors.session_expired, responseClone)
             }
-        });
+        })
 
         throw new GraphQLError(data.errors, responseClone)
     }
@@ -122,9 +120,9 @@ export const magentoGraphQL = window.magentoGraphQL = async (
     }
 
     return data
-}
+})
 
-export const magentoAPI = window.magentoAPI = async (
+export const magentoAPI = (window.magentoAPI = async (
     method,
     endpoint,
     data = {},
@@ -167,4 +165,4 @@ export const magentoAPI = window.magentoAPI = async (
     let responseData = await response.json()
 
     return responseData
-}
+})

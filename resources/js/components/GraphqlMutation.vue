@@ -1,5 +1,5 @@
 <script>
-import { GraphQLError, magentoGraphQL } from '../fetch';
+import { GraphQLError, magentoGraphQL } from '../fetch'
 import InteractWithUser from './User/mixins/InteractWithUser'
 
 export default {
@@ -122,24 +122,23 @@ export default {
                     ;[query, variables, options] = await this.beforeRequest(this.query, this.variables, options)
                 }
 
-                let response = await magentoGraphQL(query, variables, options)
-                    .catch(async (error) => {
-                        if(!GraphQLError.prototype.isPrototypeOf(err)) {
-                            throw error
-                        }
+                let response = await magentoGraphQL(query, variables, options).catch(async (error) => {
+                    if (!GraphQLError.prototype.isPrototypeOf(err)) {
+                        throw error
+                    }
 
-                        if (this.errorCallback) {
-                            await this.errorCallback(this.data, error.response)
-                        }
+                    if (this.errorCallback) {
+                        await this.errorCallback(this.data, error.response)
+                    }
 
-                        if (this.alert) {
-                            error.errors.forEach(error => {
-                                Notify(error.message, 'error')
-                            });
-                        }
+                    if (this.alert) {
+                        error.errors.forEach((error) => {
+                            Notify(error.message, 'error')
+                        })
+                    }
 
-                        return error.response;
-                    })
+                    return error.response
+                })
 
                 if (response.data.errors) {
                     return
