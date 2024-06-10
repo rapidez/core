@@ -136,8 +136,10 @@ export default {
         },
 
         calculatePrices: function () {
-            this.price = parseFloat(this.simpleProduct.price) + this.priceAddition(this.simpleProduct.price)
-            this.specialPrice = parseFloat(this.simpleProduct.special_price) + this.priceAddition(this.simpleProduct.special_price)
+            this.price = Math.round((parseFloat(this.simpleProduct.price) + this.priceAddition(this.simpleProduct.price)) * 100) / 100
+            this.specialPrice =
+                Math.round((parseFloat(this.simpleProduct.special_price) + this.priceAddition(this.simpleProduct.special_price)) * 100) /
+                100
         },
 
         getOptions: function (superAttributeCode) {
@@ -146,7 +148,7 @@ export default {
                 let values = {}
 
                 Object.entries(this.product['super_' + superAttributeCode]).forEach(([key, val]) => {
-                    let swatch = swatchOptions.find((swatch) => swatch.value === val)
+                    let swatch = Object.values(swatchOptions).find((swatch) => swatch.value === val)
                     if (swatch) {
                         values[val] = swatch
                     }

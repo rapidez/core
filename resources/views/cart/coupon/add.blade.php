@@ -17,7 +17,7 @@
             v-bind:disabled="$root.loading"
             required
         />
-        <x-rapidez::button type="submit" class="sm:text-sm">
+        <x-rapidez::button type="submit" class="sm:text-sm" dusk="apply-coupon">
             @lang('Apply')
         </x-rapidez::button>
     </form>
