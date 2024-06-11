@@ -1,4 +1,7 @@
+import { print } from 'graphql'
 import { token } from './stores/useUser'
+import combineQuery from 'graphql-combine-query'
+import { gql } from 'graphql-tag'
 
 class FetchError extends Error {
     constructor(message, response) {
@@ -54,7 +57,43 @@ window.rapidezAPI = async (method, endpoint, data = {}, options = {}) => {
     return await response.json()
 }
 
-window.magentoGraphQL = async (
+export const combineGraphqlQueries = window.combineGraphqlQueries = function (queries) {
+    if (!Array.isArray(queries)) {
+        queries = [...arguments];
+    }
+
+    // Transform all queries into a gql object
+    queries = queries.map((query) => typeof query === 'string' ? gql(query) : query);
+
+    const name = queries.reduce((str, query) => str + query.definitions.reduce((name, definition) => name + definition.name.value, ''), '');
+    const { document } = queries.reduce((newQuery, query) => {
+        return newQuery.add(query)
+    }, combineQuery(name));
+
+    return print(document);
+}
+
+let pendingQuery = null;
+let pendingData = [];
+
+export const combiningGraphQL = (window.combiningGraphQL = async (query, variables) => {
+    if (!pendingQuery) {
+        pendingQuery = new Promise((resolve, reject) => window.setTimeout(() => {
+            const query = combineGraphqlQueries(pendingData.map(([query, variables]) => query))
+            const variables = pendingData.reduce((combinedVariables, [query, variables]) => {return {...combinedVariables, ...variables};}, {});
+
+            pendingData = [];
+            pendingQuery = null;
+
+            magentoGraphQL(query, variables).then(resolve)
+        }, 5))
+    }
+
+    pendingData.push([query, variables])
+    return pendingQuery
+})
+
+export const magentoGraphQL = (window.magentoGraphQL = async (
     query,
     variables = {},
     options = {
