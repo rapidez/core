@@ -65,7 +65,7 @@ export const combineGraphqlQueries = window.combineGraphqlQueries = function (qu
     // Transform all queries into a gql object
     queries = queries.map((query) => typeof query === 'string' ? gql(query) : query);
 
-    const name = queries.reduce((str, query) => str + query.definitions.reduce((name, definition) => name + definition.name.value, ''), '');
+    const name = queries.reduce((str, query) => str + query.definitions.reduce((name, definition) => name + definition.name?.value, ''), '');
     const { document } = queries.reduce((newQuery, query) => {
         return newQuery.add(query)
     }, combineQuery(name));
@@ -143,7 +143,7 @@ export const magentoGraphQL = (window.magentoGraphQL = async (
     }
 
     return data
-}
+})
 
 window.magentoAPI = async (
     method,
