@@ -86,7 +86,7 @@ export default {
                 rapidezFetch(`${baseUrl}/${config.es_prefix}_${name}_${config.store}/_search`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', Authorization: auth },
-                    body: JSON.stringify(esQuery),
+                    data: JSON.stringify(esQuery),
                 }).then(async (response) => {
                     const responseData = await response.json()
 

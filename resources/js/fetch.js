@@ -139,8 +139,6 @@ export const magentoGraphQL = (window.magentoGraphQL = async (
             }
         }
 
-        // Because of this the "errorCallback" in the GraphQL mutation component
-        // isn't working as you're going straight to the "catch".
         throw new FetchError(data.errors[0].message, responseClone)
     }
 
