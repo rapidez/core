@@ -85,4 +85,10 @@ return [
         'notification'     => 'z-20',
         'slideover'        => 'z-50',
     ],
+
+    // Add to cart settings to automaticly select configurable- or product options (true/false)
+    'add_to_cart' => [
+        'auto_select_configurable_options' => false,
+        'auto_select_product_options' => false
+    ]
 ];

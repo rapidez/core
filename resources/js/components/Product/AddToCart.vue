@@ -48,6 +48,11 @@ export default {
     mounted() {
         this.qty = this.defaultQty
         this.calculatePrices()
+
+        this.$nextTick(() => {
+            this.setDefaultOptions()
+            this.setDefaultCustomSelectedOptions()
+        })
     },
 
     render() {
@@ -214,6 +219,35 @@ export default {
 
             return addition
         },
+        async setDefaultOptions() {
+            if (!window.config.add_to_cart.auto_select_configurable_options || !window.config.product?.super_attributes) {
+                return
+            }
+            // We do not loop and use the values of enabledOptions directly.
+            // This is on purpose in order to force recalculations of enabledOptions to be considered.
+            Object.keys(this.enabledOptions).map((attributeKey) => {
+                Vue.set(this.options, attributeKey, this.enabledOptions[attributeKey].find(Boolean))
+            })
+        },
+        async setDefaultCustomSelectedOptions() {
+            if (!window.config.add_to_cart.auto_select_product_options || !window.config.product?.options) {
+                return
+            }
+
+            window.config.product.options.map((option) => {
+                if (!option.is_require || !option.values) {
+                    return
+                }
+                let value = option.values
+                    .sort((aValue, bValue) => aValue.sort_order - bValue.sort_order)
+                    .find((value) => value.in_stock)?.option_type_id
+                if (!value) {
+                    return
+                }
+
+                Vue.set(this.customSelectedOptions, option.option_id, value)
+            })
+        }
     },
 
     computed: {
@@ -332,6 +366,20 @@ export default {
 
             return disabledOptions
         },
+        enabledOptions: function () {
+            let valuesPerAttribute = {}
+            Object.entries(this.product.super_attributes).forEach(([attributeId, attribute]) => {
+                valuesPerAttribute[attributeId] = []
+                // Fill list with products per attribute value
+                Object.entries(this.product.children).forEach(([productId, product]) => {
+                    if (!product.in_stock || this.disabledOptions['super_' + attribute.code].includes(product.value)) {
+                        return
+                    }
+                    valuesPerAttribute[attributeId].push(product[attribute.code])
+                })
+            })
+            return valuesPerAttribute
+        }
     },
 
     watch: {
