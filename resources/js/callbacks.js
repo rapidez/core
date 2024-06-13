@@ -99,6 +99,9 @@ Vue.prototype.checkResponseForExpiredCart = async function (error) {
 }
 
 Vue.prototype.updateCart = async function (data, response) {
+    if (!response?.data) {
+        return response?.data
+    }
     cart.value = 'cart' in Object.values(response.data)[0] ? Object.values(response.data)[0].cart : Object.values(response.data)[0]
 
     getAttributeValues().then((response) => {
