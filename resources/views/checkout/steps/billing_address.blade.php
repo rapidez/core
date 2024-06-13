@@ -11,7 +11,7 @@
     mutate-event="setBillingAddressOnCart"
     v-slot="{ mutate, variables }"
 >
-    <div>
+    <div data-function="mutate">
         {{--
         TODO: Same problem as in the sidebar; how do we know it was previously selected?
         As we're not getting this back from GraphQL...

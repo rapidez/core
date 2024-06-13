@@ -42,6 +42,14 @@ export const clearAddresses = async function () {
     useLocalStorage('shipping_address').value = null
 }
 
+export const setGuestEmailOnCart = async function (email) {
+    await window.magentoGraphQL(config.queries.setGuestEmailOnCart, {
+        cart_id: mask.value,
+        email: email
+    })
+    .then((response) => Vue.prototype.updateCart([], response))
+}
+
 export const linkUserToCart = async function () {
     await window
         .magentoGraphQL(`mutation ($cart_id: String!) { assignCustomerToGuestCart (cart_id: $cart_id) { ${config.queries.cart} } }`, {

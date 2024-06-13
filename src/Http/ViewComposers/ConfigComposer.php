@@ -49,6 +49,7 @@ class ConfigComposer
         // package or project? Not sure what the order will be.
         Config::set('frontend.queries', [
             'cart'                       => view('rapidez::cart.queries.cart')->renderOneliner(),
+            'customer'                   => view('rapidez::customer.queries.customer')->renderOneliner(),
             'setGuestEmailOnCart'        => view('rapidez::checkout.queries.setGuestEmailOnCart')->renderOneliner(),
             'setShippingAddressesOnCart' => view('rapidez::checkout.queries.setShippingAddressesOnCart')->renderOneliner(),
             'setBillingAddressOnCart'    => view('rapidez::checkout.queries.setBillingAddressOnCart')->renderOneliner(),

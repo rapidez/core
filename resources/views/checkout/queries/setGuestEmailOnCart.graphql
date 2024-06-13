@@ -1,4 +1,4 @@
-mutation (
+mutation setGuestEmailOnCart (
     $cart_id: String!,
     $email: String!,
 ) {

@@ -123,7 +123,7 @@ function init() {
             ),
 
             loggedIn() {
-                return Boolean(this.user?.id)
+                return this.user?.is_logged_in
             },
 
             hasCart() {

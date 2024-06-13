@@ -11,7 +11,7 @@
     mutate-event="setShippingAddressesOnCart"
     v-slot="{ mutate, variables }"
 >
-    <div>
+    <div data-function="mutate">
         @include('rapidez::checkout.partials.address', ['type' => 'shipping'])
     </div>
 </graphql-mutation>

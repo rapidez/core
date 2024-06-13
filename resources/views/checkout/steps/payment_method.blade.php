@@ -9,7 +9,7 @@
     mutate-event="setPaymentMethodOnCart"
     v-slot="{ mutate, variables }"
 >
-    <div>
+    <div data-function="mutate">
         <template v-for="(method, index) in cart.available_payment_methods">
             <x-rapidez::radio
                 name="payment_method"

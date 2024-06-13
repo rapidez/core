@@ -13,6 +13,24 @@ Vue.prototype.getCheckoutStep = (stepName) => {
     return (config.checkout_steps[config.store_code] ?? config.checkout_steps['default'])?.indexOf(stepName)
 }
 
+Vue.prototype.submitFieldsets = async function(form) {
+    let promises = [];
+    form.querySelectorAll('[data-function]').forEach((fieldset) => {
+        if (!fieldset?.dataset?.function || !fieldset?.__vue__) {
+            return;
+        }
+
+        promises.push(fieldset.__vue__[fieldset?.dataset?.function]().then((result) => {
+                if(result === false) {
+                    throw new Error;
+                }
+            })
+        );
+    })
+
+    return await Promise.all(promises);
+}
+
 Vue.prototype.updateCart = async function (data, response) {
     cart.value = 'cart' in Object.values(response.data)[0] ? Object.values(response.data)[0].cart : Object.values(response.data)[0]
 

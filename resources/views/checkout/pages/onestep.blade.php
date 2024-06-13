@@ -7,7 +7,9 @@
 @section('content')
     <div class="container">
         <div v-if="hasCart" v-cloak>
-            <div class="grid grid-cols-2 gap-5">
+            <form class="grid grid-cols-2 gap-5" v-on:submit.prevent="(e) => {
+                submitFieldsets(e.target?.form ?? e.target).then((result) => window.app.$emit('placeOrder')).catch();
+            }">
                 <div class="col-span-2">
                     @include('rapidez::checkout.steps.email')
                 </div>
@@ -30,7 +32,7 @@
                 <div>
                     @include('rapidez::checkout.steps.place_order')
                 </div>
-            </div>
+            </form>
         </div>
         {{--
         TODO: This isn't very nice but not sure yet if we could redirect

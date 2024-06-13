@@ -9,15 +9,9 @@
         <div v-if="hasCart" v-cloak>
             <div class="flex gap-5">
                 <div class="w-3/4">
-                    <form v-on:submit.prevent="() => {
-                        // Not sure yet if this is the best idea but seems like
-                        // it gives a lot of flexibility on how you arrange
-                        // all checkout steps. But.. no validation; yet.
-                        // How can we know the event was successful?
-                        window.app.$emit('setShippingAddressesOnCart');
-                        window.app.$emit('setBillingAddressOnCart');
-                        window.Turbo.visit(window.url('{{ route('checkout', ['step' => 'payment']) }}'));
-                    }" v-on:change="window.app.$emit('setShippingAddressesOnCart')" class="flex flex-col gap-5">
+                    <form
+                        v-on:submit.prevent="(e) => {submitFieldsets(e.target?.form ?? e.target).then((result) => window.Turbo.visit(window.url('{{ route('checkout', ['step' => 'payment']) }}'))).catch();}"
+                        v-on:change="window.app.$emit('setShippingAddressesOnCart')" class="flex flex-col gap-5">
                         <h2 class="text-xl font-bold">@lang('Shipping address')</h2>
                         @include('rapidez::checkout.steps.shipping_address')
 

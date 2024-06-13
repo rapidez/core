@@ -14,7 +14,7 @@
     mutate-event="setShippingMethodsOnCart"
     v-slot="{ mutate, variables }"
 >
-    <div>
+    <div data-function="mutate">
         <template v-for="(method, index) in cart.shipping_addresses[0]?.available_shipping_methods">
             <x-rapidez::radio
                 name="shipping_method"
