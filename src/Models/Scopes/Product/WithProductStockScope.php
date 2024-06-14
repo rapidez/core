@@ -5,6 +5,7 @@ namespace Rapidez\Core\Models\Scopes\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
+use Rapidez\Core\Facades\Rapidez;
 
 class WithProductStockScope implements Scope
 {
@@ -14,7 +15,10 @@ class WithProductStockScope implements Scope
             $builder->selectRaw('ANY_VALUE(cataloginventory_stock_item.qty) AS qty');
         }
 
+        $configBackorder = Rapidez::config('cataloginventory/item_options/backorders', 0);
+
         $builder
+            ->selectRaw('ANY_VALUE(IF(cataloginventory_stock_item.use_config_backorders, ' . $configBackorder . ', cataloginventory_stock_item.backorders)) as backorder_type')
             ->selectRaw('ANY_VALUE(cataloginventory_stock_item.manage_stock) as manage_stock')
             ->selectRaw('ANY_VALUE(cataloginventory_stock_item.min_sale_qty) as min_sale_qty')
             ->selectRaw('ANY_VALUE(cataloginventory_stock_item.is_in_stock) AS in_stock')

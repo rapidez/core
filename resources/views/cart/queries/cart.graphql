@@ -3,6 +3,7 @@ total_quantity
 items {
     id
     quantity
+    qty_backordered
     product {
         @foreach(collect([
             'id',
