@@ -3,11 +3,11 @@
 }
 
 .pagination-button {
-    @apply !font-semibold !font-sans !border !border-border !rounded !bg-highlight !text-neutral !shadow disabled:opacity-40;
+    @apply !font-semibold !font-sans !border !border-border !rounded !bg-white !text-neutral !shadow;
 }
 
 .pagination-button.active {
-    @apply !border !border-border !bg-white !text-neutral !shadow-none;
+    @apply !border !border-none !bg-primary !text-white !shadow-none;
 }
 
 .pagination-button:first-child {
@@ -25,4 +25,8 @@
 .pagination-button:first-child,
 .pagination-button:last-child {
     @apply h-14 px-6 max-md:!m-0;
+}
+
+.pagination-button[disabled] {
+    @apply opacity-60;
 }
