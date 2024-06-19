@@ -3,6 +3,9 @@ total_quantity
 items {
     id
     quantity
+    @if (Rapidez::checkCompadreVersion('0.0.2'))
+        qty_backordered
+    @endif
     product {
         @foreach(collect([
             'id',
