@@ -247,7 +247,7 @@ export default {
 
                 Vue.set(this.customSelectedOptions, option.option_id, value)
             })
-        }
+        },
     },
 
     computed: {
@@ -379,7 +379,7 @@ export default {
                 })
             })
             return valuesPerAttribute
-        }
+        },
     },
 
     watch: {
