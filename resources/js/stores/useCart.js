@@ -122,10 +122,8 @@ export const hasOnlyVirtualItems = computed(() => {
 
 export const fixedProductTaxes = computed(() => {
     let taxes = {}
-    cart.value?.items?.forEach(item =>
-        item.prices?.fixed_product_taxes?.forEach(tax =>
-            taxes[tax.label] = (taxes[tax.label] ?? 0) + tax.amount.value
-        )
+    cart.value?.items?.forEach((item) =>
+        item.prices?.fixed_product_taxes?.forEach((tax) => (taxes[tax.label] = (taxes[tax.label] ?? 0) + tax.amount.value)),
     )
     return taxes
 })
