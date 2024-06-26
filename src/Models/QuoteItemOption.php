@@ -29,7 +29,11 @@ class QuoteItemOption extends Model
                 'option_ids'      => explode(',', $value),
                 default           => (function () use ($value) {
                     if (! $this->option) {
-                        return;
+                        if (is_string($value)) {
+                            return json_decode($value);
+                        }
+
+                        return null;
                     }
 
                     if (in_array($this->option->type, ['drop_down', 'radio'])) {
