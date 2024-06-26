@@ -30,7 +30,7 @@ class QuoteItemOption extends Model
                 default           => (function () use ($value) {
                     if (! $this->option) {
                         if (is_string($value)) {
-                            return json_decode($value);
+                            return json_decode($value) ?? $value;
                         }
 
                         return null;
