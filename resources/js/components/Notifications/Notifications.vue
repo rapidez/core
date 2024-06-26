@@ -3,6 +3,12 @@ import notification from './Notification.vue'
 Vue.component('notification', notification)
 
 export default {
+    props: {
+        sessionNotification: {
+            type: Object,
+            required: false
+        }
+    },
     data: () => ({
         notifications: [],
     }),
@@ -19,6 +25,10 @@ export default {
                 show: true,
             })
         })
+
+        if (this.sessionNotification) {
+            this.notifications.push(this.sessionNotification)
+        }
     },
 }
 </script>
