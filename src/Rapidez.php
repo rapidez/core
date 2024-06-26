@@ -11,9 +11,7 @@ use Rapidez\Core\Models\Store;
 
 class Rapidez
 {
-    public function __construct(protected Collection $routes)
-    {
-    }
+    public function __construct(protected Collection $routes) {}
 
     public function addFallbackRoute($action, $position = 9999)
     {
