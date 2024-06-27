@@ -97,6 +97,7 @@ export const cart = computed({
 
         cartStorage.value.virtualItems = virtualItems
         cartStorage.value.hasOnlyVirtualItems = hasOnlyVirtualItems
+        cartStorage.value.fixedProductTaxes = fixedProductTaxes
 
         return cartStorage.value
     },
@@ -117,6 +118,14 @@ export const virtualItems = computed(() => {
 
 export const hasOnlyVirtualItems = computed(() => {
     return cart.value.total_quantity === virtualItems.value.length
+})
+
+export const fixedProductTaxes = computed(() => {
+    let taxes = {}
+    cart.value?.items?.forEach((item) =>
+        item.prices?.fixed_product_taxes?.forEach((tax) => (taxes[tax.label] = (taxes[tax.label] ?? 0) + tax.amount.value)),
+    )
+    return taxes
 })
 
 export default () => cart
