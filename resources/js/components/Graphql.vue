@@ -76,9 +76,9 @@ export default {
                 let response = await window.magentoGraphQL(this.query, this.variables, options)
 
                 if (this.check) {
-                    if (!eval('response.data.' + this.check)) {
+                    if (!eval('response?.data?.' + this.check)) {
                         Turbo.visit(window.url(this.redirect))
-                        return
+                        return false;
                     }
                 }
 
@@ -90,6 +90,7 @@ export default {
             } catch (error) {
                 console.error(error)
                 this.errorCallback(error)
+                throw error
             }
         },
     },

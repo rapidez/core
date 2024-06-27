@@ -7,9 +7,13 @@ return [
 
     // The fully qualified class names of the controllers.
     'controllers' => [
-        'page'     => Rapidez\Core\Http\Controllers\PageController::class,
-        'product'  => Rapidez\Core\Http\Controllers\ProductController::class,
-        'category' => Rapidez\Core\Http\Controllers\CategoryController::class,
+        'category'    => Rapidez\Core\Http\Controllers\CategoryController::class,
+        'checkout'    => Rapidez\Core\Http\Controllers\CheckoutController::class,
+        'fallback'    => Rapidez\Core\Http\Controllers\FallbackController::class,
+        'healthcheck' => Rapidez\Core\Http\Controllers\HealthcheckController::class,
+        'page'        => Rapidez\Core\Http\Controllers\PageController::class,
+        'product'     => Rapidez\Core\Http\Controllers\ProductController::class,
+        'search'      => Rapidez\Core\Http\Controllers\SearchController::class,
     ],
 
     'fallback' => [

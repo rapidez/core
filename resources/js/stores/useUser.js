@@ -29,7 +29,7 @@ export const refresh = async function () {
     try {
         isRefreshing = true
         // TODO: Migrate to GraphQL?
-        userStorage.value = (await window.magentoAPI('GET', 'customers/me', {}, { redirectOnExpiration: false })) || {}
+        userStorage.value = (await window.magentoGraphQL(`{ customer { ${config.queries.customer} } }`))?.data?.customer;
         isRefreshing = false
     } catch (error) {
         isRefreshing = false
@@ -46,6 +46,45 @@ export const clear = async function () {
     token.value = ''
     userStorage.value = {}
     await clearCart()
+}
+
+export const isEmailAvailable = async function (email) {
+    if (!email) {
+        return true;
+    }
+
+    // As of Commerce 2.4.7, by default the query always returns a value of true for all email addresses.
+    // You can change this behavior by setting the Stores > Configuration > Sales > Checkout > Enable Guest Checkout Login field in the Admin to Yes.
+    return await magentoGraphQL(
+        'query isEmailAvailable ($email:String!) { isEmailAvailable (email: $email) { is_email_available } }',
+        {
+            email: email,
+        },
+    )
+    .then((response) => response.data.isEmailAvailable.is_email_available)
+    .catch(() => true)
+}
+
+export const register = async function (email, firstname, lastname, password, input = {}) {
+    return magentoGraphQL(
+        'mutation register ($input:CustomerCreateInput!) { createCustomerV2 (input: $input) { customer { email } } }',
+        {
+            input: {
+                email: email,
+                firstname: firstname,
+                lastname: lastname,
+                password: password,
+                ...input
+            }
+        },
+    )
+        .then(async (response) => {
+            if(response.data?.createCustomerV2?.customer?.email) {
+                await login(email, password);
+            }
+
+            return response;
+        })
 }
 
 export const login = async function (email, password) {
@@ -79,9 +118,11 @@ export const logout = async function () {
 
 export const user = computed({
     get() {
-        if (token.value && !userStorage.value?.id) {
+        if (token.value && !userStorage.value?.email) {
             refresh()
         }
+
+        userStorage.value.is_logged_in = Boolean(userStorage.value?.email)
 
         return userStorage.value
     },

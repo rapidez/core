@@ -93,9 +93,9 @@ export default {
 
     mounted() {
         if (this.mutateEvent) {
-            window.app.$on(this.mutateEvent, () => {
+            this.$nextTick(() => window.app.$on(this.mutateEvent, () => {
                 this.mutate()
-            })
+            }))
         }
     },
 
@@ -178,6 +178,7 @@ export default {
                 console.error(error)
                 this.error = error.message
                 Notify(window.config.translations.errors.wrong, 'warning')
+                throw error;
             } finally {
                 this.mutating = false
             }

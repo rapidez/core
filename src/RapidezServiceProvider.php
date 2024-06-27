@@ -268,7 +268,9 @@ class RapidezServiceProvider extends ServiceProvider
 
         ViewComponent::macro('renderOneliner', function () {
             /** @var ViewComponent $this */
-            return Str::squish($this->render());
+            return Str::of($this->render())
+                ->replaceMatches('/#.*/m', '')
+                ->squish();
         });
 
         return $this;
