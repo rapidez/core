@@ -41,7 +41,7 @@ export default {
         },
 
         async getShippingMethods() {
-            let responseData = await this.magentoCart('post', 'estimate-shipping-methods', { address: this.checkout.shipping_address })
+            let responseData = await this.magentoCart('post', 'estimate-shipping-methods', { address: this.shippingAddress })
             this.checkout.shipping_methods = responseData
 
             if (responseData.length === 1) {
@@ -53,7 +53,7 @@ export default {
             let responseData = await this.magentoCart('post', 'totals-information', {
                 addressInformation: {
                     address: {
-                        countryId: this.checkout.shipping_address.country_id,
+                        countryId: this.shippingAddress.country_id,
                     },
                 },
             })
