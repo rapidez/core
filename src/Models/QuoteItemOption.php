@@ -39,7 +39,6 @@ class QuoteItemOption extends Model
         )->shouldCache();
     }
 
-
     protected function label(): Attribute
     {
         return Attribute::make(
