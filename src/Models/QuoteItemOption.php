@@ -3,7 +3,7 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Support\Facades\DB;
+use TorMorten\Eventy\Facades\Eventy;
 
 class QuoteItemOption extends Model
 {
@@ -23,31 +23,22 @@ class QuoteItemOption extends Model
     protected function value(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => match ($this->code) {
-                'info_buyRequest' => json_decode($value),
-                'attributes'      => json_decode($value),
-                'option_ids'      => explode(',', $value),
-                default           => (function () use ($value) {
-                    if (! $this->option) {
-                        if (is_string($value)) {
-                            return json_decode($value) ?? $value;
-                        }
+            get: function (string $value) {
+                $value = Eventy::filter('quote_item_option.value', $value, $this);
 
-                        return null;
-                    }
+                if (isset($this->option) && in_array($this->option->type, ['drop_down', 'radio'])) {
+                    $value = config('rapidez.models.product_option_type_value')::find($value)->title;
+                }
 
-                    if (in_array($this->option->type, ['drop_down', 'radio'])) {
-                        return config('rapidez.models.product_option_type_value')::find($value)->title;
-                    }
+                if ($this->code === 'option_ids') {
+                    $value = explode(',', $value);
+                }
 
-                    if ($this->option->type == 'file') {
-                        return json_decode($value);
-                    }
-
-                    return $value;
-                })()
-            })->shouldCache();
+                return is_string($value) ? (json_decode($value) ?? $value) : $value;
+            }
+        )->shouldCache();
     }
+
 
     protected function label(): Attribute
     {
