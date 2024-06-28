@@ -34,7 +34,7 @@ class QuoteItemOption extends Model
                     $value = explode(',', $value);
                 }
 
-                return is_string($value) ?  (json_decode($value) ?? $value) : $value;
+                return is_string($value) ? (json_decode($value) ?? $value) : $value;
             }
         )->shouldCache();
     }
