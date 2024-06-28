@@ -1,6 +1,26 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.16.1...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.17.0...master)
+## [1.17.0](https://github.com/rapidez/core/releases/tag/1.17.0) - 2024-06-28
+
+### Fixed
+- Convert the object to an array (#508)
+### Changed
+- Fire events on checkout success (#507)
+- Always attempt to decode attribute value (#519)
+
+## [2.6.0](https://github.com/rapidez/core/releases/tag/2.6.0) - 2024-06-04
+
+### Added
+
+- Checkout step and success events (#506)
+- Dusk selectors for coupons (#511)
+
+### Fixed
+
+- Reset styling of the listing component (#463)
+- Convert the object to an array (#509)
+
 ## [1.16.1](https://github.com/rapidez/core/releases/tag/1.16.1) - 2024-05-29
 
 ### Fixed
