@@ -1,9 +1,4 @@
-<notifications
-    v-cloak
-    @if (session('notification'))
-        :session-notification="{{ json_encode(session('notification')) }}"
-    @endif
->
+<notifications v-cloak>
     <div class="fixed sm:max-w-sm sm:w-full top-6 right-6 left-6 sm:left-auto flex flex-col {{ config('rapidez.frontend.z-indexes.notification') }}" slot-scope="{ notifications }">
         <notification v-if="notifications.length" v-for="(notification, index) in notifications" :notification="notification" :key="index +1">
             <transition
