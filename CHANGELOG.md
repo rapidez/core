@@ -4,8 +4,11 @@
 ## [1.17.0](https://github.com/rapidez/core/releases/tag/1.17.0) - 2024-06-28
 
 ### Fixed
+
 - Convert the object to an array (#508)
+
 ### Changed
+
 - Fire events on checkout success (#507)
 - Always attempt to decode attribute value (#519)
 
