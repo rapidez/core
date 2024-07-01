@@ -612,13 +612,13 @@ arg@^5.0.2:
   resolved "https://registry.yarnpkg.com/arg/-/arg-5.0.2.tgz#c81433cc427c92c4dcf4865142dbca6f15acd59c"
   integrity sha512-PYjyFOLKQ9y57JvQ6QLo8dAgNqswh8M1RMJYdQduT6xbWSgK36P/Z/v+p888pM69jMMfS8Xd8F6I1kQ/I9HUGg==
 
-autoprefixer@^10.4.15:
-  version "10.4.18"
-  resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-10.4.18.tgz#fcb171a3b017be7cb5d8b7a825f5aacbf2045163"
-  integrity sha512-1DKbDfsr6KUElM6wg+0zRNkB/Q7WcKYAaK+pzXn+Xqmszm/5Xa9coeNdtP88Vi+dPzZnMjhge8GIV49ZQkDa+g==
+autoprefixer@^10.4.19:
+  version "10.4.19"
+  resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-10.4.19.tgz#ad25a856e82ee9d7898c59583c1afeb3fa65f89f"
+  integrity sha512-BaENR2+zBZ8xXhM4pUaKUxlVdxZ0EZhjvbopwnXmxRUfqDmwSpC2lAi/QXvx7NRdPCo1WKEcEF6mV64si1z4Ew==
   dependencies:
     browserslist "^4.23.0"
-    caniuse-lite "^1.0.30001591"
+    caniuse-lite "^1.0.30001599"
     fraction.js "^4.3.7"
     normalize-range "^0.1.2"
     picocolors "^1.0.0"
@@ -700,10 +700,15 @@ camelcase-css@^2.0.1:
   resolved "https://registry.yarnpkg.com/camelcase-css/-/camelcase-css-2.0.1.tgz#ee978f6947914cc30c6b44741b6ed1df7f043fd5"
   integrity sha512-QOSvevhslijgYwRx6Rv7zKdMF8lbRmx+uQGx2+vDc+KI/eBnsy9kit5aj23AgGu3pa4t9AgwbnXWqS+iOY+2aA==
 
-caniuse-lite@^1.0.30001587, caniuse-lite@^1.0.30001591:
+caniuse-lite@^1.0.30001587:
   version "1.0.30001597"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001597.tgz#8be94a8c1d679de23b22fbd944232aa1321639e6"
   integrity sha512-7LjJvmQU6Sj7bL0j5b5WY/3n7utXUJvAe1lxhsHDbLmwX9mdL86Yjtr+5SRCyf8qME4M7pU2hswj0FpyBVCv9w==
+
+caniuse-lite@^1.0.30001599:
+  version "1.0.30001636"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001636.tgz#b15f52d2bdb95fad32c2f53c0b68032b85188a78"
+  integrity sha512-bMg2vmr8XBsbL6Lr0UHXy/21m84FTxDLWn2FSqMd5PrlbMxwJlQnC2YWYxVgp66PZE+BBNF2jYQUBKCo1FDeZg==
 
 chalk@^2.4.2:
   version "2.4.2"
@@ -1173,10 +1178,10 @@ jackspeak@^2.3.5:
   optionalDependencies:
     "@pkgjs/parseargs" "^0.11.0"
 
-jiti@^1.19.1:
-  version "1.21.0"
-  resolved "https://registry.yarnpkg.com/jiti/-/jiti-1.21.0.tgz#7c97f8fe045724e136a397f7340475244156105d"
-  integrity sha512-gFqAIbuKyyso/3G2qhiO2OM6shY6EPP/R0+mkDbyspxKazh8BXDC5FiFsUjlczgdNz/vfra0da2y+aHrusLG/Q==
+jiti@^1.21.0:
+  version "1.21.6"
+  resolved "https://registry.yarnpkg.com/jiti/-/jiti-1.21.6.tgz#6c7f7398dd4b3142767f9a168af2f317a428d268"
+  integrity sha512-2yTgeWTWzMWkHu6Jp9NKgePDaYHbntiwvYuuJLbbN9vl7DC9DvXKOB2BC3ZZ92D3cvV/aflH0osDfwpHepQ53w==
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
@@ -1498,7 +1503,7 @@ postcss-value-parser@^4.0.0, postcss-value-parser@^4.2.0:
   resolved "https://registry.yarnpkg.com/postcss-value-parser/-/postcss-value-parser-4.2.0.tgz#723c09920836ba6d3e5af019f92bc0971c02e514"
   integrity sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==
 
-postcss@^8.4.14, postcss@^8.4.23, postcss@^8.4.27, postcss@^8.4.29:
+postcss@^8.4.14, postcss@^8.4.23, postcss@^8.4.27:
   version "8.4.35"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.35.tgz#60997775689ce09011edf083a549cea44aabe2f7"
   integrity sha512-u5U8qYpBCpN13BsiEB0CbR1Hhh4Gc0zLFuedrHJKMctHCHAGrMdG0PRM/KErzAL3CU6/eckEtmHNB3x6e3c0vA==
@@ -1506,6 +1511,15 @@ postcss@^8.4.14, postcss@^8.4.23, postcss@^8.4.27, postcss@^8.4.29:
     nanoid "^3.3.7"
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
+
+postcss@^8.4.38:
+  version "8.4.38"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.38.tgz#b387d533baf2054288e337066d81c6bee9db9e0e"
+  integrity sha512-Wglpdk03BSfXkHoQa3b/oulrotAkwrlLDRSOb9D0bN86FdRyE9lppSp33aHNPgBa0JKCoB+drFLZkQoRRYae5A==
+  dependencies:
+    nanoid "^3.3.7"
+    picocolors "^1.0.0"
+    source-map-js "^1.2.0"
 
 "prettier@^1.18.2 || ^2.0.0":
   version "2.8.8"
@@ -1642,6 +1656,11 @@ source-map-js@^1.0.2:
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.0.2.tgz#adbc361d9c62df380125e7f161f71c826f1e490c"
   integrity sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==
 
+source-map-js@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.2.0.tgz#16b809c162517b5b8c3e7dcd315a2a5c2612b2af"
+  integrity sha512-itJW8lvSA0TXEphiRoawsCksnlf8SyvmFzIhltqAHluXd88pkCd+cXJVHTDwdCr0IzwptSm035IHQktUu1QUMg==
+
 source-map@^0.5.7:
   version "0.5.7"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
@@ -1736,10 +1755,10 @@ tailwind-scrollbar-hide@^1.1.7:
   resolved "https://registry.yarnpkg.com/tailwind-scrollbar-hide/-/tailwind-scrollbar-hide-1.1.7.tgz#90b481fb2e204030e3919427416650c54f56f847"
   integrity sha512-X324n9OtpTmOMqEgDUEA/RgLrNfBF/jwJdctaPZDzB3mppxJk7TLIDmOreEDm1Bq4R9LSPu4Epf8VSdovNU+iA==
 
-tailwindcss@^3.3.3:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-3.4.1.tgz#f512ca5d1dd4c9503c7d3d28a968f1ad8f5c839d"
-  integrity sha512-qAYmXRfk3ENzuPBakNK0SRrUDipP8NQnEY6772uDhflcQz5EhRdD7JNZxyrFHVQNCwULPBn6FNPp9brpO7ctcA==
+tailwindcss@^3.4.4:
+  version "3.4.4"
+  resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-3.4.4.tgz#351d932273e6abfa75ce7d226b5bf3a6cb257c05"
+  integrity sha512-ZoyXOdJjISB7/BcLTR6SEsLgKtDStYyYZVLsUtWChO4Ps20CBad7lfJKVDiejocV4ME1hLmyY0WJE3hSDcmQ2A==
   dependencies:
     "@alloc/quick-lru" "^5.2.0"
     arg "^5.0.2"
@@ -1749,7 +1768,7 @@ tailwindcss@^3.3.3:
     fast-glob "^3.3.0"
     glob-parent "^6.0.2"
     is-glob "^4.0.3"
-    jiti "^1.19.1"
+    jiti "^1.21.0"
     lilconfig "^2.1.0"
     micromatch "^4.0.5"
     normalize-path "^3.0.0"

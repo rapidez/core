@@ -10,8 +10,10 @@
     :react="{and: reactiveFilters}"
     :sort-options="sortOptions"
     :inner-class="{
-        button: '!bg-inactive disabled:!bg-opacity-60 !text-white [&.active]:!bg-neutral',
-        sortOptions: '{{ $dropdownClasses }}'
+        button: 'pagination-button',
+        current: 'current-button',
+        sortOptions: '{{ $dropdownClasses }}',
+        pagination: 'pagination'
     }"
     prev-label="@lang('Prev')"
     next-label="@lang('Next')"
