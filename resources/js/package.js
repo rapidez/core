@@ -128,7 +128,7 @@ function init() {
             loadingCount: function (count) {
                 window.app.$data.loading = count > 0
             },
-        },
+        }
     })
 
     const lastStoreCode = useLocalStorage('last_store_code', window.config.store_code)
@@ -153,7 +153,10 @@ function init() {
                     console.log(...arguments)
             }
         })
-    }
-}
 
+    }
+
+    const event = new CustomEvent('vue:loaded')
+    document.dispatchEvent(event)
+}
 document.addEventListener('turbo:load', init)
