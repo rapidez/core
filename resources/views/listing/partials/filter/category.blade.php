@@ -12,7 +12,7 @@
             <div slot-scope="{ hasResults, results }">
                 <strong v-if="hasResults">@lang('Category')</strong>
                 <input class="hidden" type="radio" name="category" value="" :checked="!value" v-on:change="setQuery({})"/>
-                <ul class="mb-5">
+                <ul class="filter-category">
                     <category-filter-category
                         v-for="category in results"
                         v-bind:key="category.key"
@@ -21,6 +21,7 @@
                         :set-query="setQuery"
                     />
                 </ul>
+
             </div>
         </category-filter>
     </div>
