@@ -8,7 +8,7 @@ let isRefreshing = false
 
 export const refresh = async function () {
     if (!token.value) {
-        userStorage.value = {}
+        clear()
         return false
     }
 
@@ -26,7 +26,7 @@ export const refresh = async function () {
         userStorage.value = !token.value ? {} : response.data
     } catch (error) {
         if (error.response.status == 401) {
-            token.value = ''
+            clear()
             return false
         }
 
