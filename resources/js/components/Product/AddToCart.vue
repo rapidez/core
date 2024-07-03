@@ -220,7 +220,7 @@ export default {
             return addition
         },
         async setDefaultOptions() {
-            if (!window.config.add_to_cart.auto_select_configurable_options || !window.config.product?.super_attributes) {
+            if (!window.config.add_to_cart?.auto_select_configurable_options || !window.config.product?.super_attributes) {
                 return
             }
             // We do not loop and use the values of enabledOptions directly.
@@ -230,7 +230,7 @@ export default {
             })
         },
         async setDefaultCustomSelectedOptions() {
-            if (!window.config.add_to_cart.auto_select_product_options || !window.config.product?.options) {
+            if (!window.config.add_to_cart?.auto_select_product_options || !window.config.product?.options) {
                 return
             }
 
