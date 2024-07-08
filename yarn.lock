@@ -1059,10 +1059,9 @@ gmap-vue@^3.5.4:
   dependencies:
     "@googlemaps/markerclusterer" "^2.0.4"
 
-graphql-combine-query@^1.2.4:
+graphql-combine-query@indykoning/graphql-combine-query#feature/add-allowed-duplicates:
   version "1.2.4"
-  resolved "https://registry.yarnpkg.com/graphql-combine-query/-/graphql-combine-query-1.2.4.tgz#73013fbef0671762569a70780778da8eb2157ef2"
-  integrity sha512-Os0d5cS8nH1cRnejGyACda0lraPzMJJjtd21KrfjKi1NWgEgzXzP8s29cpLlne+Y+51/2mS4j/3aTaIlCYMexg==
+  resolved "https://codeload.github.com/indykoning/graphql-combine-query/tar.gz/12c517bbe231077f8e1a677df8786a506ef902be"
 
 graphql-tag@^2.12.6:
   version "2.12.6"

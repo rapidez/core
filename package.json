@@ -16,7 +16,7 @@
         "autoprefixer": "^10.4.15",
         "cross-env": "^7.0.3",
         "graphql": "^16.8.1",
-        "graphql-combine-query": "^1.2.4",
+        "graphql-combine-query": "indykoning/graphql-combine-query#feature/add-allowed-duplicates",
         "graphql-tag": "^2.12.6",
         "laravel-vite-plugin": "^0.7.3",
         "postcss": "^8.4.29",
