@@ -1,3 +1,5 @@
+@include('rapidez::cart.queries.cart')
+
 mutation setGuestEmailOnCart (
     $cart_id: String!,
     $email: String!,
@@ -6,6 +8,6 @@ mutation setGuestEmailOnCart (
         cart_id: $cart_id,
         email: $email
     }) {
-        cart { @include('rapidez::cart.queries.cart') }
+        cart { ...cart }
     }
 }

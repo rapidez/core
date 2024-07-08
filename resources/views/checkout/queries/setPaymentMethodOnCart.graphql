@@ -1,3 +1,5 @@
+@include('rapidez::cart.queries.cart')
+
 mutation (
     $cart_id: String!,
     $code: String!,
@@ -8,6 +10,6 @@ mutation (
             code: $code
         }
     }) {
-        cart { @include('rapidez::cart.queries.cart') }
+        cart { ...cart }
     }
 }
