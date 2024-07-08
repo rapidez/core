@@ -27,6 +27,11 @@ class Customer extends Model implements AuthenticatableContract
         return $this->hasMany(config('rapidez.models.oauth_token'), 'customer_id');
     }
 
+    public function group()
+    {
+        return $this->belongsTo(CustomerGroup::class, 'group_id');
+    }
+
     public function getRememberTokenName()
     {
         return '';
