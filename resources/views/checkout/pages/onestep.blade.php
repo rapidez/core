@@ -11,7 +11,7 @@
                 submitFieldsets(e.target?.form ?? e.target).then((result) => window.app.$emit('placeOrder')).catch();
             }">
                 <div class="col-span-2">
-                    @include('rapidez::checkout.steps.email')
+                    @include('rapidez::checkout.steps.login')
                 </div>
                 <div>
                     <h2 class="text-xl font-bold">@lang('Shipping address')</h2>

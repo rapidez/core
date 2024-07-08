@@ -14,6 +14,10 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        group: {
+            // Group name for combining graphql queries, use "nameless" to join it with all others
+            type: String,
+        },
         check: {
             type: String,
         },
@@ -29,10 +33,6 @@ export default {
         errorCallback: {
             type: Function,
             default: (error) => Notify(window.config.translations.errors.wrong, 'warning'),
-        },
-        store: {
-            type: String,
-            default: window.config.store_code,
         },
     },
 
@@ -63,17 +63,7 @@ export default {
 
         async runQuery() {
             try {
-                let options = {
-                    headers: {},
-                    redirectOnExpiration: true,
-                    notifyOnError: true,
-                }
-
-                if (this.store) {
-                    options['headers']['Store'] = this.store
-                }
-
-                let response = await window.magentoGraphQL(this.query, this.variables, options)
+                let response = this.group ?  await window.combiningGraphQL(this.query, this.variables, undefined, this.group) : await window.magentoGraphQL(this.query, this.variables)
 
                 if (this.check) {
                     if (!eval('response?.data?.' + this.check)) {

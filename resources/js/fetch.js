@@ -65,40 +65,45 @@ export const rapidezAPI = (window.rapidezAPI = async (method, endpoint, data = {
     return await response.json()
 })
 
-export const combineGraphqlQueries = window.combineGraphqlQueries = function (queries) {
+export const combineGraphqlQueries = window.combineGraphqlQueries = function (queries, name = '') {
     if (!Array.isArray(queries)) {
         queries = [...arguments];
     }
-
     // Transform all queries into a gql object
     queries = queries.map((query) => typeof query === 'string' ? gql(query) : query);
 
-    const name = queries.reduce((str, query) => str + query.definitions.reduce((name, definition) => name + definition.name?.value, ''), '');
+    name = queries.reduce((str, query) => str + query.definitions.reduce((name, definition) => name + definition.name?.value, ''), name);
+
     const { document } = queries.reduce((newQuery, query) => {
-        return newQuery.add(query)
-    }, combineQuery(name));
+        return newQuery.add(query, undefined, {allow_duplicates: ['cart_id']})
+    }, combineQuery(name, {allow_duplicates: ['cart_id']}));
 
     return print(document);
 }
 
-let pendingQuery = null;
-let pendingData = [];
+let pendingQuery = [];
 
-export const combiningGraphQL = (window.combiningGraphQL = async (query, variables) => {
-    if (!pendingQuery) {
-        pendingQuery = new Promise((resolve, reject) => window.setTimeout(() => {
-            const query = combineGraphqlQueries(pendingData.map(([query, variables]) => query))
-            const variables = pendingData.reduce((combinedVariables, [query, variables]) => {return {...combinedVariables, ...variables};}, {});
+export const combiningGraphQL = (window.combiningGraphQL = async (query, variables, options = {}, name) => {
+    let pendingQueryName = name ?? 'nameless';
+    if (!pendingQuery[pendingQueryName]) {
+        pendingQuery[pendingQueryName] = {
+            queries: [],
+            options: [options],
+            promise: new Promise((resolve, reject) => window.setTimeout(() => {
+                const query = combineGraphqlQueries(pendingQuery[pendingQueryName].queries.map(([query, variables]) => query), name)
+                const variables = pendingQuery[pendingQueryName].queries.reduce((combinedVariables, [query, variables]) => {return {...combinedVariables, ...variables};}, {});
+                const options = pendingQuery[pendingQueryName].options.reduce((combinedOptions, options) => {return {...combinedOptions, ...options};}, {});
 
-            pendingData = [];
-            pendingQuery = null;
+                pendingQuery[pendingQueryName] = null;
 
-            magentoGraphQL(query, variables).then(resolve)
-        }, 5))
+                magentoGraphQL(query, variables, options).then(resolve)
+            }, 5))
+        }
     }
 
-    pendingData.push([query, variables])
-    return pendingQuery
+    pendingQuery[pendingQueryName].queries.push([query, variables])
+    pendingQuery[pendingQueryName].options.push(options)
+    return pendingQuery[pendingQueryName].promise
 })
 
 export const magentoGraphQL = (window.magentoGraphQL = async (

@@ -4,6 +4,7 @@
         cart_id: mask,
         method: cart.shipping_addresses[0]?.selected_shipping_method?.carrier_code+'/'+cart.shipping_addresses[0]?.selected_shipping_method?.method_code,
     }"
+    group="shipping"
     :callback="updateCart"
     :error-callback="checkResponseForExpiredCart"
     :before-request="function (query, variables, options) {

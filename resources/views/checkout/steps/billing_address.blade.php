@@ -8,6 +8,7 @@
     }"
     :callback="updateCart"
     :error-callback="checkResponseForExpiredCart"
+    group="billing"
     mutate-event="setBillingAddressOnCart"
     v-slot="{ mutate, variables }"
 >

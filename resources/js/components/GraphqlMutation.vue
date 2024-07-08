@@ -1,5 +1,5 @@
 <script>
-import { GraphQLError, magentoGraphQL } from '../fetch'
+import { GraphQLError, combiningGraphQL, magentoGraphQL } from '../fetch'
 import InteractWithUser from './User/mixins/InteractWithUser'
 
 export default {
@@ -13,6 +13,10 @@ export default {
         variables: {
             type: Object,
             default: () => ({}),
+        },
+        group: {
+            // Group name for combining graphql queries, use "nameless" to join it with all others
+            type: String,
         },
         watch: {
             type: Boolean,
@@ -53,10 +57,6 @@ export default {
         recaptcha: {
             type: Boolean,
             default: false,
-        },
-        store: {
-            type: String,
-            default: window.config.store_code,
         },
     },
 
@@ -111,10 +111,6 @@ export default {
                     options['headers']['Authorization'] = await this.getReCaptchaToken()
                 }
 
-                if (this.store) {
-                    options['headers']['Store'] = this.store
-                }
-
                 let variables = this.data,
                     query = this.query
 
@@ -122,7 +118,7 @@ export default {
                     ;[query, variables, options] = await this.beforeRequest(this.query, this.variables, options)
                 }
 
-                let response = await magentoGraphQL(query, variables, options).catch(async (error) => {
+                let response = await (this.group ? combiningGraphQL(query, variables, options, this.group) : magentoGraphQL(query, variables, options)).catch(async (error) => {
                     if (!GraphQLError.prototype.isPrototypeOf(err)) {
                         throw error
                     }
