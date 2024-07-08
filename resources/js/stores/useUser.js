@@ -1,10 +1,38 @@
 import { useLocalStorage, useSessionStorage, StorageSerializers } from '@vueuse/core'
+import { useCookies } from '@vueuse/integrations/useCookies'
 import { clear as clearCart, fetchCustomerCart, linkUserToCart } from './useCart'
 import { computed, watch } from 'vue'
 import Jwt from '../jwt'
 import { mask } from './useMask'
 
-export const token = useLocalStorage('token', '')
+const localstorageToken = useLocalStorage('token', '');
+const { get: getCookie, set: setCookie } = useCookies(['token']);
+
+export const token = computed({
+    get() {
+        const token = getCookie('token') ?? '';
+        localstorageToken.value = token;
+
+        return token
+    },
+    set(value) {
+        let options = {
+            path: '/',
+            secure: window.location.protocol === "https:",
+            maxAge: 31556952
+        }
+
+        if (Jwt.isJwt(value)) {
+            delete options['maxAge'];
+            options.expires = Jwt.decode(value).expDate;
+        }
+
+        setCookie('token', value, options);
+        localstorageToken.value = value;
+    },
+})
+
+
 const userStorage = useSessionStorage('user', {}, { serializer: StorageSerializers.object })
 let isRefreshing = false
 

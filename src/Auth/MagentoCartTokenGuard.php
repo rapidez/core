@@ -2,46 +2,30 @@
 
 namespace Rapidez\Core\Auth;
 
+use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Auth\TokenGuard;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Http\Request;
+use Illuminate\Cookie\Middleware\EncryptCookies;
 
-class MagentoCustomerTokenGuard extends TokenGuard implements Guard
+class MagentoCartTokenGuard extends MagentoCustomerTokenGuard implements Guard
 {
     public static function register()
     {
         app()->afterResolving(EncryptCookies::class, function (EncryptCookies $middleware) {
-            $middleware->disableFor('token');
+            $middleware->disableFor('mask');
         });
 
-        auth()->extend('magento-customer', function (Application $app, string $name, array $config) {
-            return new static(auth()->createUserProvider($config['provider']), request(), 'token', 'token');
+        auth()->extend('magento-cart', function (Application $app, string $name, array $config) {
+            return new static(auth()->createUserProvider($config['provider']), request(), 'mask', 'mask');
         });
 
         config([
-            'auth.guards.magento-customer' => [
-                'driver'   => 'magento-customer',
+            'auth.guards.magento-cart' => [
+                'driver'   => 'magento-cart',
                 'provider' => 'users',
             ],
         ]);
-    }
-
-    /**
-     * Get the token for the current request.
-     *
-     * @return string
-     */
-    public function getTokenForRequest()
-    {
-        $token = parent::getTokenForRequest();
-
-        if (empty($token)) {
-            $token = $this->request->cookie($this->inputKey);
-        }
-
-        return $token;
     }
 
     /**
@@ -51,6 +35,7 @@ class MagentoCustomerTokenGuard extends TokenGuard implements Guard
      */
     public function user()
     {
+        Authenticate::redirectUsing(fn ($request) => route('cart'));
         // If we've already retrieved the user for the current request we can just
         // return it back immediately. We do not want to fetch the user data on
         // every call to this method because that would be tremendously slow.
@@ -79,6 +64,6 @@ class MagentoCustomerTokenGuard extends TokenGuard implements Guard
 
     protected function retrieveByToken($token)
     {
-        return config('rapidez.models.customer')::whereToken($token)->first();
+        return config('rapidez.models.quote')::whereQuoteIdOrCustomerToken($token)->first();
     }
 }

@@ -4,7 +4,7 @@
         cart_id: mask,
         code: cart.selected_payment_method.code,
     }"
-    group="checkout"
+    group="payment"
     :callback="updateCart"
     :error-callback="checkResponseForExpiredCart"
     mutate-event="setPaymentMethodOnCart"

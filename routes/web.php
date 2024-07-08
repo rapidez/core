@@ -12,7 +12,7 @@ Route::middleware('web')->group(function () {
     Route::get('catalog/category/view/id/{categoryId}', [config('rapidez.routing.controllers.category'), 'show']);
 
     Route::view('cart', 'rapidez::cart.overview')->name('cart');
-    Route::get('checkout/{step?}', config('rapidez.routing.controllers.checkout'))->name('checkout');
+    Route::get('checkout/{step?}', config('rapidez.routing.controllers.checkout'))->middleware('auth:magento-cart')->name('checkout');
     Route::get('search', config('rapidez.routing.controllers.search'))->name('search');
     Route::fallback(config('rapidez.routing.controllers.fallback'));
 });

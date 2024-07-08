@@ -6,7 +6,7 @@
         ...cart.shipping_addresses[0],
         country_code: cart.shipping_addresses[0]?.country.code || window.address_defaults.country_code
     }"
-    group="checkout"
+    group="shipping"
     :callback="updateCart"
     :error-callback="checkResponseForExpiredCart"
     mutate-event="setShippingAddressesOnCart"

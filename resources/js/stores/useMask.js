@@ -1,7 +1,28 @@
 import { useLocalStorage } from '@vueuse/core'
-import { token, user } from './useUser'
+import { useCookies } from '@vueuse/integrations/useCookies'
+import { computed } from 'vue'
 
-export const mask = useLocalStorage('mask', '')
+const localstorageMask = useLocalStorage('mask', '');
+const { get: getCookie, set: setCookie } = useCookies(['mask']);
+
+export const mask = computed({
+    get() {
+        const mask = getCookie('mask') ?? '';
+        localstorageMask.value = mask;
+
+        return mask
+    },
+    set(value) {
+        let options = {
+            path: '/',
+            secure: window.location.protocol === "https:",
+            maxAge: 31556952
+        }
+
+        setCookie('mask', value, options);
+        localstorageMask.value = value;
+    },
+})
 
 export const refreshMask = async function () {
     try {
