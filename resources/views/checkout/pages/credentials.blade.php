@@ -11,7 +11,7 @@
                 <div class="w-3/4">
                     <form
                         v-on:submit.prevent="(e) => {submitFieldsets(e.target?.form ?? e.target).then((result) => window.Turbo.visit(window.url('{{ route('checkout', ['step' => 'payment']) }}'))).catch();}"
-                        v-on:change="window.app.$emit('setShippingAddressesOnCart')" class="flex flex-col gap-5">
+                        class="flex flex-col gap-5">
                         <h2 class="text-xl font-bold">@lang('Shipping address')</h2>
                         @include('rapidez::checkout.steps.shipping_address')
 

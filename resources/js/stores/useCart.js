@@ -1,6 +1,7 @@
 import { StorageSerializers, asyncComputed, useLocalStorage, useMemoize } from '@vueuse/core'
 import { computed, watch } from 'vue'
 import { mask, clearMask } from './useMask'
+import { user } from './useUser'
 
 const cartStorage = useLocalStorage('cart', {}, { serializer: StorageSerializers.object })
 let age = 0
@@ -105,6 +106,29 @@ export const getAttributeValues = async function () {
     return await fetchAttributeValuesMemo(window.config.cart_attributes)
 }
 
+function areAddressesSame(address1, address2) {
+    const fieldsToCompare = [
+        'city',
+        'postcode',
+        'company',
+        'firstname',
+        'lastname',
+        'telephone'
+    ];
+
+    return fieldsToCompare.every((field) => address1[field] === address2[field]) && [0,1,2].every((key) => address1?.street[key] === address2?.street[key])
+}
+
+function addCustomerAddressId(address) {
+    if (address?.customer_address_id) {
+        return address
+    }
+    const customerAddress = user.value?.addresses?.find((customerAddress) => areAddressesSame(customerAddress, address))
+    address.customer_address_id = address.customer_address_id || customerAddress?.id
+
+    return address
+}
+
 export const cart = computed({
     get() {
         if (!cartStorage.value?.id && mask.value) {
@@ -117,6 +141,9 @@ export const cart = computed({
         return cartStorage.value
     },
     set(value) {
+        value.shipping_addresses = value.shipping_addresses?.map(addCustomerAddressId)
+        value.billing_address = addCustomerAddressId(value.billing_address)
+        value.billing_address.same_as_shipping = areAddressesSame(value.shipping_addresses[0], value.billing_address)
         cartStorage.value = value
         age = Date.now()
 

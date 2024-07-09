@@ -15,7 +15,7 @@
     mutate-event="setShippingMethodsOnCart"
     v-slot="{ mutate, variables }"
 >
-    <div data-function="mutate">
+    <fieldset data-function="mutate" v-on:change="window.app.$emit('setShippingAddressesOnCart')">
         <template v-for="(method, index) in cart.shipping_addresses[0]?.available_shipping_methods">
             <x-rapidez::radio
                 name="shipping_method"
@@ -30,6 +30,6 @@
                 <span v-if="method.amount.value">- @{{ method.amount.value | price }}</span>
             </x-rapidez::radio>
         </template>
-    </div>
+    </fieldset>
 </graphql-mutation>
 

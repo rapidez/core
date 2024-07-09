@@ -1,0 +1,18 @@
+@include('rapidez::cart.queries.cart')
+
+mutation setExistingBillingAddressOnCart (
+    $cart_id: String!,
+    $customer_address_id: Int,
+    $same_as_shipping: Boolean
+) {
+    setBillingAddressOnCart(input: {
+        cart_id: $cart_id,
+        billing_address: {
+            customer_address_id: $customer_address_id,
+            same_as_shipping: $same_as_shipping,
+            # use_for_shipping: $use_for_shipping,
+        }
+    }) {
+        cart { ...cart }
+    }
+}

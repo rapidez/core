@@ -1,11 +1,12 @@
 <graphql-mutation
-    :query="config.queries.setBillingAddressOnCart"
-    :variables="{
+    :query="config.queries.setNewBillingAddressOnCart"
+    :variables="JSON.parse(JSON.stringify({
         cart_id: mask,
         ...window.address_defaults,
         ...cart.billing_address,
         country_code: cart.billing_address?.country.code || window.address_defaults.country_code
-    }"
+    }))"
+    :before-request="(query, variables, options) => [variables.customer_address_id ? config.queries.setExistingBillingAddressOnCart : query, variables, options]"
     :callback="updateCart"
     :error-callback="checkResponseForExpiredCart"
     group="billing"
@@ -13,16 +14,12 @@
     v-slot="{ mutate, variables }"
 >
     <div data-function="mutate">
-        {{--
-        TODO: Same problem as in the sidebar; how do we know it was previously selected?
-        As we're not getting this back from GraphQL...
-        --}}
         <x-rapidez::checkbox v-model="variables.same_as_shipping">
             @lang('My billing and shipping address are the same')
         </x-rapidez::checkbox>
 
-        <div v-if="!variables.same_as_shipping">
+        <fieldset v-if="!variables.same_as_shipping" v-on:change="window.app.$emit('setBillingAddressOnCart')">
             @include('rapidez::checkout.partials.address', ['type' => 'billing'])
-        </div>
+        </fieldset>
     </div>
 </graphql-mutation>

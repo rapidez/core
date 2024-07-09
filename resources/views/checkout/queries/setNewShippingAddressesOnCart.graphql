@@ -1,16 +1,16 @@
 @include('rapidez::cart.queries.cart')
 
-mutation (
+mutation setNewShippingAddressOnCart (
     $cart_id: String!,
     $prefix: String,
-    $firstname: String!,
+    $firstname: String,
     $middlename: String,
-    $lastname: String!,
+    $lastname: String,
     $suffix: String,
     $postcode: String,
     $street: [String]!,
     $city: String!,
-    $country_code: String!,
+    $country_code: String,
     $telephone: String,
     $fax: String,
     $company: String,
@@ -20,7 +20,6 @@ mutation (
         cart_id: $cart_id,
         shipping_addresses: [
             {
-                # customer_address_id: $customer_address_id,
                 address: {
                     prefix: $prefix,
                     firstname: $firstname,
