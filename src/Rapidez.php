@@ -7,6 +7,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Event;
+use Rapidez\Core\Models\Config;
+use Rapidez\Core\Models\ConfigScopes;
 use Rapidez\Core\Models\Store;
 
 class Rapidez
@@ -38,7 +40,7 @@ class Rapidez
 
     public function config(string $path, $default = null, bool $sensitive = false): ?string
     {
-        return config('rapidez.models.config')::getCachedByPath($path, $default, $sensitive);
+        return config('rapidez.models.config')::getValue($path, options: ['cache' => true, 'decrypt' => $sensitive]) ?? $default;
     }
 
     public function content($content)
@@ -107,6 +109,26 @@ class Rapidez
         config()->set('rapidez.group', $store['group_id']);
         config()->set('rapidez.root_category_id', $store['root_category_id']);
         config()->set('frontend.base_url', url('/'));
+
+        $magentoUrl = trim(
+            Config::getValue('web/secure/base_url', ConfigScopes::SCOPE_WEBSITE) ?? config()->get('rapidez.magento_url'),
+            '/'
+        );
+        if ($magentoUrl !== url('/')) {
+            config()->set('rapidez.magento_url', $magentoUrl);
+        }
+
+        $mediaUrl = trim(
+            str_replace(
+                ['{{secure_base_url}}', '{{unsecure_base_url}}'],
+                config()->get('rapidez.magento_url') . '/',
+                Config::getValue('web/secure/base_media_url', ConfigScopes::SCOPE_WEBSITE) ?? config()->get('rapidez.media_url')
+            ),
+            '/'
+        );
+        if ($mediaUrl !== url('/media')) {
+            config()->set('rapidez.media_url', $mediaUrl);
+        }
 
         App::setLocale(strtok(Rapidez::config('general/locale/code', 'en_US'), '_'));
 
