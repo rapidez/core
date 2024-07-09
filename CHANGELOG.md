@@ -1,6 +1,16 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/1.17.0...1.x)
+[Unreleased changes](https://github.com/rapidez/core/compare/1.18.0...1.18.0)
+## [1.18.0](https://github.com/rapidez/core/releases/tag/1.18.0) - 2024-07-09
+
+### Added
+
+- Customer group relation (#527)
+
+### Fixed
+
+- Changelog per branch (#523)
+
 ## [1.17.0](https://github.com/rapidez/core/releases/tag/1.17.0) - 2024-06-28
 
 ### Fixed
