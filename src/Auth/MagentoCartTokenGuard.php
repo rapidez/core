@@ -3,7 +3,6 @@
 namespace Rapidez\Core\Auth;
 
 use Illuminate\Auth\Middleware\Authenticate;
-use Illuminate\Auth\TokenGuard;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Cookie\Middleware\EncryptCookies;

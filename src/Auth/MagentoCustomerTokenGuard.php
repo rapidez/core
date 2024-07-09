@@ -4,8 +4,8 @@ namespace Rapidez\Core\Auth;
 
 use Illuminate\Auth\TokenGuard;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Http\Request;
 
 class MagentoCustomerTokenGuard extends TokenGuard implements Guard
