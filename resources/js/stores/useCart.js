@@ -1,5 +1,5 @@
 import { StorageSerializers, asyncComputed, useLocalStorage, useMemoize } from '@vueuse/core'
-import { computed, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { mask, clearMask } from './useMask'
 import { user } from './useUser'
 
@@ -163,5 +163,10 @@ export const virtualItems = computed(() => {
 export const hasOnlyVirtualItems = computed(() => {
     return cart.value.total_quantity === virtualItems.value.length
 })
+
+watch(mask, refresh);
+if(cartStorage.value?.id && !mask.value) {
+    clear()
+}
 
 export default () => cart
