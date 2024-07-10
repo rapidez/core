@@ -12,7 +12,7 @@ class CheckoutSuccessController
         // This filter is responsible for checking successfull payment, and if it isn't re-enabling the cart.
         $success = Eventy::filter('checkout.checksuccess', true, $request);
 
-        if (!$success) {
+        if (! $success) {
             return redirect('cart');
         }
 
