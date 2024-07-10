@@ -8,6 +8,7 @@ if (!window.process) {
 
 import './polyfills'
 import { useLocalStorage, StorageSerializers, useScrollLock } from '@vueuse/core'
+import useOrder from './stores/useOrder.js'
 import useCart from './stores/useCart'
 import useUser from './stores/useUser'
 import useMask from './stores/useMask'
@@ -63,6 +64,7 @@ function init() {
             loading: false,
             loadAutocomplete: false,
             cart: useCart(),
+            order: useOrder(),
             user: useUser(),
             mask: useMask(),
             swatches: swatches,

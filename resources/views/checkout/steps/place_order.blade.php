@@ -1,8 +1,9 @@
 <graphql-mutation
     :query="config.queries.placeOrder"
     :variables="{ cart_id: mask }"
-    {{-- :callback="storeOrderInLocalstorageAndRedirectToSuccessPage" --}}
+    :callback="handlePlaceOrder"
     mutate-event="placeOrder"
+    redirect="{{ route('checkout.success') }}"
     {{-- :error-callback="alert" --}}
     v-slot="{ mutate, variables }"
 >

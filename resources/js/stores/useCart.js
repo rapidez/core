@@ -116,11 +116,11 @@ function areAddressesSame(address1, address2) {
         'telephone'
     ];
 
-    return fieldsToCompare.every((field) => address1[field] === address2[field]) && [0,1,2].every((key) => address1?.street[key] === address2?.street[key])
+    return fieldsToCompare.every((field) => address1?.[field] === address2?.[field]) && [0,1,2].every((key) => address1?.street?.[key] === address2?.street?.[key])
 }
 
 function addCustomerAddressId(address) {
-    if (address?.customer_address_id) {
+    if (address?.customer_address_id || address === null) {
         return address
     }
     const customerAddress = user.value?.addresses?.find((customerAddress) => areAddressesSame(customerAddress, address))
@@ -142,8 +142,10 @@ export const cart = computed({
     },
     set(value) {
         value.shipping_addresses = value.shipping_addresses?.map(addCustomerAddressId)
-        value.billing_address = addCustomerAddressId(value.billing_address)
-        value.billing_address.same_as_shipping = areAddressesSame(value.shipping_addresses[0], value.billing_address)
+        if (value.billing_address !== null) {
+            value.billing_address = addCustomerAddressId(value.billing_address)
+            value.billing_address.same_as_shipping = areAddressesSame(value.shipping_addresses[0], value.billing_address)
+        }
         cartStorage.value = value
         age = Date.now()
 

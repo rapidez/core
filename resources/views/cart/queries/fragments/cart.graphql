@@ -1,3 +1,5 @@
+@include('rapidez::cart.queries.fragments.product')
+
 fragment cart on Cart {
     id
     # TODO: Check if virtual orders are working
@@ -7,29 +9,7 @@ fragment cart on Cart {
         id
         quantity
         product {
-            @foreach(collect([
-                'id',
-                'sku',
-                'name',
-                'type_id',
-                'url_key',
-                'url_suffix',
-            ])->merge(config('rapidez.frontend.cart_attributes'))->unique() as $attribute)
-                {{ $attribute }}
-            @endforeach
-            image {
-                url
-            }
-            crosssell_products {
-                id
-            }
-            @if (Rapidez::checkCompadreVersion('0.0.1'))
-                stock_item {
-                    max_sale_qty
-                    min_sale_qty
-                    qty_increments
-                }
-            @endif
+            ...product
         }
         prices {
             price {

@@ -1,0 +1,5 @@
+fragment order on Order {
+    order_number
+    #  Still used by PSPs
+    {{ Eventy::filter('checkout.queries.order.data', '') }}
+}

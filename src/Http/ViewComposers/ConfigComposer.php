@@ -48,7 +48,7 @@ class ConfigComposer
         // it harder to override if there was already something set from a
         // package or project? Not sure what the order will be.
         Config::set('frontend.queries', [
-            'cart'                                  => view('rapidez::cart.queries.cart')->renderOneliner(),
+            'cart'                                  => view('rapidez::cart.queries.fragments.cart')->renderOneliner(),
             'customer'                              => view('rapidez::customer.queries.customer')->renderOneliner(),
             'setGuestEmailOnCart'                   => view('rapidez::checkout.queries.setGuestEmailOnCart')->renderOneliner(),
             'setNewShippingAddressesOnCart'         => view('rapidez::checkout.queries.setNewShippingAddressesOnCart')->renderOneliner(),
@@ -57,6 +57,8 @@ class ConfigComposer
             'setExistingBillingAddressOnCart'       => view('rapidez::checkout.queries.setExistingBillingAddressOnCart')->renderOneliner(),
             'setShippingMethodsOnCart'              => view('rapidez::checkout.queries.setShippingMethodsOnCart')->renderOneliner(),
             'setPaymentMethodOnCart'                => view('rapidez::checkout.queries.setPaymentMethodOnCart')->renderOneliner(),
+            'order'                                 => view('rapidez::checkout.queries.fragments.order')->renderOneliner(),
+            'orderV2'                               => view('rapidez::checkout.queries.fragments.orderV2')->renderOneliner(),
             'placeOrder'                            => view('rapidez::checkout.queries.placeOrder')->renderOneliner(),
         ]);
     }

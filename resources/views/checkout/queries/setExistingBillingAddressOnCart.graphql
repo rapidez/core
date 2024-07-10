@@ -1,4 +1,4 @@
-@include('rapidez::cart.queries.cart')
+@include('rapidez::cart.queries.fragments.cart')
 
 mutation setExistingBillingAddressOnCart (
     $cart_id: String!,
