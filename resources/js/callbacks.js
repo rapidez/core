@@ -19,42 +19,6 @@ Vue.prototype.updateCart = async function (data, response) {
     }
     cart.value = 'cart' in Object.values(response.data)[0] ? Object.values(response.data)[0].cart : Object.values(response.data)[0]
 
-    getAttributeValues().then((response) => {
-        if (!response?.data?.customAttributeMetadata?.items) {
-            return
-        }
-
-        const mapping = Object.fromEntries(
-            response.data.customAttributeMetadata.items.map((attribute) => [
-                attribute.attribute_code,
-                Object.fromEntries(attribute.attribute_options.map((value) => [value.value, value.label])),
-            ]),
-        )
-
-        cart.value.items = cart.value.items.map((cartItem) => {
-            cartItem.product.attribute_values = {}
-
-            for (const key in mapping) {
-                cartItem.product.attribute_values[key] = cartItem.product[key]
-                if (cartItem.product.attribute_values[key] === null) {
-                    continue
-                }
-
-                if (typeof cartItem.product.attribute_values[key] === 'string') {
-                    cartItem.product.attribute_values[key] = cartItem.product.attribute_values[key].split(',')
-                }
-
-                if (typeof cartItem.product.attribute_values[key] !== 'object') {
-                    cartItem.product.attribute_values[key] = [cartItem.product.attribute_values[key]]
-                }
-
-                cartItem.product.attribute_values[key] = cartItem.product.attribute_values[key].map((value) => mapping[key][value] || value)
-            }
-
-            return cartItem
-        })
-    })
-
     return response.data
 }
 
