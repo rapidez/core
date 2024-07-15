@@ -135,7 +135,7 @@ export const cart = computed({
 
                 return cartItem
             })
-
+        }).finally(() => {
             cartStorage.value = value
             age = Date.now()
 
