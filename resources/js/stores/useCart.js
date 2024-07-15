@@ -101,13 +101,49 @@ export const cart = computed({
         return cartStorage.value
     },
     set(value) {
-        cartStorage.value = value
-        age = Date.now()
+        getAttributeValues().then((response) => {
+            if (!response?.data?.customAttributeMetadata?.items) {
+                return
+            }
 
-        if (value.id && value.id !== mask.value) {
-            // Linking user to cart will create a new mask, it will be returned in the id field.
-            mask.value = value.id
-        }
+            const mapping = Object.fromEntries(
+                response.data.customAttributeMetadata.items.map((attribute) => [
+                    attribute.attribute_code,
+                    Object.fromEntries(attribute.attribute_options.map((value) => [value.value, value.label])),
+                ]),
+            )
+
+            value.items = value.items.map((cartItem) => {
+                cartItem.product.attribute_values = {}
+
+                for (const key in mapping) {
+                    cartItem.product.attribute_values[key] = cartItem.product[key]
+                    if (cartItem.product.attribute_values[key] === null) {
+                        continue
+                    }
+
+                    if (typeof cartItem.product.attribute_values[key] === 'string') {
+                        cartItem.product.attribute_values[key] = cartItem.product.attribute_values[key].split(',')
+                    }
+
+                    if (typeof cartItem.product.attribute_values[key] !== 'object') {
+                        cartItem.product.attribute_values[key] = [cartItem.product.attribute_values[key]]
+                    }
+
+                    cartItem.product.attribute_values[key] = cartItem.product.attribute_values[key].map((value) => mapping[key][value] || value)
+                }
+
+                return cartItem
+            })
+
+            cartStorage.value = value
+            age = Date.now()
+
+            if (value.id && value.id !== mask.value) {
+                // Linking user to cart will create a new mask, it will be returned in the id field.
+                mask.value = value.id
+            }
+        })
     },
 })
 
