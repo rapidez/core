@@ -162,6 +162,8 @@ function init() {
             }
         })
     }
-}
 
+    const event = new CustomEvent('vue:loaded')
+    document.dispatchEvent(event)
+}
 document.addEventListener('turbo:load', init)

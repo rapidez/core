@@ -3,21 +3,21 @@
 [Unreleased changes](https://github.com/rapidez/core/compare/2.7.0...2.7.0)
 ## [2.7.0](https://github.com/rapidez/core/releases/tag/2.7.0) - 2024-07-15
 
-### Fixed
-- Correctly deal with graphql exceptions to excecute errorcallback (#513)
-- Fix sidebar (#521)
-- Prevent causing errors if add_to_cart config is missing (#526)
-- Fix missing attributeValues and autoselect config errors (#530)
-
 ### Added
-- Added check for array (#510)
-- Add option to automaticly select configurable- and product options (#515)
-- Add backorders (#516)
-- Add fixed product taxes in cart (#517)
-- Add customer group relation (#528)
 
-### Changed
+- Auto select configurable and product option setting (#515)
+- Backorders info messages (#516)
+- Add fixed product taxes in cart (#517)
+- Customer group relation (#528)
+
+### Fixed
+
+- Refactored GraphQL exceptions for error callbacks (#513)
+- Slider array check (#510)
+- Fix sidebar (#521)
 - Use computed shipping address in estimateshippingmethod (#522)
+- Prevent errors if add_to_cart config is missing (#526)
+- Fix missing attributeValues and autoselect config errors (#530)
 
 ## [2.6.0](https://github.com/rapidez/core/releases/tag/2.6.0) - 2024-06-04
 
