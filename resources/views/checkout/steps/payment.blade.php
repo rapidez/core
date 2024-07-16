@@ -23,7 +23,7 @@
                             @{{ agreement.checkbox_text }}
                         </a>
                         <div v-else>
-                            <x-rapidez::checkbox
+                            <x-rapidez::input.checkbox
                                 name="agreement_ids[]"
                                 v-bind:value="agreement.agreement_id"
                                 v-model="checkout.agreement_ids"
@@ -31,7 +31,7 @@
                                 required
                             >
                                 <a href="#" v-on:click.prevent="toggle">@{{ agreement.checkbox_text }}</a>
-                            </x-rapidez::checkbox>
+                            </x-rapidez::input.checkbox>
                         </div>
                     </x-slot>
 

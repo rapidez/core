@@ -1,5 +1,5 @@
 <label>
-    <x-rapidez::label>{{ $option->title }} {{ $option->price_label }}</x-rapidez::label>
+    <x-rapidez::input.label>{{ $option->title }} {{ $option->price_label }}</x-rapidez::input.label>
     <x-rapidez::input
         :required="$option->is_require"
         :maxlength="$option->max_characters ?: false"

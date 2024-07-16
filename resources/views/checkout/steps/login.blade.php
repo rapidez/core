@@ -11,16 +11,9 @@
                 v-on:input="loginInputChange"
                 required
             />
-            <x-rapidez::input
-                v-if="!emailAvailable"
-                class="mt-3"
-                name="password"
-                type="password"
-                placeholder="Password"
-                ref="password"
-                v-on:input="loginInputChange"
-                required
-            />
+            <template v-if="!emailAvailable">
+                <x-rapidez::input.password v-on:input="loginInputChange" class="mt-3" required placeholder="Password" />
+            </template>
 
             <x-rapidez::button type="submit" class="w-full mt-5" dusk="continue">
                 @lang('Continue')

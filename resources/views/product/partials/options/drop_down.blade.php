@@ -1,5 +1,5 @@
 <label>
-    <x-rapidez::label>{{ $option->title }}</x-rapidez::label>
+    <x-rapidez::input.label>{{ $option->title }}</x-rapidez::input.label>
     <x-rapidez::input.select
         :required="$option->is_require"
         v-model="addToCart.customSelectedOptions[{{ $option->option_id }}]"

@@ -1,6 +1,6 @@
 @if (Rapidez::checkcompadreVersion('0.0.1'))
     <label>
-        <x-rapidez::label>{{ $option->title }} {{ $option->price_label }}</x-rapidez::label>
+        <x-rapidez::input.label>{{ $option->title }} {{ $option->price_label }}</x-rapidez::input.label>
         <x-rapidez::input
             type="file"
             :required="$option->is_require"

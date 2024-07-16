@@ -1,6 +1,6 @@
 <template v-for="(superAttribute, superAttributeId) in item.super_attributes">
     <label>
-        <x-rapidez::label>@{{ superAttribute.label }}</x-rapidez::label>
+        <x-rapidez::input.label>@{{ superAttribute.label }}</x-rapidez::input.label>
         <x-rapidez::input.select
             v-bind:id="item.entity_id+'_super_attribute_'+superAttributeId"
             v-bind:name="superAttributeId"
