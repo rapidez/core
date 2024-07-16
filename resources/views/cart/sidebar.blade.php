@@ -7,6 +7,10 @@
         <dt>@lang('Tax')</dt>
         <dd>@{{ cart.prices.applied_taxes[0].amount.value | price }}</dd>
     </div>
+    <div v-for="value, name in cart.fixedProductTaxes.value">
+        <dt>@{{ name }}</dt>
+        <dd>@{{ value | price }}</dd>
+    </div>
     <div v-if="cart.shipping_addresses.length && cart.shipping_addresses[0].selected_shipping_method">
         <dt>
             @lang('Shipping')<br>

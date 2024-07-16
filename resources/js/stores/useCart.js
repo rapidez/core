@@ -137,6 +137,7 @@ export const cart = computed({
 
         cartStorage.value.virtualItems = virtualItems
         cartStorage.value.hasOnlyVirtualItems = hasOnlyVirtualItems
+        cartStorage.value.fixedProductTaxes = fixedProductTaxes
 
         return cartStorage.value
     },
@@ -146,13 +147,54 @@ export const cart = computed({
             value.billing_address = addCustomerAddressId(value.billing_address)
             value.billing_address.same_as_shipping = areAddressesSame(value.shipping_addresses[0], value.billing_address)
         }
-        cartStorage.value = value
-        age = Date.now()
 
-        if (value.id && value.id !== mask.value) {
-            // Linking user to cart will create a new mask, it will be returned in the id field.
-            mask.value = value.id
-        }
+        getAttributeValues()
+            .then((response) => {
+                if (!response?.data?.customAttributeMetadata?.items) {
+                    return
+                }
+
+                const mapping = Object.fromEntries(
+                    response.data.customAttributeMetadata.items.map((attribute) => [
+                        attribute.attribute_code,
+                        Object.fromEntries(attribute.attribute_options.map((value) => [value.value, value.label])),
+                    ]),
+                )
+
+                value.items = value.items.map((cartItem) => {
+                    cartItem.product.attribute_values = {}
+
+                    for (const key in mapping) {
+                        cartItem.product.attribute_values[key] = cartItem.product[key]
+                        if (cartItem.product.attribute_values[key] === null) {
+                            continue
+                        }
+
+                        if (typeof cartItem.product.attribute_values[key] === 'string') {
+                            cartItem.product.attribute_values[key] = cartItem.product.attribute_values[key].split(',')
+                        }
+
+                        if (typeof cartItem.product.attribute_values[key] !== 'object') {
+                            cartItem.product.attribute_values[key] = [cartItem.product.attribute_values[key]]
+                        }
+
+                        cartItem.product.attribute_values[key] = cartItem.product.attribute_values[key].map(
+                            (value) => mapping[key][value] || value,
+                        )
+                    }
+
+                    return cartItem
+                })
+            })
+            .finally(() => {
+                cartStorage.value = value
+                age = Date.now()
+
+                if (value.id && value.id !== mask.value) {
+                    // Linking user to cart will create a new mask, it will be returned in the id field.
+                    mask.value = value.id
+                }
+            })
     },
 })
 
@@ -162,6 +204,14 @@ export const virtualItems = computed(() => {
 
 export const hasOnlyVirtualItems = computed(() => {
     return cart.value.total_quantity === virtualItems.value.length
+})
+
+export const fixedProductTaxes = computed(() => {
+    let taxes = {}
+    cart.value?.items?.forEach((item) =>
+        item.prices?.fixed_product_taxes?.forEach((tax) => (taxes[tax.label] = (taxes[tax.label] ?? 0) + tax.amount.value)),
+    )
+    return taxes
 })
 
 watch(mask, refresh);
