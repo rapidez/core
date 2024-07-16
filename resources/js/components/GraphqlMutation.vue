@@ -123,7 +123,7 @@ export default {
                 }
 
                 let response = await magentoGraphQL(query, variables, options).catch(async (error) => {
-                    if (!GraphQLError.prototype.isPrototypeOf(err)) {
+                    if (!GraphQLError.prototype.isPrototypeOf(error)) {
                         throw error
                     }
                     const errorResponse = error.response.json()
