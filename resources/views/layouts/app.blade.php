@@ -38,6 +38,15 @@
     </div>
 
     <script>window.config = @json(config('frontend'));</script>
+    @if (session('notifications'))
+        <script async>
+            document.addEventListener('vue:loaded', function() {
+                @foreach (session('notifications') ?? [] as $notification)
+                    window.Notify('{{ $notification['message'] }}', '{{ $notification['type'] ?? 'success' }}')
+                @endforeach
+            });
+        </script>
+    @endif
     @stack('foot')
 </body>
 </html>
