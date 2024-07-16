@@ -126,10 +126,13 @@ export default {
                     if (!GraphQLError.prototype.isPrototypeOf(error)) {
                         throw error
                     }
+
                     const errorResponse = error.response.json()
                     if (this.errorCallback) {
                         await this.errorCallback(this.data, errorResponse)
                     }
+
+                    this.error = error.message
 
                     if (this.alert) {
                         error.errors.forEach((error) => {
@@ -140,7 +143,7 @@ export default {
                     return errorResponse
                 })
 
-                if (response.data.errors) {
+                if (response.errors) {
                     return
                 }
 
