@@ -163,6 +163,7 @@
                 <x-rapidez::input.label>@lang('Telephone')</x-rapidez::input.label>
                 <x-rapidez::input
                     name="{{ $type }}_telephone"
+                    type="tel"
                     v-model.lazy="checkout.{{ $type }}_address.telephone"
                     :required="Rapidez::config('customer/address/telephone_show', 'req') == 'req'"
                 />

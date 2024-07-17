@@ -14,6 +14,6 @@ you can use the label like this:
 <x-label class="after:hidden" />
 ```
 --}}
-<span {{ $attributes->twMerge("font-medium text-inactive text-sm inline-block mb-2 duration-300 transition-colors has-[~_*_:focus,~:focus]:text-primary has-[~_*_:required,~:required]:after:content-['*'] has-[~:user-invalid:not(:placeholder-shown)]:text-red-500") }}>
+<span {{ $attributes->twMerge("font-medium text-inactive text-sm inline-block mb-2 has-[~_*_:required,~:required]:after:content-['*']") }}>
     {{ $slot }}
 </span>

@@ -1,18 +1,20 @@
 <h1 class="font-bold text-4xl mb-5">@lang('Payment method')</h1>
 <form class="bg-highlight p-8 rounded mt-6" v-on:submit.prevent="save(['payment_method'], 4)">
-    <label class="flex items-center gap-2 my-2 border bg-white p-4 rounded" v-for="(method, index) in checkout.payment_methods">
+    <div v-for="(method, index) in checkout.payment_methods">
         <x-rapidez::input.radio
+            class="flex items-center gap-2 my-2 border bg-white p-4 rounded"
             v-bind:value="method.code"
             v-bind:dusk="'method-'+index"
             v-model="checkout.payment_method"
-        />
-        <span>@{{ method.title }}</span>
-        <img
-            class="ml-auto w-8 h-8"
-            v-bind:src="`/payment-icons/${method.code}.svg`"
-            onerror="this.onerror=null; this.src=`/payment-icons/default.svg`"
         >
-    </label>
+            <span>@{{ method.title }}</span>
+            <img
+                class="ml-auto w-8 h-8"
+                v-bind:src="`/payment-icons/${method.code}.svg`"
+                onerror="this.onerror=null; this.src=`/payment-icons/default.svg`"
+            >
+        </x-rapidez::input.radio>
+    </div>
 
     <graphql query="{ checkoutAgreements { agreement_id name checkbox_text content is_html mode } }">
         <div v-if="data" slot-scope="{ data }" class="mt-5">
