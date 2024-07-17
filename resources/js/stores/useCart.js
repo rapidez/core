@@ -120,6 +120,7 @@ function areAddressesSame(address1, address2) {
 }
 
 function addCustomerAddressId(address) {
+    // TODO: Remove if https://github.com/magento/magento2/pull/38909 is merged
     if (address?.customer_address_id || address === null) {
         return address
     }
