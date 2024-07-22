@@ -140,6 +140,24 @@ export const cart = computed({
                     return cartItem
                 })
             })
+            .then(async () => {
+                await window
+                    .magentoGraphQL(config.queries.shipping_methods, {
+                        cart_id: value.id,
+                    })
+                    .then((response) => {
+                        if (!response?.data) {
+                            return;
+                        }
+
+                        value.shipping_method = response.data.estimateShippingMethods.filter(
+                            (method) => method.available
+                        ).reduce(
+                            (a, b) => a?.amount?.value < b?.amount?.value ? a : b
+                        )
+                    })
+
+            })
             .finally(() => {
                 cartStorage.value = value
                 age = Date.now()

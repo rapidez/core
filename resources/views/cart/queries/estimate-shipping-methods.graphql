@@ -1,0 +1,27 @@
+mutation ($cart_id: String!) {
+  estimateShippingMethods(input:{
+    cart_id: $cart_id
+    address: {
+         country_code: {{ Rapidez::config('general/country/default', 'NL') }}
+    }
+  })
+  {
+    amount{
+      currency
+      value
+    }
+    available
+    carrier_title
+    carrier_code
+    price_incl_tax {
+      currency
+      value
+    }
+    price_excl_tax {
+      currency
+      value
+    }
+    method_code
+    method_title
+  }
+}
