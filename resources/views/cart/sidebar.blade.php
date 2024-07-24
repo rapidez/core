@@ -11,12 +11,12 @@
         <dt>@{{ name }}</dt>
         <dd>@{{ value | price }}</dd>
     </div>
-    <div v-if="cart.shipping_method">
+    <div v-if="cart.shipping_addresses.length && cart.shipping_addresses[0].selected_shipping_method">
         <dt>
             @lang('Shipping')<br>
-            <small>@{{ cart.shipping_method.carrier_title }} - @{{ cart.shipping_method.method_title }}</small>
+            <small>@{{ cart.shipping_addresses[0].selected_shipping_method.carrier_title }} - @{{ cart.shipping_addresses[0].selected_shipping_method.method_title }}</small>
         </dt>
-        <dd>@{{ cart.shipping_method.amount.value | price }}</dd>
+        <dd>@{{ cart.shipping_addresses[0].selected_shipping_method.amount.value | price }}</dd>
     </div>
     <div v-for="discount in cart.prices.discounts">
         <dt>@{{ discount.label }}</dt>
@@ -24,11 +24,7 @@
     </div>
     <div class="font-bold">
         <dt>@lang('Total')</dt>
-        <dd>
-            @{{ cart.prices.subtotal_including_tax.value + cart.shipping_method.amount.value === cart.prices.grand_total.value
-            ? cart.prices.grand_total.value
-            : cart.prices.grand_total.value + cart.shipping_method.amount.value | price }}
-        </dd>
+        <dd>@{{ cart.prices.grand_total.value | price }}</dd>
     </div>
 </dl>
 

@@ -44,7 +44,6 @@ class ConfigComposer
         Config::set('frontend.grid_per_page', Rapidez::config('catalog/frontend/grid_per_page', 12));
         Config::set('frontend.grid_per_page_values', explode(',', Rapidez::config('catalog/frontend/grid_per_page_values', '12,24,36')));
         Config::set('frontend.queries.cart', view('rapidez::cart.queries.cart')->renderOneliner());
-        Config::set('frontend.queries.shipping_methods', view('rapidez::cart.queries.estimate-shipping-methods')->renderOneliner());
     }
 
     public function getCustomerAddressFields()
