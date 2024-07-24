@@ -1,6 +1,19 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.7.0...2.7.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.8.0...2.8.0)
+## [2.8.0](https://github.com/rapidez/core/releases/tag/2.8.0) - 2024-07-24
+
+### Added
+
+- Notifications from the session (#518)
+- Order item product relation (#533)
+
+### Fixed
+
+- Graphql Mutation component typo (#529)
+- Set error message on GraphQL errors as well (#531)
+- Redirect all redirect type rewrites (#534)
+
 ## [2.7.0](https://github.com/rapidez/core/releases/tag/2.7.0) - 2024-07-15
 
 ### Added
