@@ -18,12 +18,12 @@
             <dt>@lang('Tax')</dt>
             <dd>@{{ cart.prices.applied_taxes[0].amount.value | price }}</dd>
         </div>
-        <div v-if="cart.shipping_addresses.length && cart.shipping_addresses[0].selected_shipping_method">
+        <div v-if="cart.shipping_addresses.length && cart.shipping_addresses[0]?.selected_shipping_method">
             <dt>
                 @lang('Shipping')<br>
-                <small>@{{ cart.shipping_addresses[0].selected_shipping_method.carrier_title }} - @{{ cart.shipping_addresses[0].selected_shipping_method.method_title }}</small>
+                <small>@{{ cart.shipping_addresses[0]?.selected_shipping_method.carrier_title }} - @{{ cart.shipping_addresses[0]?.selected_shipping_method.method_title }}</small>
             </dt>
-            <dd>@{{ cart.shipping_addresses[0].selected_shipping_method.amount.value | price }}</dd>
+            <dd>@{{ cart.shipping_addresses[0]?.selected_shipping_method.amount.value | price }}</dd>
         </div>
         <div v-for="discount in cart.prices.discounts">
             <dt>@{{ discount.label }}</dt>
@@ -38,19 +38,19 @@
     <div v-if="cart.shipping_addresses[0]" class="flex w-full flex-col gap-x-1 border p-3 rounded">
         <p class="font-lg mb-2 font-bold text-neutral">
             {{-- TODO: Check this compare as uid might not what we want but there is not anything else in the cart response --}}
-            <template v-if="cart.shipping_addresses[0].uid == cart.billing_address?.uid">@lang('Shipping & billing address')</template>
+            <template v-if="cart.shipping_addresses[0]?.uid == cart.billing_address?.uid">@lang('Shipping & billing address')</template>
             <template v-else>@lang('Shipping address')</template>
         </p>
         <ul>
             {{-- TODO: Check if all fields are here --}}
-            <li>@{{ cart.shipping_addresses[0].company }}</li>
-            <li>@{{ cart.shipping_addresses[0].prefix }} @{{ cart.shipping_addresses[0].firstname }} @{{ cart.shipping_addresses[0].middlename }} @{{ cart.shipping_addresses[0].lastname }} @{{ cart.shipping_addresses[0].suffix }}</li>
-            <li>@{{ cart.shipping_addresses[0].street[0] }} @{{ cart.shipping_addresses[0].street[1] }} @{{ $root.checkout?.billing_address?.street[2] }}</li>
-            <li>@{{ cart.shipping_addresses[0].postcode }} - @{{ cart.shipping_addresses[0].city }} - @{{ cart.shipping_addresses[0].country.label }}</li>
-            <li>@{{ cart.shipping_addresses[0].telephone }}</li>
+            <li>@{{ cart.shipping_addresses[0]?.company }}</li>
+            <li>@{{ cart.shipping_addresses[0]?.prefix }} @{{ cart.shipping_addresses[0]?.firstname }} @{{ cart.shipping_addresses[0]?.middlename }} @{{ cart.shipping_addresses[0]?.lastname }} @{{ cart.shipping_addresses[0]?.suffix }}</li>
+            <li>@{{ cart.shipping_addresses[0]?.street[0] }} @{{ cart.shipping_addresses[0]?.street[1] }} @{{ $root.checkout?.billing_address?.street[2] }}</li>
+            <li>@{{ cart.shipping_addresses[0]?.postcode }} - @{{ cart.shipping_addresses[0]?.city }} - @{{ cart.shipping_addresses[0]?.country.label }}</li>
+            <li>@{{ cart.shipping_addresses[0]?.telephone }}</li>
         </ul>
     </div>
-    <div v-if="cart.billing_address && !cart.shipping_addresses[0].uid != cart.billing_address.uid" class="mt-4 flex w-full flex-col gap-x-1 border p-3">
+    <div v-if="cart.billing_address && !cart.shipping_addresses[0]?.uid != cart.billing_address.uid" class="mt-4 flex w-full flex-col gap-x-1 border p-3">
         <p class="font-lg mb-2 font-bold text-neutral">@lang('Billing address')</p>
         <ul>
             <li>@{{ cart.billing_address.company }}</li>

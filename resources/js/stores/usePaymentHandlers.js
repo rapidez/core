@@ -8,6 +8,9 @@ export async function addBeforePaymentMethodHandler(promise) {
 }
 
 export async function runBeforePaymentMethodHandlers(query, variables, options) {
+    if (!beforePaymentMethodHandlers.length) {
+        return [query, variables, options];
+    }
     let results = await Promise.all(beforePaymentMethodHandlers.map(handler => handler(query, variables, options)))
     return results.reduce((old, current) => JSON.stringify(current) === JSON.stringify(variables) ? old : current, variables)
 }

@@ -1,7 +1,5 @@
 <script>
-import { order, refresh as refreshOrder } from '../../stores/useOrder'
-import { mask as useMask } from '../../stores/useMask'
-import { token as useToken } from '../../stores/useUser'
+import { order, refresh as refreshOrder, clear as clearOrder } from '../../stores/useOrder'
 import { clear as clearCart } from '../../stores/useCart'
 
 export default {
@@ -16,7 +14,19 @@ export default {
     },
 
     created() {
+        if (!order?.orderv2?.email) {
+            window.location = url('/cart')
+            return;
+        }
         this.$root.$emit('checkout-success', this.order)
+        window.addEventListener('beforeunload', function (event) {
+            clearCart();
+            if (!window.debug) {
+                clearOrder();
+            }
+
+            return undefined;
+        });
     },
 
     methods: {
