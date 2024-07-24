@@ -17,10 +17,5 @@
                 </div>
             </div>
         </div>
-        {{--
-        TODO: This isn't very nice but not sure yet if we could redirect
-        from the CheckoutController when there is no quote yet.
-        --}}
-        <meta v-else :http-equiv="'refresh'" content="0; url=/">
     </div>
 @endsection
