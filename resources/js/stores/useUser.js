@@ -1,6 +1,7 @@
 import { useLocalStorage, useSessionStorage, StorageSerializers } from '@vueuse/core'
 import { useCookies } from '@vueuse/integrations/useCookies'
 import { clear as clearCart, fetchCustomerCart, linkUserToCart } from './useCart'
+import { clear as clearOrder } from './useOrder'
 import { computed, watch } from 'vue'
 import Jwt from '../jwt'
 import { mask } from './useMask'
@@ -74,6 +75,7 @@ export const clear = async function () {
     token.value = ''
     userStorage.value = {}
     await clearCart()
+    await clearOrder()
 }
 
 export const isEmailAvailable = async function (email) {

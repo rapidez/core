@@ -4,6 +4,7 @@ fragment orderV2 on CustomerOrder {
     id
     number
     token
+    status
     email
     carrier
     shipping_method

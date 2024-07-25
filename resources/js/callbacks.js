@@ -1,6 +1,6 @@
 import { cart, clear as clearCart, getAttributeValues } from './stores/useCart'
 import { fillFromGraphqlResponse as updateOrder, order } from './stores/useOrder'
-import { runAfterPlaceOrderHandlers, runBeforePaymentMethodHandlers } from './stores/usePaymentHandlers'
+import { runAfterPlaceOrderHandlers, runBeforePaymentMethodHandlers, runBeforePlaceOrderHandlers } from './stores/usePaymentHandlers'
 import { refresh as refreshUser, token } from './stores/useUser'
 
 Vue.prototype.scrollToElement = (selector) => {
@@ -143,13 +143,14 @@ Vue.prototype.checkResponseForExpiredCart = async function (error) {
 }
 
 Vue.prototype.handleBeforePaymentMethodHandlers = runBeforePaymentMethodHandlers
+Vue.prototype.handleBeforePlaceOrderHandlers = runBeforePlaceOrderHandlers
 
 Vue.prototype.handlePlaceOrder = async function (data, response) {
     if (!response?.data) {
         return response?.data
     }
     await updateOrder(data, response)
-    await runAfterPlaceOrderHandlers(order, this)
+    await runAfterPlaceOrderHandlers(response, this)
 
     return response.data
 }

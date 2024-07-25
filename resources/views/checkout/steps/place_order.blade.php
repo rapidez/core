@@ -1,6 +1,7 @@
 <graphql-mutation
     :query="config.queries.placeOrder"
     :variables="{ cart_id: mask }"
+    :before-request="handleBeforePlaceOrderHandlers"
     :callback="handlePlaceOrder"
     mutate-event="placeOrder"
     redirect="{{ route('checkout.success') }}"

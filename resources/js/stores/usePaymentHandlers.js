@@ -1,7 +1,6 @@
-
 let beforePaymentMethodHandlers = []
 
-// Pushing your handler here will schedule it to receive the query, variables and options for add to cart.
+// Pushing your handler here will schedule it to receive the query, variables and options for setPaymentMethodOnCart.
 // it must return an array with the same structure.
 export async function addBeforePaymentMethodHandler(promise) {
     beforePaymentMethodHandlers.push(promise);
@@ -15,14 +14,30 @@ export async function runBeforePaymentMethodHandlers(query, variables, options) 
     return results.reduce((old, current) => JSON.stringify(current) === JSON.stringify(variables) ? old : current, variables)
 }
 
-let afterPlaceOrdersHandlers = []
+let beforePlaceOrderHandlers = []
+
+// Pushing your handler here will schedule it to receive the query, variables and options for PlaceOrder.
+// it must return an array with the same structure.
+export async function addBeforePlaceOrderHandler(promise) {
+    beforePlaceOrderHandlers.push(promise);
+}
+
+export async function runBeforePlaceOrderHandlers(query, variables, options) {
+    if (!beforePlaceOrderHandlers.length) {
+        return [query, variables, options];
+    }
+    let results = await Promise.all(beforePlaceOrderHandlers.map(handler => handler(query, variables, options)))
+    return results.reduce((old, current) => JSON.stringify(current) === JSON.stringify(variables) ? old : current, variables)
+}
+
+let afterPlaceOrderHandlers = []
 
 // Pushing your handler here will schedule it to receive the order and instance of the mutationComponent
 // If you wish to change the redirect, set `mutationComponent.redirect = '<path to new url>'`
 export async function addAfterPlaceOrderHandler(promise) {
-    afterPlaceOrdersHandlers.push(promise);
+    afterPlaceOrderHandlers.push(promise);
 }
 
-export async function runAfterPlaceOrderHandlers(order, mutationComponent) {
-    return await Promise.all(afterPlaceOrdersHandlers.map(handler => handler(order, mutationComponent)))
+export async function runAfterPlaceOrderHandlers(response, mutationComponent) {
+    return await Promise.all(afterPlaceOrderHandlers.map(handler => handler(response, mutationComponent)))
 }

@@ -14,10 +14,11 @@ export default {
     },
 
     created() {
-        if (!order?.orderv2?.email) {
+        if (!order.value?.email) {
             window.location = url('/cart')
             return;
         }
+        refreshOrder();
         this.$root.$emit('checkout-success', this.order)
         window.addEventListener('beforeunload', function (event) {
             clearCart();
