@@ -196,6 +196,9 @@ export default {
 
         priceAddition: function (basePrice) {
             let addition = 0
+            if (!this?.product?.options) {
+                return addition;
+            }
 
             let optionEntries = Object.entries(this.customOptions)
             let selectedOptionEntries = Object.entries(this.customSelectedOptions)
@@ -206,13 +209,17 @@ export default {
                         return
                     }
 
-                    let option = this.product.options.find((option) => option.option_id == key)
-                    let optionPrice = option.price || option.values?.find((value) => value.option_type_id == val)?.price
-
-                    if (optionPrice.price_type == 'fixed') {
-                        addition += parseFloat(optionPrice.price)
-                    } else {
-                        addition += (parseFloat(basePrice) * parseFloat(optionPrice.price)) / 100
+                    try {
+                        let option = this.product.options.find((option) => option.option_id == key)
+                        let optionPrice = option.price || option.values?.find((value) => value.option_type_id == val)?.price
+    
+                        if (optionPrice.price_type == 'fixed') {
+                            addition += parseFloat(optionPrice.price)
+                        } else {
+                            addition += (parseFloat(basePrice) * parseFloat(optionPrice.price)) / 100
+                        }
+                    } catch (e) {
+                        console.error('Price addition calcuation failed, prices may display incorrect!', this, e)
                     }
                 })
             })
