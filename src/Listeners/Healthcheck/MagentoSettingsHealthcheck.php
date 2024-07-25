@@ -64,7 +64,7 @@ class MagentoSettingsHealthcheck extends Base
         }
 
         $nonFlatSuperAttributes = Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {
-            return !$attribute['flat'] && $attribute['super'];
+            return ! $attribute['flat'] && $attribute['super'];
         }), 'code');
 
         if (! empty($nonFlatSuperAttributes)) {
