@@ -1,7 +1,4 @@
-import { print } from 'graphql'
 import { token } from './stores/useUser'
-import combineQuery from 'graphql-combine-query'
-import { gql } from 'graphql-tag'
 
 export class FetchError extends Error {
     constructor(message, response) {
@@ -65,7 +62,8 @@ export const rapidezAPI = (window.rapidezAPI = async (method, endpoint, data = {
     return await response.json()
 })
 
-export const combineGraphqlQueries = window.combineGraphqlQueries = function (queries, name = '') {
+export const combineGraphqlQueries = window.combineGraphqlQueries = async function (queries, name = '') {
+    const { gql, combineQuery, print } = await import('./fetch/graphqlbundle.js')
     if (!Array.isArray(queries)) {
         queries = [...arguments];
     }
@@ -89,8 +87,8 @@ export const combiningGraphQL = (window.combiningGraphQL = async (query, variabl
         pendingQuery[pendingQueryName] = {
             queries: [],
             options: [options],
-            promise: new Promise((resolve, reject) => window.setTimeout(() => {
-                const query = combineGraphqlQueries(pendingQuery[pendingQueryName].queries.map(([query, variables]) => query), name)
+            promise: new Promise((resolve, reject) => window.setTimeout(async () => {
+                const query = await combineGraphqlQueries(pendingQuery[pendingQueryName].queries.map(([query, variables]) => query), name)
                 const variables = pendingQuery[pendingQueryName].queries.reduce((combinedVariables, [query, variables]) => {return {...combinedVariables, ...variables};}, {});
                 const options = pendingQuery[pendingQueryName].options.reduce((combinedOptions, options) => {return {...combinedOptions, ...options};}, {});
 
