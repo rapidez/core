@@ -197,7 +197,7 @@ export default {
         priceAddition: function (basePrice) {
             let addition = 0
             if (!this?.product?.options) {
-                return addition;
+                return addition
             }
 
             let optionEntries = Object.entries(this.customOptions)
@@ -212,7 +212,7 @@ export default {
                     try {
                         let option = this.product.options.find((option) => option.option_id == key)
                         let optionPrice = option.price || option.values?.find((value) => value.option_type_id == val)?.price
-    
+
                         if (optionPrice.price_type == 'fixed') {
                             addition += parseFloat(optionPrice.price)
                         } else {
