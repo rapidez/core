@@ -63,6 +63,21 @@ class MagentoSettingsHealthcheck extends Base
             ];
         }
 
+        $nonFlatSuperAttributes = Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {
+            return ! $attribute['flat'] && $attribute['super'];
+        }), 'code');
+
+        if (! empty($nonFlatSuperAttributes)) {
+            $response['healthy'] = false;
+            $response['messages'][] = [
+                'type'  => 'error',
+                'value' => __(
+                    'Super attributes are missing from the flat table: :nonFlatAttributes',
+                    ['nonFlatAttributes' => PHP_EOL . '- ' . implode(PHP_EOL . '- ', $nonFlatSuperAttributes)]
+                ),
+            ];
+        }
+
         $superAttributesCount = count($attributeModel::getCachedWhere(fn ($attribute) => $attribute['super'] && $attribute['flat']));
         $joinCount = ($superAttributesCount * 2) + (count($nonFlatAttributes) * 3) + 4;
 
