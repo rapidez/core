@@ -38,7 +38,7 @@ class WithProductAttributesScope implements Scope
                 if ($attribute->input == 'select' && ! in_array($attribute->source_model, [
                     'Magento\Tax\Model\TaxClass\Source\Product',
                     'Magento\Eav\Model\Entity\Attribute\Source\Boolean',
-                    'Magento\Catalog\Model\Product\Visibility'
+                    'Magento\Catalog\Model\Product\Visibility',
                 ])) {
                     $builder->addSelect($builder->getQuery()->from . '.' . $attribute->code . '_value AS ' . $attribute->code);
                 } else {
