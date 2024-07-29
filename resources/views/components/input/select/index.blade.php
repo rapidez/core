@@ -3,9 +3,9 @@ Examples:
 
 1. Just a select:
 ```
-<x-rapidez::select name="something">
+<x-rapidez::input.select name="something">
     <option value="1">Option 1</option>
-</x-rapidez::select>
+</x-rapidez::input.select>
 ```
 
 2. With a label:
