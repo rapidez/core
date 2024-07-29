@@ -17,7 +17,7 @@ Examples:
 
 <toggler>
     <span {{ $attributes->only('class')->twMerge('block relative') }} slot-scope="{ isOpen, toggle }">
-        <x-rapidez::input
+        <x-rapidez::input.base
             name="password"
             type="password"
             placeholder="password"

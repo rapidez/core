@@ -9,7 +9,7 @@
     v-slot="{ mutate, variables }"
 >
     <form v-on:submit.prevent="mutate" class="flex gap-3">
-        <x-rapidez::input
+        <x-rapidez::input.base
             name="couponCode"
             placeholder="Coupon code"
             v-model="variables.coupon_code"

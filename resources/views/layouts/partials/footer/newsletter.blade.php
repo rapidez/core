@@ -10,7 +10,7 @@
                     </p>
                     <div v-else>
                         <form class="mt-4 sm:flex sm:max-w-md items-center" v-on:submit.prevent="mutate">
-                            <x-rapidez::input
+                            <x-rapidez::input.base
                                 name="email"
                                 type="email"
                                 v-model="variables.email"

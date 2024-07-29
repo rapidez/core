@@ -1,13 +1,12 @@
 @if (Rapidez::checkcompadreVersion('0.0.1'))
-    <label>
-        <x-rapidez::input.label>{{ $option->title }} {{ $option->price_label }}</x-rapidez::input.label>
-        <x-rapidez::input
-            type="file"
-            :required="$option->is_require"
-            v-on:change="addToCart.setCustomOptionFile($event, {{ $option->option_id }})"
-            class="px-0"
-        />
-    </label>
+    <x-rapidez::input
+        type="file"
+        :required="$option->is_require"
+        v-on:change="addToCart.setCustomOptionFile($event, {{ $option->option_id }})"
+        class="px-0"
+    >
+        {{ $option->title }} {{ $option->price_label }}
+    </x-rapidez::input>
     @if ($option->file_extension)
         <p class="text-sm">@lang('Compatible file extensions to upload'): <strong>{{ $option->file_extension }}</strong></p>
     @endif

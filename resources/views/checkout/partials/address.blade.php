@@ -38,35 +38,29 @@
         </div>
     @endif
     <div class="col-span-12 {{ Rapidez::config('customer/address/middlename_show', 0) ? 'sm:col-span-4' : 'sm:col-span-6' }}">
-        <label>
-            <x-rapidez::input.label>@lang('Firstname')</x-rapidez::input.label>
-            <x-rapidez::input
-                name="{{ $type }}_firstname"
-                v-model.lazy="checkout.{{ $type }}_address.firstname"
-                required
-            />
-        </label>
+        <x-rapidez::input
+            :label="__('Firstname')"
+            name="{{ $type }}_firstname"
+            v-model.lazy="checkout.{{ $type }}_address.firstname"
+            required
+        />
     </div>
     @if (Rapidez::config('customer/address/middlename_show', 0))
         <div class="col-span-12 sm:col-span-4">
-            <label>
-                <x-rapidez::input.label>@lang('Middlename')</x-rapidez::input.label>
-                <x-rapidez::input
-                    name="{{ $type }}_middlename"
-                    v-model.lazy="checkout.{{ $type }}_address.middlename"
-                />
-            </label>
+            <x-rapidez::input
+                :label="__('Middlename')"
+                name="{{ $type }}_middlename"
+                v-model.lazy="checkout.{{ $type }}_address.middlename"
+            />
         </div>
     @endif
     <div class="col-span-12 {{ Rapidez::config('customer/address/middlename_show', 0) ? 'sm:col-span-4' : 'sm:col-span-6' }}">
-        <label>
-            <x-rapidez::input.label>@lang('Lastname')</x-rapidez::input.label>
-            <x-rapidez::input
-                name="{{ $type }}_lastname"
-                v-model.lazy="checkout.{{ $type }}_address.lastname"
-                required
-            />
-        </label>
+        <x-rapidez::input
+            :label="__('Lastname')"
+            name="{{ $type }}_lastname"
+            v-model.lazy="checkout.{{ $type }}_address.lastname"
+            required
+        />
     </div>
     @if (Rapidez::config('customer/address/suffix_show', '') && strlen(Rapidez::config('customer/address/suffix_options', '')))
         <div class="col-span-12">
@@ -90,65 +84,55 @@
         </div>
     @endif
     <div class="col-span-6 sm:col-span-3">
-        <label>
-            <x-rapidez::input.label>@lang('Postcode')</x-rapidez::input.label>
-            <x-rapidez::input
-                name="{{ $type }}_postcode"
-                v-model.lazy="checkout.{{ $type }}_address.postcode"
-                v-on:change="$root.$nextTick(() => window.app.$emit('postcode-change', checkout.{{ $type }}_address))"
-                required
-            />
-        </label>
+        <x-rapidez::input
+            :label="__('Postcode')"
+            name="{{ $type }}_postcode"
+            v-model.lazy="checkout.{{ $type }}_address.postcode"
+            v-on:change="$root.$nextTick(() => window.app.$emit('postcode-change', checkout.{{ $type }}_address))"
+            required
+        />
     </div>
     @if (Rapidez::config('customer/address/street_lines', 3) >= 2)
         <div class="col-span-6 sm:col-span-3">
-            <label>
-                <x-rapidez::input.label>@lang('Housenumber')</x-rapidez::input.label>
-                <x-rapidez::input
-                    name="{{ $type }}_housenumber"
-                    type="number"
-                    v-model.lazy="checkout.{{ $type }}_address.street[1]"
-                    v-on:change="$root.$nextTick(() => window.app.$emit('postcode-change', checkout.{{ $type }}_address))"
-                    required
-                />
-            </label>
+            <x-rapidez::input
+                :label="__('Housenumber')"
+                name="{{ $type }}_housenumber"
+                type="number"
+                v-model.lazy="checkout.{{ $type }}_address.street[1]"
+                v-on:change="$root.$nextTick(() => window.app.$emit('postcode-change', checkout.{{ $type }}_address))"
+                required
+            />
         </div>
     @endif
     @if (Rapidez::config('customer/address/street_lines', 3) >= 3)
         <div class="col-span-6 sm:col-span-3">
-            <label>
-                <x-rapidez::input.label>@lang('Addition')</x-rapidez::input.label>
-                <x-rapidez::input
-                    name="{{ $type }}_addition"
-                    v-model.lazy="checkout.{{ $type }}_address.street[2]"
-                />
-            </label>
+            <x-rapidez::input
+                :label="__('Addition')"
+                name="{{ $type }}_addition"
+                v-model.lazy="checkout.{{ $type }}_address.street[2]"
+            />
         </div>
     @endif
     <div class="col-span-6 sm:col-span-3">
-        <label>
-            <x-rapidez::input.label>@lang('Street')</x-rapidez::input.label>
-            <x-rapidez::input
-                name="{{ $type }}_street"
-                v-model.lazy="checkout.{{ $type }}_address.street[0]"
-                required
-            />
-        </label>
+        <x-rapidez::input
+            :label="__('Street')"
+            name="{{ $type }}_street"
+            v-model.lazy="checkout.{{ $type }}_address.street[0]"
+            required
+        />
     </div>
     <div class="col-span-12 sm:col-span-6 sm:col-start-1">
-        <label>
-            <x-rapidez::input.label>@lang('City')</x-rapidez::input.label>
-            <x-rapidez::input
-                name="{{ $type }}_city"
-                v-model.lazy="checkout.{{ $type }}_address.city"
-                required
-            />
-        </label>
+        <x-rapidez::input
+            :label="__('City')"
+            name="{{ $type }}_city"
+            v-model.lazy="checkout.{{ $type }}_address.city"
+            required
+        />
     </div>
     <div class="col-span-12 sm:col-span-6">
         <label>
             <x-rapidez::input.label>@lang('Country')</x-rapidez::input.label>
-            <x-rapidez::country-select
+            <x-rapidez::input.select.country
                 name="{{ $type }}_country"
                 dusk="{{ $type }}_country"
                 v-model="checkout.{{ $type }}_address.country_id"
@@ -159,51 +143,43 @@
     </div>
     @if (Rapidez::config('customer/address/telephone_show', 'req'))
         <div class="col-span-12 sm:col-span-6 sm:col-start-1">
-            <label>
-                <x-rapidez::input.label>@lang('Telephone')</x-rapidez::input.label>
-                <x-rapidez::input
-                    name="{{ $type }}_telephone"
-                    type="tel"
-                    v-model.lazy="checkout.{{ $type }}_address.telephone"
-                    :required="Rapidez::config('customer/address/telephone_show', 'req') == 'req'"
-                />
-            </label>
+            <x-rapidez::input
+                :label="__('Telephone')"
+                name="{{ $type }}_telephone"
+                type="tel"
+                v-model.lazy="checkout.{{ $type }}_address.telephone"
+                :required="Rapidez::config('customer/address/telephone_show', 'req') == 'req'"
+            />
         </div>
     @endif
     @if (Rapidez::config('customer/address/fax_show', false))
         <div class="col-span-12 sm:col-span-6">
-            <label>
-                <x-rapidez::input.label>@lang('Fax')</x-rapidez::input.label>
-                <x-rapidez::input
-                    name="{{ $type }}_fax"
-                    v-model.lazy="checkout.{{ $type }}_address.fax"
-                    :required="Rapidez::config('customer/address/fax_show', false) === 'req'"
-                />
-            </label>
+            <x-rapidez::input
+                :label="__('Fax')"
+                name="{{ $type }}_fax"
+                v-model.lazy="checkout.{{ $type }}_address.fax"
+                :required="Rapidez::config('customer/address/fax_show', false) === 'req'"
+            />
         </div>
     @endif
     @if (Rapidez::config('customer/address/company_show', 'opt'))
         <div class="col-span-12 sm:col-span-6 sm:col-start-1">
-            <label>
-                <x-rapidez::input.label>@lang('Company')</x-rapidez::input.label>
-                <x-rapidez::input
-                    name="{{ $type }}_company"
-                    v-model.lazy="checkout.{{ $type }}_address.company"
-                    :required="Rapidez::config('customer/address/company_show', 'opt') == 'req'"
-                />
-            </label>
+            <x-rapidez::input
+                :label="__('Company')"
+                name="{{ $type }}_company"
+                v-model.lazy="checkout.{{ $type }}_address.company"
+                :required="Rapidez::config('customer/address/company_show', 'opt') == 'req'"
+            />
         </div>
     @endif
     @if (Rapidez::config('customer/address/taxvat_show', 0))
         <div class="col-span-12 sm:col-span-6">
-            <label>
-                <x-rapidez::input.label>@lang('Tax ID')</x-rapidez::input.label>
-                <x-rapidez::input
-                    name="{{ $type }}_vat_id"
-                    v-model.lazy="checkout.{{ $type }}_address.vat_id"
-                    :required="Rapidez::config('customer/address/taxvat_show', 'opt') == 'req'"
-                />
-            </label>
+            <x-rapidez::input
+                :label="__('Tax ID')"
+                name="{{ $type }}_vat_id"
+                v-model.lazy="checkout.{{ $type }}_address.vat_id"
+                :required="Rapidez::config('customer/address/taxvat_show', 'opt') == 'req'"
+            />
         </div>
     @endif
 </div>

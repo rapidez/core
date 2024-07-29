@@ -6,7 +6,7 @@
     v-slot="{ mutate, variables }"
 >
     <form v-on:submit.prevent="mutate" class="grid grid-cols-2 gap-1">
-        <x-rapidez::input
+        <x-rapidez::input.base
             type="number"
             v-model="variables.quantity"
             v-bind:dusk="'qty-'+index"
