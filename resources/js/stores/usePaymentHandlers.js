@@ -11,7 +11,7 @@ export async function runBeforePaymentMethodHandlers(query, variables, options) 
         return [query, variables, options];
     }
     let results = await Promise.all(beforePaymentMethodHandlers.map(handler => handler(query, variables, options)))
-    return results.reduce((old, current) => JSON.stringify(current) === JSON.stringify(variables) ? old : current, variables)
+    return results.reduce((old, current) => JSON.stringify(current) === JSON.stringify([query, variables, options]) ? old : current, [query, variables, options])
 }
 
 let beforePlaceOrderHandlers = []
@@ -27,7 +27,7 @@ export async function runBeforePlaceOrderHandlers(query, variables, options) {
         return [query, variables, options];
     }
     let results = await Promise.all(beforePlaceOrderHandlers.map(handler => handler(query, variables, options)))
-    return results.reduce((old, current) => JSON.stringify(current) === JSON.stringify(variables) ? old : current, variables)
+    return results.reduce((old, current) => JSON.stringify(current) === JSON.stringify([query, variables, options]) ? old : current, [query, variables, options])
 }
 
 let afterPlaceOrderHandlers = []
