@@ -15,7 +15,7 @@
                 v-text="option.label"
                 :value="option.value"
                 :disabled="addToCart.disabledOptions.super_{{ $superAttribute->code }}.includes(option.value)"
-            />
+            ></option>
         </x-rapidez::input.select>
     </label>
 @endforeach

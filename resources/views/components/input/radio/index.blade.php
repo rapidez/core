@@ -3,9 +3,9 @@ Examples:
 
 1. Radio with a label
 ```
-<x-rapidez::input.radio name="something" class="text-red-500">
+<x-rapidez::input.radio.base name="something" class="text-red-500">
     Option 1
-</x-rapidez::input.radio>
+</x-rapidez::input.radio.base>
 ```
 
 2. With a custom styled label

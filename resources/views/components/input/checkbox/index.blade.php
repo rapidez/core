@@ -3,9 +3,9 @@ Examples:
 
 1. Checkbox with a label
 ```
-<x-rapidez::input.checkbox name="something" class="border-red-500">
+<x-rapidez::input.checkbox.base name="something" class="border-red-500">
     Accept!
-</x-rapidez::input.checkbox>
+</x-rapidez::input.checkbox.base>
 ```
 
 2. With a custom styled label

@@ -15,4 +15,4 @@ Examples:
 ```
 --}}
 
-<input type="checkbox" {{ $attributes->twMerge('cursor-pointer border rounded-md focus:ring-neutral size-5 text-neutral border-border focus:outline-none focus:ring-0 focus:ring-offset-0') }}>
+<input type="checkbox" {{ $attributes->twMerge('cursor-pointer border rounded-md focus:ring-neutral size-5 text-neutral border-border focus:outline-none focus:ring-0 focus:ring-offset-0') }} />

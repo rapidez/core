@@ -1,21 +1,28 @@
 {{--
 Examples:
 
-1. Just a select:
+1. Just a select without a label:
 ```
-<x-rapidez::input.select name="something">
+<x-rapidez::input.select.base>
     <option value="1">Option 1</option>
-</x-rapidez::input.select>
+</x-rapidez::input.select.base>
 ```
 
 2. With a label:
 ```
-<label>
-    <x-rapidez::input.label>@lang('Something')</x-rapidez::input.label>
-    <x-rapidez::select name="something">
-        <option value="1">Option 1</option>
-    </x-rapidez::select>
-</label>
+<x-rapidez::input.select" label="something">
+    <option value="1">Option 1</option>
+</x-rapidez::input.select>
+```
+
+3. With a custom styled label:
+```
+<x-rapidez::input.select">
+    <x-slot:label>
+        <span class="text-red-700">@lang('something')</span>
+    </x-slot:label>
+    <option value="1">Option 1</option>
+</x-rapidez::input.select>
 ```
 --}}
 

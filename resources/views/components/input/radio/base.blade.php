@@ -15,4 +15,4 @@ Examples:
 ```
 --}}
 
-<input type="radio" {{ $attributes->twMerge('cursor-pointer border focus:ring-neutral size-5 text-neutral border-border focus:outline-none focus:ring-0 focus:ring-offset-0') }}>
+<input type="radio" {{ $attributes->twMerge('cursor-pointer border focus:ring-neutral size-5 text-neutral border-border focus:outline-none focus:ring-0 focus:ring-offset-0') }} />
