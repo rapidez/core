@@ -14,7 +14,9 @@ Examples:
 3. With a label as a slot:
 ```
 <x-rapidez::input">
-    @lang('something')
+    <x-slot:label>
+        @lang('something')
+    </x-slot:label>
 </x-rapidez::input>
 ```
 --}}

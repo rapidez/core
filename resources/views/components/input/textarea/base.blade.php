@@ -13,9 +13,11 @@ Examples:
 
 3. With a label as a slot:
 ```
-<x-rapidez::input">
-    @lang('something')
-</x-rapidez::input>
+<x-rapidez::input.textarea">
+    <x-slot:label>
+        @lang('something')
+    </x-slot:label>
+</x-rapidez::input.textarea>
 ```
 --}}
 
