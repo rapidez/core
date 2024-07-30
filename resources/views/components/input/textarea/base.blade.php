@@ -1,7 +1,7 @@
 {{--
 Examples:
 
-1. Just an textarea without a label:
+1. Just a textarea without a label:
 ```
 <x-rapidez::input.textarea.base name="something"/>
 ```
