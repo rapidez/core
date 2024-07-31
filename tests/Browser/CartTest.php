@@ -72,6 +72,7 @@ class CartTest extends DuskTestCase
     {
         return $browser->visit($url)
             ->waitUntilIdle()
+            ->screenshot('Product')
             ->pressAndWaitFor('@add-to-cart', 60)
             ->waitForText('Added', 60);
     }
