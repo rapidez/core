@@ -1,18 +1,10 @@
 {{--
 Examples:
 
-1. Just a radio
+1. Just a simple radio:
 ```
-<x-rapidez::input.radio.base name="something" class="border-red-500" />
-```
-
-2. Custom with a label
-```
-<label class="flex">
-    <x-rapidez::input.radio.base name="something" class="mr-2.5" />
-    <x-rapidez::input.label>@lang('Something')</x-rapidez::input.label>
-</label>
+<x-rapidez::input.radio.base />
 ```
 --}}
 
-<input type="radio" {{ $attributes->twMerge('cursor-pointer border focus:ring-neutral size-5 text-neutral border-border focus:outline-none focus:ring-0 focus:ring-offset-0') }} />
+<input type="radio" {{ $attributes->twMerge('cursor-pointer border size-5 text-neutral border-border focus:outline-none focus:ring-0 focus:ring-offset-0') }} />

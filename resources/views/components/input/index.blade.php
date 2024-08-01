@@ -1,33 +1,18 @@
 {{--
 Examples:
 
-1. Just an input without a label:
+1. Just an input:
 ```
-<x-rapidez::input.base name="something"/>
-```
-
-2. With a label:
-```
-<x-rapidez::input label="something"/>
+<x-rapidez::input />
 ```
 
-3. With a label as a slot:
+2 With a label:
 ```
-<x-rapidez::input">
-    <x-slot:label>
-        @lang('something')
-    </x-slot:label>
-</x-rapidez::input>
+<label>
+    <x-rapidez::label>Something</x-rapidez::label>
+    <x-rapidez::input />
+</label>
 ```
 --}}
-@slots(['label'])
 
-<label {{ $attributes->only(['class', 'v-bind:class', ':class'])->twMerge() }}>
-    @if ($label->isNotEmpty())
-        <x-rapidez::input.label>
-            {{ $label }}
-        </x-rapidez::input.label>
-    @endif
-    <x-rapidez::input.base :attributes="$attributes->except(['class', 'v-bind:class', ':class'])"/>
-    {{ $slot }}
-</label>
+<input {{ $attributes->twMerge('w-full py-3 px-5 border rounded-md border-border outline-0 ring-0 text-sm transition-colors focus:ring-transparent focus:border-neutral disabled:cursor-not-allowed disabled:bg-disabled disabled:border-disabled placeholder:text-inactive [&::-webkit-inner-spin-button]:appearance-none [&:user-invalid:not(:placeholder-shown)]:border-red-500') }} />

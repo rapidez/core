@@ -1,7 +1,7 @@
 {{--
 Examples:
 
-1. Just an input:
+1. Just a password:
 ```
 <x-rapidez::input.password />
 ```
@@ -9,21 +9,31 @@ Examples:
 2. With a label:
 ```
 <label>
-    <x-rapidez::input.label>@lang('Password')</x-rapidez::input.label>
+    <x-rapidez::input.label>Password</x-rapidez::input.label>
     <x-rapidez::input.password />
 </label>
+```
+
+3. Conditional with vue:
+```
+<template v-if="true">
+    <label>
+        <x-rapidez::input.label>Password</x-rapidez::input.label>
+        <x-rapidez::input.password />
+    </label>
+</template>
 ```
 --}}
 
 <toggler>
-    <span {{ $attributes->only('class')->twMerge('block relative') }} slot-scope="{ isOpen, toggle }">
-        <x-rapidez::input.base
+    <span class="block relative" slot-scope="{ isOpen, toggle }">
+        <x-rapidez::input
             name="password"
             type="password"
             placeholder="password"
             v-bind:type="isOpen ? 'text' : 'password'"
             class="pr-10"
-            {{ $attributes->except('class') }}
+            :$attributes
         />
         @if (!$attributes['disabled'] ?? false)
             <span v-on:click="toggle" class="absolute right-5 top-1/2 -translate-y-1/2 cursor-pointer">
