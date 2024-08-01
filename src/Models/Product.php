@@ -197,8 +197,8 @@ class Product extends Model
     public function getUrlAttribute(): string
     {
         return '/' . $this->rewrites()
-                ->where('store_id', config('rapidez.store'))
-                ->firstWhere('redirect_type', '=', 0)?->request_path ??
+            ->where('store_id', config('rapidez.store'))
+            ->firstWhere('redirect_type', '=', 0)?->request_path ??
                 'catalog/product/view/id/' . $this->entity_id;
     }
 
