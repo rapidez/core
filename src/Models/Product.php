@@ -199,8 +199,8 @@ class Product extends Model
         $configModel = config('rapidez.models.config');
 
         return '/' . $this->rewrites()
-                ->where('store_id', config('rapidez.store'))
-                ->firstWhere('redirect_type', '=', 0)?->request_path ??
+            ->where('store_id', config('rapidez.store'))
+            ->firstWhere('redirect_type', '=', 0)?->request_path ??
                 'catalog/product/view/id/' . $this->entity_id;
 
         return '/' . ($this->url_key ? $this->url_key . $configModel::getCachedByPath('catalog/seo/product_url_suffix', '.html') : 'catalog/product/view/id/' . $this->entity_id);
