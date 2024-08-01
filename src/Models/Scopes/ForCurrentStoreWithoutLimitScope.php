@@ -11,9 +11,7 @@ use Illuminate\Database\Eloquent\Scope;
  */
 class ForCurrentStoreWithoutLimitScope implements Scope
 {
-    public function __construct(public $uniquePerStoreKey, public $storeIdColumn = 'store_id')
-    {
-    }
+    public function __construct(public $uniquePerStoreKey, public $storeIdColumn = 'store_id') {}
 
     public function apply(Builder $query, Model $model)
     {

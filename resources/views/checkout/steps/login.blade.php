@@ -1,6 +1,6 @@
 <login v-slot="{ email, password, go, loginInputChange, emailAvailable }">
     <div class="flex justify-center">
-        <form class="p-8 w-[400px]" v-on:submit.prevent="go()">
+        <form class="p-8 w-[400px] space-y-3" v-on:submit.prevent="go()">
             <h1 class="font-bold text-4xl text-center mb-5">@lang('Checkout')</h1>
 
             <x-rapidez::input
@@ -11,16 +11,9 @@
                 v-on:input="loginInputChange"
                 required
             />
-            <x-rapidez::input
-                v-if="!emailAvailable"
-                class="mt-3"
-                name="password"
-                type="password"
-                placeholder="Password"
-                ref="password"
-                v-on:input="loginInputChange"
-                required
-            />
+            <template v-if="!emailAvailable">
+                <x-rapidez::input.password v-on:input="loginInputChange" required placeholder="Password" />
+            </template>
 
             <x-rapidez::button type="submit" class="w-full mt-5" dusk="continue">
                 @lang('Continue')

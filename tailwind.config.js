@@ -28,6 +28,7 @@ module.exports = {
                 inactive: 'rgb(var(--inactive) / <alpha-value>)', // Inactive text color
                 highlight: 'rgb(var(--highlight) / <alpha-value>)', // Background highlight color
                 border: 'rgb(var(--border) / <alpha-value>)', // Border color
+                disabled: 'rgb(var(--disabled) / <alpha-value>)', // Disabled color
             },
             borderColor: {
                 DEFAULT: 'rgb(var(--border) / <alpha-value>)', // Border color default so it gets used when only using border

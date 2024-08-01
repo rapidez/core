@@ -162,8 +162,8 @@ export default {
             let slide = this.childSpan == 0 ? 0 : this.currentSlide
 
             this.childSpan = this.vertical
-                ? this.slider.children[0]?.offsetHeight ?? this.slider.offsetHeight
-                : this.slider.children[0]?.offsetWidth ?? this.slider.offsetWidth
+                ? (this.slider.children[0]?.offsetHeight ?? this.slider.offsetHeight)
+                : (this.slider.children[0]?.offsetWidth ?? this.slider.offsetWidth)
 
             this.navigate(slide, 'instant')
 

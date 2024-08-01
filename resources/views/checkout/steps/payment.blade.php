@@ -1,7 +1,7 @@
 <h1 class="font-bold text-4xl mb-5">@lang('Payment method')</h1>
 <form class="bg-highlight p-8 rounded mt-6" v-on:submit.prevent="save(['payment_method'], 4)">
-    <label class="flex items-center gap-2 my-2 border bg-white p-4 rounded" v-for="(method, index) in checkout.payment_methods">
-        <x-rapidez::input.radio
+    <label v-for="(method, index) in checkout.payment_methods" class="flex items-center gap-2 my-2 border bg-white p-4 rounded cursor-pointer">
+        <x-rapidez::input.radio.base
             v-bind:value="method.code"
             v-bind:dusk="'method-'+index"
             v-model="checkout.payment_method"
@@ -23,7 +23,7 @@
                             @{{ agreement.checkbox_text }}
                         </a>
                         <div v-else>
-                            <x-rapidez::checkbox
+                            <x-rapidez::input.checkbox
                                 name="agreement_ids[]"
                                 v-bind:value="agreement.agreement_id"
                                 v-model="checkout.agreement_ids"
@@ -31,7 +31,7 @@
                                 required
                             >
                                 <a href="#" v-on:click.prevent="toggle">@{{ agreement.checkbox_text }}</a>
-                            </x-rapidez::checkbox>
+                            </x-rapidez::input.checkbox>
                         </div>
                     </x-slot>
 

@@ -1,6 +1,6 @@
 @foreach ($product->super_attributes ?: [] as $superAttributeId => $superAttribute)
     <label>
-        <x-rapidez::label>{{ $superAttribute->label }}</x-rapidez::label>
+        <x-rapidez::input.label>{{ $superAttribute->label }}</x-rapidez::input.label>
         <x-rapidez::input.select
             name="{{ $superAttributeId }}"
             v-model="addToCart.options[{{ $superAttributeId }}]"
@@ -15,7 +15,7 @@
                 v-text="option.label"
                 :value="option.value"
                 :disabled="addToCart.disabledOptions.super_{{ $superAttribute->code }}.includes(option.value)"
-            />
+            ></option>
         </x-rapidez::input.select>
     </label>
 @endforeach
