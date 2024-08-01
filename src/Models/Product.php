@@ -199,7 +199,7 @@ class Product extends Model
         return '/' . $this->rewrites()
             ->where('store_id', config('rapidez.store'))
             ->firstWhere('redirect_type', '=', 0)?->request_path ??
-                'catalog/product/view/id/' . $this->entity_id;
+            'catalog/product/view/id/' . $this->entity_id;
     }
 
     public function getImagesAttribute(): array
