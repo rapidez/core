@@ -35,7 +35,7 @@
         </p>
         @include('rapidez::checkout.partials.create-account')
     </div>
-    <x-rapidez::button type="submit" dusk="continue" class="self-start">
+    <x-rapidez::button.enhanced type="submit" dusk="continue" class="self-start">
         @lang('Continue')
-    </x-rapidez::button>
+    </x-rapidez::button.enhanced>
 </form>

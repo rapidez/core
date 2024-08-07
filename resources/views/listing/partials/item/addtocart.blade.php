@@ -15,7 +15,7 @@
         <div v-else>
             @include('rapidez::listing.partials.item.super_attributes')
 
-            <x-rapidez::button.cart/>
+            <x-rapidez::button.cart class="w-40"/>
         </div>
     </form>
 </add-to-cart>

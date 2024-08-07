@@ -62,7 +62,7 @@
         </div>
     @endif
 
-    <x-rapidez::button type="submit" class="mt-5" dusk="continue">
+    <x-rapidez::button.enhanced type="submit" class="mt-5" dusk="continue">
         @lang('Place order')
-    </x-rapidez::button>
+    </x-rapidez::button.enhanced>
 </form>

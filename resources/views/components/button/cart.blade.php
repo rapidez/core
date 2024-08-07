@@ -1,11 +1,19 @@
-<x-rapidez::button {{ $attributes->merge([
-    'type' => 'submit',
-    'dusk' => 'add-to-cart',
-])->class('flex items-center') }}>
-    <x-heroicon-o-shopping-cart class="mr-2 h-5 w-5" v-if="!addToCart.adding && !addToCart.added" />
-    <x-heroicon-o-arrow-path class="mr-2 h-5 w-5 animate-spin" v-if="addToCart.adding" v-cloak />
-    <x-heroicon-o-check class="mr-2 h-5 w-5" v-if="addToCart.added" v-cloak />
+{{--
+This is the default add to cart button and has a nice loading animation when you click on it.
+
+Example:
+```
+    <x-rapidez:button.card>Something</x-rapidez:button.card>
+```
+--}}
+
+<x-rapidez::button.enhanced
+    v-bind:class="{ 'button-loading': addToCart.adding }"
+    class="flex-1"
+    {{ $attributes->merge([ 'type' => 'submit', 'dusk' => 'add-to-cart']) }}
+>
+    <x-heroicon-o-shopping-cart class="mr-2 size-5" />
     <span v-if="!addToCart.adding && !addToCart.added">@lang('Add to cart')</span>
-    <span v-if="addToCart.adding" v-cloak>@lang('Adding')...</span>
+    <span v-if="addToCart.adding" v-cloak>@lang('Adding')</span>
     <span v-if="addToCart.added" v-cloak>@lang('Added')</span>
-</x-rapidez::button>
+</x-rapidez::button.enhanced>

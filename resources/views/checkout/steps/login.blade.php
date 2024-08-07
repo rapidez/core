@@ -24,9 +24,9 @@
                 required
             />
 
-            <x-rapidez::button type="submit" class="w-full mt-5" dusk="continue">
+            <x-rapidez::button.enhanced type="submit" class="w-full mt-5" dusk="continue">
                 @lang('Continue')
-            </x-rapidez::button>
+            </x-rapidez::button.enhanced>
 
             @if (App::providerIsLoaded('Rapidez\Account\AccountServiceProvider'))
                 <a href="{{ route('account.forgotpassword') }}" class="inline-block text-sm hover:underline mt-5" v-if="!emailAvailable">

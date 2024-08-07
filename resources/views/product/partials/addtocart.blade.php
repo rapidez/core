@@ -14,7 +14,7 @@
                 </div>
             @endif
 
-            <div class="flex flex-wrap items-center gap-3">
+            <div class="flex flex-wrap items-center gap-3 lg:max-w-96">
                 <div>
                     <div class="text-2xl font-bold text-neutral" v-text="$options.filters.price(addToCart.specialPrice || addToCart.price)">
                         {{ price($product->special_price ?: $product->price) }}
@@ -26,7 +26,7 @@
 
                 @include('rapidez::product.partials.quantity')
 
-                <x-rapidez::button.cart/>
+                <x-rapidez::button.cart class="w-40"/>
             </div>
         @endif
     </form>

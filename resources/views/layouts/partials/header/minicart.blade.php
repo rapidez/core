@@ -20,9 +20,9 @@
                 <x-rapidez::button.outline href="{{ route('cart') }}" class="mr-5">
                     @lang('Show cart')
                 </x-rapidez::button.outline>
-                <x-rapidez::button href="{{ route('checkout') }}">
+                <x-rapidez::button.enhanced href="{{ route('checkout') }}">
                     @lang('Checkout')
-                </x-rapidez::button>
+                </x-rapidez::button.enhanced>
             </div>
         </div>
     </div>
