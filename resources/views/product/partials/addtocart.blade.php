@@ -1,6 +1,6 @@
 <add-to-cart :default-qty="{{ $product->min_sale_qty > $product->qty_increments ? $product->min_sale_qty : $product->qty_increments }}" v-slot="addToCart">
     <form v-on:submit.prevent="addToCart.add" class="flex flex-col gap-5">
-        <h1 class="text-3xl font-bold" itemprop="name">{{ $product->name }}</h1>
+        <x-rapidez::title tag="h1" class="text-3xl" itemprop="name">{{ $product->name }}</x-rapidez::title>
         @if (!$product->in_stock && $product->backorder_type === 0)
             <p class="text-red-600">@lang('Sorry! This product is currently out of stock.')</p>
         @else

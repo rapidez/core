@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="container">
-        <h1 class="font-bold text-3xl">@lang('Search for'): {{ request()->q }}</h1>
+        <x-rapidez::title tag="h1" class="text-3xl">@lang('Search for'): {{ request()->q }}</x-rapidez::title>
         <x-rapidez::listing query="{
             bool: {
                 must: [

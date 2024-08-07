@@ -1,7 +1,7 @@
 <checkout-success>
     <template slot-scope="{ order, hideBilling, shipping, billing, items }">
         <div dusk="checkout-success" v-cloak v-if="order">
-            <h1 class="font-bold text-4xl mb-5">@lang('Order placed succesfully')</h1>
+            <x-rapidez::title tag="h1" class="text-4xl mb-5">@lang('Order placed succesfully')</x-rapidez::title>
             <div class="bg-highlight rounded p-8">
                 <p>@lang('We will get to work for you right away')</p>
                 <p>@lang('We will send a confirmation of your order to') <span class="font-bold">@{{ order.customer_email }}</span></p>

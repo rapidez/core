@@ -6,7 +6,7 @@
 @section('content')
     <div class="container">
         @if ($page->identifier != 'home' && $page->content_heading)
-            <h1 class="mb-5 text-4xl font-bold">{{ $page->content_heading }}</h1>
+            <x-rapidez::title tag="h1" class="mb-5 text-4xl">{{ $page->content_heading }}</x-rapidez::title>
         @endif
         @includeIf('pages.' . $page->identifier)
         @if ($page->content)
