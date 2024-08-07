@@ -3,6 +3,7 @@
 fragment orderV2 on CustomerOrder {
     id
     number
+    order_date
     token
     status
     email
@@ -46,6 +47,11 @@ fragment orderV2 on CustomerOrder {
     total {
         subtotal {
             value
+        }
+        shipping_handling {
+            total_amount {
+                value
+            }
         }
         total_shipping {
             value
