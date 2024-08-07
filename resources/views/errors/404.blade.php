@@ -16,7 +16,7 @@
 
 @section('content')
     <div class="container">
-        <h1 class="mb-5 text-4xl font-bold">{{ $page->content_heading }}</h1>
+        <x-rapidez::title tag="h1" class="mb-5 text-4xl">{{ $page->content_heading }}</x-rapidez::title>
         <div class="prose prose-green mb-5">
             {!! $page->content !!}
         </div>

@@ -8,7 +8,7 @@
 @section('content')
     <div class="container">
         @include('rapidez::category.partials.breadcrumbs')
-        <h1 class="mb-5 text-3xl font-bold">{{ $category->name }}</h1>
+        <x-rapidez::title tag="h1" class="mb-5 text-3xl">{{ $category->name }}</x-rapidez::title>
 
         @if ($category->is_anchor)
             <x-rapidez::listing query="{ bool: { must: [{ terms: { visibility: [2, 4] } }, { terms: { category_ids: [config.category.entity_id] } }] } }" />

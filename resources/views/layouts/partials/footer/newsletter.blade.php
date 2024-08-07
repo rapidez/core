@@ -1,5 +1,5 @@
 <div class="mt-4 md:mt-0 text-inactive">
-    <h3 class="text-base font-bold">@lang('Want product news and updates?')</h3>
+    <x-rapidez::title tag="h3" class="text-base">@lang('Want product news and updates?')</x-rapidez::title>
     <p class="mt-4 text-base">@lang('Sign up for our newsletter to stay up to date.')</p>
     <div class="sm:w-full sm:max-w-md xl:mt-0" dusk="newsletter">
         <lazy>
@@ -15,7 +15,7 @@
                                 name="email"
                                 type="email"
                                 v-model="variables.email"
-                                class="w-full min-w-0 appearance-none rounded-md border h-10 border-text-inactive bg-white py-2 px-4 text-base text-gray-900 placeholder-text-neutral shadow-sm focus:border-indigo-500 focus:placeholder-gray-400 focus:outline-none focus:ring-indigo-500"
+                                class="w-full min-w-0 appearance-none rounded-md border h-10 border-text-inactive bg-white py-2 px-4 text-base text-neutral placeholder-text-neutral shadow-sm focus:border-indigo-500 focus:placeholder-gray-400 focus:outline-none focus:ring-indigo-500"
                                 wrapperClass="flex-grow"
                                 dusk="newsletter-email"
                                 autocomplete="email"

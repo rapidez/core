@@ -1,6 +1,6 @@
 @php($checkoutAgreements = \Rapidez\Core\Models\CheckoutAgreement::all())
 
-<h1 class="font-bold text-4xl mb-5">@lang('Payment method')</h1>
+<x-rapidez::title tag="h1" class="text-4xl mb-5">@lang('Payment method')</x-rapidez::title>
 <form class="bg-highlight p-8 rounded mt-6" v-on:submit.prevent="save(['payment_method'], 4)">
     <div class="my-2 border bg-white p-4 rounded" v-for="(method, index) in checkout.payment_methods">
         <x-rapidez::radio

@@ -1,4 +1,4 @@
-<h1 class="mb-5 text-4xl font-bold">@lang('Credentials')</h1>
+<x-rapidez::title tag="h1" class="mb-5 text-4xl">@lang('Credentials')</x-rapidez::title>
 
 <form v-on:submit.prevent="save(['credentials'], 3)" class="flex flex-col gap-5 rounded bg-highlight p-4 md:p-8">
     <div class="flex flex-col gap-2">

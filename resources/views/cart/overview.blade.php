@@ -6,7 +6,9 @@
 
 @section('content')
     <div class="container">
-        <h1 class="mb-5 text-4xl font-bold">@lang('Cart')</h1>
+        <x-rapidez::title tag="h1" class="mb-5 text-4xl">
+            @lang('Cart')
+        </x-rapidez::title>
         <graphql
             v-if="mask"
             :query="'query getCart($cart_id: String!) { cart (cart_id: $cart_id) { ' + config.queries.cart + ' } }'"
