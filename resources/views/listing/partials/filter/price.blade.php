@@ -6,7 +6,7 @@
     :react="{and: ['query-filter']}"
     :show-filter="false"
     :inner-class="{
-        title: 'capitalize text-sm font-medium text-gray-900',
+        title: 'capitalize text-sm font-medium text-neutral',
     }"
     :slider-options="{ dragOnClick: true, useKeyboard: false }"
     u-r-l-params

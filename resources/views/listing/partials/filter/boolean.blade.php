@@ -3,7 +3,7 @@
     :component-id="filter.code"
     :data-field="filter.code+(filter.type != 'int' ? '.keyword' : '')"
     :inner-class="{
-        title: 'capitalize text-sm font-medium text-gray-900',
+        title: 'capitalize text-sm font-medium text-neutral',
         count: 'text-gray-400',
         list: '!max-h-full',
         label: 'ml-1 text-sm text-gray-600'

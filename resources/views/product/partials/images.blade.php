@@ -42,10 +42,10 @@
                     />
                 </a>
                 <button class="{{ config('rapidez.frontend.z-indexes.lightbox') }} top-1/2 left-3 -translate-y-1/2" :class="zoomed ? 'fixed' : 'absolute'" v-if="active" v-on:click="change(active-1)" aria-label="@lang('Prev')">
-                    <x-heroicon-o-chevron-left class="h-8 w-8 text-gray-900" />
+                    <x-heroicon-o-chevron-left class="h-8 w-8 text-neutral" />
                 </button>
                 <button class="{{ config('rapidez.frontend.z-indexes.lightbox') }} top-1/2 right-3 -translate-y-1/2" :class="zoomed ? 'fixed' : 'absolute'" v-if="active != images.length-1" v-on:click="change(active+1)" aria-label="@lang('Next')">
-                    <x-heroicon-o-chevron-right class="h-8 w-8 text-gray-900" />
+                    <x-heroicon-o-chevron-right class="h-8 w-8 text-neutral" />
                 </button>
             </div>
             <x-rapidez::no-image v-else class="h-96 rounded" />

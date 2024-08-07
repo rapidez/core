@@ -3,7 +3,7 @@
     :component-id="filter.code"
     :data-field="filter.super ? 'super_' + filter.code : filter.code"
     :inner-class="{
-        title: 'capitalize text-sm font-medium text-gray-900',
+        title: 'capitalize text-sm font-medium text-neutral',
         list: '!max-h-full flex flex-wrap',
     }"
     :title="filter.name.replace('_', ' ')"
