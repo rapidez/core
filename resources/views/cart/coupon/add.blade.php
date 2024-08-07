@@ -11,14 +11,15 @@
     <form v-on:submit.prevent="mutate" class="flex gap-3">
         <x-rapidez::input
             :label="false"
+            wrapperClass="flex flex-1"
             name="couponCode"
             placeholder="Coupon code"
             v-model="variables.coupon_code"
             v-bind:disabled="$root.loading"
             required
         />
-        <x-rapidez::button type="submit" class="sm:text-sm" dusk="apply-coupon">
+        <x-rapidez::button.enhanced type="submit" class="sm:text-sm" dusk="apply-coupon">
             @lang('Apply')
-        </x-rapidez::button>
+        </x-rapidez::button.enhanced>
     </form>
 </graphql-mutation>

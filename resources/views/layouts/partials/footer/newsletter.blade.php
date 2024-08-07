@@ -23,13 +23,13 @@
                                 required
                             />
                             <div class="mt-3 rounded-md sm:mt-0 sm:ml-3 sm:flex-shrink-0">
-                                <x-rapidez::button
+                                <x-rapidez::button.primary
                                     type="submit"
                                     dusk="newsletter-submit"
                                     class="w-full"
                                 >
                                     @lang('Subscribe')
-                                </x-rapidez::button>
+                                </x-rapidez::button.primary>
                             </div>
                         </form>
                         <p v-if="error" class="mt-3 text-sm text-red-700" v-cloak>

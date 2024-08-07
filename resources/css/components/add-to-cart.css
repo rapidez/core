@@ -1,0 +1,22 @@
+@keyframes is-loading {
+    0% {
+        left: 0;
+        width: 0;
+    }
+    50% {
+        left: 0;
+        width: 100%;
+    }
+    to {
+        left: 100%;
+        width: 0;
+    }
+}
+
+.button-loading {
+    @apply overflow-hidden !bg-enhanced/10 hover:!bg-enhanced/10 !text-white !cursor-progress before:absolute before:block before:h-1 before:bg-enhanced before:top-0 before:left-0 before:w-16;
+}
+
+.button-loading:before {
+    animation: is-loading 1s infinite;
+}

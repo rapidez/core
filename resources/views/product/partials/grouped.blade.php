@@ -19,7 +19,7 @@
                 @else
                     @include('rapidez::product.partials.quantity', ['product' => $groupedProduct])
 
-                    <x-rapidez::button.cart/>
+                    <x-rapidez::button.cart class="w-40"/>
                 @endif
             </form>
         </add-to-cart>
