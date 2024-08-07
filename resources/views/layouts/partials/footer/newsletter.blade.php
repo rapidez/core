@@ -1,5 +1,5 @@
 <div class="mt-4 md:mt-0 text-inactive">
-    <x-rapidez::title tag="h3" class="text-base font-bold">@lang('Want product news and updates?')</x-rapidez::title>
+    <x-rapidez::title tag="h3" class="text-base">@lang('Want product news and updates?')</x-rapidez::title>
     <p class="mt-4 text-base">@lang('Sign up for our newsletter to stay up to date.')</p>
     <div class="sm:w-full sm:max-w-md xl:mt-0" dusk="newsletter">
         <lazy>
