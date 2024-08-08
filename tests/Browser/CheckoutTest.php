@@ -51,16 +51,17 @@ class CheckoutTest extends DuskTestCase
             ->pause(5000)
             ->waitUntilIdle()
             ->type('@email', $email ?: 'wayne@enterprises.com')
-            ->click('@continue')
+            ->pressAndWaitFor('@continue')
             ->waitUntilIdle();
 
         if ($password && ! $register) {
             $browser
                 ->type('@password', $password)
                 ->waitUntilIdle()
-                ->click('@continue') // login
+                ->pressAndWaitFor('@continue') // login
                 ->waitUntilIdle();
         }
+
 
         $browser
             ->waitFor('@shipping_country', 15)
@@ -92,12 +93,12 @@ class CheckoutTest extends DuskTestCase
             ->waitUntilIdle()
             ->assertFormValid('form')
             ->scrollIntoView('@continue')
-            ->click('@continue') // go to payment step
+            ->pressAndWaitFor('@continue') // go to payment step
             ->waitUntilIdle()
             ->waitForText(__('Payment method'))
             ->click('@method-0') // select payment method
             ->waitUntilIdle()
-            ->click('@continue') // place order
+            ->pressAndWaitFor('@continue') // place order
             ->waitUntilIdle()
             ->waitFor('@checkout-success', 15)
             ->assertPresent('@checkout-success');

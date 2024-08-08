@@ -28,6 +28,7 @@ class CartTest extends DuskTestCase
     public function addMultipleSimpleProduct()
     {
         $this->browse(function (Browser $browser) {
+            $browser->deleteCookie('mask');
             $browser->script('localStorage.clear();');
             $browser->addProductToCart($this->testProduct->url);
             $browser->addProductToCart($this->testProduct->url);
