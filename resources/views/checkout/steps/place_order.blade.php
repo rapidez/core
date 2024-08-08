@@ -9,7 +9,7 @@
     v-slot="{ mutate, variables }"
 >
     <fieldset>
-        <x-rapidez::button type="submit">
+        <x-rapidez::button type="submit" dusk="continue">
             @lang('Order')
         </x-rapidez::button>
     </fieldset>

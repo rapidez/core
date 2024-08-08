@@ -46,7 +46,7 @@
             />
         </template>
         <template v-if="!loggedIn && checkoutLogin.isEmailAvailable">
-            <x-rapidez::checkbox v-model="checkoutLogin.createAccount">@lang('Create an account')</x-rapidez::checkbox>
+            <x-rapidez::checkbox v-model="checkoutLogin.createAccount" dusk="create_account">@lang('Create an account')</x-rapidez::checkbox>
         </template>
     </fieldset>
 </checkout-login>
