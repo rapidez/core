@@ -79,8 +79,10 @@ export default {
             }
 
             try {
-                let response = await window.magentoGraphQL(
-                    `mutation (
+                let response = await window.magentoGraphQL(config.queries.cart +
+                    `
+
+                    mutation (
                         $cartId: String!,
                         $sku: String!,
                         $quantity: Float!,
@@ -91,9 +93,7 @@ export default {
                         quantity: $quantity,
                         selected_options: $selected_options,
                         entered_options: $entered_options
-                    }]) { cart { ` +
-                        config.queries.cart +
-                        ` } user_errors { code message } } }`,
+                    }]) { cart { ...cart } user_errors { code message } } }`,
                     {
                         sku: this.product.sku,
                         cartId: mask.value,

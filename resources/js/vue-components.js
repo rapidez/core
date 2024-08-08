@@ -23,8 +23,8 @@ import images from './components/Product/Images.vue'
 Vue.component('images', images)
 
 Vue.component('autocomplete', () => import('./components/Search/Autocomplete.vue'))
-Vue.component('login', () => import('./components/Checkout/Login.vue'))
+Vue.component('checkout-login', () => import('./components/Checkout/CheckoutLogin.vue'))
+Vue.component('login', () => import('./components/User/Login.vue'))
 Vue.component('listing', () => import('./components/Listing/Listing.vue'))
-Vue.component('checkout', () => import('./components/Checkout/Checkout.vue'))
 Vue.component('checkout-success', () => import('./components/Checkout/CheckoutSuccess.vue'))
 Vue.component('popup', () => import('./components/Popup.vue'))

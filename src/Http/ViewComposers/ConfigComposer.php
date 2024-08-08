@@ -43,7 +43,24 @@ class ConfigComposer
         Config::set('frontend.show_customer_address_fields', $this->getCustomerAddressFields());
         Config::set('frontend.grid_per_page', Rapidez::config('catalog/frontend/grid_per_page', 12));
         Config::set('frontend.grid_per_page_values', explode(',', Rapidez::config('catalog/frontend/grid_per_page_values', '12,24,36')));
-        Config::set('frontend.queries.cart', view('rapidez::cart.queries.cart')->renderOneliner());
+        // Not sure if we should continue this way. All above is pretty repeated.
+        // We could assign everything as nested array at once but it could make
+        // it harder to override if there was already something set from a
+        // package or project? Not sure what the order will be.
+        Config::set('frontend.queries', [
+            'cart'                               => view('rapidez::cart.queries.fragments.cart')->renderOneliner(),
+            'customer'                           => view('rapidez::customer.queries.customer')->renderOneliner(),
+            'setGuestEmailOnCart'                => view('rapidez::checkout.queries.setGuestEmailOnCart')->renderOneliner(),
+            'setNewShippingAddressesOnCart'      => view('rapidez::checkout.queries.setNewShippingAddressesOnCart')->renderOneliner(),
+            'setExistingShippingAddressesOnCart' => view('rapidez::checkout.queries.setExistingShippingAddressesOnCart')->renderOneliner(),
+            'setNewBillingAddressOnCart'         => view('rapidez::checkout.queries.setNewBillingAddressOnCart')->renderOneliner(),
+            'setExistingBillingAddressOnCart'    => view('rapidez::checkout.queries.setExistingBillingAddressOnCart')->renderOneliner(),
+            'setShippingMethodsOnCart'           => view('rapidez::checkout.queries.setShippingMethodsOnCart')->renderOneliner(),
+            'setPaymentMethodOnCart'             => view('rapidez::checkout.queries.setPaymentMethodOnCart')->renderOneliner(),
+            'order'                              => view('rapidez::checkout.queries.fragments.order')->renderOneliner(),
+            'orderV2'                            => view('rapidez::checkout.queries.fragments.orderV2')->renderOneliner(),
+            'placeOrder'                         => view('rapidez::checkout.queries.placeOrder')->renderOneliner(),
+        ]);
     }
 
     public function getCustomerAddressFields()

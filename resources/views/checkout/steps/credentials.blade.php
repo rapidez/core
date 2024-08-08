@@ -29,12 +29,6 @@
             @{{ method.method_title }}
         </x-rapidez::radio>
     </div>
-    <div class="flex flex-col gap-4">
-        <p class="text-2xl font-bold">
-            @lang('Account')
-        </p>
-        @include('rapidez::checkout.partials.create-account')
-    </div>
     <x-rapidez::button type="submit" dusk="continue" class="self-start">
         @lang('Continue')
     </x-rapidez::button>
