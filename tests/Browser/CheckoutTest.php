@@ -62,7 +62,6 @@ class CheckoutTest extends DuskTestCase
                 ->waitUntilIdle();
         }
 
-
         $browser
             ->waitFor('@shipping_country', 15)
             ->type('@shipping_firstname', 'Bruce')
