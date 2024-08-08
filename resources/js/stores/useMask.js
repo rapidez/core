@@ -1,6 +1,7 @@
 import { useLocalStorage } from '@vueuse/core'
 import { useCookies } from '@vueuse/integrations/useCookies'
 import { computed } from 'vue'
+import { fetchCart } from './useCart'
 
 const localstorageMask = useLocalStorage('mask', '');
 const { get: getCookie, set: setCookie } = useCookies(['mask']);
@@ -26,8 +27,8 @@ export const mask = computed({
 
 export const refreshMask = async function () {
     try {
-        let response = await window.magentoGraphQL('mutation { createEmptyCart }')
-        mask.value = response.data.createEmptyCart
+        await fetchCart();
+        // FetchCart automatically fills the mask.
     } catch (error) {
         Notify(window.config.translations.errors.wrong, 'error')
         console.error(error)

@@ -73,6 +73,25 @@ export const fetchCustomerCart = async function () {
         .then((response) => Vue.prototype.updateCart([], response))
 }
 
+export const fetchGuestCart = async function () {
+    await window
+        .magentoGraphQL(config.queries.cart +
+            `
+
+            mutation { createGuestCart { cart { ...cart } } }`)
+        .then((response) => Vue.prototype.updateCart([], response))
+}
+
+export const fetchCart = async function () {
+    if (user.value.is_logged_in) {
+        await fetchCustomerCart();
+
+        return;
+    }
+
+    await fetchGuestCart();
+}
+
 export const fetchAttributeValues = async function (attributes = []) {
     if (!attributes.length) {
         return { data: { customAttributeMetadata: { items: null } } }
@@ -150,6 +169,11 @@ export const cart = computed({
             value.billing_address.same_as_shipping = areAddressesSame(value.shipping_addresses[0], value.billing_address)
         }
 
+        if (value.id && value.id !== mask.value) {
+            // Linking user to cart will create a new mask, it will be returned in the id field.
+            mask.value = value.id
+        }
+
         getAttributeValues()
             .then((response) => {
                 if (!response?.data?.customAttributeMetadata?.items) {
@@ -191,11 +215,6 @@ export const cart = computed({
             .finally(() => {
                 cartStorage.value = value
                 age = Date.now()
-
-                if (value.id && value.id !== mask.value) {
-                    // Linking user to cart will create a new mask, it will be returned in the id field.
-                    mask.value = value.id
-                }
             })
     },
 })
