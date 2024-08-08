@@ -21,7 +21,7 @@
                         <h2 class="text-xl font-bold">@lang('Shipping method')</h2>
                         @include('rapidez::checkout.steps.shipping_method')
 
-                        <x-rapidez::button type="submit">
+                        <x-rapidez::button type="submit" dusk="continue">
                             @lang('Next')
                         </x-rapidez::button>
                     </form>
