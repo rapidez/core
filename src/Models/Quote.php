@@ -65,7 +65,7 @@ class Quote extends Model
                         "attributes", quote_item_option.value,
                         "type", quote_item.product_type,
                     QUERY
-                        . '"backorder_count", IF(IF(stock.use_config_backorders, ' . $configBackorder . ', stock.backorders) = 2, GREATEST(0, quote_item.qty - stock.qty), 0)'
+                        . '"backorder_count", IF(IF(stock.use_config_backorders, ' . $configBackorder . ', stock.backorders) = 2, GREATEST(0, quote_item.qty - GREATEST(0, stock.qty)), 0)'
                 ) . ')), "$.null__") AS items')
                 ->leftJoin('quote_id_mask', 'quote_id_mask.quote_id', '=', $builder->getModel()->getQualifiedKeyName())
                 ->leftJoin('oauth_token', 'oauth_token.customer_id', '=', $builder->qualifyColumn('customer_id'))
