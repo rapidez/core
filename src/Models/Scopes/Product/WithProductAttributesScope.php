@@ -11,7 +11,7 @@ class WithProductAttributesScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         if (empty($model->attributesToSelect)) {
-            return
+            return;
         }
 
         $attributeModel = config('rapidez.models.attribute');
