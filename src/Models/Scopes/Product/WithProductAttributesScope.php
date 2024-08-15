@@ -12,7 +12,7 @@ class WithProductAttributesScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         if (empty($model->attributesToSelect)) {
-            throw NoAttributesToSelectSpecifiedException::create();
+            return
         }
 
         $attributeModel = config('rapidez.models.attribute');
