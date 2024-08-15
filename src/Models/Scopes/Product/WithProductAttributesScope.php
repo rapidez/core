@@ -5,7 +5,6 @@ namespace Rapidez\Core\Models\Scopes\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
-use Rapidez\Core\Exceptions\NoAttributesToSelectSpecifiedException;
 
 class WithProductAttributesScope implements Scope
 {
