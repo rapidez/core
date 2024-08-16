@@ -59,7 +59,14 @@ export const rapidezAPI = (window.rapidezAPI = async (method, endpoint, data = {
         throw new FetchError(window.config.translations.errors.wrong, response)
     }
 
-    return await response.json()
+    let responseData = await response.text()
+
+    try {
+        let json = JSON.parse(responseData)
+        return json
+    } catch (e) {
+        return responseData
+    }
 })
 
 export const magentoGraphQL = (window.magentoGraphQL = async (
