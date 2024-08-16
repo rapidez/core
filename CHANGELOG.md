@@ -1,6 +1,22 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.8.0...2.8.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.9.0...2.9.0)
+## [2.9.0](https://github.com/rapidez/core/releases/tag/2.9.0) - 2024-08-16
+
+### Added
+
+- Health check for super attributes (#535)
+- Category index scopes Eventy filter (#537)
+
+### Changed
+
+- Removed the NoAttributesToSelectSpecifiedException (#543)
+
+### Fixed
+
+- Prevent price addition errors in sliders (#536)
+- Always attempt to decode attribute values (#520)
+
 ## [2.8.0](https://github.com/rapidez/core/releases/tag/2.8.0) - 2024-07-24
 
 ### Added
