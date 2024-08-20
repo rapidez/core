@@ -26,7 +26,10 @@ module.exports = {
                     text: 'rgb(var(--secondary-text) / <alpha-value>)', // Text color that goes onto secondary color
                 },
                 neutral: 'rgb(var(--neutral) / <alpha-value>)', // Default text color
-                inactive: 'rgb(var(--inactive) / <alpha-value>)', // Inactive text color
+                inactive: {
+                    DEFAULT: 'rgb(var(--inactive) / <alpha-value>)', // Inactive text color
+                    100: 'rgb(var(--inactive-100) / <alpha-value>)', // Inactive light background color
+                },
                 highlight: 'rgb(var(--highlight) / <alpha-value>)', // Background highlight color
                 border: 'rgb(var(--border) / <alpha-value>)', // Border color
             },

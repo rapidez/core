@@ -33,11 +33,14 @@ return [
         // Attach additional indexes to the autocomplete
         // Uses the views in rapidez::layouts.partials.header.autocomplete
         'additionals' => [
-            'categories' => ['name^3', 'description'],
+            'categories' => [
+                'fields' => ['name^3', 'description'],
+                'size' => 3,
+            ],
         ],
 
-        'debounce' => 100,
-        'size'     => 10,
+        'debounce' => 500,
+        'size'     => 3,
     ],
 
     // Link store codes to theme folders

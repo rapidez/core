@@ -31,6 +31,7 @@ export default {
             results: {},
             resultsCount: 0,
             searchAdditionals: () => null,
+            overlay: false,
         }
     },
 
@@ -102,6 +103,9 @@ export default {
             let source = hit._source ?? hit.source
             let highlight = hit.highlight ?? source.highlight
             return highlight?.[field]?.[0] ?? source?.[field] ?? ''
+        },
+        showOverlay(isOpen) {
+            this.overlay = isOpen
         },
     },
 }
