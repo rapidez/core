@@ -203,7 +203,7 @@ class Product extends Model
 
     public function getImagesAttribute(): array
     {
-        return $this->gallery->sortBy('productImageValue.position')->pluck('value')->toArray();
+        return $this->gallery->sortBy('productImageValue.position')->values()->pluck('value')->toArray();
     }
 
     public function getImageAttribute($image): ?string
