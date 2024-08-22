@@ -62,8 +62,7 @@ export const rapidezAPI = (window.rapidezAPI = async (method, endpoint, data = {
     let responseData = await response.text()
 
     try {
-        let json = JSON.parse(responseData)
-        return json
+        return JSON.parse(responseData)
     } catch (e) {
         return responseData
     }
