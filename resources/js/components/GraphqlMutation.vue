@@ -108,7 +108,7 @@ export default {
                 let options = { headers: {} }
 
                 if (this.recaptcha) {
-                    options['headers']['Authorization'] = await this.getReCaptchaToken()
+                    options['headers']['X-Recaptcha'] = await this.getReCaptchaToken()
                 }
 
                 if (this.store) {
