@@ -14,7 +14,7 @@
 </div>
 
 <autocomplete
-    v-if="$root.loadAutocomplete"
+    v-else
     v-on:mounted="() => window.document.getElementById('autocomplete-input').focus()"
     v-bind:additionals="{{ json_encode(config('rapidez.frontend.autocomplete.additionals')) }}"
     v-bind:debounce="{{ config('rapidez.frontend.autocomplete.debounce') }}"
