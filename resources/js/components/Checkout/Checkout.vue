@@ -231,11 +231,11 @@ export default {
                         },
                     })
                 }
-                // response.data = orderId
+                // response = orderId
 
                 this.$root.$emit('checkout-payment-saved', {
                     order: {
-                        id: response?.data,
+                        id: response,
                         payment_method_code: this.checkout.payment_method,
                     },
                 })
