@@ -37,14 +37,15 @@
                     <li v-if="data.length > 6">
                         <button class="text-sm text-primary" @click="toggle">
                             <span v-if="isOpen" class="flex gap-x-4">
-                                @lang('Less options')</span>
-                            <span v-else class="flex gap-x-4 items-center font-sans">
+                                @lang('Less options')
+                            </span>
+                            <span v-else class="flex gap-x-4">
                                 @lang('More options')
                             </span>
                         </button>
                     </li>
                 </ul>
             </toggler>
-        </x-rapidez::filter.heading>
+        </x-rapidez::filter.heading>o
     </div>
 </multi-list>
