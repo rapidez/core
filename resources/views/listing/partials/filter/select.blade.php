@@ -46,6 +46,6 @@
                     </li>
                 </ul>
             </toggler>
-        </x-rapidez::filter.heading>o
+        </x-rapidez::filter.heading>
     </div>
 </multi-list>
