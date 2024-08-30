@@ -40,8 +40,7 @@ export default {
 
     methods: {
         async refreshOrder() {
-            this.order = await window
-                .rapidezAPI(
+            this.order = await window.rapidezAPI(
                     'get',
                     'order',
                     {},
