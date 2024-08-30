@@ -47,7 +47,7 @@ export default {
                 {
                     headers: { Authorization: 'Bearer ' + (this.token || this.mask) },
                 },
-            )
+            ).catch((error) => Turbo.visit(window.url('/')))
         },
 
         serialize(address) {
