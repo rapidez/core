@@ -27,8 +27,8 @@
         </p>
         <x-rapidez::radio
             v-for="(method, index) in checkout.shipping_methods"
-            v-model="checkout.shipping_method" 
-            v-bind:value="method.carrier_code+'_'+method.method_code" 
+            v-model="checkout.shipping_method"
+            v-bind:value="method.carrier_code+'_'+method.method_code"
             v-bind:dusk="'method-'+index"
         >
             @{{ method.method_title }}
