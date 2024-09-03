@@ -1,6 +1,13 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.9.1...2.9.1)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.9.2...2.9.2)
+## [2.9.2](https://github.com/rapidez/core/releases/tag/2.9.2) - 2024-09-03
+
+### Fixed
+
+- Sliderover header button fix (#554)
+- Checkout progressbar steps correct fallback (#555)
+
 ## [2.9.1](https://github.com/rapidez/core/releases/tag/2.9.1) - 2024-08-27
 
 ### Fixed
