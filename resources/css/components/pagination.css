@@ -1,0 +1,37 @@
+.pagination .pagination-button:first-child:nth-last-child(3),
+.pagination .pagination-button:first-child:nth-last-child(3) ~ .pagination-button {
+    @apply hidden;
+}
+
+.pagination {
+    @apply flex flex-wrap justify-center gap-x-2 !m-0 !mb-6 max-md:gap-y-4;
+}
+
+.pagination-button {
+    @apply !font-semibold !font-sans !border !border-border !rounded !bg-white !text-neutral !shadow;
+}
+
+.pagination-button.active {
+    @apply !border !border-none !bg-primary !text-white !shadow-none;
+}
+
+.pagination-button:first-child {
+    @apply !mr-auto max-md:hidden;
+}
+
+.pagination-button:last-child {
+    @apply !ml-auto max-md:w-full max-md:-order-1;
+}
+
+.pagination-button:not(:first-child):not(:last-child) {
+    @apply !m-0 !size-14 max-md:flex-1 max-md:w-auto;
+}
+
+.pagination-button:first-child,
+.pagination-button:last-child {
+    @apply h-14 px-6 max-md:!m-0;
+}
+
+.pagination-button[disabled] {
+    @apply opacity-60;
+}
