@@ -4,7 +4,7 @@
 }
 
 .pagination {
-    @apply flex flex-wrap justify-center gap-x-2 !m-0 !mb-6 max-md:gap-y-4;
+    @apply flex flex-wrap justify-center gap-x-2 !m-0 !my-6 max-md:gap-y-4;
 }
 
 .pagination-button {
@@ -16,7 +16,7 @@
 }
 
 .pagination-button:first-child {
-    @apply !mr-auto max-md:hidden;
+    @apply !mr-auto max-md:w-full max-md:order-last;
 }
 
 .pagination-button:last-child {
