@@ -11,10 +11,10 @@ class IndexJob
     use Dispatchable;
 
     protected string $index;
-    protected int $id;
+    protected int|string $id;
     protected array $values;
 
-    public function __construct(string $index, int $id, $values)
+    public function __construct(string $index, int|string $id, $values)
     {
         $this->index = $index;
         $this->id = $id;
