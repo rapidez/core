@@ -4,7 +4,6 @@
     :data-field="filter.code+(filter.type != 'int' ? '.keyword' : '')"
     :react="{and: reactiveFilters}"
     :show-search="false"
-    @value-change="scrollToElement('body')"
     u-r-l-params
 >
     <div
