@@ -1,6 +1,19 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.9.2...2.9.2)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.10.0...2.10.0)
+## [2.10.0](https://github.com/rapidez/core/releases/tag/2.10.0) - 2024-09-06
+
+### Changed
+
+- Improved the pagination styling (#558)
+- Fabulous filters 💅 (#560)
+
+### Fixed
+
+- One shipping method title (#556, #557)
+- Redirect when the order can not be fetched from the success page (#553)
+- Publish the .prettierrc.js file with the install command (#562)
+
 ## [2.9.2](https://github.com/rapidez/core/releases/tag/2.9.2) - 2024-09-03
 
 ### Fixed
