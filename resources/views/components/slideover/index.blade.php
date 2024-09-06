@@ -27,13 +27,13 @@
 <x-tag v-on:reset="toggleScroll(false)" :is="$tag">
     <input id="{{ 'close-' . $id }}" class="hidden" type="reset">
     @if (!$hasParent)
-        <input @checked($open) {{ $attributes->merge(['id' => $id, 'class' => 'peer hidden']) }} v-on:change="toggleScroll($event.target.checked)" type="checkbox">
+        <input @checked($open) {{ $attributes->only(['id'])->merge(['id' => $id, 'class' => 'peer hidden']) }} v-on:change="toggleScroll($event.target.checked)" type="checkbox">
         <label
             v-bind:for="{{ $attributes->get('v-bind:id') ?? '\'' . $closeId . '\'' }}"
             class="pointer-events-none fixed inset-0 z-40 cursor-pointer bg-neutral/50 opacity-0 transition peer-checked:pointer-events-auto peer-checked:opacity-100"
         ></label>
     @else
-        <input @checked($open) {{ $attributes->merge(['id' => $id, 'class' => 'peer hidden']) }} type="checkbox">
+        <input @checked($open) {{ $attributes->only(['id'])->merge(['id' => $id, 'class' => 'peer hidden']) }} type="checkbox">
     @endif
     <div {{ $attributes->class([
         'fixed inset-y-0 transition-all bg-white z-40 flex flex-col max-w-md w-full',

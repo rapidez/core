@@ -2,23 +2,32 @@
     v-else-if="filter.input == 'boolean'"
     :component-id="filter.code"
     :data-field="filter.code+(filter.type != 'int' ? '.keyword' : '')"
-    :inner-class="{
-        title: 'capitalize text-sm font-medium text-gray-900',
-        count: 'text-gray-400',
-        list: '!max-h-full',
-        label: 'ml-1 text-sm text-gray-600'
-    }"
-    :title="filter.name.replace('_', ' ')"
     :react="{and: reactiveFilters}"
     :show-search="false"
+    @value-change="scrollToElement('body')"
     u-r-l-params
 >
-    <span
-        slot="renderItem"
-        slot-scope="{ label, count }"
+    <div
+        slot="render"
+        class="relative pb-4"
+        slot-scope="{ data, handleChange, value }"
+        v-if="data.length > 0"
     >
-        <template v-if="label">@lang('Yes')</template>
-        <template v-else>@lang('No')</template>
-        <span class="text-gray-600">(@{{ count }})</span>
-    </span>
+        <x-rapidez::filter.heading>
+            <ul class="flex flex-col gap-1">
+                <li class="flex" v-for="item in data">
+                    <x-rapidez::checkbox
+                        v-bind:checked="value[item.key]"
+                        v-on:change="handleChange(item.key)"
+                    >
+                        <div class="font-sans font-medium text-sm items-center flex text-inactive" :class="{'text-neutral': value[item.key] == true}">
+                            <template v-if="item.key">@lang('Yes')</template>
+                            <template v-if="!item.key">@lang('No')</template>
+                            <span class="block ml-0.5 text-xs">(@{{ item.doc_count }})</span>
+                        </div>
+                    </x-rapidez::checkbox>
+                </li>
+            </ul>
+        </x-rapidez::filter.heading>
+    </div>
 </multi-list>
