@@ -1,6 +1,24 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.9.0...2.9.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.9.2...2.9.2)
+## [2.9.2](https://github.com/rapidez/core/releases/tag/2.9.2) - 2024-09-03
+
+### Fixed
+
+- Sliderover header button fix (#554)
+- Checkout progressbar steps correct fallback (#555)
+
+## [2.9.1](https://github.com/rapidez/core/releases/tag/2.9.1) - 2024-08-27
+
+### Fixed
+
+- Allow UUID's in Elasticsearch (#545)
+- Don't always assume api calls return json (#544)
+- Correct slideover class merging (#548)
+- Correct ReCaptcha header in the GraphQL mutation component (#549)
+- Correct data for the order id for the checkout-payment-saved event (#550)
+- Correctly use parseInt (#551)
+
 ## [2.9.0](https://github.com/rapidez/core/releases/tag/2.9.0) - 2024-08-16
 
 ### Added
