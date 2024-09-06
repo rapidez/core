@@ -1,0 +1,44 @@
+div.vue-slider {
+    @apply mt-5 mb-3.5 max-w-sm;
+}
+
+div.vue-slider-process,
+div.vue-slider-rail {
+    @apply h-2 bg-neutral !important;
+}
+
+div.vue-slider-rail {
+    @apply bg-highlight !important;
+}
+
+div.vue-slider .vue-slider-dot {
+    @apply size-6 !important;
+}
+
+div.vue-slider-dot-tooltip-inner {
+    @apply bg-white text-neutral border-border border px-1.5 !important;
+}
+
+span.vue-slider-dot-tooltip-text {
+    @apply font-medium font-sans text-neutral;
+}
+
+div.vue-slider-dot-tooltip::before {
+    @apply hidden;
+}
+
+div.vue-slider-dot .vue-slider-dot-handle {
+    @apply border border-border shadow;
+}
+
+div.vue-slider-tooltip-wrap.vue-slider-tooltip-top {
+    @apply font-sans;
+}
+
+.price-input {
+    @apply space-x-3;
+}
+
+.vue-slider-component.vue-slider-horizontal {
+    @apply mt-5;
+}
