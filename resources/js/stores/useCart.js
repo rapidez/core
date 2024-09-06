@@ -168,4 +168,44 @@ export const fixedProductTaxes = computed(() => {
     return taxes
 })
 
+export const sidebarSegments = computed(() => {
+    if(!cart) {
+        return []
+    }
+
+    let segments = []
+
+    segments.push({
+        'title': 'Subtotal',
+        'value_including_tax': cart.prices.subtotal_including_tax.value,
+        'value_excluding_tax': cart.prices.subtotal_excluding_tax.value,
+    })
+
+    if (cart.shipping_addresses?.length  && cart.shipping_addresses[0]?.selected_shipping_method?.amount) {
+        segments.push({
+            'title': 'Shipping',
+            'value_including_tax': cart.shipping_addresses[0].selected_shipping_method.price_incl_tax.value,
+            'value_excluding_tax': cart.shipping_addresses[0].selected_shipping_method.price_excl_tax.value,
+        })
+    }
+
+    if (cart.prices?.applied_taxes?.length && cart.prices?.applied_taxes[0]?.amount?.value > 0) {
+        segments.push({
+            'title': 'Tax',
+            'value_including_tax': cart.prices.applied_taxes[0].amount.value,
+            'value_excluding_tax': 0,
+        })
+    }
+
+    if(cart.prices?.discounts) {
+        cart.prices.discounts.forEach(discount => {
+            segments.push({
+                'title': discount.label,
+                'value_including_tax': -discount.amount.value,
+                'value_excluding_tax': -discount.amount.value,
+            })
+        });
+    }
+})
+
 export default () => cart
