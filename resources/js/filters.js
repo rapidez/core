@@ -14,15 +14,13 @@ Vue.filter('price', function (value) {
 })
 
 window.url = function (path = '') {
-    // Replace any double slashes not preceded by a : with a single slash
-    path = path.replaceAll(/([^:])\/\//g, '$1/')
-
     // Transform urls starting with / into url with domain
-    if (!path.startsWith('/')) {
-        return path
+    if (path.startsWith('/')) {
+        path = (window.config.base_url || window.origin) + path
     }
 
-    return (window.config.base_url || window.origin) + path
+    // Replace any double slashes not preceded by a : with a single slash
+    return path.replaceAll(/([^:])\/\//g, '$1/')
 }
 
 Vue.filter('url', window.url)
