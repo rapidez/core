@@ -13,7 +13,7 @@
                     {{ $title }}
                 </span>
             @endif
-            <label v-bind:for="{{ $attributes->get('v-bind:id') ?? '\'' . $closeId . '\'' }}" class="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer text-white">
+            <label for="{{ $closeId }}" class="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer text-white">
                 <x-heroicon-o-x-mark class="size-6" />
             </label>
         </div>
