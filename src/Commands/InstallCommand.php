@@ -17,6 +17,7 @@ class InstallCommand extends Command
         copy(__DIR__ . '/../../tailwind.config.js', base_path('tailwind.config.js'));
         copy(__DIR__ . '/../../vite.config.js', base_path('vite.config.js'));
         copy(__DIR__ . '/../../yarn.lock', base_path('yarn.lock'));
+        copy(__DIR__ . '/../../.prettierrc.js', base_path('.prettierrc.js'));
 
         $this->info('Done 🚀');
     }
