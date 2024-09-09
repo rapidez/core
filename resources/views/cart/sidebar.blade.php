@@ -1,30 +1,19 @@
 <dl class="mb-5 flex w-full flex-col rounded-lg border [&>*]:flex [&>*]:flex-wrap [&>*]:justify-between [&>*]:p-3 [&>*]:border-b [&>*:last-child]:border-none">
-    <div>
-        <dt>@lang('Subtotal')</dt>
-        <dd>@{{ cart.prices.subtotal_including_tax.value | price }}</dd>
-    </div>
-    <div v-if="cart.prices.applied_taxes.length">
-        <dt>@lang('Tax')</dt>
-        <dd>@{{ cart.prices.applied_taxes[0].amount.value | price }}</dd>
-    </div>
-    <div v-for="value, name in cart.fixedProductTaxes.value">
-        <dt>@{{ name }}</dt>
-        <dd>@{{ value | price }}</dd>
-    </div>
-    <div v-if="cart.shipping_addresses.length && cart.shipping_addresses[0].selected_shipping_method">
+    <div v-for="segment in cart.sidebarSegments.value">
         <dt>
-            @lang('Shipping')<br>
-            <small>@{{ cart.shipping_addresses[0].selected_shipping_method.carrier_title }} - @{{ cart.shipping_addresses[0].selected_shipping_method.method_title }}</small>
+            @{{ segment.title }}
         </dt>
-        <dd>@{{ cart.shipping_addresses[0].selected_shipping_method.amount.value | price }}</dd>
-    </div>
-    <div v-for="discount in cart.prices.discounts">
-        <dt>@{{ discount.label }}</dt>
-        <dd>-@{{ discount.amount.value | price }}</dd>
-    </div>
-    <div class="font-bold">
-        <dt>@lang('Total')</dt>
-        <dd>@{{ cart.prices.grand_total.value | price }}</dd>
+        <dd>
+            <template v-if="segment.value">
+                @{{ segment.value | price }}
+            </template>
+            <template v-else>
+                @{{ segment.display_tax ? segment.value_including_tax : segment.value_excluding_tax | price }}
+            </template>
+        </dd>
+        <small v-if="segment.subtitle">
+            @{{ segment.subtitle }}
+        </small>
     </div>
 </dl>
 

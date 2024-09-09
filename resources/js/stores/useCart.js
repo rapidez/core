@@ -98,6 +98,7 @@ export const cart = computed({
         cartStorage.value.virtualItems = virtualItems
         cartStorage.value.hasOnlyVirtualItems = hasOnlyVirtualItems
         cartStorage.value.fixedProductTaxes = fixedProductTaxes
+        cartStorage.value.sidebarSegments = sidebarSegments
 
         return cartStorage.value
     },
@@ -169,43 +170,70 @@ export const fixedProductTaxes = computed(() => {
 })
 
 export const sidebarSegments = computed(() => {
-    if(!cart) {
+    if(!cart || !cart.value.prices) {
         return []
     }
 
     let segments = []
 
     segments.push({
-        'title': 'Subtotal',
-        'value_including_tax': cart.prices.subtotal_including_tax.value,
-        'value_excluding_tax': cart.prices.subtotal_excluding_tax.value,
+        'code': 'subtotal',
+        'title': config.translations.cart.segments.subtotal,
+        'value_including_tax': cart.value.prices.subtotal_including_tax.value,
+        'value_excluding_tax': cart.value.prices.subtotal_excluding_tax.value,
+        'display_tax': Boolean(config.tax?.display?.cart_subtotal),
     })
 
-    if (cart.shipping_addresses?.length  && cart.shipping_addresses[0]?.selected_shipping_method?.amount) {
+    if (cart.value.shipping_addresses?.length && cart.value.shipping_addresses[0]?.selected_shipping_method?.amount) {
         segments.push({
-            'title': 'Shipping',
-            'value_including_tax': cart.shipping_addresses[0].selected_shipping_method.price_incl_tax.value,
-            'value_excluding_tax': cart.shipping_addresses[0].selected_shipping_method.price_excl_tax.value,
+            'code': 'shipping',
+            'title': config.translations.cart.segments.shipping,
+            'subtitle': cart.value.shipping_addresses[0].selected_shipping_method.carrier_title + ' - ' + cart.value.shipping_addresses[0].selected_shipping_method.method_title,
+            'value_including_tax': cart.value.shipping_addresses[0].selected_shipping_method.price_incl_tax.value,
+            'value_excluding_tax': cart.value.shipping_addresses[0].selected_shipping_method.price_excl_tax.value,
+            'display_tax': Boolean(config.tax?.display?.cart_shipping),
         })
     }
 
-    if (cart.prices?.applied_taxes?.length && cart.prices?.applied_taxes[0]?.amount?.value > 0) {
-        segments.push({
-            'title': 'Tax',
-            'value_including_tax': cart.prices.applied_taxes[0].amount.value,
-            'value_excluding_tax': 0,
-        })
-    }
-
-    if(cart.prices?.discounts) {
-        cart.prices.discounts.forEach(discount => {
+    let tax_total = 0
+    if (cart.value.prices?.applied_taxes?.length) {
+        cart.value.prices.applied_taxes.forEach(tax => {
+            tax_total += tax.amount.value
             segments.push({
+                'code': 'tax',
+                'title': tax.label,
+                'value': tax.amount.value,
+            })
+        })
+    }
+
+    if (cart.value.fixedProductTaxes?.value) {
+        Object.entries(cart.value.fixedProductTaxes).forEach(([key, value]) => ({
+            'code': 'fixed_product_tax',
+            'title': key,
+            'value': value,
+        }))
+    }
+
+    if (cart.value.prices?.discounts?.length) {
+        cart.value.prices.discounts.forEach(discount => {
+            segments.push({
+                'code': 'discount',
                 'title': discount.label,
-                'value_including_tax': -discount.amount.value,
-                'value_excluding_tax': -discount.amount.value,
+                'value': -discount.amount.value,
             })
         });
     }
+
+    segments.push({
+        'code': 'grand_total',
+        'title': config.translations.cart.segments.grand_total,
+        'value_including_tax': cart.value.prices.grand_total.value,
+        'value_excluding_tax': cart.value.prices.grand_total.value - tax_total,
+        'display_tax': true,
+    })
+
+    return segments
 })
 
 export default () => cart
