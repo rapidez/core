@@ -185,14 +185,12 @@ export const sidebarSegments = computed(() => {
     })
 
     if (cart.value.shipping_addresses?.length) {
-        cart.value.shipping_addresses.forEach(shippingAddress => {
+        cart.value.shipping_addresses.forEach((shippingAddress) => {
             segments.push({
                 code: 'shipping',
                 title: config.translations.cart.segments.shipping,
                 subtitle:
-                    shippingAddress.selected_shipping_method.carrier_title +
-                    ' - ' +
-                    shippingAddress.selected_shipping_method.method_title,
+                    shippingAddress.selected_shipping_method.carrier_title + ' - ' + shippingAddress.selected_shipping_method.method_title,
                 value_including_tax: shippingAddress.selected_shipping_method.price_incl_tax.value,
                 value_excluding_tax: shippingAddress.selected_shipping_method.price_excl_tax.value,
                 display_tax: Boolean(config.tax?.display?.cart_shipping),
