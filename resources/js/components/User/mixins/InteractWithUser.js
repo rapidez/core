@@ -72,9 +72,16 @@ export default {
         },
 
         setCheckoutCredentialsFromDefaultUserAddresses() {
-            if (this.$root && this.$root.loggedIn) {
+            if (!this.$root) {
+                return;
+            }
+
+            if (this.$root.loggedIn) {
                 this.setCustomerAddressByAddressId('shipping', this.$root.user.default_shipping)
                 this.setCustomerAddressByAddressId('billing', this.$root.user.default_billing)
+            } else {
+                this.setCustomerAddressByAddressId('shipping')
+                this.setCustomerAddressByAddressId('billing')
             }
         },
 
@@ -84,13 +91,13 @@ export default {
                 return
             }
 
-            let address = this.$root.user.addresses.find((address) => address.id == id)
+            let address = this.$root.user?.addresses?.find((address) => address.id == id) || window.address_defaults
 
             this.$root.checkout[type + '_address'] = Object.assign(
                 this.$root.checkout[type + '_address'],
                 Object.assign(
                     {
-                        customer_address_id: address.id,
+                        customer_address_id: address?.id,
                     },
                     address,
                 ),
