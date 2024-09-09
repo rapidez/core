@@ -73,7 +73,7 @@ export default {
 
         setCheckoutCredentialsFromDefaultUserAddresses() {
             if (!this.$root) {
-                return;
+                return
             }
 
             if (this.$root.loggedIn) {
