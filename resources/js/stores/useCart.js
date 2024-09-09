@@ -170,67 +170,70 @@ export const fixedProductTaxes = computed(() => {
 })
 
 export const sidebarSegments = computed(() => {
-    if(!cart || !cart.value.prices) {
+    if (!cart || !cart.value.prices) {
         return []
     }
 
     let segments = []
 
     segments.push({
-        'code': 'subtotal',
-        'title': config.translations.cart.segments.subtotal,
-        'value_including_tax': cart.value.prices.subtotal_including_tax.value,
-        'value_excluding_tax': cart.value.prices.subtotal_excluding_tax.value,
-        'display_tax': Boolean(config.tax?.display?.cart_subtotal),
+        code: 'subtotal',
+        title: config.translations.cart.segments.subtotal,
+        value_including_tax: cart.value.prices.subtotal_including_tax.value,
+        value_excluding_tax: cart.value.prices.subtotal_excluding_tax.value,
+        display_tax: Boolean(config.tax?.display?.cart_subtotal),
     })
 
     if (cart.value.shipping_addresses?.length && cart.value.shipping_addresses[0]?.selected_shipping_method?.amount) {
         segments.push({
-            'code': 'shipping',
-            'title': config.translations.cart.segments.shipping,
-            'subtitle': cart.value.shipping_addresses[0].selected_shipping_method.carrier_title + ' - ' + cart.value.shipping_addresses[0].selected_shipping_method.method_title,
-            'value_including_tax': cart.value.shipping_addresses[0].selected_shipping_method.price_incl_tax.value,
-            'value_excluding_tax': cart.value.shipping_addresses[0].selected_shipping_method.price_excl_tax.value,
-            'display_tax': Boolean(config.tax?.display?.cart_shipping),
+            code: 'shipping',
+            title: config.translations.cart.segments.shipping,
+            subtitle:
+                cart.value.shipping_addresses[0].selected_shipping_method.carrier_title +
+                ' - ' +
+                cart.value.shipping_addresses[0].selected_shipping_method.method_title,
+            value_including_tax: cart.value.shipping_addresses[0].selected_shipping_method.price_incl_tax.value,
+            value_excluding_tax: cart.value.shipping_addresses[0].selected_shipping_method.price_excl_tax.value,
+            display_tax: Boolean(config.tax?.display?.cart_shipping),
         })
     }
 
     let tax_total = 0
     if (cart.value.prices?.applied_taxes?.length) {
-        cart.value.prices.applied_taxes.forEach(tax => {
+        cart.value.prices.applied_taxes.forEach((tax) => {
             tax_total += tax.amount.value
             segments.push({
-                'code': 'tax',
-                'title': tax.label,
-                'value': tax.amount.value,
+                code: 'tax',
+                title: tax.label,
+                value: tax.amount.value,
             })
         })
     }
 
     if (cart.value.fixedProductTaxes?.value) {
         Object.entries(cart.value.fixedProductTaxes).forEach(([key, value]) => ({
-            'code': 'fixed_product_tax',
-            'title': key,
-            'value': value,
+            code: 'fixed_product_tax',
+            title: key,
+            value: value,
         }))
     }
 
     if (cart.value.prices?.discounts?.length) {
-        cart.value.prices.discounts.forEach(discount => {
+        cart.value.prices.discounts.forEach((discount) => {
             segments.push({
-                'code': 'discount',
-                'title': discount.label,
-                'value': -discount.amount.value,
+                code: 'discount',
+                title: discount.label,
+                value: -discount.amount.value,
             })
-        });
+        })
     }
 
     segments.push({
-        'code': 'grand_total',
-        'title': config.translations.cart.segments.grand_total,
-        'value_including_tax': cart.value.prices.grand_total.value,
-        'value_excluding_tax': cart.value.prices.grand_total.value - tax_total,
-        'display_tax': true,
+        code: 'grand_total',
+        title: config.translations.cart.segments.grand_total,
+        value_including_tax: cart.value.prices.grand_total.value,
+        value_excluding_tax: cart.value.prices.grand_total.value - tax_total,
+        display_tax: true,
     })
 
     return segments
