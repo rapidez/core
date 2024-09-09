@@ -8,8 +8,8 @@ return [
             'applied' => 'Coupon applied succesfully!',
         ],
         'segments' => [
-            'subtotal' => 'Subtotal',
-            'shipping' => 'Shipping',
+            'subtotal'    => 'Subtotal',
+            'shipping'    => 'Shipping',
             'grand_total' => 'Grand total',
         ],
     ],
