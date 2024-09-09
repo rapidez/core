@@ -184,14 +184,16 @@ export const sidebarSegments = computed(() => {
         'display_tax': Boolean(config.tax?.display?.cart_subtotal),
     })
 
-    if (cart.value.shipping_addresses?.length && cart.value.shipping_addresses[0]?.selected_shipping_method?.amount) {
-        segments.push({
-            'code': 'shipping',
-            'title': config.translations.cart.segments.shipping,
-            'subtitle': cart.value.shipping_addresses[0].selected_shipping_method.carrier_title + ' - ' + cart.value.shipping_addresses[0].selected_shipping_method.method_title,
-            'value_including_tax': cart.value.shipping_addresses[0].selected_shipping_method.price_incl_tax.value,
-            'value_excluding_tax': cart.value.shipping_addresses[0].selected_shipping_method.price_excl_tax.value,
-            'display_tax': Boolean(config.tax?.display?.cart_shipping),
+    if (cart.value.shipping_addresses?.length) {
+        cart.value.shipping_addresses.forEach(shippingAddress => {
+            segments.push({
+                'code': 'shipping',
+                'title': config.translations.cart.segments.shipping,
+                'subtitle': shippingAddress.selected_shipping_method.carrier_title + ' - ' + shippingAddress.selected_shipping_method.method_title,
+                'value_including_tax': shippingAddress.selected_shipping_method.price_incl_tax.value,
+                'value_excluding_tax': shippingAddress.selected_shipping_method.price_excl_tax.value,
+                'display_tax': Boolean(config.tax?.display?.cart_shipping),
+            })
         })
     }
 
