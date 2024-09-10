@@ -1,6 +1,16 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.10.0...2.10.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.11.0...2.11.0)
+## [2.11.0](https://github.com/rapidez/core/releases/tag/2.11.0) - 2024-09-10
+
+### Changed
+
+- Make Graphql and GraphqlMutation errorCallback the same (#566)
+
+### Fixed
+
+- Prevent any leftover customer_address_id (#565)
+
 ## [2.10.0](https://github.com/rapidez/core/releases/tag/2.10.0) - 2024-09-06
 
 ### Changed
