@@ -3,8 +3,15 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Exceptions\DecryptionException;
+use Rapidez\Core\Facades\Rapidez;
+
+enum ConfigScopes
+{
+    case SCOPE_STORE;
+    case SCOPE_WEBSITE;
+    case SCOPE_DEFAULT;
+}
 
 class Config extends Model
 {
@@ -16,31 +23,72 @@ class Config extends Model
     {
         static::addGlobalScope('scope-fallback', function (Builder $builder) {
             $builder
-                ->where(function ($query) {
-                    $query->where(function ($query) {
-                        $query->where('scope', 'stores')->where('scope_id', config('rapidez.store'));
-                    })->orWhere(function ($query) {
-                        $query->where('scope', 'websites')->where('scope_id', config('rapidez.website'));
-                    })->orWhere(function ($query) {
-                        $query->where('scope', 'default')->where('scope_id', 0);
-                    });
-                })
-                ->orderByRaw('FIELD(scope, "stores", "websites", "default") ASC')
+                ->where(fn ($query) => $query
+                    ->where(fn ($query) => $query->whereStore(config('rapidez.store')))
+                    ->orWhere(fn ($query) => $query->whereWebsite(config('rapidez.website')))
+                    ->orWhere(fn ($query) => $query->whereDefault())
+                )
                 ->limit(1);
+        });
+
+        static::addGlobalScope('scope-default-sorting', function (Builder $builder) {
+            $builder
+                ->orderByRaw('FIELD(scope, "stores", "websites", "default") ASC');
         });
     }
 
+    public function scopeWhereStore(Builder $query, ?int $storeId): void
+    {
+        $query->where('scope', 'stores')->where('scope_id', $storeId);
+    }
+
+    public function scopeWhereWebsite(Builder $query, ?int $websiteId): void
+    {
+        $query->where('scope', 'websites')->where('scope_id', $websiteId);
+    }
+
+    public function scopeWhereDefault(Builder $query): void
+    {
+        $query->where('scope', 'default')->where('scope_id', 0);
+    }
+
+    /**
+     * @deprecated see: Config::getValue
+     */
     public static function getCachedByPath(string $path, $default = false, bool $sensitive = false): string|bool
     {
-        $cacheKey = 'config.' . config('rapidez.store') . '.' . str_replace('/', '.', $path);
+        return static::getValue($path, options: ['cache' => true, 'decrypt' => $sensitive]) ?? $default;
+    }
 
-        $value = Cache::rememberForever($cacheKey, function () use ($path, $default) {
-            $value = ($config = self::where('path', $path)->first('value')) ? $config->value : $default;
+    /**
+     * Magento compatible Config getValue method.
+     */
+    public static function getValue(
+        string $path,
+        ConfigScopes $scope = ConfigScopes::SCOPE_STORE,
+        ?int $scopeId = null,
+        array $options = ['cache' => true, 'decrypt' => false]
+    ): mixed {
+        $scopeId ??= match ($scope) {
+            ConfigScopes::SCOPE_WEBSITE => config('rapidez.website') ?? Rapidez::getStore(config('rapidez.store'))['website_id'],
+            ConfigScopes::SCOPE_STORE   => config('rapidez.store'),
+            default                     => 0
+        };
+        $websiteId = $scope === ConfigScopes::SCOPE_STORE ? Rapidez::getStore($scopeId)['website_id'] : $scopeId;
 
-            return ! is_null($value) ? $value : false;
-        });
+        $query = static::query()
+            ->withoutGlobalScope('scope-fallback')
+            ->where('path', $path)
+            ->where(fn ($query) => $query
+                ->when($scope === ConfigScopes::SCOPE_STORE, fn ($query) => $query->whereStore($scopeId))
+                ->when($scope !== ConfigScopes::SCOPE_DEFAULT, fn ($query) => $query->orWhere(fn ($query) => $query->whereWebsite($websiteId)))
+                ->orWhere(fn ($query) => $query->whereDefault())
+            )
+            ->limit(1);
 
-        return $sensitive && $value ? self::decrypt($value) : $value;
+        $result = ((bool) $options['cache'] ? $query->getCachedForever() : $query->get())->value('value');
+
+        return (bool) $options['decrypt'] && is_string($result) ? static::decrypt($result) : $result;
     }
 
     public static function decrypt(string $value): string
