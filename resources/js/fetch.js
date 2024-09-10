@@ -59,7 +59,13 @@ export const rapidezAPI = (window.rapidezAPI = async (method, endpoint, data = {
         throw new FetchError(window.config.translations.errors.wrong, response)
     }
 
-    return await response.json()
+    let responseData = await response.text()
+
+    try {
+        return JSON.parse(responseData)
+    } catch (e) {
+        return responseData
+    }
 })
 
 export const combineGraphqlQueries = window.combineGraphqlQueries = async function (queries, name = '') {

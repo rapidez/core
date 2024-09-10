@@ -1,5 +1,7 @@
 @import 'components/vue-slider';
+@import 'components/price-slider';
 @import './theme-variables.css';
+@import './components/pagination.css';
 
 @tailwind base;
 @tailwind components;

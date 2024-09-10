@@ -1,6 +1,53 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.8.0...2.8.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.10.0...2.10.0)
+## [2.10.0](https://github.com/rapidez/core/releases/tag/2.10.0) - 2024-09-06
+
+### Changed
+
+- Improved the pagination styling (#558)
+- Fabulous filters 💅 (#560)
+
+### Fixed
+
+- One shipping method title (#556, #557)
+- Redirect when the order can not be fetched from the success page (#553)
+- Publish the .prettierrc.js file with the install command (#562)
+
+## [2.9.2](https://github.com/rapidez/core/releases/tag/2.9.2) - 2024-09-03
+
+### Fixed
+
+- Sliderover header button fix (#554)
+- Checkout progressbar steps correct fallback (#555)
+
+## [2.9.1](https://github.com/rapidez/core/releases/tag/2.9.1) - 2024-08-27
+
+### Fixed
+
+- Allow UUID's in Elasticsearch (#545)
+- Don't always assume api calls return json (#544)
+- Correct slideover class merging (#548)
+- Correct ReCaptcha header in the GraphQL mutation component (#549)
+- Correct data for the order id for the checkout-payment-saved event (#550)
+- Correctly use parseInt (#551)
+
+## [2.9.0](https://github.com/rapidez/core/releases/tag/2.9.0) - 2024-08-16
+
+### Added
+
+- Health check for super attributes (#535)
+- Category index scopes Eventy filter (#537)
+
+### Changed
+
+- Removed the NoAttributesToSelectSpecifiedException (#543)
+
+### Fixed
+
+- Prevent price addition errors in sliders (#536)
+- Always attempt to decode attribute values (#520)
+
 ## [2.8.0](https://github.com/rapidez/core/releases/tag/2.8.0) - 2024-07-24
 
 ### Added

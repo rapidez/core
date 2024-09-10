@@ -26,7 +26,7 @@
     @config('design/head/includes')
 </head>
 <body class="text-neutral antialiased">
-    <div id="app" class="flex flex-col min-h-screen">
+    <div id="app" class="flex flex-col min-h-dvh">
         @includeWhen(!request()->is('checkout'), 'rapidez::layouts.partials.header')
         @includeWhen(request()->is('checkout'), 'rapidez::layouts.checkout.header')
         <main>
