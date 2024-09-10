@@ -137,9 +137,10 @@ export default {
                 }
 
                 if (error?.response) {
-                    if (!(await this.checkResponseForExpiredCart(error.response)) && GraphQLError.prototype.isPrototypeOf(error)) {
+                    const responseData = await error.response.json();
+                    if (GraphQLError.prototype.isPrototypeOf(error) && !(await this.checkResponseForExpiredCart({}, responseData))) {
                         // If there are errors we may still get a newly updated cart back.
-                        await this.updateCart({}, await error.response.json())
+                        await this.updateCart({}, responseData)
                     }
                 }
             }

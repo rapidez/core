@@ -1,5 +1,6 @@
 import { StorageSerializers, asyncComputed, useLocalStorage, useMemoize } from '@vueuse/core'
 import { computed, watch } from 'vue'
+import { GraphQLError } from '../fetch'
 import { mask, clearMask } from './useMask'
 
 const cartStorage = useLocalStorage('cart', {}, { serializer: StorageSerializers.object })
@@ -27,7 +28,7 @@ export const refresh = async function (force = false) {
         cart.value = Object.values(response.data)[0]
     } catch (error) {
         console.error(error)
-        Vue.prototype.checkResponseForExpiredCart(error)
+        GraphQLError.prototype.isPrototypeOf(error) && Vue.prototype.checkResponseForExpiredCart({}, await error?.response?.json())
     }
 }
 
