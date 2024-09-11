@@ -7,11 +7,6 @@ return [
         'coupon' => [
             'applied' => 'Coupon applied succesfully!',
         ],
-        'segments' => [
-            'subtotal'    => 'Subtotal',
-            'shipping'    => 'Shipping',
-            'grand_total' => 'Grand total',
-        ],
     ],
     'errors' => [
         'wrong'           => 'Something went wrong, please try again.',
