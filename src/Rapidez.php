@@ -14,9 +14,7 @@ class Rapidez
 {
     protected string|bool|null $compadreVersion;
 
-    public function __construct(protected Collection $routes)
-    {
-    }
+    public function __construct(protected Collection $routes) {}
 
     public function addFallbackRoute($action, $position = 9999)
     {
