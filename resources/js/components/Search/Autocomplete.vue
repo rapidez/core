@@ -92,7 +92,6 @@ export default {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', Authorization: auth },
                     data: JSON.stringify(esQuery),
-                    validateStatus: false,
                 }).then(async (response) => {
                     const responseData = await response.json()
 
