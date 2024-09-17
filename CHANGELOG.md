@@ -1,6 +1,15 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.11.0...2.11.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.11.1...2.11.1)
+## [2.11.1](https://github.com/rapidez/core/releases/tag/2.11.1) - 2024-09-17
+
+### Fixed
+
+- Sort child images by store specific value & listen to disabled (#570)
+- CSRF token on Rapidez API requests (#572)
+- Multiply fixed product tax by item quantity (#568)
+- Don't throw warning when GraphQL component is used without slot (#569)
+
 ## [2.11.0](https://github.com/rapidez/core/releases/tag/2.11.0) - 2024-09-10
 
 ### Changed
