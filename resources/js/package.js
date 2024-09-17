@@ -59,6 +59,7 @@ function init() {
             loadingCount: 0,
             loading: false,
             loadAutocomplete: false,
+            csrfToken: document.querySelector('[name=csrf-token]').content,
             cart: useCart(),
             user: useUser(),
             mask: useMask(),
