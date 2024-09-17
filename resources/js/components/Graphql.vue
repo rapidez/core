@@ -42,6 +42,10 @@ export default {
     }),
 
     render() {
+        if (!('default' in this.$scopedSlots)) {
+            return null
+        }
+
         return this.$scopedSlots.default(this)
     },
 
