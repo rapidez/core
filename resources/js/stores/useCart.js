@@ -163,8 +163,9 @@ export const hasOnlyVirtualItems = computed(() => {
 
 export const fixedProductTaxes = computed(() => {
     let taxes = {}
+    // Note: Magento does internal rounding before multiplying by the quantity, so we actually don't lose any precision here by using the rounded tax amount.
     cart.value?.items?.forEach((item) =>
-        item.prices?.fixed_product_taxes?.forEach((tax) => (taxes[tax.label] = (taxes[tax.label] ?? 0) + tax.amount.value)),
+        item.prices?.fixed_product_taxes?.forEach((tax) => (taxes[tax.label] = (taxes[tax.label] ?? 0) + tax.amount.value * item.quantity)),
     )
     return taxes
 })
