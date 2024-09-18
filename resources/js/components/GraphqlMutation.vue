@@ -123,7 +123,7 @@ export default {
                         throw error
                     }
 
-                    const errorResponse = error.response.json()
+                    const errorResponse = await error.response.json()
                     if (this.errorCallback) {
                         await this.errorCallback(this.data, errorResponse)
                     }

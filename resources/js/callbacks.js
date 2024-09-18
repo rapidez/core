@@ -33,7 +33,7 @@ Vue.prototype.submitFieldsets = async function(form) {
     return await Promise.all(promises);
 }
 
-Vue.prototype.updateCart = async function (data, response) {
+Vue.prototype.updateCart = async function (variables, response) {
     cart.value = 'cart' in Object.values(response.data)[0] ? Object.values(response.data)[0].cart : Object.values(response.data)[0]
 
     getAttributeValues().then((response) => {
@@ -75,11 +75,9 @@ Vue.prototype.updateCart = async function (data, response) {
     return response.data
 }
 
-Vue.prototype.checkResponseForExpiredCart = async function (error) {
-    let responseData = await error.response?.json()
-
+Vue.prototype.checkResponseForExpiredCart = async function (variables, response) {
     if (
-        responseData?.errors?.some(
+        response?.errors?.some(
             (error) =>
                 error.extensions.category === 'graphql-no-such-entity' &&
                 // Untested, but something like this is maybe a better idea as
@@ -109,11 +107,9 @@ Vue.prototype.updateCart = async function (data, response) {
     return response.data
 }
 
-Vue.prototype.checkResponseForExpiredCart = async function (error) {
-    let responseData = await error.response?.json()
-
+Vue.prototype.checkResponseForExpiredCart = async function (variables, response) {
     if (
-        responseData?.errors?.some(
+        response?.errors?.some(
             (error) =>
                 error.extensions.category === 'graphql-no-such-entity' &&
                 error.path.some((path) =>

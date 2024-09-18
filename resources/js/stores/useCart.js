@@ -1,5 +1,6 @@
 import { StorageSerializers, asyncComputed, useLocalStorage, useMemoize } from '@vueuse/core'
 import { computed, ref, watch } from 'vue'
+import { GraphQLError } from '../fetch'
 import { mask, clearMask } from './useMask'
 import { user } from './useUser'
 
@@ -30,7 +31,7 @@ export const refresh = async function (force = false) {
         cart.value = Object.values(response.data)[0]
     } catch (error) {
         console.error(error)
-        Vue.prototype.checkResponseForExpiredCart(error)
+        GraphQLError.prototype.isPrototypeOf(error) && Vue.prototype.checkResponseForExpiredCart({}, await error?.response?.json())
     }
 }
 
@@ -229,8 +230,9 @@ export const hasOnlyVirtualItems = computed(() => {
 
 export const fixedProductTaxes = computed(() => {
     let taxes = {}
+    // Note: Magento does internal rounding before multiplying by the quantity, so we actually don't lose any precision here by using the rounded tax amount.
     cart.value?.items?.forEach((item) =>
-        item.prices?.fixed_product_taxes?.forEach((tax) => (taxes[tax.label] = (taxes[tax.label] ?? 0) + tax.amount.value)),
+        item.prices?.fixed_product_taxes?.forEach((tax) => (taxes[tax.label] = (taxes[tax.label] ?? 0) + tax.amount.value * item.quantity)),
     )
     return taxes
 })

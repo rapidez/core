@@ -32,7 +32,7 @@ export default {
         },
         errorCallback: {
             type: Function,
-            default: (error) => Notify(window.config.translations.errors.wrong, 'warning'),
+            default: (variables, error) => Notify(window.config.translations.errors.wrong, 'warning'),
         },
     },
 
@@ -42,6 +42,10 @@ export default {
     }),
 
     render() {
+        if (!('default' in this.$scopedSlots)) {
+            return null
+        }
+
         return this.$scopedSlots.default(this)
     },
 
@@ -72,15 +76,14 @@ export default {
                     }
                 }
 
-                this.data = this.callback ? await this.callback(this.data, response) : response.data
+                this.data = this.callback ? await this.callback(this.variables, response) : response.data
 
                 if (this.cache) {
                     useLocalStorage(this.cachePrefix + this.cache, null, { serializer: StorageSerializers.object }).value = this.data
                 }
             } catch (error) {
                 console.error(error)
-                this.errorCallback(error)
-                throw error
+                this.errorCallback(this.variables, await error?.response?.json())
             }
         },
     },
