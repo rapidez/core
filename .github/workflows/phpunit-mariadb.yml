@@ -1,4 +1,4 @@
-name: phpunit
+name: PHPUnit MariaDB
 
 on:
   push:

@@ -34,13 +34,13 @@ class OnlyProductAttributesScope implements Scope
                 'is_html_allowed_on_front AS html',
                 DB::raw('column_name IS NOT NULL AS `flat`'),
                 DB::raw('EXISTS(
-                        SELECT 1
-                        FROM catalog_product_super_attribute
-                        WHERE catalog_product_super_attribute.attribute_id = eav_attribute.attribute_id
-                    ) AS `super`'),
-                DB::raw('additional_data->>"$.swatch_input_type" = "text" AS `text_swatch`'),
-                DB::raw('additional_data->>"$.swatch_input_type" = "visual" AS `visual_swatch`'),
-                DB::raw('additional_data->>"$.update_product_preview_image" = 1 AS `update_image`'),
+                    SELECT 1
+                    FROM catalog_product_super_attribute
+                    WHERE catalog_product_super_attribute.attribute_id = eav_attribute.attribute_id
+                ) AS `super`'),
+                DB::raw("additional_data->>'$.swatch_input_type' = 'text' AS `text_swatch`"),
+                DB::raw("additional_data->>'$.swatch_input_type' = 'visual' AS `visual_swatch`"),
+                DB::raw("additional_data->>'$.update_product_preview_image' = 1 AS `update_image`"),
                 'position'
             )
             ->join('catalog_eav_attribute', 'eav_attribute.attribute_id', '=', 'catalog_eav_attribute.attribute_id')
