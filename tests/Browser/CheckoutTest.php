@@ -93,8 +93,7 @@ class CheckoutTest extends DuskTestCase
                 ->typeSlowly('@password', $password)
                 ->typeSlowly('@password_repeat', $password)
                 ->assertFormValid('form')
-                ->waitUntilIdle()
-                ->pause(3000);
+                ->waitUntilIdle();
         }
 
         $browser
