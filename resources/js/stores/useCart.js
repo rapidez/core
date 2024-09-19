@@ -156,8 +156,6 @@ export const cart = computed({
             refresh()
         }
 
-        cartStorage.value.virtualItems = virtualItems
-        cartStorage.value.hasOnlyVirtualItems = hasOnlyVirtualItems
         cartStorage.value.fixedProductTaxes = fixedProductTaxes
 
         return cartStorage.value
@@ -218,14 +216,6 @@ export const cart = computed({
                 age = Date.now()
             })
     },
-})
-
-export const virtualItems = computed(() => {
-    return cart.value?.items?.filter((item) => item.product.type_id == 'downloadable')
-})
-
-export const hasOnlyVirtualItems = computed(() => {
-    return cart.value.total_quantity === virtualItems.value.length
 })
 
 export const fixedProductTaxes = computed(() => {

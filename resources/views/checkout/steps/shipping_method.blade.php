@@ -14,6 +14,7 @@
     }"
     mutate-event="setShippingMethodsOnCart"
     v-slot="{ mutate, variables }"
+    v-if="!cart.is_virtual"
 >
     <fieldset data-function="mutate" v-on:change="window.app.$emit('setShippingAddressesOnCart')">
         <template v-for="(method, index) in cart.shipping_addresses[0]?.available_shipping_methods">

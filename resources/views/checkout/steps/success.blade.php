@@ -65,7 +65,7 @@
             </div>
 
             <div class="flex flex-col mt-4 gap-x-4 md:flex-row">
-                <div class="w-full p-8 bg-highlight rounded border-l-2 border-neutral md:w-1/2">
+                <div class="w-full p-8 bg-highlight rounded border-l-2 border-neutral md:w-1/2" v-if="order.shipping_method">
                     <p class="text-neutral font-lg font-bold mb-2">@lang('Shipping method')</p>
                     <p>@{{ order.shipping_method }}</p>
                 </div>

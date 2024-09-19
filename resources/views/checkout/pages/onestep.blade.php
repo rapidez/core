@@ -13,7 +13,7 @@
                 <div class="col-span-2">
                     @include('rapidez::checkout.steps.login')
                 </div>
-                <div>
+                <div v-if="!cart.is_virtual">
                     <h2 class="text-xl font-bold">@lang('Shipping address')</h2>
                     @include('rapidez::checkout.steps.shipping_address')
                 </div>
@@ -21,7 +21,7 @@
                     <h2 class="text-xl font-bold">@lang('Billing address')</h2>
                     @include('rapidez::checkout.steps.billing_address')
                 </div>
-                <div>
+                <div v-if="!cart.is_virtual">
                     <h2 class="text-xl font-bold">@lang('Shipping method')</h2>
                     @include('rapidez::checkout.steps.shipping_method')
                 </div>
