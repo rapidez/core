@@ -6,7 +6,7 @@
                     <img
                         class="mx-auto"
                         :alt="item.product.name"
-                        :src="resizedPath(item.product.image.url + '.webp', '80x80', {{ config('rapidez.store') }})"
+                        :src="resizedPath(item.product.image.url + '.webp', '80x80')"
                         height="80"
                     />
                 </a>
