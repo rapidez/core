@@ -32,7 +32,7 @@ class OnlyProductAttributesScope implements Scope
                 'used_for_sort_by AS sorting',
                 'is_visible_on_front AS productpage',
                 'is_html_allowed_on_front AS html',
-                DB::raw('NOT(ISNULL(column_name)) AS flat'),
+                DB::raw('column_name IS NOT NULL AS `flat`'),
                 DB::raw('EXISTS(
                         SELECT 1
                         FROM catalog_product_super_attribute
