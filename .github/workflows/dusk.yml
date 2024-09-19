@@ -15,14 +15,8 @@ jobs:
         include:
           - magento-version: 2.4.5-p9
             magento-php-version: php81-fpm
-            rapidez-php-version: 8.1
-          - magento-version: 2.4.5-p9
-            magento-php-version: php81-fpm
             rapidez-php-version: 8.2
 
-          - magento-version: 2.4.6-p7
-            magento-php-version: php81-fpm
-            rapidez-php-version: 8.1
           - magento-version: 2.4.6-p7
             magento-php-version: php82-fpm
             rapidez-php-version: 8.2
@@ -94,7 +88,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: artifact
+          name: artifact-${{ strategy.job-index }}
           path: |
             tests/Browser/screenshots
             tests/Browser/console
