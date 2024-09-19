@@ -145,6 +145,13 @@ Vue.prototype.handlePlaceOrder = async function (data, response) {
     if (!response?.data) {
         return response?.data
     }
+
+    if (!response?.data?.placeOrder?.orderV2 && response?.data?.placeOrder?.errors) {
+        const message = response.data.placeOrder.errors.find(() => true).message;
+        Notify(message, 'error')
+        throw new Error(message)
+    }
+
     await updateOrder(data, response)
     await runAfterPlaceOrderHandlers(response, this)
 
