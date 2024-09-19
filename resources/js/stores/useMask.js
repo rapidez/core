@@ -3,6 +3,9 @@ import { useCookies } from '@vueuse/integrations/useCookies'
 import { computed } from 'vue'
 import { fetchCart } from './useCart'
 
+/**
+ * @deprecated using localstorage to retrieve the mask is deprecated, use the useMask.mask instead
+ */
 const localstorageMask = useLocalStorage('mask', '');
 const { get: getCookie, set: setCookie } = useCookies(['mask']);
 

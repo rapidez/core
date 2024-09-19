@@ -6,6 +6,9 @@ import { computed, watch } from 'vue'
 import Jwt from '../jwt'
 import { mask } from './useMask'
 
+/**
+ * @deprecated using localstorage to retrieve the token is deprecated, use the useUser.token instead
+ */
 const localstorageToken = useLocalStorage('token', '');
 const { get: getCookie, set: setCookie } = useCookies(['token']);
 
