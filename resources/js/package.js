@@ -110,6 +110,19 @@ function init() {
                     this.scrollLock = bool
                 }
             },
+            resizedPath(imagePath, size, store) {
+                let mediaPosition = imagePath.indexOf('/media/')
+                if (mediaPosition > 0) {
+                    return `/storage/${store}/resizes/${size}/magento` + imagePath.substr(mediaPosition + 6)
+                }
+
+                let productPosition = imagePath.indexOf('/product/')
+                if (productPosition > 0) {
+                    return `/storage/${store}/resizes/${size}/magento/catalog` + imagePath.substr(productPosition)
+                }
+
+                return `/storage/${store}/resizes/${size}/magento` + imagePath
+            },
         },
         computed: {
             // Wrap the local storage in getter and setter functions so you do not have to interact using .value
