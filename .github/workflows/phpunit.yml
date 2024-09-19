@@ -20,10 +20,13 @@ jobs:
             testbench: 8.*
           - laravel: 11.*
             testbench: 9.*
+        exclude:
+          - laravel: 11.*
+            php: 8.1
 
     services:
       mysql:
-        image: mysql:8.0
+        image: mysql:8.0.14
         env:
           MYSQL_USER: magento
           MYSQL_PASSWORD: password
