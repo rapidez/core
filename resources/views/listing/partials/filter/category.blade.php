@@ -10,7 +10,7 @@
     <div slot-scope="{ aggregations, setQuery, value }">
         <category-filter :aggregations="aggregations" :value="value" :set-query="setQuery">
             <div slot-scope="{ hasResults, results }">
-                <x-rapidez::filter.heading not-collapsible>
+                <x-rapidez::filter.heading>
                     <x-slot:title>
                         @lang('Category')
                     </x-slot:title>
