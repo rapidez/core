@@ -9,13 +9,13 @@
 >
     <div slot-scope="{ aggregations, setQuery, value }">
         <category-filter :aggregations="aggregations" :value="value" :set-query="setQuery">
-            <div slot-scope="{ hasResults, results }">
+            <div slot-scope="{ hasResults, results }" class="pb-4">
                 <x-rapidez::filter.heading>
                     <x-slot:title>
                         @lang('Category')
                     </x-slot:title>
                     <input class="hidden" type="radio" name="category" value="" :checked="!value" v-on:change="setQuery({})"/>
-                    <ul class="mb-5">
+                    <ul>
                         <category-filter-category
                             v-for="category in results"
                             v-bind:key="category.key"
