@@ -10,7 +10,7 @@
         'flex items-center justify-between gap-x-2 border-t pb-2.5 pt-4 text-neutral',
         'cursor-pointer peer-checked:[&>.chevron]:rotate-180' => !$notCollapsible,
     ])
-    @if(!$notCollapsible)
+    @if (!$notCollapsible)
         :for="id"
     @endif
 >
