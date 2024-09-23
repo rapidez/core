@@ -31,6 +31,7 @@ class ConfigComposer
             'code'
         );
 
+        Config::set('blade-icons.attributes.defer', Config::get('blade-icons.attributes.defer', true));
         Config::set('frontend.locale', Rapidez::config('general/locale/code', 'en_US'));
         Config::set('frontend.default_country', Rapidez::config('general/country/default', 'NL'));
         Config::set('frontend.currency', Rapidez::config('currency/options/default'));
