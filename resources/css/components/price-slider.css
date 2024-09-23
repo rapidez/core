@@ -8,7 +8,7 @@ div.vue-slider-rail {
 }
 
 div.vue-slider-rail {
-    @apply bg-highlight !important;
+    @apply bg-inactive-100 !important;
 }
 
 div.vue-slider .vue-slider-dot {
@@ -16,7 +16,7 @@ div.vue-slider .vue-slider-dot {
 }
 
 div.vue-slider-dot-tooltip-inner {
-    @apply bg-white text-neutral border-border border px-1.5 !important;
+    @apply bg-white text-neutral border-inactive-110 border px-1.5 !important;
 }
 
 span.vue-slider-dot-tooltip-text {
@@ -28,7 +28,7 @@ div.vue-slider-dot-tooltip::before {
 }
 
 div.vue-slider-dot .vue-slider-dot-handle {
-    @apply border border-border shadow;
+    @apply border border-inactive-110 shadow;
 }
 
 div.vue-slider-tooltip-wrap.vue-slider-tooltip-top {

@@ -17,21 +17,19 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                primary: {
-                    DEFAULT: 'rgb(var(--primary) / <alpha-value>)', // Theme color
-                    text: 'rgb(var(--primary-text) / <alpha-value>)', // Text color that goes onto primary color
-                },
-                secondary: {
-                    DEFAULT: 'rgb(var(--secondary) / <alpha-value>)', // Conversion color
-                    text: 'rgb(var(--secondary-text) / <alpha-value>)', // Text color that goes onto secondary color
-                },
+                primary: 'rgb(var(--primary) / <alpha-value>)', // Theme color
+                secondary: 'rgb(var(--secondary) / <alpha-value>)', // Conversion color
                 neutral: 'rgb(var(--neutral) / <alpha-value>)', // Default text color
-                inactive: 'rgb(var(--inactive) / <alpha-value>)', // Inactive text color
-                highlight: 'rgb(var(--highlight) / <alpha-value>)', // Background highlight color
-                border: 'rgb(var(--border) / <alpha-value>)', // Border color
+                enhanced: 'rgb(var(--enhanced) / <alpha-value>)', // Enhanced color
+                disabled: 'rgb(var(--disabled) / <alpha-value>)', // Disabled color
+                inactive: {
+                    DEFAULT: 'rgb(var(--inactive) / <alpha-value>)', // Inactive text color
+                    100: 'rgb(var(--inactive-100) / <alpha-value>)', // Background color
+                    110: 'rgb(var(--inactive-110) / <alpha-value>)', // Border color
+                },
             },
             borderColor: {
-                DEFAULT: 'rgb(var(--border) / <alpha-value>)', // Border color default so it gets used when only using border
+                DEFAULT: 'rgb(var(--inactive-110) / <alpha-value>)', // Border color default so it gets used when only using border
             },
         },
         container: {
