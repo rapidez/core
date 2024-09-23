@@ -78,9 +78,9 @@ jobs:
           docker cp ${{ job.services.magento.id }}:/data/var/log magento/var/log
       - name: Upload Artifact
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
-          name: artifact
+          name: artifact-${{ strategy.job-index }}
           path: |
             tests/Browser/screenshots
             tests/Browser/console
