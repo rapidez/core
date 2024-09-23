@@ -39,7 +39,7 @@
         <x-rapidez::input
             label="Firstname"
             name="{{ $type }}_firstname"
-            v-model.lazy="variables.firstname"
+            v-model="variables.firstname"
             required
         />
     </div>
@@ -48,7 +48,7 @@
             <x-rapidez::input
                 name="{{ $type }}_middlename"
                 label="Middlename"
-                v-model.lazy="variables.middlename"
+                v-model="variables.middlename"
             />
         </div>
     @endif
@@ -56,7 +56,7 @@
         <x-rapidez::input
             name="{{ $type }}_lastname"
             label="Lastname"
-            v-model.lazy="variables.lastname"
+            v-model="variables.lastname"
             required
         />
     </div>
@@ -83,7 +83,7 @@
         <x-rapidez::input
             name="{{ $type }}_postcode"
             label="Postcode"
-            v-model.lazy="variables.postcode"
+            v-model="variables.postcode"
             v-on:change="$root.$nextTick(() => window.app.$emit('postcode-change', variables))"
             required
         />
@@ -93,7 +93,7 @@
             <x-rapidez::input
                 name="{{ $type }}_housenumber"
                 label="Housenumber"
-                v-model.lazy="variables.street[1]"
+                v-model="variables.street[1]"
                 v-on:change="$root.$nextTick(() => window.app.$emit('postcode-change', variables))"
                 required
             />
@@ -104,7 +104,7 @@
             <x-rapidez::input
                 name="{{ $type }}_addition"
                 label="Addition"
-                v-model.lazy="variables.street[2]"
+                v-model="variables.street[2]"
             />
         </div>
     @endif
@@ -112,7 +112,7 @@
         <x-rapidez::input
             name="{{ $type }}_street"
             label="Street"
-            v-model.lazy="variables.street[0]"
+            v-model="variables.street[0]"
             required
         />
     </div>
@@ -120,7 +120,7 @@
         <x-rapidez::input
             name="{{ $type }}_city"
             label="City"
-            v-model.lazy="variables.city"
+            v-model="variables.city"
             required
         />
     </div>
@@ -139,7 +139,7 @@
             <x-rapidez::input
                 name="{{ $type }}_telephone"
                 label="Telephone"
-                v-model.lazy="variables.telephone"
+                v-model="variables.telephone"
                 :required="Rapidez::config('customer/address/telephone_show', 'req') == 'req'"
             />
         </div>
@@ -149,7 +149,7 @@
             <x-rapidez::input
                 name="{{ $type }}_fax"
                 label="Fax"
-                v-model.lazy="variables.fax"
+                v-model="variables.fax"
                 :required="Rapidez::config('customer/address/fax_show', false) === 'req'"
             />
         </div>
@@ -160,7 +160,7 @@
                 name="{{ $type }}_company"
                 label="Company"
                 placeholder=""
-                v-model.lazy="variables.company"
+                v-model="variables.company"
                 :required="Rapidez::config('customer/address/company_show', 'opt') == 'req'"
             />
         </div>
@@ -171,7 +171,7 @@
                 name="{{ $type }}_vat_id"
                 label="Tax ID"
                 placeholder=""
-                v-model.lazy="variables.vat_id"
+                v-model="variables.vat_id"
                 :required="Rapidez::config('customer/address/taxvat_show', 'opt') == 'req'"
             />
         </div>

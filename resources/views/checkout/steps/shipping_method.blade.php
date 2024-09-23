@@ -23,7 +23,7 @@
                 v-model="variables.method"
                 v-bind:value="method.carrier_code+'/'+method.method_code"
                 v-bind:disabled="!method.available"
-                v-bind:dusk="'method-'+index"
+                v-bind:dusk="'shipping-method-'+index"
                 v-on:change="mutate"
                 required
             >

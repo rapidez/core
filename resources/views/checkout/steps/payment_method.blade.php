@@ -20,7 +20,7 @@
                     name="payment_method"
                     v-model="variables.code"
                     v-bind:value="method.code"
-                    v-bind:dusk="'method-'+index"
+                    v-bind:dusk="'payment-method-'+index"
                     v-on:change="mutate"
                     required
                 >

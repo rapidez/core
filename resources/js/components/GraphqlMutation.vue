@@ -75,6 +75,7 @@ export default {
             mutating: this.mutating,
             error: this.error,
             variables: this.data,
+            watch: this.watch,
         })
     },
 
@@ -115,7 +116,7 @@ export default {
                     query = this.query
 
                 if (this.beforeRequest) {
-                    ;[query, variables, options] = await this.beforeRequest(this.query, this.variables, options)
+                    ;[query, variables, options] = await this.beforeRequest(query, variables, options)
                 }
 
                 let response = await (this.group ? combiningGraphQL(query, variables, options, this.group) : magentoGraphQL(query, variables, options)).catch(async (error) => {

@@ -60,6 +60,13 @@ class CheckoutTest extends DuskTestCase
                 ->waitUntilIdle()
                 ->click('@continue') // login
                 ->waitUntilIdle();
+        } else if ($password && $register) {
+            $browser->click('@create_account')
+                ->waitUntilIdle()
+                ->typeSlowly('@password', $password)
+                ->typeSlowly('@password_repeat', $password)
+                ->assertFormValid('form')
+                ->waitUntilIdle();
         }
 
         $browser
@@ -76,26 +83,17 @@ class CheckoutTest extends DuskTestCase
             ->assertFormValid('form')
             ->waitUntilIdle();
 
-        if ($password && $register) {
-            $browser->click('@create_account')
-                ->waitUntilIdle()
-                ->typeSlowly('@password', $password)
-                ->typeSlowly('@password_repeat', $password)
-                ->assertFormValid('form')
-                ->waitUntilIdle();
-        }
-
         $browser
             ->waitForText(__('Shipping method'))
-            ->scrollIntoView('@method-0')
-            ->click('@method-0') // select shipping method
+            ->scrollIntoView('@shipping-method-0')
+            ->click('@shipping-method-0') // select shipping method
             ->waitUntilIdle()
             ->assertFormValid('form')
             ->scrollIntoView('@continue')
             ->click('@continue') // go to payment step
             ->waitUntilIdle()
             ->waitForText(__('Payment method'))
-            ->click('@method-0') // select payment method
+            ->click('@payment-method-0') // select payment method
             ->waitUntilIdle()
             ->click('@continue') // place order
             ->waitUntilIdle()

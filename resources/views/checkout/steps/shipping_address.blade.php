@@ -10,11 +10,12 @@
     :before-request="(query, variables, options) => [variables.customer_address_id ? config.queries.setExistingShippingAddressesOnCart : query, variables, options]"
     :callback="updateCart"
     :error-callback="checkResponseForExpiredCart"
+    :watch="false"
     mutate-event="setShippingAddressesOnCart"
     v-slot="{ mutate, variables }"
     v-if="!cart.is_virtual"
 >
-    <fieldset data-function="mutate" v-on:change="window.app.$emit('setShippingAddressesOnCart') && window.app.$emit('setBillingAddressOnCart')">
+    <fieldset data-function="mutate" v-on:change="function (e) {e.target.closest('fieldset').querySelector(':invalid') === null && mutate().then(() => (cart?.billing_address?.same_as_shipping ?? true) && window.app.$emit('setBillingAddressOnCart'))}">
         @include('rapidez::checkout.partials.address', ['type' => 'shipping'])
     </fieldset>
 </graphql-mutation>
