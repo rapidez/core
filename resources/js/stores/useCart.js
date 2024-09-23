@@ -33,9 +33,9 @@ export const refresh = async function (force = false) {
 }
 
 export const clear = async function () {
-    await clearAddresses()
     await clearMask()
     await refresh()
+    await clearAddresses()
 }
 
 export const clearAddresses = async function () {
