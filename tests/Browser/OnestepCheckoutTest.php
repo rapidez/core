@@ -9,16 +9,18 @@ class OnestepCheckoutTest extends CheckoutTest
     protected $config;
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->config = $config = config('rapidez.frontend');
         $config['checkout_steps']['default'] = ['onestep'];
-        file_put_contents(__DIR__.'../..//config/rapidez/frontend.php', print_r($config, true));
-        parent::setUp();
+        file_put_contents(__DIR__.'../../config/rapidez/frontend.php', print_r($config, true));
     }
 
     protected function tearDown(): void
     {
-        file_put_contents(__DIR__.'../..//config/rapidez/frontend.php', print_r($this->config, true));
         parent::tearDown();
+
+        file_put_contents(__DIR__.'../../config/rapidez/frontend.php', print_r($this->config, true));
     }
 
     public function doCheckout(Browser $browser, $email = false, $password = false, $register = false)
