@@ -8,7 +8,7 @@ class OrderController
 {
     public function __invoke(Request $request)
     {
-        if (!$request->bearerToken()) {
+        if (! $request->bearerToken()) {
             \Illuminate\Support\Facades\Log::debug($request->headers->__toString());
         }
 
