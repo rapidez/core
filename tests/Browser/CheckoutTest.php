@@ -60,7 +60,7 @@ class CheckoutTest extends DuskTestCase
                 ->waitUntilIdle()
                 ->click('@continue') // login
                 ->waitUntilIdle();
-        } else if ($password && $register) {
+        } elseif ($password && $register) {
             $browser->click('@create_account')
                 ->waitUntilIdle()
                 ->typeSlowly('@password', $password)
