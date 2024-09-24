@@ -7,6 +7,20 @@ use Rapidez\Core\Tests\DuskTestCase;
 
 class CheckoutTest extends DuskTestCase
 {
+    protected $config;
+    protected function setUp(): void
+    {
+        $this->config = $config = config('rapidez.frontend');
+        $config['checkout_steps']['default'] = ['onestep'];
+        file_put_contents(__DIR__.'../..//config/rapidez/frontend.php', print_r($config, true));
+        parent::setUp();
+    }
+
+    protected function tearDown(): void
+    {
+        file_put_contents(__DIR__.'../..//config/rapidez/frontend.php', print_r($this->config, true));
+        parent::tearDown();
+    }
     /**
      * @test
      */
@@ -48,7 +62,6 @@ class CheckoutTest extends DuskTestCase
     {
         $browser
             ->visit('/checkout')
-            ->pause(5000)
             ->waitUntilIdle()
             ->type('@email', $email ?: 'wayne@enterprises.com')
             ->waitUntilIdle();
@@ -56,23 +69,18 @@ class CheckoutTest extends DuskTestCase
         if ($password && ! $register) {
             $browser
                 ->type('@password', $password)
-                ->assertFormValid('form')
-                ->waitUntilIdle()
-                ->click('@continue') // login
                 ->waitUntilIdle();
         } else if ($password && $register) {
             $browser->click('@create_account')
                 ->waitUntilIdle()
                 ->typeSlowly('@password', $password)
                 ->typeSlowly('@password_repeat', $password)
-                ->assertFormValid('form')
+                ->typeSlowly('@firstname', 'Bruce')
+                ->typeSlowly('@lastname', 'Wayne')
                 ->waitUntilIdle();
         }
 
         $browser
-            ->click('@continue')
-            ->waitUntilIdle()
-            ->waitFor('@shipping_country', 15)
             ->type('@shipping_firstname', 'Bruce')
             ->type('@shipping_lastname', 'Wayne')
             ->type('@shipping_postcode', '72000')
@@ -85,15 +93,9 @@ class CheckoutTest extends DuskTestCase
             ->waitUntilIdle();
 
         $browser
-            ->waitForText(__('Shipping method'))
             ->scrollIntoView('@shipping-method-0')
             ->click('@shipping-method-0') // select shipping method
             ->waitUntilIdle()
-            ->assertFormValid('form')
-            ->scrollIntoView('@continue')
-            ->click('@continue') // go to payment step
-            ->waitUntilIdle()
-            ->waitForText(__('Payment method'))
             ->click('@payment-method-0') // select payment method
             ->waitUntilIdle()
             ->click('@continue') // place order
