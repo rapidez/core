@@ -42,24 +42,6 @@ export const rapidezFetch = (window.rapidezFetch = ((originalFetch) => {
 })(fetch))
 
 export const rapidezAPI = (window.rapidezAPI = async (method, endpoint, data = {}, options = {}) => {
-    console.error(
-        'RapidezAPI Calling :',
-        window.url('/api/' + endpoint),
-        {
-            method: method.toUpperCase(),
-            headers: Object.assign(
-                {
-                    Store: window.config.store_code,
-                    Authorization: token.value ? `Bearer ${token.value}` : null,
-                    'Content-Type': 'application/json',
-                    'X-CSRF-Token': window.app.csrfToken,
-                },
-                options?.headers || {},
-            ),
-            body: Object.keys(data).length ? JSON.stringify(data) : null,
-        }.headers.Authorization,
-    )
-
     let response = await rapidezFetch(window.url('/api/' + endpoint), {
         method: method.toUpperCase(),
         headers: Object.assign(
