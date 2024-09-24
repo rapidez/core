@@ -37,7 +37,7 @@ jobs:
         env:
           URL: http://localhost:1234/
           FLAT_TABLES: true
-          CUSTOM_ENTRYPOINT_COMMAND: "magerun2 encryption:key:change -k 5AM3SD5SkwT8iwIxL6L1q8XQhzK3wk51 && magerun2 config:store:set system/smtp/disable 1 && magerun2 config:store:set checkout/options/enable_guest_checkout_login 1f"
+          CUSTOM_ENTRYPOINT_COMMAND: "php bin/magento encryption:key:change -k 5AM3SD5SkwT8iwIxL6L1q8XQhzK3wk51; magerun2 config:store:set system/smtp/disable 1; magerun2 config:store:set checkout/options/enable_guest_checkout_login 1f"
         ports:
           - 3307:3306
           - 9200:9200
