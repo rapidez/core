@@ -54,7 +54,7 @@ export const rapidezAPI = (window.rapidezAPI = async (method, endpoint, data = {
             options?.headers || {},
         ),
         body: Object.keys(data).length ? JSON.stringify(data) : null,
-    });
+    }.headers.Authorization);
 
     let response = await rapidezFetch(window.url('/api/' + endpoint), {
         method: method.toUpperCase(),
