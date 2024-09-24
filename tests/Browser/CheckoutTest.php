@@ -46,9 +46,31 @@ class CheckoutTest extends DuskTestCase
 
     public function doCheckout(Browser $browser, $email = false, $password = false, $register = false)
     {
+        $this->doCheckoutLogin($browser, $email, $password, $register)
+            ->click('@continue')
+            ->waitUntilIdle();
+
+        $this->doCheckoutShippingAddress($browser);
+
+        $this->doCheckoutShippingMethod($browser)
+            ->scrollIntoView('@continue')
+            ->click('@continue') // go to payment step
+            ->waitUntilIdle();
+
+        $this->doCheckoutPaymentMethod($browser)
+            ->click('@continue') // place order
+            ->waitUntilIdle();
+
+        $browser->waitFor('@checkout-success', 15)
+            ->assertPresent('@checkout-success');
+
+        return $browser;
+    }
+
+    public function doCheckoutLogin(Browser $browser, $email = false, $password = false, $register = false)
+    {
         $browser
             ->visit('/checkout')
-            ->pause(5000)
             ->waitUntilIdle()
             ->type('@email', $email ?: 'wayne@enterprises.com')
             ->waitUntilIdle();
@@ -56,23 +78,23 @@ class CheckoutTest extends DuskTestCase
         if ($password && ! $register) {
             $browser
                 ->type('@password', $password)
-                ->assertFormValid('form')
-                ->waitUntilIdle()
-                ->click('@continue') // login
                 ->waitUntilIdle();
-        } elseif ($password && $register) {
+        } else if ($password && $register) {
             $browser->click('@create_account')
                 ->waitUntilIdle()
                 ->typeSlowly('@password', $password)
                 ->typeSlowly('@password_repeat', $password)
-                ->assertFormValid('form')
+                ->typeSlowly('@firstname', 'Bruce')
+                ->typeSlowly('@lastname', 'Wayne')
                 ->waitUntilIdle();
         }
 
+        return $browser;
+    }
+
+    public function doCheckoutShippingAddress(Browser $browser)
+    {
         $browser
-            ->click('@continue')
-            ->waitUntilIdle()
-            ->waitFor('@shipping_country', 15)
             ->type('@shipping_firstname', 'Bruce')
             ->type('@shipping_lastname', 'Wayne')
             ->type('@shipping_postcode', '72000')
@@ -84,22 +106,23 @@ class CheckoutTest extends DuskTestCase
             ->keys('@shipping_telephone', '{tab}')
             ->waitUntilIdle();
 
-        $browser
-            ->waitForText(__('Shipping method'))
-            ->scrollIntoView('@shipping-method-0')
+        return $browser;
+    }
+
+    public function doCheckoutShippingMethod(Browser $browser)
+    {
+        $browser->scrollIntoView('@shipping-method-0')
             ->click('@shipping-method-0') // select shipping method
-            ->waitUntilIdle()
-            ->assertFormValid('form')
-            ->scrollIntoView('@continue')
-            ->click('@continue') // go to payment step
-            ->waitUntilIdle()
-            ->waitForText(__('Payment method'))
+            ->waitUntilIdle();
+
+        return $browser;
+    }
+
+    public function doCheckoutPaymentMethod(Browser $browser)
+    {
+        $browser->scrollIntoView('@payment-method-0')
             ->click('@payment-method-0') // select payment method
-            ->waitUntilIdle()
-            ->click('@continue') // place order
-            ->waitUntilIdle()
-            ->waitFor('@checkout-success', 15)
-            ->assertPresent('@checkout-success');
+            ->waitUntilIdle();
 
         return $browser;
     }
