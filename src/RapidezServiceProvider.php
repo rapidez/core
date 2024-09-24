@@ -303,7 +303,6 @@ class RapidezServiceProvider extends ServiceProvider
 
         method_exists($exceptionHandler, 'renderable') && $exceptionHandler
             ->renderable(function (RequiredConstraintsViolated $e, Request $request) {
-                \Illuminate\Support\Facades\Log::critical($e->getMessage());
                 throw new HttpException(401, $e->getMessage(), $e);
             });
 
