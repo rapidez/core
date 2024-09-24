@@ -7,17 +7,18 @@ use Laravel\Dusk\Browser;
 class OnestepCheckoutTest extends CheckoutTest
 {
     protected $config;
+
     protected function setUp(): void
     {
         $this->config = $config = config('rapidez.frontend');
         $config['checkout_steps']['default'] = ['onestep'];
-        file_put_contents(__DIR__.'../..//config/rapidez/frontend.php', print_r($config, true));
+        file_put_contents(__DIR__ . '../..//config/rapidez/frontend.php', print_r($config, true));
         parent::setUp();
     }
 
     protected function tearDown(): void
     {
-        file_put_contents(__DIR__.'../..//config/rapidez/frontend.php', print_r($this->config, true));
+        file_put_contents(__DIR__ . '../..//config/rapidez/frontend.php', print_r($this->config, true));
         parent::tearDown();
     }
 
