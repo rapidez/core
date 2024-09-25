@@ -24,6 +24,7 @@
         <env name="MAGENTO_URL" value="http://localhost:1234"/>
         <env name="APP_ENV" value="testing"/>
         <env name="APP_KEY" value="AckfSECXIvnK5r28GVIWUAxmbBSjTsmF"/>
+        <env name="CRYPT_KEY" value="5AM3SD5SkwT8iwIxL6L1q8XQhzK3wk51"/>
         <env name="APP_DEBUG" value="true"/>
         <env name="VITE_DEBUG" value="true"/>
         <env name="APP_MAINTENANCE_STORE" value="file"/>

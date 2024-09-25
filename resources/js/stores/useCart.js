@@ -36,9 +36,9 @@ export const refresh = async function (force = false) {
 }
 
 export const clear = async function () {
-    await clearAddresses()
     await clearMask()
     await refresh()
+    await clearAddresses()
 }
 
 export const clearAddresses = async function () {
@@ -157,6 +157,7 @@ export const cart = computed({
         }
 
         cartStorage.value.fixedProductTaxes = fixedProductTaxes
+        cartStorage.value.taxTotal = taxTotal
 
         return cartStorage.value
     },
@@ -225,6 +226,14 @@ export const fixedProductTaxes = computed(() => {
         item.prices?.fixed_product_taxes?.forEach((tax) => (taxes[tax.label] = (taxes[tax.label] ?? 0) + tax.amount.value * item.quantity)),
     )
     return taxes
+})
+
+export const taxTotal = computed(() => {
+    if (!cart?.value?.prices?.applied_taxes?.length) {
+        return
+    }
+
+    return cart.value.prices.applied_taxes.reduce((sum, tax) => sum + tax.amount.value, 0)
 })
 
 watch(mask, refresh);

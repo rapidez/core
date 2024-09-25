@@ -75,6 +75,12 @@ fragment cart on Cart {
             carrier_code
             method_code
             method_title
+            price_incl_tax {
+                value
+            }
+            price_excl_tax {
+                value
+            }
             amount {
                 value
             }

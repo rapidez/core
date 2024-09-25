@@ -68,6 +68,7 @@ function init() {
             order: useOrder(),
             user: useUser(),
             mask: useMask(),
+            showTax: window.config.show_tax,
             swatches: swatches,
             scrollLock: useScrollLock(document.body),
             /*

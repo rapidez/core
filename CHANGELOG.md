@@ -1,6 +1,19 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.11.1...2.11.1)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.12.0...2.12.0)
+## [2.12.0](https://github.com/rapidez/core/releases/tag/2.12.0) - 2024-09-24
+
+### Changed
+
+- Blade icons deferring by default (#577)
+
+### Fixed
+
+- Move default selects to always select (#571)
+- Elasticsearch query script needs to be a string (#574)
+- Filter heading on the category filter (#576)
+- Only sort child images when there are images (#578)
+
 ## [2.11.1](https://github.com/rapidez/core/releases/tag/2.11.1) - 2024-09-17
 
 ### Fixed
