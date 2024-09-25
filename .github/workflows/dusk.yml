@@ -16,14 +16,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - magento-version: 2.4.5-p9
-            magento-php-version: php81-fpm
-            rapidez-php-version: 8.2
-
-          - magento-version: 2.4.6-p7
-            magento-php-version: php82-fpm
-            rapidez-php-version: 8.2
-
           - magento-version: 2.4.7-p2
             magento-php-version: php82-fpm
             rapidez-php-version: 8.2
