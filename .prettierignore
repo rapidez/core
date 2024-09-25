@@ -5,6 +5,8 @@
 **/*.php
 !**/*.blade.php
 /resources/views/cart/queries/cart.graphql
+/resources/views/cart/queries/fragments/cart.graphql
+/resources/views/cart/queries/fragments/product.graphql
 /resources/views/cart/queries/partials/customizable_options.graphql
 /resources/views/checkout/queries/fragments/item.graphql
 /resources/views/checkout/queries/fragments/order.graphql
@@ -18,5 +20,6 @@
 /resources/views/checkout/queries/setNewShippingAddressesOnCart.graphql
 /resources/views/checkout/queries/setPaymentMethodOnCart.graphql
 /resources/views/checkout/queries/setShippingMethodsOnCart.graphql
+/resources/views/customer/queries/customer.graphql
 composer.lock
 CHANGELOG.md
