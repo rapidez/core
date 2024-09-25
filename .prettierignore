@@ -6,5 +6,17 @@
 !**/*.blade.php
 /resources/views/cart/queries/cart.graphql
 /resources/views/cart/queries/partials/customizable_options.graphql
+/resources/views/checkout/queries/fragments/item.graphql
+/resources/views/checkout/queries/fragments/order.graphql
+/resources/views/checkout/queries/fragments/orderV2.graphql
+/resources/views/checkout/queries/placeOrder.graphql
+/resources/views/checkout/queries/setBillingAddressOnCart.graphql
+/resources/views/checkout/queries/setExistingBillingAddressOnCart.graphql
+/resources/views/checkout/queries/setExistingShippingAddressesOnCart.graphql
+/resources/views/checkout/queries/setGuestEmailOnCart.graphql
+/resources/views/checkout/queries/setNewBillingAddressOnCart.graphql
+/resources/views/checkout/queries/setNewShippingAddressesOnCart.graphql
+/resources/views/checkout/queries/setPaymentMethodOnCart.graphql
+/resources/views/checkout/queries/setShippingMethodsOnCart.graphql
 composer.lock
 CHANGELOG.md
