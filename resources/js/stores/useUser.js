@@ -9,33 +9,32 @@ import { mask } from './useMask'
 /**
  * @deprecated using localstorage to retrieve the token is deprecated, use the useUser.token instead
  */
-const localstorageToken = useLocalStorage('token', '');
-const { get: getCookie, set: setCookie } = useCookies(['token']);
+const localstorageToken = useLocalStorage('token', '')
+const { get: getCookie, set: setCookie } = useCookies(['token'])
 
 export const token = computed({
     get() {
-        const token = getCookie('token') ?? '';
-        localstorageToken.value = token;
+        const token = getCookie('token') ?? ''
+        localstorageToken.value = token
 
         return token
     },
     set(value) {
         let options = {
             path: '/',
-            secure: window.location.protocol === "https:",
-            maxAge: 31556952
+            secure: window.location.protocol === 'https:',
+            maxAge: 31556952,
         }
 
         if (Jwt.isJwt(value)) {
-            delete options['maxAge'];
-            options.expires = Jwt.decode(value).expDate;
+            delete options['maxAge']
+            options.expires = Jwt.decode(value).expDate
         }
 
-        setCookie('token', value, options);
-        localstorageToken.value = value;
+        setCookie('token', value, options)
+        localstorageToken.value = value
     },
 })
-
 
 const userStorage = useSessionStorage('user', {}, { serializer: StorageSerializers.object })
 let isRefreshing = false
@@ -61,7 +60,7 @@ export const refresh = async function () {
     try {
         isRefreshing = true
         // TODO: Migrate to GraphQL?
-        userStorage.value = (await window.magentoGraphQL(`{ customer { ${config.queries.customer} } }`))?.data?.customer;
+        userStorage.value = (await window.magentoGraphQL(`{ customer { ${config.queries.customer} } }`))?.data?.customer
         isRefreshing = false
     } catch (error) {
         isRefreshing = false
@@ -83,41 +82,34 @@ export const clear = async function () {
 
 export const isEmailAvailable = async function (email) {
     if (!email) {
-        return true;
+        return true
     }
 
     // As of Commerce 2.4.7, by default the query always returns a value of true for all email addresses.
     // You can change this behavior by setting the Stores > Configuration > Sales > Checkout > Enable Guest Checkout Login field in the Admin to Yes.
-    return await magentoGraphQL(
-        'query isEmailAvailable ($email:String!) { isEmailAvailable (email: $email) { is_email_available } }',
-        {
-            email: email,
-        },
-    )
-    .then((response) => response.data.isEmailAvailable.is_email_available)
-    .catch(() => true)
+    return await magentoGraphQL('query isEmailAvailable ($email:String!) { isEmailAvailable (email: $email) { is_email_available } }', {
+        email: email,
+    })
+        .then((response) => response.data.isEmailAvailable.is_email_available)
+        .catch(() => true)
 }
 
 export const register = async function (email, firstname, lastname, password, input = {}) {
-    return magentoGraphQL(
-        'mutation register ($input:CustomerCreateInput!) { createCustomerV2 (input: $input) { customer { email } } }',
-        {
-            input: {
-                email: email,
-                firstname: firstname,
-                lastname: lastname,
-                password: password,
-                ...input
-            }
+    return magentoGraphQL('mutation register ($input:CustomerCreateInput!) { createCustomerV2 (input: $input) { customer { email } } }', {
+        input: {
+            email: email,
+            firstname: firstname,
+            lastname: lastname,
+            password: password,
+            ...input,
         },
-    )
-        .then(async (response) => {
-            if(response.data?.createCustomerV2?.customer?.email) {
-                await login(email, password);
-            }
+    }).then(async (response) => {
+        if (response.data?.createCustomerV2?.customer?.email) {
+            await login(email, password)
+        }
 
-            return response;
-        })
+        return response
+    })
 }
 
 export const login = async function (email, password) {

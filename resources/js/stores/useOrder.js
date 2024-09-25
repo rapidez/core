@@ -1,18 +1,22 @@
 import { StorageSerializers, useLocalStorage } from '@vueuse/core'
-import { user } from './useUser';
+import { user } from './useUser'
 
 export const order = useLocalStorage('order', {}, { serializer: StorageSerializers.object })
 
 export const refresh = async function () {
     if (order.value?.number && user.value.is_logged_in) {
-        return await loadCustomerByNumber(order.value?.number).then(() => true).catch(() => false);
+        return await loadCustomerByNumber(order.value?.number)
+            .then(() => true)
+            .catch(() => false)
     }
 
     if (order.value?.token && !user.value.is_logged_in) {
-        return await loadGuestByToken(order.value?.token).then(() => true).catch(() => false);
+        return await loadGuestByToken(order.value?.token)
+            .then(() => true)
+            .catch(() => false)
     }
 
-    return false;
+    return false
 }
 
 export const clear = async function () {
@@ -20,8 +24,10 @@ export const clear = async function () {
 }
 
 export async function loadCustomerByNumber(number) {
-    await window.magentoGraphQL(config.queries.orderV2 +
-        `
+    await window
+        .magentoGraphQL(
+            config.queries.orderV2 +
+                `
 
             query customerOrder($number: String!) {
                 customer {
@@ -33,17 +39,20 @@ export async function loadCustomerByNumber(number) {
                 }
             }
         `,
-        {
-            number: number,
-        },
-    ).then(async (response) => await fillFromGraphqlResponse([], {data: response?.data?.customer?.orders?.items}));
+            {
+                number: number,
+            },
+        )
+        .then(async (response) => await fillFromGraphqlResponse([], { data: response?.data?.customer?.orders?.items }))
 
     return order.value
 }
 
 export async function loadGuestByToken(token) {
-    await window.magentoGraphQL(config.queries.orderV2 +
-        `
+    await window
+        .magentoGraphQL(
+            config.queries.orderV2 +
+                `
 
             query guestOrderByToken($token: String!) {
                 guestOrderByToken(input: {token: $token}) {
@@ -51,17 +60,20 @@ export async function loadGuestByToken(token) {
                 }
             }
         `,
-        {
-            token: token,
-        },
-    ).then(async (response) => await fillFromGraphqlResponse([], response));
+            {
+                token: token,
+            },
+        )
+        .then(async (response) => await fillFromGraphqlResponse([], response))
 
     return order.value
 }
 
 export async function loadGuestByCredentials(orderNumber, email, postcode) {
-    await window.magentoGraphQL(config.queries.cart +
-        `
+    await window
+        .magentoGraphQL(
+            config.queries.cart +
+                `
 
             query guestOrder($email: String!, $number: String!, $postcode: String!) {
                 guestOrder(input: {email: $email, number: $number, postcode: $postcode}) {
@@ -69,12 +81,13 @@ export async function loadGuestByCredentials(orderNumber, email, postcode) {
                 }
             }
         `,
-        {
-            number: orderNumber,
-            email: email,
-            postcode: postcode,
-        },
-    ).then(async (response) => await fillFromGraphqlResponse([], response));
+            {
+                number: orderNumber,
+                email: email,
+                postcode: postcode,
+            },
+        )
+        .then(async (response) => await fillFromGraphqlResponse([], response))
 
     return order.value
 }
@@ -88,6 +101,5 @@ export async function fillFromGraphqlResponse(data, response) {
 
     return response.data
 }
-
 
 export default () => order

@@ -15,22 +15,23 @@ Vue.prototype.getCheckoutStep = (stepName) => {
     return (config.checkout_steps[config.store_code] ?? config.checkout_steps['default'])?.indexOf(stepName)
 }
 
-Vue.prototype.submitFieldsets = async function(form) {
-    let promises = [];
+Vue.prototype.submitFieldsets = async function (form) {
+    let promises = []
     form.querySelectorAll('[data-function]').forEach((fieldset) => {
         if (!fieldset?.dataset?.function || !fieldset?.__vue__) {
-            return;
+            return
         }
 
-        promises.push(fieldset.__vue__[fieldset?.dataset?.function]().then((result) => {
-                if(result === false) {
-                    throw new Error;
+        promises.push(
+            fieldset.__vue__[fieldset?.dataset?.function]().then((result) => {
+                if (result === false) {
+                    throw new Error()
                 }
-            })
-        );
+            }),
+        )
     })
 
-    return await Promise.all(promises);
+    return await Promise.all(promises)
 }
 
 Vue.prototype.updateCart = async function (variables, response) {
@@ -147,7 +148,7 @@ Vue.prototype.handlePlaceOrder = async function (data, response) {
     }
 
     if (!response?.data?.placeOrder?.orderV2 && response?.data?.placeOrder?.errors) {
-        const message = response.data.placeOrder.errors.find(() => true).message;
+        const message = response.data.placeOrder.errors.find(() => true).message
         Notify(message, 'error')
         throw new Error(message)
     }

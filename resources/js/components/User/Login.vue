@@ -12,7 +12,7 @@ export default {
 
     data: () => ({
         email: useLocalStorage('email').value,
-        password: ''
+        password: '',
     }),
 
     render() {
@@ -32,9 +32,9 @@ export default {
                 return false
             }
 
-            if(await login(this.email, this.password)) {
+            if (await login(this.email, this.password)) {
                 this.successfulLogin()
-                return true;
+                return true
             }
             return false
         },
@@ -42,6 +42,6 @@ export default {
         successfulLogin() {
             Turbo.visit(window.url(this.redirect))
         },
-    }
+    },
 }
 </script>

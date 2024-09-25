@@ -79,8 +79,9 @@ export default {
             }
 
             try {
-                let response = await window.magentoGraphQL(config.queries.cart +
-                    `
+                let response = await window.magentoGraphQL(
+                    config.queries.cart +
+                        `
 
                     mutation (
                         $cartId: String!,

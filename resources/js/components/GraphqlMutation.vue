@@ -94,9 +94,11 @@ export default {
 
     mounted() {
         if (this.mutateEvent) {
-            this.$nextTick(() => window.app.$on(this.mutateEvent, () => {
-                this.mutate()
-            }))
+            this.$nextTick(() =>
+                window.app.$on(this.mutateEvent, () => {
+                    this.mutate()
+                }),
+            )
         }
     },
 
@@ -119,7 +121,9 @@ export default {
                     ;[query, variables, options] = await this.beforeRequest(query, variables, options)
                 }
 
-                let response = await (this.group ? combiningGraphQL(query, variables, options, this.group) : magentoGraphQL(query, variables, options)).catch(async (error) => {
+                let response = await (
+                    this.group ? combiningGraphQL(query, variables, options, this.group) : magentoGraphQL(query, variables, options)
+                ).catch(async (error) => {
                     if (!GraphQLError.prototype.isPrototypeOf(error)) {
                         throw error
                     }
@@ -178,7 +182,7 @@ export default {
                 console.error(error)
                 this.error = error.message
                 Notify(window.config.translations.errors.wrong, 'warning')
-                throw error;
+                throw error
             } finally {
                 this.mutating = false
             }

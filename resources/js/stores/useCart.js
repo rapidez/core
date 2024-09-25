@@ -21,8 +21,9 @@ export const refresh = async function (force = false) {
     age = Date.now()
 
     try {
-        let response = await window.magentoGraphQL(config.queries.cart +
-            `
+        let response = await window.magentoGraphQL(
+            config.queries.cart +
+                `
 
             query getCart($cart_id: String!) { cart (cart_id: $cart_id) { ...cart } }`,
             { cart_id: mask.value },
@@ -47,50 +48,58 @@ export const clearAddresses = async function () {
 }
 
 export const setGuestEmailOnCart = async function (email) {
-    await window.magentoGraphQL(config.queries.setGuestEmailOnCart, {
-        cart_id: mask.value,
-        email: email
-    })
-    .then((response) => Vue.prototype.updateCart([], response))
+    await window
+        .magentoGraphQL(config.queries.setGuestEmailOnCart, {
+            cart_id: mask.value,
+            email: email,
+        })
+        .then((response) => Vue.prototype.updateCart([], response))
 }
 
 export const linkUserToCart = async function () {
     await window
-        .magentoGraphQL(config.queries.cart +
-            `
+        .magentoGraphQL(
+            config.queries.cart +
+                `
 
-            mutation ($cart_id: String!) { assignCustomerToGuestCart (cart_id: $cart_id) { ...cart } }`, {
-            cart_id: mask.value,
-        })
+            mutation ($cart_id: String!) { assignCustomerToGuestCart (cart_id: $cart_id) { ...cart } }`,
+            {
+                cart_id: mask.value,
+            },
+        )
         .then((response) => Vue.prototype.updateCart([], response))
 }
 
 export const fetchCustomerCart = async function () {
     await window
-        .magentoGraphQL(config.queries.cart +
-            `
+        .magentoGraphQL(
+            config.queries.cart +
+                `
 
-            query { customerCart { ...cart } }`)
+            query { customerCart { ...cart } }`,
+        )
         .then((response) => Vue.prototype.updateCart([], response))
 }
 
 export const fetchGuestCart = async function () {
     await window
-        .magentoGraphQL(config.queries.cart +
-            `
+        .magentoGraphQL(
+            config.queries.cart +
+                `
 
-            mutation { createGuestCart { cart { ...cart } } }`)
+            mutation { createGuestCart { cart { ...cart } } }`,
+        )
         .then((response) => Vue.prototype.updateCart([], response))
 }
 
 export const fetchCart = async function () {
     if (user.value.is_logged_in) {
-        await fetchCustomerCart();
+        await fetchCustomerCart()
 
-        return;
+        return
     }
 
-    await fetchGuestCart();
+    await fetchGuestCart()
 }
 
 export const fetchAttributeValues = async function (attributes = []) {
@@ -127,16 +136,12 @@ export const getAttributeValues = async function () {
 }
 
 function areAddressesSame(address1, address2) {
-    const fieldsToCompare = [
-        'city',
-        'postcode',
-        'company',
-        'firstname',
-        'lastname',
-        'telephone'
-    ];
+    const fieldsToCompare = ['city', 'postcode', 'company', 'firstname', 'lastname', 'telephone']
 
-    return fieldsToCompare.every((field) => address1?.[field] === address2?.[field]) && [0,1,2].every((key) => address1?.street?.[key] === address2?.street?.[key])
+    return (
+        fieldsToCompare.every((field) => address1?.[field] === address2?.[field]) &&
+        [0, 1, 2].every((key) => address1?.street?.[key] === address2?.street?.[key])
+    )
 }
 
 function addCustomerAddressId(address) {
@@ -236,8 +241,8 @@ export const taxTotal = computed(() => {
     return cart.value.prices.applied_taxes.reduce((sum, tax) => sum + tax.amount.value, 0)
 })
 
-watch(mask, refresh);
-if(cartStorage.value?.id && !mask.value) {
+watch(mask, refresh)
+if (cartStorage.value?.id && !mask.value) {
     clear()
 }
 

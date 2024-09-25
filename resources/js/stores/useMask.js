@@ -6,31 +6,31 @@ import { fetchCart } from './useCart'
 /**
  * @deprecated using localstorage to retrieve the mask is deprecated, use the useMask.mask instead
  */
-const localstorageMask = useLocalStorage('mask', '');
-const { get: getCookie, set: setCookie } = useCookies(['mask']);
+const localstorageMask = useLocalStorage('mask', '')
+const { get: getCookie, set: setCookie } = useCookies(['mask'])
 
 export const mask = computed({
     get() {
-        const mask = getCookie('mask') ?? '';
-        localstorageMask.value = mask;
+        const mask = getCookie('mask') ?? ''
+        localstorageMask.value = mask
 
         return mask
     },
     set(value) {
         let options = {
             path: '/',
-            secure: window.location.protocol === "https:",
-            maxAge: 31556952
+            secure: window.location.protocol === 'https:',
+            maxAge: 31556952,
         }
 
-        setCookie('mask', value, options);
-        localstorageMask.value = value;
+        setCookie('mask', value, options)
+        localstorageMask.value = value
     },
 })
 
 export const refreshMask = async function () {
     try {
-        await fetchCart();
+        await fetchCart()
         // FetchCart automatically fills the mask.
     } catch (error) {
         Notify(window.config.translations.errors.wrong, 'error')

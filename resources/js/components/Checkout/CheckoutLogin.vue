@@ -1,16 +1,18 @@
 <script>
-import { cart, setGuestEmailOnCart } from '../../stores/useCart';
-import { isEmailAvailable, login, register, user } from '../../stores/useUser';
+import { cart, setGuestEmailOnCart } from '../../stores/useCart'
+import { isEmailAvailable, login, register, user } from '../../stores/useUser'
 import { useDebounceFn } from '@vueuse/core'
 
-const debouncePromise = useDebounceFn(async function (self) {self.isEmailAvailable = await isEmailAvailable(self.email || '')}, 300);
+const debouncePromise = useDebounceFn(async function (self) {
+    self.isEmailAvailable = await isEmailAvailable(self.email || '')
+}, 300)
 
 export default {
     props: {
         checkWhileTyping: {
             type: Boolean,
-            default: true
-        }
+            default: true,
+        },
     },
 
     data: () => ({
@@ -20,7 +22,7 @@ export default {
         createAccount: false,
         firstname: '',
         lastname: '',
-        isEmailAvailable: true
+        isEmailAvailable: true,
     }),
 
     render() {
@@ -30,12 +32,12 @@ export default {
     methods: {
         async go() {
             if (user.value.is_logged_in) {
-                return true;
+                return true
             }
 
-            let isAvailable = await this.checkEmailAvailability();
+            let isAvailable = await this.checkEmailAvailability()
             if (!isAvailable && !this.password) {
-                return false;
+                return false
             }
 
             if (!isAvailable && this.password) {
@@ -56,15 +58,15 @@ export default {
                     if (error.message) {
                         Notify(error.message, 'error')
                     }
-                    return false;
-                });
+                    return false
+                })
         },
 
         async handleRegister() {
             if (this.password !== this.password_repeat) {
                 Notify(window.config.translations.account.password_mismatch, 'warning')
 
-                return false;
+                return false
             }
             return await register(this.email, this.firstname, this.lastname, this.password)
                 .then(() => true)
@@ -72,35 +74,35 @@ export default {
                     if (error.message) {
                         Notify(error.message, 'error')
                     }
-                    return false;
-                });
+                    return false
+                })
         },
 
         async handleGuest() {
             await setGuestEmailOnCart(this.email)
 
-            return true;
+            return true
         },
 
         async checkEmailAvailability() {
             return await isEmailAvailable(this.email).then((isAvailable) => {
-                this.isEmailAvailable = isAvailable;
-                return isAvailable;
+                this.isEmailAvailable = isAvailable
+                return isAvailable
             })
         },
     },
     watch: {
         email: async function () {
             if (!this.checkWhileTyping) {
-                return;
+                return
             }
-            await debouncePromise(this);
+            await debouncePromise(this)
         },
         isEmailAvailable: function (isAvailable) {
-            if(!isAvailable) {
+            if (!isAvailable) {
                 this.createAccount = false
             }
-        }
-    }
+        },
+    },
 }
 </script>

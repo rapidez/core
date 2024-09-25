@@ -67,12 +67,14 @@ export default {
 
         async runQuery() {
             try {
-                let response = this.group ?  await window.combiningGraphQL(this.query, this.variables, undefined, this.group) : await window.magentoGraphQL(this.query, this.variables)
+                let response = this.group
+                    ? await window.combiningGraphQL(this.query, this.variables, undefined, this.group)
+                    : await window.magentoGraphQL(this.query, this.variables)
 
                 if (this.check) {
                     if (!eval('response?.data?.' + this.check)) {
                         Turbo.visit(window.url(this.redirect))
-                        return false;
+                        return false
                     }
                 }
 
