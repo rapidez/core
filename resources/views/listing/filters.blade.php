@@ -1,6 +1,6 @@
 @php($id = uniqid('filters-'))
 <x-rapidez::slideover.mobile :$id :title="__('Filters')" position="right">
-    <div class="w-full p-2 max-lg:bg-white max-lg:p-6">
+    <div class="w-full p-2 max-lg:bg-white max-lg:p-5">
         {{-- On mobile the filters aren't immedately visible so we should defer loading --}}
         <lazy>
             @include('rapidez::listing.partials.filter.selected')
