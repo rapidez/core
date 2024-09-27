@@ -42,7 +42,7 @@ export const rapidezFetch = (window.rapidezFetch = ((originalFetch) => {
 })(fetch))
 
 export const rapidezAPI = (window.rapidezAPI = async (method, endpoint, data = {}, options = {}) => {
-    let response = await rapidezFetch(window.url('/api/' + endpoint), {
+    let response = await rapidezFetch(window.url('/api/' + endpoint.replace(/^\/+/, '')), {
         method: method.toUpperCase(),
         headers: Object.assign(
             {
@@ -138,7 +138,7 @@ export const magentoAPI = (window.magentoAPI = async (
         notifyOnError: true,
     },
 ) => {
-    let response = await rapidezFetch(config.magento_url + '/rest/' + window.config.store_code + '/V1/' + endpoint, {
+    let response = await rapidezFetch(config.magento_url + '/rest/' + window.config.store_code + '/V1/' + endpoint.replace(/^\/+/, ''), {
         method: method.toUpperCase(),
         headers: {
             Authorization: token.value ? `Bearer ${token.value}` : null,
