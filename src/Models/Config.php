@@ -3,6 +3,8 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Exceptions\DecryptionException;
 use Rapidez\Core\Facades\Rapidez;
 
@@ -18,6 +20,8 @@ class Config extends Model
     protected $table = 'core_config_data';
 
     protected $primaryKey = 'config_id';
+
+    protected $configCache = [];
 
     protected static function booting()
     {
@@ -74,9 +78,31 @@ class Config extends Model
             ConfigScopes::SCOPE_STORE   => config('rapidez.store'),
             default                     => 0
         };
+
+        if ($options['cache'] ?? true) {
+            $configCache = Cache::driver('array')->rememberForever('magento.config::array', fn() => Cache::get('magento.config', []));
+            $cacheKey = implode(
+                '.',
+                [
+                    match($scope) {
+                        ConfigScopes::SCOPE_WEBSITE => 'website',
+                        ConfigScopes::SCOPE_STORE => 'store',
+                        default => 'global'
+                    },
+                    $scopeId,
+                    $path
+                ]
+            );
+            // Catch the case it is intentionally set to null
+            if (Arr::has($configCache, $cacheKey)) {
+                $result = Arr::get($configCache, $cacheKey);
+                return (bool) $options['decrypt'] && is_string($result) ? static::decrypt($result) : $result;
+            }
+        }
+
         $websiteId = $scope === ConfigScopes::SCOPE_STORE ? Rapidez::getStore($scopeId)['website_id'] : $scopeId;
 
-        $query = static::query()
+        $result = static::query()
             ->withoutGlobalScope('scope-fallback')
             ->where('path', $path)
             ->where(fn ($query) => $query
@@ -84,9 +110,14 @@ class Config extends Model
                 ->when($scope !== ConfigScopes::SCOPE_DEFAULT, fn ($query) => $query->orWhere(fn ($query) => $query->whereWebsite($websiteId)))
                 ->orWhere(fn ($query) => $query->whereDefault())
             )
-            ->limit(1);
+            ->first('value')
+            ?->value;
 
-        $result = ((bool) $options['cache'] ? $query->getCachedForever() : $query->get())->value('value');
+        if ($options['cache'] ?? true) {
+            Arr::set($configCache, $cacheKey, $result);
+            Cache::driver('array')->set('magento.config::array', $configCache);
+            Cache::set('magento.config', $configCache);
+        }
 
         return (bool) $options['decrypt'] && is_string($result) ? static::decrypt($result) : $result;
     }

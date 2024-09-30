@@ -14,17 +14,13 @@ class OptionValue extends Model
     {
         $cacheKey = 'optionvalue.' . config('rapidez.store') . '.' . $optionId;
 
-        if (! $optionValue = config('cache.app.' . $cacheKey)) {
-            $optionValue = Cache::rememberForever($cacheKey, function () use ($optionId) {
-                return html_entity_decode(self::where('option_id', $optionId)
-                    ->whereIn('store_id', [config('rapidez.store'), 0])
-                    ->orderByDesc('store_id')
-                    ->first('value')
-                    ->value ?? false);
-            });
-
-            config(['cache.app.' . $cacheKey => $optionValue]);
-        }
+        $optionValue = once(fn() => Cache::rememberForever($cacheKey, function () use ($optionId) {
+            return html_entity_decode(self::where('option_id', $optionId)
+                ->whereIn('store_id', [config('rapidez.store'), 0])
+                ->orderByDesc('store_id')
+                ->first('value')
+                ->value ?? false);
+        }));
 
         return $optionValue;
     }
