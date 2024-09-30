@@ -80,22 +80,23 @@ class Config extends Model
         };
 
         if ($options['cache'] ?? true) {
-            $configCache = Cache::driver('array')->rememberForever('magento.config::array', fn() => Cache::get('magento.config', []));
+            $configCache = Cache::driver('array')->rememberForever('magento.config::array', fn () => Cache::get('magento.config', []));
             $cacheKey = implode(
                 '.',
                 [
-                    match($scope) {
+                    match ($scope) {
                         ConfigScopes::SCOPE_WEBSITE => 'website',
-                        ConfigScopes::SCOPE_STORE => 'store',
-                        default => 'global'
+                        ConfigScopes::SCOPE_STORE   => 'store',
+                        default                     => 'global'
                     },
                     $scopeId,
-                    $path
+                    $path,
                 ]
             );
             // Catch the case it is intentionally set to null
             if (Arr::has($configCache, $cacheKey)) {
                 $result = Arr::get($configCache, $cacheKey);
+
                 return (bool) $options['decrypt'] && is_string($result) ? static::decrypt($result) : $result;
             }
         }

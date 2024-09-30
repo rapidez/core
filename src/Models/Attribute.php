@@ -27,7 +27,7 @@ class Attribute extends Model
 
     public static function getCachedWhere(callable $callback): array
     {
-        $attributes = once(fn() => Cache::rememberForever('attributes.' . config('rapidez.store'), function () {
+        $attributes = once(fn () => Cache::rememberForever('attributes.' . config('rapidez.store'), function () {
             return self::all()->toArray();
         }));
 
