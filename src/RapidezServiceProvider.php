@@ -282,6 +282,17 @@ class RapidezServiceProvider extends ServiceProvider
             $this->mergeConfigFrom(__DIR__ . '/../config/rapidez/' . $configFile . '.php', 'rapidez.' . $configFile);
         }
 
+        if (!config('cache.stores.rapidez:multi', false)) {
+            config()->set('cache.stores.rapidez:multi', [
+                'driver' => 'multi',
+                'stores' => [
+                    'array',
+                    config('cache.default'),
+                ],
+                'sync_missed_stores' => true
+            ]);
+        }
+
         return $this;
     }
 

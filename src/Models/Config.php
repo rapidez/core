@@ -80,7 +80,7 @@ class Config extends Model
         };
 
         if ($options['cache'] ?? true) {
-            $configCache = Cache::driver('array')->rememberForever('magento.config::array', fn() => Cache::get('magento.config', []));
+            $configCache = Cache::driver('rapidez:multi')->get('magento.config', []);
             $cacheKey = implode(
                 '.',
                 [
@@ -115,8 +115,7 @@ class Config extends Model
 
         if ($options['cache'] ?? true) {
             Arr::set($configCache, $cacheKey, $result);
-            Cache::driver('array')->set('magento.config::array', $configCache);
-            Cache::set('magento.config', $configCache);
+            Cache::driver('rapidez:multi')->set('magento.config', $configCache);
         }
 
         return (bool) $options['decrypt'] && is_string($result) ? static::decrypt($result) : $result;
