@@ -1,5 +1,6 @@
 import { StorageSerializers, asyncComputed, useLocalStorage, useMemoize } from '@vueuse/core'
 import { computed, watch } from 'vue'
+import { GraphQLError } from '../fetch'
 import { mask, clearMask } from './useMask'
 
 const cartStorage = useLocalStorage('cart', {}, { serializer: StorageSerializers.object })
@@ -27,14 +28,14 @@ export const refresh = async function (force = false) {
         cart.value = Object.values(response.data)[0]
     } catch (error) {
         console.error(error)
-        Vue.prototype.checkResponseForExpiredCart(error)
+        GraphQLError.prototype.isPrototypeOf(error) && Vue.prototype.checkResponseForExpiredCart({}, await error?.response?.json())
     }
 }
 
 export const clear = async function () {
-    await clearAddresses()
     await clearMask()
     await refresh()
+    await clearAddresses()
 }
 
 export const clearAddresses = async function () {
@@ -98,6 +99,7 @@ export const cart = computed({
         cartStorage.value.virtualItems = virtualItems
         cartStorage.value.hasOnlyVirtualItems = hasOnlyVirtualItems
         cartStorage.value.fixedProductTaxes = fixedProductTaxes
+        cartStorage.value.taxTotal = taxTotal
 
         return cartStorage.value
     },
@@ -162,10 +164,19 @@ export const hasOnlyVirtualItems = computed(() => {
 
 export const fixedProductTaxes = computed(() => {
     let taxes = {}
+    // Note: Magento does internal rounding before multiplying by the quantity, so we actually don't lose any precision here by using the rounded tax amount.
     cart.value?.items?.forEach((item) =>
-        item.prices?.fixed_product_taxes?.forEach((tax) => (taxes[tax.label] = (taxes[tax.label] ?? 0) + tax.amount.value)),
+        item.prices?.fixed_product_taxes?.forEach((tax) => (taxes[tax.label] = (taxes[tax.label] ?? 0) + tax.amount.value * item.quantity)),
     )
     return taxes
+})
+
+export const taxTotal = computed(() => {
+    if (!cart?.value?.prices?.applied_taxes?.length) {
+        return
+    }
+
+    return cart.value.prices.applied_taxes.reduce((sum, tax) => sum + tax.amount.value, 0)
 })
 
 export default () => cart

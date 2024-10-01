@@ -1,4 +1,4 @@
-<nav class="grid w-full justify-between gap-x-4 gap-y-8 hover:prose-a:text-neutral prose-ul:space-y-3 prose-li:text-base prose-li:text-inactive sm:grid-cols-2 md:grid-cols-4">
+<nav class="grid w-full justify-between gap-x-4 gap-y-8 hover:prose-a:text-neutral prose-ul:space-y-3 prose-li:text-base prose-li:text-inactive sm:grid-cols-2 lg:grid-cols-4">
     <ul>
         <li><strong>Catalog</strong></li>
         <li><a href="/what-is-new.html">What's New</a></li>

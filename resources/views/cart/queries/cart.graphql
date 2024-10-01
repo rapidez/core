@@ -79,6 +79,12 @@ shipping_addresses {
     selected_shipping_method {
         carrier_title
         method_title
+        price_incl_tax {
+            value
+        }
+        price_excl_tax {
+            value
+        }
         amount {
             value
         }
