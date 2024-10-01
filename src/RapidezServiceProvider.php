@@ -72,7 +72,8 @@ class RapidezServiceProvider extends ServiceProvider
             ->registerBindings()
             ->registerThemes()
             ->registerBladeDirectives()
-            ->registerExceptionHandlers();
+            ->registerExceptionHandlers()
+            ->registerBladeIconConfig();
     }
 
     protected function bootAuth(): self
@@ -305,6 +306,13 @@ class RapidezServiceProvider extends ServiceProvider
             ->renderable(function (RequiredConstraintsViolated $e, Request $request) {
                 throw new HttpException(401, $e->getMessage(), $e);
             });
+
+        return $this;
+    }
+
+    protected function registerBladeIconConfig(): self
+    {
+        config()->set('blade-icons.attributes.defer', config('blade-icons.attributes.defer', true));
 
         return $this;
     }

@@ -1,7 +1,8 @@
-.phpunit.result.cache
+/.phpunit.cache
 /node_modules
 /public
 /vendor
+.phpunit.result.cache
 composer.lock
 phpunit.dusk.xml
 phpunit.xml
