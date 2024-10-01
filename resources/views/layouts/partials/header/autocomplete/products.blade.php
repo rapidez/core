@@ -10,7 +10,7 @@
                         @{{ suggestion.source.price | price }}
                     </div>
                     <div class="text-base font-base text-primary font-sans font-bold">
-                        @{{ suggestion.source.price | price }}
+                        @{{ (suggestion.source.special_price || suggestion.source.price) | price }}
                     </div>
                 </div>
             </div>

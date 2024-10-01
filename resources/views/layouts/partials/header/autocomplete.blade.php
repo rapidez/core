@@ -27,7 +27,7 @@
             class="pointer-events-none fixed z-10 inset-0 cursor-pointer bg-black/40 opacity-0 transition duration-500"
             :class="{ 'pointer-events-auto opacity-100': overlay, 'opacity-0 pointer-events-none': !overlay }"
         ></div>
-        <div class="rounded-r-xl border-l absolute right-0 inset-y-0 w-14 pointer-events-none flex items-center justify-center {{ config('rapidez.frontend.z-indexes.lightbox') }}">
+        <div class="rounded-r-xl border-l absolute right-0 inset-y-0 w-14 pointer-events-none flex items-center justify-center {{ config('rapidez.frontend.z-indexes.button-autocomplete') }}">
             <x-heroicon-o-magnifying-glass class="size-5 text-neutral" />
         </div>
         <data-search
@@ -35,13 +35,10 @@
             v-on:value-selected="search"
             component-id="autocomplete"
             :inner-class="{ input: '{{ $inputClasses }}' }"
-            {{-- These classes are only used when you come from a page with a product listing, --}}
-            {{-- click on a link that leads to a 404 page and try to use the search there --}}
             class="relative [&_*]:!m-0"
             :data-field="Object.keys(config.searchable)"
             :field-weights="Object.values(config.searchable)"
             :show-icon="false"
-            icon-position="right"
             fuzziness="AUTO"
             :debounce="debounce"
             @blur="showOverlay(false)"
@@ -55,7 +52,7 @@
                 slot-scope="{ downshiftProps: { isOpen }, data: suggestions, value }"
             >
                 <div
-                    class="{{ config('rapidez.frontend.z-indexes.header-dropdowns') }} absolute -inset-x-5 top-14 max-h-svh overflow-x-hidden overflow-y-auto md:top-14 md:max-h-[600px] md:rounded-xl md:border bg-white shadow-xl max-md:pt-0 p-5 md:pt-0 md:inset-x-0 md:w-full md:-translate-y-px"
+                    class="{{ config('rapidez.frontend.z-indexes.search-autocomplete') }} absolute -inset-x-5 top-14 max-h-svh overflow-x-hidden overflow-y-auto md:top-14 md:max-h-[600px] md:rounded-xl md:border bg-white shadow-xl max-md:pt-0 p-5 md:pt-0 md:inset-x-0 md:w-full md:-translate-y-px"
                     v-if="isOpen && (suggestions.length || resultsCount)"
                 >
                     @include('rapidez::layouts.partials.header.autocomplete.all-results')

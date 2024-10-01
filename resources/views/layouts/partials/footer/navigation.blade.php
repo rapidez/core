@@ -7,6 +7,7 @@
         <li><a href="/gear.html">Gear</a></li>
         <li><a href="/training.html">Training</a></li>
         <li><a href="/sale.html">Sale</a></li>
+        <li><a href="/kemrkemrkemrkmekmr.html">404</a></li>
     </ul>
     <ul>
         <li><strong>Support</strong></li>
