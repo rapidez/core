@@ -113,7 +113,7 @@ class Rapidez
         config()->set('rapidez.root_category_id', $store['root_category_id']);
         config()->set('frontend.base_url', url('/'));
 
-        if (config()->get('rapidez.get_magento_url_from_db', false)) {
+        if (config()->get('rapidez.magento_url_from_db', false)) {
             $magentoUrl = trim(
                 Config::getValue('web/secure/base_url', ConfigScopes::SCOPE_WEBSITE) ?? config()->get('rapidez.magento_url'),
                 '/'
