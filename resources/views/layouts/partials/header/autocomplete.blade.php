@@ -8,7 +8,7 @@
         class="{{ $inputClasses }}"
         v-on:focus="$root.loadAutocomplete = true"
     >
-    <div class="rounded-r-xl border-l absolute right-0 inset-y-0 w-14 pointer-events-none flex items-center justify-center {{ config('rapidez.frontend.z-indexes.header-dropdowns') }}">
+    <div class="rounded-r-xl border-l absolute right-0 inset-y-0 w-14 pointer-events-none flex items-center justify-center {{ config('rapidez.frontend.z-indexes.search-autocomplete') }}">
         <x-heroicon-o-magnifying-glass class="size-5 text-neutral" />
     </div>
 </div>
