@@ -13,7 +13,7 @@ Vue.prototype.getCheckoutStep = (stepName) => {
     return (config.checkout_steps[config.store_code] ?? config.checkout_steps['default'])?.indexOf(stepName)
 }
 
-Vue.prototype.updateCart = async function (data, response) {
+Vue.prototype.updateCart = async function (variables, response) {
     if (!response?.data) {
         return response?.data
     }
@@ -22,11 +22,9 @@ Vue.prototype.updateCart = async function (data, response) {
     return response.data
 }
 
-Vue.prototype.checkResponseForExpiredCart = async function (error) {
-    let responseData = await error.response?.json()
-
+Vue.prototype.checkResponseForExpiredCart = async function (variables, response) {
     if (
-        responseData?.errors?.some(
+        response?.errors?.some(
             (error) =>
                 error.extensions.category === 'graphql-no-such-entity' &&
                 error.path.some((path) =>

@@ -309,6 +309,10 @@ export default {
             this.selectPaymentMethod()
         },
         'checkout.shipping_address.country_id': function () {
+            if (!cart.value?.id) {
+                return
+            }
+
             this.getShippingMethods()
         },
         'checkout.step': function () {

@@ -25,6 +25,7 @@ class WithProductChildrenScope implements Scope
             $superAttributesSelect .= '"' . $superAttribute . '", ' . $grammar->wrap('children.' . $superAttribute) . ',';
         }
 
+        $store = config('rapidez.store', 0);
         $stockQty = config('rapidez.system.expose_stock') ? '"qty", children_stock.qty,' : '';
 
         $builder
@@ -39,10 +40,18 @@ class WithProductChildrenScope implements Scope
                     "in_stock", children_stock.is_in_stock,
                     {$stockQty}
                     "images", (
-                        SELECT JSON_ARRAYAGG(catalog_product_entity_media_gallery.value)
-                        FROM catalog_product_entity_media_gallery_value_to_entity
-                        LEFT JOIN catalog_product_entity_media_gallery ON catalog_product_entity_media_gallery.value_id = catalog_product_entity_media_gallery_value_to_entity.value_id
-                        WHERE catalog_product_entity_media_gallery_value_to_entity.entity_id = children.entity_id
+                        SELECT JSON_ARRAYAGG(JSON_OBJECT("value", catalog_product_entity_media_gallery.value, "position", catalog_product_entity_media_gallery_value.position))
+                        FROM catalog_product_entity_media_gallery_value
+                        LEFT JOIN catalog_product_entity_media_gallery ON catalog_product_entity_media_gallery.value_id = catalog_product_entity_media_gallery_value.value_id
+                        WHERE catalog_product_entity_media_gallery_value.entity_id = children.entity_id
+                        AND catalog_product_entity_media_gallery_value.disabled = 0
+                        AND catalog_product_entity_media_gallery_value.store_id IN (0, {$store})
+                        AND (
+                            catalog_product_entity_media_gallery_value.value_id not in (
+                                SELECT v2.value_id FROM catalog_product_entity_media_gallery_value as v2 WHERE catalog_product_entity_media_gallery_value.value_id = v2.value_id AND v2.store_id = {$store}
+                            )
+                            OR catalog_product_entity_media_gallery_value.store_id = {$store}
+                        )
                     )
                 QUERY) . '
             )), "$.null__") AS children')

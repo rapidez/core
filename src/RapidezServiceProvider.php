@@ -72,7 +72,8 @@ class RapidezServiceProvider extends ServiceProvider
             ->registerBindings()
             ->registerThemes()
             ->registerBladeDirectives()
-            ->registerExceptionHandlers();
+            ->registerExceptionHandlers()
+            ->registerBladeIconConfig();
     }
 
     protected function bootAuth(): self
@@ -281,6 +282,17 @@ class RapidezServiceProvider extends ServiceProvider
             $this->mergeConfigFrom(__DIR__ . '/../config/rapidez/' . $configFile . '.php', 'rapidez.' . $configFile);
         }
 
+        if (!config('cache.stores.rapidez:multi', false)) {
+            config()->set('cache.stores.rapidez:multi', [
+                'driver' => 'multi',
+                'stores' => [
+                    'array',
+                    config('cache.default'),
+                ],
+                'sync_missed_stores' => true
+            ]);
+        }
+
         return $this;
     }
 
@@ -305,6 +317,13 @@ class RapidezServiceProvider extends ServiceProvider
             ->renderable(function (RequiredConstraintsViolated $e, Request $request) {
                 throw new HttpException(401, $e->getMessage(), $e);
             });
+
+        return $this;
+    }
+
+    protected function registerBladeIconConfig(): self
+    {
+        config()->set('blade-icons.attributes.defer', config('blade-icons.attributes.defer', true));
 
         return $this;
     }

@@ -49,6 +49,7 @@ export const rapidezAPI = (window.rapidezAPI = async (method, endpoint, data = {
                 Store: window.config.store_code,
                 Authorization: token.value ? `Bearer ${token.value}` : null,
                 'Content-Type': 'application/json',
+                'X-CSRF-Token': window.app.csrfToken,
             },
             options?.headers || {},
         ),

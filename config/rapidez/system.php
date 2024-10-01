@@ -11,7 +11,7 @@ return [
     'es_prefix' => env('ELASTICSEARCH_PREFIX', 'rapidez'),
 
     // Get Magento url from Database
-    'get_magento_url_from_db' => env('GET_MAGENTO_URL_FROM_DATABASE', false),
+    'magento_url_from_db' => env('GET_MAGENTO_URL_FROM_DATABASE', false),
 
     // Media url.
     'media_url' => env('MEDIA_URL', env('MAGENTO_URL') . '/media'),
