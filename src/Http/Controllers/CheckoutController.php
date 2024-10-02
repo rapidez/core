@@ -21,8 +21,8 @@ class CheckoutController
         // For example; without a quote we could be redirected to the homepage.
 
         return view('rapidez::checkout.pages.' . $step, [
-            'checkoutSteps' => $checkoutSteps,
-            'currentStep' => $step,
+            'checkoutSteps'  => $checkoutSteps,
+            'currentStep'    => $step,
             'currentStepKey' => array_search($step, $checkoutSteps),
         ]);
     }
