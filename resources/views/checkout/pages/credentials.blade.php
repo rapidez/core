@@ -6,6 +6,7 @@
 
 @section('content')
     <div class="container">
+        @include('rapidez::checkout.partials.progressbar')
         <div v-if="hasCart" v-cloak>
             <div class="flex gap-5">
                 <div class="w-3/4">
