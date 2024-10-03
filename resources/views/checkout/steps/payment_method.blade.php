@@ -11,8 +11,8 @@
     mutate-event="setPaymentMethodOnCart"
     v-slot="{ mutate, variables }"
 >
-    <div data-function="mutate">
-        <template v-for="(method, index) in cart.available_payment_methods">
+    <div class="flex flex-col gap-3" data-function="mutate">
+        <div class="p-5 border rounded relative" v-for="(method, index) in cart.available_payment_methods">
             <template v-if="false"></template>
             @stack('payment_methods')
             <template v-else>
@@ -24,10 +24,17 @@
                     v-on:change="mutate"
                     required
                 >
-                    @{{ method.title }}
+                    <div class="flex items-center">
+                        <span>@{{ method.title }}</span>
+                        <img
+                            class="absolute right-5 w-8 h-8"
+                            v-bind:src="`/payment-icons/${method.code}.svg`"
+                            onerror="this.onerror=null; this.src=`/payment-icons/default.svg`"
+                        >
+                    </div>
                 </x-rapidez::radio>
             </template>
-        </template>
+        </div>
     </div>
 </graphql-mutation>
 

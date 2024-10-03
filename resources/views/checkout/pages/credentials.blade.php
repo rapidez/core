@@ -12,7 +12,8 @@
                 <div class="w-3/4">
                     <form
                         v-on:submit.prevent="(e) => {submitFieldsets(e.target?.form ?? e.target).then((result) => window.Turbo.visit(window.url('{{ route('checkout', ['step' => 'payment']) }}'))).catch();}"
-                        class="flex flex-col gap-5">
+                        class="flex flex-col gap-5"
+                    >
                         <template v-if="!cart.is_virtual">
                             <h2 class="text-xl font-bold">@lang('Shipping address')</h2>
                             @include('rapidez::checkout.steps.shipping_address')
@@ -26,7 +27,7 @@
                             @include('rapidez::checkout.steps.shipping_method')
                         </template>
 
-                        <x-rapidez::button type="submit" dusk="continue">
+                        <x-rapidez::button type="submit" dusk="continue" class="self-start">
                             @lang('Next')
                         </x-rapidez::button>
                     </form>

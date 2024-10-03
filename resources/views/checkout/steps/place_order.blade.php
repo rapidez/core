@@ -9,8 +9,8 @@
     v-slot="{ mutate, variables }"
 >
     <fieldset>
-        <x-rapidez::button type="submit" dusk="continue">
-            @lang('Order')
+        <x-rapidez::button type="submit" dusk="continue" class="mt-3">
+            @lang('Place order')
         </x-rapidez::button>
     </fieldset>
 </graphql-mutation>
