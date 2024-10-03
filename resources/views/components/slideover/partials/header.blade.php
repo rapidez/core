@@ -2,7 +2,13 @@
     <div class="px-5">
         <div class="relative flex items-center justify-center">
             @if ($hasParent)
-                <label for="{{ $id }}" class="absolute left-0 top-1/2 -translate-y-1/2 cursor-pointer text-white">
+                <label
+                    @if($idBind)
+                        v-bind:for="{{ $idBind }}"
+                    @else
+                        for="{{ $id }}"
+                    @endif
+                    class="absolute left-0 top-1/2 -translate-y-1/2 cursor-pointer text-white">
                     <x-heroicon-o-arrow-left class="size-6" />
                 </label>
             @elseif ($headerbutton->isNotEmpty())
@@ -13,7 +19,13 @@
                     {{ $title }}
                 </span>
             @endif
-            <label for="{{ $closeId }}" class="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer text-white">
+            <label
+                @if($idBind)
+                    v-bind:for="{{ $isInForm ? $closeId : $idBind }}"
+                @else
+                    for="{{ $isInForm ? $closeId : $id }}"
+                @endif
+                class="absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer text-white">
                 <x-heroicon-o-x-mark class="size-6" />
             </label>
         </div>
