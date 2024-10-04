@@ -59,7 +59,6 @@ export const refresh = async function () {
 
     try {
         isRefreshing = true
-        // TODO: Migrate to GraphQL?
         userStorage.value = (await window.magentoGraphQL(`{ customer { ${config.queries.customer} } }`))?.data?.customer
         isRefreshing = false
     } catch (error) {
@@ -105,6 +104,12 @@ export const register = async function (email, firstname, lastname, password, in
         },
     }).then(async (response) => {
         if (response.data?.createCustomerV2?.customer?.email) {
+            window.app.$emit('registered', {
+                email: email,
+                firstname: firstname,
+                lastname: lastname,
+                ...input,
+            })
             await login(email, password)
         }
 
@@ -120,11 +125,13 @@ export const login = async function (email, password) {
             password: password,
         },
     )
+        // Set Auth Token
         .then(async (response) => {
             token.value = response.data.generateCustomerToken.token
 
             return response
         })
+        // Link or Fetch Cart
         .then(async (response) => {
             if (mask.value) {
                 await linkUserToCart()
@@ -133,11 +140,19 @@ export const login = async function (email, password) {
             }
             return response
         })
+        // Fire logged in event
+        .then(async (response) => {
+            window.app.$emit('logged-in')
+            return response;
+        })
 }
 
 export const logout = async function () {
     await magentoGraphQL('mutation { revokeCustomerToken { result } }', {}, { notifyOnError: false, redirectOnExpiration: false }).finally(
-        async () => await clear(),
+        async () => {
+            await clear();
+            window.app.$emit('logged-out')
+        },
     )
 }
 

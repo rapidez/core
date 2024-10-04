@@ -21,7 +21,6 @@ export default {
                     await this.refreshUser(false)
 
                     this.setCheckoutCredentialsFromDefaultUserAddresses()
-                    await window.app.$emit('logged-in')
                     if (loginCallback) {
                         await loginCallback()
                     }

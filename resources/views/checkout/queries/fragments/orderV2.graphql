@@ -59,6 +59,10 @@ fragment orderV2 on CustomerOrder {
         total_tax {
             value
         }
+        base_grand_total {
+            currency
+            value
+        }
         grand_total {
             value
         }

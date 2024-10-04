@@ -8,7 +8,7 @@
     <div class="container">
         <div v-if="hasCart" v-cloak>
             <form class="grid md:grid-cols-2 gap-5" v-on:submit.prevent="(e) => {
-                submitFieldsets(e.target?.form ?? e.target).then((result) => window.app.$emit('placeOrder')).catch();
+                submitFieldsets(e.target?.form ?? e.target).then((result) => window.app.$emit('checkout-credentials-saved') && window.app.$emit('checkout-payment-saved') && window.app.$emit('placeOrder')).catch();
             }">
                 <div class="md:col-span-2">
                     @include('rapidez::checkout.steps.login')

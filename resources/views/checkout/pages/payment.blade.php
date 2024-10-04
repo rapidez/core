@@ -9,7 +9,7 @@
         @include('rapidez::checkout.partials.progressbar')
         <div v-if="hasCart" v-cloak>
             <div class="flex gap-5">
-                <form class="w-3/4" v-on:submit.prevent="(e) => {submitFieldsets(e.target?.form ?? e.target).then((result) => window.app.$emit('placeOrder')).catch();}">
+                <form class="w-3/4" v-on:submit.prevent="(e) => {submitFieldsets(e.target?.form ?? e.target).then((result) => window.app.$emit('checkout-payment-saved') && window.app.$emit('placeOrder')).catch();}">
                     @include('rapidez::checkout.steps.payment_method')
                     @include('rapidez::checkout.steps.place_order')
                 </form>
