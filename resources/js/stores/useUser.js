@@ -118,39 +118,41 @@ export const register = async function (email, firstname, lastname, password, in
 }
 
 export const login = async function (email, password) {
-    return magentoGraphQL(
-        'mutation generateCustomerToken ($email: String!, $password: String!) { generateCustomerToken (email: $email, password: $password) { token } }',
-        {
-            email: email,
-            password: password,
-        },
-    )
-        // Set Auth Token
-        .then(async (response) => {
-            token.value = response.data.generateCustomerToken.token
+    return (
+        magentoGraphQL(
+            'mutation generateCustomerToken ($email: String!, $password: String!) { generateCustomerToken (email: $email, password: $password) { token } }',
+            {
+                email: email,
+                password: password,
+            },
+        )
+            // Set Auth Token
+            .then(async (response) => {
+                token.value = response.data.generateCustomerToken.token
 
-            return response
-        })
-        // Link or Fetch Cart
-        .then(async (response) => {
-            if (mask.value) {
-                await linkUserToCart()
-            } else {
-                await fetchCustomerCart()
-            }
-            return response
-        })
-        // Fire logged in event
-        .then(async (response) => {
-            window.app.$emit('logged-in')
-            return response;
-        })
+                return response
+            })
+            // Link or Fetch Cart
+            .then(async (response) => {
+                if (mask.value) {
+                    await linkUserToCart()
+                } else {
+                    await fetchCustomerCart()
+                }
+                return response
+            })
+            // Fire logged in event
+            .then(async (response) => {
+                window.app.$emit('logged-in')
+                return response
+            })
+    )
 }
 
 export const logout = async function () {
     await magentoGraphQL('mutation { revokeCustomerToken { result } }', {}, { notifyOnError: false, redirectOnExpiration: false }).finally(
         async () => {
-            await clear();
+            await clear()
             window.app.$emit('logged-out')
         },
     )
