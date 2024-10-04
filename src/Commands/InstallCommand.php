@@ -17,6 +17,8 @@ class InstallCommand extends Command
 
     protected Collection $selectedPackages;
 
+    protected bool $dockerInstall = false;
+
     public function handle()
     {
         if ($this->option('frontendonly')) {
@@ -57,8 +59,9 @@ class InstallCommand extends Command
         if (!confirm('Do you have a Magento installation up-and-running?')) {
             if (confirm(
                 label: 'Shall we setup a demo Magento installation for you in Docker?',
-                hint: 'This will run `docker-compose up -d`'
+                hint: 'This will run `docker-compose up -d` and takes a while, make sure Docker is running!'
             )) {
+                $this->dockerInstall = true;
                 if (passthru('docker-compose up -d') === false) {
                     $this->newLine();
                     $this->error('Something went wrong, please check the errors and try again');
@@ -69,6 +72,9 @@ class InstallCommand extends Command
                     $this->error('Something went wrong, please check the errors and try again');
                     exit;
                 }
+            } else {
+                $this->error('Please setup a Magento installation first!');
+                exit;
             }
         }
 
@@ -77,7 +83,7 @@ class InstallCommand extends Command
 
     protected function validate()
     {
-        if (confirm('Did you configure the Magento credentials in the .env?')) {
+        if ($this->dockerInstall || confirm('Did you configure the Magento credentials in the .env?')) {
             $this->info('We are going to run `php artisan rapidez:validate` now');
             if ($this->call('rapidez:validate')) {
                 $this->newLine();
