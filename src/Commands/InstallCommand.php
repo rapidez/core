@@ -4,6 +4,7 @@ namespace Rapidez\Core\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
+
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\multiselect;
 use function Laravel\Prompts\pause;
@@ -21,6 +22,7 @@ class InstallCommand extends Command
     {
         if ($this->option('frontendonly')) {
             $this->frontend(true);
+
             return;
         }
 
@@ -36,12 +38,12 @@ class InstallCommand extends Command
     protected function intro()
     {
         $this->info(str_repeat('=', 37));
-        $this->info("  ____             _     _          ");
+        $this->info('  ____             _     _          ');
         $this->info(" |  _ \ __ _ _ __ (_) __| | ___ ____");
         $this->info(" | |_) / _` | '_ \| |/ _` |/ _ \_  /");
-        $this->info(" |  _ < (_| | |_) | | (_| |  __// / ");
+        $this->info(' |  _ < (_| | |_) | | (_| |  __// / ');
         $this->info(" |_| \_\__,_| .__/|_|\__,_|\___/___|");
-        $this->info("            |_|                     ");
+        $this->info('            |_|                     ');
         $this->info('  Welcome to the Rapidez installer!');
         $this->info(str_repeat('=', 37));
         $this->newLine();
@@ -54,7 +56,7 @@ class InstallCommand extends Command
 
     protected function magento()
     {
-        if (!confirm('Do you have a Magento installation up-and-running?')) {
+        if (! confirm('Do you have a Magento installation up-and-running?')) {
             if (confirm(
                 label: 'Shall we setup a demo Magento installation for you in Docker?',
                 hint: 'This will run `docker-compose up -d`'
@@ -105,10 +107,10 @@ class InstallCommand extends Command
 
         if ($force || confirm(
             label: 'Copy all files for the frontend dependencies?',
-            hint: 'The files that will be copied to your project: '.implode(', ', $filesToCopy)
+            hint: 'The files that will be copied to your project: ' . implode(', ', $filesToCopy)
         )) {
             foreach ($filesToCopy as $file) {
-                copy(__DIR__ . '/../../'.$file, base_path($file));
+                copy(__DIR__ . '/../../' . $file, base_path($file));
             }
         }
 
@@ -138,16 +140,16 @@ class InstallCommand extends Command
         $packages[] = select(
             label: 'Shall we install a CMS integration?',
             options: [
-                null => 'No thanks',
+                null       => 'No thanks',
                 'statamic' => 'Statamic',
-                'strapi' => 'Strapi',
+                'strapi'   => 'Strapi',
             ],
         );
 
         $packages[] = multiselect(
             label: 'Shall we install a monitoring integration?',
             options: [
-                'sentry' => 'Sentry',
+                'sentry'     => 'Sentry',
                 'openreplay' => 'Openreplay',
             ],
         );
@@ -155,19 +157,19 @@ class InstallCommand extends Command
         $packages[] = multiselect(
             label: 'Would you like any of these optional functionalities?',
             options: [
-                'reviews' => 'Reviews',
-                'compare' => 'Product compare',
+                'reviews'           => 'Reviews',
+                'compare'           => 'Product compare',
                 'login-as-customer' => 'Login as customer possibility for admins',
-                'product-alert' => 'Product alerts, email when a product comes back in stock',
+                'product-alert'     => 'Product alerts, email when a product comes back in stock',
             ],
         );
 
         $packages[] = select(
             label: 'Shall we install a wishlist integration?',
             options: [
-                null => 'No thanks',
-                'wishlist' => 'Default Magento wishlist',
-                'guest-wishlist' => 'Guest wishlist where the list is stored in localStorage',
+                null                 => 'No thanks',
+                'wishlist'           => 'Default Magento wishlist',
+                'guest-wishlist'     => 'Guest wishlist where the list is stored in localStorage',
                 'multiple-wishlists' => 'Multiple wishlists, with a custom database table and API endpoints',
             ],
         );
@@ -175,9 +177,9 @@ class InstallCommand extends Command
         $packages[] = multiselect(
             label: 'Shall we install a payment provider integration?',
             options: [
-                'paynl' => 'Pay.nl',
-                'mollie' => 'Mollie',
-                'riverty' => 'Riverty',
+                'paynl'        => 'Pay.nl',
+                'mollie'       => 'Mollie',
+                'riverty'      => 'Riverty',
                 'multisafepay' => 'MultiSafepay',
             ],
         );
@@ -185,8 +187,8 @@ class InstallCommand extends Command
         $packages[] = select(
             label: 'Shall we install a postcode integration?',
             options: [
-                null => 'No thanks',
-                'postcodeservice' => 'Postcodeservice.com directly',
+                null                   => 'No thanks',
+                'postcodeservice'      => 'Postcodeservice.com directly',
                 'experius-postcode-nl' => 'Postcode.nl, requires the `experius/module-postcode` Magento module',
             ],
         );
@@ -194,9 +196,9 @@ class InstallCommand extends Command
         $packages[] = select(
             label: 'Shall we install an opinionated checkout?',
             options: [
-                null => 'No thanks, the default checkout is fine < easy to customize!',
+                null             => 'No thanks, the default checkout is fine < easy to customize!',
                 'checkout-theme' => 'Checkout theme; styled for B2B',
-                'confira' => 'Confira; based on the checkout theme and styled for B2C',
+                'confira'        => 'Confira; based on the checkout theme and styled for B2C',
             ],
         );
 
@@ -211,22 +213,23 @@ class InstallCommand extends Command
         $this->selectedPackages = collect($packages)
             ->flatten()
             ->filter()
-            ->map(fn ($package) => 'rapidez/'.$package);
+            ->map(fn ($package) => 'rapidez/' . $package);
 
         if ($this->selectedPackages->isEmpty()) {
             $this->warn('Ok, no whipped cream with stroopwaffle pieces on your ice cream for you!');
             $this->newline(2);
+
             return $this;
         }
 
         $this->warn('Please review your selected packages:');
         foreach ($this->selectedPackages as $package) {
-            $this->line('- '.$package);
+            $this->line('- ' . $package);
         }
 
         if (confirm('Are you sure you want all these packages installed?', false)) {
             $this->line('Okido, here we go... we just `composer require` all of them.');
-            passthru('composer require '.$this->selectedPackages->implode(' '));
+            passthru('composer require ' . $this->selectedPackages->implode(' '));
         } else {
             $this->line('Ok, we are starting over...');
             $this->packages();
@@ -245,8 +248,8 @@ class InstallCommand extends Command
 
         $this->info('We are going to publish the config files');
         $this->call('vendor:publish', [
-            '--tag' => 'config',
-            '--provider' => 'Rapidez\Core\RapidezServiceProvider'
+            '--tag'      => 'config',
+            '--provider' => 'Rapidez\Core\RapidezServiceProvider',
         ]);
 
         $this->newLine();
@@ -261,7 +264,7 @@ class InstallCommand extends Command
         if ($this->selectedPackages->isNotEmpty()) {
             $this->warn('As you did select some packages before, check the readme of each one!');
             foreach ($this->selectedPackages as $package) {
-                $this->line('- https://github.com/'.$package);
+                $this->line('- https://github.com/' . $package);
             }
         }
 
