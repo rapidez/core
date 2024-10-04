@@ -56,6 +56,22 @@ trait DuskTestCaseSetup
             return $this;
         });
 
+        Browser::macro('addProductToCart', function ($productUrl = null) {
+            /** @var Browser $this */
+            if ($productUrl) {
+                $this
+                    ->visit($productUrl);
+            }
+
+            $this
+                ->waitUntilIdle()
+                ->pressAndWaitFor('@add-to-cart', 60)
+                ->waitForText('Added', 60)
+                ->waitUntilIdle();
+
+            return $this;
+        });
+
         $this->flat = (new Product)->getTable();
 
         $this->testProduct = Product::selectAttributes([

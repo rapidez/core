@@ -1,16 +1,23 @@
+{{-- TODO: When the steps count change this grids doesn't play nice --}}
 <nav class="grid grid-cols-12 my-5">
-    @foreach (array_slice((config('rapidez.frontend.checkout_steps.'.config('rapidez.store_code')) ?: config('rapidez.frontend.checkout_steps.default')), 0, -1) as $stepTitle)
-        <button class="col-span-3 relative focus:outline-none" :disabled="checkout.step < {{ $loop->index }}" :class="checkout.step < {{ $loop->index }} ? 'cursor-default' : ''" v-on:click="if (checkout.step >= {{ $loop->index }}) goToStep({{ $loop->index }})">
+    @foreach ($checkoutSteps as $checkoutStepKey => $checkoutStep)
+        <a href="{{ route('checkout', $checkoutStep) }}" @class([
+            'text-center col-span-3 relative focus:outline-none',
+            'pointer-events-none cursor-default' => $currentStepKey < $checkoutStepKey,
+        ])>
             @if (!$loop->last)
-                <div :class="checkout.step > {{ $loop->index }} ? 'bg-neutral' : 'bg-inactive'" class="absolute flex w-full h-0.5 top-5 left-1/2"></div>
+                {{-- TODO: This line is clickable which it shouldn't --}}
+                <div class="absolute flex w-full h-0.5 top-5 left-1/2 {{ $currentStepKey > $checkoutStepKey ? 'bg-neutral' : 'bg-inactive' }}"></div>
             @endif
-            <div
-                :class="{'bg-neutral text-white': {{ $loop->index }} <= checkout.step, 'bg-white': {{ $loop->index }} > checkout.step, 'bg-neutral text-white shadow-md shadow-neutral': {{ $loop->index }} === checkout.step}"
-                class="relative flex w-10 h-10 mx-auto justify-center rounded-full font-bold items-center border border-neutral"
-            >
-                {{ $loop->index + 1 }}
+            <div @class([
+                'relative flex w-10 h-10 mx-auto justify-center rounded-full font-bold items-center border border-neutral',
+                'bg-neutral text-white' => $checkoutStepKey <= $currentStepKey,
+                'bg-white' => $checkoutStepKey > $currentStepKey,
+                'bg-neutral text-white shadow-md shadow-neutral' => $checkoutStepKey === $currentStepKey
+            ])>
+                {{ $checkoutStepKey + 1 }}
             </div>
-            <span class="hidden sm:block">@lang(ucfirst($stepTitle))<span>
-        </button>
+            <span class="hidden sm:block">@lang(ucfirst($checkoutStep))<span>
+        </a>
     @endforeach
 </nav>

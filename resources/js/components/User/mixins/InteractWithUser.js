@@ -21,12 +21,12 @@ export default {
                     await this.refreshUser(false)
 
                     this.setCheckoutCredentialsFromDefaultUserAddresses()
-                    await window.app.$emit('logged-in')
                     if (loginCallback) {
                         await loginCallback()
                     }
                 })
                 .catch((error) => {
+                    console.error(error)
                     Notify(error.message, 'error')
 
                     return false
@@ -47,6 +47,7 @@ export default {
             }
         },
 
+        // TODO: double check if we can remove this as it's only used by the old Checkout.vue
         async createCustomer(customer) {
             try {
                 return await window.magentoAPI('post', 'customers', {

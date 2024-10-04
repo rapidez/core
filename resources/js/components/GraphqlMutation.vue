@@ -1,5 +1,5 @@
 <script>
-import { GraphQLError, magentoGraphQL } from '../fetch'
+import { GraphQLError, combiningGraphQL, magentoGraphQL } from '../fetch'
 import InteractWithUser from './User/mixins/InteractWithUser'
 
 export default {
@@ -13,6 +13,10 @@ export default {
         variables: {
             type: Object,
             default: () => ({}),
+        },
+        group: {
+            // Group name for combining graphql queries, use "nameless" to join it with all others
+            type: String,
         },
         watch: {
             type: Boolean,
@@ -54,10 +58,6 @@ export default {
             type: Boolean,
             default: false,
         },
-        store: {
-            type: String,
-            default: window.config.store_code,
-        },
     },
 
     data: () => ({
@@ -75,6 +75,7 @@ export default {
             mutating: this.mutating,
             error: this.error,
             variables: this.data,
+            watch: this.watch,
         })
     },
 
@@ -93,9 +94,11 @@ export default {
 
     mounted() {
         if (this.mutateEvent) {
-            window.app.$on(this.mutateEvent, () => {
-                this.mutate()
-            })
+            this.$nextTick(() =>
+                window.app.$on(this.mutateEvent, () => {
+                    this.mutate()
+                }),
+            )
         }
     },
 
@@ -111,18 +114,16 @@ export default {
                     options['headers']['X-ReCaptcha'] = await this.getReCaptchaToken()
                 }
 
-                if (this.store) {
-                    options['headers']['Store'] = this.store
-                }
-
                 let variables = this.data,
                     query = this.query
 
                 if (this.beforeRequest) {
-                    ;[query, variables, options] = await this.beforeRequest(this.query, this.variables, options)
+                    ;[query, variables, options] = await this.beforeRequest(query, variables, options)
                 }
 
-                let response = await magentoGraphQL(query, variables, options).catch(async (error) => {
+                let response = await (
+                    this.group ? combiningGraphQL(query, variables, options, this.group) : magentoGraphQL(query, variables, options)
+                ).catch(async (error) => {
                     if (!GraphQLError.prototype.isPrototypeOf(error)) {
                         throw error
                     }
@@ -181,6 +182,7 @@ export default {
                 console.error(error)
                 this.error = error.message
                 Notify(window.config.translations.errors.wrong, 'warning')
+                throw error
             } finally {
                 this.mutating = false
             }

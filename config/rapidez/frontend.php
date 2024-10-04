@@ -26,7 +26,8 @@ return [
     // add different steps for different stores. Keep
     // them lowercase and do not include any spaces.
     'checkout_steps' => [
-        'default' => ['cart', 'login', 'credentials', 'payment', 'success'],
+        // 'default' => ['onestep'],
+        'default' => ['login', 'credentials', 'payment'],
     ],
 
     'autocomplete' => [

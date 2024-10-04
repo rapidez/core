@@ -5,7 +5,7 @@
     <div class="my-2 border bg-white p-4 rounded" v-for="(method, index) in checkout.payment_methods">
         <x-rapidez::radio
             v-bind:value="method.code"
-            v-bind:dusk="'method-'+index"
+            v-bind:dusk="'payment-method-'+index"
             v-model="checkout.payment_method"
             class="[&+div]:flex-1"
         >
