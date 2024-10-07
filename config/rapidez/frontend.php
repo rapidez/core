@@ -13,6 +13,7 @@ return [
         'flushable_localstorage_keys',
         'show_customer_address_fields',
         'cart_attributes',
+        'color_attribute',
     ],
 
     // The attribute codes of product attributes used in the cart, used to fetch option values
@@ -20,6 +21,9 @@ return [
         // 'manufacturer',
         // 'material',
     ],
+
+    // The attribute of the color swatch, used in the active filtering
+    'color_attribute' => 'color',
 
     // The checkout steps which are used to name the steps
     // in the url and in the progressbar on steps. You can
