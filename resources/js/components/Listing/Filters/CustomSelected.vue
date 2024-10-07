@@ -8,25 +8,9 @@ export default {
             default: () => {}
         }
     },
+    
     render() {
         return this.$scopedSlots.default(this)
-    },
-
-    methods: {
-        getFilteredValues(values = {}) {
-            const filteredValues = {}
-            
-            Object.keys(values).forEach((componentId) => {
-                if (
-                    values[componentId].showFilter &&
-                    (Array.isArray(values[componentId].value) ? values[componentId].value.length : !!values[componentId].value)
-                ) {
-                    filteredValues[componentId] = values[componentId]
-                }
-            })
-            
-            return filteredValues
-        },
     },
 
     computed: {
