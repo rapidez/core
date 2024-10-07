@@ -8,7 +8,7 @@ export default {
             default: () => {},
         },
     },
-    
+
     render() {
         return this.$scopedSlots.default(this)
     },
