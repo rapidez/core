@@ -29,7 +29,7 @@ export default {
 
                     if (
                         Array.isArray(this.selectedValues[filterKey].value) &&
-                        !['category', 'price', window.config.color_attribute].includes(filterKey)
+                        !['category', 'price', ...Object.keys(swatches.value)].includes(filterKey)
                     ) {
                         result = this.selectedValues[filterKey].value.map((selected) => selected)
                     }
@@ -38,7 +38,8 @@ export default {
                         result = price(this.selectedValues[filterKey].value[0]) + ' - ' + price(this.selectedValues[filterKey].value[1])
                     }
 
-                    if (filterKey === window.config.color_attribute) {
+                    
+                    if (Object.keys(swatches.value).includes(filterKey)) {
                         result = this.selectedValues[filterKey].value.map((selected) => {
                             return swatches.value[filterKey].options[selected].label
                         })

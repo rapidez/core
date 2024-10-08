@@ -1,4 +1,4 @@
-<selected-filters :inner-class="{ button: '!inline-flex' }">
+<selected-filters>
     <div
         slot-scope="{ clearValues, selectedValues, setValue, components }"
         v-if="Object.keys(selectedValues).filter(function (id) {
