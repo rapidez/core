@@ -25,7 +25,7 @@
     @stack('head')
     @config('design/head/includes')
 </head>
-<body class="text-neutral antialiased has-[.prevent-scroll]:max-md:overflow-clip">
+<body class="text-neutral antialiased has-[.prevent-scroll]:overflow-clip">
     <div id="app" class="flex flex-col min-h-dvh">
         @includeWhen(!request()->is('checkout'), 'rapidez::layouts.partials.header')
         @includeWhen(request()->is('checkout'), 'rapidez::layouts.checkout.header')
