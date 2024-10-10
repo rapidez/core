@@ -36,8 +36,8 @@ return [
             'categories' => ['name^3', 'description'],
         ],
 
-        'debounce' => 100,
-        'size'     => 10,
+        'debounce' => 500,
+        'size'     => 3,
     ],
 
     // Link store codes to theme folders
