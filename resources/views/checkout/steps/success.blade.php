@@ -2,7 +2,7 @@
     <template slot-scope="{ order, hideBilling, shipping, billing, items }">
         <div dusk="checkout-success" v-cloak v-if="order">
             <h1 class="font-bold text-4xl mb-5">@lang('Order placed succesfully')</h1>
-            <div class="bg-highlight rounded p-8">
+            <div class="bg-inactive-100 rounded p-8">
                 <p>@lang('We will get to work for you right away')</p>
                 <p>@lang('We will send a confirmation of your order to') <span class="font-bold">@{{ order.customer_email }}</span></p>
             </div>
@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="flex flex-col mt-4 gap-x-4 md:flex-row">
-                <div class="w-full p-8 bg-highlight rounded border-l-2 border-neutral md:w-1/2" v-if="billing">
+                <div class="w-full p-8 bg-inactive-100 rounded border-l-2 border-neutral md:w-1/2" v-if="billing">
                     <p class="text-neutral font-lg font-bold mb-2">@lang('Billing address')</p>
                     <ul>
                         <li>@{{ billing.firstname }} @{{ billing.lastname }}</li>
@@ -50,7 +50,7 @@
                         <li>@{{ billing.telephone }}</li>
                     </ul>
                 </div>
-                <div class="w-full p-8 bg-highlight rounded border-l-2 border-neutral mt-4 md:mt-0 md:w-1/2" v-if="shipping">
+                <div class="w-full p-8 bg-inactive-100 rounded border-l-2 border-neutral mt-4 md:mt-0 md:w-1/2" v-if="shipping">
                     <p class="text-neutral font-lg font-bold mb-2">@lang('Shipping address')</p>
                     <ul>
                         <li>@{{ shipping.firstname }} @{{ shipping.lastname }}</li>
@@ -62,11 +62,11 @@
             </div>
 
             <div class="flex flex-col mt-4 gap-x-4 md:flex-row">
-                <div class="w-full p-8 bg-highlight rounded border-l-2 border-neutral md:w-1/2">
+                <div class="w-full p-8 bg-inactive-100 rounded border-l-2 border-neutral md:w-1/2">
                     <p class="text-neutral font-lg font-bold mb-2">@lang('Shipping method')</p>
                     <p>@{{ order.shipping_description }}</p>
                 </div>
-                <div class="w-full p-8 bg-highlight rounded border-l-2 border-neutral mt-4 md:mt-0 md:w-1/2">
+                <div class="w-full p-8 bg-inactive-100 rounded border-l-2 border-neutral mt-4 md:mt-0 md:w-1/2">
                     <p class="text-neutral font-lg font-bold mb-2">@lang('Payment method')</p>
                     <p v-for="method in order.sales_order_payments">@{{ method.additional_information.method_title || method.additional_information.raw_details_info.method_title }}</p>
                 </div>
