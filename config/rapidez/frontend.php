@@ -36,8 +36,8 @@ return [
             'categories' => ['name^3', 'description'],
         ],
 
-        'debounce' => 100,
-        'size'     => 10,
+        'debounce' => 500,
+        'size'     => 3,
     ],
 
     // Link store codes to theme folders
@@ -80,10 +80,12 @@ return [
 
     // Z-Index per element
     'z-indexes' => [
-        'header-dropdowns' => 'z-20',
-        'lightbox'         => 'z-30',
-        'notification'     => 'z-20',
-        'slideover'        => 'z-50',
+        'header-dropdowns'      => 'z-20',
+        'search-autocomplete'   => 'z-20',
+        'button-autocomplete'   => 'z-30',
+        'lightbox'              => 'z-30',
+        'notification'          => 'z-20',
+        'slideover'             => 'z-50',
     ],
 
     // Add to cart settings to automaticly select configurable- or product options (true/false)
