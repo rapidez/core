@@ -4,7 +4,6 @@
             :component-id="filter.code"
             :data-field="filter.code"
             :react="{and: ['query-filter']}"
-            :show-filter="false"
             :slider-options="{ dragOnClick: true, useKeyboard: false }"
             :inner-class="{
                 slider: '!pt-4 !mt-0 mx-2',
