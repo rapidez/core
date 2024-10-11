@@ -45,7 +45,7 @@ export default {
                         })
                     }
                     if (filterKey === 'category') {
-                        result = config.subcategories[this.selectedValues[filterKey].value]
+                        return { code: filterKey, value: config.subcategories[this.selectedValues[filterKey].value] }
                     }
 
                     return result
