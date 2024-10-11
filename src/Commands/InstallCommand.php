@@ -62,7 +62,7 @@ class InstallCommand extends Command
             return $this;
         }
 
-        if (!confirm(
+        if (! confirm(
             label: 'Shall we setup a demo Magento installation for you in Docker?',
             hint: 'This will run `docker compose up -d` and takes a while, make sure Docker is running!'
         )) {
