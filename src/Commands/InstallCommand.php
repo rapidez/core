@@ -31,9 +31,9 @@ class InstallCommand extends Command
         $this
             ->intro()
             ->magento()
+            ->packages()
             ->validate()
             ->frontend()
-            ->packages()
             ->finalize();
     }
 
@@ -49,8 +49,8 @@ class InstallCommand extends Command
         $this->info('  Welcome to the Rapidez installer!');
         $this->info(str_repeat('=', 37));
         $this->newLine();
-        $this->warn('> You will get some questions, if you do not know what to choose;');
-        $this->warn('> Just enter through, the defaults are a good start.');
+        $this->warn('> You will be given some prompts to customize your Rapidez installation.');
+        $this->warn('> If you\'re unsure, stick to the given default options.');
         $this->newLine(2);
 
         return $this;
@@ -58,26 +58,30 @@ class InstallCommand extends Command
 
     protected function magento()
     {
-        if (! confirm('Do you have a Magento installation up-and-running?')) {
-            if (confirm(
-                label: 'Shall we setup a demo Magento installation for you in Docker?',
-                hint: 'This will run `docker-compose up -d` and takes a while, make sure Docker is running!'
-            )) {
-                $this->dockerInstall = true;
-                if (passthru('docker-compose up -d') === false) {
-                    $this->newLine();
-                    $this->error('Something went wrong, please check the errors and try again');
-                    exit;
-                }
-                if (passthru('docker exec rapidez_magento magerun2 indexer:reindex') === false) {
-                    $this->newLine();
-                    $this->error('Something went wrong, please check the errors and try again');
-                    exit;
-                }
-            } else {
-                $this->error('Please setup a Magento installation first!');
-                exit;
-            }
+        if (confirm('Do you have a Magento installation up-and-running?')) {
+            return $this;
+        }
+
+        if (!confirm(
+            label: 'Shall we setup a demo Magento installation for you in Docker?',
+            hint: 'This will run `docker compose up -d` and takes a while, make sure Docker is running!'
+        )) {
+            $this->error('Please setup a Magento installation first!');
+            exit;
+        }
+
+        $this->dockerInstall = true;
+
+        if (passthru('docker compose up -d') === false) {
+            $this->newLine();
+            $this->error('Something went wrong, please check the errors and try again');
+            exit;
+        }
+
+        if (passthru('docker exec rapidez_magento magerun2 indexer:reindex') === false) {
+            $this->newLine();
+            $this->error('Something went wrong, please check the errors and try again');
+            exit;
         }
 
         return $this;
@@ -222,7 +226,7 @@ class InstallCommand extends Command
             ->map(fn ($package) => 'rapidez/' . $package);
 
         if ($this->selectedPackages->isEmpty()) {
-            $this->warn('Ok, no whipped cream with stroopwaffle pieces on your ice cream for you!');
+            $this->warn('Ok, no whipped cream with stroopwafel pieces on your ice cream for you!');
             $this->newline(2);
 
             return $this;

@@ -29,7 +29,7 @@ class MagentoSettingsHealthcheck extends Base
         if (! $configModel::getCachedByPath('catalog/frontend/flat_catalog_product', 0)) {
             $response['messages'][] = ['type' => 'error', 'value' => __(
                 'The product flat tables are disabled!' . PHP_EOL .
-                'Please enabled them; see: https://docs.rapidez.io/3.x/installation.html#flat-tables'
+                'Please enable them; see: https://docs.rapidez.io/3.x/installation.html#flat-tables'
             )];
         }
 
