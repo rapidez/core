@@ -1,7 +1,7 @@
 fragment order on Order {
     order_number
     #  Still used by PSPs
-    @foreach(array_unique(\TorMorten\Eventy\Facades\Eventy::filter('checkout.queries.order.data', []), SORT_REGULAR) as $attribute)
+    @foreach(array_unique(Eventy::filter('checkout.queries.order.data', []), SORT_REGULAR) as $attribute)
         {{ $attribute }}
     @endforeach
 }

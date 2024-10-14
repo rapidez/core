@@ -1,5 +1,3 @@
-@include('rapidez::cart.queries.fragments.product')
-
 fragment cart on Cart {
     id
     # TODO: Check if virtual orders are working
@@ -154,3 +152,5 @@ fragment cart on Cart {
         }
     }
 }
+
+@include('rapidez::cart.queries.fragments.product')

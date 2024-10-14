@@ -177,4 +177,16 @@ export const user = computed({
 // If token gets changed or emptied we should update the user.
 watch(token, refresh)
 
+document.addEventListener('vue:loaded', function (event) {
+    event.detail.vue.$on('logout', async function (data = {}) {
+        await logout()
+        useLocalStorage('email', '').value = ''
+        Turbo.cache.clear()
+
+        if (data?.redirect) {
+            this.$nextTick(() => (window.location.href = window.url(data?.redirect)))
+        }
+    })
+})
+
 export default () => user

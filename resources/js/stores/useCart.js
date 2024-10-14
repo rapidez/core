@@ -22,10 +22,9 @@ export const refresh = async function (force = false) {
 
     try {
         let response = await window.magentoGraphQL(
-            config.queries.cart +
-                `
+            `query getCart($cart_id: String!) { cart (cart_id: $cart_id) { ...cart } }
 
-            query getCart($cart_id: String!) { cart (cart_id: $cart_id) { ...cart } }`,
+            ` + config.fragments.cart,
             { cart_id: mask.value },
         )
 
@@ -59,10 +58,9 @@ export const setGuestEmailOnCart = async function (email) {
 export const linkUserToCart = async function () {
     await window
         .magentoGraphQL(
-            config.queries.cart +
-                `
+            `mutation ($cart_id: String!) { assignCustomerToGuestCart (cart_id: $cart_id) { ...cart } }
 
-            mutation ($cart_id: String!) { assignCustomerToGuestCart (cart_id: $cart_id) { ...cart } }`,
+            ` + config.fragments.cart,
             {
                 cart_id: mask.value,
             },
@@ -73,10 +71,9 @@ export const linkUserToCart = async function () {
 export const fetchCustomerCart = async function () {
     await window
         .magentoGraphQL(
-            config.queries.cart +
-                `
+            `query { customerCart { ...cart } }
 
-            query { customerCart { ...cart } }`,
+            ` + config.fragments.cart,
         )
         .then((response) => Vue.prototype.updateCart([], response))
 }
@@ -84,10 +81,9 @@ export const fetchCustomerCart = async function () {
 export const fetchGuestCart = async function () {
     await window
         .magentoGraphQL(
-            config.queries.cart +
-                `
+            `mutation { createGuestCart { cart { ...cart } } }
 
-            mutation { createGuestCart { cart { ...cart } } }`,
+            ` + config.fragments.cart,
         )
         .then((response) => Vue.prototype.updateCart([], response))
 }

@@ -1,10 +1,8 @@
 <script>
-import InteractWithUser from './User/mixins/InteractWithUser'
 import { useLocalStorage, StorageSerializers } from '@vueuse/core'
+import { magentoGraphQL, combiningGraphQL } from '../fetch';
 
 export default {
-    mixins: [InteractWithUser],
-
     props: {
         query: {
             type: String,
@@ -33,6 +31,10 @@ export default {
         errorCallback: {
             type: Function,
             default: (variables, error) => Notify(window.config.translations.errors.wrong, 'warning'),
+        },
+        store: {
+            type: String,
+            default: window.config.store_code,
         },
     },
 
@@ -67,9 +69,15 @@ export default {
 
         async runQuery() {
             try {
+                let options = {
+                    headers: {
+                        Store: this.store
+                    }
+                }
+
                 let response = this.group
-                    ? await window.combiningGraphQL(this.query, this.variables, undefined, this.group)
-                    : await window.magentoGraphQL(this.query, this.variables)
+                    ? await combiningGraphQL(this.query, this.variables, options, this.group)
+                    : await magentoGraphQL(this.query, this.variables, options)
 
                 if (this.check) {
                     if (!eval('response?.data?.' + this.check)) {

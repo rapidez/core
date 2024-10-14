@@ -1,10 +1,7 @@
 <script>
 import { GraphQLError, combiningGraphQL, magentoGraphQL } from '../fetch'
-import InteractWithUser from './User/mixins/InteractWithUser'
 
 export default {
-    mixins: [InteractWithUser],
-
     props: {
         query: {
             type: String,
@@ -46,6 +43,10 @@ export default {
         },
         errorCallback: {
             type: Function,
+        },
+        store: {
+            type: String,
+            default: window.config.store_code,
         },
         beforeRequest: {
             type: Function,
@@ -108,7 +109,7 @@ export default {
             this.error = false
 
             try {
-                let options = { headers: {} }
+                let options = { headers: { Store: this.store } }
 
                 if (this.recaptcha) {
                     options['headers']['X-ReCaptcha'] = await this.getReCaptchaToken()

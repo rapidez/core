@@ -1,11 +1,17 @@
 <script>
-import InteractWithUser from './mixins/InteractWithUser'
-
 export default {
-    mixins: [InteractWithUser],
+    data: function () {return {
+        user: user,
+    }},
 
     render() {
         return this.$scopedSlots.default(this)
+    },
+
+    methods: {
+        logout(redirect = false) {
+            this.$root.$emit('logout', { redirect: redirect })
+        },
     },
 }
 </script>

@@ -1,5 +1,3 @@
-@include('rapidez::cart.queries.fragments.cart')
-
 mutation setExistingShippingAddressOnCart (
     $cart_id: String!,
     $customer_address_id: Int
@@ -15,3 +13,5 @@ mutation setExistingShippingAddressOnCart (
         cart { ...cart }
     }
 }
+
+@include('rapidez::cart.queries.fragments.cart')

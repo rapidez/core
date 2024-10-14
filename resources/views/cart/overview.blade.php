@@ -9,7 +9,7 @@
         <h1 class="mb-5 text-4xl font-bold">@lang('Cart')</h1>
         <graphql
             v-if="mask"
-            :query="config.queries.cart + ' query getCart($cart_id: String!) { cart (cart_id: $cart_id) { ...cart } }'"
+            :query="'query getCart($cart_id: String!) { cart (cart_id: $cart_id) { ...cart } } ' + config.fragments.cart"
             :variables="{ cart_id: mask }"
             :callback="updateCart"
             :error-callback="checkResponseForExpiredCart"

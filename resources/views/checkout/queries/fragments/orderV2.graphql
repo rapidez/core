@@ -1,5 +1,3 @@
-@include('rapidez::checkout.queries.fragments.item')
-
 fragment orderV2 on CustomerOrder {
     id
     number
@@ -67,7 +65,9 @@ fragment orderV2 on CustomerOrder {
             value
         }
     }
-    @foreach(array_unique(\TorMorten\Eventy\Facades\Eventy::filter('checkout.queries.orderV2.data', []), SORT_REGULAR) as $attribute)
+    @foreach(array_unique(Eventy::filter('checkout.queries.orderV2.data', []), SORT_REGULAR) as $attribute)
         {{ $attribute }}
     @endforeach
 }
+
+@include('rapidez::checkout.queries.fragments.item')

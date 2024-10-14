@@ -71,37 +71,6 @@ function init() {
             showTax: window.config.show_tax,
             swatches: swatches,
             scrollLock: useScrollLock(document.body),
-            /*
-            TODO: Remove? As we're using the cart store for everything now.
-            checkout: {
-                step: 1,
-                totals: {},
-
-                shipping_address: useLocalStorage('shipping_address', address_defaults, {
-                    mergeDefaults: true,
-                    serializer: StorageSerializers.object,
-                }),
-                billing_address: useLocalStorage('billing_address', address_defaults, {
-                    mergeDefaults: true,
-                    serializer: StorageSerializers.object,
-                }),
-                hide_billing: useLocalStorage('hide_billing', true),
-
-                shipping_method: null,
-                shipping_methods: [],
-
-                payment_method: null,
-                payment_methods: [],
-
-                agreement_ids: [],
-
-                // This can be used to prevent the checkout from going
-                // to the next step which is useful in combination
-                // with the "CheckoutPaymentSaved" event to
-                // implement payment providers.
-                doNotGoToTheNextStep: false,
-            },
-            */
         },
         methods: {
             search(value) {
@@ -165,7 +134,7 @@ function init() {
         })
     }
 
-    const event = new CustomEvent('vue:loaded')
+    const event = new CustomEvent('vue:loaded', {detail: {vue: window.app}})
     document.dispatchEvent(event)
 }
 document.addEventListener('turbo:load', init)
