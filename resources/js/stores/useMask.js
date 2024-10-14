@@ -21,6 +21,7 @@ export const mask = computed({
             path: '/',
             secure: window.location.protocol === 'https:',
             maxAge: 31556952,
+            sameSite: 'strict',
         }
 
         setCookie('mask', value, options)

@@ -24,6 +24,7 @@ export const token = computed({
             path: '/',
             secure: window.location.protocol === 'https:',
             maxAge: 31556952,
+            sameSite: 'strict',
         }
 
         if (Jwt.isJwt(value)) {
