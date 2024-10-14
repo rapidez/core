@@ -1,4 +1,8 @@
-module.exports = {
+import tailwindForms from '@tailwindcss/forms'
+import tailwindTypography from '@tailwindcss/typography'
+import tailwindScrollbarHide from 'tailwind-scrollbar-hide'
+
+export default {
     content: [
         './resources/views/**/*.blade.php',
         './resources/css/**/*.css',
@@ -39,5 +43,5 @@ module.exports = {
             padding: '1.25rem',
         },
     },
-    plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography'), require('tailwind-scrollbar-hide')],
+    plugins: [tailwindForms, tailwindTypography, tailwindScrollbarHide],
 }
