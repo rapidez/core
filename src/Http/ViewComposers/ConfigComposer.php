@@ -61,9 +61,9 @@ class ConfigComposer
         ]);
 
         Config::set('frontend.fragments', [
-            'cart'                               => view('rapidez::cart.queries.fragments.cart')->renderOneliner(),
-            'order'                              => view('rapidez::checkout.queries.fragments.order')->renderOneliner(),
-            'orderV2'                            => view('rapidez::checkout.queries.fragments.orderV2')->renderOneliner(),
+            'cart'    => view('rapidez::cart.queries.fragments.cart')->renderOneliner(),
+            'order'   => view('rapidez::checkout.queries.fragments.order')->renderOneliner(),
+            'orderV2' => view('rapidez::checkout.queries.fragments.orderV2')->renderOneliner(),
         ]);
     }
 
