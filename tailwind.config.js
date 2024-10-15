@@ -21,7 +21,7 @@ module.exports = {
                     DEFAULT: 'rgb(var(--primary) / <alpha-value>)', // Primary color
                     text: 'rgb(var(--primary-text) / <alpha-value>)', // Primary text color
                 },
-                secondary:{
+                secondary: {
                     DEFAULT: 'rgb(var(--secondary) / <alpha-value>)', // Secondary color
                     text: 'rgb(var(--secondary-text) / <alpha-value>)', // Secondary text color
                 },
