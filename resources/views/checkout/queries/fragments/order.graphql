@@ -1,4 +1,4 @@
-@use(\TorMorten\Eventy\Facades\Eventy::class)
+@use('\TorMorten\Eventy\Facades\Eventy')
 
 fragment order on Order {
     order_number

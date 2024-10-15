@@ -11,7 +11,13 @@
             <div class="flex gap-5">
                 <div class="w-3/4">
                     <form
-                        v-on:submit.prevent="(e) => {submitFieldsets(e.target?.form ?? e.target).then((result) => window.app.$emit('checkout-credentials-saved') && window.Turbo.visit(window.url('{{ route('checkout', ['step' => 'payment']) }}'))).catch();}"
+                        v-on:submit.prevent="(e) => {
+                            submitFieldsets(e.target?.form ?? e.target)
+                                .then((result) =>
+                                    window.app.$emit('checkout-credentials-saved')
+                                    && window.Turbo.visit(window.url('{{ route('checkout', ['step' => 'payment']) }}'))
+                                ).catch();
+                        }"
                         class="flex flex-col gap-5"
                     >
                         <template v-if="!cart.is_virtual">

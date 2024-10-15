@@ -9,7 +9,12 @@
         @include('rapidez::checkout.partials.progressbar')
         <form
             v-if="hasCart"
-            v-on:submit.prevent="(e) => {submitFieldsets(e.target?.form ?? e.target).then((result) => window.Turbo.visit(window.url('{{ route('checkout', ['step' => 'credentials']) }}'))).catch();}"
+            v-on:submit.prevent="(e) => {
+                submitFieldsets(e.target?.form ?? e.target)
+                    .then((result) =>
+                        window.Turbo.visit(window.url('{{ route('checkout', ['step' => 'credentials']) }}'))
+                    ).catch();
+            }"
             class="w-[400px] mx-auto"
             v-cloak
         >
