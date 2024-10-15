@@ -67,6 +67,7 @@ class ConfigComposer
             'recaptcha'                    => Rapidez::config('recaptcha_frontend/type_recaptcha_v3/public_key', null, true),
             'searchable'                   => array_merge($searchableAttributes, config('rapidez.indexer.searchable')),
             'show_customer_address_fields' => $this->getCustomerAddressFields(),
+            'street_lines'                 => Rapidez::config('customer/address/street_lines', 3),
             'show_tax'                     => (bool) Rapidez::config('tax/display/type', 1),
             'grid_per_page'                => Rapidez::config('catalog/frontend/grid_per_page', 12),
             'grid_per_page_values'         => explode(',', Rapidez::config('catalog/frontend/grid_per_page_values', '12,24,36')),

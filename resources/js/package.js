@@ -42,14 +42,9 @@ function init() {
 
     let address = window.debug ? ['Mountain Drive', '1007', ''] : ['', '', '']
 
-    ;[window.config.show_customer_address_fields.addition, window.config.show_customer_address_fields.housenumber].forEach((enabled) => {
-        if (enabled) {
-            return
-        }
-
-        let target = address.length - 2
-        address[target] = (address[target] + ' ' + address.pop()).trim()
-    })
+    for(let i = address.length; i >= window.config.street_lines; i--){
+        address[i - 1] = (address[i - 1] + ' ' + address.pop()).trim()
+    }
 
     window.address_defaults = {
         customer_address_id: null,
