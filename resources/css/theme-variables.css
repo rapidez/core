@@ -3,8 +3,8 @@
     --primary-text: 255 255 255;
     --secondary: 249 115 22;
     --secondary-text: 255 255 255;
-    --neutral: 51 65 85;
+    --default: 51 65 85;
+    --default-100: 241 245 249;
+    --default-110: 231 235 239;
     --inactive: 100 116 139;
-    --highlight: 241 245 249;
-    --border: 231 235 239;
 }
