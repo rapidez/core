@@ -12,7 +12,7 @@
             <div class="flex items-center">
                 <span>@{{ method.title }}</span>
                 <img
-                    class="ml-auto w-8 h-8"
+                    class="ml-auto size-8"
                     v-bind:src="`/payment-icons/${method.code}.svg`"
                     onerror="this.onerror=null; this.src=`/payment-icons/default.svg`"
                 >
@@ -40,7 +40,7 @@
                 </x-rapidez::slideover>
 
                 @if ($agreement->mode == 'AUTO')
-                    <label class="text-gray-700 cursor-pointer underline hover:no-underline" for="{{ $agreement->agreement_id }}_agreement">
+                    <label class="text-inactive cursor-pointer underline hover:no-underline" for="{{ $agreement->agreement_id }}_agreement">
                         {{ $agreement->checkbox_text }}
                     </label>
                 @else
@@ -52,7 +52,7 @@
                             dusk="agreements"
                             required
                         >
-                            <label class="text-gray-700 cursor-pointer underline hover:no-underline" for="{{ $agreement->agreement_id }}_agreement">
+                            <label class="text-inactive cursor-pointer underline hover:no-underline" for="{{ $agreement->agreement_id }}_agreement">
                                 {{ $agreement->checkbox_text }}
                             </label>
                         </x-rapidez::checkbox>

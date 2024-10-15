@@ -15,7 +15,7 @@
                         window.Turbo.visit(window.url('{{ route('checkout', ['step' => 'credentials']) }}'))
                     ).catch();
             }"
-            class="w-[400px] mx-auto"
+            class="max-w-md mx-auto"
             v-cloak
         >
             @include('rapidez::checkout.steps.login')
