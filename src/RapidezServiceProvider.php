@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -283,11 +284,17 @@ class RapidezServiceProvider extends ServiceProvider
         }
 
         if (!config('cache.stores.rapidez:multi', false)) {
+            $fallbackDriver = config('cache.default');
+            if ($fallbackDriver === 'rapidez:multi') {
+                $fallbackDriver = config('cache.multi-fallback', 'file');
+                Log::warning('Default cache driver is rapidez:multi, setting fallback driver to ' . $fallbackDriver);
+            }
+
             config()->set('cache.stores.rapidez:multi', [
                 'driver' => 'multi',
                 'stores' => [
                     'array',
-                    config('cache.default'),
+                    $fallbackDriver,
                 ],
                 'sync_missed_stores' => true
             ]);
