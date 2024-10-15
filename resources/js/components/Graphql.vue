@@ -1,6 +1,6 @@
 <script>
 import { useLocalStorage, StorageSerializers } from '@vueuse/core'
-import { magentoGraphQL, combiningGraphQL } from '../fetch';
+import { magentoGraphQL, combiningGraphQL } from '../fetch'
 
 export default {
     props: {
@@ -71,8 +71,8 @@ export default {
             try {
                 let options = {
                     headers: {
-                        Store: this.store
-                    }
+                        Store: this.store,
+                    },
                 }
 
                 let response = this.group

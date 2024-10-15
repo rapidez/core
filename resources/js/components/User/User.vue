@@ -1,8 +1,10 @@
 <script>
 export default {
-    data: function () {return {
-        user: user,
-    }},
+    data: function () {
+        return {
+            user: user,
+        }
+    },
 
     render() {
         return this.$scopedSlots.default(this)

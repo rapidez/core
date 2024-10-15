@@ -40,14 +40,14 @@ function init() {
         cachekey.value = window.config.cachekey
     }
 
-    let address = window.debug ? ['Mountain Drive', '1007', ''] : ['', '', ''];
+    let address = window.debug ? ['Mountain Drive', '1007', ''] : ['', '', '']
 
-    [window.config.show_customer_address_fields.addition, window.config.show_customer_address_fields.housenumber].forEach((enabled) => {
+    ;[window.config.show_customer_address_fields.addition, window.config.show_customer_address_fields.housenumber].forEach((enabled) => {
         if (enabled) {
             return
         }
 
-        let target = address.length - 2;
+        let target = address.length - 2
         address[target] = (address[target] + ' ' + address.pop()).trim()
     })
 
@@ -143,7 +143,7 @@ function init() {
         })
     }
 
-    const event = new CustomEvent('vue:loaded', {detail: {vue: window.app}})
+    const event = new CustomEvent('vue:loaded', { detail: { vue: window.app } })
     document.dispatchEvent(event)
 }
 document.addEventListener('turbo:load', init)
