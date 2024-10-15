@@ -11,6 +11,6 @@
         'name' => $name,
         'placeholder' => __($placeholder ?? ucfirst($name)),
         'dusk' => $attributes->get('v-bind:dusk') ? null : $name,
-        'class' => 'w-full py-2 px-3 border-inactive-110 rounded !ring-0 focus:!border-inactive sm:text-sm text-neutral',
+        'class' => 'w-full py-2 px-3 border-border rounded !ring-0 focus:!border-inactive sm:text-sm text-neutral',
     ]) }}></textarea>
 </div>

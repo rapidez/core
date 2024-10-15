@@ -1,6 +1,6 @@
 <h1 class="mb-5 text-4xl font-bold">@lang('Credentials')</h1>
 
-<form v-on:submit.prevent="save(['credentials'], 3)" class="flex flex-col gap-5 rounded bg-inactive-100 p-4 md:p-8">
+<form v-on:submit.prevent="save(['credentials'], 3)" class="flex flex-col gap-5 rounded bg-base p-4 md:p-8">
     <div class="flex flex-col gap-2">
         <div class="grid grid-cols-12 gap-4">
             <p class="col-span-12 text-2xl font-bold">
