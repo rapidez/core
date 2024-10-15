@@ -19,7 +19,6 @@ mutation setNewBillingAddressOnCart (
         cart_id: $cart_id,
         billing_address: {
             same_as_shipping: $same_as_shipping,
-            # use_for_shipping: $use_for_shipping,
             address: {
                 prefix: $prefix,
                 firstname: $firstname,
@@ -34,7 +33,6 @@ mutation setNewBillingAddressOnCart (
                 fax: $fax,
                 company: $company,
                 vat_id: $vat_id,
-                # save_in_address_book: false,
             }
         }
     }) {
