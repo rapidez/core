@@ -35,6 +35,7 @@ export default {
                     110: 'rgb(var(--default-110) / <alpha-value>)',     // Default border color - `border-default-110`
                 },
                 inactive: 'rgb(var(--inactive) / <alpha-value>)',       // Inactive less prominent text color - `text-inactive`
+                enhanced: 'rgb(var(--enhanced) / <alpha-value>)',       // Color used to stimulate anything conversion related
             },
             borderColor: 'rgb(var(--default-110) / <alpha-value>)',     // Assigning the default border color - `border`
         },
