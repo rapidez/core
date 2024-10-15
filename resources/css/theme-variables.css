@@ -4,7 +4,8 @@
     --secondary: 249 115 22;
     --secondary-text: 255 255 255;
     --neutral: 51 65 85;
-    --inactive: 100 116 139;
-    --highlight: 241 245 249;
+    --light: 100 116 139;
+    --base-100: 241 245 249;
+    --enhanced: 54 180 34;
     --border: 231 235 239;
 }
