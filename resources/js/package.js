@@ -42,7 +42,7 @@ function init() {
 
     let address = window.debug ? ['Mountain Drive', '1007', ''] : ['', '', '']
 
-    for(let i = address.length; i >= window.config.street_lines; i--){
+    for (let i = address.length; i >= window.config.street_lines; i--) {
         address[i - 1] = (address[i - 1] + ' ' + address.pop()).trim()
     }
 
