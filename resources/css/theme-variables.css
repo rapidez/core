@@ -5,8 +5,8 @@
     --secondary-text: 255 255 255;
     --neutral: 51 65 85;
     --inactive: 100 116 139;
-    --inactive-100: 241 245 249;
-    --inactive-110: 231 235 239;
+    --base: 241 245 249;
+    --border: 231 235 239;
     --disabled: 235 232 222;
     --enhanced: 54 180 34;
 }
