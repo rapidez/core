@@ -16,7 +16,7 @@
                             && window.app.$emit('placeOrder')
                         ).catch();
                 }">
-                    <div class="lg:col-span-2">
+                    <div class="lg:w-1/2 lg:pr-2.5 lg:col-span-2">
                         @include('rapidez::checkout.steps.login')
                     </div>
                     <div v-if="!cart.is_virtual">
