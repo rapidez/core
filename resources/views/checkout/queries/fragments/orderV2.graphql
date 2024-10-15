@@ -1,3 +1,5 @@
+@use(\TorMorten\Eventy\Facades\Eventy::class)
+
 fragment orderV2 on CustomerOrder {
     id
     number

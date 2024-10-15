@@ -40,15 +40,24 @@ function init() {
         cachekey.value = window.config.cachekey
     }
 
+    let address = window.debug ? ['Mountain Drive', '1007', ''] : ['', '', ''];
+
+    [window.config.show_customer_address_fields.addition, window.config.show_customer_address_fields.housenumber].forEach((enabled) => {
+        if (enabled) {
+            return
+        }
+
+        let target = address.length - 2;
+        address[target] = (address[target] + ' ' + address.pop()).trim()
+    })
+
     window.address_defaults = {
         customer_address_id: null,
         same_as_shipping: true,
         firstname: window.debug ? 'Bruce' : '',
         lastname: window.debug ? 'Wayne' : '',
         postcode: window.debug ? '72000' : '',
-        // TODO: This should listen to the "customer/address/street_lines" config
-        // street: window.debug ? ['Mountain Drive', 1007, ''] : ['', '', ''],
-        street: window.debug ? ['Mountain Drive', 1007] : ['', ''],
+        street: address,
         city: window.debug ? 'Gotham' : '',
         telephone: window.debug ? '530-7972' : '',
         country_code: window.debug ? 'NL' : window.config.default_country,

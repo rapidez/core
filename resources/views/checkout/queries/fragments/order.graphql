@@ -1,3 +1,5 @@
+@use(\TorMorten\Eventy\Facades\Eventy::class)
+
 fragment order on Order {
     order_number
     #  Still used by PSPs
