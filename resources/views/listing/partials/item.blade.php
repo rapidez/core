@@ -9,7 +9,7 @@
             <a :href="item.url | url" class="block">
                 <img
                     v-if="item.thumbnail"
-                    :src="'/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + item.thumbnail + '.webp'"
+                    :src="resizedPath(item.thumbnail + '.webp', '200')"
                     class="mb-3 h-48 w-full rounded-t object-contain" :alt="item.name" :loading="config.category && count <= 4 ? 'eager' : 'lazy'"
                     width="200"
                     height="200"
