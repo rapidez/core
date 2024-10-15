@@ -17,6 +17,7 @@
     "prefer-stable": true,
     "require": {
         "php": "^8.1|^8.2|^8.3",
+        "antriver/laravel-multi-cache": "^10.1",
         "blade-ui-kit/blade-heroicons": "^2.4",
         "mailerlite/laravel-elasticsearch": "^11.1",
         "illuminate/database": "^10.0|^11.0",
@@ -26,6 +27,7 @@
         "lcobucci/clock": "^2.0|^3.2",
         "lcobucci/jwt": "^4.0|^5.3",
         "rapidez/blade-directives": "^0.6",
+        "spatie/once": "*",
         "tormjens/eventy": "^0.8"
     },
     "require-dev": {
