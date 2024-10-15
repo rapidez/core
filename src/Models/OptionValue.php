@@ -15,7 +15,7 @@ class OptionValue extends Model
         $cacheKey = 'optionvalues.' . config('rapidez.store');
         $cache = Cache::store('rapidez:multi')->get($cacheKey, []);
 
-        if(!isset($cache[$optionId])) {
+        if (! isset($cache[$optionId])) {
             $cache[$optionId] = html_entity_decode(self::where('option_id', $optionId)
                 ->whereIn('store_id', [config('rapidez.store'), 0])
                 ->orderByDesc('store_id')
