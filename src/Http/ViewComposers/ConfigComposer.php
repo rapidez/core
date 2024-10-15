@@ -46,7 +46,7 @@ class ConfigComposer
         Event::dispatch('rapidez:frontend-config-composed');
     }
 
-    public function getConfig() : array
+    public function getConfig(): array
     {
         $attributeModel = config('rapidez.models.attribute');
         $searchableAttributes = Arr::pluck(
@@ -57,23 +57,23 @@ class ConfigComposer
         );
 
         return [
-            'locale' => Rapidez::config('general/locale/code', 'en_US'),
-            'default_country' => Rapidez::config('general/country/default', 'NL'),
-            'currency' => Rapidez::config('currency/options/default'),
-            'cachekey' => Cache::rememberForever('cachekey', fn () => md5(Str::random())),
-            'redirect_cart' => (bool) Rapidez::config('checkout/cart/redirect_to_cart'),
-            'show_swatches' => (bool) Rapidez::config('catalog/frontend/show_swatches_in_product_list'),
-            'translations' => __('rapidez::frontend'),
-            'recaptcha' => Rapidez::config('recaptcha_frontend/type_recaptcha_v3/public_key', null, true),
-            'searchable' => array_merge($searchableAttributes, config('rapidez.indexer.searchable')),
+            'locale'                       => Rapidez::config('general/locale/code', 'en_US'),
+            'default_country'              => Rapidez::config('general/country/default', 'NL'),
+            'currency'                     => Rapidez::config('currency/options/default'),
+            'cachekey'                     => Cache::rememberForever('cachekey', fn () => md5(Str::random())),
+            'redirect_cart'                => (bool) Rapidez::config('checkout/cart/redirect_to_cart'),
+            'show_swatches'                => (bool) Rapidez::config('catalog/frontend/show_swatches_in_product_list'),
+            'translations'                 => __('rapidez::frontend'),
+            'recaptcha'                    => Rapidez::config('recaptcha_frontend/type_recaptcha_v3/public_key', null, true),
+            'searchable'                   => array_merge($searchableAttributes, config('rapidez.indexer.searchable')),
             'show_customer_address_fields' => $this->getCustomerAddressFields(),
-            'show_tax' => (bool) Rapidez::config('tax/display/type', 1),
-            'grid_per_page' => Rapidez::config('catalog/frontend/grid_per_page', 12),
-            'grid_per_page_values' => explode(',', Rapidez::config('catalog/frontend/grid_per_page_values', '12,24,36')),
-         ];
+            'show_tax'                     => (bool) Rapidez::config('tax/display/type', 1),
+            'grid_per_page'                => Rapidez::config('catalog/frontend/grid_per_page', 12),
+            'grid_per_page_values'         => explode(',', Rapidez::config('catalog/frontend/grid_per_page_values', '12,24,36')),
+        ];
     }
 
-    public function getCustomerAddressFields() : array
+    public function getCustomerAddressFields(): array
     {
         return [
             'prefix'      => strlen(Rapidez::config('customer/address/prefix_options', '')) ? Rapidez::config('customer/address/prefix_show', 'opt') : 'opt',
