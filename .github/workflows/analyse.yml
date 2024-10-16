@@ -15,13 +15,13 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-          php: [8.3]
-          stability: [prefer-stable]
-          include:
-              - laravel: 10.*
-                testbench: 8.*
-              - laravel: 11.*
-                testbench: 9.*
+        php: [8.3]
+        stability: [prefer-stable]
+        include:
+          - laravel: 10.*
+            testbench: 8.*
+          - laravel: 11.*
+            testbench: 9.*
 
     steps:
       - uses: actions/checkout@v3
@@ -32,9 +32,9 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-            php-version: ${{ matrix.php }}
-            extensions: dom, curl, libxml, mbstring, zip, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
-            coverage: none
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+          coverage: none
 
       - name: Install dependencies
         run: |
