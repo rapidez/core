@@ -25,7 +25,7 @@ export const refresh = async function (force = false) {
 
     age = Date.now()
 
-    return (currentRefresh = async function () {
+    return (currentRefresh = (async function () {
         try {
             let response = await window.magentoGraphQL(
                 `query getCart($cart_id: String!) { cart (cart_id: $cart_id) { ...cart } }
@@ -41,7 +41,7 @@ export const refresh = async function (force = false) {
 
             return false
         }
-    }.finally(() => {
+    })().finally(() => {
         currentRefresh = null
     }))
 }
