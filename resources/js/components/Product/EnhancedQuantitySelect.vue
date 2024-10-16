@@ -3,24 +3,24 @@ export default {
     props: {
         inputRef: {
             type: String,
-            default: 'qty-select-1'
+            default: 'qty-select-1',
         },
         defaultQty: {
             type: Number,
-            default: 1
+            default: 1,
         },
         minQty: {
             type: Number,
-            default: 1
+            default: 1,
         },
         model: {
             type: Number,
-            default: 1
+            default: 1,
         },
         increment: {
             type: Number,
-            default: 1
-        }
+            default: 1,
+        },
     },
 
     render() {
@@ -31,7 +31,7 @@ export default {
         increase() {
             this.updateQty(this.model + this.increment)
         },
-        
+
         decrease() {
             if (this.model - this.increment >= this.minQty) {
                 this.updateQty(this.model - this.increment)
@@ -39,7 +39,7 @@ export default {
         },
 
         updateQty(qty) {
-            let input = this.$scopedSlots.default()[0].context.$refs[this.inputRef];
+            let input = this.$scopedSlots.default()[0].context.$refs[this.inputRef]
             if (Array.isArray(input)) {
                 input = input[0]
             }
@@ -48,7 +48,7 @@ export default {
             let event = new Event('input')
             input.dispatchEvent(event)
             this.$root.$emit('updated-quantity')
-        }
-    }
+        },
+    },
 }
 </script>
