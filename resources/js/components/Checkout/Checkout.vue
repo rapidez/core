@@ -3,6 +3,7 @@ import InteractWithUser from './../User/mixins/InteractWithUser'
 import { useEventListener, useLocalStorage } from '@vueuse/core'
 import useMask from '../../stores/useMask'
 import { cart, hasOnlyVirtualItems, virtualItems, linkUserToCart } from '../../stores/useCart'
+import { FetchError } from '../../fetch';
 
 export default {
     mixins: [InteractWithUser],
@@ -242,7 +243,10 @@ export default {
 
                 return true
             } catch (error) {
-                Notify(error.response.data.message, 'error', error.response.data?.parameters)
+                if (FetchError.prototype.isPrototypeOf(error)) {
+                    const response = await error.response.json()
+                    Notify(response?.message, 'error', response?.parameters)
+                }
                 return false
             }
         },
