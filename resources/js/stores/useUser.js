@@ -48,7 +48,7 @@ export const refresh = async function () {
 
     if (currentRefresh) {
         console.debug('Refresh canceled, request already in progress...')
-        return currentRefresh;
+        return currentRefresh
     }
 
     if (Jwt.isJwt(token.value) && Jwt.decode(token.value)?.isExpired()) {
@@ -58,7 +58,7 @@ export const refresh = async function () {
         return false
     }
 
-    return currentRefresh = (async function() {
+    return (currentRefresh = (async function () {
         try {
             userStorage.value = (await window.magentoGraphQL(`{ customer { ${config.queries.customer} } }`))?.data?.customer
         } catch (error) {
@@ -68,14 +68,16 @@ export const refresh = async function () {
                 throw error
             }
 
-            return false;
+            return false
         }
 
-        return true;
-    })().finally(() => {currentRefresh = null})
+        return true
+    })().finally(() => {
+        currentRefresh = null
+    }))
 }
 
-window.refreshUser = refresh;
+window.refreshUser = refresh
 
 export const clear = async function () {
     token.value = ''
