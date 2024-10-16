@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class CmsPageController
 {
-    public function __invoke(Request $request): View|null
+    public function __invoke(Request $request): ?View
     {
         $pageModel = config('rapidez.models.page');
         if ($page = $pageModel::where('identifier', $request->path() == '/' ? 'home' : $request->path())->first()) {

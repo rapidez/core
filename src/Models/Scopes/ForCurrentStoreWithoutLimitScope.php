@@ -18,6 +18,7 @@ class ForCurrentStoreWithoutLimitScope implements Scope
     {
         if (! config('rapidez.store')) {
             $query->where($query->qualifyColumn($this->storeIdColumn), 0);
+
             return;
         }
 

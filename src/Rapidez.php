@@ -51,7 +51,7 @@ class Rapidez
     {
         foreach (config('rapidez.frontend.content_variables') as $parser) {
             $parserObj = new $parser;
-            if (!is_callable($parserObj)) {
+            if (! is_callable($parserObj)) {
                 continue;
             }
 

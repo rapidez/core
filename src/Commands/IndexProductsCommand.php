@@ -119,8 +119,8 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
     }
 
     /**
-     * @param array<string, array<int, string>> $data
-     * @param Collection<int, Category> $categories
+     * @param  array<string, array<int, string>>  $data
+     * @param  Collection<int, Category>  $categories
      * @return array<string, array<int, string>>
      */
     public function withCategories(array $data, Collection $categories): array

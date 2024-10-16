@@ -13,7 +13,7 @@ class IndexJob
     protected string $index;
     protected int|string $id;
 
-    /** @var array<string, mixed> $values */
+    /** @var array<string, mixed> */
     protected array $values;
 
     /** @param iterable<string, mixed>|Arrayable<string, mixed> $values */

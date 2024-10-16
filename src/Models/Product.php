@@ -30,7 +30,6 @@ use TorMorten\Eventy\Facades\Eventy;
  * @property string|null $url_key
  * @property \Carbon\Carbon|null $special_from_date
  * @property \Carbon\Carbon|null $special_to_date
- *
  * @property-read array<int, Product>|null $children
  * @property-read array<int, Product>|null $grouped
  * @property-read array<int, int> $category_ids
@@ -172,8 +171,8 @@ class Product extends Model
     }
 
     /**
-     * @param Builder<Product> $query
-     * @param array<int> $productIds
+     * @param  Builder<Product>  $query
+     * @param  array<int>  $productIds
      * @return Builder<Product>
      */
     public function scopeByIds(Builder $query, array $productIds): Builder
