@@ -40,7 +40,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class RapidezServiceProvider extends ServiceProvider
 {
-    /** @var array<string> $configFiles */
+    /** @var array<string> */
     protected array $configFiles = [
         'frontend',
         'healthcheck',
@@ -81,7 +81,7 @@ class RapidezServiceProvider extends ServiceProvider
     {
         auth()->extend('magento-customer', function (Application $app, string $name, array $config) {
             $user = auth()->createUserProvider($config['provider']);
-            if(!$user) {
+            if (! $user) {
                 return null;
             }
 
@@ -166,7 +166,7 @@ class RapidezServiceProvider extends ServiceProvider
 
         $theme = request()->server('MAGE_RUN_CODE', request()->has('_store') && ! app()->isProduction() ? request()->get('_store') : 'default');
 
-        if (!is_string($theme)) {
+        if (! is_string($theme)) {
             return $this;
         }
 

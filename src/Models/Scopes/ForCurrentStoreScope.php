@@ -20,7 +20,7 @@ class ForCurrentStoreScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         $currentTable = $builder->getQuery()->from;
-        if (!is_string($currentTable)) {
+        if (! is_string($currentTable)) {
             return;
         }
 

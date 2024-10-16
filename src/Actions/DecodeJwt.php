@@ -34,6 +34,7 @@ class DecodeJwt
             try {
                 /** @var \Lcobucci\JWT\Signer $signer */
                 $signer = new (config('rapidez.jwt.signed_with'));
+
                 return (new JwtFacade)->parse(
                     $jwt,
                     new SignedWith($signer, $key),

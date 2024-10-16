@@ -31,7 +31,7 @@ class MagentoCustomerTokenGuard extends TokenGuard implements Guard
     /**
      * Validate a user's credentials.
      *
-     * @param array<string, string> $credentials
+     * @param  array<string, string>  $credentials
      * @return bool
      */
     public function validate(array $credentials = [])

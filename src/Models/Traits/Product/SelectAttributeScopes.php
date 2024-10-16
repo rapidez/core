@@ -10,8 +10,8 @@ use TorMorten\Eventy\Facades\Eventy;
 trait SelectAttributeScopes
 {
     /**
-     * @param Builder<Model> $query
-     * @param array<int, string> $attributes
+     * @param  Builder<Model>  $query
+     * @param  array<int, string>  $attributes
      * @return Builder<Model>
      * */
     public function scopeSelectAttributes(Builder $query, array $attributes): Builder
@@ -22,7 +22,7 @@ trait SelectAttributeScopes
     }
 
     /**
-     * @param Builder<Model> $query
+     * @param  Builder<Model>  $query
      * @return Builder<Model>
      * */
     public function scopeSelectForProductPage(Builder $query): Builder
@@ -46,7 +46,7 @@ trait SelectAttributeScopes
     }
 
     /**
-     * @param Builder<Model> $query
+     * @param  Builder<Model>  $query
      * @return Builder<Model>
      * */
     public function scopeSelectOnlyComparable(Builder $query): Builder
@@ -60,7 +60,7 @@ trait SelectAttributeScopes
     }
 
     /**
-     * @param Builder<Model> $query
+     * @param  Builder<Model>  $query
      * @return Builder<Model>
      * */
     public function scopeSelectOnlyIndexable(Builder $query): Builder

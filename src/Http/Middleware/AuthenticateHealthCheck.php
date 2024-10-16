@@ -11,8 +11,6 @@ class AuthenticateHealthCheck
     /**
      * Handle the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  Closure  $next
      * @return \Illuminate\Http\Response|null
      */
     public function handle(Request $request, Closure $next): mixed

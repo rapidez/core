@@ -24,7 +24,7 @@ trait HasEventyGlobalScopeFilter
     }
 
     /**
-     * @param Builder<Model> $query
+     * @param  Builder<Model>  $query
      * @return Builder<Model>
      * */
     public function scopeWithEventyGlobalScopes(Builder $query, string $scope): Builder

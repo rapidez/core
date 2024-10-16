@@ -44,7 +44,7 @@ class Customer extends Model implements AuthenticatableContract
     }
 
     /**
-     * @param Builder<Customer> $query
+     * @param  Builder<Customer>  $query
      */
     public function scopeWhereToken(Builder $query, string $token): void
     {

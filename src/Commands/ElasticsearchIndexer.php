@@ -26,8 +26,8 @@ class ElasticsearchIndexer
     }
 
     /**
-     * @param iterable<int, object|null>|object|null $data
-     * @param callable|array<int, string>|null $dataFilter
+     * @param  iterable<int, object|null>|object|null  $data
+     * @param  callable|array<int, string>|null  $dataFilter
      */
     public function index(iterable|object|null $data, callable|array|null $dataFilter, callable|string $id = 'entity_id'): void
     {
@@ -39,8 +39,8 @@ class ElasticsearchIndexer
     }
 
     /**
-     * @param iterable<int, object|null> $items
-     * @param callable|array<int, string>|null $dataFilter
+     * @param  iterable<int, object|null>  $items
+     * @param  callable|array<int, string>|null  $dataFilter
      */
     public function indexItems(iterable $items, callable|array|null $dataFilter, callable|string $id = 'entity_id'): void
     {
@@ -50,9 +50,9 @@ class ElasticsearchIndexer
     }
 
     /**
-     * @param callable|array<int, string>|null $dataFilter
+     * @param  callable|array<int, string>|null  $dataFilter
      */
-    public function indexItem(object|null $item, callable|array|null $dataFilter, callable|string $id = 'entity_id'): void
+    public function indexItem(?object $item, callable|array|null $dataFilter, callable|string $id = 'entity_id'): void
     {
         if (is_null($item)) {
             return;
@@ -80,9 +80,9 @@ class ElasticsearchIndexer
     }
 
     /**
-     * @param array<string, mixed> $mapping
-     * @param array<string, mixed> $settings
-     * @param array<int, string> $synonymsFor
+     * @param  array<string, mixed>  $mapping
+     * @param  array<string, mixed>  $settings
+     * @param  array<int, string>  $synonymsFor
      */
     public function prepare(string $indexName, array $mapping = [], array $settings = [], array $synonymsFor = []): void
     {
@@ -136,8 +136,8 @@ class ElasticsearchIndexer
     }
 
     /**
-     * @param array<string, mixed> $mapping
-     * @param array<string, mixed> $settings
+     * @param  array<string, mixed>  $mapping
+     * @param  array<string, mixed>  $settings
      */
     public function createIndex(string $index, array $mapping = [], array $settings = []): void
     {

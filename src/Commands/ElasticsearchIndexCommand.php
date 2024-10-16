@@ -11,13 +11,13 @@ abstract class ElasticsearchIndexCommand extends Command
 {
     public ElasticsearchIndexer $indexer;
 
-    /** @var array<string, mixed> $mapping */
+    /** @var array<string, mixed> */
     public array $mapping = [];
 
-    /** @var array<string, mixed> $settings */
+    /** @var array<string, mixed> */
     public array $settings = [];
 
-    /** @var array<int, string> $synonymsFor */
+    /** @var array<int, string> */
     public array $synonymsFor = [];
 
     public function __construct(ElasticsearchIndexer $indexer)
@@ -27,8 +27,8 @@ abstract class ElasticsearchIndexCommand extends Command
     }
 
     /**
-     * @param callable|iterable<int, object|null> $items
-     * @param callable|array<int, string>|null $dataFilter
+     * @param  callable|iterable<int, object|null>  $items
+     * @param  callable|array<int, string>|null  $dataFilter
      */
     public function indexAllStores(string $indexName, callable|iterable $items, callable|array|null $dataFilter = null, callable|string $id = 'entity_id'): void
     {
@@ -36,9 +36,9 @@ abstract class ElasticsearchIndexCommand extends Command
     }
 
     /**
-     * @param array<int, Store|array<string, mixed>> $stores
-     * @param callable|iterable<int, object|null> $items
-     * @param callable|array<int, string>|null $dataFilter
+     * @param  array<int, Store|array<string, mixed>>  $stores
+     * @param  callable|iterable<int, object|null>  $items
+     * @param  callable|array<int, string>|null  $dataFilter
      */
     public function indexStores(array $stores, string $indexName, callable|iterable $items, callable|array|null $dataFilter = null, callable|string $id = 'entity_id'): void
     {
@@ -48,9 +48,9 @@ abstract class ElasticsearchIndexCommand extends Command
     }
 
     /**
-     * @param Store|array<string, mixed> $store
-     * @param callable|iterable<int, object|null> $items
-     * @param callable|array<int, string>|null $dataFilter
+     * @param  Store|array<string, mixed>  $store
+     * @param  callable|iterable<int, object|null>  $items
+     * @param  callable|array<int, string>|null  $dataFilter
      */
     public function indexStore(Store|array $store, string $indexName, callable|iterable $items, callable|array|null $dataFilter = null, callable|string $id = 'entity_id'): void
     {
@@ -69,10 +69,10 @@ abstract class ElasticsearchIndexCommand extends Command
     }
 
     /**
-     * @param Store|array<string, mixed> $store
-     * @param array<string, mixed> $mapping
-     * @param array<string, mixed> $settings
-     * @param array<int, string> $synonymsFor
+     * @param  Store|array<string, mixed>  $store
+     * @param  array<string, mixed>  $mapping
+     * @param  array<string, mixed>  $settings
+     * @param  array<int, string>  $synonymsFor
      */
     public function prepareIndexerWithStore(Store|array $store, string $indexName, array $mapping = [], array $settings = [], array $synonymsFor = []): void
     {
@@ -81,7 +81,7 @@ abstract class ElasticsearchIndexCommand extends Command
     }
 
     /**
-     * @param callable|iterable<int, object|null> $items
+     * @param  callable|iterable<int, object|null>  $items
      */
     public function dataFrom(callable|iterable $items): mixed
     {

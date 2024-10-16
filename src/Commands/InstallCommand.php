@@ -16,7 +16,7 @@ class InstallCommand extends Command
 
     protected $description = 'Install Rapidez';
 
-    /** @var Collection<int, string> $selectedPackages */
+    /** @var Collection<int, string> */
     protected Collection $selectedPackages;
 
     protected bool $dockerInstall = false;
