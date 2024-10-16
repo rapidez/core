@@ -38,7 +38,7 @@ export const token = computed({
 })
 
 const userStorage = useSessionStorage('user', {}, { serializer: StorageSerializers.object })
-let isRefreshing = false
+let currentRefresh = null
 
 export const refresh = async function () {
     if (!token.value) {
@@ -46,9 +46,9 @@ export const refresh = async function () {
         return false
     }
 
-    if (isRefreshing) {
+    if (currentRefresh) {
         console.debug('Refresh canceled, request already in progress...')
-        return
+        return currentRefresh;
     }
 
     if (Jwt.isJwt(token.value) && Jwt.decode(token.value)?.isExpired()) {
@@ -58,20 +58,24 @@ export const refresh = async function () {
         return false
     }
 
-    try {
-        isRefreshing = true
-        userStorage.value = (await window.magentoGraphQL(`{ customer { ${config.queries.customer} } }`))?.data?.customer
-        isRefreshing = false
-    } catch (error) {
-        isRefreshing = false
+    return currentRefresh = (async function() {
+        try {
+            userStorage.value = (await window.magentoGraphQL(`{ customer { ${config.queries.customer} } }`))?.data?.customer
+        } catch (error) {
+            if (error instanceof SessionExpired) {
+                await clear()
+            } else {
+                throw error
+            }
 
-        if (error instanceof SessionExpired) {
-            await clear()
-        } else {
-            throw error
+            return false;
         }
-    }
+
+        return true;
+    })().finally(() => {currentRefresh = null})
 }
+
+window.refreshUser = refresh;
 
 export const clear = async function () {
     token.value = ''

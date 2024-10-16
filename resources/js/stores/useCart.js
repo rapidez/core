@@ -6,11 +6,16 @@ import { user } from './useUser'
 
 const cartStorage = useLocalStorage('cart', {}, { serializer: StorageSerializers.object })
 let age = 0
+let currentRefresh = null
 
 export const refresh = async function (force = false) {
     if (!mask.value) {
         cartStorage.value = {}
         return false
+    }
+
+    if (currentRefresh) {
+        return currentRefresh
     }
 
     if (!force && Date.now() - age < 5000) {
@@ -20,19 +25,23 @@ export const refresh = async function (force = false) {
 
     age = Date.now()
 
-    try {
-        let response = await window.magentoGraphQL(
-            `query getCart($cart_id: String!) { cart (cart_id: $cart_id) { ...cart } }
+    return currentRefresh = (async function () {
+        try {
+            let response = await window.magentoGraphQL(
+                `query getCart($cart_id: String!) { cart (cart_id: $cart_id) { ...cart } }
 
-            ` + config.fragments.cart,
-            { cart_id: mask.value },
-        )
+                ` + config.fragments.cart,
+                { cart_id: mask.value },
+            )
 
-        cart.value = Object.values(response.data)[0]
-    } catch (error) {
-        console.error(error)
-        GraphQLError.prototype.isPrototypeOf(error) && Vue.prototype.checkResponseForExpiredCart({}, await error?.response?.json())
-    }
+            cart.value = Object.values(response.data)[0]
+        } catch (error) {
+            console.error(error)
+            GraphQLError.prototype.isPrototypeOf(error) && Vue.prototype.checkResponseForExpiredCart({}, await error?.response?.json())
+
+            return false;
+        }
+    }).finally(() => {currentRefresh = null})
 }
 
 export const clear = async function () {
