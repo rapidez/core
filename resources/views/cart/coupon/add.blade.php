@@ -1,5 +1,5 @@
 <graphql-mutation
-    :query="'mutation ($cart_id: String!, $coupon_code: String!) { applyCouponToCart(input: { cart_id: $cart_id, coupon_code: $coupon_code }) { cart { ' + config.queries.cart + ' } } }'"
+    :query="'mutation ($cart_id: String!, $coupon_code: String!) { applyCouponToCart(input: { cart_id: $cart_id, coupon_code: $coupon_code }) { cart { ...cart } } } ' + config.fragments.cart"
     :variables="{ cart_id: mask, coupon_code: '' }"
     :notify="{ message: config.translations.cart.coupon.applied }"
     :clear="true"

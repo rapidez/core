@@ -1,0 +1,17 @@
+mutation setExistingShippingAddressOnCart (
+    $cart_id: String!,
+    $customer_address_id: Int
+) {
+    setShippingAddressesOnCart(input: {
+        cart_id: $cart_id,
+        shipping_addresses: [
+            {
+                customer_address_id: $customer_address_id,
+            }
+        ]
+    }) {
+        cart { ...cart }
+    }
+}
+
+@include('rapidez::cart.queries.fragments.cart')

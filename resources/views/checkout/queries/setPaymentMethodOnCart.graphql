@@ -1,0 +1,15 @@
+mutation (
+    $cart_id: String!,
+    $code: String!,
+) {
+    setPaymentMethodOnCart(input: {
+        cart_id: $cart_id,
+        payment_method: {
+            code: $code
+        }
+    }) {
+        cart { ...cart }
+    }
+}
+
+@include('rapidez::cart.queries.fragments.cart')

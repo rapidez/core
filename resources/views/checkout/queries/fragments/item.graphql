@@ -1,0 +1,54 @@
+fragment orderItem on OrderItemInterface {
+    id
+    quantity_ordered
+    status
+    product_name
+    product_sku
+    product_type
+    product_url_key
+    product_sale_price {
+        currency
+        value
+    }
+    product {
+        ...product
+    }
+    discounts {
+        amount {
+            currency
+            value
+        }
+        applied_to
+        coupon {
+            code
+        }
+        label
+    }
+    entered_options {
+        label
+        value
+    }
+    selected_options {
+        label
+        value
+    }
+    gift_message {
+        from
+        message
+        to
+    }
+    quantity_canceled
+    quantity_invoiced
+    quantity_ordered
+    quantity_refunded
+    quantity_returned
+    quantity_shipped
+    ... on DownloadableOrderItem {
+        downloadable_links {
+            title
+            sort_order
+        }
+    }
+}
+
+@include('rapidez::cart.queries.fragments.product')

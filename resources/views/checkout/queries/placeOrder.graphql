@@ -1,0 +1,21 @@
+mutation placeOrder (
+    $cart_id: String!,
+) {
+    placeOrder(input: {
+        cart_id: $cart_id,
+    }) {
+        order {
+            ...order
+        }
+        orderV2 {
+            ...orderV2
+        }
+        errors {
+            code
+            message
+        }
+    }
+}
+
+@include('rapidez::checkout.queries.fragments.order')
+@include('rapidez::checkout.queries.fragments.orderV2')

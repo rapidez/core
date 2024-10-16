@@ -1,0 +1,156 @@
+fragment cart on Cart {
+    id
+    # TODO: Check if virtual orders are working
+    is_virtual
+    total_quantity
+    items {
+        id
+        quantity
+        product {
+            ...product
+        }
+        prices {
+            price {
+                value
+            }
+            price_including_tax {
+                value
+            }
+            row_total {
+                value
+            }
+            row_total_including_tax {
+                value
+            }
+        }
+        ... on SimpleCartItem {
+            @include('rapidez::cart.queries.partials.customizable_options')
+        }
+        ... on VirtualCartItem {
+            @include('rapidez::cart.queries.partials.customizable_options')
+        }
+        ... on DownloadableCartItem {
+            @include('rapidez::cart.queries.partials.customizable_options')
+        }
+        ... on ConfigurableCartItem {
+            @include('rapidez::cart.queries.partials.customizable_options')
+            configurable_options {
+                id
+                option_label
+                value_label
+            }
+        }
+        ... on BundleCartItem {
+            @include('rapidez::cart.queries.partials.customizable_options')
+        }
+    }
+    applied_coupons {
+        code
+    }
+    email
+    shipping_addresses {
+        uid
+        company
+        prefix
+        firstname
+        middlename
+        lastname
+        suffix
+        street
+        city
+        region {
+            code
+            label
+        }
+        postcode
+        telephone
+        country {
+            code
+            label
+        }
+        selected_shipping_method {
+            carrier_title
+            carrier_code
+            method_code
+            method_title
+            price_incl_tax {
+                value
+            }
+            price_excl_tax {
+                value
+            }
+            amount {
+                value
+            }
+        }
+        available_shipping_methods {
+            carrier_title
+            carrier_code
+            method_code
+            method_title
+            amount {
+                value
+            }
+            available
+        }
+    }
+    billing_address {
+        uid
+        company
+        prefix
+        firstname
+        middlename
+        lastname
+        suffix
+        street
+        city
+        region {
+            code
+            label
+        }
+        postcode
+        telephone
+        country {
+            code
+            label
+        }
+    }
+    selected_payment_method {
+        code
+        title
+        purchase_order_number
+    }
+    available_payment_methods {
+        code
+        title
+        is_deferred
+    }
+    prices {
+        subtotal_excluding_tax {
+            value
+        }
+        subtotal_including_tax {
+            value
+        }
+        discounts {
+            label
+            amount {
+                value
+            }
+        }
+        subtotal_with_discount_excluding_tax {
+            value
+        }
+        applied_taxes {
+            label
+            amount {
+                value
+            }
+        }
+        grand_total {
+            value
+        }
+    }
+}
+
+@include('rapidez::cart.queries.fragments.product')

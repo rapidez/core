@@ -9,7 +9,7 @@
         <h1 class="mb-5 text-4xl font-bold">@lang('Cart')</h1>
         <graphql
             v-if="mask"
-            :query="'query getCart($cart_id: String!) { cart (cart_id: $cart_id) { ' + config.queries.cart + ' } }'"
+            :query="'query getCart($cart_id: String!) { cart (cart_id: $cart_id) { ...cart } } ' + config.fragments.cart"
             :variables="{ cart_id: mask }"
             :callback="updateCart"
             :error-callback="checkResponseForExpiredCart"
@@ -25,7 +25,7 @@
                     </div>
                 </div>
 
-                <div class="flex w-full flex-wrap justify-end self-baseline lg:max-w-xs">
+                <div class="flex w-full flex-wrap justify-end self-baseline max-lg:mt-5 lg:max-w-xs">
                     @include('rapidez::cart.sidebar')
                 </div>
             </div>

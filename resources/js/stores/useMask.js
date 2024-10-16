@@ -1,12 +1,38 @@
 import { useLocalStorage } from '@vueuse/core'
-import { token, user } from './useUser'
+import { useCookies } from '@vueuse/integrations/useCookies'
+import { computed } from 'vue'
+import { fetchCart } from './useCart'
 
-export const mask = useLocalStorage('mask', '')
+/**
+ * @deprecated using localstorage to retrieve the mask is deprecated, use the useMask.mask instead
+ */
+const localstorageMask = useLocalStorage('mask', '')
+const { get: getCookie, set: setCookie } = useCookies(['mask'])
+
+export const mask = computed({
+    get() {
+        const mask = getCookie('mask') ?? ''
+        localstorageMask.value = mask
+
+        return mask
+    },
+    set(value) {
+        let options = {
+            path: '/',
+            secure: window.location.protocol === 'https:',
+            maxAge: 31556952,
+            sameSite: 'strict',
+        }
+
+        setCookie('mask', value, options)
+        localstorageMask.value = value
+    },
+})
 
 export const refreshMask = async function () {
     try {
-        let response = await window.magentoGraphQL('mutation { createEmptyCart }')
-        mask.value = response.data.createEmptyCart
+        await fetchCart()
+        // FetchCart automatically fills the mask.
     } catch (error) {
         Notify(window.config.translations.errors.wrong, 'error')
         console.error(error)

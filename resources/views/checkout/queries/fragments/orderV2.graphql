@@ -1,0 +1,75 @@
+@use('\TorMorten\Eventy\Facades\Eventy')
+
+fragment orderV2 on CustomerOrder {
+    id
+    number
+    order_date
+    token
+    status
+    email
+    carrier
+    shipping_method
+    payment_methods {
+        name
+        type
+    }
+    billing_address {
+        prefix
+        firstname
+        middlename
+        lastname
+        suffix
+        company
+        street
+        city
+        postcode
+        telephone
+        fax
+        country_code
+    }
+    shipping_address {
+        prefix
+        firstname
+        middlename
+        lastname
+        suffix
+        company
+        street
+        city
+        postcode
+        telephone
+        fax
+        country_code
+    }
+    items {
+        ...orderItem
+    }
+    total {
+        subtotal {
+            value
+        }
+        shipping_handling {
+            total_amount {
+                value
+            }
+        }
+        total_shipping {
+            value
+        }
+        total_tax {
+            value
+        }
+        base_grand_total {
+            currency
+            value
+        }
+        grand_total {
+            value
+        }
+    }
+    @foreach(array_unique(Eventy::filter('checkout.queries.orderV2.data', []), SORT_REGULAR) as $attribute)
+        {{ $attribute }}
+    @endforeach
+}
+
+@include('rapidez::checkout.queries.fragments.item')
