@@ -3,7 +3,7 @@ import InteractWithUser from './../User/mixins/InteractWithUser'
 import { useEventListener, useLocalStorage } from '@vueuse/core'
 import useMask from '../../stores/useMask'
 import { cart, hasOnlyVirtualItems, virtualItems, linkUserToCart } from '../../stores/useCart'
-import { FetchError } from '../../fetch';
+import { FetchError } from '../../fetch'
 
 export default {
     mixins: [InteractWithUser],
