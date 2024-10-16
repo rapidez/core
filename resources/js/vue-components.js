@@ -22,6 +22,9 @@ Vue.component('notifications', notifications)
 import images from './components/Product/Images.vue'
 Vue.component('images', images)
 
+import enhancedQuantitySelect from './components/Product/EnhancedQuantitySelect.vue'
+Vue.component('enhanced-quantity-select', enhancedQuantitySelect)
+
 Vue.component('autocomplete', () => import('./components/Search/Autocomplete.vue'))
 Vue.component('login', () => import('./components/Checkout/Login.vue'))
 Vue.component('listing', () => import('./components/Listing/Listing.vue'))
