@@ -73,7 +73,7 @@ class Category extends Model
         return $this->hasMany(config('rapidez.models.category'), 'parent_id', 'entity_id');
     }
 
-    /** @return HasManyThrough<Product, Category> */
+    /** @return HasManyThrough<Product, CategoryProduct, Category> */
     public function products(): HasManyThrough
     {
         /** @var CategoryProduct $categoryProductObject */

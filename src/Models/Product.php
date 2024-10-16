@@ -158,7 +158,7 @@ class Product extends Model
             ->where('entity_type', 'product');
     }
 
-    /** @return HasOneThrough<Product, Product> */
+    /** @return HasOneThrough<Product, ProductLink, Product> */
     public function parent(): HasOneThrough
     {
         // @phpstan-ignore-next-line
