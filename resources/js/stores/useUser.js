@@ -75,8 +75,6 @@ export const refresh = async function () {
     })().finally(() => {currentRefresh = null})
 }
 
-window.refreshUser = refresh;
-
 export const clear = async function () {
     token.value = ''
     userStorage.value = {}
