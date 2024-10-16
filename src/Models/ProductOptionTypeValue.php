@@ -35,7 +35,7 @@ class ProductOptionTypeValue extends Model
         )->shouldCache();
     }
 
-    /** @return HasMany<ProductOptionTypeTitle> */
+    /** @return HasMany<ProductOptionTypeTitle, ProductOptionTypeValue> */
     public function titles(): HasMany
     {
         // @phpstan-ignore-next-line
@@ -68,7 +68,7 @@ class ProductOptionTypeValue extends Model
         )->shouldCache();
     }
 
-    /** @return HasMany<ProductOptionTypePrice> */
+    /** @return HasMany<ProductOptionTypePrice, ProductOptionTypeValue> */
     public function prices(): HasMany
     {
         // @phpstan-ignore-next-line

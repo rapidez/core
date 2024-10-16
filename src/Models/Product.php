@@ -95,7 +95,7 @@ class Product extends Model
         return $this->casts;
     }
 
-    /** @return BelongsToMany<ProductImage> */
+    /** @return BelongsToMany<ProductImage, Product> */
     public function gallery(): BelongsToMany
     {
         // @phpstan-ignore-next-line
@@ -107,7 +107,7 @@ class Product extends Model
         );
     }
 
-    /** @return HasMany<ProductView> */
+    /** @return HasMany<ProductView, Product> */
     public function views(): HasMany
     {
         // @phpstan-ignore-next-line
@@ -117,7 +117,7 @@ class Product extends Model
         );
     }
 
-    /** @return HasMany<ProductOption> */
+    /** @return HasMany<ProductOption, Product> */
     public function options(): HasMany
     {
         // @phpstan-ignore-next-line
@@ -127,7 +127,7 @@ class Product extends Model
         );
     }
 
-    /** @return HasMany<CategoryProduct> */
+    /** @return HasMany<CategoryProduct, Product> */
     public function categoryProducts(): HasMany
     {
         // @phpstan-ignore-next-line
@@ -138,7 +138,7 @@ class Product extends Model
             );
     }
 
-    /** @return HasOne<ProductReviewSummary> */
+    /** @return HasOne<ProductReviewSummary, Product> */
     public function reviewSummary(): HasOne
     {
         // @phpstan-ignore-next-line
@@ -148,7 +148,7 @@ class Product extends Model
         );
     }
 
-    /** @return HasMany<Rewrite> */
+    /** @return HasMany<Rewrite, Product> */
     public function rewrites(): HasMany
     {
         // @phpstan-ignore-next-line
@@ -158,7 +158,7 @@ class Product extends Model
             ->where('entity_type', 'product');
     }
 
-    /** @return HasOneThrough<Product> */
+    /** @return HasOneThrough<Product, Product> */
     public function parent(): HasOneThrough
     {
         // @phpstan-ignore-next-line

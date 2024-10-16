@@ -28,16 +28,18 @@ class QuoteItem extends Model
     /** @return BelongsTo<QuoteItem, QuoteItem> */
     public function parent(): BelongsTo
     {
+        // @phpstan-ignore-next-line
         return $this->belongsTo(self::class, 'parent_item_id');
     }
 
-    /** @return HasMany<QuoteItem> */
+    /** @return HasMany<QuoteItem, QuoteItem> */
     public function children(): HasMany
     {
+        // @phpstan-ignore-next-line
         return $this->hasMany(self::class, 'parent_item_id');
     }
 
-    /** @return HasMany<QuoteItemOption> */
+    /** @return HasMany<QuoteItemOption, QuoteItem> */
     public function options(): HasMany
     {
         // @phpstan-ignore-next-line

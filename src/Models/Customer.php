@@ -24,7 +24,7 @@ class Customer extends Model implements AuthenticatableContract
         'confirmation',
     ];
 
-    /** @return HasMany<OauthToken> */
+    /** @return HasMany<OauthToken, Customer> */
     public function oauthTokens(): HasMany
     {
         // @phpstan-ignore-next-line

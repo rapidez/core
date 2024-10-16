@@ -66,14 +66,14 @@ class Category extends Model
         return '/' . ($this->url_path ? $this->url_path : 'catalog/category/view/id/' . $this->entity_id);
     }
 
-    /** @return HasMany<Category> */
+    /** @return HasMany<Category, Category> */
     public function subcategories(): HasMany
     {
         // @phpstan-ignore-next-line
         return $this->hasMany(config('rapidez.models.category'), 'parent_id', 'entity_id');
     }
 
-    /** @return HasManyThrough<Product> */
+    /** @return HasManyThrough<Product, Category> */
     public function products(): HasManyThrough
     {
         /** @var CategoryProduct $categoryProductObject */
@@ -93,7 +93,7 @@ class Category extends Model
             ->whereIn($categoryProductObject->qualifyColumn('visibility'), [2, 4]);
     }
 
-    /** @return HasMany<Rewrite> */
+    /** @return HasMany<Rewrite, Category> */
     public function rewrites(): HasMany
     {
         // @phpstan-ignore-next-line

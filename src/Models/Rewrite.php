@@ -18,7 +18,7 @@ class Rewrite extends Model
         });
     }
 
-    /** @return HasOne<Store> */
+    /** @return HasOne<Store, Rewrite> */
     public function store(): HasOne
     {
         // @phpstan-ignore-next-line

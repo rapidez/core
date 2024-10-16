@@ -33,14 +33,14 @@ class Quote extends Model
         return $this->belongsTo(config('rapidez.models.store'));
     }
 
-    /** @return HasMany<QuoteIdMask> */
+    /** @return HasMany<QuoteIdMask, Quote> */
     public function quote_id_masks(): HasMany
     {
         // @phpstan-ignore-next-line
         return $this->hasMany(config('rapidez.models.quote_id_mask'), 'quote_id');
     }
 
-    /** @return HasMany<OauthToken> */
+    /** @return HasMany<OauthToken, Quote> */
     public function oauth_tokens(): HasMany
     {
         // @phpstan-ignore-next-line
@@ -54,7 +54,7 @@ class Quote extends Model
         return $this->belongsTo(config('rapidez.models.sales_order'));
     }
 
-    /** @return HasMany<QuoteItem> */
+    /** @return HasMany<QuoteItem, Quote> */
     public function items(): HasMany
     {
         // @phpstan-ignore-next-line

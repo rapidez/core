@@ -43,7 +43,7 @@ class ProductOption extends Model
         )->shouldCache();
     }
 
-    /** @return HasMany<ProductOptionTitle> */
+    /** @return HasMany<ProductOptionTitle, ProductOption> */
     public function titles(): HasMany
     {
         // @phpstan-ignore-next-line
@@ -76,14 +76,14 @@ class ProductOption extends Model
         )->shouldCache();
     }
 
-    /** @return HasMany<ProductOptionPrice> */
+    /** @return HasMany<ProductOptionPrice, ProductOption> */
     public function prices(): HasMany
     {
         // @phpstan-ignore-next-line
         return $this->hasMany(config('rapidez.models.product_option_price'), 'option_id');
     }
 
-    /** @return HasMany<ProductOptionTypeValue> */
+    /** @return HasMany<ProductOptionTypeValue, ProductOption> */
     public function values(): HasMany
     {
         // @phpstan-ignore-next-line
