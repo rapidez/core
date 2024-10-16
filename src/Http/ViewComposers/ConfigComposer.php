@@ -11,7 +11,7 @@ use Rapidez\Core\Facades\Rapidez;
 
 class ConfigComposer
 {
-    public function compose(View $view)
+    public function compose(View $view): void
     {
         $exposedFrontendConfigValues = Arr::only(
             array_merge_recursive(config('rapidez'), config('rapidez.frontend')),
@@ -43,18 +43,19 @@ class ConfigComposer
         Config::set('frontend.show_customer_address_fields', $this->getCustomerAddressFields());
         Config::set('frontend.show_tax', (bool) Rapidez::config('tax/display/type', 1));
         Config::set('frontend.grid_per_page', Rapidez::config('catalog/frontend/grid_per_page', 12));
-        Config::set('frontend.grid_per_page_values', explode(',', Rapidez::config('catalog/frontend/grid_per_page_values', '12,24,36')));
-        Config::set('frontend.queries.cart', view('rapidez::cart.queries.cart')->renderOneliner());
+        Config::set('frontend.grid_per_page_values', explode(',', Rapidez::config('catalog/frontend/grid_per_page_values', '12,24,36') ?? ''));
+        Config::set('frontend.queries.cart', view('rapidez::cart.queries.cart')->renderOneliner()); // @phpstan-ignore-line
     }
 
-    public function getCustomerAddressFields()
+    /** @return array<string, string|false|null> */
+    public function getCustomerAddressFields(): array
     {
         return [
-            'prefix'      => strlen(Rapidez::config('customer/address/prefix_options', '')) ? Rapidez::config('customer/address/prefix_show', 'opt') : 'opt',
+            'prefix'      => strlen(Rapidez::config('customer/address/prefix_options', '') ?? '') ? Rapidez::config('customer/address/prefix_show', 'opt') : 'opt',
             'firstname'   => 'req',
             'middlename'  => Rapidez::config('customer/address/middlename_show', 0) ? 'opt' : false,
             'lastname'    => 'req',
-            'suffix'      => strlen(Rapidez::config('customer/address/suffix_options', '')) ? Rapidez::config('customer/address/suffix_show', 'opt') : 'opt',
+            'suffix'      => strlen(Rapidez::config('customer/address/suffix_options', '') ?? '') ? Rapidez::config('customer/address/suffix_show', 'opt') : 'opt',
             'postcode'    => 'req',
             'housenumber' => Rapidez::config('customer/address/street_lines', 3) >= 2 ? 'req' : false,
             'addition'    => Rapidez::config('customer/address/street_lines', 3) >= 3 ? 'opt' : false,

@@ -1,7 +1,7 @@
 <?php
 
 if (! function_exists('price')) {
-    function price($price)
+    function price(float $price): string|false
     {
         $configModel = config('rapidez.models.config');
         $currency = $configModel::getCachedByPath('currency/options/default');
@@ -13,9 +13,9 @@ if (! function_exists('price')) {
 }
 
 if (! function_exists('vite_filename_with_chunkhash')) {
-    function vite_filename_with_chunkhash($file)
+    function vite_filename_with_chunkhash(string $file): ?string
     {
-        $manifest = @json_decode(@file_get_contents(public_path('build/manifest.json')));
+        $manifest = @json_decode(@file_get_contents(public_path('build/manifest.json')) ?: '');
         if ($manifest) {
             foreach ($manifest as $path => $asset) {
                 if (Str::endsWith($path, $file)) {
@@ -23,13 +23,15 @@ if (! function_exists('vite_filename_with_chunkhash')) {
                 }
             }
         }
+
+        return null;
     }
 }
 
 if (! function_exists('vite_filename_path')) {
-    function vite_filename_path($file)
+    function vite_filename_path(string $file): ?string
     {
-        $manifest = @json_decode(@file_get_contents(public_path('build/manifest.json')));
+        $manifest = @json_decode(@file_get_contents(public_path('build/manifest.json')) ?: '');
         if ($manifest) {
             foreach ($manifest as $path => $asset) {
                 if (Str::endsWith($path, $file)) {
@@ -37,5 +39,7 @@ if (! function_exists('vite_filename_path')) {
                 }
             }
         }
+
+        return null;
     }
 }

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class WithProductSuperAttributesScope implements Scope
 {
+    /** @param Builder<Model> $builder */
     public function apply(Builder $builder, Model $model)
     {
         $attributeModel = config('rapidez.models.attribute');

@@ -18,10 +18,12 @@ class Rewrite extends Model
         });
     }
 
+    /** @return HasOne<Store> */
     public function store(): HasOne
     {
+        // @phpstan-ignore-next-line
         return $this->hasOne(
-            Store::class,
+            config('rapidez.models.store'),
             'store_id',
             'store_id',
         );

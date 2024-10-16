@@ -14,6 +14,7 @@ class Model extends BaseModel
         Macroable::__callStatic as macroCallStatic;
     }
 
+    // @phpstan-ignore-next-line
     public function __call($method, $parameters)
     {
         if (static::hasMacro($method)) {
@@ -23,6 +24,7 @@ class Model extends BaseModel
         return parent::__call($method, $parameters);
     }
 
+    // @phpstan-ignore-next-line
     public static function __callStatic($method, $parameters)
     {
         if (static::hasMacro($method)) {

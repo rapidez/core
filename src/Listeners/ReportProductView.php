@@ -7,7 +7,7 @@ use Rapidez\Core\Facades\Rapidez;
 
 class ReportProductView
 {
-    public function handle(ProductViewEvent $event)
+    public function handle(ProductViewEvent $event): void
     {
         if (! Rapidez::config('reports/options/enabled') || ! Rapidez::config('reports/options/product_view_enabled')) {
             return;

@@ -2,12 +2,14 @@
 
 namespace Rapidez\Core\Http\Controllers;
 
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class SearchController
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): RedirectResponse|View
     {
         $searchQuery = config('rapidez.models.search_query')::firstOrNew([
             'query_text' => Str::lower($request->q),

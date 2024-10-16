@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Exceptions\DecryptionException;
 
+/**
+ * @property string|null $value
+ */
 class Config extends Model
 {
     protected $table = 'core_config_data';
@@ -30,7 +33,7 @@ class Config extends Model
         });
     }
 
-    public static function getCachedByPath(string $path, $default = false, bool $sensitive = false): string|bool
+    public static function getCachedByPath(string $path, ?string $default = null, bool $sensitive = false): ?string
     {
         $cacheKey = 'config.' . config('rapidez.store') . '.' . str_replace('/', '.', $path);
 
@@ -43,7 +46,7 @@ class Config extends Model
         return $sensitive && $value ? self::decrypt($value) : $value;
     }
 
-    public static function decrypt(string $value): string
+    public static function decrypt(string $value): string|false
     {
         throw_unless(
             config('rapidez.crypt_key'),

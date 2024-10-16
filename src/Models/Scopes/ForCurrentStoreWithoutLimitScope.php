@@ -11,16 +11,17 @@ use Illuminate\Database\Eloquent\Scope;
  */
 class ForCurrentStoreWithoutLimitScope implements Scope
 {
-    public function __construct(public $uniquePerStoreKey, public $storeIdColumn = 'store_id') {}
+    public function __construct(public string $uniquePerStoreKey, public string $storeIdColumn = 'store_id') {}
 
+    /** @param Builder<Model> $query */
     public function apply(Builder $query, Model $model)
     {
         if (! config('rapidez.store')) {
-            return $query
-                ->where($query->qualifyColumn($this->storeIdColumn), 0);
+            $query->where($query->qualifyColumn($this->storeIdColumn), 0);
+            return;
         }
 
-        return $query
+        $query
             // Pre-filter results to be default and current store only.
             ->whereIn($query->qualifyColumn($this->storeIdColumn), [0, config('rapidez.store')])
             // Remove values from the default store where values for the current store exist.

@@ -3,6 +3,8 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProductOptionTypeValue extends Model
 {
@@ -18,35 +20,42 @@ class ProductOptionTypeValue extends Model
 
     protected $hidden = ['titles', 'prices'];
 
-    public function option()
+    /** @return BelongsTo<ProductOption, ProductOptionTypeValue> */
+    public function option(): BelongsTo
     {
+        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.product_option'), 'option_id');
     }
 
+    /** @return Attribute<string, null> */
     protected function title(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->titles->firstForCurrentStore()->title,
+            get: fn () => $this->titles->firstForCurrentStore()->title, // @phpstan-ignore-line
         )->shouldCache();
     }
 
-    public function titles()
+    /** @return HasMany<ProductOptionTypeTitle> */
+    public function titles(): HasMany
     {
+        // @phpstan-ignore-next-line
         return $this->hasMany(config('rapidez.models.product_option_type_title'), 'option_type_id');
     }
 
+    /** @return Attribute<ProductOptionTypePrice|null, null> */
     protected function price(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->prices->firstForCurrentStore(),
+            get: fn () => $this->prices->firstForCurrentStore(), // @phpstan-ignore-line
         )->shouldCache();
     }
 
+    /** @return Attribute<string|null, null> */
     protected function priceLabel(): Attribute
     {
         return Attribute::make(
             get: function () {
-                if (! floatval($this->price->price)) {
+                if (! $this->price || ! floatval($this->price->price)) {
                     return;
                 }
 
@@ -59,8 +68,10 @@ class ProductOptionTypeValue extends Model
         )->shouldCache();
     }
 
-    public function prices()
+    /** @return HasMany<ProductOptionTypePrice> */
+    public function prices(): HasMany
     {
+        // @phpstan-ignore-next-line
         return $this->hasMany(config('rapidez.models.product_option_type_price'), 'option_type_id');
     }
 }

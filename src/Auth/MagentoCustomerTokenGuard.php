@@ -5,6 +5,7 @@ namespace Rapidez\Core\Auth;
 use Illuminate\Auth\TokenGuard;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
+use Rapidez\Core\Models\Customer;
 
 class MagentoCustomerTokenGuard extends TokenGuard implements Guard
 {
@@ -30,6 +31,7 @@ class MagentoCustomerTokenGuard extends TokenGuard implements Guard
     /**
      * Validate a user's credentials.
      *
+     * @param array<string, string> $credentials
      * @return bool
      */
     public function validate(array $credentials = [])
@@ -41,7 +43,7 @@ class MagentoCustomerTokenGuard extends TokenGuard implements Guard
         return (bool) $this->retrieveByToken($credentials[$this->inputKey]);
     }
 
-    protected function retrieveByToken($token)
+    protected function retrieveByToken(string $token): Customer
     {
         return config('rapidez.models.customer')::whereToken($token)->first();
     }

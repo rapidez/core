@@ -3,6 +3,7 @@
 namespace Rapidez\Core\Actions;
 
 use DateTimeZone;
+use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -25,11 +26,17 @@ class DecodeJwt
 
     public static function decode(string $jwt): UnencryptedToken
     {
+        if ($jwt === '') {
+            throw new Exception('JWT cannot be empty.');
+        }
+
         foreach (static::getKeys() as $key) {
             try {
+                /** @var \Lcobucci\JWT\Signer $signer */
+                $signer = new (config('rapidez.jwt.signed_with'));
                 return (new JwtFacade)->parse(
                     $jwt,
-                    new SignedWith(new (config('rapidez.jwt.signed_with')), $key),
+                    new SignedWith($signer, $key),
                     new LooseValidAt(new SystemClock(new DateTimeZone(date_default_timezone_get())))
                 );
             } catch (RequiredConstraintsViolated $exception) {
@@ -39,11 +46,11 @@ class DecodeJwt
             }
         }
 
-        throw $exception;
+        throw $exception ?? new Exception('No crypt key defined');
     }
 
     /**
-     * @return Collection<Key>
+     * @return Collection<int, covariant Key>
      */
     public static function getKeys(): Collection
     {
@@ -55,6 +62,6 @@ class DecodeJwt
 
     public static function isJwt(string $jwt): bool
     {
-        return preg_match('/^(?:[\w-]*\.){2}[\w-]*$/', $jwt);
+        return boolval(preg_match('/^(?:[\w-]*\.){2}[\w-]*$/', $jwt));
     }
 }

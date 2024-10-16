@@ -12,10 +12,10 @@ class ValidateCommand extends Command
 
     protected $description = 'Validates all settings';
 
-    public function handle()
+    public function handle(): int
     {
         $this->call('cache:clear');
-        $result = array_merge_recursive(...Event::dispatch('rapidez:health-check'));
+        $result = array_merge_recursive(...Event::dispatch('rapidez:health-check') ?? []);
         $isHealthy = Arr::first($result['healthy'], fn ($healthy) => ! $healthy, true);
 
         foreach ($result['messages'] as $message) {

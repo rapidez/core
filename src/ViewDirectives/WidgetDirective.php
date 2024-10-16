@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Cache;
 
 class WidgetDirective
 {
-    public function render($location, $type, $handle = 'default', $entities = null, $replace = [])
+    /** @param array<string, string> $replace */
+    public function render(?string $location, ?string $type, ?string $handle = 'default', ?string $entities = null, array $replace = []): string
     {
         return Cache::rememberForever(
             'widget.' . md5(serialize(func_get_args())) . '_' . config('rapidez.store'),
@@ -39,9 +40,11 @@ class WidgetDirective
                             $viewName = $widgetClass;
                             $widgetClass = config('rapidez.frontend.view_only_widget');
 
+                            // @phpstan-ignore-next-line
                             $html .= (new $widgetClass($widget->widget_parameters))->render($viewName);
                         }
                     } else {
+                        // @phpstan-ignore-next-line
                         $html .= (new $widgetClass($widget->widget_parameters))->render();
                     }
                 }

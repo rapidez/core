@@ -5,6 +5,8 @@ namespace Rapidez\Core\Models;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Rapidez\Core\Actions\DecodeJwt;
 
 class Customer extends Model implements AuthenticatableContract
@@ -22,22 +24,29 @@ class Customer extends Model implements AuthenticatableContract
         'confirmation',
     ];
 
-    public function oauthTokens()
+    /** @return HasMany<OauthToken> */
+    public function oauthTokens(): HasMany
     {
+        // @phpstan-ignore-next-line
         return $this->hasMany(config('rapidez.models.oauth_token'), 'customer_id');
     }
 
-    public function group()
+    /** @return BelongsTo<CustomerGroup, Customer> */
+    public function group(): BelongsTo
     {
-        return $this->belongsTo(CustomerGroup::class, 'group_id');
+        // @phpstan-ignore-next-line
+        return $this->belongsTo(config('rapidez.models.customer_group'), 'group_id');
     }
 
-    public function getRememberTokenName()
+    public function getRememberTokenName(): string
     {
         return '';
     }
 
-    public function scopeWhereToken(Builder $query, string $token)
+    /**
+     * @param Builder<Customer> $query
+     */
+    public function scopeWhereToken(Builder $query, string $token): void
     {
         $query->when(
             DecodeJwt::isJwt($token),

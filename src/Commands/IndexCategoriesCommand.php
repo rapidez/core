@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core\Commands;
 
+use Illuminate\Support\Collection;
 use Rapidez\Core\Facades\Rapidez;
 use TorMorten\Eventy\Facades\Eventy;
 
@@ -25,13 +26,18 @@ class IndexCategoriesCommand extends ElasticsearchIndexCommand
         return 0;
     }
 
-    public function getCategories()
+    /** @return Collection<int, \Rapidez\Core\Models\Category> */
+    public function getCategories(): Collection
     {
-        return config('rapidez.models.category')::withEventyGlobalScopes('index.categories.scopes')
-            ->select((new (config('rapidez.models.category')))->qualifyColumns(['entity_id', 'name', 'url_path']))
+        $categoryModel = config('rapidez.models.category');
+        /** @var \Rapidez\Core\Models\Category $categoryObject */
+        $categoryObject = new $categoryModel;
+
+        return $categoryModel::withEventyGlobalScopes('index.categories.scopes')
+            ->select($categoryObject->qualifyColumns(['entity_id', 'name', 'url_path']))
             ->whereNotNull('url_key')
             ->whereNot('url_key', 'default-category')
             ->has('products')
-            ->get() ?? [];
+            ->get() ?? collect();
     }
 }

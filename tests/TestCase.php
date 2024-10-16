@@ -14,7 +14,7 @@ class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        $this->setUpDatabase($this->app);
+        $this->setUpDatabase();
     }
 
     protected function getPackageProviders($app)
@@ -32,7 +32,7 @@ class TestCase extends BaseTestCase
         ];
     }
 
-    protected function setUpDatabase($app)
+    protected function setUpDatabase(): void
     {
         if (Schema::hasTable('yotpo_sync')) {
             return;

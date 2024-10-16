@@ -25,7 +25,11 @@ class ElasticsearchIndexer
         $this->elasticsearch->indices()->delete(['index' => $index]);
     }
 
-    public function index(iterable|object $data, callable|array|null $dataFilter, callable|string $id = 'entity_id'): void
+    /**
+     * @param iterable<int, object|null>|object|null $data
+     * @param callable|array<int, string>|null $dataFilter
+     */
+    public function index(iterable|object|null $data, callable|array|null $dataFilter, callable|string $id = 'entity_id'): void
     {
         if (is_iterable($data)) {
             $this->indexItems($data, $dataFilter, $id);
@@ -34,6 +38,10 @@ class ElasticsearchIndexer
         }
     }
 
+    /**
+     * @param iterable<int, object|null> $items
+     * @param callable|array<int, string>|null $dataFilter
+     */
     public function indexItems(iterable $items, callable|array|null $dataFilter, callable|string $id = 'entity_id'): void
     {
         foreach ($items as $item) {
@@ -41,7 +49,10 @@ class ElasticsearchIndexer
         }
     }
 
-    public function indexItem(object $item, callable|array|null $dataFilter, callable|string $id = 'entity_id'): void
+    /**
+     * @param callable|array<int, string>|null $dataFilter
+     */
+    public function indexItem(object|null $item, callable|array|null $dataFilter, callable|string $id = 'entity_id'): void
     {
         if (is_null($item)) {
             return;
@@ -68,6 +79,11 @@ class ElasticsearchIndexer
         IndexJob::dispatch($this->index, $currentId, $currentValues);
     }
 
+    /**
+     * @param array<string, mixed> $mapping
+     * @param array<string, mixed> $settings
+     * @param array<int, string> $synonymsFor
+     */
     public function prepare(string $indexName, array $mapping = [], array $settings = [], array $synonymsFor = []): void
     {
         data_set($settings, 'index.analysis.analyzer.default', [
@@ -119,6 +135,10 @@ class ElasticsearchIndexer
         $this->index = $this->alias . '_' . Carbon::now()->format('YmdHis');
     }
 
+    /**
+     * @param array<string, mixed> $mapping
+     * @param array<string, mixed> $settings
+     */
     public function createIndex(string $index, array $mapping = [], array $settings = []): void
     {
         $this->elasticsearch->indices()->create([

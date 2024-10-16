@@ -4,9 +4,9 @@ namespace Rapidez\Core\Widgets;
 
 class ViewOnly
 {
-    protected $options;
+    protected mixed $options;
 
-    public function __construct($options)
+    public function __construct(mixed $options)
     {
         $this->options = $options;
     }

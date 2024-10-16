@@ -8,7 +8,8 @@ use PDOException;
 
 class MagentoSettingsHealthcheck extends Base
 {
-    public function handle()
+    /** @return array<string, mixed> */
+    public function handle(): array
     {
         $response = [
             'healthy'  => true,
@@ -34,7 +35,9 @@ class MagentoSettingsHealthcheck extends Base
         }
 
         $productModel = config('rapidez.models.product');
-        $flatTable = (new $productModel)->getTable();
+        /** @var \Rapidez\Core\Models\Product $productObject */
+        $productObject = new $productModel;
+        $flatTable = $productObject->getTable();
         if (! DB::getSchemaBuilder()->hasTable($flatTable)) {
             $response['healthy'] = false;
             $response['messages'][] = ['type' => 'error', 'value' => __('Flat table ":flatTable" is missing! Don\'t forget to run bin/magento indexer:reindex', ['flatTable' => $flatTable])];
@@ -45,7 +48,9 @@ class MagentoSettingsHealthcheck extends Base
         }
 
         $categoryModel = config('rapidez.models.category');
-        $flatTable = (new $categoryModel)->getTable();
+        /** @var \Rapidez\Core\Models\Category $categoryObject */
+        $categoryObject = new $categoryModel;
+        $flatTable = $categoryObject->getTable();
         if (! DB::getSchemaBuilder()->hasTable($flatTable)) {
             $response['healthy'] = false;
             $response['messages'][] = ['type' => 'error', 'value' => __('Flat table ":flatTable" is missing! Don\'t forget to run bin/magento indexer:reindex', ['flatTable' => $flatTable])];

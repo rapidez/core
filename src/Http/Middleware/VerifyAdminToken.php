@@ -3,11 +3,12 @@
 namespace Rapidez\Core\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class VerifyAdminToken
 {
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next): mixed
     {
         $token = config('rapidez.admin_token');
 

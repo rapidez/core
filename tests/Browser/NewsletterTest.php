@@ -13,11 +13,11 @@ class NewsletterTest extends DuskTestCase
     /**
      * @test
      */
-    public function test()
+    public function test(): void
     {
         $this->browse(function (Browser $browser) {
             $email = $this->faker->email;
-            $browser->visit('/')
+            $browser->visit('/') // @phpstan-ignore-line
                 ->scrollIntoView('@newsletter')
                 ->waitUntilIdle()
                 ->type('@newsletter-email', $email)

@@ -11,7 +11,7 @@ class ProductViewEvent
     use Dispatchable;
     use SerializesModels;
 
-    public $product;
+    public Product $product;
 
     public function __construct(Product $product)
     {

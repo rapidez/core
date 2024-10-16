@@ -11,14 +11,19 @@ class ForCurrentStoreScope implements Scope
 {
     public ?string $joinTable;
 
-    public function __construct($joinTable = null)
+    public function __construct(?string $joinTable = null)
     {
         $this->joinTable = $joinTable;
     }
 
+    /** @param Builder<Model> $builder */
     public function apply(Builder $builder, Model $model)
     {
         $currentTable = $builder->getQuery()->from;
+        if (!is_string($currentTable)) {
+            return;
+        }
+
         $joinTable = $this->joinTable ?: $currentTable . '_store';
         $primaryKey = $model->getKeyName();
 

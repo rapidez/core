@@ -10,10 +10,13 @@ use Illuminate\Support\Facades\DB;
 
 class OnlyProductAttributesScope implements Scope
 {
+    /** @param Builder<Model> $builder */
     public function apply(Builder $builder, Model $model)
     {
         $productModel = config('rapidez.models.product');
-        $productTable = (new $productModel)->getTable();
+        /** @var \Rapidez\Core\Models\Product $productObject */
+        $productObject = new $productModel;
+        $productTable = $productObject->getTable();
         $databaseName = DB::getDatabaseName();
 
         $builder

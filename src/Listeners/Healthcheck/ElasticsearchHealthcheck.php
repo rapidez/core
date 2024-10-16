@@ -4,16 +4,17 @@ namespace Rapidez\Core\Listeners\Healthcheck;
 
 class ElasticsearchHealthcheck extends Base
 {
-    protected $esVersion = '7.6';
+    protected string $esVersion = '7.6';
 
-    public function handle()
+    /** @return array<string, mixed> */
+    public function handle(): array
     {
         $response = [
             'healthy'  => true,
             'messages' => [],
         ];
 
-        $data = json_decode(@file_get_contents(config('rapidez.es_url')));
+        $data = json_decode(@file_get_contents(config('rapidez.es_url')) ?: '');
         if (is_object($data)
             && property_exists($data, 'version')
             && $data->version->build_flavor !== 'oss'

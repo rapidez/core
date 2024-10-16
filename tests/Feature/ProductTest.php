@@ -10,7 +10,7 @@ class ProductTest extends TestCase
     /**
      * @test
      */
-    public function supported_product_types_can_be_received()
+    public function supported_product_types_can_be_received(): void
     {
         foreach (['simple', 'configurable', 'downloadable', 'grouped'] as $supportedType) {
             $this->assertInstanceOf(
@@ -23,7 +23,7 @@ class ProductTest extends TestCase
     /**
      * @test
      */
-    public function unsupported_product_types_can_not_be_received()
+    public function unsupported_product_types_can_not_be_received(): void
     {
         foreach (['bundle'] as $unsupportedType) {
             $this->assertNull(Product::selectAttributes(['sku'])->where((new Product)->getTable() . '.type_id', $unsupportedType)->first());

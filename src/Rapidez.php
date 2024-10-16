@@ -8,15 +8,17 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
+use Rapidez\Core\Exceptions\StoreNotFoundException;
 use Rapidez\Core\Models\Store;
 
 class Rapidez
 {
     protected string|bool|null $compadreVersion;
 
+    /** @param Collection<int, array<string, mixed>> $routes */
     public function __construct(protected Collection $routes) {}
 
-    public function addFallbackRoute($action, $position = 9999)
+    public function addFallbackRoute(mixed $action, int $position = 9999): static
     {
         $this->routes->push([
             'action'   => RouteAction::parse('', $action),
@@ -26,7 +28,7 @@ class Rapidez
         return $this;
     }
 
-    public function removeFallbackRoute($action)
+    public function removeFallbackRoute(mixed $action): static
     {
         $action = RouteAction::parse('', $action);
         $this->routes = $this->routes->reject(fn ($route) => $route['action'] === $action);
@@ -34,20 +36,26 @@ class Rapidez
         return $this;
     }
 
-    public function getAllFallbackRoutes()
+    /** @return Collection<int, array<string, mixed>> */
+    public function getAllFallbackRoutes(): Collection
     {
         return $this->routes->sortBy('position');
     }
 
-    public function config(string $path, $default = null, bool $sensitive = false): ?string
+    public function config(string $path, ?string $default = null, bool $sensitive = false): ?string
     {
         return config('rapidez.models.config')::getCachedByPath($path, $default, $sensitive);
     }
 
-    public function content($content)
+    public function content(string $content): string
     {
         foreach (config('rapidez.frontend.content_variables') as $parser) {
-            $content = (new $parser)($content);
+            $parserObj = new $parser;
+            if (!is_callable($parserObj)) {
+                continue;
+            }
+
+            $content = $parserObj($content);
         }
 
         return $content;
@@ -67,6 +75,7 @@ class Rapidez
         return json_decode(str_replace(array_values($mapping), array_keys($mapping), $encodedString));
     }
 
+    /** @return array<mixed> */
     public function getStores(callable|int|string|null $store = null): array
     {
         $storeModel = config('rapidez.models.store');
@@ -82,6 +91,7 @@ class Rapidez
         return $storeModel::getCached();
     }
 
+    /** @return array<string, mixed> */
     public function getStore(callable|int|string $store): array
     {
         $stores = $this->getStores($store);
@@ -95,6 +105,7 @@ class Rapidez
         return Arr::first($stores);
     }
 
+    /** @param Store|array<string, mixed>|callable|int|string $store */
     public function setStore(Store|array|callable|int|string $store): void
     {
         if (is_callable($store) || is_int($store) || is_string($store)) {
@@ -111,12 +122,13 @@ class Rapidez
         config()->set('rapidez.root_category_id', $store['root_category_id']);
         config()->set('frontend.base_url', url('/'));
 
-        App::setLocale(strtok(Rapidez::config('general/locale/code', 'en_US'), '_'));
+        App::setLocale(strtok(Rapidez::config('general/locale/code', 'en_US') ?? 'en_US', '_') ?: 'en');
 
         Event::dispatch('rapidez:store-set', [$store]);
     }
 
-    public function withStore(Store|array|callable|int|string $store, callable $callback, ...$args)
+    /** @param Store|array<string, mixed>|callable|int|string $store */
+    public function withStore(Store|array|callable|int|string $store, callable $callback, mixed ...$args): mixed
     {
         $initialStore = config('rapidez.store');
         Rapidez::setStore($store);
@@ -129,7 +141,7 @@ class Rapidez
         return $result;
     }
 
-    public function checkCompadreVersion($version = '0.0.1', $operator = '>=')
+    public function checkCompadreVersion(string $version = '0.0.1', string $operator = '>='): bool
     {
         $this->compadreVersion ??= (DB::table('setup_module')->where('module', 'Rapidez_Compadre')->value('schema_version') ?? false);
 

@@ -3,6 +3,7 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProductImage extends Model
 {
@@ -26,8 +27,10 @@ class ProductImage extends Model
         );
     }
 
-    public function productImageValue()
+    /** @return BelongsTo<ProductImageValue, ProductImage> */
+    public function productImageValue(): BelongsTo
     {
+        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.product_image_value'), 'value_id', 'value_id');
     }
 }

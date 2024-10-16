@@ -10,7 +10,7 @@ trait DuskTestCaseSetup
 {
     public string $flat;
 
-    public Product $testProduct;
+    public ?Product $testProduct;
 
     protected function setUp(): void
     {
@@ -39,7 +39,7 @@ trait DuskTestCaseSetup
 
         Browser::macro('waitUntilIdle', function ($timeout = 120) {
             /** @var Browser $this */
-            $this->waitUntilTrueForDuration('window.app?.$data?.loading !== true && await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 5}))', $timeout);
+            $this->waitUntilTrueForDuration('window.app?.$data?.loading !== true && await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 5}))', $timeout); // @phpstan-ignore-line
 
             return $this;
         });

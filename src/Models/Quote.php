@@ -3,6 +3,8 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Rapidez\Core\Actions\DecodeJwt;
 use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
@@ -24,32 +26,43 @@ class Quote extends Model
         static::addGlobalScope(new IsActiveScope);
     }
 
-    public function store()
+    /** @return BelongsTo<Store, Quote> */
+    public function store(): BelongsTo
     {
+        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.store'));
     }
 
-    public function quote_id_masks()
+    /** @return HasMany<QuoteIdMask> */
+    public function quote_id_masks(): HasMany
     {
+        // @phpstan-ignore-next-line
         return $this->hasMany(config('rapidez.models.quote_id_mask'), 'quote_id');
     }
 
-    public function oauth_tokens()
+    /** @return HasMany<OauthToken> */
+    public function oauth_tokens(): HasMany
     {
+        // @phpstan-ignore-next-line
         return $this->hasMany(config('rapidez.models.oauth_token'), 'customer_id', 'customer_id');
     }
 
-    public function sales_order()
+    /** @return BelongsTo<SalesOrder, Quote> */
+    public function sales_order(): BelongsTo
     {
+        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.sales_order'));
     }
 
-    public function items()
+    /** @return HasMany<QuoteItem> */
+    public function items(): HasMany
     {
+        // @phpstan-ignore-next-line
         return $this->hasMany(config('rapidez.models.quote_item'), 'quote_id');
     }
 
-    public function scopeWhereQuoteIdOrCustomerToken(Builder $query, string $quoteIdMaskOrCustomerToken)
+    /** @param Builder<Quote> $query */
+    public function scopeWhereQuoteIdOrCustomerToken(Builder $query, string $quoteIdMaskOrCustomerToken): void
     {
         $query->when(
             DecodeJwt::isJwt($quoteIdMaskOrCustomerToken),

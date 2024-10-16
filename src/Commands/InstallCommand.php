@@ -16,11 +16,12 @@ class InstallCommand extends Command
 
     protected $description = 'Install Rapidez';
 
+    /** @var Collection<int, string> $selectedPackages */
     protected Collection $selectedPackages;
 
     protected bool $dockerInstall = false;
 
-    public function handle()
+    public function handle(): void
     {
         if ($this->option('frontendonly')) {
             $this->frontend(true);
@@ -37,7 +38,7 @@ class InstallCommand extends Command
             ->finalize();
     }
 
-    protected function intro()
+    protected function intro(): static
     {
         $this->info(str_repeat('=', 37));
         $this->info('  ____             _     _          ');
@@ -56,7 +57,7 @@ class InstallCommand extends Command
         return $this;
     }
 
-    protected function magento()
+    protected function magento(): static
     {
         if (confirm('Do you have a Magento installation up-and-running?')) {
             return $this;
@@ -87,7 +88,7 @@ class InstallCommand extends Command
         return $this;
     }
 
-    protected function validate()
+    protected function validate(): static
     {
         if ($this->dockerInstall || confirm('Did you configure the Magento credentials in the .env?')) {
             $this->info('We are going to run `php artisan rapidez:validate` now');
@@ -104,7 +105,7 @@ class InstallCommand extends Command
         return $this;
     }
 
-    protected function frontend($force = false)
+    protected function frontend(bool $force = false): static
     {
         $filesToCopy = [
             'package.json',
@@ -139,7 +140,7 @@ class InstallCommand extends Command
         return $this;
     }
 
-    protected function packages()
+    protected function packages(): static
     {
         $this->warn('We are going to ask you which packages you would like to install,');
         $this->warn('at the end we will show your selection before we do anything.');
@@ -248,7 +249,7 @@ class InstallCommand extends Command
         return $this;
     }
 
-    protected function finalize()
+    protected function finalize(): static
     {
         $this->info('We are going to run `php artisan storage:link` now');
         $this->call('storage:link');

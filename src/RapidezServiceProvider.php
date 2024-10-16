@@ -40,7 +40,8 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class RapidezServiceProvider extends ServiceProvider
 {
-    protected $configFiles = [
+    /** @var array<string> $configFiles */
+    protected array $configFiles = [
         'frontend',
         'healthcheck',
         'indexer',
@@ -50,7 +51,7 @@ class RapidezServiceProvider extends ServiceProvider
         'system',
     ];
 
-    public function boot()
+    public function boot(): void
     {
         $this
             ->bootAuth()
@@ -79,7 +80,12 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootAuth(): self
     {
         auth()->extend('magento-customer', function (Application $app, string $name, array $config) {
-            return new MagentoCustomerTokenGuard(auth()->createUserProvider($config['provider']), request(), 'token', 'token');
+            $user = auth()->createUserProvider($config['provider']);
+            if(!$user) {
+                return null;
+            }
+
+            return new MagentoCustomerTokenGuard($user, request(), 'token', 'token');
         });
 
         config([
@@ -158,7 +164,13 @@ class RapidezServiceProvider extends ServiceProvider
             return $this;
         }
 
-        $path = config('rapidez.frontend.themes.' . request()->server('MAGE_RUN_CODE', request()->has('_store') && ! app()->isProduction() ? request()->get('_store') : 'default'), false);
+        $theme = request()->server('MAGE_RUN_CODE', request()->has('_store') && ! app()->isProduction() ? request()->get('_store') : 'default');
+
+        if (!is_string($theme)) {
+            return $this;
+        }
+
+        $path = config('rapidez.frontend.themes.' . $theme);
 
         if (! $path) {
             return $this;
@@ -236,6 +248,7 @@ class RapidezServiceProvider extends ServiceProvider
     {
         $this->app->make(Kernel::class)->pushMiddleware(DetermineAndSetShop::class);
 
+        // @phpstan-ignore-next-line
         $this->app['router']->aliasMiddleware('store_code', CheckStoreCode::class);
 
         return $this;
@@ -261,7 +274,7 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootMacros(): self
     {
         Collection::macro('firstForCurrentStore', function () {
-            /** @var Collection $this */
+            /** @var Collection<> $this */
             return $this->filter(function ($value) {
                 return in_array($value->store_id, [config('rapidez.store'), 0]);
             })->sortByDesc('store_id')->first();

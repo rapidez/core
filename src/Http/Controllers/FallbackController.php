@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class FallbackController
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): mixed
     {
         $cacheKey = 'fallbackroute-' . md5($request->url());
         $route = Cache::get($cacheKey);
@@ -41,7 +41,7 @@ class FallbackController
         abort(404);
     }
 
-    protected function tryRoute($route)
+    protected function tryRoute(mixed $route): mixed
     {
         try {
             $response = App::call($route['action']['uses']);

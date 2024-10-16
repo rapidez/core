@@ -1,0 +1,11 @@
+includes:
+    - ./vendor/larastan/larastan/extension.neon
+
+parameters:
+    paths:
+        - src/
+        - tests/
+        - routes/
+    ignoreErrors:
+        - '#^Call to an undefined method MailerLite\\LaravelElasticsearch\\Manager::#'
+    level: 8

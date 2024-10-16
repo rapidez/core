@@ -2,9 +2,11 @@
 
 namespace Rapidez\Core\Http\Controllers;
 
+use Illuminate\Contracts\View\View;
+
 class CategoryController
 {
-    public function show(int $categoryId)
+    public function show(int $categoryId): View
     {
         $categoryModel = config('rapidez.models.category');
         $category = $categoryModel::findOrFail($categoryId);

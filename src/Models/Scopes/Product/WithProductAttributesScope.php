@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Scope;
 
 class WithProductAttributesScope implements Scope
 {
+    /** @param Builder<Model> $builder */
     public function apply(Builder $builder, Model $model)
     {
         $builder->addSelect([
@@ -38,9 +39,9 @@ class WithProductAttributesScope implements Scope
                     'Magento\Tax\Model\TaxClass\Source\Product',
                     'Magento\Eav\Model\Entity\Attribute\Source\Boolean',
                 ])) {
-                    $builder->addSelect($builder->getQuery()->from . '.' . $attribute->code . '_value AS ' . $attribute->code);
+                    $builder->addSelect($builder->qualifyColumn($attribute->code . '_value') . ' AS ' . $attribute->code);
                 } else {
-                    $builder->addSelect($builder->getQuery()->from . '.' . $attribute->code . ' AS ' . $attribute->code);
+                    $builder->addSelect($builder->qualifyColumn($attribute->code) . ' AS ' . $attribute->code);
                 }
             } else {
                 if ($attribute->input == 'select') {
@@ -49,7 +50,7 @@ class WithProductAttributesScope implements Scope
                         ->leftJoin(
                             'catalog_product_entity_' . $attribute->type . ' AS ' . $attribute->code,
                             function ($join) use ($builder, $attribute) {
-                                $join->on($attribute->code . '.entity_id', '=', $builder->getQuery()->from . '.entity_id')
+                                $join->on($attribute->code . '.entity_id', '=', $builder->qualifyColumn('entity_id'))
                                     ->where($attribute->code . '.attribute_id', $attribute->id)
                                     ->where($attribute->code . '.store_id', 0);
                             }
@@ -72,14 +73,14 @@ class WithProductAttributesScope implements Scope
                         ->leftJoin(
                             'catalog_product_entity_' . $attribute->type . ' AS ' . $attribute->code . '_' . config('rapidez.store'),
                             function ($join) use ($builder, $attribute) {
-                                $join->on($attribute->code . '_' . config('rapidez.store') . '.entity_id', '=', $builder->getQuery()->from . '.entity_id')
+                                $join->on($attribute->code . '_' . config('rapidez.store') . '.entity_id', '=', $builder->qualifyColumn('entity_id'))
                                     ->where($attribute->code . '_' . config('rapidez.store') . '.attribute_id', $attribute->id)
                                     ->where($attribute->code . '_' . config('rapidez.store') . '.store_id', config('rapidez.store'));
                             }
                         )->leftJoin(
                             'catalog_product_entity_' . $attribute->type . ' AS ' . $attribute->code . '_0',
                             function ($join) use ($builder, $attribute) {
-                                $join->on($attribute->code . '_0.entity_id', '=', $builder->getQuery()->from . '.entity_id')
+                                $join->on($attribute->code . '_0.entity_id', '=', $builder->qualifyColumn('entity_id'))
                                     ->where($attribute->code . '_0.attribute_id', $attribute->id)
                                     ->where($attribute->code . '_0.store_id', 0);
                             }

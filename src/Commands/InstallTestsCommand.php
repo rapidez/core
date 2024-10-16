@@ -11,7 +11,7 @@ class InstallTestsCommand extends Command
 
     protected $description = 'Install Rapidez Tests';
 
-    public function handle()
+    public function handle(): void
     {
         File::copyDirectory(base_path('vendor/rapidez/core/tests/Browser'), base_path('tests/Browser'));
         File::copyDirectory(base_path('vendor/rapidez/core/tests/Feature'), base_path('tests/Feature'));
@@ -27,7 +27,7 @@ class InstallTestsCommand extends Command
         shell_exec('cd ' . base_path() . ' && composer require --dev laravel/dusk && php artisan dusk:install && php artisan dusk:chrome-driver --detect');
 
         $duskTestCaseFile = base_path('tests/DuskTestCase.php');
-        file_put_contents($duskTestCaseFile, str(file_get_contents($duskTestCaseFile))
+        file_put_contents($duskTestCaseFile, str(file_get_contents($duskTestCaseFile) ?: null)
             ->replace('use CreatesApplication;', 'use CreatesApplication, DuskTestCaseSetup;')
             ->replace("use Laravel\Dusk\TestCase as BaseTestCase;\n", "use Laravel\Dusk\TestCase as BaseTestCase;\nuse Rapidez\Core\Tests\DuskTestCaseSetup;\n"));
 

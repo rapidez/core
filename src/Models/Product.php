@@ -25,6 +25,16 @@ use Rapidez\Core\Models\Traits\Product\CastSuperAttributes;
 use Rapidez\Core\Models\Traits\Product\SelectAttributeScopes;
 use TorMorten\Eventy\Facades\Eventy;
 
+/**
+ * @property string $type_id
+ * @property string|null $url_key
+ * @property \Carbon\Carbon|null $special_from_date
+ * @property \Carbon\Carbon|null $special_to_date
+ *
+ * @property-read array<int, Product>|null $children
+ * @property-read array<int, Product>|null $grouped
+ * @property-read array<int, int> $category_ids
+ */
 class Product extends Model
 {
     use CastMultiselectAttributes;
@@ -32,6 +42,7 @@ class Product extends Model
     use HasAlternatesThroughRewrites;
     use SelectAttributeScopes;
 
+    /** @var array<string> @attributesToSelect */
     public array $attributesToSelect = [];
 
     protected $primaryKey = 'entity_id';
@@ -49,8 +60,8 @@ class Product extends Model
         static::addGlobalScope(new WithProductGroupedScope);
         static::addGlobalScope('defaults', function (Builder $builder) {
             $builder
-                ->whereNotIn($builder->getQuery()->from . '.type_id', ['bundle'])
-                ->groupBy($builder->getQuery()->from . '.entity_id');
+                ->whereNotIn($builder->qualifyColumn('type_id'), ['bundle'])
+                ->groupBy($builder->qualifyColumn('entity_id'));
         });
     }
 
@@ -59,6 +70,7 @@ class Product extends Model
         return 'catalog_product_flat_' . config('rapidez.store');
     }
 
+    /** @return array<string, string> */
     public function getCasts(): array
     {
         if (! isset($this->casts['name'])) {
@@ -77,15 +89,17 @@ class Product extends Model
                 ],
                 $this->getSuperAttributeCasts(),
                 $this->getMultiselectAttributeCasts(),
-                Eventy::filter('product.casts', []),
+                Eventy::filter('product.casts', []), // @phpstan-ignore-line
             );
         }
 
         return $this->casts;
     }
 
+    /** @return BelongsToMany<ProductImage> */
     public function gallery(): BelongsToMany
     {
+        // @phpstan-ignore-next-line
         return $this->belongsToMany(
             config('rapidez.models.product_image'),
             'catalog_product_entity_media_gallery_value_to_entity',
@@ -94,24 +108,30 @@ class Product extends Model
         );
     }
 
+    /** @return HasMany<ProductView> */
     public function views(): HasMany
     {
+        // @phpstan-ignore-next-line
         return $this->hasMany(
             config('rapidez.models.product_view'),
             'product_id',
         );
     }
 
+    /** @return HasMany<ProductOption> */
     public function options(): HasMany
     {
+        // @phpstan-ignore-next-line
         return $this->hasMany(
             config('rapidez.models.product_option'),
             'product_id',
         );
     }
 
+    /** @return HasMany<CategoryProduct> */
     public function categoryProducts(): HasMany
     {
+        // @phpstan-ignore-next-line
         return $this
             ->hasMany(
                 config('rapidez.models.category_product'),
@@ -119,24 +139,30 @@ class Product extends Model
             );
     }
 
+    /** @return HasOne<ProductReviewSummary> */
     public function reviewSummary(): HasOne
     {
+        // @phpstan-ignore-next-line
         return $this->hasOne(
-            config('rapidez.models.product_review_summary', Rapidez\Core\Models\ProductReviewSummary::class),
+            config('rapidez.models.product_review_summary'),
             'entity_pk_value'
         );
     }
 
+    /** @return HasMany<Rewrite> */
     public function rewrites(): HasMany
     {
+        // @phpstan-ignore-next-line
         return $this
             ->hasMany(config('rapidez.models.rewrite'), 'entity_id')
             ->withoutGlobalScope('store')
             ->where('entity_type', 'product');
     }
 
+    /** @return HasOneThrough<Product> */
     public function parent(): HasOneThrough
     {
+        // @phpstan-ignore-next-line
         return $this->hasOneThrough(
             config('rapidez.models.product'),
             config('rapidez.models.product_link'),
@@ -145,25 +171,30 @@ class Product extends Model
         )->withoutGlobalScopes();
     }
 
+    /**
+     * @param Builder<Product> $query
+     * @param array<int> $productIds
+     * @return Builder<Product>
+     */
     public function scopeByIds(Builder $query, array $productIds): Builder
     {
         return $query->whereIn($this->getQualifiedKeyName(), $productIds);
     }
 
-    public function getPriceAttribute($price)
+    public function getPriceAttribute(?float $price): ?float
     {
-        if ($this->type_id == 'configurable') {
+        if ($this->type_id == 'configurable' && $this->children) {
             return collect($this->children)->min->price;
         }
 
-        if ($this->type_id == 'grouped') {
+        if ($this->type_id == 'grouped' && $this->grouped) {
             return collect($this->grouped)->min->price;
         }
 
         return $price;
     }
 
-    public function getSpecialPriceAttribute($specialPrice)
+    public function getSpecialPriceAttribute(?float $specialPrice): ?float
     {
         if (! in_array($this->type_id, ['configurable', 'grouped'])) {
             if ($this->special_from_date && $this->special_from_date > now()->toDateTimeString()) {
@@ -201,43 +232,47 @@ class Product extends Model
         return '/' . ($this->url_key ? $this->url_key . $configModel::getCachedByPath('catalog/seo/product_url_suffix', '.html') : 'catalog/product/view/id/' . $this->entity_id);
     }
 
+    /** @return array<int, string> */
     public function getImagesAttribute(): array
     {
         return $this->gallery->sortBy('productImageValue.position')->pluck('value')->toArray();
     }
 
-    public function getImageAttribute($image): ?string
+    public function getImageAttribute(?string $image): ?string
     {
         return $image !== 'no_selection' ? $image : null;
     }
 
-    public function getSmallImageAttribute($image): ?string
+    public function getSmallImageAttribute(?string $image): ?string
     {
         return $this->getImageAttribute($image);
     }
 
-    public function getThumbnailAttribute($image): ?string
+    public function getThumbnailAttribute(?string $image): ?string
     {
         return $this->getImageAttribute($image);
     }
 
+    /** @return Attribute<iterable<Category>, null> */
     protected function breadcrumbCategories(): Attribute
     {
         return Attribute::make(
             get: function () {
                 if (! $path = session('latest_category_path')) {
-                    return [];
+                    return collect();
                 }
 
                 $categoryIds = explode('/', $path);
                 $categoryIds = array_slice($categoryIds, array_search(config('rapidez.root_category_id'), $categoryIds) + 1);
 
                 if (! in_array(end($categoryIds), $this->category_ids)) {
-                    return [];
+                    return collect();
                 }
 
                 $categoryModel = config('rapidez.models.category');
-                $categoryTable = (new $categoryModel)->getTable();
+                /** @var Category $categoryObject */
+                $categoryObject = new $categoryModel;
+                $categoryTable = $categoryObject->getTable();
 
                 return Category::whereIn($categoryTable . '.entity_id', $categoryIds)
                     ->orderByRaw('FIELD(' . $categoryTable . '.entity_id,' . implode(',', $categoryIds) . ')')
@@ -246,7 +281,7 @@ class Product extends Model
         )->shouldCache();
     }
 
-    public static function exist($productId): bool
+    public static function exist(int $productId): bool
     {
         return self::withoutGlobalScopes()->where('entity_id', $productId)->exists();
     }

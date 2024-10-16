@@ -3,6 +3,8 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SalesOrder extends Model
 {
@@ -17,27 +19,36 @@ class SalesOrder extends Model
         'paypal_ipn_customer_notified',
     ];
 
-    public function quote()
+    /** @return BelongsTo<Quote, SalesOrder> */
+    public function quote(): BelongsTo
     {
+        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.quote'), 'quote_id');
     }
 
-    public function sales_order_addresses()
+    /** @return HasMany<SalesOrderAddress> */
+    public function sales_order_addresses(): HasMany
     {
+        // @phpstan-ignore-next-line
         return $this->hasMany(config('rapidez.models.sales_order_address'), 'parent_id');
     }
 
-    public function sales_order_items()
+    /** @return HasMany<SalesOrderItem> */
+    public function sales_order_items(): HasMany
     {
+        // @phpstan-ignore-next-line
         return $this->hasMany(config('rapidez.models.sales_order_item'), 'order_id');
     }
 
-    public function sales_order_payments()
+    /** @return HasMany<SalesOrderPayment> */
+    public function sales_order_payments(): HasMany
     {
+        // @phpstan-ignore-next-line
         return $this->hasMany(config('rapidez.models.sales_order_payment'), 'parent_id');
     }
 
-    public function scopeWhereQuoteIdOrCustomerToken(Builder $query, string $quoteIdMaskOrCustomerToken)
+    /** @param Builder<SalesOrder> $query */
+    public function scopeWhereQuoteIdOrCustomerToken(Builder $query, string $quoteIdMaskOrCustomerToken): void
     {
         $query->whereHas(
             'quote',

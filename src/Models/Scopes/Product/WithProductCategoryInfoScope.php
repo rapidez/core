@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Scope;
 
 class WithProductCategoryInfoScope implements Scope
 {
+    /** @param Builder<Model> $builder */
     public function apply(Builder $builder, Model $model)
     {
         // We're joining this on everything, also the simple product so we
