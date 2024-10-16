@@ -42,22 +42,21 @@
             <template v-else>@lang('Shipping address')</template>
         </p>
         <ul>
-            {{-- TODO: Check if all fields are here --}}
-            <li>@{{ cart.shipping_addresses[0]?.company }}</li>
+            <li v-if="cart.shipping_addresses[0]?.company">@{{ cart.shipping_addresses[0]?.company }}</li>
             <li>@{{ cart.shipping_addresses[0]?.prefix }} @{{ cart.shipping_addresses[0]?.firstname }} @{{ cart.shipping_addresses[0]?.middlename }} @{{ cart.shipping_addresses[0]?.lastname }} @{{ cart.shipping_addresses[0]?.suffix }}</li>
-            <li>@{{ cart.shipping_addresses[0]?.street[0] }} @{{ cart.shipping_addresses[0]?.street[1] }} @{{ $root.checkout?.billing_address?.street[2] }}</li>
+            <li>@{{ cart.shipping_addresses[0]?.street[0] }} @{{ cart.shipping_addresses[0]?.street[1] }} @{{ cart.shipping_addresses[0]?.street[2] }}</li>
             <li>@{{ cart.shipping_addresses[0]?.postcode }} - @{{ cart.shipping_addresses[0]?.city }} - @{{ cart.shipping_addresses[0]?.country.label }}</li>
-            <li>@{{ cart.shipping_addresses[0]?.telephone }}</li>
+            <li v-if="cart.shipping_addresses[0]?.telephone">@{{ cart.shipping_addresses[0]?.telephone }}</li>
         </ul>
     </div>
     <div v-if="cart.billing_address && !cart.shipping_addresses[0]?.uid != cart.billing_address.uid" class="mt-4 flex w-full flex-col gap-x-1 border p-3">
         <p class="font-lg mb-2 font-bold text-neutral">@lang('Billing address')</p>
         <ul>
-            <li>@{{ cart.billing_address.company }}</li>
+            <li v-if="cart.billing_address.company">@{{ cart.billing_address.company }}</li>
             <li>@{{ cart.billing_address.prefix }} @{{ cart.billing_address.firstname }} @{{ cart.billing_address.middlename }} @{{ cart.billing_address.lastname }} @{{ cart.billing_address.suffix }}</li>
             <li>@{{ cart.billing_address.street[0] }} @{{ cart.billing_address.street[1] }} @{{ cart.billing_address.street[2] }}</li>
-            <li>@{{ cart.billing_address.postcode }} - @{{ cart.billing_address.city }} - @{{ cart.billing_address.country_id }}</li>
-            <li>@{{ cart.billing_address.telephone }}</li>
+            <li>@{{ cart.billing_address.postcode }} - @{{ cart.billing_address.city }} - @{{ cart.billing_address.country.label }}</li>
+            <li v-if="cart.billing_address.telephone">@{{ cart.billing_address.telephone }}</li>
         </ul>
     </div>
 </div>

@@ -25,7 +25,7 @@
                     </div>
                 </div>
 
-                <div class="flex w-full flex-wrap justify-end self-baseline lg:max-w-xs">
+                <div class="flex w-full flex-wrap justify-end self-baseline max-lg:mt-5 lg:max-w-xs">
                     @include('rapidez::cart.sidebar')
                 </div>
             </div>

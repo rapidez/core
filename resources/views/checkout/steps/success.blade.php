@@ -1,6 +1,6 @@
 <checkout-success>
     <template slot-scope="{ order, refreshOrder, hideBilling, shipping, billing, items }">
-        <div dusk="checkout-success" v-cloak v-if="order">
+        <div v-if="order" dusk="checkout-success" class="container" v-cloak>
             <h1 class="font-bold text-4xl mb-5">@lang('Order placed succesfully')</h1>
             <div class="bg-highlight rounded p-8">
                 <p>@lang('We will get to work for you right away')</p>
@@ -17,13 +17,13 @@
                         <a :href="'/' + item.product.url_key + item.product.url_suffix | url" target="blank" class="block">
                             <img
                                 :alt="item.product_name"
-                                :src="'/storage/{{ config('rapidez.store') }}/resizes/80x80/sku/' + item.product_sku + '.webp'"
+                                :src="'/storage/{{ config('rapidez.store') }}/resizes/200/sku/' + item.product_sku + '.webp'"
                                 height="100"
                                 class="mx-auto"
                             />
                         </a>
                     </div>
-                    <div class="w-5/6 sm:w-5/12 lg:w-5/12">
+                    <div class="w-5/6 sm:w-5/12">
                         <a :href="'/' + item.product.url_key + item.product.url_suffix | url" target="blank" dusk="cart-item-name" class="font-bold">@{{ item.product_name }}</a>
                         <div v-for="option in item.selected_options">
                             @{{ option.label }}: @{{ option.value }}
@@ -45,7 +45,7 @@
             </div>
             <div class="flex flex-col mt-4 gap-x-4 md:flex-row">
                 <div class="w-full p-8 bg-highlight rounded border-l-2 border-neutral md:w-1/2" v-if="order.billing_address">
-                    <p class="text-neutral font-lg font-bold mb-2">@lang('billing address')</p>
+                    <p class="text-neutral font-lg font-bold mb-2">@lang('Billing address')</p>
                     <ul>
                         <li>@{{ order.billing_address.firstname }} @{{ order.billing_address.lastname }}</li>
                         <li>@{{ order.billing_address.street?.join(' ') }}</li>
