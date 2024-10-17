@@ -27,6 +27,11 @@ export default {
                         return result.concat({ code: filterKey, value: config.subcategories[value] })
                     }
 
+                    if (filterKey === 'price') {
+                        let [minPrice, maxPrice] = value
+                        return result.concat({ code: filterKey, value: price(minPrice) + ' - ' + price(maxPrice) })
+                    }
+
                     if (Array.isArray(value)) {
                         // Check if the value is a swatch value, boolean or just an array
                         let items = Object.keys(swatches.value).includes(filterKey)
@@ -41,11 +46,6 @@ export default {
 
                         // We can have a filter where multiple values may be selected, so we need to map and concat all of them
                         return result.concat(items.map((item) => ({ code: filterKey, value: item })))
-                    }
-
-                    if (filterKey === 'price') {
-                        let [minPrice, maxPrice] = value
-                        return result.concat({ code: filterKey, value: price(minPrice) + ' - ' + price(maxPrice) })
                     }
 
                     return result
