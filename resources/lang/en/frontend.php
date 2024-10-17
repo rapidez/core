@@ -23,6 +23,11 @@ return [
         'email'             => 'An email address is required.',
     ],
 
+    'filters' => [
+        'no'  => 'No',
+        'yes' => 'Yes',
+    ],
+
     'asc'       => 'asc',
     'desc'      => 'desc',
     'relevance' => 'Relevance',
