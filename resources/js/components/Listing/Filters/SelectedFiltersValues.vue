@@ -17,43 +17,38 @@ export default {
         activeFilters() {
             return Object.keys(this.selectedValues)
                 .filter((filterKey) => {
-                    return (
-                        this.selectedValues[filterKey].showFilter &&
-                        (Array.isArray(this.selectedValues[filterKey].value)
-                            ? this.selectedValues[filterKey].value.length
-                            : !!this.selectedValues[filterKey].value)
-                    )
+                    let { showFilter, value } = this.selectedValues[filterKey]
+                    return showFilter && (Array.isArray(value) ? value.length : !!value)
                 })
-                .flatMap((filterKey) => {
-                    let result
+                .reduce((result, filterKey) => {
+                    let { value } = this.selectedValues[filterKey]
 
-                    if (
-                        Array.isArray(this.selectedValues[filterKey].value) &&
-                        !['category', 'price', ...Object.keys(swatches.value)].includes(filterKey)
-                    ) {
-                        result = this.selectedValues[filterKey].value.map((selected) => selected)
+                    if (filterKey === 'category') {
+                        return result.concat({ code: filterKey, value: config.subcategories[value] })
+                    }
+
+                    if (Array.isArray(value)) {
+                        // Check if the value is a swatch value, boolean or just an array
+                        let items = Object.keys(swatches.value).includes(filterKey)
+                            ? value.map((selected) => swatches.value[filterKey].options[selected].label)
+                            : value.map((item) => item === '0'
+                                ? window.config.translations.filters.no 
+                                : item === '1'
+                                    ? window.config.translations.filters.yes 
+                                    : item
+                            )
+
+                        // We can have a filter where multiple values may be selected, so we need to map and concat all of them
+                        return result.concat(items.map((item) => ({ code: filterKey, value: item })));
                     }
 
                     if (filterKey === 'price') {
-                        result = price(this.selectedValues[filterKey].value[0]) + ' - ' + price(this.selectedValues[filterKey].value[1])
+                        let [minPrice, maxPrice] = value
+                        return result.concat({ code: filterKey, value: price(minPrice) + ' - ' + price(maxPrice) })
                     }
 
-                    
-                    if (Object.keys(swatches.value).includes(filterKey)) {
-                        result = this.selectedValues[filterKey].value.map((selected) => {
-                            return swatches.value[filterKey].options[selected].label
-                        })
-                    }
-                    if (filterKey === 'category') {
-                        return { code: filterKey, value: config.subcategories[this.selectedValues[filterKey].value] }
-                    }
-
-                    return result
-                        ? Array.isArray(result)
-                            ? result.map((value) => ({ code: filterKey, value: value }))
-                            : [{ code: filterKey, value: result }]
-                        : []
-                })
+                    return result;
+                }, []);
         },
     },
 }
