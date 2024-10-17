@@ -31,15 +31,16 @@ export default {
                         // Check if the value is a swatch value, boolean or just an array
                         let items = Object.keys(swatches.value).includes(filterKey)
                             ? value.map((selected) => swatches.value[filterKey].options[selected].label)
-                            : value.map((item) => item === '0'
-                                ? window.config.translations.filters.no 
-                                : item === '1'
-                                    ? window.config.translations.filters.yes 
-                                    : item
-                            )
+                            : value.map((item) =>
+                                  item === '0'
+                                      ? window.config.translations.filters.no
+                                      : item === '1'
+                                        ? window.config.translations.filters.yes
+                                        : item,
+                              )
 
                         // We can have a filter where multiple values may be selected, so we need to map and concat all of them
-                        return result.concat(items.map((item) => ({ code: filterKey, value: item })));
+                        return result.concat(items.map((item) => ({ code: filterKey, value: item })))
                     }
 
                     if (filterKey === 'price') {
@@ -47,8 +48,8 @@ export default {
                         return result.concat({ code: filterKey, value: price(minPrice) + ' - ' + price(maxPrice) })
                     }
 
-                    return result;
-                }, []);
+                    return result
+                }, [])
         },
     },
 }
