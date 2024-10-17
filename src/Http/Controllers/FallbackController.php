@@ -41,7 +41,8 @@ class FallbackController
         abort(404);
     }
 
-    protected function tryRoute(mixed $route): mixed
+    /** @param array<string, mixed> $route */
+    protected function tryRoute(array $route): mixed
     {
         try {
             $response = App::call($route['action']['uses']);
