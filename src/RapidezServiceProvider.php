@@ -128,7 +128,7 @@ class RapidezServiceProvider extends ServiceProvider
 
             $this->publishes([
                 __DIR__ . '/../resources/lang' => resource_path('lang/vendor/rapidez'),
-                __DIR__ . '/../lang' => resource_path('lang'),
+                __DIR__ . '/../lang'           => resource_path('lang'),
             ], 'translations');
 
             $this->publishes([
