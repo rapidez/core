@@ -5,7 +5,7 @@
     'index' => 1,
 ])
 
-<enhanced-quantity-select :input-ref="'qty-select-' + {{ $index }}" :model="parseInt({{ $model }})" :min-qty="{{ $minSaleQty }}" :increment="{{ $qtyIncrements }}" v-slot="qtySelect">
+<quantity-select :input-ref="'qty-select-' + {{ $index }}" :model="parseInt({{ $model }})" :min-qty="{{ $minSaleQty }}" :increment="{{ $qtyIncrements }}" v-slot="qtySelect">
     <div class="flex">
         <x-rapidez::button.outline @click.prevent="qtySelect.decrease">
             <div class="bg-neutral h-0.5 w-3 hover:bg-white"></div>
@@ -29,4 +29,4 @@
             </div>
         </x-rapidez::button.outline>
     </div>
-</enhanced-quantity-select>
+</quantity-select>
