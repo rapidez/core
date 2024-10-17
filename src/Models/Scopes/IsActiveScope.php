@@ -8,12 +8,8 @@ use Illuminate\Database\Eloquent\Scope;
 
 class IsActiveScope implements Scope
 {
-    public string $column;
-
-    public function __construct(string $column = 'is_active')
-    {
-        $this->column = $column;
-    }
+    public function __construct(public string $column = 'is_active')
+    { }
 
     /** @param Builder<Model> $builder */
     public function apply(Builder $builder, Model $model)

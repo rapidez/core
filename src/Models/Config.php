@@ -46,7 +46,7 @@ class Config extends Model
         return $sensitive && $value ? self::decrypt($value) : $value;
     }
 
-    public static function decrypt(string $value): string|false
+    public static function decrypt(string $value): ?string
     {
         throw_unless(
             config('rapidez.crypt_key'),
@@ -73,6 +73,6 @@ class Config extends Model
             $nonce,
             $nonce,
             config('rapidez.crypt_key')
-        );
+        ) ?: null;
     }
 }

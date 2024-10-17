@@ -2,14 +2,11 @@
 
 namespace Rapidez\Core\Http\Controllers\Fallback;
 
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Redirector;
 
 class UrlRewriteController
 {
-    public function __invoke(Request $request): Redirector|RedirectResponse|View|null
+    public function __invoke(Request $request): mixed
     {
         $rewriteModel = config('rapidez.models.rewrite');
         if (! $rewrite = $rewriteModel::firstWhere('request_path', $request->path())) {

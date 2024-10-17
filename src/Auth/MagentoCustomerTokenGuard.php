@@ -43,7 +43,7 @@ class MagentoCustomerTokenGuard extends TokenGuard implements Guard
         return (bool) $this->retrieveByToken($credentials[$this->inputKey]);
     }
 
-    protected function retrieveByToken(string $token): Customer
+    protected function retrieveByToken(string $token): ?Customer
     {
         return config('rapidez.models.customer')::whereToken($token)->first();
     }

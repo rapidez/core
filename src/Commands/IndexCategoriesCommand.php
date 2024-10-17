@@ -2,7 +2,7 @@
 
 namespace Rapidez\Core\Commands;
 
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 use Rapidez\Core\Facades\Rapidez;
 use TorMorten\Eventy\Facades\Eventy;
 
@@ -38,6 +38,6 @@ class IndexCategoriesCommand extends ElasticsearchIndexCommand
             ->whereNotNull('url_key')
             ->whereNot('url_key', 'default-category')
             ->has('products')
-            ->get() ?? collect();
+            ->get();
     }
 }

@@ -14,9 +14,11 @@ class ModelsHealthcheck extends Base
             'messages' => [],
         ];
 
+        /** @var array<string, string> $models */
+        $models = config('rapidez.models');
+
         /** @var \Illuminate\Support\Collection<string, string> $classesWithIncorrectParent */
-        // @phpstan-ignore-next-line
-        $classesWithIncorrectParent = collect(config('rapidez.models'))->filter(fn ($model) => ! is_subclass_of($model, Model::class));
+        $classesWithIncorrectParent = collect($models)->filter(fn ($model) => ! is_subclass_of($model, Model::class));
 
         if (! $classesWithIncorrectParent->count()) {
             return $response;
