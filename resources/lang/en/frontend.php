@@ -24,7 +24,7 @@ return [
     ],
 
     'filters' => [
-        'no' => 'No',
+        'no'  => 'No',
         'yes' => 'Yes',
     ],
 
