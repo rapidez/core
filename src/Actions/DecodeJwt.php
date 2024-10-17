@@ -3,7 +3,6 @@
 namespace Rapidez\Core\Actions;
 
 use DateTimeZone;
-use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -16,6 +15,7 @@ use Lcobucci\JWT\Validation\Constraint\LooseValidAt;
 use Lcobucci\JWT\Validation\Constraint\SignedWith;
 use Lcobucci\JWT\Validation\ConstraintViolation;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
+use Rapidez\Core\Exceptions\DecryptionException;
 
 class DecodeJwt
 {
@@ -27,7 +27,7 @@ class DecodeJwt
     public static function decode(string $jwt): UnencryptedToken
     {
         if ($jwt === '') {
-            throw new Exception('JWT cannot be empty.');
+            throw new DecryptionException('JWT cannot be empty.');
         }
 
         foreach (static::getKeys() as $key) {
@@ -47,7 +47,7 @@ class DecodeJwt
             }
         }
 
-        throw $exception ?? new Exception('No crypt key defined');
+        throw $exception ?? new DecryptionException('No crypt key defined.');
     }
 
     /**

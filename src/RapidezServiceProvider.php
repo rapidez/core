@@ -23,6 +23,7 @@ use Rapidez\Core\Commands\InstallTestsCommand;
 use Rapidez\Core\Commands\ValidateCommand;
 use Rapidez\Core\Events\IndexBeforeEvent;
 use Rapidez\Core\Events\ProductViewEvent;
+use Rapidez\Core\Exceptions\DecryptionException;
 use Rapidez\Core\Facades\Rapidez as RapidezFacade;
 use Rapidez\Core\Http\Controllers\Fallback\CmsPageController;
 use Rapidez\Core\Http\Controllers\Fallback\LegacyFallbackController;
@@ -311,12 +312,12 @@ class RapidezServiceProvider extends ServiceProvider
         $exceptionHandler = app(ExceptionHandler::class);
 
         method_exists($exceptionHandler, 'reportable') && $exceptionHandler
-            ->reportable(function (RequiredConstraintsViolated $e) {
+            ->reportable(function (RequiredConstraintsViolated|DecryptionException $e) {
                 return false;
             });
 
         method_exists($exceptionHandler, 'renderable') && $exceptionHandler
-            ->renderable(function (RequiredConstraintsViolated $e, Request $request) {
+            ->renderable(function (RequiredConstraintsViolated|DecryptionException $e, Request $request) {
                 throw new HttpException(401, $e->getMessage(), $e);
             });
 
