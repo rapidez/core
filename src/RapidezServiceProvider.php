@@ -127,7 +127,8 @@ class RapidezServiceProvider extends ServiceProvider
             ], 'views');
 
             $this->publishes([
-                __DIR__ . '/../resources/lang' => resource_path('lang/vendor/rapidez'),
+                __DIR__ . '/../resources/lang' => lang_path('vendor/rapidez'),
+                __DIR__ . '/../lang'           => lang_path(),
             ], 'translations');
 
             $this->publishes([
@@ -244,6 +245,7 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootTranslations(): self
     {
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'rapidez');
+        $this->loadJsonTranslationsFrom(__DIR__ . '/../lang');
 
         return $this;
     }
