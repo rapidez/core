@@ -2,6 +2,8 @@
 
 namespace Rapidez\Core\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 class QuoteIdMask extends Model
 {
     protected $table = 'quote_id_mask';
@@ -10,8 +12,10 @@ class QuoteIdMask extends Model
 
     public $timestamps = false;
 
-    public function quote()
+    /** @return BelongsTo<Quote, QuoteIdMask> */
+    public function quote(): BelongsTo
     {
+        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.quote'), 'entity_id', 'quote_id');
     }
 }

@@ -3,8 +3,12 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use TorMorten\Eventy\Facades\Eventy;
 
+/**
+ * @property string $code
+ */
 class QuoteItemOption extends Model
 {
     protected $table = 'quote_item_option';
@@ -15,15 +19,19 @@ class QuoteItemOption extends Model
 
     protected $appends = ['label'];
 
-    public function quote_item()
+    /** @return BelongsTo<QuoteItem, QuoteItemOption> */
+    public function quote_item(): BelongsTo
     {
+        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.quote_item'), 'item_id');
     }
 
+    /** @return Attribute<mixed, null> */
     protected function value(): Attribute
     {
         return Attribute::make(
             get: function (string $value) {
+                // @phpstan-ignore-next-line
                 $value = Eventy::filter('quote_item_option.value', $value, $this);
 
                 if (isset($this->option) && in_array($this->option->type, ['drop_down', 'radio'])) {
@@ -39,15 +47,17 @@ class QuoteItemOption extends Model
         )->shouldCache();
     }
 
+    /** @return Attribute<string|null, null> */
     protected function label(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->option?->titles->firstForCurrentStore()->title
+            get: fn () => $this->option?->titles->firstForCurrentStore()->title // @phpstan-ignore-line
         )->shouldCache();
     }
 
     // It would be nice if we could make a HasMany relation from this so it's possible
     // to eager load it but DB::raw() to do the explode within SQL can't be used.
+    /** @return Attribute<ProductOption|null, null> */
     protected function option(): Attribute
     {
         return Attribute::make(

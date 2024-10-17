@@ -9,6 +9,7 @@ use Rapidez\Core\Facades\Rapidez;
 
 class WithProductStockScope implements Scope
 {
+    /** @param Builder<Model> $builder */
     public function apply(Builder $builder, Model $model)
     {
         if (config('rapidez.system.expose_stock')) {

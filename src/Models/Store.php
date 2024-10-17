@@ -25,6 +25,7 @@ class Store extends Model
         });
     }
 
+    /** @return array<int, array<string, mixed>> */
     public static function getCached(): array
     {
         if (! $stores = config('cache.app.stores')) {
@@ -45,6 +46,7 @@ class Store extends Model
         return $stores;
     }
 
+    /** @return array<string, mixed> */
     public static function getCachedWhere(callable $callback): array
     {
         $stores = static::getCached();

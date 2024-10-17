@@ -2,14 +2,15 @@
 
 namespace Rapidez\Core\Http\Controllers;
 
+use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Event;
 
 class HealthcheckController
 {
-    public function __invoke()
+    public function __invoke(): Response
     {
-        $result = array_merge_recursive(...Event::dispatch('rapidez:health-check'));
+        $result = array_merge_recursive(...Event::dispatch('rapidez:health-check') ?? []);
         $isHealthy = Arr::first($result['healthy'], fn ($healthy) => ! $healthy, true);
         $result['healthy'] = $isHealthy;
 

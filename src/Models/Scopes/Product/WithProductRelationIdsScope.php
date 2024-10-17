@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class WithProductRelationIdsScope implements Scope
 {
+    /** @param Builder<Model> $builder */
     public function apply(Builder $builder, Model $model)
     {
         foreach ([1 => 'relation', 4 => 'upsell'] as $linkTypeId => $linkCode) {

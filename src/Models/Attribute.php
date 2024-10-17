@@ -7,6 +7,9 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Models\Scopes\Attribute\OnlyProductAttributesScope;
 
+/**
+ * @property string $code
+ */
 class Attribute extends Model
 {
     protected $table = 'eav_attribute';
@@ -18,6 +21,7 @@ class Attribute extends Model
         static::addGlobalScope(new OnlyProductAttributesScope);
     }
 
+    /** @return CastsAttribute<bool, null> */
     protected function filter(): CastsAttribute
     {
         return CastsAttribute::make(
@@ -25,6 +29,7 @@ class Attribute extends Model
         )->shouldCache();
     }
 
+    /** @return array<int, Attribute> */
     public static function getCachedWhere(callable $callback): array
     {
         if (! $attributes = config('cache.app.attributes.' . config('rapidez.store'))) {

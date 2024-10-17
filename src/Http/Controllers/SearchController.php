@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 class SearchController
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): mixed
     {
         $searchQuery = config('rapidez.models.search_query')::firstOrNew([
             'query_text' => Str::lower($request->q),

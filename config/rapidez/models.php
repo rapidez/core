@@ -8,6 +8,7 @@ return [
     'category'                  => Rapidez\Core\Models\Category::class,
     'category_product'          => Rapidez\Core\Models\CategoryProduct::class,
     'customer'                  => Rapidez\Core\Models\Customer::class,
+    'customer_group'            => Rapidez\Core\Models\CustomerGroup::class,
     'config'                    => Rapidez\Core\Models\Config::class,
     'oauth_token'               => Rapidez\Core\Models\OauthToken::class,
     'option_swatch'             => Rapidez\Core\Models\OptionSwatch::class,

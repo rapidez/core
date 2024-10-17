@@ -3,12 +3,12 @@
 namespace Rapidez\Core\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 use Rapidez\Core\Facades\Rapidez;
-use Rapidez\Core\Models\Store;
 
 class DetermineAndSetShop
 {
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next): mixed
     {
         // Set the store based on MAGE_RUN_CODE.
         $storeCode = $request->has('_store') && ! app()->isProduction()

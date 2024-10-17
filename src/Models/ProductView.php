@@ -3,7 +3,12 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int|null $store_id
+ * @property int $product_id
+ */
 class ProductView extends Model
 {
     protected $table = 'report_viewed_product_index';
@@ -37,13 +42,17 @@ class ProductView extends Model
         });
     }
 
-    public function product()
+    /** @return BelongsTo<Product, ProductView> */
+    public function product(): BelongsTo
     {
-        return $this->belongsTo(Product::class, 'product_id');
+        // @phpstan-ignore-next-line
+        return $this->belongsTo(config('rapidez.models.product'), 'product_id');
     }
 
-    public function store()
+    /** @return BelongsTo<Store, ProductView> */
+    public function store(): BelongsTo
     {
-        return $this->belongsTo(Store::class, 'store_id');
+        // @phpstan-ignore-next-line
+        return $this->belongsTo(config('rapidez.models.store'), 'store_id');
     }
 }

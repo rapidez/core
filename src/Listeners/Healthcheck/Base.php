@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Event;
 
 class Base
 {
-    public function handle()
+    /** @return array<string, mixed> */
+    public function handle(): array
     {
         return [
             'healthy'  => true,
@@ -27,7 +28,7 @@ class Base
         ];
     }
 
-    public static function register()
+    public static function register(): void
     {
         Event::listen('rapidez:health-check', static::class);
     }

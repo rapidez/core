@@ -4,6 +4,7 @@ namespace Rapidez\Core\Casts;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
+/** @implements CastsAttributes<object|array<int, object>, object|string> */
 class Children implements CastsAttributes
 {
     public function get($model, $key, $value, $attributes)
@@ -25,7 +26,8 @@ class Children implements CastsAttributes
                 }
             }
 
-            $child->images = isset($child->images) ? collect($child?->images)->sortBy('position')->pluck('value')->toArray() : [];
+            // @phpstan-ignore-next-line
+            $child->images = isset($child->images) ? collect($child->images)->sortBy('position')->pluck('value')->toArray() : [];
 
             unset($child->special_from_date, $child->special_to_date);
         }

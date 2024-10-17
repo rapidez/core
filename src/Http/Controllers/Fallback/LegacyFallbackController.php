@@ -6,8 +6,9 @@ use TorMorten\Eventy\Facades\Eventy;
 
 class LegacyFallbackController
 {
-    public function __invoke()
+    public function __invoke(): mixed
     {
+        // @phpstan-ignore-next-line
         foreach (Eventy::filter('routes', []) as $route) {
             ob_start();
             require $route;
@@ -15,5 +16,7 @@ class LegacyFallbackController
                 return $output;
             }
         }
+
+        return null;
     }
 }

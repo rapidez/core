@@ -24,11 +24,10 @@ class ProductReviewSummary extends Model
         );
     }
 
+    /** @return BelongsTo<Product, ProductReviewSummary> */
     public function product(): BelongsTo
     {
-        return $this->belongsTo(
-            config('rapidez.models.product', Rapidez\Core\Models\Product::class),
-            'entity_pk_value'
-        );
+        // @phpstan-ignore-next-line
+        return $this->belongsTo(config('rapidez.models.product'), 'entity_pk_value');
     }
 }
