@@ -21,6 +21,7 @@
     <link rel="canonical" href="@yield('canonical', url()->current())" />
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @preloadFonts
 
     @stack('head')
     @config('design/head/includes')
