@@ -31,7 +31,6 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
         foreach ($stores as $store) {
             $this->line('Store: ' . $store['name']);
 
-            // @phpstan-ignore-next-line
             $this->prepareIndexerWithStore($store, 'products', Eventy::filter('index.product.mapping', [
                 'properties' => [
                     'price' => [
@@ -47,7 +46,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                         'type' => 'flattened',
                     ],
                 ],
-            ]), Eventy::filter('index.product.settings', []), ['name']); // @phpstan-ignore-line
+            ]), Eventy::filter('index.product.settings', []), ['name']);
 
             try {
                 $maxPositions = CategoryProduct::query()
@@ -96,7 +95,6 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                             // Turn all positions positive
                             ->mapWithKeys(fn ($position, $category_id) => [$category_id => $maxPositions[$category_id] - $position]);
 
-                        // @phpstan-ignore-next-line
                         return Eventy::filter('index.product.data', $data, $product);
                     });
 

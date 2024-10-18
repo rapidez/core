@@ -30,7 +30,6 @@ class QuoteItemOption extends Model
     {
         return Attribute::make(
             get: function (string $value) {
-                // @phpstan-ignore-next-line
                 $value = Eventy::filter('quote_item_option.value', $value, $this);
 
                 if (isset($this->option) && in_array($this->option->type, ['drop_down', 'radio'])) {

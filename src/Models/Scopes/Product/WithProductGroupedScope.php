@@ -14,7 +14,6 @@ class WithProductGroupedScope implements Scope
     {
         $stockQty = config('rapidez.system.expose_stock') ? '"qty", grouped_stock.qty,' : '';
 
-        // @phpstan-ignore-next-line
         $selects = Eventy::filter('product.grouped.select', <<<QUERY
             "entity_id", grouped.entity_id,
             "sku", grouped.sku,

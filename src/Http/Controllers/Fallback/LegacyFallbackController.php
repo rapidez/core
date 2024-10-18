@@ -8,7 +8,6 @@ class LegacyFallbackController
 {
     public function __invoke(): mixed
     {
-        // @phpstan-ignore-next-line
         foreach (Eventy::filter('routes', []) as $route) {
             ob_start();
             require $route;

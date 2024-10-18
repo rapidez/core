@@ -32,7 +32,7 @@ class ProductController
             'qty_increments',
         ];
 
-        $attributes = Eventy::filter('productpage.frontend.attributes', $attributes); // @phpstan-ignore-line
+        $attributes = Eventy::filter('productpage.frontend.attributes', $attributes);
 
         foreach ($product->super_attributes ?: [] as $superAttribute) {
             $attributes[] = 'super_' . $superAttribute->code;

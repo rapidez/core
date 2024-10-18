@@ -6,4 +6,6 @@ parameters:
         - src/
         - tests/
         - routes/
+    ignoreErrors:
+        - '#^Result of static method TorMorten\\Eventy\\Events::#'
     level: 1

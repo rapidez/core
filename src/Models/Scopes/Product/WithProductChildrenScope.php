@@ -30,7 +30,6 @@ class WithProductChildrenScope implements Scope
         $store = config('rapidez.store', 0);
         $stockQty = config('rapidez.system.expose_stock') ? '"qty", children_stock.qty,' : '';
 
-        // @phpstan-ignore-next-line
         $selects = Eventy::filter('product.children.select', <<<QUERY
             "sku", children.sku,
             "price", children.price,

@@ -88,7 +88,7 @@ class Product extends Model
                 ],
                 $this->getSuperAttributeCasts(),
                 $this->getMultiselectAttributeCasts(),
-                Eventy::filter('product.casts', []), // @phpstan-ignore-line
+                Eventy::filter('product.casts', []),
             );
         }
 

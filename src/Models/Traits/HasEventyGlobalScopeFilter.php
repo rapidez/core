@@ -13,7 +13,6 @@ trait HasEventyGlobalScopeFilter
         $eventyName = strtolower(collect(explode('\\', get_called_class()))->last() ?? 'undefined');
 
         /** @var array<string> $scopes */
-        // @phpstan-ignore-next-line
         $scopes = Eventy::filter($eventyName . '.scopes', []);
 
         foreach ($scopes as $scope) {
@@ -30,7 +29,6 @@ trait HasEventyGlobalScopeFilter
     public function scopeWithEventyGlobalScopes(Builder $query, string $scope): Builder
     {
         /** @var array<string> $scopes */
-        // @phpstan-ignore-next-line
         $scopes = Eventy::filter($scope, []);
 
         foreach ($scopes as $scope) {
