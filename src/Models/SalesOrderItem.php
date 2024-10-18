@@ -17,7 +17,6 @@ class SalesOrderItem extends Model
     /** @return BelongsTo<SalesOrder, SalesOrderItem> */
     public function sales_order(): BelongsTo
     {
-        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.sales_order'), 'order_id');
     }
 

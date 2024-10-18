@@ -21,7 +21,6 @@ class Rewrite extends Model
     /** @return HasOne<Store, Rewrite> */
     public function store(): HasOne
     {
-        // @phpstan-ignore-next-line
         return $this->hasOne(
             config('rapidez.models.store'),
             'store_id',

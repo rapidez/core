@@ -24,7 +24,6 @@ class Widget
             $widgetClass = config('rapidez.frontend.widgets.' . $type);
 
             if (class_exists($widgetClass)) {
-                // @phpstan-ignore-next-line
                 return (new $widgetClass((object) $options))->render();
             }
 
@@ -38,7 +37,6 @@ class Widget
             $viewName = $widgetClass;
             $widgetClass = config('rapidez.frontend.view_only_widget');
 
-            // @phpstan-ignore-next-line
             return (new $widgetClass((object) $options))->render($viewName);
         }, $content);
     }

@@ -14,35 +14,30 @@ class QuoteItem extends Model
     /** @return BelongsTo<Store, QuoteItem> */
     public function store(): BelongsTo
     {
-        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.store'));
     }
 
     /** @return BelongsTo<Quote, QuoteItem> */
     public function quote(): BelongsTo
     {
-        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.quote'));
     }
 
     /** @return BelongsTo<QuoteItem, QuoteItem> */
     public function parent(): BelongsTo
     {
-        // @phpstan-ignore-next-line
         return $this->belongsTo(self::class, 'parent_item_id');
     }
 
     /** @return HasMany<QuoteItem, QuoteItem> */
     public function children(): HasMany
     {
-        // @phpstan-ignore-next-line
         return $this->hasMany(self::class, 'parent_item_id');
     }
 
     /** @return HasMany<QuoteItemOption, QuoteItem> */
     public function options(): HasMany
     {
-        // @phpstan-ignore-next-line
         return $this->hasMany(config('rapidez.models.quote_item_option'), 'item_id');
     }
 }

@@ -248,8 +248,6 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootMiddleware(): self
     {
         $this->app->make(Kernel::class)->pushMiddleware(DetermineAndSetShop::class);
-
-        // @phpstan-ignore-next-line
         $this->app['router']->aliasMiddleware('store_code', CheckStoreCode::class);
 
         return $this;

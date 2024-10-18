@@ -22,7 +22,6 @@ class QuoteItemOption extends Model
     /** @return BelongsTo<QuoteItem, QuoteItemOption> */
     public function quote_item(): BelongsTo
     {
-        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.quote_item'), 'item_id');
     }
 

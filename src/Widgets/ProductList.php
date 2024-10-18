@@ -11,7 +11,6 @@ class ProductList
 
     public function __construct(mixed $options)
     {
-        // @phpstan-ignore-next-line
         $conditions = collect($options->conditions ?? Rapidez::fancyMagentoSyntaxDecoder($options->conditions_encoded));
         $this->condition = $conditions->first(function (mixed $condition) {
             return $condition->type == 'Magento\CatalogWidget\Model\Rule\Condition\Product';

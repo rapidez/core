@@ -27,14 +27,12 @@ class Customer extends Model implements AuthenticatableContract
     /** @return HasMany<OauthToken, Customer> */
     public function oauthTokens(): HasMany
     {
-        // @phpstan-ignore-next-line
         return $this->hasMany(config('rapidez.models.oauth_token'), 'customer_id');
     }
 
     /** @return BelongsTo<CustomerGroup, Customer> */
     public function group(): BelongsTo
     {
-        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.customer_group'), 'group_id');
     }
 

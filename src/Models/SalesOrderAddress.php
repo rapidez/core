@@ -15,7 +15,6 @@ class SalesOrderAddress extends Model
     /** @return BelongsTo<SalesOrder, SalesOrderAddress> */
     public function sales_order(): BelongsTo
     {
-        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.sales_order'), 'parent_id');
     }
 }

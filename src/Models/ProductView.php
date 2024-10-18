@@ -45,14 +45,12 @@ class ProductView extends Model
     /** @return BelongsTo<Product, ProductView> */
     public function product(): BelongsTo
     {
-        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.product'), 'product_id');
     }
 
     /** @return BelongsTo<Store, ProductView> */
     public function store(): BelongsTo
     {
-        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.store'), 'store_id');
     }
 }

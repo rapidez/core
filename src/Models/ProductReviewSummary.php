@@ -27,7 +27,6 @@ class ProductReviewSummary extends Model
     /** @return BelongsTo<Product, ProductReviewSummary> */
     public function product(): BelongsTo
     {
-        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.product'), 'entity_pk_value');
     }
 }

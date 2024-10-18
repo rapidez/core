@@ -69,7 +69,6 @@ class Category extends Model
     /** @return HasMany<Category, Category> */
     public function subcategories(): HasMany
     {
-        // @phpstan-ignore-next-line
         return $this->hasMany(config('rapidez.models.category'), 'parent_id', 'entity_id');
     }
 
@@ -79,7 +78,6 @@ class Category extends Model
         /** @var CategoryProduct $categoryProductObject */
         $categoryProductObject = new (config('rapidez.models.category_product'));
 
-        // @phpstan-ignore-next-line
         return $this
             ->hasManyThrough(
                 config('rapidez.models.product'),
@@ -96,7 +94,6 @@ class Category extends Model
     /** @return HasMany<Rewrite, Category> */
     public function rewrites(): HasMany
     {
-        // @phpstan-ignore-next-line
         return $this
             ->hasMany(config('rapidez.models.rewrite'), 'entity_id', 'entity_id')
             ->withoutGlobalScope('store')

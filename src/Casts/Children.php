@@ -26,7 +26,6 @@ class Children implements CastsAttributes
                 }
             }
 
-            // @phpstan-ignore-next-line
             $child->images = isset($child->images) ? collect($child->images)->sortBy('position')->pluck('value')->toArray() : [];
 
             unset($child->special_from_date, $child->special_to_date);

@@ -8,4 +8,4 @@ parameters:
         - routes/
     ignoreErrors:
         - '#^Call to an undefined method MailerLite\\LaravelElasticsearch\\Manager::#'
-    level: 8
+    level: 2

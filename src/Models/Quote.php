@@ -29,35 +29,30 @@ class Quote extends Model
     /** @return BelongsTo<Store, Quote> */
     public function store(): BelongsTo
     {
-        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.store'));
     }
 
     /** @return HasMany<QuoteIdMask, Quote> */
     public function quote_id_masks(): HasMany
     {
-        // @phpstan-ignore-next-line
         return $this->hasMany(config('rapidez.models.quote_id_mask'), 'quote_id');
     }
 
     /** @return HasMany<OauthToken, Quote> */
     public function oauth_tokens(): HasMany
     {
-        // @phpstan-ignore-next-line
         return $this->hasMany(config('rapidez.models.oauth_token'), 'customer_id', 'customer_id');
     }
 
     /** @return BelongsTo<SalesOrder, Quote> */
     public function sales_order(): BelongsTo
     {
-        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.sales_order'));
     }
 
     /** @return HasMany<QuoteItem, Quote> */
     public function items(): HasMany
     {
-        // @phpstan-ignore-next-line
         return $this->hasMany(config('rapidez.models.quote_item'), 'quote_id');
     }
 

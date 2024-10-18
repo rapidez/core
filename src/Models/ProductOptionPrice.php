@@ -19,14 +19,12 @@ class ProductOptionPrice extends Model
     /** @return BelongsTo<Store, ProductOptionPrice> */
     public function store(): BelongsTo
     {
-        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.store'));
     }
 
     /** @return BelongsTo<ProductOption, ProductOptionPrice> */
     public function option(): BelongsTo
     {
-        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.product_option'), 'option_id');
     }
 }

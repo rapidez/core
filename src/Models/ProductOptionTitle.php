@@ -15,14 +15,12 @@ class ProductOptionTitle extends Model
     /** @return BelongsTo<Store, ProductOptionTitle> */
     public function store(): BelongsTo
     {
-        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.store'));
     }
 
     /** @return BelongsTo<ProductOption, ProductOptionTitle> */
     public function option(): BelongsTo
     {
-        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.product_option'), 'option_id');
     }
 }

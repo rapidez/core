@@ -22,28 +22,24 @@ class SalesOrder extends Model
     /** @return BelongsTo<Quote, SalesOrder> */
     public function quote(): BelongsTo
     {
-        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.quote'), 'quote_id');
     }
 
     /** @return HasMany<SalesOrderAddress, SalesOrder> */
     public function sales_order_addresses(): HasMany
     {
-        // @phpstan-ignore-next-line
         return $this->hasMany(config('rapidez.models.sales_order_address'), 'parent_id');
     }
 
     /** @return HasMany<SalesOrderItem, SalesOrder> */
     public function sales_order_items(): HasMany
     {
-        // @phpstan-ignore-next-line
         return $this->hasMany(config('rapidez.models.sales_order_item'), 'order_id');
     }
 
     /** @return HasMany<SalesOrderPayment, SalesOrder> */
     public function sales_order_payments(): HasMany
     {
-        // @phpstan-ignore-next-line
         return $this->hasMany(config('rapidez.models.sales_order_payment'), 'parent_id');
     }
 

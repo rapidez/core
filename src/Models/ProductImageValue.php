@@ -21,7 +21,6 @@ class ProductImageValue extends Model
     /** @return BelongsTo<ProductImage, ProductImageValue> */
     public function productImage(): BelongsTo
     {
-        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.product_image'), 'value_id');
     }
 }

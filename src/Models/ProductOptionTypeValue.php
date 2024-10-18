@@ -23,7 +23,6 @@ class ProductOptionTypeValue extends Model
     /** @return BelongsTo<ProductOption, ProductOptionTypeValue> */
     public function option(): BelongsTo
     {
-        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.product_option'), 'option_id');
     }
 
@@ -38,7 +37,6 @@ class ProductOptionTypeValue extends Model
     /** @return HasMany<ProductOptionTypeTitle, ProductOptionTypeValue> */
     public function titles(): HasMany
     {
-        // @phpstan-ignore-next-line
         return $this->hasMany(config('rapidez.models.product_option_type_title'), 'option_type_id');
     }
 
@@ -71,7 +69,6 @@ class ProductOptionTypeValue extends Model
     /** @return HasMany<ProductOptionTypePrice, ProductOptionTypeValue> */
     public function prices(): HasMany
     {
-        // @phpstan-ignore-next-line
         return $this->hasMany(config('rapidez.models.product_option_type_price'), 'option_type_id');
     }
 }

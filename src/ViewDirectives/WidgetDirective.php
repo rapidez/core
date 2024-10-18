@@ -40,11 +40,9 @@ class WidgetDirective
                             $viewName = $widgetClass;
                             $widgetClass = config('rapidez.frontend.view_only_widget');
 
-                            // @phpstan-ignore-next-line
                             $html .= (new $widgetClass($widget->widget_parameters))->render($viewName);
                         }
                     } else {
-                        // @phpstan-ignore-next-line
                         $html .= (new $widgetClass($widget->widget_parameters))->render();
                     }
                 }

@@ -15,7 +15,6 @@ class QuoteIdMask extends Model
     /** @return BelongsTo<Quote, QuoteIdMask> */
     public function quote(): BelongsTo
     {
-        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.quote'), 'entity_id', 'quote_id');
     }
 }

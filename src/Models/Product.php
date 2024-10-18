@@ -98,7 +98,6 @@ class Product extends Model
     /** @return BelongsToMany<ProductImage, Product> */
     public function gallery(): BelongsToMany
     {
-        // @phpstan-ignore-next-line
         return $this->belongsToMany(
             config('rapidez.models.product_image'),
             'catalog_product_entity_media_gallery_value_to_entity',
@@ -110,7 +109,6 @@ class Product extends Model
     /** @return HasMany<ProductView, Product> */
     public function views(): HasMany
     {
-        // @phpstan-ignore-next-line
         return $this->hasMany(
             config('rapidez.models.product_view'),
             'product_id',
@@ -120,7 +118,6 @@ class Product extends Model
     /** @return HasMany<ProductOption, Product> */
     public function options(): HasMany
     {
-        // @phpstan-ignore-next-line
         return $this->hasMany(
             config('rapidez.models.product_option'),
             'product_id',
@@ -130,7 +127,6 @@ class Product extends Model
     /** @return HasMany<CategoryProduct, Product> */
     public function categoryProducts(): HasMany
     {
-        // @phpstan-ignore-next-line
         return $this
             ->hasMany(
                 config('rapidez.models.category_product'),
@@ -141,7 +137,6 @@ class Product extends Model
     /** @return HasOne<ProductReviewSummary, Product> */
     public function reviewSummary(): HasOne
     {
-        // @phpstan-ignore-next-line
         return $this->hasOne(
             config('rapidez.models.product_review_summary'),
             'entity_pk_value'
@@ -151,7 +146,6 @@ class Product extends Model
     /** @return HasMany<Rewrite, Product> */
     public function rewrites(): HasMany
     {
-        // @phpstan-ignore-next-line
         return $this
             ->hasMany(config('rapidez.models.rewrite'), 'entity_id')
             ->withoutGlobalScope('store')
@@ -161,7 +155,6 @@ class Product extends Model
     /** @return HasOneThrough<Product, ProductLink, Product> */
     public function parent(): HasOneThrough
     {
-        // @phpstan-ignore-next-line
         return $this->hasOneThrough(
             config('rapidez.models.product'),
             config('rapidez.models.product_link'),
