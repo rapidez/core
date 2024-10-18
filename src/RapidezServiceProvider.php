@@ -23,6 +23,7 @@ use Rapidez\Core\Commands\InstallTestsCommand;
 use Rapidez\Core\Commands\ValidateCommand;
 use Rapidez\Core\Events\IndexBeforeEvent;
 use Rapidez\Core\Events\ProductViewEvent;
+use Rapidez\Core\Exceptions\DecryptionException;
 use Rapidez\Core\Facades\Rapidez as RapidezFacade;
 use Rapidez\Core\Http\Controllers\Fallback\CmsPageController;
 use Rapidez\Core\Http\Controllers\Fallback\LegacyFallbackController;
@@ -40,7 +41,8 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class RapidezServiceProvider extends ServiceProvider
 {
-    protected $configFiles = [
+    /** @var array<string> */
+    protected array $configFiles = [
         'frontend',
         'healthcheck',
         'indexer',
@@ -50,7 +52,7 @@ class RapidezServiceProvider extends ServiceProvider
         'system',
     ];
 
-    public function boot()
+    public function boot(): void
     {
         $this
             ->bootAuth()
@@ -79,7 +81,12 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootAuth(): self
     {
         auth()->extend('magento-customer', function (Application $app, string $name, array $config) {
-            return new MagentoCustomerTokenGuard(auth()->createUserProvider($config['provider']), request(), 'token', 'token');
+            $user = auth()->createUserProvider($config['provider']);
+            if (! $user) {
+                return null;
+            }
+
+            return new MagentoCustomerTokenGuard($user, request(), 'token', 'token');
         });
 
         config([
@@ -158,7 +165,13 @@ class RapidezServiceProvider extends ServiceProvider
             return $this;
         }
 
-        $path = config('rapidez.frontend.themes.' . request()->server('MAGE_RUN_CODE', request()->has('_store') && ! app()->isProduction() ? request()->get('_store') : 'default'), false);
+        $theme = request()->server('MAGE_RUN_CODE', request()->has('_store') && ! app()->isProduction() ? request()->get('_store') : 'default');
+
+        if (! is_string($theme)) {
+            return $this;
+        }
+
+        $path = config('rapidez.frontend.themes.' . $theme);
 
         if (! $path) {
             return $this;
@@ -235,7 +248,6 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootMiddleware(): self
     {
         $this->app->make(Kernel::class)->pushMiddleware(DetermineAndSetShop::class);
-
         $this->app['router']->aliasMiddleware('store_code', CheckStoreCode::class);
 
         return $this;
@@ -261,7 +273,7 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootMacros(): self
     {
         Collection::macro('firstForCurrentStore', function () {
-            /** @var Collection $this */
+            /** @var Collection<> $this */
             return $this->filter(function ($value) {
                 return in_array($value->store_id, [config('rapidez.store'), 0]);
             })->sortByDesc('store_id')->first();
@@ -298,12 +310,12 @@ class RapidezServiceProvider extends ServiceProvider
         $exceptionHandler = app(ExceptionHandler::class);
 
         method_exists($exceptionHandler, 'reportable') && $exceptionHandler
-            ->reportable(function (RequiredConstraintsViolated $e) {
+            ->reportable(function (RequiredConstraintsViolated|DecryptionException $e) {
                 return false;
             });
 
         method_exists($exceptionHandler, 'renderable') && $exceptionHandler
-            ->renderable(function (RequiredConstraintsViolated $e, Request $request) {
+            ->renderable(function (RequiredConstraintsViolated|DecryptionException $e, Request $request) {
                 throw new HttpException(401, $e->getMessage(), $e);
             });
 

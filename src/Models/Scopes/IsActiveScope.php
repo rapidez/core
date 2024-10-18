@@ -8,15 +8,11 @@ use Illuminate\Database\Eloquent\Scope;
 
 class IsActiveScope implements Scope
 {
-    public string $column;
+    public function __construct(public string $column = 'is_active') {}
 
-    public function __construct($column = 'is_active')
-    {
-        $this->column = $column;
-    }
-
+    /** @param Builder<Model> $builder */
     public function apply(Builder $builder, Model $model)
     {
-        $builder->where($builder->getQuery()->from . '.' . $this->column, 1);
+        $builder->where($builder->qualifyColumn($this->column), 1);
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Rapidez\Core\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 class ProductOptionTitle extends Model
 {
     protected $table = 'catalog_product_option_title';
@@ -10,12 +12,14 @@ class ProductOptionTitle extends Model
 
     public $timestamps = false;
 
-    public function store()
+    /** @return BelongsTo<Store, ProductOptionTitle> */
+    public function store(): BelongsTo
     {
         return $this->belongsTo(config('rapidez.models.store'));
     }
 
-    public function option()
+    /** @return BelongsTo<ProductOption, ProductOptionTitle> */
+    public function option(): BelongsTo
     {
         return $this->belongsTo(config('rapidez.models.product_option'), 'option_id');
     }

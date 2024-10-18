@@ -10,37 +10,37 @@ class CartTest extends DuskTestCase
     /**
      * @test
      */
-    public function addSimpleProduct()
+    public function addSimpleProduct(): void
     {
-        $this->browse(function (Browser $browser) {
-            $this->addProduct($browser, $this->testProduct->url)
+        $this->browse(function (Browser $browser): void {
+            $this->addProduct($browser, $this->testProduct->url ?? '/')
                 ->visit('/cart')
                 ->waitUntilIdle()
                 ->waitFor('@cart-content', 15)
                 ->waitUntilIdle()
-                ->assertSee($this->testProduct->name);
+                ->assertSee($this->testProduct->name ?? '');
         });
     }
 
     /**
      * @test
      */
-    public function addMultipleSimpleProduct()
+    public function addMultipleSimpleProduct(): void
     {
-        $this->browse(function (Browser $browser) {
+        $this->browse(function (Browser $browser): void {
             $browser->script('localStorage.clear();');
-            $this->addProduct($browser, $this->testProduct->url);
-            $this->addProduct($browser, $this->testProduct->url);
-            $browser->assertSeeIn('@minicart-count', 2);
+            $this->addProduct($browser, $this->testProduct->url ?? '/');
+            $this->addProduct($browser, $this->testProduct->url ?? '/');
+            $browser->assertSeeIn('@minicart-count', '2');
         });
     }
 
     /**
      * @test
      */
-    public function changeProductQty()
+    public function changeProductQty(): void
     {
-        $this->browse(function (Browser $browser) {
+        $this->browse(function (Browser $browser): void {
             $browser->visit('/cart')
                 ->waitUntilIdle()
                 ->waitFor('@cart-content', 15)
@@ -48,16 +48,16 @@ class CartTest extends DuskTestCase
                 ->type('@qty-0', 5)
                 ->pressAndWaitFor('@item-update-0')
                 ->waitUntilIdle()
-                ->assertSee($this->testProduct->price * 5);
+                ->assertSee(($this->testProduct->price ?? 0) * 5);
         });
     }
 
     /**
      * @test
      */
-    public function removeProduct()
+    public function removeProduct(): void
     {
-        $this->browse(function (Browser $browser) {
+        $this->browse(function (Browser $browser): void {
             $browser->visit('/cart')
                 ->waitUntilIdle()
                 ->waitFor('@cart-content', 15)
@@ -68,7 +68,7 @@ class CartTest extends DuskTestCase
         });
     }
 
-    public function addProduct($browser, $url)
+    public function addProduct(Browser $browser, string $url): Browser
     {
         return $browser->visit($url)
             ->waitUntilIdle()

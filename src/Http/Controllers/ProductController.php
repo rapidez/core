@@ -2,12 +2,13 @@
 
 namespace Rapidez\Core\Http\Controllers;
 
+use Illuminate\Contracts\View\View;
 use Rapidez\Core\Events\ProductViewEvent;
 use TorMorten\Eventy\Facades\Eventy;
 
 class ProductController
 {
-    public function show(int $productId)
+    public function show(int $productId): View
     {
         $productModel = config('rapidez.models.product');
         $product = $productModel::selectForProductPage()

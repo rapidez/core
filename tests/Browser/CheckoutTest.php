@@ -10,7 +10,7 @@ class CheckoutTest extends DuskTestCase
     /**
      * @test
      */
-    public function checkoutAsGuest()
+    public function checkoutAsGuest(): void
     {
         $this->browse(function (Browser $browser) {
             $this->addProductToCart($browser);
@@ -21,18 +21,18 @@ class CheckoutTest extends DuskTestCase
     /**
      * @test
      */
-    public function checkoutAsUser()
+    public function checkoutAsUser(): void
     {
         $email = 'wayne+' . mt_rand() . '@enterprises.com';
 
         // Go through checkout as guest and register.
-        $this->browse(function (Browser $browser) use ($email) {
+        $this->browse(function (Browser $browser) use ($email): void {
             $this->addProductToCart($browser);
             $this->doCheckout($browser, $email, 'IronManSucks.91939', true);
         });
 
         // Go through checkout as guest and log in.
-        $this->browse(function (Browser $browser) use ($email) {
+        $this->browse(function (Browser $browser) use ($email): void {
             $browser->waitForReload(fn ($browser) => $browser->visit('/'), 4)
                 ->waitUntilIdle()
                 ->waitFor('@account_menu')
@@ -44,10 +44,10 @@ class CheckoutTest extends DuskTestCase
         });
     }
 
-    public function addProductToCart($browser)
+    public function addProductToCart(Browser $browser): Browser
     {
         $browser
-            ->visit($this->testProduct->url)
+            ->visit($this->testProduct->url ?? '/')
             ->waitUntilIdle()
             ->click('@add-to-cart')
             ->waitUntilIdle();
@@ -55,7 +55,7 @@ class CheckoutTest extends DuskTestCase
         return $browser;
     }
 
-    public function doCheckout(Browser $browser, $email = false, $password = false, $register = false)
+    public function doCheckout(Browser $browser, ?string $email = null, ?string $password = null, bool $register = false): Browser
     {
         $browser
             ->visit('/checkout')

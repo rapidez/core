@@ -3,6 +3,8 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProductOptionTypeValue extends Model
 {
@@ -18,11 +20,13 @@ class ProductOptionTypeValue extends Model
 
     protected $hidden = ['titles', 'prices'];
 
-    public function option()
+    /** @return BelongsTo<ProductOption, ProductOptionTypeValue> */
+    public function option(): BelongsTo
     {
         return $this->belongsTo(config('rapidez.models.product_option'), 'option_id');
     }
 
+    /** @return Attribute<string, null> */
     protected function title(): Attribute
     {
         return Attribute::make(
@@ -30,11 +34,13 @@ class ProductOptionTypeValue extends Model
         )->shouldCache();
     }
 
-    public function titles()
+    /** @return HasMany<ProductOptionTypeTitle, ProductOptionTypeValue> */
+    public function titles(): HasMany
     {
         return $this->hasMany(config('rapidez.models.product_option_type_title'), 'option_type_id');
     }
 
+    /** @return Attribute<ProductOptionTypePrice|null, null> */
     protected function price(): Attribute
     {
         return Attribute::make(
@@ -42,11 +48,12 @@ class ProductOptionTypeValue extends Model
         )->shouldCache();
     }
 
+    /** @return Attribute<string|null, null> */
     protected function priceLabel(): Attribute
     {
         return Attribute::make(
             get: function () {
-                if (! floatval($this->price->price)) {
+                if (! $this->price || ! floatval($this->price->price)) {
                     return;
                 }
 
@@ -59,7 +66,8 @@ class ProductOptionTypeValue extends Model
         )->shouldCache();
     }
 
-    public function prices()
+    /** @return HasMany<ProductOptionTypePrice, ProductOptionTypeValue> */
+    public function prices(): HasMany
     {
         return $this->hasMany(config('rapidez.models.product_option_type_price'), 'option_type_id');
     }

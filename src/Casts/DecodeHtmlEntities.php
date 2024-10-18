@@ -4,6 +4,7 @@ namespace Rapidez\Core\Casts;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
+/** @implements CastsAttributes<string|null, string|null> */
 class DecodeHtmlEntities implements CastsAttributes
 {
     public function get($model, $key, $value, $attributes)

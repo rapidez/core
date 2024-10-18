@@ -4,17 +4,20 @@ namespace Rapidez\Core\ContentVariables;
 
 class Widget
 {
-    public function __invoke($content)
+    /** @return array<int, string>|string|null */
+    public function __invoke(string $content): array|string|null
     {
         return preg_replace_callback('/{{widget type="(.*?)" (.*?)}}/ms', function ($matches) {
             [$full, $type, $parameters] = $matches;
             preg_match_all('/(.*?)="(.*?)"/ms', $parameters, $parameters, PREG_SET_ORDER);
+
+            $options = [];
             foreach ($parameters as $parameter) {
                 [$full, $parameter, $value] = $parameter;
                 $options[trim($parameter)] = trim($value);
             }
 
-            if (! isset($type)) {
+            if (! $type) {
                 return '';
             }
 
