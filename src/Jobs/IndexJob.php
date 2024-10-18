@@ -26,7 +26,6 @@ class IndexJob
 
     public function handle(Elasticsearch $elasticsearch): void
     {
-        // @phpstan-ignore-next-line
         $elasticsearch->index([
             'index' => $this->index,
             'id'    => $this->id,

@@ -13,7 +13,7 @@ class CartTest extends DuskTestCase
     public function addSimpleProduct(): void
     {
         $this->browse(function (Browser $browser): void {
-            $this->addProduct($browser, $this->testProduct->url ?? '/') // @phpstan-ignore-line
+            $this->addProduct($browser, $this->testProduct->url ?? '/')
                 ->visit('/cart')
                 ->waitUntilIdle()
                 ->waitFor('@cart-content', 15)
@@ -41,7 +41,7 @@ class CartTest extends DuskTestCase
     public function changeProductQty(): void
     {
         $this->browse(function (Browser $browser): void {
-            $browser->visit('/cart') // @phpstan-ignore-line
+            $browser->visit('/cart')
                 ->waitUntilIdle()
                 ->waitFor('@cart-content', 15)
                 ->waitUntilIdle()
@@ -58,7 +58,7 @@ class CartTest extends DuskTestCase
     public function removeProduct(): void
     {
         $this->browse(function (Browser $browser): void {
-            $browser->visit('/cart') // @phpstan-ignore-line
+            $browser->visit('/cart')
                 ->waitUntilIdle()
                 ->waitFor('@cart-content', 15)
                 ->waitUntilIdle()
@@ -70,7 +70,7 @@ class CartTest extends DuskTestCase
 
     public function addProduct(Browser $browser, string $url): Browser
     {
-        return $browser->visit($url) // @phpstan-ignore-line
+        return $browser->visit($url)
             ->waitUntilIdle()
             ->pressAndWaitFor('@add-to-cart', 60)
             ->waitForText('Added', 60);

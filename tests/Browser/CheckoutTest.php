@@ -33,7 +33,7 @@ class CheckoutTest extends DuskTestCase
 
         // Go through checkout as guest and log in.
         $this->browse(function (Browser $browser) use ($email): void {
-            $browser->waitForReload(fn ($browser) => $browser->visit('/'), 4) // @phpstan-ignore-line
+            $browser->waitForReload(fn ($browser) => $browser->visit('/'), 4)
                 ->waitUntilIdle()
                 ->waitFor('@account_menu')
                 ->click('@account_menu')
@@ -46,7 +46,7 @@ class CheckoutTest extends DuskTestCase
 
     public function addProductToCart(Browser $browser): Browser
     {
-        $browser // @phpstan-ignore-line
+        $browser
             ->visit($this->testProduct->url ?? '/')
             ->waitUntilIdle()
             ->click('@add-to-cart')
@@ -57,7 +57,7 @@ class CheckoutTest extends DuskTestCase
 
     public function doCheckout(Browser $browser, ?string $email = null, ?string $password = null, bool $register = false): Browser
     {
-        $browser // @phpstan-ignore-line
+        $browser
             ->visit('/checkout')
             ->pause(5000)
             ->waitUntilIdle()
@@ -66,14 +66,14 @@ class CheckoutTest extends DuskTestCase
             ->waitUntilIdle();
 
         if ($password && ! $register) {
-            $browser // @phpstan-ignore-line
+            $browser
                 ->type('@password', $password)
                 ->waitUntilIdle()
                 ->click('@continue') // login
                 ->waitUntilIdle();
         }
 
-        $browser // @phpstan-ignore-line
+        $browser
             ->waitFor('@shipping_country', 15)
             ->type('@shipping_firstname', 'Bruce')
             ->type('@shipping_lastname', 'Wayne')
@@ -88,7 +88,7 @@ class CheckoutTest extends DuskTestCase
             ->waitUntilIdle();
 
         if ($password && $register) {
-            $browser->click('@create_account') // @phpstan-ignore-line
+            $browser->click('@create_account')
                 ->waitUntilIdle()
                 ->typeSlowly('@password', $password)
                 ->typeSlowly('@password_repeat', $password)
@@ -96,7 +96,7 @@ class CheckoutTest extends DuskTestCase
                 ->waitUntilIdle();
         }
 
-        $browser // @phpstan-ignore-line
+        $browser
             ->waitForText(__('Shipping method'))
             ->scrollIntoView('@method-0')
             ->click('@method-0') // select shipping method

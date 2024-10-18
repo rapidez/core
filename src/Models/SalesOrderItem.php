@@ -23,7 +23,6 @@ class SalesOrderItem extends Model
     /** @return BelongsTo<Product, SalesOrderItem> */
     public function product(): BelongsTo
     {
-        // @phpstan-ignore-next-line
         return $this->belongsTo(config('rapidez.models.product'), 'sku', 'sku')->selectAttributes(config('rapidez.frontend.cart_attributes'));
     }
 }

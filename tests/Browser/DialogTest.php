@@ -13,7 +13,7 @@ class DialogTest extends DuskTestCase
     public function test(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit('/?show-cookie-notice') // @phpstan-ignore-line
+            $browser->visit('/?show-cookie-notice')
                 ->waitUntilIdle()
                 ->assertSee('Accept cookies')
                 ->waitForReload(function (Browser $browser) {

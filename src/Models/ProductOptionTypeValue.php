@@ -30,7 +30,7 @@ class ProductOptionTypeValue extends Model
     protected function title(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->titles->firstForCurrentStore()->title, // @phpstan-ignore-line
+            get: fn () => $this->titles->firstForCurrentStore()->title,
         )->shouldCache();
     }
 
@@ -44,7 +44,7 @@ class ProductOptionTypeValue extends Model
     protected function price(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->prices->firstForCurrentStore(), // @phpstan-ignore-line
+            get: fn () => $this->prices->firstForCurrentStore(),
         )->shouldCache();
     }
 

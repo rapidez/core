@@ -50,7 +50,7 @@ class QuoteItemOption extends Model
     protected function label(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->option?->titles->firstForCurrentStore()->title // @phpstan-ignore-line
+            get: fn () => $this->option?->titles->firstForCurrentStore()->title
         )->shouldCache();
     }
 
