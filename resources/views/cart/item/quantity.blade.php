@@ -3,14 +3,14 @@
     :variables="{ cart_id: mask, cart_item_id: item.id, quantity: item.quantity }"
     :callback="updateCart"
     :error-callback="checkResponseForExpiredCart"
-    v-slot="{ mutate, variables }"
+    v-slot="cartItemQueryScope"
 >
-    <form v-on:submit.prevent="mutate" class="flex items-center gap-1">
+    <form v-on:submit.prevent="cartItemQueryScope.mutate" class="flex items-center gap-1">
         <x-rapidez::input
             name="qty"
             type="number"
             :label="false"
-            v-model="variables.quantity"
+            v-model="cartItemQueryScope.variables.quantity"
             v-bind:dusk="'qty-'+index"
             {{-- TODO: We don't need these importants with Tailwind merge and center isn't really center with type number --}}
             class="!w-14 !px-1 text-center"

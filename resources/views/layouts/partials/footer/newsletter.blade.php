@@ -4,17 +4,17 @@
     <div class="sm:w-full sm:max-w-md xl:mt-0" dusk="newsletter">
         <lazy>
             <graphql-mutation query="mutation visitor ($email: String!) { subscribeEmailToNewsletter(email: $email) { status } }" :alert="false" :clear="true">
-                <div slot-scope="{ mutate, variables, mutated, error }">
-                    <p v-if="mutated" class="text-neutral text-xl font-bold" v-cloak>
+                <div slot-scope="newsletterQueryScope">
+                    <p v-if="newsletterQueryScope.mutated" class="text-neutral text-xl font-bold" v-cloak>
                         @lang('Thank you for subscribing!')
                     </p>
                     <div v-else>
-                        <form class="mt-4 sm:flex sm:max-w-md items-center" v-on:submit.prevent="mutate">
+                        <form class="mt-4 sm:flex sm:max-w-md items-center" v-on:submit.prevent="newsletterQueryScope.mutate">
                             <x-rapidez::input
                                 :label="false"
                                 name="email"
                                 type="email"
-                                v-model="variables.email"
+                                v-model="newsletterQueryScope.variables.email"
                                 class="w-full min-w-0 appearance-none rounded-md border h-10 border-text-inactive bg-white py-2 px-4 text-base text-gray-900 placeholder-text-neutral shadow-sm focus:border-indigo-500 focus:placeholder-gray-400 focus:outline-none focus:ring-indigo-500"
                                 wrapperClass="flex-grow"
                                 dusk="newsletter-email"
@@ -32,8 +32,8 @@
                                 </x-rapidez::button>
                             </div>
                         </form>
-                        <p v-if="error" class="mt-3 text-sm text-red-700" v-cloak>
-                            @{{ error }}
+                        <p v-if="newsletterQueryScope.error" class="mt-3 text-sm text-red-700" v-cloak>
+                            @{{ newsletterQueryScope.error }}
                         </p>
                         <p class="mt-3 text-sm">
                             @lang('We care about the protection of your data. Read our')

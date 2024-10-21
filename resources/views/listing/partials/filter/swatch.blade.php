@@ -5,31 +5,31 @@
     :inner-class="{
         title: 'capitalize text-sm font-medium text-gray-900',
     }"
-    :react="{and: filter.input == 'multiselect' ? reactiveFilters : reactiveFilters.filter(item => item != filter.code) }"
+    :react="{and: filter.input == 'multiselect' ? listingScope.reactiveFilters : listingScope.reactiveFilters.filter(item => item != filter.code) }"
     :query-format="filter.input == 'multiselect' ? 'and' : 'or'"
     :show-search="false"
     :show-checkbox="false"
     u-r-l-params
 >
-    <div slot="render" class="pb-4" slot-scope="{ data, value, handleChange }">
+    <div slot="render" class="pb-4" slot-scope="swatchFilterScope">
         <x-rapidez::filter.heading>
             <div class="flex flex-wrap gap-2 items-center my-1">
-                <template v-for="swatch in data">
+                <template v-for="swatch in swatchFilterScope.data">
                     <label
                         v-if="filter.visual_swatch"
                         class="size-6 ring-black/5 ring-1 ring-inset cursor-pointer flex items-center justify-center hover:opacity-75 rounded-full transition"
-                        v-bind:class="{'outline-2 outline outline-black outline-offset-1' : value[swatch.key]}"
+                        v-bind:class="{'outline-2 outline outline-black outline-offset-1' : swatchFilterScope.value[swatch.key]}"
                         v-bind:style="{ background: $root.swatches[filter.code]?.options[swatch.key].swatch }"
                     >
-                        <input type="checkbox" v-on:change="handleChange(swatch.key)" class="hidden" v-bind:checked="value[swatch.key]"/>
+                        <input type="checkbox" v-on:change="swatchFilterScope.handleChange(swatch.key)" class="hidden" v-bind:checked="swatchFilterScope.value[swatch.key]"/>
                     </label>
                     <label
                         v-else
                         class="border px-3 transition-all rounded cursor-pointer text-sm text-inactive font-medium"
-                        v-bind:class="{'border-neutral text-neutral' : value[swatch.key]}"
+                        v-bind:class="{'border-neutral text-neutral' : swatchFilterScope.value[swatch.key]}"
                     >
                         @{{ $root.swatches[filter.code]?.options[swatch.key].swatch }}
-                        <input type="checkbox" v-on:change="handleChange(swatch.key)" class="hidden" v-bind:checked="value[swatch.key]"/>
+                        <input type="checkbox" v-on:change="swatchFilterScope.handleChange(swatch.key)" class="hidden" v-bind:checked="swatchFilterScope.value[swatch.key]"/>
                     </label>
                 </template>
             </div>

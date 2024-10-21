@@ -6,22 +6,22 @@
 
 @section('content')
     <div class="container">
-        <checkout v-cloak v-slot="{ checkout, cart, save, goToStep, forceAccount }">
+        <checkout v-cloak v-slot="checkoutScope">
             <div>
-                <template v-if="checkout.step < getCheckoutStep('success')">
+                <template v-if="checkoutScope.checkout.step < getCheckoutStep('success')">
                     @include('rapidez::checkout.partials.progressbar')
                 </template>
-                <div v-if="checkout.step == 1 && window.app.cart.total_quantity">
+                <div v-if="checkoutScope.checkout.step == 1 && window.app.cart.total_quantity">
                     @include('rapidez::checkout.steps.login')
                 </div>
 
-                <div v-if="[2, 3].includes(checkout.step)" class="-mx-2 lg:flex">
+                <div v-if="[2, 3].includes(checkoutScope.checkout.step)" class="-mx-2 lg:flex">
                     <div class="mb-5 w-full px-2 lg:w-3/4">
-                        <div v-if="checkout.step == 2">
+                        <div v-if="checkoutScope.checkout.step == 2">
                             @include('rapidez::checkout.steps.credentials')
                         </div>
 
-                        <div v-if="checkout.step == 3">
+                        <div v-if="checkoutScope.checkout.step == 3">
                             @include('rapidez::checkout.steps.payment')
                         </div>
                     </div>
@@ -30,7 +30,7 @@
                     </div>
                 </div>
 
-                <div v-if="checkout.step == getCheckoutStep('success')">
+                <div v-if="checkoutScope.checkout.step == getCheckoutStep('success')">
                     @include('rapidez::checkout.steps.success')
                 </div>
             </div>

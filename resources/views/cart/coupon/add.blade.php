@@ -6,14 +6,14 @@
     :watch="false"
     :callback="updateCart"
     :error-callback="checkResponseForExpiredCart"
-    v-slot="{ mutate, variables }"
+    v-slot="couponQueryScope"
 >
-    <form v-on:submit.prevent="mutate" class="flex gap-3">
+    <form v-on:submit.prevent="couponQueryScope.mutate" class="flex gap-3">
         <x-rapidez::input
             :label="false"
             name="couponCode"
             placeholder="Coupon code"
-            v-model="variables.coupon_code"
+            v-model="couponQueryScope.variables.coupon_code"
             v-bind:disabled="$root.loading"
             required
         />

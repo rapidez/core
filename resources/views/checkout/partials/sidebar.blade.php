@@ -5,7 +5,7 @@
             <div class="w-2/12 px-4 text-right">@{{ item.quantity }}</div>
             <div class="w-3/12 text-right">@{{ item.prices.row_total.value | price }}</div>
         </div>
-        <div v-for="total_segment in checkout.totals.total_segments" v-if="total_segment.value" class="flex gap-x-1 border-b py-3 last:border-b-0 last:font-bold">
+        <div v-for="total_segment in checkoutScope.checkout.totals.total_segments" v-if="total_segment.value" class="flex gap-x-1 border-b py-3 last:border-b-0 last:font-bold">
             <div class="w-7/12">@{{ total_segment.title }}</div>
             <div class="w-2/12 px-4"></div>
             <div class="w-3/12 text-right">@{{ total_segment.value | price }}</div>

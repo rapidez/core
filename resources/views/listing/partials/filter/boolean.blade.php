@@ -2,24 +2,24 @@
     v-else-if="filter.input == 'boolean'"
     :component-id="filter.code"
     :data-field="filter.code+(filter.type != 'int' ? '.keyword' : '')"
-    :react="{and: reactiveFilters}"
+    :react="{and: listingScope.reactiveFilters}"
     :show-search="false"
     u-r-l-params
 >
     <div
         slot="render"
         class="relative pb-4"
-        slot-scope="{ data, handleChange, value }"
-        v-if="data.length > 0"
+        slot-scope="booleanFilterScope"
+        v-if="booleanFilterScope.data.length > 0"
     >
         <x-rapidez::filter.heading>
             <ul class="flex flex-col gap-1">
-                <li class="flex" v-for="item in data">
+                <li class="flex" v-for="item in booleanFilterScope.data">
                     <x-rapidez::checkbox
-                        v-bind:checked="value[item.key]"
-                        v-on:change="handleChange(item.key)"
+                        v-bind:checked="booleanFilterScope.value[item.key]"
+                        v-on:change="booleanFilterScope.handleChange(item.key)"
                     >
-                        <div class="font-sans font-medium text-sm items-center flex text-inactive" :class="{'text-neutral': value[item.key] == true}">
+                        <div class="font-sans font-medium text-sm items-center flex text-inactive" :class="{'text-neutral': booleanFilterScope.value[item.key] == true}">
                             <template v-if="item.key">@lang('Yes')</template>
                             <template v-if="!item.key">@lang('No')</template>
                             <span class="block ml-0.5 text-xs">(@{{ item.doc_count }})</span>

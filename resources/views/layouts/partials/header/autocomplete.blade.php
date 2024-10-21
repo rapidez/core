@@ -18,7 +18,7 @@
     class="w-full"
     v-cloak
 >
-    <x-rapidez::reactive-base slot-scope="{ results, resultsCount, searchAdditionals, debounce, size, highlight }">
+    <x-rapidez::reactive-base slot-scope="autocompleteScope">
         <data-search
             placeholder="@lang('Search')"
             v-on:value-selected="search"
@@ -31,20 +31,20 @@
             :field-weights="Object.values(config.searchable)"
             :show-icon="false"
             fuzziness="AUTO"
-            :debounce="debounce"
-            :size="size"
+            :debounce="autocompleteScope.debounce"
+            :size="autocompleteScope.size"
             :highlight="true"
-            v-on:value-change="searchAdditionals($event)"
+            v-on:value-change="autocompleteScope.searchAdditionals($event)"
         >
             <div
                 slot="render"
-                slot-scope="{ downshiftProps: { isOpen }, data: suggestions }"
+                slot-scope="dataSearchScope"
             >
                 <div
                     class="{{ config('rapidez.frontend.z-indexes.header-dropdowns') }} absolute -inset-x-10 top-full max-h-[600px] overflow-auto rounded-b-xl border bg-white p-2 md:p-5 shadow-xl md:inset-x-0 md:w-full md:-translate-y-px"
-                    v-if="isOpen && (suggestions.length || resultsCount)"
+                    v-if="dataSearchScope.downshiftProps.isOpen && (dataSearchScope.suggestions.length || autocompleteScope.resultsCount)"
                 >
-                    <template v-for="(resultsData, resultsType) in results ?? {}" v-if="resultsData?.hits?.length">
+                    <template v-for="(resultsData, resultsType) in autocompleteScope.results ?? {}" v-if="resultsData?.hits?.length">
                         @foreach (config('rapidez.frontend.autocomplete.additionals') as $key => $fields)
                             @includeIf('rapidez::layouts.partials.header.autocomplete.' . $key)
                         @endforeach

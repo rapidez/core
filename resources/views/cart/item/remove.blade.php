@@ -4,9 +4,9 @@
     :notify="{ message: item.product.name+' '+config.translations.cart.remove }"
     :callback="updateCart"
     :error-callback="checkResponseForExpiredCart"
-    v-slot="{ mutate }"
+    v-slot="cartItemRemoveQueryScope"
 >
-    <button :disabled="$root.loading" v-on:click="mutate" title="@lang('Remove')" :dusk="'item-delete-'+index" class="hover:underline">
+    <button :disabled="$root.loading" v-on:click="cartItemRemoveQueryScope.mutate" title="@lang('Remove')" :dusk="'item-delete-'+index" class="hover:underline">
         @lang('Remove')
     </button>
 </graphql-mutation>
