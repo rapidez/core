@@ -8,10 +8,16 @@
     <div class="container">
         @include('rapidez::checkout.partials.progressbar')
         <div v-if="hasCart" v-cloak>
-            <div class="flex gap-5">
-                <div class="w-3/4">
+            <div class="flex gap-5 max-xl:flex-col">
+                <div class="w-full rounded bg-highlight p-4 xl:p-8 xl:w-3/4">
                     <form
-                        v-on:submit.prevent="(e) => {submitFieldsets(e.target?.form ?? e.target).then((result) => window.Turbo.visit(window.url('{{ route('checkout', ['step' => 'payment']) }}'))).catch();}"
+                        v-on:submit.prevent="(e) => {
+                            submitFieldsets(e.target?.form ?? e.target)
+                                .then((result) =>
+                                    window.app.$emit('checkout-credentials-saved')
+                                    && window.Turbo.visit(window.url('{{ route('checkout', ['step' => 'payment']) }}'))
+                                ).catch();
+                        }"
                         class="flex flex-col gap-5"
                     >
                         <template v-if="!cart.is_virtual">
@@ -32,7 +38,7 @@
                         </x-rapidez::button>
                     </form>
                 </div>
-                <div class="w-1/4">
+                <div class="w-full xl:w-1/4">
                     @include('rapidez::checkout.partials.sidebar')
                 </div>
             </div>

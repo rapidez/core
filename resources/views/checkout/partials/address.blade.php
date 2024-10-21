@@ -89,7 +89,7 @@
                 required
             />
         </div>
-        @if (Rapidez::config('customer/address/street_lines', 3) >= 2)
+        @if (Rapidez::config('customer/address/street_lines', 2) >= 2)
             <div class="col-span-6 sm:col-span-3">
                 <x-rapidez::input
                     name="{{ $type }}_housenumber"
@@ -100,7 +100,7 @@
                 />
             </div>
         @endif
-        @if (Rapidez::config('customer/address/street_lines', 3) >= 3)
+        @if (Rapidez::config('customer/address/street_lines', 2) >= 3)
             <div class="col-span-6 sm:col-span-3">
                 <x-rapidez::input
                     name="{{ $type }}_addition"

@@ -40,15 +40,19 @@ function init() {
         cachekey.value = window.config.cachekey
     }
 
+    let address = window.debug ? ['Mountain Drive', '1007', ''] : ['', '', '']
+
+    for (let i = address.length; i >= window.config.street_lines; i--) {
+        address[i - 1] = (address[i - 1] + ' ' + address.pop()).trim()
+    }
+
     window.address_defaults = {
         customer_address_id: null,
         same_as_shipping: true,
         firstname: window.debug ? 'Bruce' : '',
         lastname: window.debug ? 'Wayne' : '',
         postcode: window.debug ? '72000' : '',
-        // TODO: This should listen to the "customer/address/street_lines" config
-        // street: window.debug ? ['Mountain Drive', 1007, ''] : ['', '', ''],
-        street: window.debug ? ['Mountain Drive', 1007] : ['', ''],
+        street: address,
         city: window.debug ? 'Gotham' : '',
         telephone: window.debug ? '530-7972' : '',
         country_code: window.debug ? 'NL' : window.config.default_country,
@@ -71,37 +75,6 @@ function init() {
             showTax: window.config.show_tax,
             swatches: swatches,
             scrollLock: useScrollLock(document.body),
-            /*
-            TODO: Remove? As we're using the cart store for everything now.
-            checkout: {
-                step: 1,
-                totals: {},
-
-                shipping_address: useLocalStorage('shipping_address', address_defaults, {
-                    mergeDefaults: true,
-                    serializer: StorageSerializers.object,
-                }),
-                billing_address: useLocalStorage('billing_address', address_defaults, {
-                    mergeDefaults: true,
-                    serializer: StorageSerializers.object,
-                }),
-                hide_billing: useLocalStorage('hide_billing', true),
-
-                shipping_method: null,
-                shipping_methods: [],
-
-                payment_method: null,
-                payment_methods: [],
-
-                agreement_ids: [],
-
-                // This can be used to prevent the checkout from going
-                // to the next step which is useful in combination
-                // with the "CheckoutPaymentSaved" event to
-                // implement payment providers.
-                doNotGoToTheNextStep: false,
-            },
-            */
         },
         methods: {
             search(value) {
@@ -165,7 +138,7 @@ function init() {
         })
     }
 
-    const event = new CustomEvent('vue:loaded')
+    const event = new CustomEvent('vue:loaded', { detail: { vue: window.app } })
     document.dispatchEvent(event)
 }
 document.addEventListener('turbo:load', init)

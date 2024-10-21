@@ -1,5 +1,3 @@
-@include('rapidez::cart.queries.fragments.product')
-
 fragment orderItem on OrderItemInterface {
     id
     quantity_ordered
@@ -52,3 +50,5 @@ fragment orderItem on OrderItemInterface {
         }
     }
 }
+
+@include('rapidez::cart.queries.fragments.product')

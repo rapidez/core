@@ -6,11 +6,17 @@ import { user } from './useUser'
 
 const cartStorage = useLocalStorage('cart', {}, { serializer: StorageSerializers.object })
 let age = 0
+let currentRefresh = null
 
 export const refresh = async function (force = false) {
     if (!mask.value) {
         cartStorage.value = {}
         return false
+    }
+
+    if (currentRefresh) {
+        console.debug('Refresh canceled, request already in progress...')
+        return currentRefresh
     }
 
     if (!force && Date.now() - age < 5000) {
@@ -20,20 +26,25 @@ export const refresh = async function (force = false) {
 
     age = Date.now()
 
-    try {
-        let response = await window.magentoGraphQL(
-            config.queries.cart +
-                `
+    return (currentRefresh = (async function () {
+        try {
+            let response = await window.magentoGraphQL(
+                `query getCart($cart_id: String!) { cart (cart_id: $cart_id) { ...cart } }
 
-            query getCart($cart_id: String!) { cart (cart_id: $cart_id) { ...cart } }`,
-            { cart_id: mask.value },
-        )
+                ` + config.fragments.cart,
+                { cart_id: mask.value },
+            )
 
-        cart.value = Object.values(response.data)[0]
-    } catch (error) {
-        console.error(error)
-        GraphQLError.prototype.isPrototypeOf(error) && Vue.prototype.checkResponseForExpiredCart({}, await error?.response?.json())
-    }
+            cart.value = Object.values(response.data)[0]
+        } catch (error) {
+            console.error(error)
+            GraphQLError.prototype.isPrototypeOf(error) && Vue.prototype.checkResponseForExpiredCart({}, await error?.response?.json())
+
+            return false
+        }
+    })().finally(() => {
+        currentRefresh = null
+    }))
 }
 
 export const clear = async function () {
@@ -59,10 +70,9 @@ export const setGuestEmailOnCart = async function (email) {
 export const linkUserToCart = async function () {
     await window
         .magentoGraphQL(
-            config.queries.cart +
-                `
+            `mutation ($cart_id: String!) { assignCustomerToGuestCart (cart_id: $cart_id) { ...cart } }
 
-            mutation ($cart_id: String!) { assignCustomerToGuestCart (cart_id: $cart_id) { ...cart } }`,
+            ` + config.fragments.cart,
             {
                 cart_id: mask.value,
             },
@@ -73,10 +83,9 @@ export const linkUserToCart = async function () {
 export const fetchCustomerCart = async function () {
     await window
         .magentoGraphQL(
-            config.queries.cart +
-                `
+            `query { customerCart { ...cart } }
 
-            query { customerCart { ...cart } }`,
+            ` + config.fragments.cart,
         )
         .then((response) => Vue.prototype.updateCart([], response))
 }
@@ -84,10 +93,9 @@ export const fetchCustomerCart = async function () {
 export const fetchGuestCart = async function () {
     await window
         .magentoGraphQL(
-            config.queries.cart +
-                `
+            `mutation { createGuestCart { cart { ...cart } } }
 
-            mutation { createGuestCart { cart { ...cart } } }`,
+            ` + config.fragments.cart,
         )
         .then((response) => Vue.prototype.updateCart([], response))
 }

@@ -1,6 +1,32 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.12.0...2.12.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.14.0...2.14.0)
+## [2.14.0](https://github.com/rapidez/core/releases/tag/2.14.0) - 2024-10-17
+
+### Changed
+
+- Updated the frontend dependencies including Vite 5 (#584)
+- Drop support for Magento 2.4.5 (#589)
+
+### Fixed
+
+- Filter out double slashes from API endpoints (#559)
+- Fix casts in quote model (#542)
+- Correct error message when placing an order fails (#599)
+
+## [2.13.0](https://github.com/rapidez/core/releases/tag/2.13.0) - 2024-09-27
+
+### Changed
+
+- Cart summary refactor, listen to the Magento config (#564)
+- PHP 8.3 support and Magento 2.4.7 tests (#573)
+
+### Fixed
+
+- Change order of cart clearing (#579)
+- Fixed footer newsletter responsiveness and layout shifts (#582)
+- Slideover styling changes (#581)
+
 ## [2.12.0](https://github.com/rapidez/core/releases/tag/2.12.0) - 2024-09-24
 
 ### Changed

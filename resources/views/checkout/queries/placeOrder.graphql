@@ -1,6 +1,3 @@
-@include('rapidez::checkout.queries.fragments.order')
-@include('rapidez::checkout.queries.fragments.orderV2')
-
 mutation placeOrder (
     $cart_id: String!,
 ) {
@@ -19,3 +16,6 @@ mutation placeOrder (
         }
     }
 }
+
+@include('rapidez::checkout.queries.fragments.order')
+@include('rapidez::checkout.queries.fragments.orderV2')

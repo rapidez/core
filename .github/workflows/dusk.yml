@@ -22,6 +22,12 @@ jobs:
           - magento-version: 2.4.7-p2
             magento-php-version: php83-fpm
             rapidez-php-version: 8.3
+          - magento-version: 2.4.7-p3
+            magento-php-version: php82-fpm
+            rapidez-php-version: 8.2
+          - magento-version: 2.4.7-p3
+            magento-php-version: php83-fpm
+            rapidez-php-version: 8.3
 
     services:
       magento:

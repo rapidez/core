@@ -26,10 +26,7 @@ export const clear = async function () {
 export async function loadCustomerByNumber(number) {
     await window
         .magentoGraphQL(
-            config.queries.orderV2 +
-                `
-
-            query customerOrder($number: String!) {
+            `query customerOrder($number: String!) {
                 customer {
                     orders(filter: { number: { eq: $number } }) {
                         items {
@@ -38,7 +35,8 @@ export async function loadCustomerByNumber(number) {
                     }
                 }
             }
-        `,
+
+        ` + config.fragments.orderV2,
             {
                 number: number,
             },
@@ -51,15 +49,13 @@ export async function loadCustomerByNumber(number) {
 export async function loadGuestByToken(token) {
     await window
         .magentoGraphQL(
-            config.queries.orderV2 +
-                `
-
-            query guestOrderByToken($token: String!) {
+            `query guestOrderByToken($token: String!) {
                 guestOrderByToken(input: {token: $token}) {
                     ...orderV2
                 }
             }
-        `,
+
+        ` + config.fragments.orderV2,
             {
                 token: token,
             },
@@ -72,15 +68,13 @@ export async function loadGuestByToken(token) {
 export async function loadGuestByCredentials(orderNumber, email, postcode) {
     await window
         .magentoGraphQL(
-            config.queries.cart +
-                `
-
-            query guestOrder($email: String!, $number: String!, $postcode: String!) {
+            `query guestOrder($email: String!, $number: String!, $postcode: String!) {
                 guestOrder(input: {email: $email, number: $number, postcode: $postcode}) {
-                    ...order
+                    ...orderV2
                 }
             }
-        `,
+
+        ` + config.fragments.orderV2,
             {
                 number: orderNumber,
                 email: email,

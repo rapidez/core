@@ -1,10 +1,8 @@
 <script>
 import { GraphQLError } from '../../fetch'
 import { mask, refreshMask } from '../../stores/useMask'
-import InteractWithUser from './../User/mixins/InteractWithUser'
 
 export default {
-    mixins: [InteractWithUser],
     props: {
         product: {
             type: Object,
@@ -80,10 +78,7 @@ export default {
 
             try {
                 let response = await window.magentoGraphQL(
-                    config.queries.cart +
-                        `
-
-                    mutation (
+                    `mutation (
                         $cartId: String!,
                         $sku: String!,
                         $quantity: Float!,
@@ -94,7 +89,9 @@ export default {
                         quantity: $quantity,
                         selected_options: $selected_options,
                         entered_options: $entered_options
-                    }]) { cart { ...cart } user_errors { code message } } }`,
+                    }]) { cart { ...cart } user_errors { code message } } }
+
+                    ` + config.fragments.cart,
                     {
                         sku: this.product.sku,
                         cartId: mask.value,

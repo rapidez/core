@@ -108,6 +108,12 @@ Vue.prototype.updateCart = async function (data, response) {
     return response.data
 }
 
+Vue.prototype.updateOrder = async function (data, response) {
+    await updateOrder(data, response)
+
+    return response.data
+}
+
 Vue.prototype.checkResponseForExpiredCart = async function (variables, response) {
     if (
         response?.errors?.some(
