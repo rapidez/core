@@ -27,7 +27,7 @@ class Store extends Model
 
     public static function getCached(): array
     {
-        $stores = once(fn () => Cache::rememberForever('stores', function () {
+        $stores = Cache::store('rapidez:multi')->rememberForever('stores', function () {
             return self::select([
                 'store_id',
                 'store.name',
@@ -37,7 +37,7 @@ class Store extends Model
                 'store_group.root_category_id',
                 'store_website.code AS website_code',
             ])->get()->keyBy('store_id')->toArray();
-        }));
+        });
 
         return $stores;
     }
