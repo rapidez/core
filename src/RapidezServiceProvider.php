@@ -283,7 +283,7 @@ class RapidezServiceProvider extends ServiceProvider
             $this->mergeConfigFrom(__DIR__ . '/../config/rapidez/' . $configFile . '.php', 'rapidez.' . $configFile);
         }
 
-        if (!config('cache.stores.rapidez:multi', false)) {
+        if (! config('cache.stores.rapidez:multi', false)) {
             $fallbackDriver = config('cache.default');
             if ($fallbackDriver === 'rapidez:multi') {
                 $fallbackDriver = config('cache.multi-fallback', 'file');
@@ -296,7 +296,7 @@ class RapidezServiceProvider extends ServiceProvider
                     'array',
                     $fallbackDriver,
                 ],
-                'sync_missed_stores' => true
+                'sync_missed_stores' => true,
             ]);
         }
 
