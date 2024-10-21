@@ -115,17 +115,10 @@ function init() {
                     store = window.config.store
                 }
 
-                let mediaPosition = imagePath.indexOf('/media/')
-                if (mediaPosition > 0) {
-                    return `/storage/${store}/resizes/${size}/magento` + imagePath.substr(mediaPosition + 6)
-                }
-
-                let productPosition = imagePath.indexOf('/product/')
-                if (productPosition > 0) {
-                    return `/storage/${store}/resizes/${size}/magento/catalog` + imagePath.substr(productPosition)
-                }
-
-                return `/storage/${store}/resizes/${size}/magento/catalog/product` + imagePath
+                let url = new URL(imagePath);
+                url = (url.origin + url.pathname).replace(config.base_url + '/media', '');
+                
+                return `/storage/${store}/resizes/${size}/magento${url}`
             },
         },
         computed: {
