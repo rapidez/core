@@ -20,7 +20,6 @@ import './mixins'
 import './cookies'
 import './callbacks'
 import './vue-components'
-
 ;(() => import('./turbolinks'))()
 
 function init() {
