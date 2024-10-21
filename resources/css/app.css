@@ -24,3 +24,9 @@ listing {
     margin: unset;
     white-space: unset;
 }
+
+/* Remove default browser arrows for input type="number" */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+    @apply appearance-none m-0;
+}

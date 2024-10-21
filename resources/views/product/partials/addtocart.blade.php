@@ -14,23 +14,23 @@
                 </div>
             @endif
 
-            <div class="flex flex-wrap items-center gap-3">
-                <div>
-                    <div class="text-2xl font-bold text-neutral" v-text="$options.filters.price(addToCart.specialPrice || addToCart.price)">
-                        {{ price($product->special_price ?: $product->price) }}
-                    </div>
-                    <div class="text-lg text-neutral line-through" v-if="addToCart.specialPrice" v-text="$options.filters.price(addToCart.price)">
-                        {{ $product->special_price ? price($product->price) : '' }}
-                    </div>
+            <div>
+                <div class="text-2xl font-bold text-neutral" v-text="$options.filters.price(addToCart.specialPrice || addToCart.price)">
+                    {{ price($product->special_price ?: $product->price) }}
                 </div>
+                <div class="text-lg text-neutral line-through" v-if="addToCart.specialPrice" v-text="$options.filters.price(addToCart.price)">
+                    {{ $product->special_price ? price($product->price) : '' }}
+                </div>
+            </div>
 
+            <div class="flex gap-3 max-sm:flex-col">
                 <x-rapidez::quantity
                     model="addToCart.qty"
                     :minSaleQty="$product->min_sale_qty"
                     :qtyIncrements="$product->qty_increments"
                 />
 
-                <x-rapidez::button.cart/>
+                <x-rapidez::button.cart class="w-full max-sm:min-h-14"/>
             </div>
         @endif
     </form>
