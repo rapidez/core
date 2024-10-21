@@ -21,7 +21,7 @@ import './cookies'
 import './callbacks'
 import './vue-components'
 
-(() => import('./turbolinks'))()
+;(() => import('./turbolinks'))()
 
 function init() {
     // https://vuejs.org/api/application.html#app-config-performance

@@ -80,7 +80,7 @@ export default {
                 let response = await window.magentoGraphQL(this.query, this.variables, options)
 
                 if (this.check) {
-                    if (! this.check(response.data)) {
+                    if (!this.check(response.data)) {
                         Turbo.visit(window.url(this.redirect))
                         return
                     }
