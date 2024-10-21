@@ -23,16 +23,20 @@ return [
         'email'             => 'Een email adres is verplicht.',
     ],
 
-    'asc'       => 'Oplopend',
-    'desc'      => 'Aflopend',
+    'asc'       => 'oplopend',
+    'desc'      => 'aflopend',
     'relevance' => 'Relevantie',
     'newest'    => 'Nieuwste',
     'all'       => 'Alles',
 
-    // 'sorting' => [
-    //     'attribute' => [
-    //         'asc' => 'Attribute asc',
-    //         'desc' => 'Attrribute desc',
-    //     ],
-    // ],
+    'sorting' => [
+        'price' => [
+            'asc' => 'Prijs oplopend',
+            'desc' => 'Prijs aflopend',
+        ],
+        'name' => [
+            'asc' => 'Naam A-Z',
+            'desc' => 'Naam Z-A',
+        ],
+    ],
 ];
