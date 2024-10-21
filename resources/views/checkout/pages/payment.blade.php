@@ -17,6 +17,7 @@
                             ).catch();
                     }">
                     @include('rapidez::checkout.steps.payment_method')
+                    <div class="mt-3">@include('rapidez::checkout.steps.agreements')</div>
                     @include('rapidez::checkout.steps.place_order')
                 </form>
                 <div class="w-full xl:w-1/4">

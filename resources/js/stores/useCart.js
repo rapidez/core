@@ -15,6 +15,7 @@ export const refresh = async function (force = false) {
     }
 
     if (currentRefresh) {
+        console.debug('Refresh canceled, request already in progress...')
         return currentRefresh
     }
 
