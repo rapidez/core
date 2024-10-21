@@ -1,12 +1,12 @@
 @php($checkoutAgreements = \Rapidez\Core\Models\CheckoutAgreement::all())
 
 <h1 class="font-bold text-4xl mb-5">@lang('Payment method')</h1>
-<form class="bg-highlight p-8 rounded mt-6" v-on:submit.prevent="save(['payment_method'], 4)">
-    <div class="my-2 border bg-white p-4 rounded" v-for="(method, index) in checkout.payment_methods">
+<form class="bg-highlight p-8 rounded mt-6" v-on:submit.prevent="checkoutScope.save(['payment_method'], 4)">
+    <div class="my-2 border bg-white p-4 rounded" v-for="(method, index) in checkoutScope.checkout.payment_methods">
         <x-rapidez::radio
             v-bind:value="method.code"
             v-bind:dusk="'method-'+index"
-            v-model="checkout.payment_method"
+            v-model="checkoutScope.checkout.payment_method"
             class="[&+div]:flex-1"
         >
             <div class="flex items-center">
@@ -48,7 +48,7 @@
                         <x-rapidez::checkbox
                             name="agreement_ids[]"
                             :value="$agreement->agreement_id"
-                            v-model="checkout.agreement_ids"
+                            v-model="checkoutScope.checkout.agreement_ids"
                             dusk="agreements"
                             required
                         >

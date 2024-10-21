@@ -6,7 +6,7 @@
         label=""
         v-bind:id="item.entity_id+'_super_attribute_'+superAttributeId"
         v-bind:name="superAttributeId"
-        v-model="addToCart.options[superAttributeId]"
+        v-model="addToCartScope.options[superAttributeId]"
         class="block mb-3"
         required
     >
@@ -14,10 +14,10 @@
             @lang('Select') @{{ superAttribute.label.toLowerCase() }}
         </option>
         <option
-            v-for="(option, optionId) in addToCart.getOptions(superAttribute.code)"
+            v-for="(option, optionId) in addToCartScope.getOptions(superAttribute.code)"
             v-text="option.label"
             :value="optionId"
-            :disabled="addToCart.disabledOptions['super_'+superAttribute.code].includes(optionId)"
+            :disabled="addToCartScope.disabledOptions['super_'+superAttribute.code].includes(optionId)"
         />
     </x-rapidez::select>
 </div>

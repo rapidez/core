@@ -1,11 +1,11 @@
-<add-to-cart v-bind:product="item" v-slot="addToCart" v-cloak>
-    <form class="px-2 pb-2" v-on:submit.prevent="addToCart.add">
+<add-to-cart v-bind:product="item" v-slot="addToCartScope" v-cloak>
+    <form class="px-2 pb-2" v-on:submit.prevent="addToCartScope.add">
         <div class="flex items-center space-x-2 mb-2">
             <div class="font-semibold">
-                @{{ (addToCart.simpleProduct.special_price || addToCart.simpleProduct.price) | price }}
+                @{{ (addToCartScope.simpleProduct.special_price || addToCartScope.simpleProduct.price) | price }}
             </div>
-            <div class="line-through text-sm" v-if="addToCart.simpleProduct.special_price">
-                @{{ addToCart.simpleProduct.price | price }}
+            <div class="line-through text-sm" v-if="addToCartScope.simpleProduct.special_price">
+                @{{ addToCartScope.simpleProduct.price | price }}
             </div>
         </div>
 

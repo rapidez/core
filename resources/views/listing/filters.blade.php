@@ -5,7 +5,7 @@
         <lazy>
             @include('rapidez::listing.partials.filter.selected')
             @include('rapidez::listing.partials.filter.category')
-            <template v-for="filter in filters">
+            <template v-for="filter in listingScope.filters">
                 @include('rapidez::listing.partials.filter.price')
                 @include('rapidez::listing.partials.filter.swatch')
                 @include('rapidez::listing.partials.filter.boolean')

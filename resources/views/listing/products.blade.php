@@ -6,9 +6,9 @@
     list-class="flex flex-wrap mt-5 -mx-4 sm:-mx-1 overflow-hidden"
     :pagination="true"
     v-on:page-click="scrollToElement('#products')"
-    :size="isNaN(parseInt(listingSlotProps.pageSize)) ? 10000 : parseInt(listingSlotProps.pageSize)"
-    :react="{and: reactiveFilters}"
-    :sort-options="sortOptions"
+    :size="isNaN(parseInt(listingScope.pageSize)) ? 10000 : parseInt(listingScope.pageSize)"
+    :react="{and: listingScope.reactiveFilters}"
+    :sort-options="listingScope.sortOptions"
     :inner-class="{
         button: 'pagination-button',
         current: 'current-button',
