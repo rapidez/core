@@ -14,14 +14,14 @@ import useMask from './stores/useMask'
 import { swatches, clear as clearSwatches } from './stores/useSwatches'
 import { clear as clearAttributes } from './stores/useAttributes.js'
 import './vue'
-import { computed } from 'vue'
 import './fetch'
 import './filters'
 import './mixins'
-import './turbolinks'
 import './cookies'
 import './callbacks'
 import './vue-components'
+
+(() => import('./turbolinks'))()
 
 function init() {
     // https://vuejs.org/api/application.html#app-config-performance

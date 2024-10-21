@@ -15,7 +15,7 @@ export default {
             default: () => ({}),
         },
         check: {
-            type: String,
+            type: Function,
         },
         redirect: {
             type: String,
@@ -80,7 +80,7 @@ export default {
                 let response = await window.magentoGraphQL(this.query, this.variables, options)
 
                 if (this.check) {
-                    if (!eval('response.data.' + this.check)) {
+                    if (! this.check(response.data)) {
                         Turbo.visit(window.url(this.redirect))
                         return
                     }
