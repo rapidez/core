@@ -1,5 +1,5 @@
 @php($checkoutAgreements ??= \Rapidez\Core\Models\CheckoutAgreement::all())
-@if(!$checkoutAgreements->count())
+@if (!$checkoutAgreements->count())
     @return
 @endif
 
