@@ -93,7 +93,7 @@ export default {
 
     mounted() {
         if (this.mutateEvent) {
-            window.app.$on(this.mutateEvent, () => {
+            this.$root.$on(this.mutateEvent, () => {
                 this.mutate()
             })
         }

@@ -24,7 +24,11 @@
                     </div>
                 </div>
 
-                @include('rapidez::product.partials.quantity')
+                <x-rapidez::quantity
+                    model="addToCart.qty"
+                    :minSaleQty="$product->min_sale_qty"
+                    :qtyIncrements="$product->qty_increments"
+                />
 
                 <x-rapidez::button.cart/>
             </div>

@@ -45,8 +45,7 @@ class CartTest extends DuskTestCase
                 ->waitUntilIdle()
                 ->waitFor('@cart-content', 15)
                 ->waitUntilIdle()
-                ->type('@qty-0', 5)
-                ->pressAndWaitFor('@item-update-0')
+                ->select('@qty', 5)
                 ->waitUntilIdle()
                 ->assertSee($this->testProduct->price * 5);
         });
