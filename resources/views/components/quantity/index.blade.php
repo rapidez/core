@@ -10,6 +10,7 @@
     name="qty"
     label="Quantity"
     v-model="{{ $model }}"
+    dusk="qty"
     labelClass="flex items-center sr-only mr-3"
     wrapperClass="flex"
 >
