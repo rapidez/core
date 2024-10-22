@@ -14,6 +14,7 @@ items {
             'type_id',
             'url_key',
             'url_suffix',
+            'visibility',
         ])->merge(config('rapidez.frontend.cart_attributes'))->unique() as $attribute)
             {{ $attribute }}
         @endforeach
