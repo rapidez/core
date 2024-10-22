@@ -21,8 +21,6 @@ class Config extends Model
 
     protected $primaryKey = 'config_id';
 
-    protected $configCache = [];
-
     protected static function booting()
     {
         static::addGlobalScope('scope-fallback', function (Builder $builder) {
