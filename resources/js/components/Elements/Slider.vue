@@ -99,7 +99,7 @@ export default {
                     let startClone = this.container.insertBefore(slide.cloneNode(true), firstChild)
                     startClone.dataset.clone = true
                     startClone.dataset.position = 'start'
-    
+
                     let endClone = this.container.appendChild(slide.cloneNode(true))
                     endClone.dataset.clone = true
                     endClone.dataset.position = 'end'
@@ -174,13 +174,13 @@ export default {
         updateSpan() {
             setTimeout(() => {
                 let slide = this.childSpan == 0 ? 0 : this.currentSlide
-    
+
                 this.childSpan = this.vertical
                     ? (this.container.children[0]?.offsetHeight ?? this.container.offsetHeight)
                     : (this.container.children[0]?.offsetWidth ?? this.container.offsetWidth)
-    
+
                 this.navigate(slide, 'instant')
-    
+
                 this.sliderSpan = this.vertical ? this.container.offsetHeight : this.container.offsetWidth
             })
         },
