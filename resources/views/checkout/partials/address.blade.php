@@ -172,6 +172,7 @@
                 label="Tax ID"
                 placeholder=""
                 v-model.lazy="checkout.{{ $type }}_address.vat_id"
+                v-on:change="window.app.$emit('vat-change', $event)"
                 :required="Rapidez::config('customer/address/taxvat_show', 'opt') == 'req'"
             />
         </div>
