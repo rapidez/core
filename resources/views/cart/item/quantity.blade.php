@@ -7,6 +7,6 @@
     mutate-event="updated-quantity"
 >
     <div class="flex items-center gap-1">
-        <x-rapidez::quantity index="item.id" model="variables.quantity" minSaleQty="(item.product.stock_item?.min_sale_qty ?? 1)" qtyIncrements="(item.product.stock_item?.qty_increments ?? 1)"/>
+        <x-rapidez::quantity @change="mutate" index="item.id" model="variables.quantity" minSaleQty="(item.product.stock_item?.min_sale_qty ?? 1)" qtyIncrements="(item.product.stock_item?.qty_increments ?? 1)"/>
     </form>
 </graphql-mutation>
