@@ -6,7 +6,7 @@
                     <img
                         class="mx-auto"
                         :alt="item.product.name"
-                        :src="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento' + item.product.image.url.replace(config.media_url, '') + '.webp'"
+                        :src="resizedPath(item.product.image.url + '.webp', '80x80')"
                         height="80"
                     />
                 </a>
