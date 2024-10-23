@@ -17,7 +17,7 @@
                         @lang('Sorry! This product is currently out of stock.')
                     </p>
                 @else
-                    @include('rapidez::product.partials.quantity', ['product' => $groupedProduct])
+                    @include('rapidez::product.partials.quantity.default', ['product' => $groupedProduct])
 
                     <x-rapidez::button.cart/>
                 @endif
