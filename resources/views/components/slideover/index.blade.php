@@ -41,7 +41,7 @@
         '-left-full peer-checked:left-0' => $position === 'left',
     ]) }}>
         @include('rapidez::components.slideover.partials.header')
-        <div class="slideover-wrapper flex flex-1 flex-col items-start overflow-y-auto bg-inactive-100">
+        <div class="slideover-wrapper flex flex-1 flex-col items-start overflow-y-auto bg-base">
             {{ $slot }}
         </div>
     </div>

@@ -22,16 +22,20 @@ export default {
         extend: {
             colors: {
                 primary: {
-                    DEFAULT: 'rgb(var(--primary) / <alpha-value>)', // Theme color
-                    text: 'rgb(var(--primary-text) / <alpha-value>)', // Text color that goes onto primary color
+                    DEFAULT: 'rgb(var(--primary) / <alpha-value>)', // Primary color
+                    text: 'rgb(var(--primary-text) / <alpha-value>)', // Primary text color
                 },
                 secondary: {
-                    DEFAULT: 'rgb(var(--secondary) / <alpha-value>)', // Conversion color
-                    text: 'rgb(var(--secondary-text) / <alpha-value>)', // Text color that goes onto secondary color
+                    DEFAULT: 'rgb(var(--secondary) / <alpha-value>)', // Secondary color
+                    text: 'rgb(var(--secondary-text) / <alpha-value>)', // Secondary text color
                 },
                 neutral: 'rgb(var(--neutral) / <alpha-value>)', // Default text color
-                inactive: 'rgb(var(--inactive) / <alpha-value>)', // Inactive text color
-                highlight: 'rgb(var(--highlight) / <alpha-value>)', // Background highlight color
+                enhanced: 'rgb(var(--enhanced) / <alpha-value>)', // Enhanced color
+                disabled: 'rgb(var(--disabled) / <alpha-value>)', // Disabled color
+                inactive: {
+                    DEFAULT: 'rgb(var(--inactive) / <alpha-value>)', // Inactive text color
+                },
+                base: 'rgb(var(--base) / <alpha-value>)', // Background color
                 border: 'rgb(var(--border) / <alpha-value>)', // Border color
             },
             borderColor: {

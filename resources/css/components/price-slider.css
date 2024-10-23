@@ -8,7 +8,7 @@ div.vue-slider-rail {
 }
 
 div.vue-slider-rail {
-    @apply bg-highlight !important;
+    @apply bg-base !important;
 }
 
 div.vue-slider .vue-slider-dot {
