@@ -10,7 +10,7 @@ class DialogTest extends DuskTestCase
     /**
      * @test
      */
-    public function test()
+    public function test(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/?show-cookie-notice')

@@ -2,6 +2,8 @@
 
 namespace Rapidez\Core\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 class SalesOrderPayment extends Model
 {
     protected $table = 'sales_order_payment';
@@ -32,7 +34,8 @@ class SalesOrderPayment extends Model
         'echeck_type',
     ];
 
-    public function sales_order()
+    /** @return BelongsTo<SalesOrder, SalesOrderPayment> */
+    public function sales_order(): BelongsTo
     {
         return $this->belongsTo(config('rapidez.models.sales_order'), 'parent_id');
     }

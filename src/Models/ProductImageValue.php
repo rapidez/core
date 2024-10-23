@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Rapidez\Core\Models\Scopes\ForCurrentStoreWithoutLimitScope;
 
 class ProductImageValue extends Model
@@ -17,7 +18,8 @@ class ProductImageValue extends Model
         static::addGlobalScope(new ForCurrentStoreWithoutLimitScope('value_id'));
     }
 
-    public function productImage()
+    /** @return BelongsTo<ProductImage, ProductImageValue> */
+    public function productImage(): BelongsTo
     {
         return $this->belongsTo(config('rapidez.models.product_image'), 'value_id');
     }

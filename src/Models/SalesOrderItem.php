@@ -14,11 +14,13 @@ class SalesOrderItem extends Model
         'product_options' => 'collection',
     ];
 
+    /** @return BelongsTo<SalesOrder, SalesOrderItem> */
     public function sales_order(): BelongsTo
     {
         return $this->belongsTo(config('rapidez.models.sales_order'), 'order_id');
     }
 
+    /** @return BelongsTo<Product, SalesOrderItem> */
     public function product(): BelongsTo
     {
         return $this->belongsTo(config('rapidez.models.product'), 'sku', 'sku')->selectAttributes(config('rapidez.frontend.cart_attributes'));

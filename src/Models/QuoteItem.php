@@ -2,33 +2,41 @@
 
 namespace Rapidez\Core\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 class QuoteItem extends Model
 {
     protected $table = 'quote_item';
 
     protected $primaryKey = 'item_id';
 
-    public function store()
+    /** @return BelongsTo<Store, QuoteItem> */
+    public function store(): BelongsTo
     {
         return $this->belongsTo(config('rapidez.models.store'));
     }
 
-    public function quote()
+    /** @return BelongsTo<Quote, QuoteItem> */
+    public function quote(): BelongsTo
     {
         return $this->belongsTo(config('rapidez.models.quote'));
     }
 
-    public function parent()
+    /** @return BelongsTo<QuoteItem, QuoteItem> */
+    public function parent(): BelongsTo
     {
         return $this->belongsTo(self::class, 'parent_item_id');
     }
 
-    public function children()
+    /** @return HasMany<QuoteItem, QuoteItem> */
+    public function children(): HasMany
     {
         return $this->hasMany(self::class, 'parent_item_id');
     }
 
-    public function options()
+    /** @return HasMany<QuoteItemOption, QuoteItem> */
+    public function options(): HasMany
     {
         return $this->hasMany(config('rapidez.models.quote_item_option'), 'item_id');
     }

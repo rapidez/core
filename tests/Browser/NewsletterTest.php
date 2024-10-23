@@ -13,7 +13,7 @@ class NewsletterTest extends DuskTestCase
     /**
      * @test
      */
-    public function test()
+    public function test(): void
     {
         $this->browse(function (Browser $browser) {
             $email = $this->faker->email;

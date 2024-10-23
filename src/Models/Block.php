@@ -18,6 +18,7 @@ class Block extends Model
         static::addGlobalScope(new ForCurrentStoreScope);
     }
 
+    /** @param array<string, string> $replace */
     public static function getCachedByIdentifier(string $identifier, array $replace = []): ?string
     {
         $cacheKey = 'block.' . config('rapidez.store') . '.' . $identifier;

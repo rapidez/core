@@ -6,6 +6,7 @@ use Illuminate\Support\Arr;
 
 trait CastSuperAttributes
 {
+    /** @return array<string, string> */
     protected function getSuperAttributeCasts(): array
     {
         $attributeModel = config('rapidez.models.attribute');

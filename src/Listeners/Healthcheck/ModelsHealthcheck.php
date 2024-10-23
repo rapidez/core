@@ -6,13 +6,19 @@ use Rapidez\Core\Models\Model;
 
 class ModelsHealthcheck extends Base
 {
-    public function handle()
+    /** @return array<string, mixed> */
+    public function handle(): array
     {
         $response = [
             'healthy'  => true,
             'messages' => [],
         ];
-        $classesWithIncorrectParent = collect(config('rapidez.models'))->filter(fn ($model) => ! is_subclass_of($model, Model::class));
+
+        /** @var array<string, string> $models */
+        $models = config('rapidez.models');
+
+        /** @var \Illuminate\Support\Collection<string, string> $classesWithIncorrectParent */
+        $classesWithIncorrectParent = collect($models)->filter(fn ($model) => ! is_subclass_of($model, Model::class));
 
         if (! $classesWithIncorrectParent->count()) {
             return $response;

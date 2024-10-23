@@ -12,16 +12,19 @@ class IndexJob
 
     protected string $index;
     protected int|string $id;
+
+    /** @var array<string, mixed> */
     protected array $values;
 
-    public function __construct(string $index, int|string $id, $values)
+    /** @param iterable<string, mixed>|Arrayable<string, mixed> $values */
+    public function __construct(string $index, int|string $id, iterable|Arrayable $values)
     {
         $this->index = $index;
         $this->id = $id;
         $this->values = ($values instanceof Arrayable ? $values->toArray() : (array) $values);
     }
 
-    public function handle(Elasticsearch $elasticsearch)
+    public function handle(Elasticsearch $elasticsearch): void
     {
         $elasticsearch->index([
             'index' => $this->index,

@@ -20,7 +20,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
 
     protected int $chunkSize = 500;
 
-    public function handle()
+    public function handle(): void
     {
         $this->call('cache:clear');
 
@@ -30,6 +30,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
         $stores = Rapidez::getStores($this->argument('store'));
         foreach ($stores as $store) {
             $this->line('Store: ' . $store['name']);
+
             $this->prepareIndexerWithStore($store, 'products', Eventy::filter('index.product.mapping', [
                 'properties' => [
                     'price' => [
@@ -46,6 +47,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                     ],
                 ],
             ]), Eventy::filter('index.product.settings', []), ['name']);
+
             try {
                 $maxPositions = CategoryProduct::query()
                     ->selectRaw('GREATEST(MAX(position), 0) as position')
@@ -114,6 +116,11 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
         $this->info('Done!');
     }
 
+    /**
+     * @param  array<string, array<int, string>>  $data
+     * @param  Collection<int, Category>  $categories
+     * @return array<string, array<int, string>>
+     */
     public function withCategories(array $data, Collection $categories): array
     {
         foreach ($data['category_paths'] as $categoryPath) {

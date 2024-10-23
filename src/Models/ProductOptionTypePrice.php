@@ -2,6 +2,12 @@
 
 namespace Rapidez\Core\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+/**
+ * @property float $price
+ * @property string $price_type
+ */
 class ProductOptionTypePrice extends Model
 {
     protected $table = 'catalog_product_option_type_price';
@@ -10,12 +16,14 @@ class ProductOptionTypePrice extends Model
 
     public $timestamps = false;
 
-    public function store()
+    /** @return BelongsTo<Store, ProductOptionTypePrice> */
+    public function store(): BelongsTo
     {
         return $this->belongsTo(config('rapidez.models.store'));
     }
 
-    public function value()
+    /** @return BelongsTo<ProductOptionTypeValue, ProductOptionTypePrice> */
+    public function value(): BelongsTo
     {
         return $this->belongsTo(config('rapidez.models.product_option_type_value'), 'option_type_id');
     }

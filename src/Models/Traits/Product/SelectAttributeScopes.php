@@ -3,11 +3,17 @@
 namespace Rapidez\Core\Models\Traits\Product;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use TorMorten\Eventy\Facades\Eventy;
 
 trait SelectAttributeScopes
 {
+    /**
+     * @param  Builder<Model>  $query
+     * @param  array<int, string>  $attributes
+     * @return Builder<Model>
+     * */
     public function scopeSelectAttributes(Builder $query, array $attributes): Builder
     {
         $this->attributesToSelect = $attributes;
@@ -15,6 +21,10 @@ trait SelectAttributeScopes
         return $query;
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     * @return Builder<Model>
+     * */
     public function scopeSelectForProductPage(Builder $query): Builder
     {
         $attributeModel = config('rapidez.models.attribute');
@@ -35,6 +45,10 @@ trait SelectAttributeScopes
         return $query;
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     * @return Builder<Model>
+     * */
     public function scopeSelectOnlyComparable(Builder $query): Builder
     {
         $attributeModel = config('rapidez.models.attribute');
@@ -45,6 +59,10 @@ trait SelectAttributeScopes
         return $query;
     }
 
+    /**
+     * @param  Builder<Model>  $query
+     * @return Builder<Model>
+     * */
     public function scopeSelectOnlyIndexable(Builder $query): Builder
     {
         $attributeModel = config('rapidez.models.attribute');
