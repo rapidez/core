@@ -16,7 +16,7 @@
         @endif
     </title>
 
-    <meta name="description" content="@yield('description', '')"/>
+    <meta name="description" content="@yield('description', Rapidez::config('design/head/default_description', ''))"/>
     <meta name="robots" content="@yield('robots', Rapidez::config('design/search_engine_robots/default_robots', 'INDEX,FOLLOW'))"/>
     <link rel="canonical" href="@yield('canonical', url()->current())" />
 
