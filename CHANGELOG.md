@@ -1,6 +1,16 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.14.0...2.14.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.15.0...2.15.0)
+## [2.15.0](https://github.com/rapidez/core/releases/tag/2.15.0) - 2024-10-23
+
+### Added
+
+- VAT change event (#606)
+
+### Fixed
+
+- Use correct object structure in PostCSS config (#611)
+
 ## [2.14.0](https://github.com/rapidez/core/releases/tag/2.14.0) - 2024-10-17
 
 ### Changed
