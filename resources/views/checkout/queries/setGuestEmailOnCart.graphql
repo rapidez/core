@@ -1,0 +1,13 @@
+mutation setGuestEmailOnCart (
+    $cart_id: String!,
+    $email: String!,
+) {
+    setGuestEmailOnCart(input: {
+        cart_id: $cart_id,
+        email: $email
+    }) {
+        cart { ...cart }
+    }
+}
+
+@include('rapidez::cart.queries.fragments.cart')
