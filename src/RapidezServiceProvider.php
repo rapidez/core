@@ -3,7 +3,6 @@
 namespace Rapidez\Core;
 
 use Illuminate\Contracts\Debug\ExceptionHandler;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -15,6 +14,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\View\View as ViewComponent;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
+use Rapidez\Core\Auth\MagentoCartTokenGuard;
 use Rapidez\Core\Auth\MagentoCustomerTokenGuard;
 use Rapidez\Core\Commands\IndexCategoriesCommand;
 use Rapidez\Core\Commands\IndexProductsCommand;
@@ -78,16 +78,8 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function bootAuth(): self
     {
-        auth()->extend('magento-customer', function (Application $app, string $name, array $config) {
-            return new MagentoCustomerTokenGuard(auth()->createUserProvider($config['provider']), request(), 'token', 'token');
-        });
-
-        config([
-            'auth.guards.magento-customer' => [
-                'driver'   => 'magento-customer',
-                'provider' => 'users',
-            ],
-        ]);
+        MagentoCustomerTokenGuard::register();
+        MagentoCartTokenGuard::register();
 
         return $this;
     }
@@ -270,7 +262,9 @@ class RapidezServiceProvider extends ServiceProvider
 
         ViewComponent::macro('renderOneliner', function () {
             /** @var ViewComponent $this */
-            return Str::squish($this->render());
+            return Str::of($this->render())
+                ->replaceMatches('/#.*/m', '')
+                ->squish();
         });
 
         return $this;

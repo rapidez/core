@@ -1,0 +1,43 @@
+mutation setNewBillingAddressOnCart (
+    $cart_id: String!,
+    $same_as_shipping: Boolean,
+    $prefix: String,
+    $firstname: String!,
+    $middlename: String,
+    $lastname: String!,
+    $suffix: String,
+    $postcode: String,
+    $street: [String]!,
+    $city: String!,
+    $country_code: String!,
+    $telephone: String,
+    $fax: String,
+    $company: String,
+    $vat_id: String,
+) {
+    setBillingAddressOnCart(input: {
+        cart_id: $cart_id,
+        billing_address: {
+            same_as_shipping: $same_as_shipping,
+            address: {
+                prefix: $prefix,
+                firstname: $firstname,
+                middlename: $middlename,
+                lastname: $lastname,
+                suffix: $suffix,
+                postcode: $postcode,
+                street: $street,
+                city: $city,
+                country_code: $country_code,
+                telephone: $telephone,
+                fax: $fax,
+                company: $company,
+                vat_id: $vat_id,
+            }
+        }
+    }) {
+        cart { ...cart }
+    }
+}
+
+@include('rapidez::cart.queries.fragments.cart')

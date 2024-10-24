@@ -26,16 +26,10 @@
             @lang('Shipping method')
         </p>
         <template v-for="(method, index) in checkout.shipping_methods">
-            <x-rapidez::radio v-model="checkout.shipping_method" v-bind:value="method.carrier_code+'_'+method.method_code" v-bind:dusk="'method-'+index">
+            <x-rapidez::radio v-model="checkout.shipping_method" v-bind:value="method.carrier_code+'_'+method.method_code" v-bind:dusk="'shipping-method-'+index">
                 @{{ method.method_title }}
             </x-rapidez::radio>
         </template>
-    </div>
-    <div class="flex flex-col gap-4">
-        <p class="text-2xl font-bold">
-            @lang('Account')
-        </p>
-        @include('rapidez::checkout.partials.create-account')
     </div>
     <x-rapidez::button type="submit" dusk="continue" class="self-start">
         @lang('Continue')
