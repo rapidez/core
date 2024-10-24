@@ -26,13 +26,19 @@ export default {
                     text: 'rgb(var(--primary-text) / <alpha-value>)', // Text color that goes onto primary color
                 },
                 secondary: {
-                    DEFAULT: 'rgb(var(--secondary) / <alpha-value>)', // Conversion color
+                    DEFAULT: 'rgb(var(--secondary) / <alpha-value>)', // Secondary theme color
                     text: 'rgb(var(--secondary-text) / <alpha-value>)', // Text color that goes onto secondary color
                 },
-                neutral: 'rgb(var(--neutral) / <alpha-value>)', // Default text color
-                inactive: 'rgb(var(--inactive) / <alpha-value>)', // Inactive text color
-                highlight: 'rgb(var(--highlight) / <alpha-value>)', // Background highlight color
+                neutral: {
+                    DETAULT: 'rgb(var(--neutral) / <alpha-value>)', // Default text color
+                    light: 'rgb(var(--light) / <alpha-value>)', // Lighter text color
+                },
+                base: {
+                    100: 'rgb(var(--base-100) / <alpha-value>)' // Background color
+                },
+                enhanced: 'rgb(var(--enhanced) / <alpha-value>)', // Conversion related color
                 border: 'rgb(var(--border) / <alpha-value>)', // Border color
+                disabled: 'rgb(var(--disabled) / <alpha-value>)', // Color that is used for disabled components
             },
             borderColor: {
                 DEFAULT: 'rgb(var(--border) / <alpha-value>)', // Border color default so it gets used when only using border
