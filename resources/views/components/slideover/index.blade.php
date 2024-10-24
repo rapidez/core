@@ -21,19 +21,47 @@
 
 @php
     $isInForm = $tag === 'form' || $hasParent;
-    $closeId = $isInForm ? 'close-' . $id : $id;
+    $idBind = $attributes->get('v-bind:id');
+    $id = $idBind;
+    $closeId = ($idBind ? "'close-'+" : 'close-') . $id;
 @endphp
 
 <x-tag v-on:reset="toggleScroll(false)" :is="$tag">
-    <input id="{{ 'close-' . $id }}" class="hidden" type="reset">
-    @if (!$hasParent)
-        <input @checked($open) id="{{ $id }}" class="peer hidden" v-on:change="toggleScroll($event.target.checked)" type="checkbox">
-        <label
+    <input
+        @if($idBind)
+            v-bind:for="{{ $closeId }}"
+        @else
             for="{{ $closeId }}"
+        @endif
+        class="hidden" type="reset">
+    @if (!$hasParent)
+        <input @checked($open)
+            @if($idBind)
+                v-bind:id="{{ $idBind }}"
+            @else
+                id="{{ $id }}"
+            @endif
+            class="peer hidden"
+            v-on:change="toggleScroll($event.target.checked)"
+            type="checkbox">
+        <label
+            @if($idBind)
+                v-bind:for="{{ $isInForm ? $closeId : $idBind }}"
+            @else
+                for="{{ $isInForm ? $closeId : $id }}"
+            @endif
+
             class="pointer-events-none fixed inset-0 z-40 cursor-pointer bg-neutral/50 opacity-0 transition peer-checked:pointer-events-auto peer-checked:opacity-100"
         ></label>
     @else
-        <input @checked($open) id="{{ $id }}" class="peer hidden" type="checkbox">
+        <input @checked($open)
+            @if($idBind)
+                v-bind:id="{{ $idBind }}"
+            @else
+                id="{{ $id }}"
+            @endif
+            class="peer hidden"
+            type="checkbox">
     @endif
     <div {{ $attributes->class([
         'fixed inset-y-0 transition-all bg-white z-40 flex flex-col max-w-md w-full',
