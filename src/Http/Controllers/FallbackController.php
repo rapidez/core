@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\RecordsNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Routing\Exceptions\BackedEnumCaseNotFoundException;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
@@ -13,8 +14,21 @@ use Rapidez\Core\Facades\Rapidez;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
-class FallbackController
+class FallbackController extends Controller
 {
+    public function __construct()
+    {
+        foreach (Rapidez::getAllFallbackRoutes() as $route) {
+            $controller = new $route['action']['uses'];
+
+            if (method_exists($controller, 'getMiddleware')) {
+                foreach ($controller->getMiddleware() as $middleware) {
+                    $this->middleware(...$middleware);
+                }
+            }
+        }
+    }
+
     public function __invoke(Request $request)
     {
         $cacheKey = 'fallbackroute-' . md5($request->url());
