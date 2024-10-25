@@ -3,28 +3,42 @@
 namespace Rapidez\Core\Http\Controllers;
 
 use Exception;
+use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\RecordsNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Routing\Exceptions\BackedEnumCaseNotFoundException;
+use Illuminate\Routing\Pipeline;
+use Illuminate\Routing\Route;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Facades\Rapidez;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
-class FallbackController
+class FallbackController extends Controller
 {
+    protected $container;
+
+    public function __construct(
+        ?Container $container = null,
+        protected Router $router
+    ) {
+        $this->container = $container ?: new Container;
+    }
+
     public function __invoke(Request $request)
     {
         $cacheKey = 'fallbackroute-' . md5($request->url());
         $route = Cache::get($cacheKey);
-        if ($route && $response = $this->tryRoute($route)) {
+        if ($route && $response = $this->tryRoute($route['route'], $request)) {
             return $response;
         }
 
         foreach (Rapidez::getAllFallbackRoutes() as $route) {
-            if (! ($response = $this->tryRoute($route))) {
+            if (! ($response = $this->tryRoute($route['route'], $request))) {
                 continue;
             }
 
@@ -41,13 +55,20 @@ class FallbackController
         abort(404);
     }
 
-    protected function tryRoute($route)
+    protected function tryRoute(Route $route, $request)
     {
         try {
-            $response = App::call($route['action']['uses']);
+            $middleware = $this->router->gatherRouteMiddleware($route->setContainer($this->container));
+            /** @var Response $response */
+            $response = (new Pipeline($this->container))
+                ->send($request)
+                ->through($middleware)
+                ->then(fn ($request) => $this->router->prepareResponse(
+                    $request, $route->bind($request)->run()
+                ));
 
             // Null response is equal to no response or 404.
-            if ($response === null) {
+            if (!$response->getContent() || $response->isNotFound()) {
                 abort(404);
             }
 
