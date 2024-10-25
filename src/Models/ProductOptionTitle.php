@@ -10,6 +10,11 @@ class ProductOptionTitle extends Model
 
     public $timestamps = false;
 
+    protected static function booting(): void
+    {
+        static::addGlobalScope(new ForCurrentStoreWithoutLimitScope('option_id'));
+    }
+
     public function store()
     {
         return $this->belongsTo(config('rapidez.models.store'));
