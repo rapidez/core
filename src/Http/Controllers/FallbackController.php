@@ -7,6 +7,7 @@ use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\RecordsNotFoundException;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\Exceptions\BackedEnumCaseNotFoundException;
 use Illuminate\Routing\Pipeline;
@@ -55,7 +56,7 @@ class FallbackController extends Controller
         abort(404);
     }
 
-    protected function tryRoute(Route $route, $request)
+    protected function tryRoute(Route $route, $request): ?Response
     {
         try {
             $middleware = $this->router->gatherRouteMiddleware($route->setContainer($this->container));
