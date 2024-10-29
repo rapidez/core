@@ -34,6 +34,8 @@
         </main>
         @includeWhen(!request()->is('checkout'), 'rapidez::layouts.partials.footer')
         @includeWhen(request()->is('checkout'), 'rapidez::layouts.checkout.footer')
+
+        @include('rapidez::layouts.partials.global-slideover')
         @stack('page_end')
     </div>
 

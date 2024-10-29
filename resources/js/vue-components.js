@@ -18,6 +18,8 @@ Vue.component('graphql-mutation', graphqlMutation)
 
 import notifications from './components/Notifications/Notifications.vue'
 Vue.component('notifications', notifications)
+import globalSlideover from './components/GlobalSlideover.vue'
+Vue.component('global-slideover', globalSlideover)
 
 import images from './components/Product/Images.vue'
 Vue.component('images', images)

@@ -94,6 +94,11 @@ function init() {
                 // implement payment providers.
                 doNotGoToTheNextStep: false,
             },
+            globalSlideover: {
+                title: '',
+                position: 'left',
+                content: '',
+            },
         },
         methods: {
             search(value) {
