@@ -24,8 +24,8 @@ export default {
                 return this.contents
             }
 
-            return this.$el.querySelector('.global-slideover-wrapper').innerHTML;
-        }
+            return this.$el.querySelector('.global-slideover-wrapper').innerHTML
+        },
     },
 }
 </script>
