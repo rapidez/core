@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
 use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
 
+/**
+ * @property int $entity_id
+ * @property string $path
+ * @property string|null $url_path
+ */
 class Category extends Model
 {
     use HasAlternatesThroughRewrites;

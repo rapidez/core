@@ -5,6 +5,9 @@ namespace Rapidez\Core\Models;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * @property \Illuminate\Support\Collection<mixed> $options
+ */
 class OptionSwatch extends Model
 {
     protected $table = 'eav_attribute_option_swatch';

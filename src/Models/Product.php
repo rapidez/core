@@ -25,6 +25,15 @@ use Rapidez\Core\Models\Traits\Product\CastSuperAttributes;
 use Rapidez\Core\Models\Traits\Product\SelectAttributeScopes;
 use TorMorten\Eventy\Facades\Eventy;
 
+/**
+ * @property string $type_id
+ * @property string|null $url_key
+ * @property \Carbon\Carbon|null $special_from_date
+ * @property \Carbon\Carbon|null $special_to_date
+ * @property-read array<int, Product>|null $children
+ * @property-read array<int, Product>|null $grouped
+ * @property-read array<int, int> $category_ids
+ */
 class Product extends Model
 {
     use CastMultiselectAttributes;
@@ -122,7 +131,7 @@ class Product extends Model
     public function reviewSummary(): HasOne
     {
         return $this->hasOne(
-            config('rapidez.models.product_review_summary', Rapidez\Core\Models\ProductReviewSummary::class),
+            config('rapidez.models.product_review_summary', \Rapidez\Core\Models\ProductReviewSummary::class),
             'entity_pk_value'
         );
     }

@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Exceptions\DecryptionException;
 
+/**
+ * @property string|null $value
+ */
 class Config extends Model
 {
     protected $table = 'core_config_data';

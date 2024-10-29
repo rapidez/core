@@ -1,0 +1,11 @@
+includes:
+    - ./vendor/larastan/larastan/extension.neon
+
+parameters:
+    paths:
+        - src/
+        - tests/
+        - routes/
+    ignoreErrors:
+        - '#^Result of static method TorMorten\\Eventy\\Events::#'
+    level: 1

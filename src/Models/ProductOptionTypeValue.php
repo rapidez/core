@@ -3,7 +3,13 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 
+/**
+ * @property-read ProductOptionTypePrice $price
+ * @property-read Collection<ProductOptionTypePrice> $prices
+ * @property-read Collection<ProductOptionTypeTitle> $titles
+ */
 class ProductOptionTypeValue extends Model
 {
     protected $table = 'catalog_product_option_type_value';

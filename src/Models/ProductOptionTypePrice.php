@@ -2,6 +2,10 @@
 
 namespace Rapidez\Core\Models;
 
+/**
+ * @property float $price
+ * @property string $price_type
+ */
 class ProductOptionTypePrice extends Model
 {
     protected $table = 'catalog_product_option_type_price';
