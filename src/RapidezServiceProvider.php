@@ -123,7 +123,7 @@ class RapidezServiceProvider extends ServiceProvider
             // by default and; you should keep everyting in one place: /lang/nl.json
             foreach (['en', 'nl'] as $lang) {
                 $this->publishes([
-                    __DIR__ . '/../lang/' . $lang . '/frontend.php' => lang_path('vendor/rapidez/' . $lang .'/frontend.php'),
+                    __DIR__ . '/../lang/' . $lang . '/frontend.php' => lang_path('vendor/rapidez/' . $lang . '/frontend.php'),
                 ], 'rapidez-translations');
             }
 

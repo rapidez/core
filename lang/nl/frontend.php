@@ -31,11 +31,11 @@ return [
 
     'sorting' => [
         'price' => [
-            'asc' => 'Prijs oplopend',
+            'asc'  => 'Prijs oplopend',
             'desc' => 'Prijs aflopend',
         ],
         'name' => [
-            'asc' => 'Naam A-Z',
+            'asc'  => 'Naam A-Z',
             'desc' => 'Naam Z-A',
         ],
     ],
