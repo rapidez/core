@@ -118,9 +118,14 @@ class RapidezServiceProvider extends ServiceProvider
                 __DIR__ . '/../resources/views' => resource_path('views/vendor/rapidez'),
             ], 'views');
 
-            $this->publishes([
-                __DIR__ . '/../lang/vendor/rapidez' => lang_path('vendor/rapidez'),
-            ], 'translations');
+            // We're so explicit here as otherwise the json translations will also be published.
+            // That will publish to /lang/vendor/rapidez/nl.json where it will not be loaded
+            // by default and; you should keep everyting in one place: /lang/nl.json
+            foreach (['en', 'nl'] as $lang) {
+                $this->publishes([
+                    __DIR__ . '/../lang/' . $lang . '/frontend.php' => lang_path('vendor/rapidez/' . $lang .'/frontend.php'),
+                ], 'rapidez-translations');
+            }
 
             $this->publishes([
                 __DIR__ . '/../resources/payment-icons' => public_path('payment-icons'),
@@ -235,7 +240,7 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function bootTranslations(): self
     {
-        $this->loadTranslationsFrom(__DIR__ . '/../lang/vendor/rapidez', 'rapidez');
+        $this->loadTranslationsFrom(__DIR__ . '/../lang', 'rapidez');
         $this->loadJsonTranslationsFrom(__DIR__ . '/../lang');
 
         return $this;
