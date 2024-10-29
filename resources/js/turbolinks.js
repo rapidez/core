@@ -10,13 +10,13 @@ Turbo.setProgressBarDelay(5)
 // This allows things placed in the body by scripts like GTM to persist
 Object.assign(PageRenderer.prototype, {
     assignNewBody() {
-        const container = document.querySelector("#turbo-wrapper")
-        const newContainer = this.newElement.querySelector("#turbo-wrapper")
+        const container = document.querySelector('#turbo-wrapper')
+        const newContainer = this.newElement.querySelector('#turbo-wrapper')
 
         if (container && newContainer) {
             container.replaceWith(newContainer)
         } else {
             document.body.replaceWith(this.newElement)
         }
-    }
+    },
 })
