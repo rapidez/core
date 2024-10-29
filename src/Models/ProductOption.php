@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 /**
  * @property string $title
  * @property ?string $type
- *
  * @property-read ProductOptionPrice $price
  * @property-read Collection<ProductOptionPrice> $prices
  * @property-read Collection<ProductOptionTitle> $titles
