@@ -1,7 +1,7 @@
-<x-rapidez::button {{ $attributes->merge([
+<x-rapidez::button.secondary {{ $attributes->merge([
     'type' => 'submit',
     'dusk' => 'add-to-cart',
-])->class('flex items-center') }}>
+]) }}>
     <x-heroicon-o-shopping-cart class="mr-2 h-5 w-5" v-if="!addToCart.adding && !addToCart.added" />
     <x-heroicon-o-arrow-path class="mr-2 h-5 w-5 animate-spin" v-if="addToCart.adding" v-cloak />
     <x-heroicon-o-check class="mr-2 h-5 w-5" v-if="addToCart.added" v-cloak />

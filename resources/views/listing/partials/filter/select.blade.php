@@ -27,7 +27,10 @@
                                 v-bind:checked="value[item.key]"
                                 v-on:change="handleChange(item.key)"
                             >
-                                <div class="font-sans font-medium text-inactive items-center text-sm flex" :class="{'text-neutral': value[item.key] == true}">
+                                <div
+                                    class="font-sans font-medium items-center text-sm flex"
+                                    :class="value[item.key] ? 'text' : 'text-muted'"
+                                >
                                     @{{ item.key }}
                                     <span class="block ml-0.5 text-xs">(@{{ item.doc_count }})</span>
                                 </div>

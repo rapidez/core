@@ -1,6 +1,11 @@
-import tailwindForms from '@tailwindcss/forms'
-import tailwindTypography from '@tailwindcss/typography'
-import tailwindScrollbarHide from 'tailwind-scrollbar-hide'
+import colors from 'tailwindcss/colors'
+import forms from '@tailwindcss/forms'
+import typography from '@tailwindcss/typography'
+import scrollbarHide from 'tailwind-scrollbar-hide'
+
+function color(variable, fallback) {
+    return 'color-mix(in srgb, var('+variable+', '+fallback+') calc(100% * <alpha-value>), transparent)'
+}
 
 export default {
     content: [
@@ -22,26 +27,53 @@ export default {
         extend: {
             colors: {
                 primary: {
-                    DEFAULT: 'rgb(var(--primary) / <alpha-value>)', // Theme color
-                    text: 'rgb(var(--primary-text) / <alpha-value>)', // Text color that goes onto primary color
+                    DEFAULT: color('--primary', '#2fbc85'),
+                    text: color('--primary-text', colors.white),
                 },
+
                 secondary: {
-                    DEFAULT: 'rgb(var(--secondary) / <alpha-value>)', // Conversion color
-                    text: 'rgb(var(--secondary-text) / <alpha-value>)', // Text color that goes onto secondary color
+                    DEFAULT: color('--secondary', '#202F60'),
+                    text: color('--secondary-text', colors.white),
                 },
-                neutral: 'rgb(var(--neutral) / <alpha-value>)', // Default text color
-                inactive: 'rgb(var(--inactive) / <alpha-value>)', // Inactive text color
-                highlight: 'rgb(var(--highlight) / <alpha-value>)', // Background highlight color
-                border: 'rgb(var(--border) / <alpha-value>)', // Border color
+
+                foreground: {
+                    emphasis: color('--foreground-emphasis', colors.gray[800]),
+                    DEFAULT: color('--foreground', colors.gray[700]),
+                    muted: color('--foreground-muted', colors.gray[500]),
+                },
+
+                border: {
+                    emphasis: color('--border-emphasis', colors.gray[500]),
+                    DEFAULT: color('--border', colors.gray[200]),
+                    muted: color('--border-muted', colors.gray[100]),
+                },
+
+                background: {
+                    emphasis: color('--background-emphasis', colors.gray[200]),
+                    DEFAULT: color('--background', colors.gray[100]),
+                    muted: color('--background-muted', colors.gray[50]),
+                },
+
+
+                // TODO: check all these colors within the templates and replace
+                // neutral: 'rgb(var(--neutral) / <alpha-value>)', // Text
+                // inactive: 'rgb(var(--inactive) / <alpha-value>)', // Inactive text
+                // highlight: 'rgb(var(--highlight) / <alpha-value>)', // Background highlight
+                // enhanced: 'rgb(var(--enhanced) / <alpha-value>)', // Enhanced
+                // disabled: 'rgb(var(--disabled) / <alpha-value>)', // Disabled
+                // base: 'rgb(var(--base) / <alpha-value>)', // Background
             },
-            borderColor: {
-                DEFAULT: 'rgb(var(--border) / <alpha-value>)', // Border color default so it gets used when only using border
-            },
+            textColor: theme => theme('colors.foreground'),
+            borderColor: theme => ({
+                default: theme('colors.border'),
+                ...theme('colors.border'),
+            }),
+            backgroundColor: theme => theme('colors.background'),
         },
         container: {
             center: true,
             padding: '1.25rem',
         },
     },
-    plugins: [tailwindForms, tailwindTypography, tailwindScrollbarHide],
+    plugins: [forms, typography, scrollbarHide],
 }

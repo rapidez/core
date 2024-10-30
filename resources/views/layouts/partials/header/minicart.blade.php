@@ -2,7 +2,7 @@
     <div class="relative" v-if="hasCart" v-on-click-away="close" slot-scope="{ toggle, close, isOpen }" v-cloak>
         <button class="flex my-1 focus:outline-none" v-on:click="toggle">
             <x-heroicon-o-shopping-cart class="h-6 w-6"/>
-            <span class="bg-neutral rounded-full w-6 h-6 text-white text-center" dusk="minicart-count">@{{ Math.round(cart.total_quantity) }}</span>
+            <span class="bg-secondary text-secondary-text rounded-full w-6 h-6 text-white" dusk="minicart-count">@{{ Math.round(cart.total_quantity) }}</span>
         </button>
         <div v-if="isOpen" class="absolute right-0 bg-white border shadow rounded-xl p-5 {{ config('rapidez.frontend.z-indexes.header-dropdowns') }}">
             <table class="w-full mb-3">
@@ -20,9 +20,9 @@
                 <x-rapidez::button.outline href="{{ route('cart') }}" class="mr-5">
                     @lang('Show cart')
                 </x-rapidez::button.outline>
-                <x-rapidez::button href="{{ route('checkout') }}">
+                <x-rapidez::button.primary href="{{ route('checkout') }}">
                     @lang('Checkout')
-                </x-rapidez::button>
+                </x-rapidez::button.primary>
             </div>
         </div>
     </div>

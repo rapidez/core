@@ -1,10 +1,16 @@
 :root {
-    --primary: 47 188 133;
-    --primary-text: 255 255 255;
-    --secondary: 249 115 22;
-    --secondary-text: 255 255 255;
-    --neutral: 51 65 85;
-    --inactive: 100 116 139;
-    --highlight: 241 245 249;
-    --border: 231 235 239;
+    --primary: #2fbc85;
+    --primary-text: #ffffff;
+
+    --secondary: #202F60;
+    --secondary-text: #ffffff;
+
+    /*
+    Optionally you could define/overwrite
+    more variables in this file:
+
+    --foreground: #334155;
+    --border: #e7ebef;
+    --background: #f1f5f9;
+    */
 }
