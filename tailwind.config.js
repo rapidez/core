@@ -4,7 +4,7 @@ import typography from '@tailwindcss/typography'
 import scrollbarHide from 'tailwind-scrollbar-hide'
 
 function color(variable, fallback) {
-    return 'color-mix(in srgb, var('+variable+', '+fallback+') calc(100% * <alpha-value>), transparent)'
+    return 'color-mix(in srgb, var(' + variable + ', ' + fallback + ') calc(100% * <alpha-value>), transparent)'
 }
 
 export default {
@@ -54,7 +54,6 @@ export default {
                     muted: color('--background-muted', colors.gray[50]),
                 },
 
-
                 // TODO: check all these colors within the templates and replace
                 // neutral: 'rgb(var(--neutral) / <alpha-value>)', // Text
                 // inactive: 'rgb(var(--inactive) / <alpha-value>)', // Inactive text
@@ -63,12 +62,12 @@ export default {
                 // disabled: 'rgb(var(--disabled) / <alpha-value>)', // Disabled
                 // base: 'rgb(var(--base) / <alpha-value>)', // Background
             },
-            textColor: theme => theme('colors.foreground'),
-            borderColor: theme => ({
+            textColor: (theme) => theme('colors.foreground'),
+            borderColor: (theme) => ({
                 default: theme('colors.border'),
                 ...theme('colors.border'),
             }),
-            backgroundColor: theme => theme('colors.background'),
+            backgroundColor: (theme) => theme('colors.background'),
         },
         container: {
             center: true,
