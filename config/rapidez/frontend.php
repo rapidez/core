@@ -84,11 +84,19 @@ return [
         'auto_select_product_options'      => false,
     ],
 
+    // Z-Index per element
+    'z-indexes' => [
+        'header-dropdowns' => 'z-20',
+        'lightbox'         => 'z-30',
+        'notification'     => 'z-20',
+        'slideover'        => 'z-50',
+    ],
+
     'product_gallery_thumbnails' => [
         'xl' => 7,
         'lg' => 5,
         'md' => 4,
         'sm' => 3,
         'xs' => 4,
-    ]
+    ],
 ];
