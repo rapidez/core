@@ -41,7 +41,7 @@
                 slot-scope="{ downshiftProps: { isOpen }, data: suggestions }"
             >
                 <div
-                    class="{{ config('rapidez.frontend.z-indexes.header-dropdowns') }} absolute -inset-x-10 top-full max-h-[600px] overflow-auto rounded-b-xl border bg-white p-2 md:p-5 shadow-xl md:inset-x-0 md:w-full md:-translate-y-px"
+                    class="z-20 absolute -inset-x-10 top-full max-h-[600px] overflow-auto rounded-b-xl border bg-white p-2 md:p-5 shadow-xl md:inset-x-0 md:w-full md:-translate-y-px"
                     v-if="isOpen && (suggestions.length || resultsCount)"
                 >
                     <template v-for="(resultsData, resultsType) in results ?? {}" v-if="resultsData?.hits?.length">

@@ -37,6 +37,12 @@ export default {
             borderColor: {
                 DEFAULT: 'rgb(var(--border) / <alpha-value>)', // Border color default so it gets used when only using border
             },
+            zIndex: {
+                'header': '100',
+                'notifications': '110',
+                'slideover': '120',
+                'popup': '130'
+            }
         },
         container: {
             center: true,
