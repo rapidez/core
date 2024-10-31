@@ -23,4 +23,4 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction
       - name: Check translations
-        uses: rapidez/laravel-translation-checker@1.0.0
+        uses: rapidez/laravel-translation-checker@master
