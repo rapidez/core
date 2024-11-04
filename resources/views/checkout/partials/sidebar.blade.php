@@ -9,7 +9,7 @@
         </div>
     </div>
 
-    <dl class="flex w-full flex-col rounded border *:flex *:flex-wrap *:justify-between *:p-3 *:border-b [&>*:last-child]:border-none">
+    <dl class="flex w-full flex-col rounded border *:flex *:flex-wrap *:justify-between *:p-3 *:border-b last:*:border-none">
         <div>
             <dt>@lang('Subtotal')</dt>
             <dd>@{{ cart.prices.subtotal_including_tax.value | price }}</dd>
