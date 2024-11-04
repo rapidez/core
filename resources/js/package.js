@@ -118,7 +118,7 @@ function init() {
                 }
 
                 return true
-            }
+            },
         },
         computed: {
             // Wrap the local storage in getter and setter functions so you do not have to interact using .value
@@ -136,7 +136,7 @@ function init() {
 
             canOrder() {
                 return this.cart.items.every(this.canOrderCartItem)
-            }
+            },
         },
         watch: {
             loadingCount: function (count) {
