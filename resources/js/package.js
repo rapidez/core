@@ -92,6 +92,14 @@ function init() {
                     this.scrollLock = bool
                 }
             },
+
+            canOrderCartItem(item) {
+                if ('stock_item' in item.product && 'in_stock' in item.product.stock_item && item.product.stock_item.in_stock !== null) {
+                    return item.product.stock_item.in_stock
+                }
+
+                return true
+            },
         },
         computed: {
             // Wrap the local storage in getter and setter functions so you do not have to interact using .value
@@ -105,6 +113,10 @@ function init() {
 
             hasCart() {
                 return this.cart?.id && this.cart.items.length
+            },
+
+            canOrder() {
+                return this.cart.items.every(this.canOrderCartItem)
             },
         },
         watch: {
