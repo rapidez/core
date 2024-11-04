@@ -116,7 +116,7 @@ function init() {
                 }
 
                 let url = new URL(imagePath);
-                url = (url.origin + url.pathname).replace(config.base_url + '/media', '');
+                url = url.pathname.replace('/media', '');
                 
                 return `/storage/${store}/resizes/${size}/magento${url}`
             },
