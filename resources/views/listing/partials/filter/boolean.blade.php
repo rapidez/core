@@ -15,16 +15,16 @@
         <x-rapidez::filter.heading>
             <ul class="flex flex-col gap-1">
                 <li class="flex" v-for="item in data">
-                    <x-rapidez::checkbox
+                    <x-rapidez::input.checkbox
                         v-bind:checked="value[item.key]"
                         v-on:change="handleChange(item.key)"
                     >
-                        <div class="font-sans font-medium text-sm items-center flex text-inactive" :class="{'text-neutral': value[item.key] == true}">
+                        <span class="font-sans font-medium text-sm items-center flex text-inactive" :class="{'text-neutral': value[item.key] == true}">
                             <template v-if="item.key">@lang('Yes')</template>
                             <template v-if="!item.key">@lang('No')</template>
                             <span class="block ml-0.5 text-xs">(@{{ item.doc_count }})</span>
-                        </div>
-                    </x-rapidez::checkbox>
+                        </span>
+                    </x-rapidez::input.checkbox>
                 </li>
             </ul>
         </x-rapidez::filter.heading>

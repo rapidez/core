@@ -33,9 +33,9 @@
                             @include('rapidez::checkout.steps.shipping_method')
                         </template>
 
-                        <x-rapidez::button type="submit" dusk="continue" class="self-start">
+                        <x-rapidez::button.enhanced type="submit" dusk="continue" class="self-start">
                             @lang('Next')
-                        </x-rapidez::button>
+                        </x-rapidez::button.enhanced>
                     </form>
                 </div>
                 <div class="w-full xl:w-1/4">

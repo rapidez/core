@@ -17,12 +17,12 @@
                 </tr>
             </table>
             <div class="flex justify-between items-center">
-                <x-rapidez::button.outline href="{{ route('cart') }}" class="mr-5">
+                <x-rapidez::button.outline href="{{ route('cart') }}" class="mr-5 whitespace-nowrap">
                     @lang('Show cart')
                 </x-rapidez::button.outline>
-                <x-rapidez::button href="{{ route('checkout') }}">
+                <x-rapidez::button.enhanced href="{{ route('checkout') }}">
                     @lang('Checkout')
-                </x-rapidez::button>
+                </x-rapidez::button.enhanced>
             </div>
         </div>
     </div>

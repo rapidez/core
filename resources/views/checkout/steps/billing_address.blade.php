@@ -17,9 +17,9 @@
 >
     <div partial-submit="mutate">
         <template v-if="!cart.is_virtual">
-            <x-rapidez::checkbox v-model="variables.same_as_shipping" v-on:change="window.app.$emit('setBillingAddressOnCart')">
+            <x-rapidez::input.checkbox v-model="variables.same_as_shipping" v-on:change="window.app.$emit('setBillingAddressOnCart')">
                 @lang('My billing and shipping address are the same')
-            </x-rapidez::checkbox>
+            </x-rapidez::input.checkbox>
         </template>
 
         <fieldset v-if="!variables.same_as_shipping" v-on:change="window.app.$emit('setBillingAddressOnCart')">

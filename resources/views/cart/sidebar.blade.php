@@ -1,4 +1,4 @@
-<dl class="mb-5 flex w-full flex-col rounded-lg border [&>*]:flex [&>*]:flex-wrap [&>*]:justify-between [&>*]:p-3 [&>*]:border-b [&>*:last-child]:border-none">
+<dl class="mb-5 flex w-full flex-col rounded-lg border *:flex *:flex-wrap *:justify-between *:p-3 *:border-b [&>*:last-child]:border-none">
     <div>
         <dt>@lang('Subtotal')</dt>
         <dd v-if="showTax">@{{ cart.prices.subtotal_including_tax.value | price }}</dd>
@@ -42,6 +42,6 @@
     </div>
 </dl>
 
-<x-rapidez::button href="{{ route('checkout') }}" dusk="checkout" class="w-full text-center">
+<x-rapidez::button.enhanced href="{{ route('checkout') }}" dusk="checkout" class="w-full text-center">
     @lang('Checkout')
-</x-rapidez::button>
+</x-rapidez::button.enhanced>

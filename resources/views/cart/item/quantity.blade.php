@@ -9,7 +9,6 @@
         <x-rapidez::input
             name="qty"
             type="number"
-            :label="false"
             v-model="variables.quantity"
             v-bind:dusk="'qty-'+index"
             {{-- TODO: We don't need these importants with Tailwind merge and center isn't really center with type number --}}
@@ -19,8 +18,8 @@
             ::max="item.product.stock_item?.max_sale_qty"
             ::step="item.product.stock_item?.qty_increments"
         />
-        <x-rapidez::button type="submit" v-bind:dusk="'item-update-'+index" :title="__('Update')">
+        <x-rapidez::button.primary type="submit" v-bind:dusk="'item-update-'+index" :title="__('Update')">
             <x-heroicon-s-arrow-path class="h-4 w-4" />
-        </x-rapidez::button>
+        </x-rapidez::button.primary>
     </form>
 </graphql-mutation>

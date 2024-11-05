@@ -22,17 +22,15 @@
                         :key="item._id"
                         class="flex justify-between text-base text-inactive"
                     >
-                        <div class="flex">
-                            <x-rapidez::checkbox
-                                v-bind:checked="value[item.key]"
-                                v-on:change="handleChange(item.key)"
-                            >
-                                <div class="font-sans font-medium text-inactive items-center text-sm flex" :class="{'text-neutral': value[item.key] == true}">
-                                    @{{ item.key }}
-                                    <span class="block ml-0.5 text-xs">(@{{ item.doc_count }})</span>
-                                </div>
-                            </x-rapidez::checkbox>
-                        </div>
+                        <x-rapidez::input.checkbox
+                            v-bind:checked="value[item.key]"
+                            v-on:change="handleChange(item.key)"
+                        >
+                            <span class="font-sans font-medium text-sm items-center flex text-inactive" :class="{'text-neutral': value[item.key] == true}">
+                                @{{ item.key }}
+                                <span class="flex items-center ml-0.5 text-xs">(@{{ item.doc_count }})</span>
+                            </span>
+                        </x-rapidez::input.checkbox>
                     </li>
                     <li v-if="data.length > 6">
                         <button class="text-sm text-primary" @click="toggle">
