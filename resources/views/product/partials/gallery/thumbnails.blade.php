@@ -1,14 +1,15 @@
+@php($breakpoints = ['xl' => 7, 'lg' => 5, 'md' => 4, 'sm' => 3, 'xs' => 4])
 <div v-if="images.length > 1" class="flex mt-3 gap-2">
     <button
-        v-for="(image, imageId) in images.slice(0, {{ max(config('rapidez.frontend.product_gallery_thumbnails.xs'), config('rapidez.frontend.product_gallery_thumbnails.sm'), config('rapidez.frontend.product_gallery_thumbnails.md'), config('rapidez.frontend.product_gallery_thumbnails.lg'), config('rapidez.frontend.product_gallery_thumbnails.xl')) + 1 }})"
+        v-for="(image, imageId) in images.slice(0, {{ max($breakpoints) }})"
         class="flex items-center justify-center bg-white border rounded p-1.5 aspect-square max-w-24 flex-1 transition-all outline-transparent overflow-hidden relative"
         :class="{
             'outline outline-1 !outline-neutral border-neutral': active == imageId,
-            'xl:hidden': imageId > {{ config('rapidez.frontend.product_gallery_thumbnails.xl') }},
-            'lg:max-xl:hidden': imageId > {{ config('rapidez.frontend.product_gallery_thumbnails.lg') }},
-            'md:max-lg:hidden': imageId > {{ config('rapidez.frontend.product_gallery_thumbnails.md') }},
-            'sm:max-md:hidden': imageId > {{ config('rapidez.frontend.product_gallery_thumbnails.sm') }},
-            'max-sm:hidden': imageId > {{ config('rapidez.frontend.product_gallery_thumbnails.xs') }}
+            'xl:hidden': imageId > {{ $breakpoints['xl'] }},
+            'lg:max-xl:hidden': imageId > {{ $breakpoints['lg'] }},
+            'md:max-lg:hidden': imageId > {{ $breakpoints['md'] }},
+            'sm:max-md:hidden': imageId > {{ $breakpoints['sm'] }},
+            'max-sm:hidden': imageId > {{ $breakpoints['xs'] }}
         }"
         @click="change(imageId)"
     >
@@ -24,11 +25,11 @@
             v-on:click="toggleZoom()"
             class="absolute inset-0 items-center justify-center bg-neutral/20 hidden"
             :class="{
-                'xl:!flex': imageId === {{ config('rapidez.frontend.product_gallery_thumbnails.xl') }},
-                'lg:max-xl:!flex': imageId === {{ config('rapidez.frontend.product_gallery_thumbnails.lg') }},
-                'md:max-lg:!flex': imageId === {{ config('rapidez.frontend.product_gallery_thumbnails.md') }},
-                'sm:max-md:!flex': imageId === {{ config('rapidez.frontend.product_gallery_thumbnails.sm') }},
-                'max-sm:!flex': imageId === {{ config('rapidez.frontend.product_gallery_thumbnails.xs') }}
+                'xl:flex': imageId === {{ $breakpoints['xl'] }},
+                'lg:max-xl:flex': imageId === {{$breakpoints['lg'] }},
+                'md:max-lg:flex': imageId === {{ $breakpoints['md'] }},
+                'sm:max-md:flex': imageId === {{ $breakpoints['sm'] }},
+                'max-sm:flex': imageId === {{ $breakpoints['xs'] }}
             }"
         >
             <span class="size-9 flex items-center justify-center rounded-full shadow-lg bg-white text-sm font-bold text-neutral">

@@ -91,12 +91,4 @@ return [
         'notification'     => 'z-20',
         'slideover'        => 'z-50',
     ],
-
-    'product_gallery_thumbnails' => [
-        'xl' => 7,
-        'lg' => 5,
-        'md' => 4,
-        'sm' => 3,
-        'xs' => 4,
-    ],
 ];
