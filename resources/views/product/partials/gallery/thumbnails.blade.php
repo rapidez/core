@@ -26,7 +26,7 @@
             class="absolute inset-0 items-center justify-center bg-neutral/20 hidden"
             :class="{
                 'xl:flex': imageId === {{ $breakpoints['xl'] }},
-                'lg:max-xl:flex': imageId === {{$breakpoints['lg'] }},
+                'lg:max-xl:flex': imageId === {{ $breakpoints['lg'] }},
                 'md:max-lg:flex': imageId === {{ $breakpoints['md'] }},
                 'sm:max-md:flex': imageId === {{ $breakpoints['sm'] }},
                 'max-sm:flex': imageId === {{ $breakpoints['xs'] }}
