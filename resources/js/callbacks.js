@@ -18,7 +18,7 @@ Vue.prototype.getCheckoutStep = (stepName) => {
 Vue.prototype.submitPartials = async function (form) {
     let promises = []
     form.querySelectorAll('[partial-submit]').forEach((element) => {
-        const partialFn = element?.getAttribute('partial-submit');
+        const partialFn = element?.getAttribute('partial-submit')
         if (!partialFn || !element?.__vue__) {
             return
         }
