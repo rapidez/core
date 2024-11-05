@@ -10,7 +10,7 @@
         <div v-if="hasCart" v-cloak>
             <div class="flex gap-5 max-xl:flex-col">
                 <form class="w-full rounded bg-highlight h-fit p-4 xl:p-8 xl:w-3/4" v-on:submit.prevent="(e) => {
-                        submitFieldsets(e.target?.form ?? e.target)
+                        submitPartials(e.target?.form ?? e.target)
                             .then((result) =>
                                 window.app.$emit('checkout-payment-saved')
                                 && window.app.$emit('placeOrder')
