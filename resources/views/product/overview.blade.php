@@ -12,12 +12,10 @@
             @include('rapidez::product.partials.microdata')
             @include('rapidez::product.partials.opengraph')
             <div class="relative flex flex-col gap-8 sm:flex-row">
-                <div class="sm:w-1/2">
-                    <div class="sticky top-5">
-                        @include('rapidez::product.partials.images')
-                    </div>
+                <div class="sm:w-1/2 flex flex-col shrink-0">
+                    @include('rapidez::product.partials.images')
                 </div>
-                <div class="flex flex-col gap-5 sm:w-1/2">
+                <div class="flex flex-col gap-5 sm:w-1/2 shrink-0">
                     @includeWhen($product->type_id == 'grouped', 'rapidez::product.partials.grouped')
                     @includeWhen($product->type_id !== 'grouped', 'rapidez::product.partials.addtocart')
                     @if (App::providerIsLoaded('Rapidez\Reviews\ReviewsServiceProvider'))
