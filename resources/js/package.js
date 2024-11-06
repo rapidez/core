@@ -100,7 +100,7 @@ function init() {
 
                 return true
             },
-            
+
             resizedPath(imagePath, size, store = null) {
                 if (!store) {
                     store = window.config.store
