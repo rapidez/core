@@ -1,6 +1,6 @@
 <div class="grid grid-cols-3 gap-3 grid-cols-[auto_max-content_max-content]">
     @foreach ($product->grouped as $groupedProduct)
-        <add-to-cart :product="config.product.grouped[{{ $groupedProduct->id }}]" v-slot="addToCart" class="contents">
+        <add-to-cart :product="config.product.grouped[{{ $groupedProduct->entity_id }}]" v-slot="addToCart" class="contents">
             <form v-on:submit.prevent="addToCart.add" class="contents">
                 <div>
                     {{ $groupedProduct->name }}

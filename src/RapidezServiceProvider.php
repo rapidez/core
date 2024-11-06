@@ -3,7 +3,6 @@
 namespace Rapidez\Core;
 
 use Illuminate\Contracts\Debug\ExceptionHandler;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -15,6 +14,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\View\View as ViewComponent;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
+use Rapidez\Core\Auth\MagentoCartTokenGuard;
 use Rapidez\Core\Auth\MagentoCustomerTokenGuard;
 use Rapidez\Core\Commands\IndexCategoriesCommand;
 use Rapidez\Core\Commands\IndexProductsCommand;
@@ -78,16 +78,8 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function bootAuth(): self
     {
-        auth()->extend('magento-customer', function (Application $app, string $name, array $config) {
-            return new MagentoCustomerTokenGuard(auth()->createUserProvider($config['provider']), request(), 'token', 'token');
-        });
-
-        config([
-            'auth.guards.magento-customer' => [
-                'driver'   => 'magento-customer',
-                'provider' => 'users',
-            ],
-        ]);
+        MagentoCustomerTokenGuard::register();
+        MagentoCartTokenGuard::register();
 
         return $this;
     }
@@ -126,9 +118,14 @@ class RapidezServiceProvider extends ServiceProvider
                 __DIR__ . '/../resources/views' => resource_path('views/vendor/rapidez'),
             ], 'views');
 
-            $this->publishes([
-                __DIR__ . '/../resources/lang' => resource_path('lang/vendor/rapidez'),
-            ], 'translations');
+            // We're so explicit here as otherwise the json translations will also be published.
+            // That will publish to /lang/vendor/rapidez/nl.json where it will not be loaded
+            // by default and; you should keep everyting in one place: /lang/nl.json
+            foreach (['en', 'nl'] as $lang) {
+                $this->publishes([
+                    __DIR__ . '/../lang/' . $lang . '/frontend.php' => lang_path('vendor/rapidez/' . $lang . '/frontend.php'),
+                ], 'rapidez-translations');
+            }
 
             $this->publishes([
                 __DIR__ . '/../resources/payment-icons' => public_path('payment-icons'),
@@ -243,7 +240,8 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function bootTranslations(): self
     {
-        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'rapidez');
+        $this->loadTranslationsFrom(__DIR__ . '/../lang', 'rapidez');
+        $this->loadJsonTranslationsFrom(__DIR__ . '/../lang');
 
         return $this;
     }
@@ -269,7 +267,9 @@ class RapidezServiceProvider extends ServiceProvider
 
         ViewComponent::macro('renderOneliner', function () {
             /** @var ViewComponent $this */
-            return Str::squish($this->render());
+            return Str::of($this->render())
+                ->replaceMatches('/#.*/m', '')
+                ->squish();
         });
 
         return $this;

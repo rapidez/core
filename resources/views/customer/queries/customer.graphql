@@ -1,0 +1,54 @@
+addresses {
+    city
+    company
+    country_code
+    default_billing
+    default_shipping
+    extension_attributes {
+        attribute_code
+        value
+    }
+    fax
+    firstname
+    id
+    lastname
+    middlename
+    postcode
+    prefix
+    region {
+        region
+        region_code
+        region_id
+    }
+    region_id
+    street
+    suffix
+    telephone
+    vat_id
+}
+created_at
+id
+date_of_birth
+default_billing
+default_shipping
+email
+firstname
+gender
+is_subscribed
+lastname
+middlename
+prefix
+suffix
+taxvat
+custom_attributes {
+    code
+    ... on AttributeValue {
+        value
+    }
+    ... on AttributeSelectedOptions {
+        selected_options {
+            label
+            value
+        }
+    }
+}
