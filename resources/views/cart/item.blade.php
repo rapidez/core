@@ -1,6 +1,6 @@
 <table class="w-full border-b">
     <tbody class="divide-y">
-        <tr v-for="(item, index) in cart.items" class="flex-wrap max-md:flex [&>*]:p-2 md:[&>*]:p-4">
+        <tr v-for="(item, index) in cart.items" class="flex-wrap max-md:flex *:p-2 md:*:p-4">
             <td class="w-24">
                 <a :href="item.product.url_key + item.product.url_suffix | url">
                     <img

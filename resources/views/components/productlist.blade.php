@@ -38,7 +38,7 @@
                                     v-on:click="navigate(currentSlide - 1)"
                                     :aria-label="__('Prev')"
                                 >
-                                    <x-heroicon-o-chevron-left class="w-6 h-6 shrink-0"/>
+                                    <x-heroicon-o-chevron-left class="size-6 shrink-0"/>
                                 </x-rapidez::button.slider>
                                 <x-rapidez::button.slider
                                     class="absolute right-0 top-1/2 sm:translate-x-1/2 -translate-y-1/2"
@@ -46,7 +46,7 @@
                                     v-on:click="navigate(currentSlide + 1)"
                                     :aria-label="__('Next')"
                                 >
-                                    <x-heroicon-o-chevron-right class="w-6 h-6 shrink-0"/>
+                                    <x-heroicon-o-chevron-right class="size-6 shrink-0"/>
                                 </x-rapidez::button.slider>
                                 <div v-show="slidesTotal > 1" class="flex flex-row justify-center w-full mt-[35px]">
                                     <div
