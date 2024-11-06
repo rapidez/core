@@ -100,6 +100,17 @@ function init() {
 
                 return true
             },
+            
+            resizedPath(imagePath, size, store = null) {
+                if (!store) {
+                    store = window.config.store
+                }
+
+                let url = new URL(imagePath)
+                url = url.pathname.replace('/media', '')
+
+                return `/storage/${store}/resizes/${size}/magento${url}`
+            },
         },
         computed: {
             // Wrap the local storage in getter and setter functions so you do not have to interact using .value

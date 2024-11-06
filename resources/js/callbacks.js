@@ -15,15 +15,16 @@ Vue.prototype.getCheckoutStep = (stepName) => {
     return (config.checkout_steps[config.store_code] ?? config.checkout_steps['default'])?.indexOf(stepName)
 }
 
-Vue.prototype.submitFieldsets = async function (form) {
+Vue.prototype.submitPartials = async function (form) {
     let promises = []
-    form.querySelectorAll('[data-function]').forEach((fieldset) => {
-        if (!fieldset?.dataset?.function || !fieldset?.__vue__) {
+    form.querySelectorAll('[partial-submit]').forEach((element) => {
+        const partialFn = element?.getAttribute('partial-submit')
+        if (!partialFn || !element?.__vue__) {
             return
         }
 
         promises.push(
-            fieldset.__vue__[fieldset?.dataset?.function]().then((result) => {
+            element.__vue__[partialFn]().then((result) => {
                 if (result === false) {
                     throw new Error()
                 }
