@@ -21,5 +21,5 @@
         <p class="text-sm">@lang('Maximum image height'): <strong>{{ $option->image_size_y }}</strong></p>
     @endif
 @else
-    @php(Log::error(__('File upload customizable option is being used, for now you will need to install rapidez/magento2-compadre')))
+    @php(Log::error('File upload customizable option is being used, for now you will need to install rapidez/magento2-compadre'))
 @endif
