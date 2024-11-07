@@ -4,7 +4,11 @@
 .git
 **/*.php
 !**/*.blade.php
-/resources/views/cart/queries/cart.graphql
-/resources/views/cart/queries/partials/customizable_options.graphql
+/resources/views/cart/queries/*.graphql
+/resources/views/cart/queries/**/*.graphql
+/resources/views/checkout/queries/*.graphql
+/resources/views/checkout/queries/**/*.graphql
+/resources/views/customer/queries/*.graphql
+/resources/views/customer/queries/**/*.graphql
 composer.lock
 CHANGELOG.md

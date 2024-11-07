@@ -1,12 +1,12 @@
 <table class="w-full border-b">
     <tbody class="divide-y">
-        <tr v-for="(item, index) in cart.items" class="flex-wrap max-md:flex [&>*]:p-2 md:[&>*]:p-4">
+        <tr v-for="(item, index) in cart.items" class="flex-wrap max-md:flex *:p-2 md:*:p-4">
             <td class="w-24">
                 <a :href="item.product.url_key + item.product.url_suffix | url">
                     <img
                         class="mx-auto"
                         :alt="item.product.name"
-                        :src="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento' + item.product.image.url.replace(config.media_url, '') + '.webp'"
+                        :src="resizedPath(item.product.image.url + '.webp', '80x80')"
                         height="80"
                     />
                 </a>

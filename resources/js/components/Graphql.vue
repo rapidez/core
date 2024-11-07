@@ -1,10 +1,8 @@
 <script>
-import InteractWithUser from './User/mixins/InteractWithUser'
 import { useLocalStorage, StorageSerializers } from '@vueuse/core'
+import { magentoGraphQL, combiningGraphQL } from '../fetch'
 
 export default {
-    mixins: [InteractWithUser],
-
     props: {
         query: {
             type: String,
@@ -13,6 +11,10 @@ export default {
         variables: {
             type: Object,
             default: () => ({}),
+        },
+        group: {
+            // Group name for combining graphql queries, use "nameless" to join it with all others
+            type: String,
         },
         check: {
             type: Function,
@@ -68,21 +70,19 @@ export default {
         async runQuery() {
             try {
                 let options = {
-                    headers: {},
-                    redirectOnExpiration: true,
-                    notifyOnError: true,
+                    headers: {
+                        Store: this.store,
+                    },
                 }
 
-                if (this.store) {
-                    options['headers']['Store'] = this.store
-                }
-
-                let response = await window.magentoGraphQL(this.query, this.variables, options)
+                let response = this.group
+                    ? await combiningGraphQL(this.query, this.variables, options, this.group)
+                    : await magentoGraphQL(this.query, this.variables, options)
 
                 if (this.check) {
-                    if (!this.check(response.data)) {
+                    if (!this.check(response?.data)) {
                         Turbo.visit(window.url(this.redirect))
-                        return
+                        return false
                     }
                 }
 
