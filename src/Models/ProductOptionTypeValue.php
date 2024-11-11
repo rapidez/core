@@ -3,7 +3,6 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Collection;
 
 class ProductOptionTypeValue extends Model
 {
