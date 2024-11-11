@@ -5,10 +5,6 @@ namespace Rapidez\Core\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use TorMorten\Eventy\Facades\Eventy;
 
-/**
- * @property string $code
- * @property ?ProductOption $option
- */
 class QuoteItemOption extends Model
 {
     protected $table = 'quote_item_option';

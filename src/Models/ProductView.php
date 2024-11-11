@@ -4,10 +4,6 @@ namespace Rapidez\Core\Models;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
 
-/**
- * @property int|null $store_id
- * @property int $product_id
- */
 class ProductView extends Model
 {
     protected $table = 'report_viewed_product_index';

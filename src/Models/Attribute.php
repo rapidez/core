@@ -7,9 +7,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Models\Scopes\Attribute\OnlyProductAttributesScope;
 
-/**
- * @property string $code
- */
 class Attribute extends Model
 {
     protected $table = 'eav_attribute';

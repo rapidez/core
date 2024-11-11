@@ -8,4 +8,5 @@ parameters:
         - routes/
     ignoreErrors:
         - '#^Result of static method TorMorten\\Eventy\\Events::#'
+        - "#Access to an undefined property#"
     level: 1

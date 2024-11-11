@@ -4,14 +4,6 @@ namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
-/**
- * @property string $title
- * @property ?string $type
- * @property-read ProductOptionPrice $price
- * @property-read Collection<ProductOptionPrice> $prices
- * @property-read Collection<ProductOptionTitle> $titles
- * @property-read Collection<ProductOptionTypeValue> $values
- */
 class ProductOption extends Model
 {
     protected $table = 'catalog_product_option';
