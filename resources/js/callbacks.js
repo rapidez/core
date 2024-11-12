@@ -81,7 +81,7 @@ Vue.prototype.checkResponseForExpiredCart = async function (variables, response)
     if (
         response?.errors?.some(
             (error) =>
-                error.extensions.category === 'graphql-no-such-entity' &&
+                error.extensions?.category === 'graphql-no-such-entity' &&
                 // Untested, but something like this is maybe a better idea as
                 // we're using a lot of different mutations in the checkout.
                 error.path.some((path) => path.toLowerCase().includes('cart')),
