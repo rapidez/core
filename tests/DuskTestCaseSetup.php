@@ -39,7 +39,7 @@ trait DuskTestCaseSetup
 
         Browser::macro('waitUntilIdle', function ($timeout = 120) {
             /** @var Browser $this */
-            $this->waitUntilTrueForDuration('window.app?.$data?.loading !== true && await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 5}))', $timeout);
+            $this->waitUntilTrueForDuration('window.app?.$data?.loading !== true && await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 5}))', $timeout); // @phpstan-ignore-line
 
             return $this;
         });
@@ -63,6 +63,7 @@ trait DuskTestCaseSetup
                     ->visit($productUrl);
             }
 
+            // @phpstan-ignore-next-line
             $this
                 ->waitUntilIdle()
                 ->pressAndWaitFor('@add-to-cart', 60)

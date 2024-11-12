@@ -15,6 +15,7 @@ use Lcobucci\JWT\Validation\Constraint\LooseValidAt;
 use Lcobucci\JWT\Validation\Constraint\SignedWith;
 use Lcobucci\JWT\Validation\ConstraintViolation;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
+use Rapidez\Core\Exceptions\DecryptionException;
 
 class DecodeJwt
 {
@@ -39,7 +40,7 @@ class DecodeJwt
             }
         }
 
-        throw $exception;
+        throw $exception ?? new DecryptionException('No crypt keys defined.');
     }
 
     /**
