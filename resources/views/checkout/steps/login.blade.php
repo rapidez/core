@@ -8,24 +8,13 @@
             v-bind:disabled="loggedIn"
             required
         />
-        <template v-if="!loggedIn && (!checkoutLogin.isEmailAvailable || checkoutLogin.createAccount)">
-            <div class="relative">
-                <x-rapidez::input
-                    label="Password"
-                    name="password"
-                    type="password"
-                    v-model="checkoutLogin.password"
-                    required
-                />
-                <input
-                    type="checkbox"
-                    v-if="!checkoutLogin.createAccount"
-                    oninvalid="this.setCustomValidity('{{ __('Please log in') }}')"
-                    class="absolute h-full inset-0 opacity-0 pointer-events-none"
-                    required
-                />
-            </div>
-        </template>
+        <x-rapidez::input
+            label="Password"
+            name="password"
+            type="password"
+            v-model="checkoutLogin.password"
+            required
+        />
         @if (App::providerIsLoaded('Rapidez\Account\AccountServiceProvider'))
             <a href="{{ route('account.forgotpassword') }}" class="inline-block text-sm hover:underline mt-5" v-if="!checkoutLogin.isEmailAvailable">
                 @lang('Forgot your password?')
