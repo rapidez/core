@@ -57,18 +57,22 @@ export const login = async function (email, password) {
         },
     )
         .then(async (response) => {
-            token.value = response.data.generateCustomerToken.token
+            await loginByToken(response.data.generateCustomerToken.token)
 
             return response
         })
-        .then(async (response) => {
-            if (mask.value) {
-                await linkUserToCart()
-            } else {
-                await fetchCustomerCart()
-            }
-            return response
-        })
+}
+
+export const loginByToken = async function (customerToken) {
+    token.value = customerToken;
+
+    if (mask.value) {
+        await linkUserToCart()
+    } else {
+        await fetchCustomerCart()
+    }
+
+    window.app.$emit('logged-in')
 }
 
 export const logout = async function () {
