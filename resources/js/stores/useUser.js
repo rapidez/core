@@ -123,23 +123,20 @@ export const register = async function (email, firstname, lastname, password, in
 }
 
 export const login = async function (email, password) {
-    return (
-        magentoGraphQL(
-            'mutation generateCustomerToken ($email: String!, $password: String!) { generateCustomerToken (email: $email, password: $password) { token } }',
-            {
-                email: email,
-                password: password,
-            },
-        )
-            .then(async (response) => {
-                await loginByToken(response.data.generateCustomerToken.token)
-                return response
-            })
-    )
+    return magentoGraphQL(
+        'mutation generateCustomerToken ($email: String!, $password: String!) { generateCustomerToken (email: $email, password: $password) { token } }',
+        {
+            email: email,
+            password: password,
+        },
+    ).then(async (response) => {
+        await loginByToken(response.data.generateCustomerToken.token)
+        return response
+    })
 }
 
 export const loginByToken = async function (customerToken) {
-    token.value = customerToken;
+    token.value = customerToken
 
     if (mask.value) {
         await linkUserToCart()
