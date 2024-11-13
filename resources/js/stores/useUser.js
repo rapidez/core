@@ -55,16 +55,15 @@ export const login = async function (email, password) {
             email: email,
             password: password,
         },
-    )
-        .then(async (response) => {
-            await loginByToken(response.data.generateCustomerToken.token)
+    ).then(async (response) => {
+        await loginByToken(response.data.generateCustomerToken.token)
 
-            return response
-        })
+        return response
+    })
 }
 
 export const loginByToken = async function (customerToken) {
-    token.value = customerToken;
+    token.value = customerToken
 
     if (mask.value) {
         await linkUserToCart()
