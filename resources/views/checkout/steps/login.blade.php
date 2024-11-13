@@ -12,27 +12,17 @@
                 v-on:input="loginInputChange"
                 required
             />
-            <div class="relative">
-                <x-rapidez::input
-                    v-if="!emailAvailable"
-                    :label="false"
-                    class="mt-3"
-                    name="password"
-                    type="password"
-                    placeholder="Password"
-                    ref="password"
-                    v-on:input="loginInputChange"
-                    required
-                />
-
-                <input
-                    type="checkbox"
-                    v-if="!emailAvailable"
-                    oninvalid="this.setCustomValidity('{{ __('Please log in') }}')"
-                    class="absolute h-full inset-0 opacity-0 pointer-events-none"
-                    required
-                />
-            </div>
+            <x-rapidez::input
+                v-if="!emailAvailable"
+                :label="false"
+                class="mt-3"
+                name="password"
+                type="password"
+                placeholder="Password"
+                ref="password"
+                v-on:input="loginInputChange"
+                required
+            />
 
             <x-rapidez::button type="submit" class="w-full mt-5" dusk="continue">
                 @lang('Continue')
