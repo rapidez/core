@@ -95,7 +95,6 @@ export const checkAvailability = function (cartItem) {
         // because the default is_available field supported by Magento
         // always returns true, even when a product is out of stock. This
         // should be fixed in the next Magento release.
-        console.log(cartItem)
         if ('stock_item' in cartItem.product && 'in_stock' in cartItem.product.stock_item && cartItem.product.stock_item.in_stock !== null) {
             return cartItem.product.stock_item.in_stock
         }
