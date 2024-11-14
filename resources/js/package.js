@@ -92,7 +92,7 @@ function init() {
                     this.scrollLock = bool
                 }
             },
-            
+
             resizedPath(imagePath, size, store = null) {
                 if (!store) {
                     store = window.config.store
