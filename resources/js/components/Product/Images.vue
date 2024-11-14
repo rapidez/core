@@ -22,6 +22,7 @@ export default {
                     Object.values(window.config.product.super_attributes).filter((attribute) => attribute.update_image).length
                 ) {
                     self.images = simpleProduct.images
+                    self.active = Math.min(self.active, self.images.length - 1)
                 }
             })
         })
@@ -40,10 +41,10 @@ export default {
         },
 
         keyPressed(e) {
-            if (e.key == 'ArrowLeft' && this.active) {
+            if (e.key == 'ArrowLeft' && this.active > 0) {
                 // left
                 this.active--
-            } else if (e.key == 'ArrowRight' && this.active != this.images.length - 1) {
+            } else if (e.key == 'ArrowRight' && this.active < this.images.length - 1) {
                 // right
                 this.active++
             } else if (e.key == 'Escape') {
