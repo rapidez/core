@@ -91,18 +91,18 @@ export const getAttributeValues = async function () {
 }
 
 export const checkAvailability = function (cartItem) {
-        // Here we polyfill the is_available field. We need to do this
-        // because the default is_available field supported by Magento
-        // always returns true, even when a product is out of stock. This
-        // should be fixed in the next Magento release.
-        if ('stock_item' in cartItem.product && 'in_stock' in cartItem.product.stock_item && cartItem.product.stock_item.in_stock !== null) {
-            return cartItem.product.stock_item.in_stock
-        }
+    // Here we polyfill the is_available field. We need to do this
+    // because the default is_available field supported by Magento
+    // always returns true, even when a product is out of stock. This
+    // should be fixed in the next Magento release.
+    if ('stock_item' in cartItem.product && 'in_stock' in cartItem.product.stock_item && cartItem.product.stock_item.in_stock !== null) {
+        return cartItem.product.stock_item.in_stock
+    }
 
-        // Without the use of compadre the in stock check can't be
-        // done. We will need to always allow users to go on to
-        // the checkout.
-        return true
+    // Without the use of compadre the in stock check can't be
+    // done. We will need to always allow users to go on to
+    // the checkout.
+    return true
 }
 
 export const cart = computed({
@@ -116,7 +116,6 @@ export const cart = computed({
         cartStorage.value.fixedProductTaxes = fixedProductTaxes
         cartStorage.value.taxTotal = taxTotal
 
-
         return cartStorage.value
     },
     set(value) {
@@ -125,7 +124,7 @@ export const cart = computed({
                 if (!response?.data?.customAttributeMetadata?.items) {
                     value.items = value.items.map((item) => {
                         item.is_available = checkAvailability(item)
-                        
+
                         return item
                     })
 
