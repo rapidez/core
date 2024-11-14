@@ -15,7 +15,7 @@
                 <div class="flex flex-col items-start">
                     <a :href="item.product.url_key + item.product.url_suffix | url" class="font-bold" dusk="cart-item-name">
                         @{{ item.product.name }}
-                        <div class="text-red-600" v-if="!canOrderCartItem(item)">
+                        <div class="text-red-600" v-if="!item.is_available">
                             @lang('This product it out of stock, remove it to continue your order.')
                         </div>
                     </a>

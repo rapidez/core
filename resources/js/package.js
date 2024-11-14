@@ -92,14 +92,6 @@ function init() {
                     this.scrollLock = bool
                 }
             },
-
-            canOrderCartItem(item) {
-                if ('stock_item' in item.product && 'in_stock' in item.product.stock_item && item.product.stock_item.in_stock !== null) {
-                    return item.product.stock_item.in_stock
-                }
-
-                return true
-            },
             
             resizedPath(imagePath, size, store = null) {
                 if (!store) {
@@ -127,7 +119,7 @@ function init() {
             },
 
             canOrder() {
-                return this.cart.items.every(this.canOrderCartItem)
+                return this.cart.items.every((item) => item.is_available)
             },
         },
         watch: {
