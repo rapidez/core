@@ -8,7 +8,7 @@ is present on the input and the quantity select component.
         <x-rapidez::button.outline
             v-on:click.prevent="qtySelect.decrease"
             v-bind:disabled="!qtySelect.decreasable"
-            aria-label="@lang('Decrease')"
+            :aria-label="__('Decrease')"
         >
             <div class="bg-neutral h-0.5 w-3 hover:bg-white"></div>
         </x-rapidez::button.outline>
@@ -23,7 +23,7 @@ is present on the input and the quantity select component.
         <x-rapidez::button.outline
             v-on:click.prevent="qtySelect.increase"
             v-bind:disabled="!qtySelect.increasable"
-            aria-label="@lang('Increase')"
+            :aria-label="__('Increase')"
         >
             <div class="relative">
                 <div class="bg-neutral absolute h-0.5 w-3 rotate-90"></div>
