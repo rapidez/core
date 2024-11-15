@@ -55,6 +55,6 @@ export default {
         decreasable() {
             return this.value - this.step >= this.min
         },
-    }
+    },
 }
 </script>
