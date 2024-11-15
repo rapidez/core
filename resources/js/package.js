@@ -24,6 +24,10 @@ import './callbacks'
 import './vue-components'
 
 function init() {
+    if (document.body.contains(window.app.$el)) {
+        return;
+    }
+
     // https://vuejs.org/api/application.html#app-config-performance
     Vue.config.performance = import.meta.env.VITE_PERFORMANCE == 'true'
     Vue.prototype.window = window
@@ -171,3 +175,4 @@ function init() {
     document.dispatchEvent(event)
 }
 document.addEventListener('turbo:load', init)
+setTimeout(init)
