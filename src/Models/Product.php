@@ -74,6 +74,7 @@ class Product extends Model
                     'grouped'        => Children::class,
                     'qty_increments' => 'int',
                     'min_sale_qty'   => 'int',
+                    'max_sale_qty'   => 'int',
                 ],
                 $this->getSuperAttributeCasts(),
                 $this->getMultiselectAttributeCasts(),

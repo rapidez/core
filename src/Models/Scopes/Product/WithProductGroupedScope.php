@@ -13,6 +13,13 @@ class WithProductGroupedScope implements Scope
     {
         $stockQty = config('rapidez.system.expose_stock') ? '"qty", grouped_stock.qty,' : '';
 
+        // TODO: These values should listen to:
+        // - use_config_min_sale_qty
+        // - use_config_max_sale_qty
+        // - enable_qty_increments
+        // - use_config_enable_qty_inc
+        // - use_config_qty_increments
+
         $builder
             ->selectRaw('JSON_REMOVE(JSON_OBJECTAGG(IFNULL(grouped.entity_id, "null__"), JSON_OBJECT(
                 ' . Eventy::filter('product.grouped.select', <<<QUERY
@@ -25,6 +32,7 @@ class WithProductGroupedScope implements Scope
                     "special_to_date", DATE(grouped.special_to_date),
                     "in_stock", grouped_stock.is_in_stock,
                     "min_sale_qty", grouped_stock.min_sale_qty,
+                    "max_sale_qty", grouped_stock.max_sale_qty,
                     {$stockQty}
                     "qty_increments", IFNULL(NULLIF(grouped_stock.qty_increments, 0), 1)
                 QUERY) . '

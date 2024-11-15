@@ -28,6 +28,7 @@ class ProductController
             'images',
             'url',
             'min_sale_qty',
+            'max_sale_qty',
             'qty_increments',
         ];
 

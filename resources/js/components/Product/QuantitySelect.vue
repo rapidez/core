@@ -1,25 +1,25 @@
 <script>
+// This components acts like a normal input element.
+// The props and events are the same so you're
+// able to use v-model, min, step and max
 export default {
     props: {
-        inputRef: {
-            type: String,
-            default: 'qty-select-1',
+        value: {
+            // We're not enforcing a type here as
+            // the input could be set to empty.
+            default: 1,
         },
-        defaultQty: {
+        min: {
+            type: Number,
+            default: 0,
+        },
+        step: {
             type: Number,
             default: 1,
         },
-        minQty: {
+        max: {
             type: Number,
-            default: 1,
-        },
-        model: {
-            type: Number,
-            default: 1,
-        },
-        increment: {
-            type: Number,
-            default: 1,
+            default: 0, // = disabled / no maximum
         },
     },
 
@@ -29,26 +29,32 @@ export default {
 
     methods: {
         increase() {
-            this.updateQty(this.model + this.increment)
+            if (this.increasable) {
+                this.$emit('input', this.value + this.step)
+                this.$emit('change')
+            }
         },
 
         decrease() {
-            if (this.model - this.increment >= this.minQty) {
-                this.updateQty(this.model - this.increment)
+            if (this.decreasable) {
+                this.$emit('input', this.value - this.step)
+                this.$emit('change')
             }
-        },
-
-        updateQty(qty) {
-            let input = this.$scopedSlots.default()[0].context.$refs[this.inputRef]
-            if (Array.isArray(input)) {
-                input = input[0]
-            }
-
-            input.value = qty
-            let event = new Event('input')
-            input.dispatchEvent(event)
-            this.$root.$emit('updated-quantity')
         },
     },
+
+    computed: {
+        increasable() {
+            if (!this.max) {
+                return true
+            }
+
+            return this.value + this.step <= this.max
+        },
+
+        decreasable() {
+            return this.value - this.step >= this.min
+        },
+    }
 }
 </script>
