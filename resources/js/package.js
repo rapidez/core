@@ -93,10 +93,17 @@ function init() {
                 }
             },
             resizedPath(imagePath, size, store = config.store) {
-                let url = new URL(imagePath)
-                url = url.pathname.replace('/media', '')
+                let mediaPosition = imagePath.indexOf('/media/')
+                if (mediaPosition > 0) {
+                    return `/storage/${store}/resizes/${size}/magento` + imagePath.substr(mediaPosition + 6)
+                }
 
-                return `/storage/${store}/resizes/${size}/magento${url}`
+                let productPosition = imagePath.indexOf('/product/')
+                if (productPosition > 0) {
+                    return `/storage/${store}/resizes/${size}/magento/catalog` + imagePath.substr(productPosition)
+                }
+
+                return `/storage/${store}/resizes/${size}/magento/catalog/product` + imagePath
             },
         },
         computed: {
