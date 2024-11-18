@@ -23,6 +23,34 @@ import './cookies'
 import './callbacks'
 import './vue-components'
 
+if (import.meta.env.VITE_DEBUG === 'true') {
+    document.addEventListener('vue:loaded', () => {
+        window.app.$on('notification-message', function (message, type, params, link) {
+            switch (type) {
+                case 'error':
+                    console.error(...arguments)
+                    break
+                case 'warning':
+                    console.warn(...arguments)
+                    break
+                case 'success':
+                case 'info':
+                default:
+                    console.log(...arguments)
+            }
+        })
+    })
+}
+
+document.addEventListener('vue:loaded', () => {
+    const lastStoreCode = useLocalStorage('last_store_code', window.config.store_code)
+    if (lastStoreCode.value !== window.config.store_code) {
+        clearAttributes()
+        clearSwatches()
+        lastStoreCode.value = window.config.store_code
+    }
+})
+
 function init() {
     if (document.body.contains(window.app.$el)) {
         return;
@@ -55,124 +83,105 @@ function init() {
         custom_attributes: [],
     }
 
-    window.app = new Vue({
-        el: '#app',
-        data: {
-            custom: {},
-            config: window.config,
-            loadingCount: 0,
-            loading: false,
-            loadAutocomplete: false,
-            csrfToken: document.querySelector('[name=csrf-token]').content,
-            cart: useCart(),
-            user: useUser(),
-            mask: useMask(),
-            showTax: window.config.show_tax,
-            swatches: swatches,
-            scrollLock: useScrollLock(document.body),
-            checkout: {
-                step: 1,
-                totals: {},
+    requestAnimationFrame(() => {
+        window.app = new Vue({
+            el: '#app',
+            data: {
+                custom: {},
+                config: window.config,
+                loadingCount: 0,
+                loading: false,
+                loadAutocomplete: false,
+                csrfToken: document.querySelector('[name=csrf-token]').content,
+                cart: useCart(),
+                user: useUser(),
+                mask: useMask(),
+                showTax: window.config.show_tax,
+                swatches: swatches,
+                scrollLock: useScrollLock(document.body),
+                checkout: {
+                    step: 1,
+                    totals: {},
 
-                shipping_address: useLocalStorage('shipping_address', address_defaults, {
-                    mergeDefaults: true,
-                    serializer: StorageSerializers.object,
-                }),
-                billing_address: useLocalStorage('billing_address', address_defaults, {
-                    mergeDefaults: true,
-                    serializer: StorageSerializers.object,
-                }),
-                hide_billing: useLocalStorage('hide_billing', true),
+                    shipping_address: useLocalStorage('shipping_address', address_defaults, {
+                        mergeDefaults: true,
+                        serializer: StorageSerializers.object,
+                    }),
+                    billing_address: useLocalStorage('billing_address', address_defaults, {
+                        mergeDefaults: true,
+                        serializer: StorageSerializers.object,
+                    }),
+                    hide_billing: useLocalStorage('hide_billing', true),
 
-                shipping_method: null,
-                shipping_methods: [],
+                    shipping_method: null,
+                    shipping_methods: [],
 
-                payment_method: null,
-                payment_methods: [],
+                    payment_method: null,
+                    payment_methods: [],
 
-                agreement_ids: [],
+                    agreement_ids: [],
 
-                // This can be used to prevent the checkout from going
-                // to the next step which is useful in combination
-                // with the "CheckoutPaymentSaved" event to
-                // implement payment providers.
-                doNotGoToTheNextStep: false,
+                    // This can be used to prevent the checkout from going
+                    // to the next step which is useful in combination
+                    // with the "CheckoutPaymentSaved" event to
+                    // implement payment providers.
+                    doNotGoToTheNextStep: false,
+                },
             },
-        },
-        methods: {
-            search(value) {
-                if (value.length) {
-                    Turbo.visit(window.url('/search?q=' + encodeURIComponent(value)))
-                }
-            },
-            setSearchParams(url) {
-                window.history.pushState(window.history.state, '', new URL(url))
-            },
-            toggleScroll(bool = null) {
-                if (bool === null) {
-                    this.scrollLock = !this.scrollLock
-                } else {
-                    this.scrollLock = bool
-                }
-            },
-            resizedPath(imagePath, size, store = null) {
-                if (!store) {
-                    store = window.config.store
-                }
+            methods: {
+                search(value) {
+                    if (value.length) {
+                        Turbo.visit(window.url('/search?q=' + encodeURIComponent(value)))
+                    }
+                },
+                setSearchParams(url) {
+                    window.history.pushState(window.history.state, '', new URL(url))
+                },
+                toggleScroll(bool = null) {
+                    if (bool === null) {
+                        this.scrollLock = !this.scrollLock
+                    } else {
+                        this.scrollLock = bool
+                    }
+                },
+                resizedPath(imagePath, size, store = null) {
+                    if (!store) {
+                        store = window.config.store
+                    }
 
-                let url = new URL(imagePath)
-                url = url.pathname.replace('/media', '')
+                            let url = new URL(imagePath)
+                            url = url.pathname.replace('/media', '')
 
-                return `/storage/${store}/resizes/${size}/magento${url}`
+                            return `/storage/${store}/resizes/${size}/magento${url}`
+                        },
+                    },
+                    computed: {
+                        // Wrap the local storage in getter and setter functions so you do not have to interact using .value
+                        guestEmail: wrapValue(
+                            useLocalStorage('email', window.debug ? 'wayne@enterprises.com' : '', { serializer: StorageSerializers.string }),
+                        ),
+
+                loggedIn() {
+                    return Boolean(this.user?.id)
+                },
+
+                hasCart() {
+                    return this.cart?.id && this.cart.items.length
+                },
             },
-        },
-        computed: {
-            // Wrap the local storage in getter and setter functions so you do not have to interact using .value
-            guestEmail: wrapValue(
-                useLocalStorage('email', window.debug ? 'wayne@enterprises.com' : '', { serializer: StorageSerializers.string }),
-            ),
-
-            loggedIn() {
-                return Boolean(this.user?.id)
+            watch: {
+                loadingCount: function (count) {
+                    window.app.$data.loading = count > 0
+                },
             },
-
-            hasCart() {
-                return this.cart?.id && this.cart.items.length
-            },
-        },
-        watch: {
-            loadingCount: function (count) {
-                window.app.$data.loading = count > 0
-            },
-        },
-    })
-
-    const lastStoreCode = useLocalStorage('last_store_code', window.config.store_code)
-    if (lastStoreCode.value !== window.config.store_code) {
-        clearAttributes()
-        clearSwatches()
-        lastStoreCode.value = window.config.store_code
-    }
-
-    if (window.debug) {
-        window.app.$on('notification-message', function (message, type, params, link) {
-            switch (type) {
-                case 'error':
-                    console.error(...arguments)
-                    break
-                case 'warning':
-                    console.warn(...arguments)
-                    break
-                case 'success':
-                case 'info':
-                default:
-                    console.log(...arguments)
-            }
         })
-    }
 
-    const event = new CustomEvent('vue:loaded')
-    document.dispatchEvent(event)
+        setTimeout(() => {
+            const event = new CustomEvent('vue:loaded')
+            document.dispatchEvent(event)
+        })
+    })
 }
+
 document.addEventListener('turbo:load', init)
 setTimeout(init)
