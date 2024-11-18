@@ -97,9 +97,9 @@ function init() {
                     store = window.config.store
                 }
 
-                let url = new URL(imagePath);
-                url = url.pathname.replace('/media', '');
-                
+                let url = new URL(imagePath)
+                url = url.pathname.replace('/media', '')
+
                 return `/storage/${store}/resizes/${size}/magento${url}`
             },
         },
