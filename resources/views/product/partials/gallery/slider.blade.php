@@ -5,7 +5,7 @@
         v-on:click.prevent="toggleZoom"
     >
         <img
-            :src="resizedPath(images[active] + '.webp', '400')"
+            :src="'/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product' + images[active] + '.webp'"
             alt="{{ $product->name }}"
             class="object-contain max-h-full"
             width="400"

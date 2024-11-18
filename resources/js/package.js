@@ -92,11 +92,7 @@ function init() {
                     this.scrollLock = bool
                 }
             },
-            resizedPath(imagePath, size, store = null) {
-                if (!store) {
-                    store = window.config.store
-                }
-
+            resizedPath(imagePath, size, store = config.store) {
                 let url = new URL(imagePath)
                 url = url.pathname.replace('/media', '')
 
