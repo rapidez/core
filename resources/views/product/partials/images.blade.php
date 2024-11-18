@@ -27,7 +27,7 @@
                 >
                     <img
                         v-if="!zoomed"
-                        :src="resizedPath(images[active] + '.webp', '400')"
+                        :src="'/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product' + images[active] + '.webp'"
                         alt="{{ $product->name }}"
                         class="object-contain w-full m-auto max-h-[400px]"
                         width="400"
@@ -58,7 +58,7 @@
                     @click="change(imageId)"
                 >
                     <img
-                        :src="resizedPath(image + '.webp', '80x80')"
+                        :src="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product' + image + '.webp'"
                         alt="{{ $product->name }}"
                         class="object-contain w-full m-auto max-h-[80px]"
                         loading="lazy"
