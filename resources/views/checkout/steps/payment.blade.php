@@ -1,7 +1,7 @@
 @php($checkoutAgreements = \Rapidez\Core\Models\CheckoutAgreement::all())
 
 <h1 class="font-bold text-4xl mb-5">@lang('Payment method')</h1>
-<form class="bg-highlight p-8 rounded mt-6" v-on:submit.prevent="save(['payment_method'], 4)">
+<form class="bg-neutral-100 p-8 rounded mt-6" v-on:submit.prevent="save(['payment_method'], 4)">
     <div class="my-2 border bg-white p-4 rounded" v-for="(method, index) in checkout.payment_methods">
         <x-rapidez::radio
             v-bind:value="method.code"
@@ -62,7 +62,7 @@
         </div>
     @endif
 
-    <x-rapidez::button type="submit" class="mt-5" dusk="continue">
+    <x-rapidez::button.enhanced type="submit" class="mt-5" dusk="continue">
         @lang('Place order')
-    </x-rapidez::button>
+    </x-rapidez::button.enhanced>
 </form>

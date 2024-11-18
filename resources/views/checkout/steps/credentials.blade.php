@@ -1,6 +1,6 @@
 <h1 class="mb-5 text-4xl font-bold">@lang('Credentials')</h1>
 
-<form v-on:submit.prevent="save(['credentials'], 3)" class="flex flex-col gap-5 rounded bg-highlight p-4 md:p-8">
+<form v-on:submit.prevent="save(['credentials'], 3)" class="flex flex-col gap-5 rounded bg-neutral-100 p-4 md:p-8">
     <div class="flex flex-col gap-2">
         <div class="grid grid-cols-12 gap-4">
             <p class="col-span-12 text-2xl font-bold">
@@ -31,7 +31,7 @@
             </x-rapidez::radio>
         </template>
     </div>
-    <x-rapidez::button type="submit" dusk="continue" class="self-start">
+    <x-rapidez::button.enhanced type="submit" dusk="continue" class="self-start">
         @lang('Continue')
-    </x-rapidez::button>
+    </x-rapidez::button.enhanced>
 </form>

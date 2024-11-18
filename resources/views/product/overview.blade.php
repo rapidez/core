@@ -31,7 +31,7 @@
                     </div>
                     <div>
                         <div class="mb-2 border-t pt-5 text-lg font-bold">@lang('Specifications')</div>
-                        <dl class="flex flex-col text-inactive [&>dd]:rounded [&>dd]:p-2 odd:[&>dd]:bg-highlight odd:[&>dd]:font-semibold odd:[&>dd]:text-neutral even:[&>dd]:pl-4">
+                        <dl class="flex flex-col text-inactive [&>dd]:rounded [&>dd]:p-2 odd:[&>dd]:bg-neutral-100 odd:[&>dd]:font-semibold odd:[&>dd]:text-neutral even:[&>dd]:pl-4">
                             <dd>ID</dd>
                             <dd>{{ $product->entity_id }}</dd>
                             <dd>SKU</dd>
@@ -52,7 +52,7 @@
         </div>
     </div>
     @if (App::providerIsLoaded('Rapidez\Reviews\ReviewsServiceProvider'))
-        <div class="my-5 py-8 bg-highlight min-h-[515px]">
+        <div class="my-5 py-8 bg-neutral-100 min-h-[515px]">
             <div class="container grid w-full grid-cols-1 gap-5 p-5 md:grid-cols-3">
                 @include('rapidez-reviews::form', ['sku' => $product->sku])
                 <div class="md:col-span-2">

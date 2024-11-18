@@ -1,4 +1,4 @@
-<x-rapidez::button {{ $attributes->merge([
+<x-rapidez::button.enhanced {{ $attributes->merge([
     'type' => 'submit',
     'dusk' => 'add-to-cart',
 ])->class('flex items-center') }}>
@@ -8,4 +8,4 @@
     <span v-if="!addToCart.adding && !addToCart.added">@lang('Add to cart')</span>
     <span v-if="addToCart.adding" v-cloak>@lang('Adding')...</span>
     <span v-if="addToCart.added" v-cloak>@lang('Added')</span>
-</x-rapidez::button>
+</x-rapidez::button.enhanced>

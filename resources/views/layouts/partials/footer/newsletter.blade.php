@@ -15,7 +15,7 @@
                                 name="email"
                                 type="email"
                                 v-model="variables.email"
-                                class="w-full min-w-0 appearance-none rounded-md border h-10 border-text-inactive bg-white py-2 px-4 text-base text-gray-900 placeholder-text-neutral shadow-sm focus:border-indigo-500 focus:placeholder-gray-400 focus:outline-none focus:ring-indigo-500"
+                                class="w-full min-w-0 appearance-none rounded-md border h-10 border-text-inactive bg-white py-2 px-4 text-base text-neutral placeholder-text-neutral shadow-sm focus:placeholder-inactive focus:outline-none"
                                 wrapperClass="flex-grow"
                                 dusk="newsletter-email"
                                 autocomplete="email"

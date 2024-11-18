@@ -10,7 +10,7 @@
         'id' => $name ?? null,
         'name' => $name ?? null,
         'dusk' => $attributes->get('v-bind:dusk') ? null : $name ?? null,
-        'class' => 'w-full py-2 pl-3 pr-8 border-gray-200 rounded focus:ring-neutral focus:border-neutral sm:text-sm'
+        'class' => 'w-full py-2 pl-3 pr-8 border border-neutral-110 rounded outline-0 ring-0 focus:ring-transparent focus:border-neutral sm:text-sm'
     ]) }}>
         {{ $slot }}
     </select>
