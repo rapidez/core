@@ -21,7 +21,7 @@
     </x-rapidez::slideover>
 
     @if ($agreement->mode == 'AUTO')
-        <label class="text-neutral cursor-pointer underline hover:no-underline" for="{{ $agreement->agreement_id }}_agreement">
+        <label class="cursor-pointer underline hover:no-underline" for="{{ $agreement->agreement_id }}_agreement">
             {{ $agreement->checkbox_text }}
         </label>
     @else
@@ -32,7 +32,7 @@
                 dusk="agreements"
                 required
             >
-                <label class="text-neutral cursor-pointer underline hover:no-underline" for="{{ $agreement->agreement_id }}_agreement">
+                <label class="cursor-pointer underline hover:no-underline" for="{{ $agreement->agreement_id }}_agreement">
                     {{ $agreement->checkbox_text }}
                 </label>
             </x-rapidez::checkbox>

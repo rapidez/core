@@ -29,14 +29,14 @@ export default {
                     DEFAULT: 'rgb(var(--secondary) / <alpha-value>)',
                     text: 'rgb(var(--secondary-text) / <alpha-value>)',
                 },
+                enhanced: {
+                    DEFAULT: 'rgb(var(--enhanced) / <alpha-value>)',
+                    text: 'rgb(var(--enhanced-text) / <alpha-value>)',
+                },
                 neutral: {
                     DEFAULT: 'rgb(var(--neutral) / <alpha-value>)',
                     100: 'rgb(var(--neutral-100) / <alpha-value>)',
                     110: 'rgb(var(--neutral-110) / <alpha-value>)',
-                },
-                enhanced: {
-                    DEFAULT: 'rgb(var(--enhanced) / <alpha-value>)',
-                    text: 'rgb(var(--enhanced-text) / <alpha-value>)',
                 },
                 inactive: 'rgb(var(--inactive) / <alpha-value>)',
             },

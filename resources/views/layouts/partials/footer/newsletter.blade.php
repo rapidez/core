@@ -5,7 +5,7 @@
         <lazy>
             <graphql-mutation query="mutation visitor ($email: String!) { subscribeEmailToNewsletter(email: $email) { status } }" :alert="false" :clear="true">
                 <div slot-scope="{ mutate, variables, mutated, error }">
-                    <p v-if="mutated" class="text-neutral text-xl font-bold" v-cloak>
+                    <p v-if="mutated" class="text-xl font-bold" v-cloak>
                         @lang('Thank you for subscribing!')
                     </p>
                     <div v-else>
@@ -15,7 +15,7 @@
                                 name="email"
                                 type="email"
                                 v-model="variables.email"
-                                class="w-full min-w-0 appearance-none rounded-md border h-10 border-text-inactive bg-white py-2 px-4 text-base text-neutral placeholder-text-neutral shadow-sm focus:placeholder-inactive focus:outline-none"
+                                class="w-full min-w-0 appearance-none rounded-md border h-10 bg-white py-2 px-4 text-base placeholder-text-neutral shadow-sm focus:placeholder-inactive focus:outline-none"
                                 wrapperClass="flex-grow"
                                 dusk="newsletter-email"
                                 autocomplete="email"

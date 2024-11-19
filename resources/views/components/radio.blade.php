@@ -1,6 +1,6 @@
 <label class="flex items-center">
-    <input type="radio" {{ $attributes->merge(['class' => 'focus:ring-neutral h-4 w-4 text-neutral border']) }}>
-    <div class="ml-2 text-neutral">
+    <input type="radio" {{ $attributes->merge(['class' => 'focus:ring-neutral text-neutral size-4 border border-neutral-110']) }}>
+    <div class="ml-2">
         {{ $slot }}
     </div>
 </label>

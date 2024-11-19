@@ -3,7 +3,7 @@
     :component-id="filter.code"
     :data-field="filter.super ? 'super_' + filter.code : (filter.visual_swatch ? 'visual_' + filter.code : filter.code)"
     :inner-class="{
-        title: 'capitalize text-sm font-medium text-neutral',
+        title: 'capitalize text-sm font-medium',
     }"
     :react="{and: filter.input == 'multiselect' ? reactiveFilters : reactiveFilters.filter(item => item != filter.code) }"
     :query-format="filter.input == 'multiselect' ? 'and' : 'or'"
