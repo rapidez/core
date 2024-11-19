@@ -21,5 +21,5 @@ return [
 
     'earlyhints' => [
         'enabled' => env('EARLY_HINTS_ENABLED', true),
-    ]
+    ],
 ];
