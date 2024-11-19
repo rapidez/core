@@ -53,7 +53,7 @@ document.addEventListener('vue:loaded', () => {
 
 function init() {
     if (document.body.contains(window.app.$el)) {
-        return;
+        return
     }
 
     // https://vuejs.org/api/application.html#app-config-performance
@@ -149,17 +149,17 @@ function init() {
                         store = window.config.store
                     }
 
-                            let url = new URL(imagePath)
-                            url = url.pathname.replace('/media', '')
+                    let url = new URL(imagePath)
+                    url = url.pathname.replace('/media', '')
 
-                            return `/storage/${store}/resizes/${size}/magento${url}`
-                        },
-                    },
-                    computed: {
-                        // Wrap the local storage in getter and setter functions so you do not have to interact using .value
-                        guestEmail: wrapValue(
-                            useLocalStorage('email', window.debug ? 'wayne@enterprises.com' : '', { serializer: StorageSerializers.string }),
-                        ),
+                    return `/storage/${store}/resizes/${size}/magento${url}`
+                },
+            },
+            computed: {
+                // Wrap the local storage in getter and setter functions so you do not have to interact using .value
+                guestEmail: wrapValue(
+                    useLocalStorage('email', window.debug ? 'wayne@enterprises.com' : '', { serializer: StorageSerializers.string }),
+                ),
 
                 loggedIn() {
                     return Boolean(this.user?.id)
