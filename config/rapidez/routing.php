@@ -23,4 +23,8 @@ return [
         // This does not cache the response, it caches the controller used for that page.
         'cache_duration' => 3600,
     ],
+
+    'earlyhints' => [
+        'enabled' => env('EARLY_HINTS_ENABLED', true),
+    ]
 ];
