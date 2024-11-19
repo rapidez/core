@@ -1,6 +1,18 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.15.0...2.15.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.16.0...2.16.0)
+## [2.16.0](https://github.com/rapidez/core/releases/tag/2.16.0) - 2024-11-19
+
+### Changed
+
+- Resize path helper (#633, #648)
+- Extracted login to a loginByToken function (#637)
+
+### Fixed
+
+- Image switching length fix (#641)
+- Fix error of undefined when extensions is not set (#634)
+
 ## [2.15.0](https://github.com/rapidez/core/releases/tag/2.15.0) - 2024-10-23
 
 ### Added
