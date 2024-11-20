@@ -44,6 +44,13 @@ trait DuskTestCaseSetup
             return $this;
         });
 
+        Browser::macro('waitUntilVueLoaded', function () {
+            /** @var Browser $this */
+            $this->waitUntil('document.body.contains(window.app.$el) || await new Promise((resolve, reject) => document.addEventListener("vue:loaded", resolve))', 120);
+
+            return $this;
+        });
+
         Browser::macro('assertFormValid', function ($selector) {
             /** @var Browser $this */
             $fullSelector = $this->resolver->format($selector);
