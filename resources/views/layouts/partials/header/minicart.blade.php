@@ -7,7 +7,12 @@
         <div v-if="isOpen" class="absolute right-0 bg-white border shadow rounded-xl p-5 {{ config('rapidez.frontend.z-indexes.header-dropdowns') }}">
             <table class="w-full mb-3">
                 <tr v-for="item in cart.items" class="[&>*]:pb-3">
-                    <td class="block w-48 truncate overflow-hidden">@{{ item.product.name }}</td>
+                    <td class="block w-48 truncate overflow-hidden">
+                        @{{ item.product.name }}
+                        <div class="text-red-600" v-if="!item.is_available">
+                            @lang('This product is out of stock.')
+                        </div>
+                    </td>
                     <td class="text-right px-4">@{{ item.quantity }}</td>
                     <td class="text-right">@{{ item.prices.row_total.value | price }}</td>
                 </tr>
@@ -20,9 +25,12 @@
                 <x-rapidez::button.outline href="{{ route('cart') }}" class="mr-5">
                     @lang('Show cart')
                 </x-rapidez::button.outline>
-                <x-rapidez::button href="{{ route('checkout') }}">
-                    @lang('Checkout')
-                </x-rapidez::button>
+                
+                <div class="w-full" :class="{ 'cursor-not-allowed': !canOrder }">
+                    <x-rapidez::button href="{{ route('checkout') }}" v-bind:class="{ 'pointer-events-none': !canOrder }">
+                        @lang('Checkout')
+                    </x-rapidez::button>
+                </div>
             </div>
         </div>
     </div>
