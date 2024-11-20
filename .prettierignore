@@ -4,11 +4,6 @@
 .git
 **/*.php
 !**/*.blade.php
-/resources/views/cart/queries/*.graphql
-/resources/views/cart/queries/**/*.graphql
-/resources/views/checkout/queries/*.graphql
-/resources/views/checkout/queries/**/*.graphql
-/resources/views/customer/queries/*.graphql
-/resources/views/customer/queries/**/*.graphql
-composer.lock
+/resources/views/*.graphql
+/resources/views/**/*.graphql
 CHANGELOG.md

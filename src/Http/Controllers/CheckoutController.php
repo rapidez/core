@@ -17,9 +17,6 @@ class CheckoutController
 
         abort_if(! in_array($step, $checkoutSteps), 404);
 
-        // TODO: Is there a way to check if we should be able to go to this step?
-        // For example; without a quote we could be redirected to the homepage.
-
         return view('rapidez::checkout.pages.' . $step, [
             'checkoutSteps'  => $checkoutSteps,
             'currentStep'    => $step,
