@@ -25,7 +25,7 @@
                 <x-rapidez::button.outline href="{{ route('cart') }}" class="mr-5">
                     @lang('Show cart')
                 </x-rapidez::button.outline>
-                
+
                 <div class="w-full" :class="{ 'cursor-not-allowed': !canOrder }">
                     <x-rapidez::button href="{{ route('checkout') }}" v-bind:class="{ 'pointer-events-none': !canOrder }">
                         @lang('Checkout')
