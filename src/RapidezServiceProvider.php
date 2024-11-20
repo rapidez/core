@@ -146,6 +146,16 @@ class RapidezServiceProvider extends ServiceProvider
         RapidezFacade::addFallbackRoute(CmsPageController::class, 10);
         RapidezFacade::addFallbackRoute(LegacyFallbackController::class, 99999);
 
+        if (!app()->runningInConsole() && config('rapidez.routing.earlyhints.enabled', true)) {
+            $this->app->call(function (\Illuminate\Contracts\Http\Kernel $kernel) {
+                /** @var \Illuminate\Foundation\Http\Kernel $kernel */
+                $middlewares = $kernel->getGlobalMiddleware();
+                $middlewares[] = \JustBetter\Http3EarlyHints\Middleware\AddHttp3EarlyHints::class;
+
+                $kernel->setGlobalMiddleware($middlewares);
+            });
+        }
+
         return $this;
     }
 
