@@ -167,7 +167,7 @@ export const checkAvailability = function (cartItem) {
     // Here we polyfill the is_available field. We need to do this
     // because the default is_available field supported by Magento
     // always returns true, even when a product is out of stock. This
-    // should be fixed in the next Magento release.
+    // should be fixed in the next Magento release, reference: https://github.com/magento/magento2/blame/2.4-develop/app/code/Magento/QuoteGraphQl/Model/CartItem/ProductStock.php#L61
     if ('stock_item' in cartItem.product && 'in_stock' in cartItem.product.stock_item && cartItem.product.stock_item.in_stock !== null) {
         return cartItem.product.stock_item.in_stock
     }
