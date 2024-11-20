@@ -3,7 +3,6 @@
 namespace Rapidez\Core;
 
 use Illuminate\Routing\Route;
-use Illuminate\Routing\RouteAction;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -32,8 +31,7 @@ class Rapidez
 
     private function actionToRoute(Route|array|string $action): Route
     {
-        if($action instanceof Route)
-        {
+        if ($action instanceof Route) {
             return $action;
         }
 

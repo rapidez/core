@@ -7,15 +7,14 @@ use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\RecordsNotFoundException;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\Exceptions\BackedEnumCaseNotFoundException;
 use Illuminate\Routing\Pipeline;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Facades\Rapidez;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
@@ -24,7 +23,7 @@ class FallbackController extends Controller
     protected $container;
 
     public function __construct(
-        ?Container $container = null,
+        ?Container $container,
         protected Router $router
     ) {
         $this->container = $container ?: new Container;
@@ -69,7 +68,7 @@ class FallbackController extends Controller
                 ));
 
             // Null response is equal to no response or 404.
-            if (!$response->getContent() || $response->isNotFound()) {
+            if (! $response->getContent() || $response->isNotFound()) {
                 abort(404);
             }
 
