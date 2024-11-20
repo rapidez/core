@@ -92,6 +92,7 @@ function init() {
                     this.scrollLock = bool
                 }
             },
+
             resizedPath(imagePath, size, store = null) {
                 if (!store) {
                     store = window.config.store
@@ -115,6 +116,10 @@ function init() {
 
             hasCart() {
                 return this.cart?.id && this.cart.items.length
+            },
+
+            canOrder() {
+                return this.cart.items.every((item) => item.is_available)
             },
         },
         watch: {
