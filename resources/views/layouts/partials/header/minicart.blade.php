@@ -10,7 +10,7 @@
                     <td class="block w-48 truncate overflow-hidden">
                         @{{ item.product.name }}
                         <div class="text-red-600" v-if="!item.is_available">
-                            @lang('This product is out of stock.')
+                            @lang('Out of stock')
                         </div>
                     </td>
                     <td class="text-right px-4">@{{ item.quantity }}</td>
