@@ -16,7 +16,7 @@
                     <a :href="item.product.url_key + item.product.url_suffix | url" class="font-bold" dusk="cart-item-name">
                         @{{ item.product.name }}
                         <div class="text-red-600" v-if="!item.is_available">
-                            @lang('This product it out of stock, remove it to continue your order.')
+                            @lang('This product is out of stock, remove it to continue your order.')
                         </div>
                     </a>
                     <div v-for="option in item.configurable_options">
