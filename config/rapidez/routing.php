@@ -27,5 +27,5 @@ return [
     // See: https://docs.rapidez.io/3.x/configuration.html#early-hints
     'earlyhints' => [
         'enabled' => env('EARLY_HINTS_ENABLED', true),
-    ]
+    ],
 ];
