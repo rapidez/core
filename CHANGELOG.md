@@ -1,18 +1,17 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.14.0...2.14.0)
-## [2.14.0](https://github.com/rapidez/core/releases/tag/2.14.0) - 2024-10-17
+[Unreleased changes](https://github.com/rapidez/core/compare/2.16.0...2.16.0)
+## [2.16.0](https://github.com/rapidez/core/releases/tag/2.16.0) - 2024-11-19
 
 ### Changed
 
-- Updated the frontend dependencies including Vite 5 (#584)
-- Drop support for Magento 2.4.5 (#589)
+- Resize path helper (#633, #648)
+- Extracted login to a loginByToken function (#637)
 
 ### Fixed
 
-- Filter out double slashes from API endpoints (#559)
-- Fix casts in quote model (#542)
-- Correct error message when placing an order fails (#599)
+- Image switching length fix (#641)
+- Fix error of undefined when extensions is not set (#634)
 
 ## [2.13.0](https://github.com/rapidez/core/releases/tag/2.13.0) - 2024-09-27
 
