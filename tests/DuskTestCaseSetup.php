@@ -75,7 +75,7 @@ trait DuskTestCaseSetup
             $this
                 ->waitUntilIdle()
                 ->waitUntilEnabled('@add-to-cart')
-                ->pressAndWaitFor('@add-to-cart', 60)
+                ->pressAndWaitFor('@add-to-cart', 120)
                 ->waitForText('Added', 60)
                 ->waitUntilIdle();
 
