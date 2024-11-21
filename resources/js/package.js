@@ -134,7 +134,7 @@ function init() {
                         Turbo.visit(window.url('/search?q=' + encodeURIComponent(value)))
                     }
                 },
-                
+
                 setSearchParams(url) {
                     window.history.pushState(window.history.state, '', new URL(url))
                 },
