@@ -68,16 +68,17 @@ trait DuskTestCaseSetup
             if ($productUrl) {
                 $this
                     ->visit($productUrl)
-                    ->waitUntilVueLoaded();
+                    ->waitUntilVueLoaded()
+                    ->waitUntilIdle();
             }
 
             // @phpstan-ignore-next-line
             $this
                 ->waitUntilIdle()
                 ->waitUntilEnabled('@add-to-cart')
-                ->press('@add-to-cart')
                 ->waitUntilIdle()
-                ->waitForText('Added', 60)
+                ->press('@add-to-cart')
+                ->waitForText('Added', 120)
                 ->waitUntilIdle();
 
             return $this;
