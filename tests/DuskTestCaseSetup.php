@@ -46,7 +46,10 @@ trait DuskTestCaseSetup
 
         Browser::macro('waitUntilVueLoaded', function () {
             /** @var Browser $this */
-            $this->waitUntil('document.body.contains(window.app.$el) || await new Promise((resolve, reject) => document.addEventListener("vue:loaded", resolve))', 120);
+            $this
+                ->waitUntil('document.body.contains(window.app.$el) || await new Promise((resolve, reject) => document.addEventListener("vue:loaded", () => resolve(true)))', 120)
+                ->pause(3000)
+                ->waitUntilIdle();
 
             return $this;
         });
