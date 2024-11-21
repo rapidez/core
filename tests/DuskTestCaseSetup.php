@@ -67,12 +67,14 @@ trait DuskTestCaseSetup
             /** @var Browser $this */
             if ($productUrl) {
                 $this
-                    ->visit($productUrl);
+                    ->visit($productUrl)
+                    ->waitUntilVueLoaded();
             }
 
             // @phpstan-ignore-next-line
             $this
                 ->waitUntilIdle()
+                ->waitUntilEnabled('@add-to-cart')
                 ->pressAndWaitFor('@add-to-cart', 60)
                 ->waitForText('Added', 60)
                 ->waitUntilIdle();
