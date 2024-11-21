@@ -91,7 +91,7 @@ export default {
                 return
             }
 
-            let address = this.$root.user?.addresses?.find((address) => address.id == id) || window.address_defaults
+            let address = JSON.parse(JSON.stringify(this.$root.user?.addresses?.find((address) => address.id == id) || window.address_defaults))
 
             this.$root.checkout[type + '_address'] = Object.assign(
                 this.$root.checkout[type + '_address'],
