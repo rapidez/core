@@ -1,6 +1,16 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.16.0...2.16.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.17.0...2.17.0)
+## [2.17.0](https://github.com/rapidez/core/releases/tag/2.17.0) - 2024-11-20
+
+### Added
+
+- Disable checkout button and add notice if not in stock (#627)
+
+### Changed
+
+- Apply middlewares from fallback routes (#643)
+
 ## [2.16.0](https://github.com/rapidez/core/releases/tag/2.16.0) - 2024-11-19
 
 ### Changed
