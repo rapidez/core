@@ -163,6 +163,21 @@ function addCustomerAddressId(address) {
     return address
 }
 
+export const checkAvailability = function (cartItem) {
+    // Here we polyfill the is_available field. We need to do this
+    // because the default is_available field supported by Magento
+    // always returns true, even when a product is out of stock. This
+    // should be fixed in the next Magento release, reference: https://github.com/magento/magento2/blame/2.4-develop/app/code/Magento/QuoteGraphQl/Model/CartItem/ProductStock.php#L61
+    if ('stock_item' in cartItem.product && 'in_stock' in cartItem.product.stock_item && cartItem.product.stock_item.in_stock !== null) {
+        return cartItem.product.stock_item.in_stock
+    }
+
+    // Without the use of compadre the in stock check can't be
+    // done. We will need to always allow users to go on to
+    // the checkout.
+    return true
+}
+
 export const cart = computed({
     get() {
         if (!cartStorage.value?.id && mask.value) {
@@ -190,6 +205,12 @@ export const cart = computed({
         getAttributeValues()
             .then((response) => {
                 if (!response?.data?.customAttributeMetadata?.items) {
+                    value.items = value.items.map((item) => {
+                        item.is_available = checkAvailability(item)
+
+                        return item
+                    })
+
                     return
                 }
 
@@ -201,6 +222,7 @@ export const cart = computed({
                 )
 
                 value.items = value.items.map((cartItem) => {
+                    cartItem.is_available = checkAvailability(item)
                     cartItem.product.attribute_values = {}
 
                     for (const key in mapping) {

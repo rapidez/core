@@ -71,6 +71,8 @@
     "Shipping method": "Verzendmethode",
     "Shipping": "Verzending",
     "Show cart": "Bekijk winkelwagen",
+    "This product is out of stock, remove it to continue your order.": "Dit product is niet op voorraad, verwijder het om verder te gaan met je bestelling.",
+    "Out of stock": "Niet op voorraad",
     "Show results": "Bekijk resultaten",
     "Sign up for our newsletter to stay up to date.": "Meld je aan voor onze nieuwsbrief om op de hoogte te blijven.",
     "Sorry! No image": "Sorry! Geen afbeelding",
@@ -97,7 +99,7 @@
     "We will send a confirmation of your order to": "Wij zullen een confirmatie sturen naar",
     "Wishlist": "Wensenlijst",
     "Yes": "Ja",
-    "You don't have anything in your cart.": "Deze winkelwagen is leeg.",
+    "You don't have anything in your cart.": "Je hebt geen producten in je winkelwagen.",
     "You have filtered for:": "Je hebt gefilterd op:",
     "Your order is currently:": "Je bestelling is op dit moment:"
 }

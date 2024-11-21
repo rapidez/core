@@ -116,9 +116,11 @@ function init() {
                             Turbo.visit(window.url('/search?q=' + encodeURIComponent(value)))
                         }
                     },
+                    
                     setSearchParams(url) {
                         window.history.pushState(window.history.state, '', new URL(url))
                     },
+
                     toggleScroll(bool = null) {
                         if (bool === null) {
                             this.scrollLock = !this.scrollLock
@@ -126,6 +128,7 @@ function init() {
                             this.scrollLock = bool
                         }
                     },
+
                     resizedPath(imagePath, size, store = null) {
                         if (!store) {
                             store = window.config.store
@@ -149,6 +152,11 @@ function init() {
 
                     hasCart() {
                         return this.cart?.id && this.cart.items.length
+                    },
+
+
+                    canOrder() {
+                        return this.cart.items.every((item) => item.is_available)
                     },
                 },
                 watch: {
