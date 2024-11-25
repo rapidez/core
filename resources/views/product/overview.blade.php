@@ -27,13 +27,13 @@
                     @endif
                     <div>
                         <div class="border-t pt-5 text-lg font-bold">@lang('Description')</div>
-                        <div class="prose text-inactive" itemprop="description">
+                        <div class="prose text-muted" itemprop="description">
                             {!! $product->description !!}
                         </div>
                     </div>
                     <div>
                         <div class="mb-2 border-t pt-5 text-lg font-bold">@lang('Specifications')</div>
-                        <dl class="flex flex-col text-inactive [&>dd]:rounded [&>dd]:p-2 odd:[&>dd]:bg-highlight odd:[&>dd]:font-semibold odd:[&>dd]:text-neutral even:[&>dd]:pl-4">
+                        <dl class="flex flex-col text-muted [&>dd]:rounded [&>dd]:p-2 odd:[&>dd]:bg-muted odd:[&>dd]:font-semibold odd:[&>dd]:text even:[&>dd]:pl-4">
                             <dd>ID</dd>
                             <dd>{{ $product->entity_id }}</dd>
                             <dd>SKU</dd>

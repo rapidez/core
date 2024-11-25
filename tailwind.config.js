@@ -27,7 +27,7 @@ export default {
         extend: {
             colors: {
                 primary: {
-                    DEFAULT: color('--primary', '#2fbc85'),
+                    DEFAULT: color('--primary', '#2FBC85'),
                     text: color('--primary-text', colors.white),
                 },
 
@@ -36,31 +36,28 @@ export default {
                     text: color('--secondary-text', colors.white),
                 },
 
+                conversion: {
+                    DEFAULT: color('--conversion', colors.green[500]),
+                    text: color('--conversion-text', colors.white),
+                },
+
                 foreground: {
-                    emphasis: color('--foreground-emphasis', colors.gray[800]),
-                    DEFAULT: color('--foreground', colors.gray[700]),
-                    muted: color('--foreground-muted', colors.gray[500]),
+                    emphasis: color('--foreground-emphasis', colors.slate[900]),
+                    DEFAULT: color('--foreground', colors.slate[800]),
+                    muted: color('--foreground-muted', colors.slate[600]),
                 },
 
                 border: {
-                    emphasis: color('--border-emphasis', colors.gray[500]),
-                    DEFAULT: color('--border', colors.gray[200]),
-                    muted: color('--border-muted', colors.gray[100]),
+                    emphasis: color('--border-emphasis', colors.slate[500]),
+                    DEFAULT: color('--border', colors.slate[200]),
+                    muted: color('--border-muted', colors.slate[100]),
                 },
 
                 background: {
-                    emphasis: color('--background-emphasis', colors.gray[200]),
-                    DEFAULT: color('--background', colors.gray[100]),
-                    muted: color('--background-muted', colors.gray[50]),
+                    emphasis: color('--background-emphasis', colors.slate[900]),
+                    DEFAULT: color('--background', colors.slate[800]),
+                    muted: color('--background-muted', colors.slate[50]),
                 },
-
-                // TODO: check all these colors within the templates and replace
-                // neutral: 'rgb(var(--neutral) / <alpha-value>)', // Text
-                // inactive: 'rgb(var(--inactive) / <alpha-value>)', // Inactive text
-                // highlight: 'rgb(var(--highlight) / <alpha-value>)', // Background highlight
-                // enhanced: 'rgb(var(--enhanced) / <alpha-value>)', // Enhanced
-                // disabled: 'rgb(var(--disabled) / <alpha-value>)', // Disabled
-                // base: 'rgb(var(--base) / <alpha-value>)', // Background
             },
             textColor: (theme) => theme('colors.foreground'),
             borderColor: (theme) => ({

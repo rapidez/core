@@ -20,9 +20,9 @@
         >
             @include('rapidez::checkout.steps.login')
 
-            <x-rapidez::button type="submit" dusk="continue" class="mt-3">
+            <x-rapidez::button.conversion type="submit" dusk="continue" class="mt-3">
                 @lang('Next')
-            </x-rapidez::button>
+            </x-rapidez::button.conversion>
         </form>
     </div>
 @endsection

@@ -7,7 +7,7 @@
 @section('content')
     <div class="container">
         <div v-if="hasCart" class="flex gap-5 max-xl:flex-col" v-cloak>
-            <div class="w-full bg-highlight rounded p-4 xl:p-8 xl:w-3/4">
+            <div class="w-full bg-muted rounded p-4 xl:p-8 xl:w-3/4">
                 <form class="grid gap-5 lg:grid-cols-2" v-on:submit.prevent="(e) => {
                     submitFieldsets(e.target?.form ?? e.target)
                         .then((result) =>
