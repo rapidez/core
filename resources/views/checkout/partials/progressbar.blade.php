@@ -6,7 +6,7 @@
                 <div class="absolute flex w-full h-0.5 top-5 left-1/2 {{ $currentStepKey > $checkoutStepKey ? 'bg-emphasis' : 'bg' }}"></div>
             @endif
             <a href="{{ route('checkout', $checkoutStep) }}" @class([
-                'relative text flex size-10 mx-auto justify-center rounded-full font-bold items-center border',
+                'relative flex size-10 mx-auto justify-center rounded-full font-bold items-center border',
                 'pointer-events-none cursor-default' => $currentStepKey < $checkoutStepKey,
                 'bg-emphasis' => $checkoutStepKey <= $currentStepKey,
                 'bg-white' => $checkoutStepKey > $currentStepKey,
