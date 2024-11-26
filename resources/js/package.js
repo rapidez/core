@@ -15,11 +15,10 @@ import useMask from './stores/useMask'
 import { swatches, clear as clearSwatches } from './stores/useSwatches'
 import { clear as clearAttributes } from './stores/useAttributes.js'
 import './vue'
-import { computed } from 'vue'
 import './fetch'
 import './filters'
 import './mixins'
-import './turbolinks'
+(() => import('./turbolinks'))()
 import './cookies'
 import './callbacks'
 import './vue-components'
@@ -116,7 +115,7 @@ function init() {
                             Turbo.visit(window.url('/search?q=' + encodeURIComponent(value)))
                         }
                     },
-                    
+
                     setSearchParams(url) {
                         window.history.pushState(window.history.state, '', new URL(url))
                     },
@@ -164,6 +163,12 @@ function init() {
                         window.app.$data.loading = count > 0
                     },
                 },
+                mounted() {
+                    setTimeout(() => {
+                        const event = new CustomEvent('vue:mounted', { detail: { vue: window.app } })
+                        document.dispatchEvent(event)
+                    })
+                }
             })
 
             setTimeout(() => {
