@@ -17,7 +17,7 @@ import './vue'
 import './fetch'
 import './filters'
 import './mixins'
-(() => import('./turbolinks'))()
+;(() => import('./turbolinks'))()
 import './cookies'
 import './callbacks'
 import './vue-components'
