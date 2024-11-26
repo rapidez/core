@@ -44,6 +44,16 @@ trait DuskTestCaseSetup
             return $this;
         });
 
+        Browser::macro('waitUntilVueLoaded', function () {
+            /** @var Browser $this */
+            $this
+                ->waitUntilIdle()
+                ->waitUntilTrueForDuration('document.body.contains(window.app?.$el) && window.app?._isMounted && console.log("mounted") === undefined', 10, 1)
+                ->waitUntilIdle();
+
+            return $this;
+        });
+
         Browser::macro('assertFormValid', function ($selector) {
             /** @var Browser $this */
             $fullSelector = $this->resolver->format($selector);
@@ -52,6 +62,26 @@ trait DuskTestCaseSetup
                 $this->driver->executeScript("return document.querySelector('{$fullSelector}').reportValidity();"),
                 'Form is not valid: ' . PHP_EOL . $this->driver->executeScript("return Array.from(document.querySelector('{$fullSelector}').elements).filter(el => !el.validity.valid).map(el => el.name + ': ' + el.validationMessage).join('\\n');")
             );
+
+            return $this;
+        });
+
+        Browser::macro('addProductToCart', function ($productUrl = null) {
+            /** @var Browser $this */
+            if ($productUrl) {
+                $this
+                    ->visit($productUrl)
+                    ->waitUntilVueLoaded()
+                    ->waitUntilIdle();
+            }
+
+            // @phpstan-ignore-next-line
+            $this
+                ->waitUntilIdle()
+                ->waitUntilEnabled('@add-to-cart', 200)
+                ->pressAndWaitFor('@add-to-cart', 120)
+                ->waitForText(__('Added'), 120)
+                ->waitUntilIdle();
 
             return $this;
         });
