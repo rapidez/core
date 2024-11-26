@@ -14,7 +14,7 @@
             v-bind:dusk="'qty-'+index"
             wrapperClass="flex flex-1"
             {{-- TODO: We don't need these importants with Tailwind merge and center isn't really center with type number --}}
-            class="flex-1 !w-14 !px-1 text-center"
+            class="!w-14 !px-1 text-center"
 
             ::min="Math.max(item.product.stock_item?.min_sale_qty, item.product.stock_item?.qty_increments) || null"
             ::max="item.product.stock_item?.max_sale_qty"
