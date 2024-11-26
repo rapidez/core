@@ -18,7 +18,7 @@ import './vue'
 import './fetch'
 import './filters'
 import './mixins'
-(() => import('./turbolinks'))()
+;(() => import('./turbolinks'))()
 import './cookies'
 import './callbacks'
 import './vue-components'
@@ -53,7 +53,7 @@ document.addEventListener('vue:loaded', () => {
 
 function init() {
     if (document.body.contains(window.app.$el)) {
-        return;
+        return
     }
 
     // https://vuejs.org/api/application.html#app-config-performance
@@ -90,93 +90,90 @@ function init() {
         custom_attributes: [],
     }
 
-    requestAnimationFrame(
-        () => {
-            window.app = new Vue({
-                el: '#app',
-                data: {
-                    custom: {},
-                    config: window.config,
-                    loadingCount: 0,
-                    loading: false,
-                    loadAutocomplete: false,
-                    csrfToken: document.querySelector('[name=csrf-token]').content,
-                    cart: useCart(),
-                    order: useOrder(),
-                    user: useUser(),
-                    mask: useMask(),
-                    showTax: window.config.show_tax,
-                    swatches: swatches,
-                    scrollLock: useScrollLock(document.body),
+    requestAnimationFrame(() => {
+        window.app = new Vue({
+            el: '#app',
+            data: {
+                custom: {},
+                config: window.config,
+                loadingCount: 0,
+                loading: false,
+                loadAutocomplete: false,
+                csrfToken: document.querySelector('[name=csrf-token]').content,
+                cart: useCart(),
+                order: useOrder(),
+                user: useUser(),
+                mask: useMask(),
+                showTax: window.config.show_tax,
+                swatches: swatches,
+                scrollLock: useScrollLock(document.body),
+            },
+            methods: {
+                search(value) {
+                    if (value.length) {
+                        Turbo.visit(window.url('/search?q=' + encodeURIComponent(value)))
+                    }
                 },
-                methods: {
-                    search(value) {
-                        if (value.length) {
-                            Turbo.visit(window.url('/search?q=' + encodeURIComponent(value)))
-                        }
-                    },
 
-                    setSearchParams(url) {
-                        window.history.pushState(window.history.state, '', new URL(url))
-                    },
-
-                    toggleScroll(bool = null) {
-                        if (bool === null) {
-                            this.scrollLock = !this.scrollLock
-                        } else {
-                            this.scrollLock = bool
-                        }
-                    },
-
-                    resizedPath(imagePath, size, store = null) {
-                        if (!store) {
-                            store = window.config.store
-                        }
-
-                        let url = new URL(imagePath)
-                        url = url.pathname.replace('/media', '')
-
-                        return `/storage/${store}/resizes/${size}/magento${url}`
-                    },
+                setSearchParams(url) {
+                    window.history.pushState(window.history.state, '', new URL(url))
                 },
-                computed: {
-                    // Wrap the local storage in getter and setter functions so you do not have to interact using .value
-                    guestEmail: wrapValue(
-                        useLocalStorage('email', window.debug ? 'wayne@enterprises.com' : '', { serializer: StorageSerializers.string }),
-                    ),
 
-                    loggedIn() {
-                        return this.user?.is_logged_in
-                    },
-
-                    hasCart() {
-                        return this.cart?.id && this.cart.items.length
-                    },
-
-
-                    canOrder() {
-                        return this.cart.items.every((item) => item.is_available)
-                    },
+                toggleScroll(bool = null) {
+                    if (bool === null) {
+                        this.scrollLock = !this.scrollLock
+                    } else {
+                        this.scrollLock = bool
+                    }
                 },
-                watch: {
-                    loadingCount: function (count) {
-                        window.app.$data.loading = count > 0
-                    },
-                },
-                mounted() {
-                    setTimeout(() => {
-                        const event = new CustomEvent('vue:mounted', { detail: { vue: window.app } })
-                        document.dispatchEvent(event)
-                    })
-                }
-            })
 
-            setTimeout(() => {
-                const event = new CustomEvent('vue:loaded', { detail: { vue: window.app } })
-                document.dispatchEvent(event)
-            })
-        }
-    )
+                resizedPath(imagePath, size, store = null) {
+                    if (!store) {
+                        store = window.config.store
+                    }
+
+                    let url = new URL(imagePath)
+                    url = url.pathname.replace('/media', '')
+
+                    return `/storage/${store}/resizes/${size}/magento${url}`
+                },
+            },
+            computed: {
+                // Wrap the local storage in getter and setter functions so you do not have to interact using .value
+                guestEmail: wrapValue(
+                    useLocalStorage('email', window.debug ? 'wayne@enterprises.com' : '', { serializer: StorageSerializers.string }),
+                ),
+
+                loggedIn() {
+                    return this.user?.is_logged_in
+                },
+
+                hasCart() {
+                    return this.cart?.id && this.cart.items.length
+                },
+
+                canOrder() {
+                    return this.cart.items.every((item) => item.is_available)
+                },
+            },
+            watch: {
+                loadingCount: function (count) {
+                    window.app.$data.loading = count > 0
+                },
+            },
+            mounted() {
+                setTimeout(() => {
+                    const event = new CustomEvent('vue:mounted', { detail: { vue: window.app } })
+                    document.dispatchEvent(event)
+                })
+            },
+        })
+
+        setTimeout(() => {
+            const event = new CustomEvent('vue:loaded', { detail: { vue: window.app } })
+            document.dispatchEvent(event)
+        })
+    })
 }
 
 document.addEventListener('turbo:load', init)
