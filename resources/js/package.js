@@ -14,11 +14,10 @@ import useMask from './stores/useMask'
 import { swatches, clear as clearSwatches } from './stores/useSwatches'
 import { clear as clearAttributes } from './stores/useAttributes.js'
 import './vue'
-import { computed } from 'vue'
 import './fetch'
 import './filters'
 import './mixins'
-import './turbolinks'
+(() => import('./turbolinks'))()
 import './cookies'
 import './callbacks'
 import './vue-components'
@@ -180,6 +179,12 @@ function init() {
                 loadingCount: function (count) {
                     window.app.$data.loading = count > 0
                 },
+            },
+            mounted() {
+                setTimeout(() => {
+                    const event = new CustomEvent('vue:mounted', { detail: { vue: window.app } })
+                    document.dispatchEvent(event)
+                })
             },
         })
 

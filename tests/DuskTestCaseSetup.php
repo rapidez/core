@@ -47,8 +47,8 @@ trait DuskTestCaseSetup
         Browser::macro('waitUntilVueLoaded', function () {
             /** @var Browser $this */
             $this
-                ->waitUntil('document.body.contains(window.app.$el) || await new Promise((resolve, reject) => document.addEventListener("vue:loaded", () => resolve(true)))', 120)
-                ->pause(3000)
+                ->waitUntilIdle()
+                ->waitUntilTrueForDuration('document.body.contains(window.app?.$el) && window.app?._isMounted && console.log("mounted") === undefined', 10, 1)
                 ->waitUntilIdle();
 
             return $this;
@@ -78,10 +78,9 @@ trait DuskTestCaseSetup
             // @phpstan-ignore-next-line
             $this
                 ->waitUntilIdle()
-                ->waitUntilEnabled('@add-to-cart')
-                ->waitUntilIdle()
-                ->press('@add-to-cart')
-                ->waitForText('Added', 120)
+                ->waitUntilEnabled('@add-to-cart', 200)
+                ->pressAndWaitFor('@add-to-cart', 120)
+                ->waitForText(__('Added'), 120)
                 ->waitUntilIdle();
 
             return $this;
