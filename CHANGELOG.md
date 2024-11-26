@@ -1,6 +1,13 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.17.0...2.17.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.17.1...2.17.1)
+## [2.17.1](https://github.com/rapidez/core/releases/tag/2.17.1) - 2024-11-26
+
+### Fixed
+
+- Reduce forced reflow with the slider (#609)
+- Clone address to remove reactivity (#656)
+
 ## [2.17.0](https://github.com/rapidez/core/releases/tag/2.17.0) - 2024-11-20
 
 ### Added
