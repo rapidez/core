@@ -20,8 +20,8 @@
             ::max="item.product.stock_item?.max_sale_qty"
             ::step="item.product.stock_item?.qty_increments"
         />
-        <x-rapidez::button type="submit" v-bind:dusk="'item-update-'+index" :title="__('Update')">
+        <x-rapidez::button.secondary type="submit" v-bind:dusk="'item-update-'+index" :title="__('Update')">
             <x-heroicon-s-arrow-path class="h-4 w-4" />
-        </x-rapidez::button>
+        </x-rapidez::button.secondary>
     </form>
 </graphql-mutation>

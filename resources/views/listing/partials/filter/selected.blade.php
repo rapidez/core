@@ -19,7 +19,7 @@
                 <div class="flex gap-2 flex-wrap">
                     <div class="flex flex-wrap gap-2 relative cursor-pointer" v-for="filter in activeFilters">
                         <div v-on:click="setValue(filter.code, null)" class="flex justify-between items-center transition hover:opacity-80">
-                            <span class="font-sans flex gap-1 p-1 items-center text-xs text rounded-lg bg-muted">
+                            <span class="font-sans flex gap-1 p-1 items-center text-xs text rounded-lg bg">
                                 @{{ filter.value }}
                                 <x-heroicon-o-x-mark class="size-3 shrink-0 text"/>
                             </span>

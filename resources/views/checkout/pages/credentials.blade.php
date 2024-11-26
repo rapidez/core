@@ -9,7 +9,7 @@
         @include('rapidez::checkout.partials.progressbar')
         <div v-if="hasCart" v-cloak>
             <div class="flex gap-5 max-xl:flex-col">
-                <div class="w-full rounded bg-muted p-4 xl:p-8 xl:w-3/4">
+                <div class="w-full rounded bg p-4 xl:p-8 xl:w-3/4">
                     <form
                         v-on:submit.prevent="(e) => {
                             submitFieldsets(e.target?.form ?? e.target)

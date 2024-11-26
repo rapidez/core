@@ -54,8 +54,8 @@ export default {
                 },
 
                 background: {
-                    emphasis: color('--background-emphasis', colors.slate[900]),
-                    DEFAULT: color('--background', colors.slate[800]),
+                    emphasis: color('--background-emphasis', colors.slate[200]),
+                    DEFAULT: color('--background', colors.slate[100]),
                     muted: color('--background-muted', colors.slate[50]),
                 },
             },
