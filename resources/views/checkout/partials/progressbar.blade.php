@@ -3,14 +3,14 @@
     @foreach ($checkoutSteps as $checkoutStepKey => $checkoutStep)
         <div class="text-center w-full relative focus:outline-none">
             @if (!$loop->last)
-                <div class="absolute flex w-full h-0.5 top-5 left-1/2 {{ $currentStepKey > $checkoutStepKey ? 'bg-neutral' : 'bg-inactive' }}"></div>
+                <div class="absolute flex w-full h-0.5 top-5 left-1/2 {{ $currentStepKey > $checkoutStepKey ? 'bg-emphasis' : 'bg' }}"></div>
             @endif
             <a href="{{ route('checkout', $checkoutStep) }}" @class([
-                'relative flex w-10 h-10 mx-auto justify-center rounded-full font-bold items-center border border-neutral',
+                'relative flex size-10 mx-auto justify-center rounded-full font-bold items-center border',
                 'pointer-events-none cursor-default' => $currentStepKey < $checkoutStepKey,
-                'bg-neutral text-white' => $checkoutStepKey <= $currentStepKey,
+                'bg-emphasis' => $checkoutStepKey <= $currentStepKey,
                 'bg-white' => $checkoutStepKey > $currentStepKey,
-                'bg-neutral text-white shadow-md shadow-neutral pointer-events-none cursor-default' => $checkoutStepKey === $currentStepKey
+                'bg-emphasis shadow-md pointer-events-none cursor-default' => $checkoutStepKey === $currentStepKey
             ])>
                 {{ $checkoutStepKey + 1 }}
             </a>

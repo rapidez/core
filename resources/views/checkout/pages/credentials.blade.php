@@ -9,7 +9,7 @@
         @include('rapidez::checkout.partials.progressbar')
         <div v-if="hasCart" v-cloak>
             <div class="flex gap-5 max-xl:flex-col">
-                <div class="w-full rounded bg-highlight p-4 xl:p-8 xl:w-3/4">
+                <div class="w-full rounded bg p-4 xl:p-8 xl:w-3/4">
                     <form
                         v-on:submit.prevent="(e) => {
                             submitFieldsets(e.target?.form ?? e.target)
@@ -33,9 +33,9 @@
                             @include('rapidez::checkout.steps.shipping_method')
                         </template>
 
-                        <x-rapidez::button type="submit" dusk="continue" class="self-start">
+                        <x-rapidez::button.conversion type="submit" dusk="continue" class="self-start">
                             @lang('Next')
-                        </x-rapidez::button>
+                        </x-rapidez::button.conversion>
                     </form>
                 </div>
                 <div class="w-full xl:w-1/4">

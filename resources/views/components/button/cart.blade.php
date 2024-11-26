@@ -1,4 +1,4 @@
-<x-rapidez::button.secondary {{ $attributes->merge([
+<x-rapidez::button.conversion {{ $attributes->merge([
     'type' => 'submit',
     'dusk' => 'add-to-cart',
 ]) }}>

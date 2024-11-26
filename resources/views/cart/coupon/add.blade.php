@@ -15,10 +15,11 @@
             placeholder="Coupon code"
             v-model="variables.coupon_code"
             v-bind:disabled="$root.loading"
+            wrapperClass="flex flex-1"
             required
         />
-        <x-rapidez::button type="submit" class="sm:text-sm" dusk="apply-coupon">
+        <x-rapidez::button.outline type="submit" class="sm:text-sm" dusk="apply-coupon">
             @lang('Apply')
-        </x-rapidez::button>
+        </x-rapidez::button.outline>
     </form>
 </graphql-mutation>

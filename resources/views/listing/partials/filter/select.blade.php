@@ -3,9 +3,9 @@
     :component-id="filter.code"
     :data-field="filter.code+'.keyword'"
     :inner-class="{
-        count: 'text-inactive',
+        count: 'text-muted',
         list: '!max-h-full [&>li]:!h-auto',
-        label: 'text-inactive before:shrink-0'
+        label: 'text-muted before:shrink-0'
     }"
     :react="{and: filter.input == 'multiselect' ? reactiveFilters : reactiveFilters.filter(item => item != filter.code) }"
     :query-format="filter.input == 'multiselect' ? 'and' : 'or'"
@@ -20,7 +20,7 @@
                         v-for="item, index in data"
                         v-if="index < 6 || isOpen"
                         :key="item._id"
-                        class="flex justify-between text-base text-inactive"
+                        class="flex justify-between text-base text-muted"
                     >
                         <div class="flex">
                             <x-rapidez::checkbox

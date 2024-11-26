@@ -42,6 +42,6 @@
     </div>
 </dl>
 
-<x-rapidez::button href="{{ route('checkout') }}" dusk="checkout" class="w-full text-center">
+<x-rapidez::button.conversion href="{{ route('checkout') }}" dusk="checkout" class="w-full text-center">
     @lang('Checkout')
-</x-rapidez::button>
+</x-rapidez::button.conversion>
