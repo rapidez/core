@@ -1,4 +1,4 @@
-@php $inputClasses = 'border !border-default !text-sm !min-h-0 outline-none !h-auto rounded !p-2 !bg-white w-full focus:!border-muted' @endphp
+@php $inputClasses = 'border !border-default !text-sm !min-h-0 outline-none !h-auto rounded !p-2 !bg-white w-full focus:!border-emphasis' @endphp
 
 <label for="autocomplete-input" class="sr-only">@lang('Search')</label>
 <input
