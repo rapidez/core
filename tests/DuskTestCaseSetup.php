@@ -44,6 +44,16 @@ trait DuskTestCaseSetup
             return $this;
         });
 
+        Browser::macro('waitUntilVueLoaded', function () {
+            /** @var Browser $this */
+            $this
+                ->waitUntilIdle()
+                ->waitUntilTrueForDuration('document.body.contains(window.app?.$el) && window.app?._isMounted && console.log("mounted") === undefined', 10, 1)
+                ->waitUntilIdle();
+
+            return $this;
+        });
+
         Browser::macro('assertFormValid', function ($selector) {
             /** @var Browser $this */
             $fullSelector = $this->resolver->format($selector);
@@ -60,14 +70,17 @@ trait DuskTestCaseSetup
             /** @var Browser $this */
             if ($productUrl) {
                 $this
-                    ->visit($productUrl);
+                    ->visit($productUrl)
+                    ->waitUntilVueLoaded()
+                    ->waitUntilIdle();
             }
 
             // @phpstan-ignore-next-line
             $this
                 ->waitUntilIdle()
-                ->pressAndWaitFor('@add-to-cart', 60)
-                ->waitForText('Added', 60)
+                ->waitUntilEnabled('@add-to-cart', 200)
+                ->pressAndWaitFor('@add-to-cart', 120)
+                ->waitForText(__('Added'), 120)
                 ->waitUntilIdle();
 
             return $this;
