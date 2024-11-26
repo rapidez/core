@@ -1,7 +1,5 @@
 @php($checkoutAgreements ??= \Rapidez\Core\Models\CheckoutAgreement::all())
-@if (!$checkoutAgreements->count())
-    @return
-@endif
+@return(!$checkoutAgreements->count())
 
 @foreach ($checkoutAgreements as $agreement)
     <x-rapidez::slideover position="right" id="{{ $agreement->agreement_id }}_agreement">

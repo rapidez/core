@@ -34,6 +34,7 @@ class CheckoutTest extends DuskTestCase
         // Go through checkout as guest and log in.
         $this->browse(function (Browser $browser) use ($email) {
             $browser->waitForReload(fn ($browser) => $browser->visit('/'), 4)
+                ->waitUntilVueLoaded()
                 ->waitUntilIdle()
                 ->waitFor('@account_menu')
                 ->click('@account_menu')
@@ -71,6 +72,7 @@ class CheckoutTest extends DuskTestCase
     {
         $browser
             ->visit('/checkout')
+            ->waitUntilVueLoaded()
             ->waitUntilIdle()
             ->type('@email', $email ?: 'wayne@enterprises.com')
             ->waitUntilIdle();

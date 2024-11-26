@@ -11,7 +11,7 @@
     mutate-event="setPaymentMethodOnCart"
     v-slot="{ mutate, variables }"
 >
-    <div class="flex flex-col gap-3" data-function="mutate">
+    <div class="flex flex-col gap-3" partial-submit="mutate">
         <div class="p-5 border rounded relative bg-white" v-for="(method, index) in cart.available_payment_methods">
             <template v-if="false"></template>
             @stack('payment_methods')
