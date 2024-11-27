@@ -48,7 +48,7 @@ trait DuskTestCaseSetup
             /** @var Browser $this */
             $this
                 ->waitUntilIdle()
-                ->waitUntilTrueForDuration('document.body.contains(window.app?.$el) && window.app?._isMounted && console.log("mounted") === undefined', 10, 1)
+                ->waitUntilTrueForDuration('document.body.contains(window.app?.$el) && window.app?._isMounted', 60, 1)
                 ->waitUntilIdle();
 
             return $this;
