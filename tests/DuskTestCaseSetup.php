@@ -75,7 +75,6 @@ trait DuskTestCaseSetup
                     ->waitUntilIdle();
             }
 
-            // @phpstan-ignore-next-line
             $this
                 ->waitUntilIdle()
                 ->waitUntilEnabled('@add-to-cart', 200)

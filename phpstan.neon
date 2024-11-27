@@ -9,4 +9,5 @@ parameters:
     ignoreErrors:
         - '#^Result of static method TorMorten\\Eventy\\Events::#'
         - "#Access to an undefined property#"
+        - "#::waitUntilIdle#"
     level: 1
