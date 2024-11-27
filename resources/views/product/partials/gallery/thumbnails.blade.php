@@ -14,7 +14,7 @@
         @click="change(imageId)"
     >
         <img
-            :src="resizedPath(image + '.webp', '80x80')"
+            :src="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product' + image + '.webp'"
             alt="{{ $product->name }}"
             class="object-contain block w-auto max-h-full"
             width="80"
