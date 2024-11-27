@@ -20,6 +20,7 @@ import './mixins'
 import './cookies'
 import './callbacks'
 import './vue-components'
+import './turbolinks'
 
 if (import.meta.env.VITE_DEBUG === 'true') {
     document.addEventListener('vue:loaded', () => {
@@ -195,6 +196,4 @@ function init() {
 }
 
 document.addEventListener('turbo:load', init)
-import('./turbolinks').then(() => {
-    setTimeout(init)
-})
+setTimeout(init)
