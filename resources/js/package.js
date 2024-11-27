@@ -17,10 +17,10 @@ import './vue'
 import './fetch'
 import './filters'
 import './mixins'
-;(() => import('./turbolinks'))()
 import './cookies'
 import './callbacks'
 import './vue-components'
+import './turbolinks'
 
 if (import.meta.env.VITE_DEBUG === 'true') {
     document.addEventListener('vue:loaded', () => {
@@ -50,10 +50,12 @@ document.addEventListener('vue:loaded', () => {
     }
 })
 
+let booting = false
 function init() {
-    if (document.body.contains(window.app.$el)) {
+    if (booting || document.body.contains(window.app.$el)) {
         return
     }
+    booting = true
 
     // https://vuejs.org/api/application.html#app-config-performance
     Vue.config.performance = import.meta.env.VITE_PERFORMANCE == 'true'
@@ -189,6 +191,7 @@ function init() {
         })
 
         setTimeout(() => {
+            booting = false
             const event = new CustomEvent('vue:loaded')
             document.dispatchEvent(event)
         })
