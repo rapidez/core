@@ -172,7 +172,7 @@ function init() {
         })
 
         setTimeout(() => {
-            booting = false;
+            booting = false
             const event = new CustomEvent('vue:loaded', { detail: { vue: window.app } })
             document.dispatchEvent(event)
         })
