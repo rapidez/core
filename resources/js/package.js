@@ -50,12 +50,12 @@ document.addEventListener('vue:loaded', () => {
     }
 })
 
-let booted = false;
+let booted = false
 function init() {
     if (booted) {
         return
     }
-    booted = true;
+    booted = true
 
     // https://vuejs.org/api/application.html#app-config-performance
     Vue.config.performance = import.meta.env.VITE_PERFORMANCE == 'true'
