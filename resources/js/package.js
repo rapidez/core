@@ -17,7 +17,6 @@ import './vue'
 import './fetch'
 import './filters'
 import './mixins'
-;(() => import('./turbolinks'))()
 import './cookies'
 import './callbacks'
 import './vue-components'
@@ -196,4 +195,6 @@ function init() {
 }
 
 document.addEventListener('turbo:load', init)
-setTimeout(init)
+import('./turbolinks').then(() => {
+    setTimeout(init)
+})
