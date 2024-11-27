@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.18.1...2.18.1)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.18.2...2.18.2)
+## [2.18.2](https://github.com/rapidez/core/releases/tag/2.18.2) - 2024-11-27
+
+### Fixed
+
+- Improved Vue/Turbo loading speed fix (#662)
+
 ## [2.18.1](https://github.com/rapidez/core/releases/tag/2.18.1) - 2024-11-27
 
 ### Fixed
