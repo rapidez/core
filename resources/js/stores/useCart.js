@@ -222,7 +222,7 @@ export const cart = computed({
                 )
 
                 value.items = value.items.map((cartItem) => {
-                    cartItem.is_available = checkAvailability(item)
+                    cartItem.is_available = checkAvailability(cartItem)
                     cartItem.product.attribute_values = {}
 
                     for (const key in mapping) {
