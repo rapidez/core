@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.18.0...2.18.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.18.1...2.18.1)
+## [2.18.1](https://github.com/rapidez/core/releases/tag/2.18.1) - 2024-11-27
+
+### Fixed
+
+- Typo (#658)
+
 ## [2.18.0](https://github.com/rapidez/core/releases/tag/2.18.0) - 2024-11-26
 
 ### Changed
