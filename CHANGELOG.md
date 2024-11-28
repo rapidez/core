@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.18.2...2.18.2)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.18.3...2.18.3)
+## [2.18.3](https://github.com/rapidez/core/releases/tag/2.18.3) - 2024-11-28
+
+### Fixed
+
+- Use synonym graph instead of regular synonyms (#663)
+
 ## [2.18.2](https://github.com/rapidez/core/releases/tag/2.18.2) - 2024-11-27
 
 ### Fixed
