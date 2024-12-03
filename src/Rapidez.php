@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\URL;
 use Rapidez\Core\Models\Config;
 use Rapidez\Core\Models\ConfigScopes;
 use Rapidez\Core\Models\Store;
@@ -133,6 +134,17 @@ class Rapidez
                 Config::getValue('web/secure/base_url', ConfigScopes::SCOPE_WEBSITE) ?? config()->get('rapidez.magento_url'),
                 '/'
             );
+
+            $storeUrl = trim(
+                Config::getValue('web/secure/base_url', ConfigScopes::SCOPE_STORE) ?? config()->get('frontend.base_url'),
+                '/'
+            );
+
+            // Make sure the store url is not the same as the magentoUrl
+            if ($magentoUrl !== $storeUrl) {
+                URL::forceRootUrl($storeUrl);
+            }
+
             // Make sure the Magento url is not the Rapidez url before setting it
             if ($magentoUrl !== url('/')) {
                 config()->set('rapidez.magento_url', $magentoUrl);
@@ -152,6 +164,7 @@ class Rapidez
             }
         }
 
+        config()->set('frontend.base_url', url('/'));
         App::setLocale(strtok(Rapidez::config('general/locale/code', 'en_US'), '_'));
 
         Event::dispatch('rapidez:store-set', [$store]);
