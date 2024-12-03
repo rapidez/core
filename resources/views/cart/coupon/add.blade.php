@@ -14,7 +14,6 @@
             placeholder="Coupon code"
             v-model="variables.coupon_code"
             v-bind:disabled="$root.loading"
-            wrapperClass="flex flex-1"
             required
         />
         <x-rapidez::button.outline type="submit" class="sm:text-sm" dusk="apply-coupon">
