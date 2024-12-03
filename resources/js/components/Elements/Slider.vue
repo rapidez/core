@@ -67,7 +67,7 @@ export default {
             if (this.loop) {
                 this.initLoop()
             }
-            this.slider.dispatchEvent(new CustomEvent('scroll'))
+            setTimeout(() => this.slider.dispatchEvent(new CustomEvent('scroll')))
             this.mounted = true
 
             this.initAutoPlay()
@@ -94,17 +94,19 @@ export default {
             }
             let firstChild = this.container.firstChild
 
-            for (let slide of slides) {
-                let startClone = this.container.insertBefore(slide.cloneNode(true), firstChild)
-                startClone.dataset.clone = true
-                startClone.dataset.position = 'start'
+            requestAnimationFrame(() => {
+                for (let slide of slides) {
+                    let startClone = this.container.insertBefore(slide.cloneNode(true), firstChild)
+                    startClone.dataset.clone = true
+                    startClone.dataset.position = 'start'
 
-                let endClone = this.container.appendChild(slide.cloneNode(true))
-                endClone.dataset.clone = true
-                endClone.dataset.position = 'end'
-            }
+                    let endClone = this.container.appendChild(slide.cloneNode(true))
+                    endClone.dataset.clone = true
+                    endClone.dataset.position = 'end'
+                }
 
-            this.slider.dispatchEvent(new CustomEvent('scrollend'))
+                this.slider.dispatchEvent(new CustomEvent('scrollend'))
+            })
         },
         initAutoPlay() {
             if (!this.autoplay) {
@@ -156,27 +158,31 @@ export default {
                 : this.slider.scrollTo({ left: this.container.children[index]?.offsetLeft, behavior: behavior })
         },
         handleLoop() {
-            if (this.currentSlide + 1 === this.slidesTotal - 1) {
-                Array.from(this.chunk.children).forEach((child) => {
-                    this.container.appendChild(child.cloneNode(true))
-                })
-            }
-            if (this.currentSlide < 1) {
-                Array.from(this.chunk.children).forEach((child) => {
-                    this.container.insertBefore(child.cloneNode(true), this.container.firstChild)
-                })
-            }
+            requestAnimationFrame(() => {
+                if (this.currentSlide + 1 === this.slidesTotal - 1) {
+                    Array.from(this.chunk.children).forEach((child) => {
+                        this.container.appendChild(child.cloneNode(true))
+                    })
+                }
+                if (this.currentSlide < 1) {
+                    Array.from(this.chunk.children).forEach((child) => {
+                        this.container.insertBefore(child.cloneNode(true), this.container.firstChild)
+                    })
+                }
+            })
         },
         updateSpan() {
-            let slide = this.childSpan == 0 ? 0 : this.currentSlide
+            setTimeout(() => {
+                let slide = this.childSpan == 0 ? 0 : this.currentSlide
 
-            this.childSpan = this.vertical
-                ? (this.container.children[0]?.offsetHeight ?? this.container.offsetHeight)
-                : (this.container.children[0]?.offsetWidth ?? this.container.offsetWidth)
+                this.childSpan = this.vertical
+                    ? (this.container.children[0]?.offsetHeight ?? this.container.offsetHeight)
+                    : (this.container.children[0]?.offsetWidth ?? this.container.offsetWidth)
 
-            this.navigate(slide, 'instant')
+                this.navigate(slide, 'instant')
 
-            this.sliderSpan = this.vertical ? this.container.offsetHeight : this.container.offsetWidth
+                this.sliderSpan = this.vertical ? this.container.offsetHeight : this.container.offsetWidth
+            })
         },
     },
     watch: {

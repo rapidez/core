@@ -13,7 +13,7 @@
             'type' => 'text',
             'placeholder' => __($placeholder ?? ''),
             'dusk' => $attributes->get('v-bind:dusk') ? null : $name,
-            'class' => 'w-full py-2 px-3 border-border rounded !ring-0 focus:!border-inactive sm:text-sm text-neutral',
+            'class' => 'w-full py-2 px-3 border border-default rounded !ring-0 focus:border-emphasis sm:text-sm',
         ]) }}
     >
 </div>

@@ -27,7 +27,10 @@ class MagentoSettingsHealthcheck extends Base
 
         $configModel = config('rapidez.models.config');
         if (! $configModel::getCachedByPath('catalog/frontend/flat_catalog_product', 0)) {
-            $response['messages'][] = ['type' => 'error', 'value' => __('The product flat tables are disabled!')];
+            $response['messages'][] = ['type' => 'error', 'value' => __(
+                'The product flat tables are disabled!' . PHP_EOL .
+                'Please enable them; see: https://docs.rapidez.io/3.x/installation.html#flat-tables'
+            )];
         }
 
         $productModel = config('rapidez.models.product');
@@ -57,7 +60,9 @@ class MagentoSettingsHealthcheck extends Base
             $response['messages'][] = [
                 'type'  => 'warn',
                 'value' => __(
-                    'Not all attributes are in the flat table: :nonFlatAttributes',
+                    'Not all attributes are in the flat table: :nonFlatAttributes' . PHP_EOL .
+                    'You should enable "Used in Product Listing" on them!' . PHP_EOL .
+                    'More information: https://docs.rapidez.io/3.x/installation.html#flat-tables',
                     ['nonFlatAttributes' => PHP_EOL . '- ' . implode(PHP_EOL . '- ', $nonFlatAttributes)]
                 ),
             ];

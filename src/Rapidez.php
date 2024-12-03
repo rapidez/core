@@ -2,7 +2,8 @@
 
 namespace Rapidez\Core;
 
-use Illuminate\Routing\RouteAction;
+use Illuminate\Routing\Route;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
@@ -11,7 +12,9 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 use Rapidez\Core\Models\Config;
 use Rapidez\Core\Models\ConfigScopes;
+use Rapidez\Core\Exceptions\StoreNotFoundException;
 use Rapidez\Core\Models\Store;
+use ReflectionClass;
 
 class Rapidez
 {
@@ -19,20 +22,33 @@ class Rapidez
 
     public function __construct(protected Collection $routes) {}
 
-    public function addFallbackRoute($action, $position = 9999)
+    public function addFallbackRoute(Route|array|string $action, $position = 9999)
     {
         $this->routes->push([
-            'action'   => RouteAction::parse('', $action),
+            'route'    => $this->actionToRoute($action)->fallback(),
             'position' => $position,
         ]);
 
         return $this;
     }
 
-    public function removeFallbackRoute($action)
+    private function actionToRoute(Route|array|string $action): Route
     {
-        $action = RouteAction::parse('', $action);
-        $this->routes = $this->routes->reject(fn ($route) => $route['action'] === $action);
+        if ($action instanceof Route) {
+            return $action;
+        }
+
+        $router = new ReflectionClass(Router::class);
+        $createRoute = $router->getMethod('createRoute');
+        $createRoute->setAccessible(true);
+
+        return $createRoute->invoke(app(Router::class), ['GET'], '', $action);
+    }
+
+    public function removeFallbackRoute(Route|array|string $action)
+    {
+        $action = $this->actionToRoute($action);
+        $this->routes = $this->routes->reject(fn ($route) => $route['route']->action === $action->action);
 
         return $this;
     }

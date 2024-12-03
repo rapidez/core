@@ -1,6 +1,6 @@
 <label class="flex items-center">
-    <input type="checkbox" {{ $attributes->merge(['class' => 'focus:ring-neutral h-4 w-4 text-neutral border rounded']) }}>
-    <div class="ml-2 text-neutral">
+    <input type="checkbox" {{ $attributes->merge(['class' => 'focus:ring-current h-4 w-4 text border rounded']) }}>
+    <div class="ml-2 text">
         {{ $slot }}
     </div>
 </label>

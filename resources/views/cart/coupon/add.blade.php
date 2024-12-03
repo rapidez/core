@@ -1,5 +1,5 @@
 <graphql-mutation
-    :query="'mutation ($cart_id: String!, $coupon_code: String!) { applyCouponToCart(input: { cart_id: $cart_id, coupon_code: $coupon_code }) { cart { ' + config.queries.cart + ' } } }'"
+    :query="'mutation ($cart_id: String!, $coupon_code: String!) { applyCouponToCart(input: { cart_id: $cart_id, coupon_code: $coupon_code }) { cart { ...cart } } } ' + config.fragments.cart"
     :variables="{ cart_id: mask, coupon_code: '' }"
     :notify="{ message: config.translations.cart.coupon.applied }"
     :clear="true"
@@ -15,10 +15,11 @@
             placeholder="Coupon code"
             v-model="variables.coupon_code"
             v-bind:disabled="$root.loading"
+            wrapperClass="flex flex-1"
             required
         />
-        <x-rapidez::button type="submit" class="sm:text-sm" dusk="apply-coupon">
+        <x-rapidez::button.outline type="submit" class="sm:text-sm" dusk="apply-coupon">
             @lang('Apply')
-        </x-rapidez::button>
+        </x-rapidez::button.outline>
     </form>
 </graphql-mutation>
