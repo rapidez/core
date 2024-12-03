@@ -24,7 +24,7 @@
 
                     <div slot="renderNoResults"></div>
 
-                    <div class="relative" slot="render" slot-scope="{ data, loading }" v-if="!loading">
+                    <div class="relative" slot="render" slot-scope="{ data, loading }" v-if="!loading && data?.length">
                         <slider>
                             <div slot-scope="{ navigate, showLeft, showRight, currentSlide, slidesTotal }">
                                 <div class="-mx-2 flex mt-5 overflow-x-auto snap-x scrollbar-hide scroll-smooth snap-mandatory" ref="slider">

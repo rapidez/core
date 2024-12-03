@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     // "wrapAttributes": "force-expand-multiline",
     sortTailwindcssClasses: true,
     sortHtmlAttributes: 'code-guide',
