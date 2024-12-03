@@ -14,8 +14,6 @@
                                 name="email"
                                 type="email"
                                 v-model="variables.email"
-                                class="size-full min-w-0 appearance-none rounded-md border bg-white py-2 px-4 text-base text placeholder-text shadow-sm focus:border-emphasis focus:placeholder-text-muted focus:outline-none focus:ring-border-emphasis focus:ring-1 max-sm:h-12 sm:flex-1"
-                                wrapperClass="flex flex-1"
                                 dusk="newsletter-email"
                                 autocomplete="email"
                                 placeholder="Enter your email"

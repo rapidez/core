@@ -1,4 +1,4 @@
-<div v-if="images.length && zoomed" class="fixed inset-0 bg-white cursor-zoom-out z-popup flex">
+<div v-if="images.length && zoomed" class="fixed inset-0 bg-white cursor-zoom-out flex {{ config('rapidez.frontend.z-indexes.popup') }}">
     <div class="flex flex-1 items-center justify-center" v-on:click.prevent="toggleZoom">
         <img
             :src="config.media_url + '/catalog/product' + images[active]"

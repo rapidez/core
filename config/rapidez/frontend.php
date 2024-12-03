@@ -82,6 +82,7 @@ return [
     // Z-Index per element
     'z-indexes' => [
         'header-dropdowns' => 'z-20',
+        'popup'            => 'z-20',
         'lightbox'         => 'z-30',
         'notification'     => 'z-20',
         'slideover'        => 'z-50',
