@@ -26,7 +26,7 @@
                             <template v-if="item.key">@lang('Yes')</template>
                             <template v-if="!item.key">@lang('No')</template>
                             <span class="block ml-0.5 text-xs">(@{{ item.doc_count }})</span>
-                    </div>
+                        </div>
                     </x-rapidez::input.checkbox>
                 </li>
             </ul>
