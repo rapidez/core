@@ -50,7 +50,7 @@ document.addEventListener('vue:loaded', () => {
     }
 })
 
-let booting = false;
+let booting = false
 function init() {
     if (booting || document.body.contains(window.app.$el)) {
         return
