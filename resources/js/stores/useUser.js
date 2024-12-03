@@ -123,35 +123,28 @@ export const register = async function (email, firstname, lastname, password, in
 }
 
 export const login = async function (email, password) {
-    return (
-        magentoGraphQL(
-            'mutation generateCustomerToken ($email: String!, $password: String!) { generateCustomerToken (email: $email, password: $password) { token } }',
-            {
-                email: email,
-                password: password,
-            },
-        )
-            // Set Auth Token
-            .then(async (response) => {
-                token.value = response.data.generateCustomerToken.token
+    return magentoGraphQL(
+        'mutation generateCustomerToken ($email: String!, $password: String!) { generateCustomerToken (email: $email, password: $password) { token } }',
+        {
+            email: email,
+            password: password,
+        },
+    ).then(async (response) => {
+        await loginByToken(response.data.generateCustomerToken.token)
+        return response
+    })
+}
 
-                return response
-            })
-            // Link or Fetch Cart
-            .then(async (response) => {
-                if (mask.value) {
-                    await linkUserToCart()
-                } else {
-                    await fetchCustomerCart()
-                }
-                return response
-            })
-            // Fire logged in event
-            .then(async (response) => {
-                window.app.$emit('logged-in')
-                return response
-            })
-    )
+export const loginByToken = async function (customerToken) {
+    token.value = customerToken
+
+    if (mask.value) {
+        await linkUserToCart()
+    } else {
+        await fetchCustomerCart()
+    }
+
+    window.app.$emit('logged-in')
 }
 
 export const logout = async function () {

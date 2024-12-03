@@ -36,9 +36,8 @@
     </dl>
 
     <div v-if="cart.shipping_addresses[0]" class="flex w-full flex-col gap-x-1 border p-3 rounded">
-        <p class="font-lg mb-2 font-bold text-neutral">
-            {{-- TODO: Check this compare as uid might not what we want but there is not anything else in the cart response --}}
-            <template v-if="cart.shipping_addresses[0]?.uid == cart.billing_address?.uid">@lang('Shipping & billing address')</template>
+        <p class="font-lg mb-2 font-bold">
+            <template v-if="cart.billing_address?.same_as_shipping">@lang('Shipping & billing address')</template>
             <template v-else>@lang('Shipping address')</template>
         </p>
         <ul>
@@ -49,8 +48,8 @@
             <li v-if="cart.shipping_addresses[0]?.telephone">@{{ cart.shipping_addresses[0]?.telephone }}</li>
         </ul>
     </div>
-    <div v-if="cart.billing_address && !cart.shipping_addresses[0]?.uid != cart.billing_address.uid" class="mt-4 flex w-full flex-col gap-x-1 border p-3">
-        <p class="font-lg mb-2 font-bold text-neutral">@lang('Billing address')</p>
+    <div v-if="cart.billing_address && !cart.billing_address?.same_as_shipping" class="mt-4 flex w-full flex-col gap-x-1 border p-3">
+        <p class="font-lg mb-2 font-bold">@lang('Billing address')</p>
         <ul>
             <li v-if="cart.billing_address.company">@{{ cart.billing_address.company }}</li>
             <li>@{{ cart.billing_address.prefix }} @{{ cart.billing_address.firstname }} @{{ cart.billing_address.middlename }} @{{ cart.billing_address.lastname }} @{{ cart.billing_address.suffix }}</li>

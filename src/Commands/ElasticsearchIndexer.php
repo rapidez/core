@@ -81,7 +81,7 @@ class ElasticsearchIndexer
                 ->map(fn ($synonym) => $synonym->synonyms)
                 ->toArray();
 
-            data_set($settings, 'index.analysis.filter.synonym', ['type' => 'synonym', 'synonyms' => $synonyms]);
+            data_set($settings, 'index.analysis.filter.synonym', ['type' => 'synonym_graph', 'synonyms' => $synonyms]);
             data_set($settings, 'index.analysis.analyzer.synonym', [
                 'filter'    => ['lowercase', 'asciifolding', 'synonym'],
                 'tokenizer' => 'standard',

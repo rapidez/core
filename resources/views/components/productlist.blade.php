@@ -24,7 +24,7 @@
 
                     <div slot="renderNoResults"></div>
 
-                    <div class="relative" slot="render" slot-scope="{ data, loading }" v-if="!loading">
+                    <div class="relative" slot="render" slot-scope="{ data, loading }" v-if="!loading && data?.length">
                         <slider>
                             <div slot-scope="{ navigate, showLeft, showRight, currentSlide, slidesTotal }">
                                 <div class="-mx-2 flex mt-5 overflow-x-auto snap-x scrollbar-hide scroll-smooth snap-mandatory" ref="slider">
@@ -53,7 +53,7 @@
                                         v-for="slide, index in slidesTotal"
                                         v-on:click="navigate(index)"
                                         class="relative bg-white rounded-full border w-[15px] h-[15px] mx-1 cursor-pointer"
-                                        :class="{ 'bg-neutral border-0': index === currentSlide }">
+                                        :class="{ 'bg-emphasis border-0': index === currentSlide }">
                                     </div>
                                 </div>
                             </div>

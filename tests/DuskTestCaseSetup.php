@@ -39,7 +39,17 @@ trait DuskTestCaseSetup
 
         Browser::macro('waitUntilIdle', function ($timeout = 120) {
             /** @var Browser $this */
-            $this->waitUntilTrueForDuration('window.app?.$data?.loading !== true && await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 5}))', $timeout);
+            $this->waitUntilTrueForDuration('window.app?.$data?.loading !== true && await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 5}))', $timeout); // @phpstan-ignore-line
+
+            return $this;
+        });
+
+        Browser::macro('waitUntilVueLoaded', function () {
+            /** @var Browser $this */
+            $this
+                ->waitUntilIdle()
+                ->waitUntilTrueForDuration('document.body.contains(window.app?.$el) && window.app?._isMounted', 60, 2)
+                ->waitUntilIdle();
 
             return $this;
         });
@@ -60,13 +70,16 @@ trait DuskTestCaseSetup
             /** @var Browser $this */
             if ($productUrl) {
                 $this
-                    ->visit($productUrl);
+                    ->visit($productUrl)
+                    ->waitUntilVueLoaded()
+                    ->waitUntilIdle();
             }
 
             $this
                 ->waitUntilIdle()
-                ->pressAndWaitFor('@add-to-cart', 60)
-                ->waitForText('Added', 60)
+                ->waitUntilEnabled('@add-to-cart', 200)
+                ->press('@add-to-cart', 120)
+                ->waitForText(__('Added'), 120)
                 ->waitUntilIdle();
 
             return $this;

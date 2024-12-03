@@ -2,12 +2,17 @@
     <div class="relative" v-if="hasCart" v-on-click-away="close" slot-scope="{ toggle, close, isOpen }" v-cloak>
         <button class="flex my-1 focus:outline-none" v-on:click="toggle">
             <x-heroicon-o-shopping-cart class="size-6"/>
-            <span class="bg-neutral rounded-full size-6 text-white text-center" dusk="minicart-count">@{{ Math.round(cart.total_quantity) }}</span>
+            <span class="bg-secondary text-secondary-text rounded-full size-6 text-white text-center" dusk="minicart-count">@{{ Math.round(cart.total_quantity) }}</span>
         </button>
         <div v-if="isOpen" class="absolute right-0 bg-white border shadow rounded-xl p-5 {{ config('rapidez.frontend.z-indexes.header-dropdowns') }}">
             <table class="w-full mb-3">
                 <tr v-for="item in cart.items" class="*:pb-3">
-                    <td class="block w-48 truncate overflow-hidden">@{{ item.product.name }}</td>
+                    <td class="block w-48 truncate overflow-hidden">
+                        @{{ item.product.name }}
+                        <div class="text-red-600" v-if="!item.is_available">
+                            @lang('Out of stock')
+                        </div>
+                    </td>
                     <td class="text-right px-4">@{{ item.quantity }}</td>
                     <td class="text-right">@{{ item.prices.row_total.value | price }}</td>
                 </tr>
@@ -17,12 +22,15 @@
                 </tr>
             </table>
             <div class="flex justify-between items-center">
-                <x-rapidez::button.outline href="{{ route('cart') }}" class="mr-5">
+                <x-rapidez::button.outline href="{{ route('cart') }}" class="mr-5 whitespace-nowrap">
                     @lang('Show cart')
                 </x-rapidez::button.outline>
-                <x-rapidez::button href="{{ route('checkout') }}">
-                    @lang('Checkout')
-                </x-rapidez::button>
+
+                <div class="w-full" :class="{ 'cursor-not-allowed': !canOrder }">
+                    <x-rapidez::button.conversion href="{{ route('checkout') }}" v-bind:class="{ 'pointer-events-none': !canOrder }">
+                        @lang('Checkout')
+                    </x-rapidez::button.conversion>
+                </div>
             </div>
         </div>
     </div>
