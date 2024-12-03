@@ -5,6 +5,7 @@ namespace Rapidez\Core\Tests;
 use BladeUI\Heroicons\BladeHeroiconsServiceProvider;
 use BladeUI\Icons\BladeIconsServiceProvider;
 use Orchestra\Testbench\Dusk\TestCase as BaseTestCase;
+use Rapidez\BladeComponents\BladeComponentsServiceProvider;
 use Rapidez\BladeDirectives\BladeDirectivesServiceProvider;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\RapidezServiceProvider;
@@ -21,6 +22,7 @@ abstract class DuskTestCase extends BaseTestCase
             RapidezServiceProvider::class,
             BladeIconsServiceProvider::class,
             BladeHeroiconsServiceProvider::class,
+            BladeComponentsServiceProvider::class,
             BladeDirectivesServiceProvider::class,
         ];
     }

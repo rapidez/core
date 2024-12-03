@@ -24,7 +24,7 @@
 
                     <div slot="renderNoResults"></div>
 
-                    <div class="relative" slot="render" slot-scope="{ data, loading }" v-if="!loading">
+                    <div class="relative" slot="render" slot-scope="{ data, loading }" v-if="!loading && data?.length">
                         <slider>
                             <div slot-scope="{ navigate, showLeft, showRight, currentSlide, slidesTotal }">
                                 <div class="-mx-2 flex mt-5 overflow-x-auto snap-x scrollbar-hide scroll-smooth snap-mandatory" ref="slider">
@@ -38,7 +38,7 @@
                                     v-on:click="navigate(currentSlide - 1)"
                                     :aria-label="__('Prev')"
                                 >
-                                    <x-heroicon-o-chevron-left class="w-6 h-6 shrink-0"/>
+                                    <x-heroicon-o-chevron-left class="size-6 shrink-0"/>
                                 </x-rapidez::button.slider>
                                 <x-rapidez::button.slider
                                     class="absolute right-0 top-1/2 sm:translate-x-1/2 -translate-y-1/2"
@@ -46,14 +46,14 @@
                                     v-on:click="navigate(currentSlide + 1)"
                                     :aria-label="__('Next')"
                                 >
-                                    <x-heroicon-o-chevron-right class="w-6 h-6 shrink-0"/>
+                                    <x-heroicon-o-chevron-right class="size-6 shrink-0"/>
                                 </x-rapidez::button.slider>
                                 <div v-show="slidesTotal > 1" class="flex flex-row justify-center w-full mt-[35px]">
                                     <div
                                         v-for="slide, index in slidesTotal"
                                         v-on:click="navigate(index)"
                                         class="relative bg-white rounded-full border w-[15px] h-[15px] mx-1 cursor-pointer"
-                                        :class="{ 'bg-neutral border-0': index === currentSlide }">
+                                        :class="{ 'bg-emphasis border-0': index === currentSlide }">
                                     </div>
                                 </div>
                             </div>

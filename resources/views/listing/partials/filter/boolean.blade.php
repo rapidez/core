@@ -19,11 +19,14 @@
                         v-bind:checked="value[item.key]"
                         v-on:change="handleChange(item.key)"
                     >
-                        <span class="font-sans font-medium text-sm items-center flex text-inactive" :class="{'text-neutral': value[item.key] == true}">
+                        <div
+                            class="font-sans font-medium text-sm items-center flex"
+                            :class="value[item.key] ? 'text' : 'text-muted'"
+                        >
                             <template v-if="item.key">@lang('Yes')</template>
                             <template v-if="!item.key">@lang('No')</template>
                             <span class="block ml-0.5 text-xs">(@{{ item.doc_count }})</span>
-                        </span>
+                    </div>
                     </x-rapidez::input.checkbox>
                 </li>
             </ul>

@@ -1,4 +1,4 @@
-@php $dropdownClasses = '!font-sans !h-auto !py-3 !px-5 border !rounded-md !border-border outline-0 ring-0 text-sm transition-colors focus:!ring-transparent focus:!border-neutral disabled:cursor-not-allowed placeholder:!text-inactive' @endphp
+@php $dropdownClasses = '!h-auto !border-solid !border !border-default !rounded !py-2 !ring-0 focus:!border-muted !text-sm !text !outline-none ' @endphp
 <reactive-list
     id="products"
     component-id="products"

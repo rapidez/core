@@ -1,6 +1,5 @@
 fragment cart on Cart {
     id
-    # TODO: Check if virtual orders are working
     is_virtual
     total_quantity
     items {

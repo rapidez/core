@@ -4,11 +4,11 @@ div.vue-slider {
 
 div.vue-slider-process,
 div.vue-slider-rail {
-    @apply h-2 bg-neutral !important;
+    @apply h-2 bg !important;
 }
 
 div.vue-slider-rail {
-    @apply bg-highlight !important;
+    @apply bg-emphasis !important;
 }
 
 div.vue-slider .vue-slider-dot {
@@ -16,11 +16,11 @@ div.vue-slider .vue-slider-dot {
 }
 
 div.vue-slider-dot-tooltip-inner {
-    @apply bg-white text-neutral border-border border px-1.5 !important;
+    @apply bg-white text border border-default px-1.5 !important;
 }
 
 span.vue-slider-dot-tooltip-text {
-    @apply font-medium font-sans text-neutral;
+    @apply font-medium font-sans text;
 }
 
 div.vue-slider-dot-tooltip::before {
