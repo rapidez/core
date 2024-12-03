@@ -112,7 +112,7 @@ class Config extends Model
             ->first('value')
             ?->value;
 
-        if ($options['cache'] ?? true) {
+        if (($options['cache'] ?? true) && isset($cacheKey)) {
             Arr::set($configCache, $cacheKey, $result);
             Cache::driver('rapidez:multi')->set('magento.config', $configCache);
         }
