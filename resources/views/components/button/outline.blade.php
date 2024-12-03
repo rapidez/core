@@ -1,3 +1,3 @@
-<x-rapidez::button.base {{ $attributes->class('bg-transparent hover:bg-neutral text-neutral hover:text-white border-neutral hover:border-transparent') }}>
+<x-rapidez::button.base {{ $attributes->class('bg-transparent text border hover:border-emphasis') }}>
     {{ $slot }}
 </x-rapidez::button.base>

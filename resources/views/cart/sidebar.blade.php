@@ -43,12 +43,12 @@
 </dl>
 
 <div class="w-full" :class="{ 'cursor-not-allowed': !canOrder }">
-    <x-rapidez::button
-        dusk="checkout"
+    <x-rapidez::button.conversion
         href="{{ route('checkout') }}"
         class="w-full text-center"
         v-bind:class="{ 'pointer-events-none': !canOrder }"
+        dusk="checkout"
     >
         @lang('Checkout')
-    </x-rapidez::button>
+    </x-rapidez::button.conversion>
 </div>

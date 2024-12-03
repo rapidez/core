@@ -12,12 +12,12 @@
                 @include('rapidez::listing.partials.filter.select')
             </template>
         </lazy>
-        <x-rapidez::button for="{{ $id }}" class="w-full text-sm lg:hidden">
+        <x-rapidez::button.primary for="{{ $id }}" class="w-full text-sm lg:hidden">
             @lang('Show results')
-        </x-rapidez::button>
+        </x-rapidez::button.primary>
     </div>
 </x-rapidez::slideover.mobile>
 
-<x-rapidez::button :for="$id" class="mb-3 w-full lg:hidden">
+<x-rapidez::button.secondary :for="$id" class="mb-3 w-full lg:hidden">
     @lang('Filters')
-</x-rapidez::button>
+</x-rapidez::button.secondary>

@@ -6,7 +6,7 @@
 
     <div class="justify-self-end mr-5">
         <div class="flex items-center gap-1 flex-wrap">
-            <span class="text-sm text-inactive">@lang('Items per page'):</span>
+            <span class="text-sm text-muted">@lang('Items per page'):</span>
             <select class="{{ $dropdownClasses }}" v-model="listingSlotProps.pageSize">
                 <option
                     v-for="size in $root.config.grid_per_page_values.concat($root.config.translations.all)"
