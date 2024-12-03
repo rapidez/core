@@ -1,5 +1,5 @@
 @foreach ($product->super_attributes ?: [] as $superAttributeId => $superAttribute)
-    <label class="w-fit">
+    <label>
         <x-rapidez::label>
             {{ $superAttribute->label }}
         </x-rapidez::label>
