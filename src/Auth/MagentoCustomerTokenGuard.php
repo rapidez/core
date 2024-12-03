@@ -4,10 +4,46 @@ namespace Rapidez\Core\Auth;
 
 use Illuminate\Auth\TokenGuard;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Http\Request;
 
 class MagentoCustomerTokenGuard extends TokenGuard implements Guard
 {
+    public static function register()
+    {
+        app()->afterResolving(EncryptCookies::class, function (EncryptCookies $middleware) {
+            $middleware->disableFor('token');
+        });
+
+        auth()->extend('magento-customer', function (Application $app, string $name, array $config) {
+            return new self(auth()->createUserProvider($config['provider']), request(), 'token', 'token');
+        });
+
+        config([
+            'auth.guards.magento-customer' => [
+                'driver'   => 'magento-customer',
+                'provider' => 'users',
+            ],
+        ]);
+    }
+
+    /**
+     * Get the token for the current request.
+     *
+     * @return string
+     */
+    public function getTokenForRequest()
+    {
+        $token = parent::getTokenForRequest();
+
+        if (empty($token)) {
+            $token = $this->request->cookie($this->inputKey);
+        }
+
+        return $token;
+    }
+
     /**
      * Get the currently authenticated user.
      *

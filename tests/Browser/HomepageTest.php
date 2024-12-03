@@ -13,7 +13,7 @@ class HomepageTest extends DuskTestCase
     public function homepage()
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit('/')->assertSee('All rights reserved.');
+            $browser->visit('/')->waitUntilVueLoaded()->assertSee('All rights reserved.');
         });
     }
 }

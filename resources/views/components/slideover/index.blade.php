@@ -24,13 +24,13 @@
     $closeId = $isInForm ? 'close-' . $id : $id;
 @endphp
 
-<x-tag v-on:reset="toggleScroll(false)" :is="$tag" class="z-slideover relative">
+<x-rapidez::tag v-on:reset="toggleScroll(false)" :is="$tag">
     <input id="{{ 'close-' . $id }}" class="hidden" type="reset">
     @if (!$hasParent)
         <input @checked($open) id="{{ $id }}" class="peer hidden" v-on:change="toggleScroll($event.target.checked)" type="checkbox">
         <label
             for="{{ $closeId }}"
-            class="pointer-events-none fixed inset-0 cursor-pointer bg-neutral/50 opacity-0 transition peer-checked:pointer-events-auto peer-checked:opacity-100"
+            class="pointer-events-none fixed inset-0 z-40 cursor-pointer bg-black/40 opacity-0 transition peer-checked:pointer-events-auto peer-checked:opacity-100"
         ></label>
     @else
         <input @checked($open) id="{{ $id }}" class="peer hidden" type="checkbox">
@@ -41,8 +41,8 @@
         '-left-full peer-checked:left-0' => $position === 'left',
     ]) }}>
         @include('rapidez::components.slideover.partials.header')
-        <div class="slideover-wrapper flex flex-1 flex-col items-start overflow-y-auto bg-inactive-100">
+        <div class="slideover-wrapper flex flex-1 flex-col items-start overflow-y-auto bg">
             {{ $slot }}
         </div>
     </div>
-</x-tag>
+</x-rapidez::tag>
