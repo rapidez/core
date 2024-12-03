@@ -1,29 +1,13 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.18.3...2.18.3)
-## [2.18.3](https://github.com/rapidez/core/releases/tag/2.18.3) - 2024-11-28
-
-### Fixed
-
-- Use synonym graph instead of regular synonyms (#663)
-
-## [2.18.2](https://github.com/rapidez/core/releases/tag/2.18.2) - 2024-11-27
-
-### Fixed
-
-- Improved Vue/Turbo loading speed fix (#662)
-
-## [2.18.1](https://github.com/rapidez/core/releases/tag/2.18.1) - 2024-11-27
-
-### Fixed
-
-- Typo (#658)
-
+[Unreleased changes](https://github.com/rapidez/core/compare/...2.18.0)
 ## [2.18.0](https://github.com/rapidez/core/releases/tag/2.18.0) - 2024-11-26
 
 ### Changed
 
 - Improved Vue/Turbo loading speed (#653)
+
+Since Vue boots quicker on first load and doesn't block during subsequent loads, make sure you listen to `vue:loaded` instead of `turbo:load` if you want to interact with Vue.
 
 ## [2.17.1](https://github.com/rapidez/core/releases/tag/2.17.1) - 2024-11-26
 
