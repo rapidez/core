@@ -36,7 +36,7 @@
         <input @checked($open) id="{{ $id }}" class="peer hidden" type="checkbox">
     @endif
     <div {{ $attributes->class([
-        'fixed inset-y-0 transition-all bg-white z-10 flex flex-col max-w-md w-full z-slideover-sidebar',
+        'fixed inset-y-0 transition-all bg-white flex flex-col max-w-md w-full z-slideover-sidebar',
         '-right-full peer-checked:right-0' => $position === 'right',
         '-left-full peer-checked:left-0' => $position === 'left',
     ]) }}>
