@@ -11,7 +11,7 @@
             type="number"
             v-model="variables.quantity"
             v-bind:dusk="'qty-'+index"
-            class="w-14 !px-1 text-center"
+            class="w-14 px-1 text-center"
 
             ::min="Math.max(item.product.stock_item?.min_sale_qty, item.product.stock_item?.qty_increments) || null"
             ::max="item.product.stock_item?.max_sale_qty"

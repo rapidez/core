@@ -23,7 +23,7 @@
                                 <x-rapidez::button.secondary
                                     type="submit"
                                     dusk="newsletter-submit"
-                                    class="w-full static"
+                                    class="w-full"
                                 >
                                     @lang('Subscribe')
                                 </x-rapidez::button.secondary>

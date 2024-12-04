@@ -23,18 +23,18 @@
                         class="flex justify-between text-base text-muted"
                     >
                         <div class="flex">
-                            <x-rapidez::checkbox
+                            <x-rapidez::input.checkbox
                                 v-bind:checked="value[item.key]"
                                 v-on:change="handleChange(item.key)"
                             >
-                                <div
+                                <span
                                     class="font-sans font-medium items-center text-sm flex"
                                     :class="value[item.key] ? 'text' : 'text-muted'"
                                 >
                                     @{{ item.key }}
                                     <span class="block ml-0.5 text-xs">(@{{ item.doc_count }})</span>
-                                </div>
-                            </x-rapidez::checkbox>
+                                </span>
+                            </x-rapidez::input.checkbox>
                         </div>
                     </li>
                     <li v-if="data.length > 6">
