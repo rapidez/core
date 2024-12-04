@@ -9,6 +9,7 @@ use Rapidez\BladeComponents\BladeComponentsServiceProvider;
 use Rapidez\BladeDirectives\BladeDirectivesServiceProvider;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\RapidezServiceProvider;
+use Rapidez\LaravelMultiCache\MultiStoreServiceProvider;
 use TorMorten\Eventy\EventServiceProvider;
 
 abstract class DuskTestCase extends BaseTestCase
@@ -19,6 +20,7 @@ abstract class DuskTestCase extends BaseTestCase
     {
         return [
             EventServiceProvider::class,
+            MultiStoreServiceProvider::class,
             RapidezServiceProvider::class,
             BladeIconsServiceProvider::class,
             BladeHeroiconsServiceProvider::class,
