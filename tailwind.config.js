@@ -60,18 +60,18 @@ export default {
                 },
             },
             zIndex: {
-                header: '100',
+                'header': '100',
                 'header-dropdown': '10',
                 'header-autocomplete': '20',
                 'header-minicart': '30',
 
-                notifications: '110',
+                'notifications': '110',
 
-                slideover: '120',
+                'slideover': '120',
                 'slideover-overlay': '10',
                 'slideover-sidebar': '20',
 
-                popup: '130',
+                'popup': '130',
                 'popup-actions': '10',
             },
             textColor: (theme) => theme('colors.foreground'),
