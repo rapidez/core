@@ -9,9 +9,9 @@ export default {
         {
             files: ['tailwind.config.js'],
             options: {
-                quoteProps: 'preserve'
-            }
-        }
+                quoteProps: 'preserve',
+            },
+        },
         // Disabled for now as it messes with attributes and directives
         // {
         //     "files": ["*.blade.php"],
