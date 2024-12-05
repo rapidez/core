@@ -74,20 +74,20 @@ class CheckoutTest extends DuskTestCase
             ->visit('/checkout')
             ->waitUntilVueLoaded()
             ->waitUntilIdle()
-            ->type('@email', $email ?: 'wayne@enterprises.com')
+            ->type('email', $email ?: 'wayne@enterprises.com')
             ->waitUntilIdle();
 
         if ($password && ! $register) {
             $browser
-                ->type('@password', $password)
+                ->type('password', $password)
                 ->waitUntilIdle();
         } elseif ($password && $register) {
             $browser->click('@create_account')
                 ->waitUntilIdle()
-                ->typeSlowly('@password', $password)
-                ->typeSlowly('@password_repeat', $password)
-                ->typeSlowly('@firstname', 'Bruce')
-                ->typeSlowly('@lastname', 'Wayne')
+                ->typeSlowly('password', $password)
+                ->typeSlowly('password_repeat', $password)
+                ->typeSlowly('firstname', 'Bruce')
+                ->typeSlowly('lastname', 'Wayne')
                 ->waitUntilIdle();
         }
 
@@ -97,15 +97,15 @@ class CheckoutTest extends DuskTestCase
     public function doCheckoutShippingAddress(Browser $browser)
     {
         $browser
-            ->type('@shipping_firstname', 'Bruce')
-            ->type('@shipping_lastname', 'Wayne')
-            ->type('@shipping_postcode', '72000')
-            ->type('@shipping_housenumber', '1007')
-            ->type('@shipping_street', 'Mountain Drive')
-            ->type('@shipping_city', 'Gotham')
-            ->select('@shipping_country', 'NL')
-            ->type('@shipping_telephone', '530-7972')
-            ->keys('@shipping_telephone', '{tab}')
+            ->type('shipping_firstname', 'Bruce')
+            ->type('shipping_lastname', 'Wayne')
+            ->type('shipping_postcode', '72000')
+            ->type('shipping_housenumber', '1007')
+            ->type('shipping_street', 'Mountain Drive')
+            ->type('shipping_city', 'Gotham')
+            ->select('shipping_country', 'NL')
+            ->type('shipping_telephone', '530-7972')
+            ->keys('input[name=shipping_telephone]', '{tab}')
             ->waitUntilIdle();
 
         return $browser;

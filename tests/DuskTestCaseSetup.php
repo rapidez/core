@@ -2,8 +2,10 @@
 
 namespace Rapidez\Core\Tests;
 
+use Illuminate\Support\Facades\App;
 use Laravel\Dusk\Browser;
 use PHPUnit\Framework\Assert;
+use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Product;
 
 trait DuskTestCaseSetup
@@ -15,6 +17,8 @@ trait DuskTestCaseSetup
     protected function setUp(): void
     {
         parent::setUp();
+
+        App::setLocale(strtok(Rapidez::config('general/locale/code', 'en_US'), '_'));
 
         Browser::macro('waitUntilTrueForDuration', function (string $script = 'true', $timeout = 120, $for = 0.5) {
             // Waits until the script is truthy for x seconds, supports await.

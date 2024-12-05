@@ -16,9 +16,9 @@ class DialogTest extends DuskTestCase
             $browser->visit('/?show-cookie-notice')
                 ->waitUntilVueLoaded()
                 ->waitUntilIdle()
-                ->assertSee('Accept cookies')
+                ->assertSee(__('Accept cookies'))
                 ->waitForReload(function (Browser $browser) {
-                    $browser->press('Accept cookies');
+                    $browser->press(__('Accept cookies'));
                 })
                 ->assertScript("window.localStorage['cookie-notice']");
         });

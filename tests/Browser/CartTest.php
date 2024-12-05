@@ -43,7 +43,8 @@ class CartTest extends DuskTestCase
     public function changeProductQty()
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit('/cart')
+            $browser->addProductToCart($this->testProduct->url)
+                ->visit('/cart')
                 ->waitUntilVueLoaded()
                 ->waitUntilIdle()
                 ->waitFor('@cart-content', 15)
