@@ -15,7 +15,7 @@
         <x-rapidez::filter.heading>
             <ul class="flex flex-col gap-1">
                 <li class="flex" v-for="item in data">
-                    <x-rapidez::checkbox
+                    <x-rapidez::input.checkbox
                         v-bind:checked="value[item.key]"
                         v-on:change="handleChange(item.key)"
                     >
@@ -27,7 +27,7 @@
                             <template v-if="!item.key">@lang('No')</template>
                             <span class="block ml-0.5 text-xs">(@{{ item.doc_count }})</span>
                         </div>
-                    </x-rapidez::checkbox>
+                    </x-rapidez::input.checkbox>
                 </li>
             </ul>
         </x-rapidez::filter.heading>
