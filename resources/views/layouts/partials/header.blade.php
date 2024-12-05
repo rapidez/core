@@ -1,5 +1,5 @@
-<header class="relative py-2 shadow mb-5 border-b">
-    <div class="container flex flex-wrap items-center">
+<header class="relative mb-5 border-b shadow z-header">
+    <div class="container flex flex-wrap items-center max-sm:px-3">
         <input id="navigation" class="peer hidden" type="checkbox" />
         <div class="py-2">
             <div class="mr-3 flex items-center text-xl sm:text-3xl">
@@ -23,7 +23,7 @@
             @include('rapidez::layouts.partials.header.account')
             @include('rapidez::layouts.partials.header.minicart')
         </div>
-        <nav class="w-full bg-white max-md:inset-x-0 max-md:top-12 max-md:absolute max-md:z-40 max-md:grid max-md:grid-rows-[0fr] max-md:peer-checked:border-b max-md:shadow max-md:transition-all max-md:peer-checked:grid-rows-[1fr]">
+        <nav class="inset-x-0 top-full w-full bg-white max-md:absolute max-md:grid max-md:grid-rows-[0fr] max-md:shadow max-md:transition-all max-md:peer-checked:grid-rows-[1fr]">
             <div class="max-h-full overflow-hidden">
                 {{-- Because the lack of an @includeIf or @includeWhen equivalent for Blade components we're using a placeholder --}}
                 <x-dynamic-component :component="App::providerIsLoaded('Rapidez\Menu\MenuServiceProvider') ? 'menu' : 'placeholder'" />

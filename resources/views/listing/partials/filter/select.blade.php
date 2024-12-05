@@ -3,9 +3,9 @@
     :component-id="filter.code"
     :data-field="filter.code+'.keyword'"
     :inner-class="{
-        count: 'text-inactive',
+        count: 'text-muted',
         list: '!max-h-full [&>li]:!h-auto',
-        label: 'text-inactive before:shrink-0'
+        label: 'text-muted before:shrink-0'
     }"
     :react="{and: filter.input == 'multiselect' ? reactiveFilters : reactiveFilters.filter(item => item != filter.code) }"
     :query-format="filter.input == 'multiselect' ? 'and' : 'or'"
@@ -20,18 +20,21 @@
                         v-for="item, index in data"
                         v-if="index < 6 || isOpen"
                         :key="item._id"
-                        class="flex justify-between text-base text-inactive"
+                        class="flex justify-between text-base text-muted"
                     >
                         <div class="flex">
-                            <x-rapidez::checkbox
+                            <x-rapidez::input.checkbox
                                 v-bind:checked="value[item.key]"
                                 v-on:change="handleChange(item.key)"
                             >
-                                <div class="font-sans font-medium text-inactive items-center text-sm flex" :class="{'text-neutral': value[item.key] == true}">
+                                <span
+                                    class="font-sans font-medium items-center text-sm flex"
+                                    :class="value[item.key] ? 'text' : 'text-muted'"
+                                >
                                     @{{ item.key }}
                                     <span class="block ml-0.5 text-xs">(@{{ item.doc_count }})</span>
-                                </div>
-                            </x-rapidez::checkbox>
+                                </span>
+                            </x-rapidez::input.checkbox>
                         </div>
                     </li>
                     <li v-if="data.length > 6">

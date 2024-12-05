@@ -4,6 +4,7 @@ namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Rapidez\Core\Actions\DecodeJwt;
+use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
 
 class Quote extends Model
@@ -15,7 +16,6 @@ class Quote extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'items'       => QuoteItems::class,
         'cross_sells' => CommaSeparatedToIntegerArray::class,
     ];
 

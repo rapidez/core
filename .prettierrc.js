@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     // "wrapAttributes": "force-expand-multiline",
     sortTailwindcssClasses: true,
     sortHtmlAttributes: 'code-guide',
@@ -6,6 +6,12 @@ module.exports = {
     semi: false,
     singleQuote: true,
     overrides: [
+        {
+            files: ['tailwind.config.js'],
+            options: {
+                quoteProps: 'preserve',
+            },
+        },
         // Disabled for now as it messes with attributes and directives
         // {
         //     "files": ["*.blade.php"],

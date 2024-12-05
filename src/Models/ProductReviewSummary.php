@@ -27,7 +27,7 @@ class ProductReviewSummary extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(
-            config('rapidez.models.product', Rapidez\Core\Models\Product::class),
+            config('rapidez.models.product', \Rapidez\Core\Models\Product::class),
             'entity_pk_value'
         );
     }

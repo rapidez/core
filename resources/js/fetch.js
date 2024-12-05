@@ -42,7 +42,7 @@ export const rapidezFetch = (window.rapidezFetch = ((originalFetch) => {
 })(fetch))
 
 export const rapidezAPI = (window.rapidezAPI = async (method, endpoint, data = {}, options = {}) => {
-    let response = await rapidezFetch(window.url('/api/' + endpoint), {
+    let response = await rapidezFetch(window.url('/api/' + endpoint.replace(/^\/+/, '')), {
         method: method.toUpperCase(),
         headers: Object.assign(
             {
@@ -67,6 +67,60 @@ export const rapidezAPI = (window.rapidezAPI = async (method, endpoint, data = {
     } catch (e) {
         return responseData
     }
+})
+
+export const combineGraphqlQueries = (window.combineGraphqlQueries = async function (queries, name = '') {
+    const { gql, combineQuery, print } = await import('./fetch/graphqlbundle.js')
+    if (!Array.isArray(queries)) {
+        queries = [...arguments]
+    }
+    // Transform all queries into a gql object
+    queries = queries.map((query) => (typeof query === 'string' ? gql(query) : query))
+
+    name = queries.reduce((str, query) => str + query.definitions.reduce((name, definition) => name + definition.name?.value, ''), name)
+
+    const { document } = queries.reduce(
+        (newQuery, query) => {
+            return newQuery.add(query, undefined, { allow_duplicates: ['cart_id'] })
+        },
+        combineQuery(name, { allow_duplicates: ['cart_id'] }),
+    )
+
+    return print(document)
+})
+
+let pendingQuery = []
+
+export const combiningGraphQL = (window.combiningGraphQL = async (query, variables, options = {}, name) => {
+    let pendingQueryName = name ?? 'nameless'
+    if (!pendingQuery[pendingQueryName]) {
+        pendingQuery[pendingQueryName] = {
+            queries: [],
+            options: [options],
+            promise: new Promise((resolve, reject) =>
+                window.setTimeout(async () => {
+                    const query = await combineGraphqlQueries(
+                        pendingQuery[pendingQueryName].queries.map(([query, variables]) => query),
+                        name,
+                    )
+                    const variables = pendingQuery[pendingQueryName].queries.reduce((combinedVariables, [query, variables]) => {
+                        return { ...combinedVariables, ...variables }
+                    }, {})
+                    const options = pendingQuery[pendingQueryName].options.reduce((combinedOptions, options) => {
+                        return { ...combinedOptions, ...options }
+                    }, {})
+
+                    pendingQuery[pendingQueryName] = null
+
+                    magentoGraphQL(query, variables, options).then(resolve)
+                }, 5),
+            ),
+        }
+    }
+
+    pendingQuery[pendingQueryName].queries.push([query, variables])
+    pendingQuery[pendingQueryName].options.push(options)
+    return pendingQuery[pendingQueryName].promise
 })
 
 export const magentoGraphQL = (window.magentoGraphQL = async (
@@ -139,7 +193,7 @@ export const magentoAPI = (window.magentoAPI = async (
         notifyOnError: true,
     },
 ) => {
-    let response = await rapidezFetch(config.magento_url + '/rest/' + window.config.store_code + '/V1/' + endpoint, {
+    let response = await rapidezFetch(config.magento_url + '/rest/' + window.config.store_code + '/V1/' + endpoint.replace(/^\/+/, ''), {
         method: method.toUpperCase(),
         headers: {
             Authorization: token.value ? `Bearer ${token.value}` : null,

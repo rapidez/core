@@ -1,4 +1,4 @@
-@php $inputClasses = 'relative z-20 border !font-sans !border-border !text-sm !min-h-0 outline-0 ring-0 !h-auto rounded-xl !pl-5 !pr-24 !py-3.5 !bg-white w-full focus:ring-transparent search-input' @endphp
+@php $inputClasses = 'border !border-default !text-sm !min-h-0 outline-none !h-auto rounded !p-2 !bg-white w-full focus:!border-emphasis' @endphp
 
 <div v-if="!$root.loadAutocomplete" class="relative w-full">
     <label for="autocomplete-input" class="sr-only">@lang('Search')</label>
@@ -47,8 +47,8 @@
         >
             <div slot="render" slot-scope="{ downshiftProps: { isOpen }, data: suggestions, value, loading }">
                 <div
-                    v-if="isOpen && !searchLoading && !loading && value"
-                    class="{{ config('rapidez.frontend.z-indexes.search-autocomplete') }} absolute -inset-x-5 top-14 overflow-x-hidden overflow-y-auto scrollbar-hide pt-4 pb-7 bg-white shadow-xl max-md:h-[calc(100svh-110px)] max-md:max-h-[calc(100svh-110px)] md:top-14 md:max-h-[calc(100svh-150px)] md:rounded-xl md:border md:inset-x-0 md:w-full md:-translate-y-px"
+                    class="z-header-autocomplete absolute -inset-x-10 top-full max-h-[600px] overflow-auto rounded-b-xl border bg-white p-2 md:p-5 shadow-xl md:inset-x-0 md:w-full md:-translate-y-px"
+                    v-if="isOpen && (suggestions.length || resultsCount)"
                 >
                     <div v-if="suggestions.length || resultsCount">
                         <div class="flex flex-col prose-li:px-5 hover:prose-li:bg-inactive-100">

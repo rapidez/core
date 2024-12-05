@@ -3,7 +3,7 @@
     :component-id="filter.code"
     :data-field="filter.super ? 'super_' + filter.code : (filter.visual_swatch ? 'visual_' + filter.code : filter.code)"
     :inner-class="{
-        title: 'capitalize text-sm font-medium text-gray-900',
+        title: 'capitalize text-sm font-medium text',
     }"
     :react="{and: filter.input == 'multiselect' ? reactiveFilters : reactiveFilters.filter(item => item != filter.code) }"
     :query-format="filter.input == 'multiselect' ? 'and' : 'or'"
@@ -25,8 +25,8 @@
                     </label>
                     <label
                         v-else
-                        class="border px-3 transition-all rounded cursor-pointer text-sm text-inactive font-medium"
-                        v-bind:class="{'border-neutral text-neutral' : value[swatch.key]}"
+                        class="border px-3 transition-all rounded cursor-pointer text-sm text-muted font-medium"
+                        v-bind:class="{'border text' : value[swatch.key]}"
                     >
                         @{{ $root.swatches[filter.code]?.options[swatch.key].swatch }}
                         <input type="checkbox" v-on:change="handleChange(swatch.key)" class="hidden" v-bind:checked="value[swatch.key]"/>
