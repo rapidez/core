@@ -16,23 +16,28 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": "^8.1|^8.2",
-        "blade-ui-kit/blade-heroicons": "^2.0",
-        "mailerlite/laravel-elasticsearch": "^11.0",
-        "illuminate/database": "^10.0",
-        "illuminate/events": "^10.0",
-        "illuminate/queue": "^10.0",
-        "illuminate/support": "^10.0",
-        "lcobucci/clock": "^2.0|^3.0",
-        "lcobucci/jwt": "^4.0|^5.0",
-        "rapidez/blade-directives": "~0.1",
+        "php": "^8.1|^8.2|^8.3",
+        "rapidez/laravel-multi-cache": "^1.0",
+        "blade-ui-kit/blade-heroicons": "^2.4",
+        "illuminate/database": "^11.0",
+        "illuminate/events": "^11.0",
+        "illuminate/queue": "^11.0",
+        "illuminate/support": "^11.0",
+        "justbetter/laravel-http3earlyhints": "*",
+        "lcobucci/clock": "^2.0|^3.2",
+        "lcobucci/jwt": "^4.0|^5.3",
+        "mailerlite/laravel-elasticsearch": "^11.1",
+        "rapidez/blade-components": "^1.0",
+        "rapidez/blade-directives": "^1.0",
         "tormjens/eventy": "^0.8"
     },
     "require-dev": {
-        "laravel/dusk": "^7.9",
-        "orchestra/testbench": "^8.8",
-        "orchestra/testbench-dusk": "^8.8",
-        "phpunit/phpunit": "^9.5.10|^10.0"
+        "larastan/larastan": "^2.9",
+        "laravel/dusk": "^8.2",
+        "orchestra/testbench": "^9.4",
+        "orchestra/testbench-dusk": "^9.7",
+        "phpstan/phpstan": "^1.12",
+        "phpunit/phpunit": "^10.5.34|^11.3.5"
     },
     "autoload": {
         "psr-4": {
@@ -61,6 +66,7 @@
         }
     },
     "scripts": {
+        "analyse": "phpstan --memory-limit=256M",
         "dusk:prepare": [
             "./vendor/bin/dusk-updater detect --auto-update",
             "@php -r \"file_exists('phpunit.dusk.xml') || copy('phpunit.dusk.xml.dist', 'phpunit.dusk.xml'); \""

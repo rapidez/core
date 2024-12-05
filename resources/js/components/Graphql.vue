@@ -1,10 +1,8 @@
 <script>
-import InteractWithUser from './User/mixins/InteractWithUser'
 import { useLocalStorage, StorageSerializers } from '@vueuse/core'
+import { magentoGraphQL, combiningGraphQL } from '../fetch'
 
 export default {
-    mixins: [InteractWithUser],
-
     props: {
         query: {
             type: String,
@@ -13,6 +11,10 @@ export default {
         variables: {
             type: Object,
             default: () => ({}),
+        },
+        group: {
+            // Group name for combining graphql queries, use "nameless" to join it with all others
+            type: String,
         },
         check: {
             type: String,
@@ -28,7 +30,7 @@ export default {
         },
         errorCallback: {
             type: Function,
-            default: (error) => Notify(window.config.translations.errors.wrong, 'warning'),
+            default: (variables, error) => Notify(window.config.translations.errors.wrong, 'warning'),
         },
         store: {
             type: String,
@@ -42,6 +44,10 @@ export default {
     }),
 
     render() {
+        if (!('default' in this.$scopedSlots)) {
+            return null
+        }
+
         return this.$scopedSlots.default(this)
     },
 
@@ -64,32 +70,30 @@ export default {
         async runQuery() {
             try {
                 let options = {
-                    headers: {},
-                    redirectOnExpiration: true,
-                    notifyOnError: true,
+                    headers: {
+                        Store: this.store,
+                    },
                 }
 
-                if (this.store) {
-                    options['headers']['Store'] = this.store
-                }
-
-                let response = await window.magentoGraphQL(this.query, this.variables, options)
+                let response = this.group
+                    ? await combiningGraphQL(this.query, this.variables, options, this.group)
+                    : await magentoGraphQL(this.query, this.variables, options)
 
                 if (this.check) {
-                    if (!eval('response.data.' + this.check)) {
+                    if (!eval('response?.data?.' + this.check)) {
                         Turbo.visit(window.url(this.redirect))
-                        return
+                        return false
                     }
                 }
 
-                this.data = this.callback ? await this.callback(this.data, response) : response.data
+                this.data = this.callback ? await this.callback(this.variables, response) : response.data
 
                 if (this.cache) {
                     useLocalStorage(this.cachePrefix + this.cache, null, { serializer: StorageSerializers.object }).value = this.data
                 }
             } catch (error) {
                 console.error(error)
-                this.errorCallback(error)
+                this.errorCallback(this.variables, await error?.response?.json())
             }
         },
     },

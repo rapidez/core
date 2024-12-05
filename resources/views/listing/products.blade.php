@@ -1,4 +1,4 @@
-@php $dropdownClasses = '!h-auto !border-solid !border !border-border !rounded !py-2 !ring-0 focus:!border-inactive !text-sm !text-neutral !outline-none ' @endphp
+@php $dropdownClasses = '!h-auto !border-solid !border !border-default !rounded !py-2 !ring-0 focus:!border-muted !text-sm !text !outline-none ' @endphp
 <reactive-list
     id="products"
     component-id="products"
@@ -10,8 +10,10 @@
     :react="{and: reactiveFilters}"
     :sort-options="sortOptions"
     :inner-class="{
-        button: '!bg-inactive disabled:!bg-opacity-60 !text-white [&.active]:!bg-neutral',
-        sortOptions: '{{ $dropdownClasses }}'
+        button: 'pagination-button',
+        current: 'current-button',
+        sortOptions: '{{ $dropdownClasses }}',
+        pagination: 'pagination'
     }"
     prev-label="@lang('Prev')"
     next-label="@lang('Next')"

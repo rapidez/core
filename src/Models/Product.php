@@ -122,7 +122,7 @@ class Product extends Model
     public function reviewSummary(): HasOne
     {
         return $this->hasOne(
-            config('rapidez.models.product_review_summary', Rapidez\Core\Models\ProductReviewSummary::class),
+            config('rapidez.models.product_review_summary', \Rapidez\Core\Models\ProductReviewSummary::class),
             'entity_pk_value'
         );
     }
@@ -203,7 +203,7 @@ class Product extends Model
 
     public function getImagesAttribute(): array
     {
-        return $this->gallery->pluck('value')->toArray();
+        return $this->gallery->sortBy('productImageValue.position')->pluck('value')->toArray();
     }
 
     public function getImageAttribute($image): ?string

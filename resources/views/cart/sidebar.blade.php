@@ -1,29 +1,54 @@
-<dl class="mb-5 flex w-full flex-col rounded-lg border [&>*]:flex [&>*]:flex-wrap [&>*]:justify-between [&>*]:p-3 [&>*]:border-b [&>*:last-child]:border-none">
+<dl class="mb-5 flex w-full flex-col rounded-lg border *:flex *:flex-wrap *:justify-between *:p-3 *:border-b last:*:border-none">
     <div>
         <dt>@lang('Subtotal')</dt>
-        <dd>@{{ cart.prices.subtotal_including_tax.value | price }}</dd>
+        <dd v-if="showTax">@{{ cart.prices.subtotal_including_tax.value | price }}</dd>
+        <dd v-else>@{{ cart.prices.subtotal_excluding_tax.value | price }}</dd>
     </div>
-    <div v-if="cart.prices.applied_taxes.length">
-        <dt>@lang('Tax')</dt>
-        <dd>@{{ cart.prices.applied_taxes[0].amount.value | price }}</dd>
-    </div>
-    <div v-if="cart.shipping_addresses.length && cart.shipping_addresses[0].selected_shipping_method">
-        <dt>
-            @lang('Shipping')<br>
-            <small>@{{ cart.shipping_addresses[0].selected_shipping_method.carrier_title }} - @{{ cart.shipping_addresses[0].selected_shipping_method.method_title }}</small>
-        </dt>
-        <dd>@{{ cart.shipping_addresses[0].selected_shipping_method.amount.value | price }}</dd>
-    </div>
-    <div v-for="discount in cart.prices.discounts">
-        <dt>@{{ discount.label }}</dt>
-        <dd>-@{{ discount.amount.value | price }}</dd>
-    </div>
-    <div class="font-bold">
+
+    <template v-if="cart.shipping_addresses?.length">
+        <div v-for="address in cart.shipping_addresses">
+            <dt>@lang('Shipping')</dt>
+            <dd v-if="showTax">@{{ address.selected_shipping_method.price_incl_tax.value | price }}</dd>
+            <dd v-else>@{{ address.selected_shipping_method.price_excl_tax.value | price }}</dd>
+            <small>@{{ address.selected_shipping_method.carrier_title }} - @{{ address.selected_shipping_method.method_title }}</small>
+        </div>
+    </template>
+
+    <template v-if="cart.prices?.applied_taxes?.length">
+        <div v-for="tax in cart.prices.applied_taxes">
+            <dt>@{{ tax.label }}</dt>
+            <dd>@{{ tax.amount.value | price }}</dd>
+        </div>
+    </template>
+
+    <template v-if="cart.fixedProductTaxes?.value">
+        <div v-for="value, label in cart.fixed_product_taxes">
+            <dt>@{{ label }}</dt>
+            <dd>@{{ value | price }}</dd>
+        </div>
+    </template>
+
+    <template v-if="cart.prices?.discounts?.length">
+        <div v-for="discount in cart.fixed_product_taxes">
+            <dt>@{{ discount.label }}</dt>
+            <dd>-@{{ discount.amount.value | price }}</dd>
+        </div>
+    </template>
+
+    <div>
         <dt>@lang('Total')</dt>
-        <dd>@{{ cart.prices.grand_total.value | price }}</dd>
+        <dd v-if="showTax">@{{ cart.prices.grand_total.value | price }}</dd>
+        <dd v-else>@{{ cart.prices.grand_total.value - cart.taxTotal.value | price }}</dd>
     </div>
 </dl>
 
-<x-rapidez::button href="{{ route('checkout') }}" dusk="checkout" class="w-full text-center">
-    @lang('Checkout')
-</x-rapidez::button>
+<div class="w-full" :class="{ 'cursor-not-allowed': !canOrder }">
+    <x-rapidez::button.conversion
+        href="{{ route('checkout') }}"
+        class="w-full text-center"
+        v-bind:class="{ 'pointer-events-none': !canOrder }"
+        dusk="checkout"
+    >
+        @lang('Checkout')
+    </x-rapidez::button.conversion>
+</div>

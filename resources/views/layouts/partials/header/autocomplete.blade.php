@@ -1,4 +1,4 @@
-@php $inputClasses = 'border !border-gray-200 !text-sm !min-h-0 outline-none !h-auto rounded !p-2 !bg-white w-full focus:!border-inactive' @endphp
+@php $inputClasses = 'border !border-default !text-sm !min-h-0 outline-none !h-auto rounded !p-2 !bg-white w-full focus:!border-emphasis' @endphp
 
 <label for="autocomplete-input" class="sr-only">@lang('Search')</label>
 <input
@@ -33,6 +33,7 @@
             fuzziness="AUTO"
             :debounce="debounce"
             :size="size"
+            :highlight="true"
             v-on:value-change="searchAdditionals($event)"
         >
             <div
@@ -40,7 +41,7 @@
                 slot-scope="{ downshiftProps: { isOpen }, data: suggestions }"
             >
                 <div
-                    class="{{ config('rapidez.frontend.z-indexes.header-dropdowns') }} absolute -inset-x-10 top-full max-h-[600px] overflow-auto rounded-b-xl border bg-white p-2 md:p-5 shadow-xl md:inset-x-0 md:w-full md:-translate-y-px"
+                    class="z-header-autocomplete absolute -inset-x-10 top-full max-h-[600px] overflow-auto rounded-b-xl border bg-white p-2 md:p-5 shadow-xl md:inset-x-0 md:w-full md:-translate-y-px"
                     v-if="isOpen && (suggestions.length || resultsCount)"
                 >
                     <template v-for="(resultsData, resultsType) in results ?? {}" v-if="resultsData?.hits?.length">

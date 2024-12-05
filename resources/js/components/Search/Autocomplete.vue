@@ -91,7 +91,7 @@ export default {
                 rapidezFetch(`${baseUrl}/${config.es_prefix}_${name}_${config.store}/_search`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', Authorization: auth },
-                    data: JSON.stringify(esQuery),
+                    body: JSON.stringify(esQuery),
                 }).then(async (response) => {
                     const responseData = await response.json()
 
@@ -105,7 +105,7 @@ export default {
     methods: {
         highlight(hit, field) {
             let source = hit._source ?? hit.source
-            let highlight = hit.highlight ?? hit.source.highlight
+            let highlight = hit.highlight ?? source.highlight
             return highlight?.[field]?.[0] ?? source?.[field] ?? ''
         },
     },

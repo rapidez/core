@@ -1,6 +1,6 @@
 import { token } from './stores/useUser'
 
-class FetchError extends Error {
+export class FetchError extends Error {
     constructor(message, response) {
         super(message)
         this.response = response
@@ -9,7 +9,15 @@ class FetchError extends Error {
 }
 window.FetchError = FetchError
 
-class SessionExpired extends FetchError {
+export class GraphQLError extends FetchError {
+    constructor(errors, response) {
+        super(errors[0].message, response)
+        this.errors = errors
+    }
+}
+window.GraphQLError = GraphQLError
+
+export class SessionExpired extends FetchError {
     constructor(message, response) {
         super(message, response)
         this.name = this.constructor.name
@@ -17,7 +25,7 @@ class SessionExpired extends FetchError {
 }
 window.SessionExpired = SessionExpired
 
-window.rapidezFetch = ((originalFetch) => {
+export const rapidezFetch = (window.rapidezFetch = ((originalFetch) => {
     return (...args) => {
         if (window.app.$data) {
             window.app.$data.loadingCount++
@@ -31,16 +39,17 @@ window.rapidezFetch = ((originalFetch) => {
             return args
         })
     }
-})(fetch)
+})(fetch))
 
-window.rapidezAPI = async (method, endpoint, data = {}, options = {}) => {
-    let response = await rapidezFetch(window.url('/api/' + endpoint), {
+export const rapidezAPI = (window.rapidezAPI = async (method, endpoint, data = {}, options = {}) => {
+    let response = await rapidezFetch(window.url('/api/' + endpoint.replace(/^\/+/, '')), {
         method: method.toUpperCase(),
         headers: Object.assign(
             {
                 Store: window.config.store_code,
                 Authorization: token.value ? `Bearer ${token.value}` : null,
                 'Content-Type': 'application/json',
+                'X-CSRF-Token': window.app.csrfToken,
             },
             options?.headers || {},
         ),
@@ -51,10 +60,70 @@ window.rapidezAPI = async (method, endpoint, data = {}, options = {}) => {
         throw new FetchError(window.config.translations.errors.wrong, response)
     }
 
-    return await response.json()
-}
+    let responseData = await response.text()
 
-window.magentoGraphQL = async (
+    try {
+        return JSON.parse(responseData)
+    } catch (e) {
+        return responseData
+    }
+})
+
+export const combineGraphqlQueries = (window.combineGraphqlQueries = async function (queries, name = '') {
+    const { gql, combineQuery, print } = await import('./fetch/graphqlbundle.js')
+    if (!Array.isArray(queries)) {
+        queries = [...arguments]
+    }
+    // Transform all queries into a gql object
+    queries = queries.map((query) => (typeof query === 'string' ? gql(query) : query))
+
+    name = queries.reduce((str, query) => str + query.definitions.reduce((name, definition) => name + definition.name?.value, ''), name)
+
+    const { document } = queries.reduce(
+        (newQuery, query) => {
+            return newQuery.add(query, undefined, { allow_duplicates: ['cart_id'] })
+        },
+        combineQuery(name, { allow_duplicates: ['cart_id'] }),
+    )
+
+    return print(document)
+})
+
+let pendingQuery = []
+
+export const combiningGraphQL = (window.combiningGraphQL = async (query, variables, options = {}, name) => {
+    let pendingQueryName = name ?? 'nameless'
+    if (!pendingQuery[pendingQueryName]) {
+        pendingQuery[pendingQueryName] = {
+            queries: [],
+            options: [options],
+            promise: new Promise((resolve, reject) =>
+                window.setTimeout(async () => {
+                    const query = await combineGraphqlQueries(
+                        pendingQuery[pendingQueryName].queries.map(([query, variables]) => query),
+                        name,
+                    )
+                    const variables = pendingQuery[pendingQueryName].queries.reduce((combinedVariables, [query, variables]) => {
+                        return { ...combinedVariables, ...variables }
+                    }, {})
+                    const options = pendingQuery[pendingQueryName].options.reduce((combinedOptions, options) => {
+                        return { ...combinedOptions, ...options }
+                    }, {})
+
+                    pendingQuery[pendingQueryName] = null
+
+                    magentoGraphQL(query, variables, options).then(resolve)
+                }, 5),
+            ),
+        }
+    }
+
+    pendingQuery[pendingQueryName].queries.push([query, variables])
+    pendingQuery[pendingQueryName].options.push(options)
+    return pendingQuery[pendingQueryName].promise
+})
+
+export const magentoGraphQL = (window.magentoGraphQL = async (
     query,
     variables = {},
     options = {
@@ -76,19 +145,23 @@ window.magentoGraphQL = async (
             variables: variables,
         }),
     })
-
-    if (!response.ok) {
-        throw new FetchError(window.config.translations.errors.wrong, response)
-    }
-
     // You can't call response.json() twice, in case of errors we pass our clone instead which hasn't been read.
     let responseClone = response.clone()
+
+    if (!response.ok && !response.headers?.get('content-type')?.includes('application/json')) {
+        throw new FetchError(window.config.translations.errors.wrong, responseClone)
+    }
+
     let data = await response.json()
 
-    if (data.errors) {
+    if (data?.errors) {
         console.error(data.errors)
 
-        if (data.errors[0]?.extensions?.category === 'graphql-authorization') {
+        data?.errors?.forEach((error) => {
+            if (error?.extensions?.category !== 'graphql-authorization') {
+                return
+            }
+
             if (options?.notifyOnError ?? true) {
                 Notify(window.config.translations.errors.session_expired)
             }
@@ -98,15 +171,19 @@ window.magentoGraphQL = async (
             } else {
                 throw new SessionExpired(window.config.translations.errors.session_expired, responseClone)
             }
-        }
+        })
 
-        throw new FetchError(data.errors[0].message, responseClone)
+        throw new GraphQLError(data.errors, responseClone)
+    }
+
+    if (!response.ok) {
+        throw new FetchError(window.config.translations.errors.wrong, responseClone)
     }
 
     return data
-}
+})
 
-window.magentoAPI = async (
+export const magentoAPI = (window.magentoAPI = async (
     method,
     endpoint,
     data = {},
@@ -116,7 +193,7 @@ window.magentoAPI = async (
         notifyOnError: true,
     },
 ) => {
-    let response = await rapidezFetch(config.magento_url + '/rest/' + window.config.store_code + '/V1/' + endpoint, {
+    let response = await rapidezFetch(config.magento_url + '/rest/' + window.config.store_code + '/V1/' + endpoint.replace(/^\/+/, ''), {
         method: method.toUpperCase(),
         headers: {
             Authorization: token.value ? `Bearer ${token.value}` : null,
@@ -149,4 +226,4 @@ window.magentoAPI = async (
     let responseData = await response.json()
 
     return responseData
-}
+})

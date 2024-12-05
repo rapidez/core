@@ -5,7 +5,7 @@
 </x-rapidez::cookie-notice>
 <footer class="container bg-white mt-auto">
     <div class="mt-8 py-12 pt-8 border-t lg:py-16">
-        <div class="flex flex-col justify-between md:flex-row xl:gap-8">
+        <div class="flex flex-col justify-between lg:flex-row xl:gap-8">
             @include('rapidez::layouts.partials.footer.navigation')
             @include('rapidez::layouts.partials.footer.newsletter')
         </div>

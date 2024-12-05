@@ -1,9 +1,8 @@
 <script>
+import { GraphQLError } from '../../fetch'
 import { mask, refreshMask } from '../../stores/useMask'
-import InteractWithUser from './../User/mixins/InteractWithUser'
 
 export default {
-    mixins: [InteractWithUser],
     props: {
         product: {
             type: Object,
@@ -47,6 +46,11 @@ export default {
     mounted() {
         this.qty = this.defaultQty
         this.calculatePrices()
+
+        this.$nextTick(() => {
+            this.setDefaultOptions()
+            this.setDefaultCustomSelectedOptions()
+        })
     },
 
     render() {
@@ -85,9 +89,9 @@ export default {
                         quantity: $quantity,
                         selected_options: $selected_options,
                         entered_options: $entered_options
-                    }]) { cart { ` +
-                        config.queries.cart +
-                        ` } user_errors { code message } } }`,
+                    }]) { cart { ...cart } user_errors { code message } } }
+
+                    ` + config.fragments.cart,
                     {
                         sku: this.product.sku,
                         cartId: mask.value,
@@ -97,11 +101,12 @@ export default {
                     },
                 )
 
+                // If there are user errors we may still get a newly updated cart back.
+                await this.updateCart({}, response)
+
                 if (response.data.addProductsToCart.user_errors.length) {
                     throw new Error(response.data.addProductsToCart.user_errors[0].message)
                 }
-
-                await this.updateCart({}, response)
 
                 this.added = true
                 setTimeout(() => {
@@ -129,15 +134,23 @@ export default {
                     Notify(error.message, 'error')
                 }
 
-                error?.response && (await this.checkResponseForExpiredCart(error.response))
+                if (error?.response) {
+                    const responseData = await error.response.json()
+                    if (GraphQLError.prototype.isPrototypeOf(error) && !(await this.checkResponseForExpiredCart({}, responseData))) {
+                        // If there are errors we may still get a newly updated cart back.
+                        await this.updateCart({}, responseData)
+                    }
+                }
             }
 
             this.adding = false
         },
 
         calculatePrices: function () {
-            this.price = parseFloat(this.simpleProduct.price) + this.priceAddition(this.simpleProduct.price)
-            this.specialPrice = parseFloat(this.simpleProduct.special_price) + this.priceAddition(this.simpleProduct.special_price)
+            this.price = Math.round((parseFloat(this.simpleProduct.price) + this.priceAddition(this.simpleProduct.price)) * 100) / 100
+            this.specialPrice =
+                Math.round((parseFloat(this.simpleProduct.special_price) + this.priceAddition(this.simpleProduct.special_price)) * 100) /
+                100
         },
 
         getOptions: function (superAttributeCode) {
@@ -146,7 +159,7 @@ export default {
                 let values = {}
 
                 Object.entries(this.product['super_' + superAttributeCode]).forEach(([key, val]) => {
-                    let swatch = swatchOptions.find((swatch) => swatch.value === val)
+                    let swatch = Object.values(swatchOptions).find((swatch) => swatch.value === val)
                     if (swatch) {
                         values[val] = swatch
                     }
@@ -182,25 +195,64 @@ export default {
 
         priceAddition: function (basePrice) {
             let addition = 0
+            if (!this?.product?.options) {
+                return addition
+            }
 
-            Object.entries(this.customOptions).forEach(([key, val]) => {
-                if (!val) {
-                    return
-                }
+            let optionEntries = Object.entries(this.customOptions)
+            let selectedOptionEntries = Object.entries(this.customSelectedOptions)
 
-                let option = this.product.options.find((option) => option.option_id == key)
-                let optionPrice = ['drop_down', 'radio'].includes(option.type)
-                    ? option.values.find((value) => value.option_type_id == val).price
-                    : option.price
+            ;[...optionEntries, ...selectedOptionEntries].forEach(([key, vals]) => {
+                ;[vals].flat().forEach((val) => {
+                    if (!val) {
+                        return
+                    }
 
-                if (optionPrice.price_type == 'fixed') {
-                    addition += parseFloat(optionPrice.price)
-                } else {
-                    addition += (parseFloat(basePrice) * parseFloat(optionPrice.price)) / 100
-                }
+                    try {
+                        let option = this.product.options.find((option) => option.option_id == key)
+                        let optionPrice = option.price || option.values?.find((value) => value.option_type_id == val)?.price
+
+                        if (optionPrice.price_type == 'fixed') {
+                            addition += parseFloat(optionPrice.price)
+                        } else {
+                            addition += (parseFloat(basePrice) * parseFloat(optionPrice.price)) / 100
+                        }
+                    } catch (e) {
+                        console.error('Price addition calcuation failed, prices may display incorrect!', this, e)
+                    }
+                })
             })
 
             return addition
+        },
+        async setDefaultOptions() {
+            if (!window.config.add_to_cart?.auto_select_configurable_options || !window.config.product?.super_attributes) {
+                return
+            }
+            // We do not loop and use the values of enabledOptions directly.
+            // This is on purpose in order to force recalculations of enabledOptions to be considered.
+            Object.keys(this.enabledOptions).map((attributeKey) => {
+                Vue.set(this.options, attributeKey, this.enabledOptions[attributeKey].find(Boolean))
+            })
+        },
+        async setDefaultCustomSelectedOptions() {
+            if (!window.config.add_to_cart?.auto_select_product_options || !window.config.product?.options) {
+                return
+            }
+
+            window.config.product.options.map((option) => {
+                if (!option.is_require || !option.values) {
+                    return
+                }
+                let value = option.values
+                    .sort((aValue, bValue) => aValue.sort_order - bValue.sort_order)
+                    .find((value) => value.in_stock)?.option_type_id
+                if (!value) {
+                    return
+                }
+
+                Vue.set(this.customSelectedOptions, option.option_id, value)
+            })
         },
     },
 
@@ -244,8 +296,10 @@ export default {
                 selectedOptions.push(btoa('configurable/' + optionId + '/' + optionValue))
             })
 
-            Object.entries(this.customSelectedOptions).forEach(([optionId, optionValue]) => {
-                selectedOptions.push(btoa('custom-option/' + optionId + '/' + optionValue))
+            Object.entries(this.customSelectedOptions).forEach(([optionId, optionValues]) => {
+                ;[optionValues].flat().forEach((optionValue) => {
+                    selectedOptions.push(btoa('custom-option/' + optionId + '/' + optionValue))
+                })
             })
 
             return selectedOptions
@@ -275,15 +329,14 @@ export default {
             Object.entries(this.product.super_attributes).forEach(([attributeId, attribute]) => {
                 disabledOptions['super_' + attribute.code] = []
                 valuesPerAttribute[attributeId] = {}
-
                 // Fill list with products per attribute value
                 Object.entries(this.product.children).forEach(([productId, option]) => {
-                    if (!option.in_stock) {
-                        return
-                    }
-
                     if (!valuesPerAttribute[attributeId][option[attribute.code]]) {
                         valuesPerAttribute[attributeId][option[attribute.code]] = []
+                    }
+
+                    if (!option.in_stock) {
+                        return
                     }
 
                     valuesPerAttribute[attributeId][option[attribute.code]].push(productId)
@@ -297,27 +350,52 @@ export default {
                 Object.entries(valuesPerAttribute).forEach(([attributeId2, productsPerValue2]) => {
                     if (attributeId === attributeId2) return
                     var selectedValueId = this.options[attributeId]
-                    if (!selectedValueId) return
                     var attributeCode = this.product.super_attributes[attributeId2].code
 
                     Object.entries(productsPerValue2).forEach(([valueId, products]) => {
                         // If there is no product that intersects for this attribute value
                         // there will be no product available for this attribute value
-                        if (!productsPerValue[selectedValueId] || productsPerValue[selectedValueId].some((val) => products.includes(val))) {
+
+                        if (
+                            products.length &&
+                            (!selectedValueId ||
+                                !productsPerValue[selectedValueId] ||
+                                productsPerValue[selectedValueId].some((val) => products.includes(val)))
+                        ) {
                             return
                         }
 
-                        disabledOptions['super_' + attributeCode].push(valueId)
+                        disabledOptions['super_' + attributeCode].push(parseInt(valueId))
                     })
                 })
             })
 
             return disabledOptions
         },
+        enabledOptions: function () {
+            let valuesPerAttribute = {}
+            Object.entries(this.product.super_attributes).forEach(([attributeId, attribute]) => {
+                valuesPerAttribute[attributeId] = []
+                // Fill list with products per attribute value
+                Object.entries(this.product.children).forEach(([productId, product]) => {
+                    if (!product.in_stock || this.disabledOptions['super_' + attribute.code].includes(product.value)) {
+                        return
+                    }
+                    valuesPerAttribute[attributeId].push(product[attribute.code])
+                })
+            })
+            return valuesPerAttribute
+        },
     },
 
     watch: {
         customOptions: {
+            handler() {
+                this.calculatePrices()
+            },
+            deep: true,
+        },
+        customSelectedOptions: {
             handler() {
                 this.calculatePrices()
             },

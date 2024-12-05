@@ -2,7 +2,7 @@
 
 namespace Rapidez\Core\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class SalesOrderItem extends Model
 {
@@ -14,8 +14,13 @@ class SalesOrderItem extends Model
         'product_options' => 'collection',
     ];
 
-    public function sales_order()
+    public function sales_order(): BelongsTo
     {
         return $this->belongsTo(config('rapidez.models.sales_order'), 'order_id');
+    }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(config('rapidez.models.product'), 'sku', 'sku')->selectAttributes(config('rapidez.frontend.cart_attributes'));
     }
 }

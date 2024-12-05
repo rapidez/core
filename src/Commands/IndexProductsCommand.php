@@ -61,7 +61,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                 $bar = $this->output->createProgressBar($productQuery->getQuery()->getCountForPagination());
                 $bar->start();
 
-                $categories = Category::query()
+                $categories = Category::withEventyGlobalScopes('index.category.scopes')
                     ->where('catalog_category_flat_store_' . config('rapidez.store') . '.entity_id', '<>', Rapidez::config('catalog/category/root_id', 2))
                     ->pluck('name', 'entity_id');
 

@@ -27,6 +27,11 @@ class Customer extends Model implements AuthenticatableContract
         return $this->hasMany(config('rapidez.models.oauth_token'), 'customer_id');
     }
 
+    public function group()
+    {
+        return $this->belongsTo(config('rapidez.models.customer_group'), 'group_id');
+    }
+
     public function getRememberTokenName()
     {
         return '';
@@ -38,7 +43,7 @@ class Customer extends Model implements AuthenticatableContract
             DecodeJwt::isJwt($token),
             fn (Builder $query) => $query
                 ->where(
-                    $this->qualifyColumn('customer_id'),
+                    $this->getQualifiedKeyName(),
                     DecodeJwt::decode($token)
                         ->claims()
                         ->get('uid')

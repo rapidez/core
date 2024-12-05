@@ -39,7 +39,17 @@ trait DuskTestCaseSetup
 
         Browser::macro('waitUntilIdle', function ($timeout = 120) {
             /** @var Browser $this */
-            $this->waitUntilTrueForDuration('window.app?.$data?.loading !== true && await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 5}))', $timeout);
+            $this->waitUntilTrueForDuration('window.app?.$data?.loading !== true && await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 5}))', $timeout); // @phpstan-ignore-line
+
+            return $this;
+        });
+
+        Browser::macro('waitUntilVueLoaded', function () {
+            /** @var Browser $this */
+            $this
+                ->waitUntilIdle()
+                ->waitUntilTrueForDuration('document.body.contains(window.app?.$el) && window.app?._isMounted', 60, 2)
+                ->waitUntilIdle();
 
             return $this;
         });
@@ -52,6 +62,25 @@ trait DuskTestCaseSetup
                 $this->driver->executeScript("return document.querySelector('{$fullSelector}').reportValidity();"),
                 'Form is not valid: ' . PHP_EOL . $this->driver->executeScript("return Array.from(document.querySelector('{$fullSelector}').elements).filter(el => !el.validity.valid).map(el => el.name + ': ' + el.validationMessage).join('\\n');")
             );
+
+            return $this;
+        });
+
+        Browser::macro('addProductToCart', function ($productUrl = null) {
+            /** @var Browser $this */
+            if ($productUrl) {
+                $this
+                    ->visit($productUrl)
+                    ->waitUntilVueLoaded()
+                    ->waitUntilIdle();
+            }
+
+            $this
+                ->waitUntilIdle()
+                ->waitUntilEnabled('@add-to-cart', 200)
+                ->press('@add-to-cart', 120)
+                ->waitForText(__('Added'), 120)
+                ->waitUntilIdle();
 
             return $this;
         });

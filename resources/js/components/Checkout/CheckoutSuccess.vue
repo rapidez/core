@@ -1,23 +1,11 @@
 <script>
-import { mask as useMask } from '../../stores/useMask'
-import { token as useToken } from '../../stores/useUser'
+import { order, refresh as refreshOrder, clear as clearOrder } from '../../stores/useOrder'
 import { clear as clearCart } from '../../stores/useCart'
 
 export default {
-    props: {
-        token: {
-            type: String,
-            default: useToken.value,
-        },
-        mask: {
-            type: String,
-            default: useMask.value,
-        },
-    },
-
     data() {
         return {
-            order: {},
+            order: order,
         }
     },
 
@@ -26,26 +14,25 @@ export default {
     },
 
     created() {
-        let successStep = this.$root.getCheckoutStep('success')
-        if (successStep > 0) {
-            this.$root.checkout.step = successStep
+        if (!order.value?.email) {
+            window.location = url('/cart')
+            return
         }
-
-        this.refreshOrder().then(() => {
+        refreshOrder()
+        this.$root.$emit('checkout-success', this.order)
+        window.addEventListener('beforeunload', function (event) {
             clearCart()
+            if (!window.debug) {
+                clearOrder()
+            }
+
+            return undefined
         })
     },
 
     methods: {
         async refreshOrder() {
-            this.order = await window.rapidezAPI(
-                'get',
-                'order',
-                {},
-                {
-                    headers: { Authorization: 'Bearer ' + (this.token || this.mask) },
-                },
-            )
+            await refreshOrder()
         },
 
         serialize(address) {
@@ -66,27 +53,11 @@ export default {
 
     computed: {
         hideBilling() {
-            return this.shipping && this.billing && this.sameAddress(this.shipping, this.billing)
-        },
-        shipping() {
-            if (!this.order?.sales_order_addresses) {
-                return null
-            }
-            let shipping = this.order.sales_order_addresses.filter((e) => e.address_type == 'shipping')
-            return shipping.length > 1 ? null : shipping.at(-1)
-        },
-        billing() {
-            if (!this.order?.sales_order_addresses) {
-                return null
-            }
-            let billing = this.order.sales_order_addresses.filter((e) => e.address_type == 'billing')
-            return billing.at(-1)
-        },
-        items() {
-            if (!this.order?.sales_order_addresses) {
-                return []
-            }
-            return this.order.sales_order_items.filter((item) => !item.parent_item_id)
+            return (
+                this.order.shipping_address &&
+                this.order.billing_address &&
+                this.sameAddress(this.order.shipping_address, this.order.billing_address)
+            )
         },
     },
 }

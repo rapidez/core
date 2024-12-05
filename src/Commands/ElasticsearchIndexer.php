@@ -47,11 +47,10 @@ class ElasticsearchIndexer
             return;
         }
 
-        $arrItem = $item instanceof Arrayable ? $item->toArray() : (array) $item;
         $currentValues = match (true) {
             is_callable($dataFilter) => $dataFilter($item),
-            is_null($dataFilter)     => $arrItem,
-            default                  => Arr::only($arrItem, $dataFilter),
+            is_null($dataFilter)     => $item,
+            default                  => Arr::only($item instanceof Arrayable ? $item->toArray() : (array) $item, $dataFilter),
         };
 
         if (is_null($currentValues)) {
@@ -82,7 +81,7 @@ class ElasticsearchIndexer
                 ->map(fn ($synonym) => $synonym->synonyms)
                 ->toArray();
 
-            data_set($settings, 'index.analysis.filter.synonym', ['type' => 'synonym', 'synonyms' => $synonyms]);
+            data_set($settings, 'index.analysis.filter.synonym', ['type' => 'synonym_graph', 'synonyms' => $synonyms]);
             data_set($settings, 'index.analysis.analyzer.synonym', [
                 'filter'    => ['lowercase', 'asciifolding', 'synonym'],
                 'tokenizer' => 'standard',

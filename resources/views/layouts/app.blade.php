@@ -16,7 +16,7 @@
         @endif
     </title>
 
-    <meta name="description" content="@yield('description', '')"/>
+    <meta name="description" content="@yield('description', Rapidez::config('design/head/default_description', ''))"/>
     <meta name="robots" content="@yield('robots', Rapidez::config('design/search_engine_robots/default_robots', 'INDEX,FOLLOW'))"/>
     <link rel="canonical" href="@yield('canonical', url()->current())" />
 
@@ -25,19 +25,31 @@
     @stack('head')
     @config('design/head/includes')
 </head>
-<body class="text-neutral antialiased">
-    <div id="app" class="flex flex-col min-h-screen">
-        @includeWhen(!request()->is('checkout'), 'rapidez::layouts.partials.header')
-        @includeWhen(request()->is('checkout'), 'rapidez::layouts.checkout.header')
+<body class="text antialiased">
+    <div id="app" class="flex flex-col min-h-dvh">
+        @includeWhen(!request()->routeIs('checkout'), 'rapidez::layouts.partials.header')
+        @includeWhen(request()->routeIs('checkout'), 'rapidez::layouts.checkout.header')
         <main>
             @yield('content')
         </main>
-        @includeWhen(!request()->is('checkout'), 'rapidez::layouts.partials.footer')
-        @includeWhen(request()->is('checkout'), 'rapidez::layouts.checkout.footer')
+        @includeWhen(!request()->routeIs('checkout'), 'rapidez::layouts.partials.footer')
+        @includeWhen(request()->routeIs('checkout'), 'rapidez::layouts.checkout.footer')
         @stack('page_end')
     </div>
 
     <script>window.config = @json(config('frontend'));</script>
+    @if (session('notifications'))
+        <script async>
+            document.addEventListener('vue:loaded', function() {
+                @foreach (session('notifications') ?? [] as $notification)
+                    window.Notify('{{ $notification['message'] }}', '{{ $notification['type'] ?? 'success' }}')
+                @endforeach
+            });
+        </script>
+    @endif
     @stack('foot')
+    <svg hidden class="hidden">
+        @stack('bladeicons')
+    </svg>
 </body>
 </html>

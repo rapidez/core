@@ -5,14 +5,21 @@ namespace Rapidez\Core\Models\Scopes\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
-use Rapidez\Core\Exceptions\NoAttributesToSelectSpecifiedException;
 
 class WithProductAttributesScope implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
+        $builder->addSelect([
+            $model->getQualifiedKeyName(),
+            $model->qualifyColumn('sku'),
+            $model->qualifyColumn('visibility'),
+            $model->qualifyColumn('type_id'),
+            $model->getQualifiedCreatedAtColumn(),
+        ]);
+
         if (empty($model->attributesToSelect)) {
-            throw NoAttributesToSelectSpecifiedException::create();
+            return;
         }
 
         $attributeModel = config('rapidez.models.attribute');
@@ -21,14 +28,6 @@ class WithProductAttributesScope implements Scope
         });
 
         $attributes = array_filter($attributes, fn ($a) => $a['type'] !== 'static');
-
-        $builder->addSelect([
-            $model->getQualifiedKeyName(),
-            $model->qualifyColumn('sku'),
-            $model->qualifyColumn('visibility'),
-            $model->qualifyColumn('type_id'),
-            $model->getQualifiedCreatedAtColumn(),
-        ]);
 
         $grammar = $builder->getQuery()->getGrammar();
         foreach ($attributes as $attribute) {

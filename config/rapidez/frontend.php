@@ -26,7 +26,8 @@ return [
     // add different steps for different stores. Keep
     // them lowercase and do not include any spaces.
     'checkout_steps' => [
-        'default' => ['cart', 'login', 'credentials', 'payment', 'success'],
+        // 'default' => ['onestep'],
+        'default' => ['login', 'credentials', 'payment'],
     ],
 
     'autocomplete' => [
@@ -86,11 +87,9 @@ return [
         ],
     ],
 
-    // Z-Index per element
-    'z-indexes' => [
-        'header-dropdowns' => 'z-20',
-        'lightbox'         => 'z-30',
-        'notification'     => 'z-20',
-        'slideover'        => 'z-50',
+    // Add to cart settings to automatically select configurable- or product options (true/false)
+    'add_to_cart' => [
+        'auto_select_configurable_options' => false,
+        'auto_select_product_options'      => false,
     ],
 ];

@@ -1,6 +1,288 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.1.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.18.2...2.18.2)
+## [2.18.2](https://github.com/rapidez/core/releases/tag/2.18.2) - 2024-11-27
+
+### Fixed
+
+- Improved Vue/Turbo loading speed fix (#662)
+
+## [2.18.1](https://github.com/rapidez/core/releases/tag/2.18.1) - 2024-11-27
+
+### Fixed
+
+- Typo (#658)
+
+## [2.18.0](https://github.com/rapidez/core/releases/tag/2.18.0) - 2024-11-26
+
+### Changed
+
+- Improved Vue/Turbo loading speed (#653)
+
+## [2.17.1](https://github.com/rapidez/core/releases/tag/2.17.1) - 2024-11-26
+
+### Fixed
+
+- Reduce forced reflow with the slider (#609)
+- Clone address to remove reactivity (#656)
+
+## [2.17.0](https://github.com/rapidez/core/releases/tag/2.17.0) - 2024-11-20
+
+### Added
+
+- Disable checkout button and add notice if not in stock (#627)
+
+### Changed
+
+- Apply middlewares from fallback routes (#643)
+
+## [2.16.0](https://github.com/rapidez/core/releases/tag/2.16.0) - 2024-11-19
+
+### Changed
+
+- Resize path helper (#633, #648)
+- Extracted login to a loginByToken function (#637)
+
+### Fixed
+
+- Image switching length fix (#641)
+- Fix error of undefined when extensions is not set (#634)
+
+## [2.15.0](https://github.com/rapidez/core/releases/tag/2.15.0) - 2024-10-23
+
+### Added
+
+- VAT change event (#606)
+
+### Fixed
+
+- Use correct object structure in PostCSS config (#611)
+
+## [2.14.0](https://github.com/rapidez/core/releases/tag/2.14.0) - 2024-10-17
+
+### Changed
+
+- Updated the frontend dependencies including Vite 5 (#584)
+- Drop support for Magento 2.4.5 (#589)
+
+### Fixed
+
+- Filter out double slashes from API endpoints (#559)
+- Fix casts in quote model (#542)
+- Correct error message when placing an order fails (#599)
+
+## [2.13.0](https://github.com/rapidez/core/releases/tag/2.13.0) - 2024-09-27
+
+### Changed
+
+- Cart summary refactor, listen to the Magento config (#564)
+- PHP 8.3 support and Magento 2.4.7 tests (#573)
+
+### Fixed
+
+- Change order of cart clearing (#579)
+- Fixed footer newsletter responsiveness and layout shifts (#582)
+- Slideover styling changes (#581)
+
+## [2.12.0](https://github.com/rapidez/core/releases/tag/2.12.0) - 2024-09-24
+
+### Changed
+
+- Blade icons deferring by default (#577)
+
+### Fixed
+
+- Move default selects to always select (#571)
+- Elasticsearch query script needs to be a string (#574)
+- Filter heading on the category filter (#576)
+- Only sort child images when there are images (#578)
+
+## [2.11.1](https://github.com/rapidez/core/releases/tag/2.11.1) - 2024-09-17
+
+### Fixed
+
+- Sort child images by store specific value & listen to disabled (#570)
+- CSRF token on Rapidez API requests (#572)
+- Multiply fixed product tax by item quantity (#568)
+- Don't throw warning when GraphQL component is used without slot (#569)
+
+## [2.11.0](https://github.com/rapidez/core/releases/tag/2.11.0) - 2024-09-10
+
+### Changed
+
+- Make Graphql and GraphqlMutation errorCallback the same (#566)
+
+### Fixed
+
+- Prevent any leftover customer_address_id (#565)
+
+## [2.10.0](https://github.com/rapidez/core/releases/tag/2.10.0) - 2024-09-06
+
+### Changed
+
+- Improved the pagination styling (#558)
+- Fabulous filters 💅 (#560)
+
+### Fixed
+
+- One shipping method title (#556, #557)
+- Redirect when the order can not be fetched from the success page (#553)
+- Publish the .prettierrc.js file with the install command (#562)
+
+## [2.9.2](https://github.com/rapidez/core/releases/tag/2.9.2) - 2024-09-03
+
+### Fixed
+
+- Sliderover header button fix (#554)
+- Checkout progressbar steps correct fallback (#555)
+
+## [2.9.1](https://github.com/rapidez/core/releases/tag/2.9.1) - 2024-08-27
+
+### Fixed
+
+- Allow UUID's in Elasticsearch (#545)
+- Don't always assume api calls return json (#544)
+- Correct slideover class merging (#548)
+- Correct ReCaptcha header in the GraphQL mutation component (#549)
+- Correct data for the order id for the checkout-payment-saved event (#550)
+- Correctly use parseInt (#551)
+
+## [2.9.0](https://github.com/rapidez/core/releases/tag/2.9.0) - 2024-08-16
+
+### Added
+
+- Health check for super attributes (#535)
+- Category index scopes Eventy filter (#537)
+
+### Changed
+
+- Removed the NoAttributesToSelectSpecifiedException (#543)
+
+### Fixed
+
+- Prevent price addition errors in sliders (#536)
+- Always attempt to decode attribute values (#520)
+
+## [2.8.0](https://github.com/rapidez/core/releases/tag/2.8.0) - 2024-07-24
+
+### Added
+
+- Notifications from the session (#518)
+- Order item product relation (#533)
+
+### Fixed
+
+- Graphql Mutation component typo (#529)
+- Set error message on GraphQL errors as well (#531)
+- Redirect all redirect type rewrites (#534)
+
+## [2.7.0](https://github.com/rapidez/core/releases/tag/2.7.0) - 2024-07-15
+
+### Added
+
+- Auto select configurable and product option setting (#515)
+- Backorders info messages (#516)
+- Add fixed product taxes in cart (#517)
+- Customer group relation (#528)
+
+### Fixed
+
+- Refactored GraphQL exceptions for error callbacks (#513)
+- Slider array check (#510)
+- Fix sidebar (#521)
+- Use computed shipping address in estimateshippingmethod (#522)
+- Prevent errors if add_to_cart config is missing (#526)
+- Fix missing attributeValues and autoselect config errors (#530)
+
+## [2.6.0](https://github.com/rapidez/core/releases/tag/2.6.0) - 2024-06-04
+
+### Added
+
+- Checkout step and success events (#506)
+- Dusk selectors for coupons (#511)
+
+### Fixed
+
+- Reset styling of the listing component (#463)
+- Convert the object to an array (#509)
+
+## [2.5.0](https://github.com/rapidez/core/releases/tag/2.5.0) - 2024-05-28
+
+### Added
+
+- Laravel 11 support (#504)
+
+## [2.4.1](https://github.com/rapidez/core/releases/tag/2.4.1) - 2024-05-22
+
+### Fixed
+
+- Revert "Rearranged the button classes (#460)" (#499)
+- Round prices before multiplying by qty (#480)
+- Sort images in gallery by position in Magento (#500)
+- Correct rapidez/menu config path location (8e67b22)
+- Check correct customer id when jwt is used (#502)
+
+## [2.4.0](https://github.com/rapidez/core/releases/tag/2.4.0) - 2024-05-15
+
+### Added
+
+- Macroable models (#483)
+- Multiselect product option support (#484)
+- Rapidez model health check (#489)
+
+### Changed
+
+- Use lateral join in ForCurrentStoreScope (#478)
+- Rearranged the button classes (#460)
+- Refactored the slideover component (#464)
+- Allow for separate slider & child containers (#495)
+- Checkout agreements from the database instead of GraphQL (#492)
+- Enable product autocomplete highlighting (#496)
+
+### Fixed
+
+- Also calculate product price on selected product option changes (#485)
+- Reverted "Fix adding configurable product to cart (#461)" (#486)
+- Let the OptionSwatch extend the Rapidez base model (#487)
+- Use Rapidez base model for all models (#488)
+- Also save product views in the report_event table (#490)
+- Prevent ambiguous error when overwriting models (#498)
+- Don't use global scopes for quote existence check (#493)
+
+## [2.3.0](https://github.com/rapidez/core/releases/tag/2.3.0) - 2024-04-30
+
+### Changed
+
+- Use script to get the positions from the flattened type (#459)
+- Do not index the search overview page (#481)
+
+### Fixed
+
+- Fixes for swatch filter (#477)
+- Allow dataFilter null in the indexer (#470)
+- Correct key in autocomplete products loop (#465)
+- Only allow certain types to be searchable in autocomplete (#476)
+
+## [2.2.0](https://github.com/rapidez/core/releases/tag/2.2.0) - 2024-04-16
+
+### Added
+
+- Fire postcode change event in checkout (#447)
+
+### Fixed
+
+- Find flat attributes by checking the actual table schema (#452)
+- Fix entity_id in grouped products (#456)
+- Capitalize checkCompadreVersion function properly (#457)
+- Fix adding configurable product to cart (#461)
+- Fix highlight retrieval (#468)
+- Fix autocomplete fetch (#472)
+- Fixed disabled options when no options are available (#475)
+
+### Removed
+
+- Remove unnecessary toArray calls in product indexer (#471)
+
 ## [2.1.0](https://github.com/rapidez/core/releases/tag/2.1.0) - 2024-03-06
 
 ### Changed
@@ -17,24 +299,6 @@
 - Send full address to check shipping methods (#441)
 - Cache yarn dependencies with Dusk tests (#442)
 - Move resizeobserver to nextTick function (#444)
-
-## [1.14.0](https://github.com/rapidez/core/releases/tag/1.14.0) - 2024-03-01
-
-### Added
-
- - Output design/head/includes (#428)
-
-### Changed
-
- - Drop Laravel 9 and PHP 8.0 support (#429)
- - Use ReactiveSearch fork with fixes (#435)
-
-### Fixed
-
- - Properly set slide behavior in slider (#430)
- - Fallback to default checkout_steps (#440)
-
-
 
 ## [2.0.0](https://github.com/rapidez/core/releases/tag/2.0.0) - 2024-02-21
 
@@ -285,190 +549,6 @@ In this release we refactored the cart from the Magento API to GraphQL! You shou
 - Make slidesTotal a computed property (#346)
 - Passive listeners and key instead of keyCode in product image component (#350)
 - Translatable cart + checkout title (7a6c533, 2a68e8b)
-
-## [0.96.1](https://github.com/rapidez/core/releases/tag/0.96.1) - 2023-10-19
-
-### Fixed
-
-- Duster disabled method ordering (df8e8ba)
-- Revert "Apply fixes from Duster" (fd5eeaf)
-
-## [0.96.0](https://github.com/rapidez/core/releases/tag/0.96.0) - 2023-10-19
-
-### Added
-
-- Search term with redirects support (#347)
-
-### Fixed
-
-- Don't index not visible products (#344)
-
-## [0.95.0](https://github.com/rapidez/core/releases/tag/0.95.0) - 2023-09-22
-
-### Added
-
-- Accept JWT as access token (#339)
-- Implement healthchecks (#342)
-
-### Fixed
-
-- Fix duster and prettier errors when running on PR (#336)
-
-## [0.94.0](https://github.com/rapidez/core/releases/tag/0.94.0) - 2023-09-08
-
-### Added
-
-- Laravel 10 support (57daa6b)
-- Slider loop option (#309)
-
-## [0.93.0](https://github.com/rapidez/core/releases/tag/0.93.0) - 2023-08-24
-
-### Added
-
-- GraphQL mutation component error callback prop (#320)
-
-## [0.92.0](https://github.com/rapidez/core/releases/tag/0.92.0) - 2023-08-23
-
-### Added
-
-- Page size url param (#291)
-
-### Changed
-
-- Store id in product image urls (#306)
-
-### Fixed
-
-- Reactivity fix for same_as_billing (#311)
-
-## [0.91.0](https://github.com/rapidez/core/releases/tag/0.91.0) - 2023-07-05
-
-### Changed
-
-- Helpers for adding domain to urls (#289)
-
-## [0.90.1](https://github.com/rapidez/core/releases/tag/0.90.1) - 2023-06-29
-
-### Fixed
-
-- Watch loadingCount instead of a computed prop to set loading (#288)
-- Use Blade directives from rapidez/blade-directives + hasAny macro (#285)
-- Order the quote so it is getting the latest (a3cd531)
-
-## [0.90.0](https://github.com/rapidez/core/releases/tag/0.90.0) - 2023-06-27
-
-### Added
-
-- Fallback route caching (#228)
-- Install Duster to format codestyle (#242)
-- Use prettier fixes, update codestyle (#245)
-
-### Fixed
-
-- Moved theme view path from boot to register (#287)
-
-## [0.89.0](https://github.com/rapidez/core/releases/tag/0.89.0) - 2023-05-31
-
-### Added
-
-- Magento title prefix, suffix and default support (#273)
-- Get order information on success page (#230)
-
-### Fixed
-
-- Slider event fix (#270)
-- Slider visible slides calculation fix (#256)
-
-## [0.88.0](https://github.com/rapidez/core/releases/tag/0.88.0) - 2023-05-25
-
-### Added
-
-- Slider performance improvements + Vue performance variable (#261)
-- Slider autoplay bounce prop (#267)
-
-### Fixed
-
-- Aggregate swatches by value id, sort swatches later (#258)
-
-## [0.87.1](https://github.com/rapidez/core/releases/tag/0.87.1) - 2023-05-24
-
-### Fixed
-
-- GraphQL Mutation component notification with event instead of timeout (#262)
-
-## [0.87.0](https://github.com/rapidez/core/releases/tag/0.87.0) - 2023-05-03
-
-### Added
-
-- Slider autoscroll (#240)
-- Package.js for auto importing (9f80221)
-
-### Fixed
-
-- Use suggestion.source._id in autocomplete (#248)
-
-## [0.86.0](https://github.com/rapidez/core/releases/tag/0.86.0) - 2023-04-14
-
-### Changed
-
-- Prefix super attributes (#234)
-
-### Fixed
-
-- Update reactivesearch to the latest version fixing u-r-l-params (#232)
-- Prevent loading turning false when one of multiple simultaneous finishes (#233)
-- Change onLogout usage to avoid unnecessarily clearing email (#239)
-
-## [0.85.1](https://github.com/rapidez/core/releases/tag/0.85.1) - 2023-03-31
-
-### Fixed
-
-- Clear cache order in the index products command (67c85ed)
-
-## [0.85.0](https://github.com/rapidez/core/releases/tag/0.85.0) - 2023-03-28
-
-### Added
-
-- Select category children_count by default (821a23b)
-
-## [0.84.0](https://github.com/rapidez/core/releases/tag/0.84.0) - 2023-03-23
-
-### Added
-
-- Use laravel events for before/after index (#227)
-
-### Fixed
-
-- Exact match the shipping method instead of splitting by underscore (#220)
-
-## [0.83.1](https://github.com/rapidez/core/releases/tag/0.83.1) - 2023-03-22
-
-### Fixed
-
-- Sort super attributes on the frontend (0e1db6f)
-
-## [0.83.0](https://github.com/rapidez/core/releases/tag/0.83.0) - 2023-03-21
-
-### Added
-
-- Eventy before/after index actions (#224)
-
-## [0.82.1](https://github.com/rapidez/core/releases/tag/0.82.1) - 2023-03-16
-
-### Fixed
-
-- Update history with state so Turbo behaves (#222)
-
-
-## [0.82.0](https://github.com/rapidez/core/releases/tag/0.82.0) - 2023-03-09
-
-### Changed
-
-- Remove docker files, they have been moved to rapidez/rapidez (#217)
-
-### Fixed
-
-- Reactive search with Turbo history fallback (#218)
 
 ## [0.81.0](https://github.com/rapidez/core/releases/tag/0.81.0) - 2023-02-21
 

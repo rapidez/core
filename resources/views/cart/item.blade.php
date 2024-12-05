@@ -1,12 +1,12 @@
 <table class="w-full border-b">
     <tbody class="divide-y">
-        <tr v-for="(item, index) in cart.items" class="flex-wrap max-md:flex [&>*]:p-2 md:[&>*]:p-4">
+        <tr v-for="(item, index) in cart.items" class="flex-wrap max-md:flex *:p-2 md:*:p-4">
             <td class="w-24">
                 <a :href="item.product.url_key + item.product.url_suffix | url">
                     <img
                         class="mx-auto"
                         :alt="item.product.name"
-                        :src="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento' + item.product.image.url.replace(config.media_url, '') + '.webp'"
+                        :src="resizedPath(item.product.image.url + '.webp', '80x80')"
                         height="80"
                     />
                 </a>
@@ -15,6 +15,9 @@
                 <div class="flex flex-col items-start">
                     <a :href="item.product.url_key + item.product.url_suffix | url" class="font-bold" dusk="cart-item-name">
                         @{{ item.product.name }}
+                        <div class="text-red-600" v-if="!item.is_available">
+                            @lang('This product is out of stock, remove it to continue your order.')
+                        </div>
                     </a>
                     <div v-for="option in item.configurable_options">
                         @{{ option.option_label }}: @{{ option.value_label }}
@@ -28,6 +31,18 @@
                         </template>
                     </div>
                     @include('rapidez::cart.item.remove')
+                    <div v-if="item.qty_backordered" class="flex gap-2">
+                        <x-heroicon-o-exclamation-circle class="mt-px w-5" />
+                        <span>
+                            <template v-if="item.qty_backordered < item.qty">
+                                @lang(':count of the requested quantity will be backordered', ['count' => '@{{ item.qty_backordered }}'])
+                            </template>
+                            <template v-else>
+                                @lang('This product will be backordered')
+                            </template>
+                        </span>
+                    </div>
+
                 </div>
             </td>
             <td class="justify-center text-right max-md:flex max-md:w-full">
