@@ -59,6 +59,21 @@ export default {
                     muted: color('--background-muted', colors.slate[50]),
                 },
             },
+            zIndex: {
+                'header': '100',
+                'header-dropdown': '10',
+                'header-autocomplete': '20',
+                'header-minicart': '30',
+
+                'notifications': '110',
+
+                'slideover': '120',
+                'slideover-overlay': '10',
+                'slideover-sidebar': '20',
+
+                'popup': '130',
+                'popup-actions': '10',
+            },
             textColor: (theme) => theme('colors.foreground'),
             borderColor: (theme) => ({
                 default: theme('colors.border'),

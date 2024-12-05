@@ -6,14 +6,14 @@
             class="object-contain max-h-full mx-auto block"
             loading="lazy"
         />
-        <div class="z-10 pointer-events-none fixed top-3 right-3">
+        <div class="z-popup-actions pointer-events-none fixed top-3 right-3">
             <x-heroicon-o-x-mark class="size-6" />
         </div>
     </div>
-    <button class="z-10 top-1/2 left-3 -translate-y-1/2 absolute" v-if="active" v-on:click="change(active-1)" aria-label="@lang('Prev')">
+    <button class="z-popup-actions top-1/2 left-3 -translate-y-1/2 absolute" v-if="active" v-on:click="change(active-1)" aria-label="@lang('Prev')">
         <x-heroicon-o-chevron-left class="size-8 text-inactive" />
     </button>
-    <button class="z-10 top-1/2 right-3 -translate-y-1/2 absolute" v-if="active != images.length-1" v-on:click="change(active+1)" aria-label="@lang('Next')">
+    <button class="z-popup-actions top-1/2 right-3 -translate-y-1/2 absolute" v-if="active != images.length-1" v-on:click="change(active+1)" aria-label="@lang('Next')">
         <x-heroicon-o-chevron-right class="size-8 text-inactive" />
     </button>
 </div>
