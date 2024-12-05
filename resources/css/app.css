@@ -1,6 +1,7 @@
 @import 'components/vue-slider';
 @import 'components/price-slider';
 @import 'components/pagination';
+@import 'components/autocomplete';
 
 @tailwind base;
 @tailwind components;

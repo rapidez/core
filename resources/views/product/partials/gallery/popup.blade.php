@@ -11,9 +11,9 @@
         </div>
     </div>
     <button class="z-popup-actions top-1/2 left-3 -translate-y-1/2 absolute" v-if="active" v-on:click="change(active-1)" aria-label="@lang('Prev')">
-        <x-heroicon-o-chevron-left class="size-8 text-inactive" />
+        <x-heroicon-o-chevron-left class="size-8 text-muted" />
     </button>
     <button class="z-popup-actions top-1/2 right-3 -translate-y-1/2 absolute" v-if="active != images.length-1" v-on:click="change(active+1)" aria-label="@lang('Next')">
-        <x-heroicon-o-chevron-right class="size-8 text-inactive" />
+        <x-heroicon-o-chevron-right class="size-8 text-muted" />
     </button>
 </div>

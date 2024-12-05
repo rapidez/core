@@ -1,4 +1,4 @@
-@php $inputClasses = 'border !border-default !text-sm !min-h-0 outline-none !h-auto rounded !p-2 !bg-white w-full focus:!border-emphasis' @endphp
+@php $inputClasses = 'relative z-header-autocomplete border !font-sans !border-default !text-sm !min-h-0 outline-0 ring-0 !h-auto rounded-xl !pl-5 !pr-24 !py-3.5 !bg-white w-full focus:ring-transparent search-input' @endphp
 
 <div v-if="!$root.loadAutocomplete" class="relative w-full">
     <label for="autocomplete-input" class="sr-only">@lang('Search')</label>
@@ -22,7 +22,7 @@
 >
     <x-rapidez::reactive-base slot-scope="{ results, resultsCount, searchAdditionals, overlay, showOverlay, debounce, size, highlight, searchLoading, startLoading, stopLoading }">
         <div
-            class="pointer-events-none fixed z-10 inset-0 cursor-pointer bg-neutral/40 opacity-0 transition duration-500"
+            class="z-header-autocomplete-overlay pointer-events-none fixed inset-0 cursor-pointer bg-black/40 opacity-0 transition duration-500"
             :class="{ 'pointer-events-auto opacity-100 prevent-scroll': overlay, 'opacity-0 pointer-events-none ': !overlay }"
         ></div>
         <x-rapidez::autocomplete.magnifying-glass v-bind:class="{ 'bg-primary text-white': overlay }" />
@@ -47,11 +47,11 @@
         >
             <div slot="render" slot-scope="{ downshiftProps: { isOpen }, data: suggestions, value, loading }">
                 <div
-                    class="z-header-autocomplete absolute -inset-x-10 top-full max-h-[600px] overflow-auto rounded-b-xl border bg-white p-2 md:p-5 shadow-xl md:inset-x-0 md:w-full md:-translate-y-px"
-                    v-if="isOpen && (suggestions.length || resultsCount)"
+                    v-if="isOpen && !searchLoading && !loading && value"
+                    class="z-header-autocomplete absolute -inset-x-5 top-14 overflow-x-hidden overflow-y-auto scrollbar-hide pt-4 pb-7 bg-white shadow-xl max-md:h-[calc(100svh-150px)] max-md:max-h-[calc(100svh-150px)] md:top-14 md:max-h-[calc(100svh-150px)] md:rounded-xl md:border md:inset-x-0 md:w-full md:-translate-y-px"
                 >
                     <div v-if="suggestions.length || resultsCount">
-                        <div class="flex flex-col prose-li:px-5 hover:prose-li:bg-inactive-100">
+                        <div class="flex flex-col prose-li:px-5 hover:prose-li:bg-muted">
                             {{--
                                 Additionals will always be shown above the products because of this v-for.
                                 With the flex-col above, we can change the order of the items. For example, if we add a blog.blade.php and we add an order-1
