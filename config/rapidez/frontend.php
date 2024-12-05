@@ -35,6 +35,14 @@ return [
         // Uses the views in rapidez::layouts.partials.header.autocomplete
         'additionals' => [
             'categories' => ['name^3', 'description'],
+
+            // For example:
+            // 'blogs' => [
+            //     'fields' => ['title^3', 'description'],  // Required
+            //     'size' => 3,                             // Optional; Overrides the default `size` as defined below
+            //     'stores' => ['my_second_store'],         // Optional; Define this only if you want to specify which stores use this index
+            //     'sort' => ['date' => 'desc'],            // Optional; See: https://www.elastic.co/guide/en/elasticsearch/reference/7.17/sort-search-results.html)
+            // ],
         ],
 
         'debounce' => 100,
