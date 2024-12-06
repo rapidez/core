@@ -16,10 +16,10 @@ Standard usage may look like this:
 --}}
 
 @props(['title', 'position' => 'left'])
-@slots(['label', 'contents'])
+@slots(['label'])
 
-<global-slideover title="{{ $title }}" position="{{ $position }}" contents="{{ $slot->toHtml() }}" v-slot="slideover">
-    <label {{ $label->attributes->class('global-slideover-label cursor-pointer') }} for="slideover-global" v-on:click="slideover.open">
+<global-slideover title="{{ $title }}" position="{{ $position }}" content="{{ $slot->toHtml() }}" v-slot="slideover">
+    <label {{ $label->attributes->class('global-slideover-label cursor-pointer') }} v-on:click="slideover.open">
         {{ $label }}
     </label>
 </global-slideover>
