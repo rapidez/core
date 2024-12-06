@@ -1,4 +1,3 @@
-{{-- When there are no results in the search autocomplete this will be shown. --}}
 <div class="font-bold text text-lg break-all">
     @lang('No results found for :searchterm', ['searchterm' => '<span class="text-primary">"@{{ value }}"</span>'])
 </div>
