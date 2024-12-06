@@ -63,8 +63,6 @@
                         @include('rapidez::layouts.partials.header.autocomplete.all-results')
                     </div>
                     <div v-else class="p-5">
-                        {{-- This will be shown when there are no results in the autocomplete. If you type something
-                        that won't have results, for example: "kmerkemrke", this will be shown. --}}
                         @include('rapidez::layouts.partials.header.autocomplete.no-results')
                     </div>
                 </div>
