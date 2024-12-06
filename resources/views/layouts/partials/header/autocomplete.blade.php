@@ -52,11 +52,7 @@
                 >
                     <div v-if="suggestions.length || resultsCount">
                         <div class="flex flex-col prose-li:px-5 hover:prose-li:bg-muted">
-                            {{--
-                                Additionals will always be shown above the products because of this v-for.
-                                With the flex-col above, we can change the order of the items. For example, if we add a blog.blade.php and we add an order-1
-                                like this: `<div class="border-t pb-2 order-1" v-if="resultsType == 'blogs'">`, blogs will be shown below the products.
-                            --}}
+                            {{-- The order can be changed with https://tailwindcss.com/docs/order --}}
                             <template v-for="(resultsData, resultsType) in results ?? {}" v-if="resultsData?.hits?.length">
                                 @foreach (config('rapidez.frontend.autocomplete.additionals') as $key => $fields)
                                     @includeIf('rapidez::layouts.partials.header.autocomplete.' . $key)
