@@ -42,7 +42,7 @@
             >
                 <div
                     class="{{ config('rapidez.frontend.z-indexes.header-dropdowns') }} absolute -inset-x-10 top-full max-h-[600px] overflow-auto rounded-b-xl border bg-white p-2 md:p-5 shadow-xl md:inset-x-0 md:w-full md:-translate-y-px"
-                    v-if="dataSearchScope.downshiftProps.isOpen && (dataSearchScope.suggestions.length || autocompleteScope.resultsCount)"
+                    v-if="dataSearchScope.downshiftProps.isOpen && (dataSearchScope.data.length || autocompleteScope.resultsCount)"
                 >
                     <template v-for="(resultsData, resultsType) in autocompleteScope.results ?? {}" v-if="resultsData?.hits?.length">
                         @foreach (config('rapidez.frontend.autocomplete.additionals') as $key => $fields)
