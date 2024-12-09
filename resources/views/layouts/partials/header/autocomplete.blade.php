@@ -20,12 +20,12 @@
     class="relative w-full"
     v-cloak
 >
-    <x-rapidez::reactive-base slot-scope="{ results, resultsCount, searchAdditionals, overlay, showOverlay, debounce, size, highlight, searchLoading, startLoading, stopLoading }">
+    <x-rapidez::reactive-base slot-scope="autocompleteScope">
         <div
             class="z-header-autocomplete-overlay pointer-events-none fixed inset-0 cursor-pointer bg-black/40 opacity-0 transition duration-500"
-            :class="{ 'pointer-events-auto opacity-100 prevent-scroll': overlay, 'opacity-0 pointer-events-none ': !overlay }"
+            :class="autocompleteScope.overlay ? 'pointer-events-auto opacity-100 prevent-scroll' : 'opacity-0 pointer-events-none '"
         ></div>
-        <x-rapidez::autocomplete.magnifying-glass v-bind:class="{ 'bg-primary text-white': overlay }" />
+        <x-rapidez::autocomplete.magnifying-glass v-bind:class="{ 'bg-primary text-white': autocompleteScope.overlay }" />
         <data-search
             placeholder="@lang('What are you looking for?')"
             v-on:value-selected="search"
@@ -36,24 +36,24 @@
             :field-weights="Object.values(config.searchable)"
             :show-icon="false"
             fuzziness="AUTO"
-            :debounce="debounce"
-            @blur="showOverlay(false)"
-            @focus="showOverlay(true)"
-            :size="size"
+            :debounce="autocompleteScope.debounce"
+            v-on:blur="autocompleteScope.showOverlay(false)"
+            v-on:focus="autocompleteScope.showOverlay(true)"
+            :size="autocompleteScope.size"
             :highlight="true"
-            v-on:value-change="searchAdditionals"
-            v-on:key-down="startLoading"
-            v-on:suggestions="stopLoading"
+            v-on:value-change="autocompleteScope.searchAdditionals"
+            v-on:key-down="autocompleteScope.startLoading"
+            v-on:suggestions="autocompleteScope.stopLoading"
         >
-            <div slot="render" slot-scope="{ downshiftProps: { isOpen }, data: suggestions, value, loading }">
+            <div slot="render" slot-scope="dataSearchScope">
                 <div
-                    v-if="isOpen && !searchLoading && !loading && value"
+                    v-if="dataSearchScope.downshiftProps.isOpen && !autocompleteScope.searchLoading && !dataSearchScope.loading && dataSearchScope.value"
                     class="z-header-autocomplete absolute -inset-x-5 top-14 overflow-x-hidden overflow-y-auto scrollbar-hide pt-4 pb-7 bg-white shadow-xl max-md:h-[calc(100svh-150px)] max-md:max-h-[calc(100svh-150px)] md:top-14 md:max-h-[calc(100svh-150px)] md:rounded-xl md:border md:inset-x-0 md:w-full md:-translate-y-px"
                 >
-                    <div v-if="suggestions.length || resultsCount">
+                    <div v-if="dataSearchScope.data.length || autocompleteScope.resultsCount">
                         <div class="flex flex-col prose-li:px-5 hover:prose-li:bg-muted">
                             {{-- The order can be changed with https://tailwindcss.com/docs/order --}}
-                            <template v-for="(resultsData, resultsType) in results ?? {}" v-if="resultsData?.hits?.length">
+                            <template v-for="(resultsData, resultsType) in autocompleteScope.results ?? {}" v-if="resultsData?.hits?.length">
                                 @foreach (config('rapidez.frontend.autocomplete.additionals') as $key => $fields)
                                     @includeIf('rapidez::layouts.partials.header.autocomplete.' . $key)
                                 @endforeach
