@@ -2,7 +2,7 @@
     <x-rapidez::autocomplete.title>@lang('Products')</x-rapidez::autocomplete.title>
     <ul class="gap-2 flex flex-col">
         <li v-for="suggestion in dataSearchScope.data" :key="suggestion.source._id">
-            <a :href="suggestion.source.url | url" class="group relative flex flex-wrap py-2">
+            <a v-bind:href="suggestion.source.url | url" class="group relative flex flex-wrap py-2">
                 <img :src="'/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + suggestion.source.thumbnail + '.webp'" class="shrink-0 self-center object-contain size-16 mix-blend-multiply" />
                 <div class="flex flex-1 justify-center flex-col px-2">
                     <div class="text-sm font-medium font-sans hyphens-auto line-clamp-2 w-full" v-html="autocompleteScope.highlight(suggestion, 'name')"></div>
