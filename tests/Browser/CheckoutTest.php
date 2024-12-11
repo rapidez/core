@@ -13,7 +13,7 @@ class CheckoutTest extends DuskTestCase
     public function checkoutAsGuest()
     {
         $this->browse(function (Browser $browser) {
-            $this->addProductToCart($browser);
+            $browser->addProductToCart($this->testProduct->url);
             $this->doCheckout($browser, 'wayne+' . mt_rand() . '@enterprises.com');
         });
     }
@@ -27,39 +27,29 @@ class CheckoutTest extends DuskTestCase
 
         // Go through checkout as guest and register.
         $this->browse(function (Browser $browser) use ($email) {
-            $this->addProductToCart($browser);
+            $browser->addProductToCart($this->testProduct->url);
             $this->doCheckout($browser, $email, 'IronManSucks.91939', true);
         });
 
         // Go through checkout as guest and log in.
         $this->browse(function (Browser $browser) use ($email) {
             $browser->waitForReload(fn ($browser) => $browser->visit('/'), 4)
+                ->waitUntilVueLoaded()
                 ->waitUntilIdle()
                 ->waitFor('@account_menu')
                 ->click('@account_menu')
                 ->click('@logout')
                 ->waitUntilIdle();
-            $this->addProductToCart($browser);
+            $browser->addProductToCart($this->testProduct->url);
             $this->doCheckout($browser, $email, 'IronManSucks.91939', false);
         });
-    }
-
-    public function addProductToCart($browser)
-    {
-        $browser
-            ->visit($this->testProduct->url)
-            ->waitUntilIdle()
-            ->click('@add-to-cart')
-            ->waitUntilIdle();
-
-        return $browser;
     }
 
     public function doCheckout(Browser $browser, $email = false, $password = false, $register = false)
     {
         $browser
             ->visit('/checkout')
-            ->pause(5000)
+            ->waitUntilVueLoaded()
             ->waitUntilIdle()
             ->type('@email', $email ?: 'wayne@enterprises.com')
             ->click('@continue')

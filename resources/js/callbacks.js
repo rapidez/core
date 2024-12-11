@@ -26,7 +26,7 @@ Vue.prototype.checkResponseForExpiredCart = async function (variables, response)
     if (
         response?.errors?.some(
             (error) =>
-                error.extensions.category === 'graphql-no-such-entity' &&
+                error.extensions?.category === 'graphql-no-such-entity' &&
                 error.path.some((path) =>
                     [
                         'cart',

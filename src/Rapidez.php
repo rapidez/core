@@ -2,13 +2,18 @@
 
 namespace Rapidez\Core;
 
-use Illuminate\Routing\RouteAction;
+use Illuminate\Routing\Route;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\URL;
+use Rapidez\Core\Models\Config;
+use Rapidez\Core\Models\ConfigScopes;
 use Rapidez\Core\Models\Store;
+use ReflectionClass;
 
 class Rapidez
 {
@@ -16,20 +21,33 @@ class Rapidez
 
     public function __construct(protected Collection $routes) {}
 
-    public function addFallbackRoute($action, $position = 9999)
+    public function addFallbackRoute(Route|array|string $action, $position = 9999)
     {
         $this->routes->push([
-            'action'   => RouteAction::parse('', $action),
+            'route'    => $this->actionToRoute($action)->fallback(),
             'position' => $position,
         ]);
 
         return $this;
     }
 
-    public function removeFallbackRoute($action)
+    private function actionToRoute(Route|array|string $action): Route
     {
-        $action = RouteAction::parse('', $action);
-        $this->routes = $this->routes->reject(fn ($route) => $route['action'] === $action);
+        if ($action instanceof Route) {
+            return $action;
+        }
+
+        $router = new ReflectionClass(Router::class);
+        $createRoute = $router->getMethod('createRoute');
+        $createRoute->setAccessible(true);
+
+        return $createRoute->invoke(app(Router::class), ['GET'], '', $action);
+    }
+
+    public function removeFallbackRoute(Route|array|string $action)
+    {
+        $action = $this->actionToRoute($action);
+        $this->routes = $this->routes->reject(fn ($route) => $route['route']->action === $action->action);
 
         return $this;
     }
@@ -41,7 +59,7 @@ class Rapidez
 
     public function config(string $path, $default = null, bool $sensitive = false): ?string
     {
-        return config('rapidez.models.config')::getCachedByPath($path, $default, $sensitive);
+        return config('rapidez.models.config')::getValue($path, options: ['cache' => true, 'decrypt' => $sensitive]) ?? $default;
     }
 
     public function content($content)
@@ -111,6 +129,42 @@ class Rapidez
         config()->set('rapidez.root_category_id', $store['root_category_id']);
         config()->set('frontend.base_url', url('/'));
 
+        if (config()->get('rapidez.magento_url_from_db', false)) {
+            $magentoUrl = trim(
+                Config::getValue('web/secure/base_url', ConfigScopes::SCOPE_WEBSITE) ?? config()->get('rapidez.magento_url'),
+                '/'
+            );
+
+            $storeUrl = trim(
+                Config::getValue('web/secure/base_url', ConfigScopes::SCOPE_STORE) ?? config()->get('frontend.base_url'),
+                '/'
+            );
+
+            // Make sure the store url is not the same as the magentoUrl
+            if ($magentoUrl !== $storeUrl) {
+                URL::forceRootUrl($storeUrl);
+            }
+
+            // Make sure the Magento url is not the Rapidez url before setting it
+            if ($magentoUrl !== url('/')) {
+                config()->set('rapidez.magento_url', $magentoUrl);
+            }
+
+            $mediaUrl = trim(
+                str_replace(
+                    ['{{secure_base_url}}', '{{unsecure_base_url}}'],
+                    config()->get('rapidez.magento_url') . '/',
+                    Config::getValue('web/secure/base_media_url', ConfigScopes::SCOPE_WEBSITE) ?? config()->get('rapidez.media_url')
+                ),
+                '/'
+            );
+            // Make sure the Magento media url is not the same as Rapidez url before setting it
+            if ($mediaUrl !== url('/media')) {
+                config()->set('rapidez.media_url', $mediaUrl);
+            }
+        }
+
+        config()->set('frontend.base_url', url('/'));
         App::setLocale(strtok(Rapidez::config('general/locale/code', 'en_US'), '_'));
 
         Event::dispatch('rapidez:store-set', [$store]);

@@ -12,20 +12,18 @@ class OptionValue extends Model
 
     public static function getCachedByOptionId(int $optionId): string
     {
-        $cacheKey = 'optionvalue.' . config('rapidez.store') . '.' . $optionId;
+        $cacheKey = 'optionvalues.' . config('rapidez.store');
+        $cache = Cache::store('rapidez:multi')->get($cacheKey, []);
 
-        if (! $optionValue = config('cache.app.' . $cacheKey)) {
-            $optionValue = Cache::rememberForever($cacheKey, function () use ($optionId) {
-                return html_entity_decode(self::where('option_id', $optionId)
-                    ->whereIn('store_id', [config('rapidez.store'), 0])
-                    ->orderByDesc('store_id')
-                    ->first('value')
-                    ->value ?? false);
-            });
-
-            config(['cache.app.' . $cacheKey => $optionValue]);
+        if (! isset($cache[$optionId])) {
+            $cache[$optionId] = html_entity_decode(self::where('option_id', $optionId)
+                ->whereIn('store_id', [config('rapidez.store'), 0])
+                ->orderByDesc('store_id')
+                ->first('value')
+                ->value ?? false);
+            Cache::store('rapidez:multi')->forever($cacheKey, $cache);
         }
 
-        return $optionValue;
+        return $cache[$optionId];
     }
 }
