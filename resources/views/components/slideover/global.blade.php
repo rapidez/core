@@ -2,7 +2,7 @@
 This is a wrapper for the global slideover. Use this as much as possible to reduce the amount of html elements in the DOM.
 Standard usage may look like this:
 ```
-<x-rapidez::slideover.global :title="__('My slideover')">
+<x-rapidez::slideover.global title="My slideover">
     <x-slot:label class="rounded p-3 border">
         Click me
     </x-slot:label>
