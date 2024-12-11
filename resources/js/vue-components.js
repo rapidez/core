@@ -20,6 +20,8 @@ import notifications from './components/Notifications/Notifications.vue'
 Vue.component('notifications', notifications)
 import globalSlideover from './components/GlobalSlideover.vue'
 Vue.component('global-slideover', globalSlideover)
+import globalSlideoverInstance from './components/GlobalSlideoverInstance.vue'
+Vue.component('global-slideover-instance', globalSlideoverInstance)
 
 import images from './components/Product/Images.vue'
 Vue.component('images', images)

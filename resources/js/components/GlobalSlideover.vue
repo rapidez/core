@@ -3,7 +3,7 @@ export default {
     props: {
         title: String,
         position: String,
-        contents: String,
+        content: String,
     },
 
     render() {
@@ -12,19 +12,7 @@ export default {
 
     methods: {
         open() {
-            this.$root.globalSlideover.content = this.slideoverContents
-            this.$root.globalSlideover.title = this.title
-            this.$root.globalSlideover.position = this.position
-        },
-    },
-
-    computed: {
-        slideoverContents() {
-            if (this.contents) {
-                return this.contents
-            }
-
-            return this.$el.querySelector('.global-slideover-wrapper').innerHTML
+            this.$root.$emit('global-slideover-open', {'content': this.content, 'title': this.title, 'position': this.position});
         },
     },
 }
