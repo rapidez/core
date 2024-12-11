@@ -17,7 +17,7 @@ class MagentoCustomerTokenGuard extends TokenGuard implements Guard
         });
 
         auth()->extend('magento-customer', function (Application $app, string $name, array $config) {
-            return new static(auth()->createUserProvider($config['provider']), request(), 'token', 'token');
+            return new self(auth()->createUserProvider($config['provider']), request(), 'token', 'token');
         });
 
         config([

@@ -25,15 +25,17 @@
     @stack('head')
     @config('design/head/includes')
 </head>
-<body class="text-neutral antialiased">
+<body class="text antialiased">
     <div id="app" class="flex flex-col min-h-dvh">
-        @includeWhen(!request()->is('checkout'), 'rapidez::layouts.partials.header')
-        @includeWhen(request()->is('checkout'), 'rapidez::layouts.checkout.header')
+        @includeWhen(!request()->routeIs('checkout'), 'rapidez::layouts.partials.header')
+        @includeWhen(request()->routeIs('checkout'), 'rapidez::layouts.checkout.header')
         <main>
             @yield('content')
         </main>
-        @includeWhen(!request()->is('checkout'), 'rapidez::layouts.partials.footer')
-        @includeWhen(request()->is('checkout'), 'rapidez::layouts.checkout.footer')
+        @includeWhen(!request()->routeIs('checkout'), 'rapidez::layouts.partials.footer')
+        @includeWhen(request()->routeIs('checkout'), 'rapidez::layouts.checkout.footer')
+
+        @include('rapidez::layouts.partials.global-slideover')
         @stack('page_end')
     </div>
 

@@ -12,12 +12,10 @@
             @include('rapidez::product.partials.microdata')
             @include('rapidez::product.partials.opengraph')
             <div class="relative flex flex-col gap-8 sm:flex-row">
-                <div class="sm:w-1/2">
-                    <div class="sticky top-5">
-                        @include('rapidez::product.partials.images')
-                    </div>
+                <div class="sm:w-1/2 flex flex-col shrink-0">
+                    @include('rapidez::product.partials.images')
                 </div>
-                <div class="flex flex-col gap-5 sm:w-1/2">
+                <div class="flex flex-col gap-5 sm:w-1/2 shrink-0">
                     @includeWhen($product->type_id == 'grouped', 'rapidez::product.partials.grouped')
                     @includeWhen($product->type_id !== 'grouped', 'rapidez::product.partials.addtocart')
                     @if (App::providerIsLoaded('Rapidez\Reviews\ReviewsServiceProvider'))
@@ -27,13 +25,13 @@
                     @endif
                     <div>
                         <div class="border-t pt-5 text-lg font-bold">@lang('Description')</div>
-                        <div class="prose text-inactive" itemprop="description">
+                        <div class="prose text-muted" itemprop="description">
                             {!! $product->description !!}
                         </div>
                     </div>
                     <div>
                         <div class="mb-2 border-t pt-5 text-lg font-bold">@lang('Specifications')</div>
-                        <dl class="flex flex-col text-inactive [&>dd]:rounded [&>dd]:p-2 odd:[&>dd]:bg-highlight odd:[&>dd]:font-semibold odd:[&>dd]:text-neutral even:[&>dd]:pl-4">
+                        <dl class="flex flex-col text-muted [&>dd]:rounded [&>dd]:p-2 odd:[&>dd]:bg odd:[&>dd]:font-semibold odd:[&>dd]:text even:[&>dd]:pl-4">
                             <dd>ID</dd>
                             <dd>{{ $product->entity_id }}</dd>
                             <dd>SKU</dd>
@@ -54,7 +52,7 @@
         </div>
     </div>
     @if (App::providerIsLoaded('Rapidez\Reviews\ReviewsServiceProvider'))
-        <div class="my-5 py-8 bg-highlight min-h-[515px]">
+        <div class="my-5 py-8 bg min-h-[515px]">
             <div class="container grid w-full grid-cols-1 gap-5 p-5 md:grid-cols-3">
                 @include('rapidez-reviews::form', ['sku' => $product->sku])
                 <div class="md:col-span-2">

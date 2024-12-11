@@ -5,12 +5,11 @@
     :callback="handlePlaceOrder"
     mutate-event="placeOrder"
     redirect="{{ route('checkout.success') }}"
-    {{-- :error-callback="alert" --}}
     v-slot="{ mutate, variables }"
 >
     <fieldset>
-        <x-rapidez::button type="submit" dusk="continue" class="mt-3">
+        <x-rapidez::button.conversion type="submit" dusk="continue" class="mt-3">
             @lang('Place order')
-        </x-rapidez::button>
+        </x-rapidez::button.conversion>
     </fieldset>
 </graphql-mutation>

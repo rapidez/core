@@ -18,6 +18,10 @@ Vue.component('graphql-mutation', graphqlMutation)
 
 import notifications from './components/Notifications/Notifications.vue'
 Vue.component('notifications', notifications)
+import globalSlideover from './components/GlobalSlideover.vue'
+Vue.component('global-slideover', globalSlideover)
+import globalSlideoverInstance from './components/GlobalSlideoverInstance.vue'
+Vue.component('global-slideover-instance', globalSlideoverInstance)
 
 import images from './components/Product/Images.vue'
 Vue.component('images', images)
@@ -28,3 +32,4 @@ Vue.component('login', () => import('./components/User/Login.vue'))
 Vue.component('listing', () => import('./components/Listing/Listing.vue'))
 Vue.component('checkout-success', () => import('./components/Checkout/CheckoutSuccess.vue'))
 Vue.component('popup', () => import('./components/Popup.vue'))
+Vue.component('selected-filters-values', () => import('./components/Listing/Filters/SelectedFiltersValues.vue'))

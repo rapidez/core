@@ -17,6 +17,7 @@ fragment product on ProductInterface {
     }
     @if (Rapidez::checkCompadreVersion('0.0.1'))
         stock_item {
+            in_stock
             max_sale_qty
             min_sale_qty
             qty_increments

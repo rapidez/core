@@ -2,10 +2,10 @@
     <template slot-scope="{ order, refreshOrder, hideBilling, shipping, billing, items }">
         <div v-if="order" dusk="checkout-success" class="container" v-cloak>
             <h1 class="font-bold text-4xl mb-5">@lang('Order placed succesfully')</h1>
-            <div class="bg-highlight rounded p-8">
+            <div class="bg rounded p-8">
                 <p>@lang('We will get to work for you right away')</p>
                 <p>@lang('We will send a confirmation of your order to') <span class="font-bold">@{{ order.email }}</span></p>
-                <p>@lang('Your order is currently'): <span class="font-bold">@{{ order.status }}</span> <a class="inline-block" href="#" v-on:click.prevent="(e) => {e.target.classList.add('animate-spin'); refreshOrder().finally(() => e.target.classList.remove('animate-spin'))}">&#8635;</a></p>
+                <p>@lang('Your order is currently:') <span class="font-bold">@{{ order.status }}</span> <a class="inline-block" href="#" v-on:click.prevent="(e) => {e.target.classList.add('animate-spin'); refreshOrder().finally(() => e.target.classList.remove('animate-spin'))}">&#8635;</a></p>
             </div>
 
             <div class="mt-4">
@@ -44,8 +44,8 @@
                 </div>
             </div>
             <div class="flex flex-col mt-4 gap-x-4 md:flex-row">
-                <div class="w-full p-8 bg-highlight rounded border-l-2 border-neutral md:w-1/2" v-if="order.billing_address">
-                    <p class="text-neutral font-lg font-bold mb-2">@lang('Billing address')</p>
+                <div class="w-full p-8 bg-white shadow-sm rounded border border-l-2 border-l-primary md:w-1/2" v-if="order.billing_address">
+                    <p class="text font-lg font-bold mb-2">@lang('Billing address')</p>
                     <ul>
                         <li>@{{ order.billing_address.firstname }} @{{ order.billing_address.lastname }}</li>
                         <li>@{{ order.billing_address.street?.join(' ') }}</li>
@@ -53,8 +53,8 @@
                         <li>@{{ order.billing_address.telephone }}</li>
                     </ul>
                 </div>
-                <div class="w-full p-8 bg-highlight rounded border-l-2 border-neutral mt-4 md:mt-0 md:w-1/2" v-if="order.shipping_address">
-                    <p class="text-neutral font-lg font-bold mb-2">@lang('Shipping address')</p>
+                <div class="w-full p-8 bg-white shadow-sm rounded border-l-2 border border-l-primary mt-4 md:mt-0 md:w-1/2" v-if="order.shipping_address">
+                    <p class="text font-lg font-bold mb-2">@lang('Shipping address')</p>
                     <ul>
                         <li>@{{ order.shipping_address.firstname }} @{{ order.shipping_address.lastname }}</li>
                         <li>@{{ order.shipping_address.street?.join(' ') }}</li>
@@ -65,12 +65,12 @@
             </div>
 
             <div class="flex flex-col mt-4 gap-x-4 md:flex-row">
-                <div class="w-full p-8 bg-highlight rounded border-l-2 border-neutral md:w-1/2" v-if="order.shipping_method">
-                    <p class="text-neutral font-lg font-bold mb-2">@lang('Shipping method')</p>
+                <div class="w-full p-8 bg-white shadow-sm rounded border-l-2 border border-l-primary md:w-1/2" v-if="order.shipping_method">
+                    <p class="text font-lg font-bold mb-2">@lang('Shipping method')</p>
                     <p>@{{ order.shipping_method }}</p>
                 </div>
-                <div class="w-full p-8 bg-highlight rounded border-l-2 border-neutral mt-4 md:mt-0 md:w-1/2">
-                    <p class="text-neutral font-lg font-bold mb-2">@lang('Payment method')</p>
+                <div class="w-full p-8 bg-white shadow-sm rounded border-l-2 border border-l-primary mt-4 md:mt-0 md:w-1/2">
+                    <p class="text font-lg font-bold mb-2">@lang('Payment method')</p>
                     <p v-for="method in order.payment_methods">@{{ method.name || method.type }}</p>
                 </div>
             </div>

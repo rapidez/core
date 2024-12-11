@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -118,9 +119,14 @@ class RapidezServiceProvider extends ServiceProvider
                 __DIR__ . '/../resources/views' => resource_path('views/vendor/rapidez'),
             ], 'views');
 
-            $this->publishes([
-                __DIR__ . '/../resources/lang' => resource_path('lang/vendor/rapidez'),
-            ], 'translations');
+            // We're so explicit here as otherwise the json translations will also be published.
+            // That will publish to /lang/vendor/rapidez/nl.json where it will not be loaded
+            // by default and; you should keep everyting in one place: /lang/nl.json
+            foreach (['en', 'nl'] as $lang) {
+                $this->publishes([
+                    __DIR__ . '/../lang/' . $lang . '/frontend.php' => lang_path('vendor/rapidez/' . $lang . '/frontend.php'),
+                ], 'rapidez-translations');
+            }
 
             $this->publishes([
                 __DIR__ . '/../resources/payment-icons' => public_path('payment-icons'),
@@ -140,6 +146,16 @@ class RapidezServiceProvider extends ServiceProvider
         RapidezFacade::addFallbackRoute(UrlRewriteController::class, 5);
         RapidezFacade::addFallbackRoute(CmsPageController::class, 10);
         RapidezFacade::addFallbackRoute(LegacyFallbackController::class, 99999);
+
+        if (! app()->runningInConsole() && config('rapidez.routing.earlyhints.enabled', true)) {
+            $this->app->call(function (\Illuminate\Contracts\Http\Kernel $kernel) {
+                /** @var \Illuminate\Foundation\Http\Kernel $kernel */
+                $middlewares = $kernel->getGlobalMiddleware();
+                $middlewares[] = \JustBetter\Http3EarlyHints\Middleware\AddHttp3EarlyHints::class;
+
+                $kernel->setGlobalMiddleware($middlewares);
+            });
+        }
 
         return $this;
     }
@@ -235,7 +251,8 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function bootTranslations(): self
     {
-        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'rapidez');
+        $this->loadTranslationsFrom(__DIR__ . '/../lang', 'rapidez');
+        $this->loadJsonTranslationsFrom(__DIR__ . '/../lang');
 
         return $this;
     }
@@ -274,6 +291,23 @@ class RapidezServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/rapidez.php', 'rapidez');
         foreach ($this->configFiles as $configFile) {
             $this->mergeConfigFrom(__DIR__ . '/../config/rapidez/' . $configFile . '.php', 'rapidez.' . $configFile);
+        }
+
+        if (! config('cache.stores.rapidez:multi', false)) {
+            $fallbackDriver = config('cache.default');
+            if ($fallbackDriver === 'rapidez:multi') {
+                $fallbackDriver = config('cache.multi-fallback', 'file');
+                Log::warning('Default cache driver is rapidez:multi, setting fallback driver to ' . $fallbackDriver);
+            }
+
+            config()->set('cache.stores.rapidez:multi', [
+                'driver' => 'multi',
+                'stores' => [
+                    'array',
+                    $fallbackDriver,
+                ],
+                'sync_missed_stores' => true,
+            ]);
         }
 
         return $this;
