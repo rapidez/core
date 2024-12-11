@@ -4,7 +4,7 @@
         v-for="(image, imageId) in images.slice(0, {{ max($breakpoints) }})"
         class="flex items-center justify-center bg-white border rounded p-1.5 aspect-square max-w-24 flex-1 transition-all outline-transparent overflow-hidden relative"
         :class="{
-            'outline outline-1 !outline-neutral border-neutral': active == imageId,
+            'outline outline-1 !outline-primary border-primary': active == imageId,
             'xl:hidden': imageId > {{ $breakpoints['xl'] }},
             'lg:max-xl:hidden': imageId > {{ $breakpoints['lg'] }},
             'md:max-lg:hidden': imageId > {{ $breakpoints['md'] }},
@@ -23,7 +23,7 @@
         <span
             v-if="(imageId + 1) < images.length"
             v-on:click="toggleZoom()"
-            class="absolute inset-0 items-center justify-center bg-neutral/20 hidden"
+            class="absolute inset-0 items-center justify-center bg-black/20 hidden"
             :class="{
                 'xl:flex': imageId === {{ $breakpoints['xl'] }},
                 'lg:max-xl:flex': imageId === {{ $breakpoints['lg'] }},
@@ -32,7 +32,7 @@
                 'max-sm:flex': imageId === {{ $breakpoints['xs'] }}
             }"
         >
-            <span class="size-9 flex items-center justify-center rounded-full shadow-lg bg-white text-sm font-bold text-neutral">
+            <span class="size-9 flex items-center justify-center rounded-full shadow-lg bg-white text-sm font-bold text">
                 +@{{ images.length - (imageId + 1) }}
             </span>
         </span>

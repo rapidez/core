@@ -31,6 +31,8 @@ export default {
             results: {},
             resultsCount: 0,
             searchAdditionals: () => null,
+            overlay: false,
+            searchLoading: false,
         }
     },
 
@@ -103,10 +105,19 @@ export default {
     },
 
     methods: {
+        startLoading() {
+            this.searchLoading = true
+        },
+        stopLoading() {
+            this.searchLoading = false
+        },
         highlight(hit, field) {
             let source = hit._source ?? hit.source
             let highlight = hit.highlight ?? source.highlight
             return highlight?.[field]?.[0] ?? source?.[field] ?? ''
+        },
+        showOverlay(isOpen) {
+            this.overlay = isOpen
         },
     },
 }

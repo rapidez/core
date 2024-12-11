@@ -62,8 +62,10 @@ export default {
             zIndex: {
                 'header': '100',
                 'header-dropdown': '10',
+                'header-autocomplete-overlay': '10',
                 'header-autocomplete': '20',
                 'header-minicart': '30',
+                'header-autocomplete-button': '30',
 
                 'notifications': '110',
 

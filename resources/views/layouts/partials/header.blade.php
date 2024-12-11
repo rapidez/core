@@ -1,4 +1,4 @@
-<header class="relative mb-5 border-b shadow z-header">
+<header class="relative mb-5 max-md:pb-4 border-b z-header">
     <div class="container flex flex-wrap items-center max-sm:px-3">
         <input id="navigation" class="peer hidden" type="checkbox" />
         <div class="py-2">
@@ -16,7 +16,7 @@
                 </label>
             </div>
         </div>
-        <div class="flex h-12 max-w-lg flex-1 items-center">
+        <div class="flex items-center h-12 max-md:order-last max-md:w-full md:max-w-lg md:flex-1">
             @include('rapidez::layouts.partials.header.autocomplete')
         </div>
         <div class="ml-auto flex items-center justify-end pl-3">
