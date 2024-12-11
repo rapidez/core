@@ -12,7 +12,7 @@ export default {
 
     methods: {
         open() {
-            this.$root.$emit('global-slideover-open', {'content': this.content, 'title': this.title, 'position': this.position});
+            this.$root.$emit('global-slideover-open', { content: this.content, title: this.title, position: this.position })
         },
     },
 }
