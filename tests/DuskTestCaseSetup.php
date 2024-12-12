@@ -2,8 +2,10 @@
 
 namespace Rapidez\Core\Tests;
 
+use Illuminate\Support\Facades\App;
 use Laravel\Dusk\Browser;
 use PHPUnit\Framework\Assert;
+use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Product;
 
 trait DuskTestCaseSetup
@@ -15,6 +17,8 @@ trait DuskTestCaseSetup
     protected function setUp(): void
     {
         parent::setUp();
+
+        App::setLocale(strtok(Rapidez::config('general/locale/code', 'en_US'), '_'));
 
         Browser::macro('waitUntilTrueForDuration', function (string $script = 'true', $timeout = 120, $for = 0.5) {
             // Waits until the script is truthy for x seconds, supports await.
@@ -39,7 +43,17 @@ trait DuskTestCaseSetup
 
         Browser::macro('waitUntilIdle', function ($timeout = 120) {
             /** @var Browser $this */
-            $this->waitUntilTrueForDuration('window.app?.$data?.loading !== true && await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 5}))', $timeout);
+            $this->waitUntilTrueForDuration('window.app?.$data?.loading !== true && await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 5}))', $timeout); // @phpstan-ignore-line
+
+            return $this;
+        });
+
+        Browser::macro('waitUntilVueLoaded', function () {
+            /** @var Browser $this */
+            $this
+                ->waitUntilIdle()
+                ->waitUntilTrueForDuration('document.body.contains(window.app?.$el) && window.app?._isMounted', 60, 2)
+                ->waitUntilIdle();
 
             return $this;
         });
@@ -60,13 +74,16 @@ trait DuskTestCaseSetup
             /** @var Browser $this */
             if ($productUrl) {
                 $this
-                    ->visit($productUrl);
+                    ->visit($productUrl)
+                    ->waitUntilVueLoaded()
+                    ->waitUntilIdle();
             }
 
             $this
                 ->waitUntilIdle()
-                ->pressAndWaitFor('@add-to-cart', 60)
-                ->waitForText('Added', 60)
+                ->waitUntilEnabled('@add-to-cart', 200)
+                ->press('@add-to-cart', 120)
+                ->waitForText(__('Added'), 120)
                 ->waitUntilIdle();
 
             return $this;

@@ -1,7 +1,7 @@
 @import 'components/vue-slider';
 @import 'components/price-slider';
-@import './theme-variables.css';
-@import './components/pagination.css';
+@import 'components/pagination';
+@import 'components/autocomplete';
 
 @tailwind base;
 @tailwind components;
@@ -10,12 +10,15 @@
 [v-cloak] {
     display: none;
 }
+
 [v-blur] {
     @apply animate-pulse blur;
 }
+
 * {
     -webkit-tap-highlight-color: transparant;
 }
+
 listing {
     /*  Reset browser added styling causing unexpected behavior */
     display: contents;

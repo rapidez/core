@@ -35,10 +35,18 @@ return [
         // Uses the views in rapidez::layouts.partials.header.autocomplete
         'additionals' => [
             'categories' => ['name^3', 'description'],
+
+            // For example:
+            // 'blogs' => [
+            //     'fields' => ['title^3', 'description'],  // Required
+            //     'size' => 3,                             // Optional; Overrides the default `size` as defined below
+            //     'stores' => ['my_second_store'],         // Optional; Define this only if you want to specify which stores use this index
+            //     'sort' => ['date' => 'desc'],            // Optional; See: https://www.elastic.co/guide/en/elasticsearch/reference/7.17/sort-search-results.html)
+            // ],
         ],
 
-        'debounce' => 100,
-        'size'     => 10,
+        'debounce' => 500,
+        'size'     => 3,
     ],
 
     // Link store codes to theme folders
@@ -79,15 +87,7 @@ return [
         ],
     ],
 
-    // Z-Index per element
-    'z-indexes' => [
-        'header-dropdowns' => 'z-20',
-        'lightbox'         => 'z-30',
-        'notification'     => 'z-20',
-        'slideover'        => 'z-50',
-    ],
-
-    // Add to cart settings to automaticly select configurable- or product options (true/false)
+    // Add to cart settings to automatically select configurable- or product options (true/false)
     'add_to_cart' => [
         'auto_select_configurable_options' => false,
         'auto_select_product_options'      => false,

@@ -6,15 +6,17 @@
 
     <div class="justify-self-end mr-5">
         <div class="flex items-center gap-1 flex-wrap">
-            <span class="text-sm text-inactive">@lang('Items per page'):</span>
-            <select class="{{ $dropdownClasses }}" v-model="listingSlotProps.pageSize">
-                <option
-                    v-for="size in $root.config.grid_per_page_values.concat($root.config.translations.all)"
-                    v-bind:value="size"
-                >
-                    @{{ size }}
-                </option>
-            </select>
+            <label class="flex items-center gap-x-1.5">
+                <x-rapidez::label class="text-sm text-muted whitespace-nowrap mb-0">@lang('Items per page'):</x-rapidez::label>
+                <x-rapidez::input.select v-model="listingSlotProps.pageSize" class="w-20">
+                    <option
+                        v-for="size in $root.config.grid_per_page_values.concat($root.config.translations.all)"
+                        v-bind:value="size"
+                    >
+                        @{{ size }}
+                    </option>
+                </x-rapidez::input.select>
+            </label>
         </div>
     </div>
 </div>

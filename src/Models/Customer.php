@@ -29,7 +29,7 @@ class Customer extends Model implements AuthenticatableContract
 
     public function group()
     {
-        return $this->belongsTo(CustomerGroup::class, 'group_id');
+        return $this->belongsTo(config('rapidez.models.customer_group'), 'group_id');
     }
 
     public function getRememberTokenName()

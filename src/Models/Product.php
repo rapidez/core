@@ -123,7 +123,7 @@ class Product extends Model
     public function reviewSummary(): HasOne
     {
         return $this->hasOne(
-            config('rapidez.models.product_review_summary', Rapidez\Core\Models\ProductReviewSummary::class),
+            config('rapidez.models.product_review_summary', \Rapidez\Core\Models\ProductReviewSummary::class),
             'entity_pk_value'
         );
     }

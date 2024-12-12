@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -146,6 +147,16 @@ class RapidezServiceProvider extends ServiceProvider
         RapidezFacade::addFallbackRoute(CmsPageController::class, 10);
         RapidezFacade::addFallbackRoute(LegacyFallbackController::class, 99999);
 
+        if (! app()->runningInConsole() && config('rapidez.routing.earlyhints.enabled', true)) {
+            $this->app->call(function (\Illuminate\Contracts\Http\Kernel $kernel) {
+                /** @var \Illuminate\Foundation\Http\Kernel $kernel */
+                $middlewares = $kernel->getGlobalMiddleware();
+                $middlewares[] = \JustBetter\Http3EarlyHints\Middleware\AddHttp3EarlyHints::class;
+
+                $kernel->setGlobalMiddleware($middlewares);
+            });
+        }
+
         return $this;
     }
 
@@ -280,6 +291,23 @@ class RapidezServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/rapidez.php', 'rapidez');
         foreach ($this->configFiles as $configFile) {
             $this->mergeConfigFrom(__DIR__ . '/../config/rapidez/' . $configFile . '.php', 'rapidez.' . $configFile);
+        }
+
+        if (! config('cache.stores.rapidez:multi', false)) {
+            $fallbackDriver = config('cache.default');
+            if ($fallbackDriver === 'rapidez:multi') {
+                $fallbackDriver = config('cache.multi-fallback', 'file');
+                Log::warning('Default cache driver is rapidez:multi, setting fallback driver to ' . $fallbackDriver);
+            }
+
+            config()->set('cache.stores.rapidez:multi', [
+                'driver' => 'multi',
+                'stores' => [
+                    'array',
+                    $fallbackDriver,
+                ],
+                'sync_missed_stores' => true,
+            ]);
         }
 
         return $this;

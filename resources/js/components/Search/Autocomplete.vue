@@ -31,6 +31,8 @@ export default {
             results: {},
             resultsCount: 0,
             searchAdditionals: () => null,
+            overlay: false,
+            searchLoading: false,
         }
     },
 
@@ -53,6 +55,11 @@ export default {
             let baseUrl = url.origin
 
             Object.entries(self.additionals).forEach(([name, data]) => {
+                let stores = data['stores'] ?? null
+                if (stores && !stores.includes(window.config.store_code)) {
+                    return
+                }
+
                 let fields = data['fields'] ?? data
                 let size = data['size'] ?? self.size ?? undefined
                 let sort = data['sort'] ?? undefined
@@ -98,10 +105,19 @@ export default {
     },
 
     methods: {
+        startLoading() {
+            this.searchLoading = true
+        },
+        stopLoading() {
+            this.searchLoading = false
+        },
         highlight(hit, field) {
             let source = hit._source ?? hit.source
             let highlight = hit.highlight ?? source.highlight
             return highlight?.[field]?.[0] ?? source?.[field] ?? ''
+        },
+        showOverlay(isOpen) {
+            this.overlay = isOpen
         },
     },
 }

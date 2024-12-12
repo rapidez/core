@@ -17,8 +17,8 @@
     v-if="!cart.is_virtual"
 >
     <fieldset class="flex flex-col gap-3" partial-submit="mutate" v-on:change="window.app.$emit('setShippingAddressesOnCart')">
-        <div class="p-5 border rounded bg-white" v-for="(method, index) in cart.shipping_addresses[0]?.available_shipping_methods">
-            <x-rapidez::radio
+        <label class="flex items-center gap-x-1.5 p-5 border rounded bg-white cursor-pointer text-sm text" v-for="(method, index) in cart.shipping_addresses[0]?.available_shipping_methods">
+            <x-rapidez::input.radio.base
                 name="shipping_method"
                 v-model="variables.method"
                 v-bind:value="method.carrier_code+'/'+method.method_code"
@@ -26,11 +26,10 @@
                 v-bind:dusk="'shipping-method-'+index"
                 v-on:change="mutate"
                 required
-            >
-                @{{ method.method_title }}
-                <span v-if="method.amount.value">- @{{ method.amount.value | price }}</span>
-            </x-rapidez::radio>
-        </div>
+            />
+            <span class="ml-1">@{{ method.method_title }}</span>
+            <span v-if="method.amount.value">- @{{ method.amount.value | price }}</span>
+        </label>
     </fieldset>
 </graphql-mutation>
 

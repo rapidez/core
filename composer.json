@@ -17,21 +17,26 @@
     "prefer-stable": true,
     "require": {
         "php": "^8.1|^8.2|^8.3",
+        "rapidez/laravel-multi-cache": "^1.0",
         "blade-ui-kit/blade-heroicons": "^2.4",
-        "mailerlite/laravel-elasticsearch": "^11.1",
         "illuminate/database": "^11.0",
         "illuminate/events": "^11.0",
         "illuminate/queue": "^11.0",
         "illuminate/support": "^11.0",
+        "justbetter/laravel-http3earlyhints": "*",
         "lcobucci/clock": "^2.0|^3.2",
         "lcobucci/jwt": "^4.0|^5.3",
-        "rapidez/blade-directives": "^0.6",
+        "mailerlite/laravel-elasticsearch": "^11.1",
+        "rapidez/blade-components": "^1.0",
+        "rapidez/blade-directives": "^1.0",
         "tormjens/eventy": "^0.8"
     },
     "require-dev": {
+        "larastan/larastan": "^2.9",
         "laravel/dusk": "^8.2",
         "orchestra/testbench": "^9.4",
         "orchestra/testbench-dusk": "^9.7",
+        "phpstan/phpstan": "^1.12",
         "phpunit/phpunit": "^10.5.34|^11.3.5"
     },
     "autoload": {
@@ -61,6 +66,7 @@
         }
     },
     "scripts": {
+        "analyse": "phpstan --memory-limit=256M",
         "dusk:prepare": [
             "./vendor/bin/dusk-updater detect --auto-update",
             "@php -r \"file_exists('phpunit.dusk.xml') || copy('phpunit.dusk.xml.dist', 'phpunit.dusk.xml'); \""

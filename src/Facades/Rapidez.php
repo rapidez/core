@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static array getStores($storeId = null)
  * @method static array getStore($storeId)
  * @method static void setStore($store)
+ * @method static mixed withStore(\Rapidez\Core\Models\Store|array|callable|int|string $store, callable $callback, mixed ...$args)
  *
  * @see \Rapidez\Core\Rapidez
  */

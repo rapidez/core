@@ -1,7 +1,5 @@
 @php($checkoutAgreements ??= \Rapidez\Core\Models\CheckoutAgreement::all())
-@if (!$checkoutAgreements->count())
-    @return
-@endif
+@return(!$checkoutAgreements->count())
 
 @foreach ($checkoutAgreements as $agreement)
     <x-rapidez::slideover position="right" id="{{ $agreement->agreement_id }}_agreement">
@@ -21,21 +19,20 @@
     </x-rapidez::slideover>
 
     @if ($agreement->mode == 'AUTO')
-        <label class="text-gray-700 cursor-pointer underline hover:no-underline" for="{{ $agreement->agreement_id }}_agreement">
+        <label class="text text-sm cursor-pointer underline hover:no-underline" for="{{ $agreement->agreement_id }}_agreement">
             {{ $agreement->checkbox_text }}
         </label>
     @else
         <div>
-            <x-rapidez::checkbox
+            <x-rapidez::input.checkbox.base
                 name="agreement_ids[]"
                 :value="$agreement->agreement_id"
                 dusk="agreements"
                 required
-            >
-                <label class="text-gray-700 cursor-pointer underline hover:no-underline" for="{{ $agreement->agreement_id }}_agreement">
-                    {{ $agreement->checkbox_text }}
-                </label>
-            </x-rapidez::checkbox>
+            />
+            <label class="text text-sm cursor-pointer underline hover:no-underline" for="{{ $agreement->agreement_id }}_agreement">
+                {{ $agreement->checkbox_text }}
+            </label>
         </div>
     @endif
 @endforeach

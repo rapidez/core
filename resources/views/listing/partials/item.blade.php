@@ -9,14 +9,14 @@
             <a :href="item.url | url" class="block">
                 <img
                     v-if="item.thumbnail"
-                    :src="resizedPath(item.thumbnail + '.webp', '200')"
+                    :src="'/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + item.thumbnail + '.webp'"
                     class="mb-3 h-48 w-full rounded-t object-contain" :alt="item.name" :loading="config.category && count <= 4 ? 'eager' : 'lazy'"
                     width="200"
                     height="200"
                 />
                 <x-rapidez::no-image v-else class="mb-3 h-48 rounded-t" />
                 <div class="px-2">
-                    <div class="text-base font-medium text-gray-900">@{{ item.name }}</div>
+                    <div class="text-base font-medium">@{{ item.name }}</div>
                     @if (!Rapidez::config('catalog/frontend/show_swatches_in_product_list', 1))
                         <div class="flex items-center space-x-2">
                             <div class="font-semibold">@{{ (item.special_price || item.price) | price }}</div>
