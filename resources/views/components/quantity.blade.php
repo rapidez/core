@@ -4,31 +4,30 @@ for styling! This makes sure any data like v-model, min, step, etc
 is present on the input and the quantity select component.
 --}}
 <quantity-select v-slot="qtySelect" {{ $attributes }}>
-    <div class="flex border">
-        <x-rapidez::button.outline
+    <div class="flex items-center justify-center border rounded bg-white h-12 self-start">
+        <button
             v-on:click.prevent="qtySelect.decrease"
             v-bind:disabled="!qtySelect.decreasable"
-            :aria-label="__('Decrease')"
+            aria-label="@lang('Decrease')"
+            class="shrink-0 pl-2.5 text disabled:cursor-not-allowed disabled:opacity-50"
         >
-            <div class="bg-neutral h-0.5 w-3 hover:bg-white"></div>
-        </x-rapidez::button.outline>
+            <x-heroicon-o-minus class="mt-0.5 size-5" stroke-width="2" />
+        </button>
         <input
             name="qty"
             type="number"
             dusk="qty"
-            class="w-14 px-1 text-center"
+            class="outline-0 ring-0 border-none w-12 bg-transparent font-medium text-center px-0 sm:text-base focus:ring-transparent"
             aria-label="@lang('Quantity')"
             {{ $attributes }}
         />
-        <x-rapidez::button.outline
+        <button
             v-on:click.prevent="qtySelect.increase"
             v-bind:disabled="!qtySelect.increasable"
-            :aria-label="__('Increase')"
+            aria-label="@lang('Increase')"
+            class="shrink-0 pr-2.5 text disabled:cursor-not-allowed disabled:opacity-50"
         >
-            <div class="relative">
-                <div class="bg-neutral absolute h-0.5 w-3 rotate-90"></div>
-                <div class="bg-neutral h-0.5 w-3"></div>
-            </div>
-        </x-rapidez::button.outline>
+            <x-heroicon-o-plus class="mt-0.5 size-5" stroke-width="2" />
+        </button>
     </div>
 </quantity-select>
