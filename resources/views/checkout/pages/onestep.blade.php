@@ -36,6 +36,7 @@
                         @include('rapidez::checkout.steps.payment_method')
                     </div>
                     <div>
+                        @include('rapidez::checkout.steps.agreements')
                         @include('rapidez::checkout.steps.place_order')
                     </div>
                 </form>
