@@ -24,7 +24,12 @@
                     </div>
                 </div>
 
-                @include('rapidez::product.partials.quantity')
+                <x-rapidez::quantity
+                    v-model.number="addToCart.qty"
+                    ::min="{{ $product->min_sale_qty }}"
+                    ::step="{{ $product->qty_increments }}"
+                    ::max="{{ $product->max_sale_qty ?: 'null' }}"
+                />
 
                 <x-rapidez::button.cart/>
             </div>

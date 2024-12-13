@@ -26,6 +26,9 @@ Vue.component('global-slideover-instance', globalSlideoverInstance)
 import images from './components/Product/Images.vue'
 Vue.component('images', images)
 
+import quantitySelect from './components/Product/QuantitySelect.vue'
+Vue.component('quantity-select', quantitySelect)
+
 Vue.component('autocomplete', () => import('./components/Search/Autocomplete.vue'))
 Vue.component('checkout-login', () => import('./components/Checkout/CheckoutLogin.vue'))
 Vue.component('login', () => import('./components/User/Login.vue'))

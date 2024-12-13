@@ -17,7 +17,12 @@
                         @lang('Sorry! This product is currently out of stock.')
                     </p>
                 @else
-                    @include('rapidez::product.partials.quantity', ['product' => $groupedProduct])
+                    <x-rapidez::quantity
+                        v-model.number="addToCart.qty"
+                        ::min="{{ $groupedProduct->min_sale_qty }}"
+                        ::step="{{ $groupedProduct->qty_increments }}"
+                        ::max="{{ $groupedProduct->max_sale_qty ?: 'null' }}"
+                    />
 
                     <x-rapidez::button.cart/>
                 @endif

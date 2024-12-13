@@ -5,20 +5,13 @@
     :error-callback="checkResponseForExpiredCart"
     v-slot="{ mutate, variables }"
 >
-    <form v-on:submit.prevent="mutate" class="flex gap-1">
-        <x-rapidez::input
-            name="qty"
-            type="number"
-            v-model="variables.quantity"
-            v-bind:dusk="'qty-'+index"
-            class="w-14 px-1 text-center"
-
-            ::min="Math.max(item.product.stock_item?.min_sale_qty, item.product.stock_item?.qty_increments) || null"
-            ::max="item.product.stock_item?.max_sale_qty"
-            ::step="item.product.stock_item?.qty_increments"
+    <div class="flex items-center gap-1">
+        <x-rapidez::quantity
+            v-on:change="mutate"
+            v-model.number="variables.quantity"
+            {{-- No "min" here so you're able to remove by lowering to 0 --}}
+            ::step="(item.product?.stock_item?.qty_increments ?? 1)"
+            ::max="item.product?.stock_item?.max_sale_qty"
         />
-        <x-rapidez::button.secondary type="submit" v-bind:dusk="'item-update-'+index" :title="__('Update')">
-            <x-heroicon-s-arrow-path class="size-4" />
-        </x-rapidez::button.secondary>
     </form>
 </graphql-mutation>
