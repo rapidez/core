@@ -3,7 +3,7 @@
 [Unreleased changes](https://github.com/rapidez/core/compare/3.0.0...3.0.0)
 ## [3.0.0](https://github.com/rapidez/core/releases/tag/3.0.0) - 2024-12-13
 
-In this release we refactored the checkout from the Magento API to GraphQL! You should review all changes! See the upgrade guide: https://docs.rapidez.io/3.x/upgrading.html
+See the upgrade guide: https://docs.rapidez.io/3.x/upgrading.html
 
 ### Added
 
