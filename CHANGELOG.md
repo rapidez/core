@@ -1,6 +1,33 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.19.0...2.19.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/3.0.0...3.0.0)
+## [3.0.0](https://github.com/rapidez/core/releases/tag/3.0.0) - 2024-12-13
+
+In this release we refactored the checkout from the Magento API to GraphQL! You should review all changes! See the upgrade guide: https://docs.rapidez.io/3.x/upgrading.html
+
+### Added
+
+- Checkout refactor using GraphQL and added a onestep option (#503, #630, #631, #636, #647, #612)
+- Improved install command (#586)
+- Use design/head/default_description (#605)
+- Show selected/active filters (#587)
+- Moved the translations and added Dutch translations (#598)
+- HTTP/3 Early Hints support (#644)
+
+### Changed
+
+- Drop support for Magento 2.4.5 and 2.4.6 (#590)
+- Product gallery refactor with count overflow (#624)
+- Color names refactor (#622)
+- Named z-indexes refactor (#625)
+- Implemented rapidez/blade-components (#667)
+- Autocomplete styling (#670)
+- Quantity input refactor (#645)
+
+### Fixed
+
+- Reduce javascript bundle size (#604)
+
 ## [2.19.0](https://github.com/rapidez/core/releases/tag/2.19.0) - 2024-12-13
 
 ### Added
