@@ -1,75 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.18.2...2.18.2)
-## [2.18.2](https://github.com/rapidez/core/releases/tag/2.18.2) - 2024-11-27
-
-### Fixed
-
-- Improved Vue/Turbo loading speed fix (#662)
-
-## [2.18.1](https://github.com/rapidez/core/releases/tag/2.18.1) - 2024-11-27
-
-### Fixed
-
-- Typo (#658)
-
-## [2.18.0](https://github.com/rapidez/core/releases/tag/2.18.0) - 2024-11-26
-
-### Changed
-
-- Improved Vue/Turbo loading speed (#653)
-
-## [2.17.1](https://github.com/rapidez/core/releases/tag/2.17.1) - 2024-11-26
-
-### Fixed
-
-- Reduce forced reflow with the slider (#609)
-- Clone address to remove reactivity (#656)
-
-## [2.17.0](https://github.com/rapidez/core/releases/tag/2.17.0) - 2024-11-20
+[Unreleased changes](https://github.com/rapidez/core/compare/2.19.0...2.19.0)
+## [2.19.0](https://github.com/rapidez/core/releases/tag/2.19.0) - 2024-12-13
 
 ### Added
 
-- Disable checkout button and add notice if not in stock (#627)
-
-### Changed
-
-- Apply middlewares from fallback routes (#643)
-
-## [2.16.0](https://github.com/rapidez/core/releases/tag/2.16.0) - 2024-11-19
-
-### Changed
-
-- Resize path helper (#633, #648)
-- Extracted login to a loginByToken function (#637)
-
-### Fixed
-
-- Image switching length fix (#641)
-- Fix error of undefined when extensions is not set (#634)
-
-## [2.15.0](https://github.com/rapidez/core/releases/tag/2.15.0) - 2024-10-23
-
-### Added
-
-- VAT change event (#606)
-
-### Fixed
-
-- Use correct object structure in PostCSS config (#611)
-
-## [2.14.0](https://github.com/rapidez/core/releases/tag/2.14.0) - 2024-10-17
-
-### Changed
-
-- Updated the frontend dependencies including Vite 5 (#584)
-- Drop support for Magento 2.4.5 (#589)
-
-### Fixed
-
-- Filter out double slashes from API endpoints (#559)
-- Fix casts in quote model (#542)
-- Correct error message when placing an order fails (#599)
+- URLs from Magento option + config refactor with multi-cache (#567)
+- Global slideover (#619)
 
 ## [2.13.0](https://github.com/rapidez/core/releases/tag/2.13.0) - 2024-09-27
 
