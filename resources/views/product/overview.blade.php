@@ -31,14 +31,14 @@
                     </div>
                     <div>
                         <div class="mb-2 border-t pt-5 text-lg font-bold">@lang('Specifications')</div>
-                        <dl class="flex flex-col text-muted [&>dd]:rounded [&>dd]:p-2 odd:[&>dd]:bg odd:[&>dd]:font-semibold odd:[&>dd]:text even:[&>dd]:pl-4">
-                            <dd>ID</dd>
+                        <dl class="flex flex-col text-muted *:rounded *:p-2 odd:*:bg odd:*:font-semibold odd:*:text even:*:pl-4">
+                            <dt>ID</dt>
                             <dd>{{ $product->entity_id }}</dd>
-                            <dd>SKU</dd>
+                            <dt>SKU</dt>
                             <dd>{{ $product->sku }}</dd>
                             @foreach (config('rapidez.models.attribute')::getCachedWhere(fn($a) => $a['productpage']) as $attribute)
                                 @if (($value = $product->{$attribute['code']}) && !is_object($value))
-                                    <dd>{{ $attribute['name'] }}</dd>
+                                    <dt>{{ $attribute['name'] }}</dt>
                                     <dd>
                                         @php $output = is_array($value) ? implode(', ', $value) : $value @endphp
                                         {!! $attribute['html'] ? $output : e($output) !!}
