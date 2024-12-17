@@ -1,6 +1,31 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/...2.18.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/...2.19.0)
+## [2.19.0](https://github.com/rapidez/core/releases/tag/2.19.0) - 2024-12-11
+
+### Added
+
+- URLs from Magento option + config refactor with multi-cache (#567)
+- Global slideover (#619)
+
+## [2.18.3](https://github.com/rapidez/core/releases/tag/2.18.3) - 2024-11-28
+
+### Fixed
+
+- Use synonym graph instead of regular synonyms (#663)
+
+## [2.18.2](https://github.com/rapidez/core/releases/tag/2.18.2) - 2024-11-27
+
+### Fixed
+
+- Improved Vue/Turbo loading speed fix (#662)
+
+## [2.18.1](https://github.com/rapidez/core/releases/tag/2.18.1) - 2024-11-27
+
+### Fixed
+
+- Typo (#658)
+
 ## [2.18.0](https://github.com/rapidez/core/releases/tag/2.18.0) - 2024-11-26
 
 ### Changed
