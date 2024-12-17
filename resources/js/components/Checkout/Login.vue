@@ -28,6 +28,9 @@ export default {
 
     created() {
         this.refreshUser(false)
+    },
+
+    mounted() {
         if (this.$root.loggedIn) {
             this.successfulLogin()
         }
