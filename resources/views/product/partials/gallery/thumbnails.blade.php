@@ -24,13 +24,7 @@
                 'max-sm:hidden' => $imageId > $breakpoints['xs'],
             ])>
                 <img
-                    src="{{ route('resized-image', [
-                        'store' => config('rapidez.store'),
-                        'size' => '80x80',
-                        'placeholder' => 'magento',
-                        'file' => 'catalog/product' . $image,
-                        'webp' => '.webp',
-                    ]) }}"
+                    src="/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product/{{ $image }}.webp"
                     alt="{{ $product->name }}"
                     class="block max-h-full w-auto object-contain"
                     width="80"
