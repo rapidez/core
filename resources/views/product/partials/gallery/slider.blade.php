@@ -5,13 +5,7 @@
         class="flex h-[440px] cursor-zoom-in items-center justify-center rounded border p-5"
     >
         <img
-            src="{{ route('resized-image', [
-                'store' => config('rapidez.store'),
-                'size' => '400',
-                'placeholder' => 'magento',
-                'file' => 'catalog/product' . Arr::first($product->images),
-                'webp' => '.webp',
-            ]) }}"
+            src="/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product/{{ Arr::first($product->images) }}.webp"
             {{-- src should always be above v-bind:src --}}
             v-bind:src="'/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product' + images[active] + '.webp'"
             alt="{{ $product->name }}"
