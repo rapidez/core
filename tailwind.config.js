@@ -48,8 +48,8 @@ export default {
                 },
 
                 border: {
-                    emphasis: color('--border-emphasis', colors.slate[500]),
-                    DEFAULT: color('--border', colors.slate[200]),
+                    emphasis: color('--border-emphasis', colors.slate[400]),
+                    DEFAULT: color('--border', colors.slate[300]),
                     muted: color('--border-muted', colors.slate[100]),
                 },
 
@@ -57,14 +57,14 @@ export default {
                     emphasis: color('--background-emphasis', colors.slate[200]),
                     DEFAULT: color('--background', colors.slate[100]),
                     muted: color('--background-muted', colors.slate[50]),
-                },
+                }
             },
             zIndex: {
                 'header': '100',
-                'header-dropdown': '10',
                 'header-autocomplete-overlay': '10',
                 'header-autocomplete': '20',
                 'header-minicart': '30',
+                'header-dropdown': '30',
                 'header-autocomplete-button': '30',
 
                 'notifications': '110',
