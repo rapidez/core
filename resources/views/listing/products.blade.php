@@ -4,7 +4,7 @@
     class="*:flex-wrap *:gap-3 *:max-sm:gap-y-3 *:max-md:justify-end"
     component-id="products"
     data-field="name.keyword"
-    list-class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 md:gap-5 mt-5 -mx-4 sm:-mx-1 overflow-hidden"
+    list-class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 md:gap-5 mt-5 overflow-hidden"
     :pagination="true"
     v-on:page-click="scrollToElement('#products')"
     :size="isNaN(parseInt(listingSlotProps.pageSize)) ? 10000 : parseInt(listingSlotProps.pageSize)"

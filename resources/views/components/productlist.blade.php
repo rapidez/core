@@ -27,7 +27,7 @@
                     <div class="relative" slot="render" slot-scope="{ data, loading }" v-if="!loading && data?.length">
                         <slider>
                             <div slot-scope="{ navigate, showLeft, showRight, currentSlide, slidesTotal }">
-                                <div ref="slider" class="*:sm:w-1/2 *:lg:w-1/3 *:px-0.5 *:sm:px-2 *:shrink-0 *:snap-start -mx-2 mt-5 flex snap-x snap-mandatory overflow-x-auto scroll-smooth scrollbar-hide">
+                                <div ref="slider" class="*:sm:w-1/2 *:lg:w-1/3 *:px-0.5 *:sm:px-2 *:shrink-0 *:snap-start -mx-2 -mx-4 mt-5 flex snap-x snap-mandatory overflow-x-auto scroll-smooth scrollbar-hide sm:-mx-1">
                                     <template v-for="item in data">
                                         @include('rapidez::listing.partials.item', ['slider' => true])
                                     </template>
