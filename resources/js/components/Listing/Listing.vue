@@ -35,7 +35,9 @@ export default {
     data: () => ({
         loaded: false,
         attributes: useAttributes(),
-        pageSize: (Turbo?.navigator?.location?.searchParams || new URLSearchParams(window.location.search)).get('pageSize') || config.grid_per_page,
+        pageSize:
+            (Turbo?.navigator?.location?.searchParams || new URLSearchParams(window.location.search)).get('pageSize') ||
+            config.grid_per_page,
     }),
 
     render() {
