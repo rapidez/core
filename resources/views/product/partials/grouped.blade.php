@@ -1,4 +1,4 @@
-<div class="grid grid-cols-3 gap-3 grid-cols-[auto_max-content_max-content]">
+<div class="flex flex-wrap gap-3 justify-between">
     @foreach ($product->grouped as $groupedProduct)
         <add-to-cart :product="config.product.grouped[{{ $groupedProduct->entity_id }}]" v-slot="addToCart" class="contents">
             <form v-on:submit.prevent="addToCart.add" class="contents">
@@ -12,20 +12,22 @@
                     </div>
                 </div>
 
-                @if (!$groupedProduct->in_stock)
-                    <p class="col-span-2 self-center text-red-600">
-                        @lang('Sorry! This product is currently out of stock.')
-                    </p>
-                @else
-                    <x-rapidez::quantity
-                        v-model.number="addToCart.qty"
-                        ::min="{{ $groupedProduct->min_sale_qty }}"
-                        ::step="{{ $groupedProduct->qty_increments }}"
-                        ::max="{{ $groupedProduct->max_sale_qty ?: 'null' }}"
-                    />
+                <div class="flex flex-wrap gap-2">
+                    @if (!$groupedProduct->in_stock)
+                        <p class="col-span-2 self-center text-red-600">
+                            @lang('Sorry! This product is currently out of stock.')
+                        </p>
+                    @else
+                        <x-rapidez::quantity
+                            v-model.number="addToCart.qty"
+                            ::min="{{ $groupedProduct->min_sale_qty }}"
+                            ::step="{{ $groupedProduct->qty_increments }}"
+                            ::max="{{ $groupedProduct->max_sale_qty ?: 'null' }}"
+                        />
 
-                    <x-rapidez::button.cart/>
-                @endif
+                        <x-rapidez::button.cart />
+                    @endif
+                </div>
             </form>
         </add-to-cart>
     @endforeach

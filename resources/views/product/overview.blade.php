@@ -11,7 +11,7 @@
         <div itemtype="https://schema.org/Product" itemscope>
             @include('rapidez::product.partials.microdata')
             @include('rapidez::product.partials.opengraph')
-            <div class="relative flex max-md:flex-col gap-8">
+            <div class="relative flex max-lg:flex-col gap-8">
                 <div class="flex-1 flex flex-col shrink-0">
                     @include('rapidez::product.partials.images')
                 </div>
