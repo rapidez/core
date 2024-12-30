@@ -177,7 +177,7 @@ export default {
             if (!file) {
                 return
             }
-            
+
             let reader = new FileReader()
             reader.onerror = (error) => alert(error)
             reader.onload = () => {
