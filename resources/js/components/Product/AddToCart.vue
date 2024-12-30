@@ -173,6 +173,11 @@ export default {
 
         setCustomOptionFile(event, optionId) {
             let file = event.target.files[0]
+
+            if (!file) {
+                return
+            }
+            
             let reader = new FileReader()
             reader.onerror = (error) => alert(error)
             reader.onload = () => {
