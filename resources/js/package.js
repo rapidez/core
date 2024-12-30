@@ -139,6 +139,24 @@ function init() {
 
                     return `/storage/${store}/resizes/${size}/magento${url}`
                 },
+
+                getCustomAttributeValue(object, code) {
+                    let attribute = object?.custom_attributes?.find((attribute) => attribute.code == code) ?? null
+
+                    if (!attribute) {
+                        return null
+                    }
+
+                    if ('value' in attribute) {
+                        return attribute.value
+                    }
+
+                    if ('selected_options' in attribute) {
+                        return Object.fromEntries(attribute.selected_options.map((option) => [option.value, option.label]))
+                    }
+
+                    return null
+                },
             },
             computed: {
                 // Wrap the local storage in getter and setter functions so you do not have to interact using .value
