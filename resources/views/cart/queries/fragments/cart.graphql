@@ -38,6 +38,9 @@ fragment cart on Cart {
                 option_label
                 value_label
             }
+            configured_variant {
+                ...product
+            }
         }
         ... on BundleCartItem {
             @include('rapidez::cart.queries.partials.customizable_options')
