@@ -84,16 +84,16 @@ export default {
             backgroundColor: (theme) => theme('colors.background'),
             ringColor: (theme) => ({
                 default: theme('colors.border'),
-                ...theme('colors.border')
+                ...theme('colors.border'),
             }),
             outlineColor: (theme) => ({
                 default: theme('colors.border'),
-                ...theme('colors.border')
+                ...theme('colors.border'),
             }),
             boxShadowColor: (theme) => ({
                 default: theme('colors.border'),
-                ...theme('colors.border')
-            })
+                ...theme('colors.border'),
+            }),
         },
         container: {
             center: true,
