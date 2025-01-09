@@ -22,7 +22,7 @@
 >
     <x-rapidez::reactive-base slot-scope="autocompleteScope">
         <div
-            class="z-header-autocomplete-overlay pointer-events-none fixed inset-0 cursor-pointer bg-black/40 opacity-0 transition duration-500"
+            class="z-header-autocomplete-overlay pointer-events-none fixed inset-0 cursor-pointer bg-overlay opacity-0 transition duration-500"
             :class="autocompleteScope.overlay ? 'pointer-events-auto opacity-100 prevent-scroll' : 'opacity-0 pointer-events-none '"
         ></div>
         <x-rapidez::autocomplete.magnifying-glass v-bind:class="{ 'bg-primary text-white': autocompleteScope.overlay }" />
