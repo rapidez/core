@@ -1,4 +1,4 @@
-<div class="border-b pb-2" v-if="resultsType == 'categories'">
+<div class="border-b pb-2">
     <x-rapidez::autocomplete.title>@lang('Categories')</x-rapidez::autocomplete.title>
     <ul class="flex flex-col font-sans">
         <li v-for="hit in resultsData.hits" :key="hit._source.id" class="flex flex-1 items-center w-full">

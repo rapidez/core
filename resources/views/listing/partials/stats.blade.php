@@ -1,4 +1,4 @@
-<div class="flex-wrap flex-1 gap-1 text-base flex justify-between" slot="renderResultStats" slot-scope="{ numberOfResults, numberOfPages, currentPage, time }">
+<div class="flex-wrap flex-1 gap-1 text-sm flex justify-between sm:text-base" slot="renderResultStats" slot-scope="{ numberOfResults, numberOfPages, currentPage, time }">
     @{{ numberOfResults }} @lang('products')
     <template v-if="numberOfPages > 1">
         (@lang('page'): @{{ currentPage + 1 }}/@{{ numberOfPages }})

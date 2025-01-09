@@ -1,6 +1,16 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/3.0.0...3.0.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/3.0.1...3.0.1)
+## [3.0.1](https://github.com/rapidez/core/releases/tag/3.0.1) - 2024-12-20
+
+### Fixed
+
+- Review stars closing (4bd7a4a)
+- Properly use of dt/dd within dl (#674)
+- Listen to newsletter/general/active (#676)
+- Small frontend fixes (#677)
+- Get pagesize from url if Turbo is not yet loaded (#681)
+
 ## [3.0.0](https://github.com/rapidez/core/releases/tag/3.0.0) - 2024-12-13
 
 See the upgrade guide: https://docs.rapidez.io/3.x/upgrading.html
@@ -27,13 +37,6 @@ See the upgrade guide: https://docs.rapidez.io/3.x/upgrading.html
 ### Fixed
 
 - Reduce javascript bundle size (#604)
-
-## [2.19.0](https://github.com/rapidez/core/releases/tag/2.19.0) - 2024-12-13
-
-### Added
-
-- URLs from Magento option + config refactor with multi-cache (#567)
-- Global slideover (#619)
 
 ## [2.13.0](https://github.com/rapidez/core/releases/tag/2.13.0) - 2024-09-27
 

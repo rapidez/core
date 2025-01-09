@@ -55,7 +55,9 @@
                             {{-- The order can be changed with https://tailwindcss.com/docs/order --}}
                             <template v-for="(resultsData, resultsType) in autocompleteScope.results ?? {}" v-if="resultsData?.hits?.length">
                                 @foreach (config('rapidez.frontend.autocomplete.additionals') as $key => $fields)
-                                    @includeIf('rapidez::layouts.partials.header.autocomplete.' . $key)
+                                    <template v-if="resultsType == '{{ $key }}'">
+                                        @includeIf('rapidez::layouts.partials.header.autocomplete.' . $key)
+                                    </template>
                                 @endforeach
                             </template>
                             @include('rapidez::layouts.partials.header.autocomplete.products')
