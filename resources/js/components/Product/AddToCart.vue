@@ -258,7 +258,7 @@ export default {
     },
 
     computed: {
-        currentThumbnail: function() {
+        currentThumbnail: function () {
             return this.simpleProduct?.thumbnail || this.simpleProduct?.images?.[0] || this.product?.thumbnail
         },
 
