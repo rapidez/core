@@ -258,6 +258,10 @@ export default {
     },
 
     computed: {
+        currentThumbnail: function() {
+            return this.simpleProduct?.thumbnail || this.simpleProduct?.images?.[0] || this.product?.thumbnail
+        },
+
         shouldRedirectToProduct: function () {
             // Never redirect if we're already on the product page
             if (window.location.pathname === this.product.url) {
