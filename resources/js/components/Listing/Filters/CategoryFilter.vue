@@ -95,7 +95,7 @@ export default {
                     }
 
                     // No child categories, get siblings instead.
-                    let parentCategoryId = categoryPaths[0].key.at(-2)
+                    let parentCategoryId = categoryPaths[0]?.key.at(-2)
                     return allCategoryPaths.filter(
                         (bucket) => bucket.key.includes(parentCategoryId) && bucket.key.at(-1) !== parentCategoryId,
                     )

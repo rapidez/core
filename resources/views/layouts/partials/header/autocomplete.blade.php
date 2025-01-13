@@ -1,5 +1,11 @@
 @php $inputClasses = 'relative z-header-autocomplete border !font-sans !border-default !text-sm !min-h-0 outline-0 ring-0 !h-auto rounded-xl !pl-5 !pr-24 !py-3.5 !bg-white w-full focus:ring-transparent search-input' @endphp
 
+@once
+    @if ($file = vite_filename_path('Autocomplete.vue'))
+        @vite([$file])
+    @endif
+@endonce
+
 <div v-if="!$root.loadAutocomplete" class="relative w-full">
     <label for="autocomplete-input" class="sr-only">@lang('Search')</label>
     <input
