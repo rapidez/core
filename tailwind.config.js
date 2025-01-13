@@ -58,7 +58,7 @@ export default {
                     DEFAULT: color('--background', colors.slate[100]),
                     muted: color('--background-muted', colors.slate[50]),
                 },
-                overlay: color('--overlay', 'rgba(0, 0, 0, 0.4)'),
+                overlay: color('--overlay', colors.slate[900]),
             },
             zIndex: {
                 'header': '100',
