@@ -13,10 +13,12 @@ use Illuminate\Routing\Pipeline;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Exceptions;
 use Rapidez\Core\Facades\Rapidez;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Throwable;
 
 class FallbackController extends Controller
 {
@@ -33,6 +35,17 @@ class FallbackController extends Controller
     {
         $cacheKey = 'fallbackroute-' . md5($request->url());
         $route = Cache::get($cacheKey);
+
+        Exceptions::shouldRenderJsonWhen(function ($request, Throwable $exception) {
+            return collect([
+                RouteNotFoundException::class,
+                NotFoundHttpException::class,
+                BackedEnumCaseNotFoundException::class,
+                ModelNotFoundException::class,
+                RecordsNotFoundException::class,
+            ])->contains(fn($class) => $exception instanceof $class) || $request->expectsJson();
+        });
+
         if ($route && $response = $this->tryRoute($route['route'], $request)) {
             return $response;
         }
@@ -52,6 +65,7 @@ class FallbackController extends Controller
             return $response;
         }
 
+        Exceptions::shouldRenderJsonWhen(null);
         abort(404);
     }
 
