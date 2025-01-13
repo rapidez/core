@@ -43,7 +43,7 @@ class FallbackController extends Controller
                 BackedEnumCaseNotFoundException::class,
                 ModelNotFoundException::class,
                 RecordsNotFoundException::class,
-            ])->contains(fn($class) => $exception instanceof $class) || $request->expectsJson();
+            ])->contains(fn ($class) => $exception instanceof $class) || $request->expectsJson();
         });
 
         if ($route && $response = $this->tryRoute($route['route'], $request)) {
