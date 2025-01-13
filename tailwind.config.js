@@ -48,8 +48,8 @@ export default {
                 },
 
                 border: {
-                    emphasis: color('--border-emphasis', colors.slate[400]),
-                    DEFAULT: color('--border', colors.slate[300]),
+                    emphasis: color('--border-emphasis', colors.slate[500]),
+                    DEFAULT: color('--border', colors.slate[200]),
                     muted: color('--border-muted', colors.slate[100]),
                 },
 
