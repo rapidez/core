@@ -1,3 +1,6 @@
+import Teleport from 'vue2-teleport';
+Vue.component('teleport', Teleport)
+
 import toggler from './components/Elements/Toggler.vue'
 Vue.component('toggler', toggler)
 

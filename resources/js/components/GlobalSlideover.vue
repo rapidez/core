@@ -3,14 +3,23 @@ export default {
     props: {
         title: String,
         position: String,
-        content: String,
+    },
+    data() {
+        return {
+            isCurrentSlideover: false
+        };
     },
     render() {
         return this.$scopedSlots.default(this)
     },
+    mounted() {
+        this.$root.$on('global-slideover-open', (data) => {
+            this.isCurrentSlideover = data.initiator === this;
+        })
+    },
     methods: {
         open() {
-            this.$root.$emit('global-slideover-open', { content: this.content, title: this.title, position: this.position })
+            this.$root.$emit('global-slideover-open', { title: this.title, position: this.position, initiator: this })
         },
     },
 }
