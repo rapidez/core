@@ -10,7 +10,7 @@
                 'pointer-events-none cursor-default' => $currentStepKey < $checkoutStepKey,
                 'bg-emphasis' => $checkoutStepKey <= $currentStepKey,
                 'bg-white' => $checkoutStepKey > $currentStepKey,
-                'bg-emphasis shadow-emphasis shadow-md pointer-events-none cursor-default' => $checkoutStepKey === $currentStepKey
+                'bg-emphasis shadow-md shadow-emphasis pointer-events-none cursor-default' => $checkoutStepKey === $currentStepKey
             ])>
                 {{ $checkoutStepKey + 1 }}
             </a>
