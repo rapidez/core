@@ -32,7 +32,7 @@
                 'max-sm:flex': imageId === {{ $breakpoints['xs'] }}
             }"
         >
-            <span class="size-9 flex items-center justify-center rounded-full shadow-lg bg-white text-sm font-bold text">
+            <span class="size-9 flex items-center justify-center rounded-full shadow-lg shadow-default bg-white text-sm font-bold text">
                 +@{{ images.length - (imageId + 1) }}
             </span>
         </span>
