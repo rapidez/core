@@ -65,7 +65,6 @@ export default {
                 'header-autocomplete': '20',
                 'header-dropdown': '30',
                 'header-minicart': '30',
-                'header-dropdown': '30',
                 'header-autocomplete-button': '30',
 
                 'notifications': '110',
