@@ -5,7 +5,6 @@
     :clear="true"
     :watch="false"
     :callback="updateCart"
-    :error-callback="checkResponseForExpiredCart"
     v-slot="{ mutate, variables }"
 >
     <form v-on:submit.prevent="mutate" class="flex gap-3">
