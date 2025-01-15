@@ -16,8 +16,15 @@ Standard usage may look like this:
 @props(['title', 'position' => 'left'])
 @slots(['label'])
 
-<global-slideover title="{{ $title }}" position="{{ $position }}" content="{{ $slot->toHtml() }}" v-slot="slideover">
-    <label {{ $label->attributes->class('global-slideover-label cursor-pointer') }} v-on:click="slideover.open">
-        {{ $label }}
-    </label>
+<global-slideover title="{{ $title }}" position="{{ $position }}" v-slot="slideover">
+    <div>
+        <label {{ $label->attributes->class('global-slideover-label cursor-pointer') }} v-on:click="slideover.open">
+            {{ $label }}
+        </label>
+        <div class="hidden">
+            <teleport to="#global-slideover-content" :disabled="!slideover.isCurrentSlideover">
+                <div>{{ $slot }}</div>
+            </teleport>
+        </div>
+    </div>
 </global-slideover>
