@@ -35,7 +35,7 @@ export const refresh = async function (force = false) {
                 { cart_id: mask.value },
             )
 
-            cart.value = Object.values(response.data)[0]
+            Vue.prototype.updateCart([], response)
         } catch (error) {
             console.error(error)
             GraphQLError.prototype.isPrototypeOf(error) && Vue.prototype.checkResponseForExpiredCart({}, await error?.response?.json())
