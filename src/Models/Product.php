@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
-use Illuminate\Support\Arr;
 use Laravel\Scout\Searchable;
 use Rapidez\Core\Casts\Children;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
@@ -34,8 +33,8 @@ class Product extends Model
     use CastMultiselectAttributes;
     use CastSuperAttributes;
     use HasAlternatesThroughRewrites;
-    use SelectAttributeScopes;
     use Searchable;
+    use SelectAttributeScopes;
 
     public array $attributesToSelect = [];
 
@@ -126,7 +125,7 @@ class Product extends Model
 
     public function searchableAs(): string
     {
-        return 'products_'.config('rapidez.store');
+        return 'products_' . config('rapidez.store');
     }
 
     protected function makeAllSearchableUsing(Builder $query): Builder
