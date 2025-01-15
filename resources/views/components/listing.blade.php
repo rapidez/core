@@ -19,20 +19,15 @@
         v-cloak
     >
         <div slot-scope="{ loaded, filters, sortOptions, reactiveFilters, getQuery, _renderProxy: listingSlotProps }">
-            <x-rapidez::reactive-base v-if="loaded">
-                @isset($query)
-                    <reactive-component
-                        component-id="query-filter"
-                        :custom-query="function () {return {query: {{ $query }} } }"
-                        :show-filter="false"
-                    ></reactive-component>
-                @endisset
-                <reactive-component
-                    component-id="score-position"
-                    :custom-query="getQuery"
-                    :show-filter="false"
-                ></reactive-component>
-
+            {{-- TODO: Implement $query and make sure the default product in category position is applied --}}
+            <ais-instant-search
+                v-if="loaded"
+                :search-client="listingSlotProps.searchClient"
+                index-name="products_1"
+                :routing="listingSlotProps.routing"
+            >
+                {{-- TODO: This isn't working?  --}}
+                <ais-configure :hitsPerPage="9" />
                 {{ $before ?? '' }}
                 @if ($slot->isEmpty())
                     <div class="flex flex-col lg:flex-row gap-x-4">
@@ -47,7 +42,7 @@
                     {{ $slot }}
                 @endif
                 {{ $after ?? '' }}
-            </x-rapidez::reactive-base>
+            </ais-instant-search>
         </div>
     </listing>
 </div>

@@ -1,4 +1,4 @@
-<template {!! isset($slider) ? '' : 'slot="renderItem" slot-scope="{ item, count }"' !!}>
+{{-- <template {!! isset($slider) ? '' : 'slot="renderItem" slot-scope="{ item, count }"' !!}> --}}
     <div class="my-0.5 w-full h-full shrink-0 snap-start px-0.5 sm:my-2 sm:px-2 sm:w-1/2 lg:w-1/3">
         <div class="group relative flex flex-1 flex-col rounded border bg-white p-5" :key="item.entity_id">
             @if (App::providerIsLoaded('Rapidez\Wishlist\WishlistServiceProvider'))
@@ -28,4 +28,4 @@
             @includeWhen(Rapidez::config('catalog/frontend/show_swatches_in_product_list', 1), 'rapidez::listing.partials.item.addtocart')
         </div>
     </div>
-</template>
+{{-- </template> --}}

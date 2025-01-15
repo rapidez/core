@@ -7,9 +7,9 @@
         "prod": "vite build"
     },
     "devDependencies": {
-        "@appbaseio/reactivesearch-vue": "https://gitpkg.vercel.app/api/pkg?url=rapidez/reactivesearch/packages/vue&commit=fixes&scripts.postinstall=yarn%20install%20--ignore-scripts%20%26%26%20yarn%20run%20build-es&scripts.build-es=nps%20build.es",
         "@babel/core": "^7.23.9",
         "@hotwired/turbo": "^8.0.2",
+        "@meilisearch/instant-meilisearch": "^0.23.0",
         "@tailwindcss/forms": "^0.5.3",
         "@tailwindcss/typography": "^0.5.9",
         "@vitejs/plugin-vue2": "^2.2.0",
@@ -20,6 +20,7 @@
         "graphql": "^16.8.1",
         "graphql-combine-query": "indykoning/graphql-combine-query#feature/add-allowed-duplicates",
         "graphql-tag": "^2.12.6",
+        "instantsearch.js": "^4.75.7",
         "laravel-vite-plugin": "^1.0.5",
         "postcss": "^8.4.29",
         "postcss-import": "^16.1.0",
@@ -33,6 +34,7 @@
         "vue": "^2.7",
         "vue-clickaway": "^2.2.2",
         "vue-cookies": "^1.8.2",
+        "vue-instantsearch": "^4.19.13",
         "vue-template-compiler": "^2.7.14",
         "vue-turbolinks": "^2.2.2"
     },
