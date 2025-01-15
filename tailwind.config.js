@@ -53,6 +53,12 @@ export default {
                     muted: color('--border-muted', colors.slate[100]),
                 },
 
+                shadow: {
+                    emphasis: color('--shadow-emphasis', colors.slate[900]),
+                    DEFAULT: color('--shadow', colors.slate[700]),
+                    muted: color('--shadow-muted', colors.slate[500]),
+                },
+
                 background: {
                     emphasis: color('--background-emphasis', colors.slate[200]),
                     DEFAULT: color('--background', colors.slate[100]),
@@ -82,6 +88,18 @@ export default {
                 ...theme('colors.border'),
             }),
             backgroundColor: (theme) => theme('colors.background'),
+            ringColor: (theme) => ({
+                default: theme('colors.border'),
+                ...theme('colors.border'),
+            }),
+            outlineColor: (theme) => ({
+                default: theme('colors.border'),
+                ...theme('colors.border'),
+            }),
+            boxShadowColor: (theme) => ({
+                default: theme('colors.shadow'),
+                ...theme('colors.shadow'),
+            }),
         },
         container: {
             center: true,
