@@ -2,7 +2,7 @@
 import InstantSearch from 'vue-instantsearch'
 // TODO: Maybe make this swappable, so users can switch?
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
-import { history as historyRouter } from 'instantsearch.js/es/lib/routers';
+import { history as historyRouter } from 'instantsearch.js/es/lib/routers'
 import { singleIndex as singleIndexMapping } from 'instantsearch.js/es/lib/stateMappings'
 // We should only import the components used!
 // https://www.algolia.com/doc/guides/building-search-ui/installation/vue/?client=Vue+2#optimize-your-build-with-tree-shaking
@@ -46,7 +46,7 @@ export default {
         routing: {
             router: historyRouter(),
             stateMapping: singleIndexMapping('products_1'),
-        }
+        },
     }),
 
     render() {
@@ -70,13 +70,15 @@ export default {
             return this.filters.map((filter) => filter.code).concat(this.additionalFilters)
         },
         hitsPerPage: function () {
-            return this.$root.config.grid_per_page_values.map(function (pages, index) {
-                return {
-                    label: pages,
-                    value: pages,
-                    default: index === 0
-                }
-            }).concat({ label: this.$root.config.translations.all, value: 10000 })
+            return this.$root.config.grid_per_page_values
+                .map(function (pages, index) {
+                    return {
+                        label: pages,
+                        value: pages,
+                        default: index === 0,
+                    }
+                })
+                .concat({ label: this.$root.config.translations.all, value: 10000 })
         },
         sortOptions: function () {
             return [
