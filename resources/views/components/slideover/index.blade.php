@@ -30,7 +30,7 @@
         <input @checked($open) id="{{ $id }}" class="peer hidden" v-on:change="toggleScroll($event.target.checked)" type="checkbox">
         <label
             for="{{ $closeId }}"
-            class="pointer-events-none fixed inset-0 z-slideover-overlay cursor-pointer bg-overlay/40 opacity-0 transition peer-checked:pointer-events-auto peer-checked:opacity-100"
+            class="pointer-events-none fixed inset-0 z-slideover-overlay cursor-pointer bg-overlay opacity-0 transition peer-checked:pointer-events-auto peer-checked:opacity-100"
         ></label>
     @else
         <input @checked($open) id="{{ $id }}" class="peer hidden" type="checkbox">
