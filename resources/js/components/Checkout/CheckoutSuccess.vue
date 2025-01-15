@@ -1,6 +1,7 @@
 <script>
 import { order, refresh as refreshOrder, clear as clearOrder } from '../../stores/useOrder'
 import { clear as clearCart } from '../../stores/useCart'
+import { useEventListener } from '@vueuse/core'
 
 export default {
     data() {
@@ -20,17 +21,24 @@ export default {
         }
         refreshOrder()
         this.$root.$emit('checkout-success', this.order)
-        window.addEventListener('beforeunload', function (event) {
+
+        useEventListener(window, 'beforeunload', this.beforeUnloadCallback, { once: true })
+    },
+
+    destroyed() {
+        this.beforeUnloadCallback()
+    },
+
+    methods: {
+        beforeUnloadCallback() {
             clearCart()
             if (!window.debug) {
                 clearOrder()
             }
 
             return undefined
-        })
-    },
+        },
 
-    methods: {
         async refreshOrder() {
             await refreshOrder()
         },
