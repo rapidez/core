@@ -11,7 +11,11 @@
         <h1 class="mb-5 text-3xl font-bold">{{ $category->name }}</h1>
 
         @if ($category->is_anchor)
-            <x-rapidez::listing query="{ bool: { must: [{ terms: { visibility: [2, 4] } }, { terms: { category_ids: [config.category.entity_id] } }] } }" />
+            {{--
+            The "query string query" is cleaner,
+            but will this work everywhere?
+            --}}
+            <x-rapidez::listing query="'visibility:(2 OR 4) AND category_ids:'+config.category.entity_id" />
         @else
             <div class="flex max-md:flex-col">
                 <div class="xl:w-1/5">

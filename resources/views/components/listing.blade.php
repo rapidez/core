@@ -23,12 +23,22 @@
             <ais-instant-search
                 v-if="loaded"
                 :search-client="listingSlotProps.searchClient"
-                index-name="products_1"
+                :index-name="config.es_prefix + '_products_' + config.store"
                 :routing="listingSlotProps.routing"
             >
-                {{-- TODO: This isn't working?  --}}
                 {{-- :size="isNaN(parseInt(listingSlotProps.pageSize)) ? 10000 : parseInt(listingSlotProps.pageSize)" --}}
-                <ais-configure :hitsPerPage="9" />
+                <ais-configure
+                    :filters="{{ $query }}"
+                    {{-- :query="getQuery" --}}
+                    {{-- :custom-query="function () {return {query: {{ $query }} } }" --}}
+                />
+
+                {{-- <reactive-component
+                    component-id="score-position"
+                    :custom-query="getQuery"
+                    :show-filter="false"
+                ></reactive-component> --}}
+
                 {{ $before ?? '' }}
                 @if ($slot->isEmpty())
                     <div class="flex flex-col lg:flex-row gap-x-6 gap-y-3">

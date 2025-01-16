@@ -348,13 +348,6 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@meilisearch/instant-meilisearch@^0.23.0":
-  version "0.23.0"
-  resolved "https://registry.yarnpkg.com/@meilisearch/instant-meilisearch/-/instant-meilisearch-0.23.0.tgz#111562206d29b3f2f0f461f30470e35dab6e7ba0"
-  integrity sha512-KXyTZ7HEj4EQzROSno0k7BeijHS0YQu5AIH76OWcuGxFwUIajlk9k6CsH1DsW9+W8SPpmoJY0BglaW0lK6YH1w==
-  dependencies:
-    meilisearch "^0.47.0"
-
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"
@@ -460,6 +453,13 @@
   version "4.24.0"
   resolved "https://registry.yarnpkg.com/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.24.0.tgz#0574d7e87b44ee8511d08cc7f914bcb802b70818"
   integrity sha512-fbMkAF7fufku0N2dE5TBXcNlg0pt0cJue4xBRE2Qc5Vqikxr4VCgKj/ht6SMdFcOacVA9rqF70APJ8RN/4vMJw==
+
+"@searchkit/instantsearch-client@^4.14.1":
+  version "4.14.1"
+  resolved "https://registry.yarnpkg.com/@searchkit/instantsearch-client/-/instantsearch-client-4.14.1.tgz#85fed3f90ba88a1d73ec247264d7342aee4eddb6"
+  integrity sha512-AOkVPcnUVl+5bFTChFh60ca6GsbSU4I7TPB3ZfTGJygsfMx90/p+Ck9kGT+khhxiotDUctIa+nK3GKwNG5QcKA==
+  dependencies:
+    searchkit "^4.13.0"
 
 "@tailwindcss/forms@^0.5.3":
   version "0.5.9"
@@ -806,6 +806,11 @@ debug@^4.1.0, debug@^4.3.1:
   integrity sha512-Er2nc/H7RrMXZBFCEim6TCmMk02Z8vLC2Rbi1KEBggpo0fS6l0S1nnapwmIi3yW/+GOJap1Krg4w0Hg80oCqgQ==
   dependencies:
     ms "^2.1.3"
+
+deepmerge@^4.2.2:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-4.3.1.tgz#44b5f2147cd3b00d4b56137685966f26fd25dd4a"
+  integrity sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==
 
 define-lazy-prop@^2.0.0:
   version "2.0.0"
@@ -1180,11 +1185,6 @@ lru-cache@^5.1.1:
   dependencies:
     yallist "^3.0.2"
 
-meilisearch@^0.47.0:
-  version "0.47.0"
-  resolved "https://registry.yarnpkg.com/meilisearch/-/meilisearch-0.47.0.tgz#376bda5d65f7dd7b80e1ad317912664c4a02b05f"
-  integrity sha512-Qq+hatuDJ0z5c+szVb0O/uI7Z2jfMUjj8eNB6xPyKp9Og7GVnrOZJRVoDPqGoVY484Iwh+F61y2UreIetda00w==
-
 merge2@^1.3.0:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/merge2/-/merge2-1.4.1.tgz#4368892f885e907455a6fd7dc55c0c9d404990ae"
@@ -1511,6 +1511,13 @@ search-insights@^2.17.2:
   version "2.17.3"
   resolved "https://registry.yarnpkg.com/search-insights/-/search-insights-2.17.3.tgz#8faea5d20507bf348caba0724e5386862847b661"
   integrity sha512-RQPdCYTa8A68uM2jwxoY842xDhvx3E5LFL1LxvxCNMev4o5mLuokczhzjAgGwUZBAmOKZknArSxLKmXtIi2AxQ==
+
+searchkit@^4.13.0:
+  version "4.13.2"
+  resolved "https://registry.yarnpkg.com/searchkit/-/searchkit-4.13.2.tgz#adb978363082781cfded2663ee05cb92c7511b74"
+  integrity sha512-d6OnHFG0lwl5QKcLUfqSsk9eD9Zvl6Us2z3Ib9U9H/9T7PsNlPk/gV4ToquaPG2uIN5hhHuUAEa9jx1Pzj/HyA==
+  dependencies:
+    deepmerge "^4.2.2"
 
 semver@^6.3.1:
   version "6.3.1"

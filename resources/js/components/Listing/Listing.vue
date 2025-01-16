@@ -1,7 +1,10 @@
 <script>
 import InstantSearch from 'vue-instantsearch'
+
 // TODO: Maybe make this swappable, so users can switch?
-import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
+import Client from '@searchkit/instantsearch-client'
+import Searchkit from "searchkit"
+
 import { history as historyRouter } from 'instantsearch.js/es/lib/routers'
 import { singleIndex as singleIndexMapping } from 'instantsearch.js/es/lib/stateMappings'
 // We should only import the components used!
@@ -30,16 +33,6 @@ export default {
             (Turbo?.navigator?.location?.searchParams || new URLSearchParams(window.location.search)).get('pageSize') ||
             config.grid_per_page,
 
-        // TODO: Not sure if this is the right place,
-        // the autocomplete also needs this but
-        // we don't want to load everything
-        // directly due the JS size
-        searchClient: instantMeiliSearch(
-            // TODO: This should be configurable
-            'http://localhost:7700',
-            '',
-        ).searchClient,
-
         // TODO: We need some finetuning here; the url isn't very clean.
         // Also after a refresh the filters aren't selected.
         // Maybe it conflicts with ReactiveSearch?
@@ -58,6 +51,63 @@ export default {
     },
 
     computed: {
+        // TODO: Not sure if this is the right place,
+        // the autocomplete also needs this but
+        // we don't want to load everything
+        // directly due the JS size
+        searchClient: function () {
+            let client = Client(this.searchkit)
+
+            // console.log(client)
+
+            return client
+        },
+
+        searchkit: function () {
+            let searchkit = new Searchkit({
+                connection: {
+                    host: config.es_url,
+                },
+                search_settings: {
+                    // Are we using this? In the autocomplete maybe?
+                    // highlight_attributes: ['title'],
+
+                    // Should use: config.searchable
+                    // search_attributes: [{ field: 'title', weight: 3 }, 'actors', 'plot'],
+
+                    // We could make the response smaller with this
+                    // result_attributes: ['title', 'actors', 'poster', 'plot'],
+
+                    // TODO: Loop through all filters
+                    facet_attributes: [
+                        { attribute: 'activity', field: 'activity.keyword', type: 'string' },
+                        { attribute: 'material', field: 'material.keyword', type: 'string' },
+                        { attribute: 'style_bags', field: 'style_bags.keyword', type: 'string' },
+                        { attribute: 'gender', field: 'gender.keyword', type: 'string' },
+                    ],
+
+                    filter_attributes: [
+                        { attribute: 'category_ids', field: 'category_ids', type: 'numeric' },
+                        { attribute: 'visibility', field: 'visibility', type: 'numeric' },
+                    ],
+
+                    sorting: {
+                        default: {
+                            field: '_score',
+                            order: 'desc'
+                        },
+                        _rated_desc: {
+                            field: 'rated',
+                            order: 'desc'
+                        }
+                    },
+                }
+            })
+
+            // console.log(searchkit)
+
+            return searchkit
+        },
         filters: function () {
             return Object.values(this.attributes)
                 .filter((attribute) => attribute.filter)
