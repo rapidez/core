@@ -17,8 +17,8 @@
                 <template v-for="swatch in data">
                     <label
                         v-if="filter.visual_swatch"
-                        class="size-6 ring-black/5 ring-1 ring-inset cursor-pointer flex items-center justify-center hover:opacity-75 rounded-full transition"
-                        v-bind:class="{'outline-2 outline outline-black outline-offset-1' : value[swatch.key]}"
+                        class="size-6 ring-1 ring-emphasis/10 ring-inset cursor-pointer flex items-center justify-center hover:opacity-75 rounded-full transition"
+                        v-bind:class="{'outline outline-2 outline-emphasis outline-offset-1' : value[swatch.key]}"
                         v-bind:style="{ background: $root.swatches[filter.code]?.options[swatch.key].swatch }"
                     >
                         <input type="checkbox" v-on:change="handleChange(swatch.key)" class="hidden" v-bind:checked="value[swatch.key]"/>

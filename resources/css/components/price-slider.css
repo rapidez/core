@@ -4,7 +4,7 @@ div.vue-slider {
 
 div.vue-slider-process,
 div.vue-slider-rail {
-    @apply h-2 bg !important;
+    @apply h-2 bg-primary !important;
 }
 
 div.vue-slider-rail {

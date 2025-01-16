@@ -19,6 +19,6 @@
     </div>
 </x-rapidez::slideover.mobile>
 
-<x-rapidez::button.secondary :for="$id" class="mb-3 w-full lg:hidden">
+<x-rapidez::button.secondary :for="$id" class="w-full lg:hidden">
     @lang('Filters')
 </x-rapidez::button.secondary>

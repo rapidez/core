@@ -30,7 +30,7 @@
                 <ais-configure :hitsPerPage="9" />
                 {{ $before ?? '' }}
                 @if ($slot->isEmpty())
-                    <div class="flex flex-col lg:flex-row gap-x-4">
+                    <div class="flex flex-col lg:flex-row gap-x-6 gap-y-3">
                         <div class="xl:w-1/5">
                             @include('rapidez::listing.filters')
                         </div>
