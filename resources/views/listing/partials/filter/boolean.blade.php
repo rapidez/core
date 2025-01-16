@@ -1,35 +1,37 @@
-<multi-list
-    v-else-if="filter.input == 'boolean'"
-    :component-id="filter.code"
-    :data-field="filter.code+(filter.type != 'int' ? '.keyword' : '')"
-    :react="{and: reactiveFilters}"
-    :show-search="false"
-    u-r-l-params
+<ais-refinement-list
+    v-if="filter.input == 'boolean'"
+    :attribute="filter.code"
 >
-    <div
-        slot="render"
-        class="relative pb-4"
-        slot-scope="{ data, handleChange, value }"
-        v-if="data.length > 0"
-    >
-        <x-rapidez::filter.heading>
-            <ul class="flex flex-col gap-1">
-                <li class="flex" v-for="item in data">
-                    <x-rapidez::input.checkbox
-                        v-bind:checked="value[item.key]"
-                        v-on:change="handleChange(item.key)"
+    <template v-slot="{ items, refine }">
+        <div v-if="items.length" class="relative pb-4">
+            <x-rapidez::filter.heading>
+                {{-- @{{items}} --}}
+                <ul class="flex flex-col gap-1">
+                    <li
+                        v-for="item in items"
+                        class="flex justify-between text-base text-muted"
                     >
-                        <div
-                            class="font-sans font-medium text-sm items-center flex"
-                            :class="value[item.key] ? 'text' : 'text-muted'"
-                        >
-                            <template v-if="item.key">@lang('Yes')</template>
-                            <template v-if="!item.key">@lang('No')</template>
-                            <span class="block ml-0.5 text-xs">(@{{ item.doc_count }})</span>
+                        <div class="flex">
+                            {{-- TODO: checked state is acting weird --}}
+                            {{-- @{{ item.isRefined }} --}}
+                            <x-rapidez::input.checkbox
+                                v-bind:checked="item.isRefined"
+                                v-on:change="refine(item.value)"
+                            >
+                                <span
+                                    class="font-sans font-medium items-center text-sm flex"
+                                    :class="item.isRefined ? 'text' : 'text-muted'"
+                                >
+                                    <template v-if="item.value == 'true'">@lang('Yes')</template>
+                                    <template v-if="item.value == 'false'">@lang('No')</template>
+                                    <span class="block ml-0.5 text-xs">(@{{ item.count }})</span>
+                                </span>
+                            </x-rapidez::input.checkbox>
                         </div>
-                    </x-rapidez::input.checkbox>
-                </li>
-            </ul>
-        </x-rapidez::filter.heading>
-    </div>
-</multi-list>
+                    </li>
+                </ul>
+            </x-rapidez::filter.heading>
+        </div>
+    </template>
+</ais-refinement-list>
+

@@ -19,19 +19,25 @@
         v-cloak
     >
         <div slot-scope="{ loaded, filters, sortOptions, reactiveFilters, getQuery, _renderProxy: listingSlotProps }">
-            <x-rapidez::reactive-base v-if="loaded">
-                @isset($query)
-                    <reactive-component
-                        component-id="query-filter"
-                        :custom-query="function () {return {query: {{ $query }} } }"
-                        :show-filter="false"
-                    ></reactive-component>
-                @endisset
-                <reactive-component
+            {{-- TODO: Implement $query and make sure the default product in category position is applied --}}
+            <ais-instant-search
+                v-if="loaded"
+                :search-client="listingSlotProps.searchClient"
+                :index-name="config.es_prefix + '_products_' + config.store"
+                :routing="listingSlotProps.routing"
+            >
+                {{-- :size="isNaN(parseInt(listingSlotProps.pageSize)) ? 10000 : parseInt(listingSlotProps.pageSize)" --}}
+                <ais-configure
+                    :filters="{{ $query }}"
+                    {{-- :query="getQuery" --}}
+                    {{-- :custom-query="function () {return {query: {{ $query }} } }" --}}
+                />
+
+                {{-- <reactive-component
                     component-id="score-position"
                     :custom-query="getQuery"
                     :show-filter="false"
-                ></reactive-component>
+                ></reactive-component> --}}
 
                 {{ $before ?? '' }}
                 @if ($slot->isEmpty())
@@ -47,7 +53,7 @@
                     {{ $slot }}
                 @endif
                 {{ $after ?? '' }}
-            </x-rapidez::reactive-base>
+            </ais-instant-search>
         </div>
     </listing>
 </div>

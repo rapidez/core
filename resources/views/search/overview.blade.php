@@ -7,6 +7,10 @@
 @section('content')
     <div class="container">
         <h1 class="font-bold text-3xl">@lang('Search for'): {{ request()->q }}</h1>
+        {{--
+        Is it possible to change this query to a "query string query"?
+        Or is there something else we can use better now?
+        --}}
         <x-rapidez::listing query="{
             bool: {
                 must: [
