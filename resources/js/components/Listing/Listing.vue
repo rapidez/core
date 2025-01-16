@@ -3,7 +3,7 @@ import InstantSearch from 'vue-instantsearch'
 
 // TODO: Maybe make this swappable, so users can switch?
 import Client from '@searchkit/instantsearch-client'
-import Searchkit from "searchkit"
+import Searchkit from 'searchkit'
 
 import { history as historyRouter } from 'instantsearch.js/es/lib/routers'
 import { singleIndex as singleIndexMapping } from 'instantsearch.js/es/lib/stateMappings'
@@ -94,14 +94,14 @@ export default {
                     sorting: {
                         default: {
                             field: '_score',
-                            order: 'desc'
+                            order: 'desc',
                         },
                         _rated_desc: {
                             field: 'rated',
-                            order: 'desc'
-                        }
+                            order: 'desc',
+                        },
                     },
-                }
+                },
             })
 
             // console.log(searchkit)
