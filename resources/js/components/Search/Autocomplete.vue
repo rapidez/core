@@ -1,9 +1,9 @@
 <script>
-import { ReactiveBase, DataSearch } from '@appbaseio/reactivesearch-vue'
-import { useDebounceFn } from '@vueuse/core'
+// import { ReactiveBase, DataSearch } from '@appbaseio/reactivesearch-vue'
+// import { useDebounceFn } from '@vueuse/core'
 
-Vue.use(ReactiveBase)
-Vue.use(DataSearch)
+// Vue.use(ReactiveBase)
+// Vue.use(DataSearch)
 
 export default {
     props: {

@@ -27,6 +27,7 @@
                 :routing="listingSlotProps.routing"
             >
                 {{-- TODO: This isn't working?  --}}
+                {{-- :size="isNaN(parseInt(listingSlotProps.pageSize)) ? 10000 : parseInt(listingSlotProps.pageSize)" --}}
                 <ais-configure :hitsPerPage="9" />
                 {{ $before ?? '' }}
                 @if ($slot->isEmpty())
