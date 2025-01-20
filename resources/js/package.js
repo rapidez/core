@@ -170,11 +170,11 @@ function init() {
                 },
 
                 hasCart() {
-                    return this.cart?.id && this.cart.items.length
+                    return this.cart?.id && this.cart.items?.length
                 },
 
                 canOrder() {
-                    return this.cart.items.every((item) => item.is_available)
+                    return this.cart.items?.every((item) => item.is_available)
                 },
             },
             watch: {
