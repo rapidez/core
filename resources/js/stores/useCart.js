@@ -122,7 +122,7 @@ export const cart = computed({
         getAttributeValues()
             .then((response) => {
                 if (!response?.data?.customAttributeMetadata?.items) {
-                    value.items = value.items.map((item) => {
+                    value.items = value.items?.map((item) => {
                         item.is_available = checkAvailability(item)
 
                         return item
@@ -138,7 +138,7 @@ export const cart = computed({
                     ]),
                 )
 
-                value.items = value.items.map((cartItem) => {
+                value.items = value.items?.map((cartItem) => {
                     cartItem.is_available = checkAvailability(cartItem)
                     cartItem.product.attribute_values = {}
 
