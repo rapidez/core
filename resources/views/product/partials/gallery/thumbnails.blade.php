@@ -42,7 +42,7 @@
                 height="80"
             />
 
-            @if($imageId + 1 >= min($breakpoints))
+            @if ($imageId + 1 >= min($breakpoints))
                 <div
                     @unless (count($product->images) - $imageId - 1) v-cloak @endunless
                     v-if="images.length - {{ $imageId }} - 1"
