@@ -1,5 +1,5 @@
 {{--
-    In this file we avoid layout shifts on the page by pre-populating the possible amount of thumbnail slots.
+    In this component we avoid layout shifts on the page by pre-populating the possible amount of thumbnail slots.
     On page load all of the images come from PHP, using `@unless (...) v-cloak @endunless` to hide things that
     shouldn't be shown, but need a placeholder element.
     After Vue gets loaded in, it will take over and replace the `v-cloak`s with the `v-if`s, which means that
