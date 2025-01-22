@@ -32,7 +32,7 @@
         >
             <img
                 {{-- Note: always put the `src` before a `v-bind:src` or it will not work --}}
-                @if($imageId < count($product->images))
+                @if ($imageId < count($product->images))
                     src="/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product/{{ $product->images[$imageId] }}.webp"
                 @endif
                 v-bind:src="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product/' + images[{{ $imageId }}] + '.webp'"
