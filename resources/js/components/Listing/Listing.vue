@@ -129,19 +129,6 @@ export default {
                 { attribute: 'category_lvl2', field: 'category_lvl2.keyword', type: 'string' },
                 { attribute: 'category_lvl3', field: 'category_lvl3.keyword', type: 'string' },
             ]
-
-            return this.filters
-                .map((filter) => ({
-                    attribute: filter.code,
-                    field: filter.code + (['price', 'boolean'].includes(filter.input) ? '' : '.keyword'),
-                    type: ['price', 'boolean'].includes(filter.input) ? 'numeric' : 'string',
-                }))
-                .push([
-                    { attribute: 'category_lvl0', field: 'category_lvl0.keyword', type: 'string' },
-                    { attribute: 'category_lvl1', field: 'category_lvl1.keyword', type: 'string' },
-                    { attribute: 'category_lvl2', field: 'category_lvl2.keyword', type: 'string' },
-                    { attribute: 'category_lvl3', field: 'category_lvl3.keyword', type: 'string' },
-                ])
             // TODO: Double check this and how it's used.
             // .concat(this.additionalFilters)
         },
