@@ -1,3 +1,4 @@
+/*Can we remove this file?*/
 .search-input + div div[groupposition='right'] {
     @apply size-6 right-16 cursor-pointer z-50 !-translate-y-1/2 !top-1/2 !absolute;
 
