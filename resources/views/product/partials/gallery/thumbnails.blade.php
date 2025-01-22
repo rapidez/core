@@ -31,7 +31,7 @@
             v-on:click="change({{ $imageId }})"
         >
             <img
-                {{-- Note: always put the `src` before a `v-bind:src` or it will not work --}}
+                {{-- Note: always put the base `src` before a `v-bind:src` or it will not work --}}
                 @if ($imageId < count($product->images))
                     src="/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product/{{ $product->images[$imageId] }}.webp"
                 @endif
@@ -42,31 +42,8 @@
                 height="80"
             />
 
-            @if (in_array($imageId + 1, $breakpoints))
-                <div
-                    @unless (count($product->images) - $imageId - 1) v-cloak @endunless
-                    v-if="images.length - {{ $imageId }} - 1"
-                >
-                    <span
-                        @class([
-                            'absolute inset-0 hidden items-center justify-center bg-black/20',
-                            'xl:flex' => $imageId + 1 === $breakpoints['xl'],
-                            'lg:max-xl:flex' => $imageId + 1 === $breakpoints['lg'],
-                            'md:max-lg:flex' => $imageId + 1 === $breakpoints['md'],
-                            'sm:max-md:flex' => $imageId + 1 === $breakpoints['sm'],
-                            'max-sm:flex' => $imageId + 1 === $breakpoints['xs'],
-                        ])
-                        v-on:click="toggleZoom"
-                    >
-                        <span
-                            class="size-9 flex items-center justify-center rounded-full bg-white text-sm font-bold text shadow-lg"
-                            v-text="'+' + (images.length - {{ $imageId }} - 1)"
-                        >
-                            +{{ count($product->images) - $imageId - 1 }}
-                        </span>
-                    </span>
-                </div>
-            @endif
+            {{-- Only include the showMore if it's actually possible to be visible --}}
+            @includeWhen(in_array($imageId + 1, $breakpoints), 'rapidez::product.partials.gallery.thumbnails.showMore')
         </button>
     @endfor
 </div>
