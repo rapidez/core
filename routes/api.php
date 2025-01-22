@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Rapidez\Core\Http\Controllers\OrderController;
+use Rapidez\Core\Http\Controllers\GetSignedCheckoutController;
 use Rapidez\Core\Http\Middleware\VerifyAdminToken;
 
 Route::middleware('api')->prefix('api')->group(function () {
@@ -21,6 +22,8 @@ Route::middleware('api')->prefix('api')->group(function () {
     });
 
     Route::get('order', OrderController::class);
+
+    Route::post('get-checkout-url', GetSignedCheckoutController::class);
 
     Route::prefix('admin')->middleware(VerifyAdminToken::class)->group(function () {
         Route::match(['get', 'post'], 'cache/clear', fn () => Artisan::call('cache:clear'));

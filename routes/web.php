@@ -1,6 +1,7 @@
 <?php
 
 use Rapidez\Core\Facades\Rapidez;
+use Rapidez\Core\Http\Controllers\SignedCheckoutController;
 use Rapidez\Core\Http\Middleware\AuthenticateHealthCheck;
 
 Route::get('healthcheck', config('rapidez.routing.controllers.healthcheck'))->middleware(AuthenticateHealthCheck::class);
@@ -15,6 +16,7 @@ Route::middleware('web')->group(function () {
     Route::get('checkout/success', config('rapidez.routing.controllers.checkout-success'))->name('checkout.success');
 
     Route::get('checkout/onepage/success', fn () => redirect(route('checkout.success', request()->query()), 308));
+    Route::get('checkout/signed', SignedCheckoutController::class)->name('signed-checkout');;
     Route::get('checkout/{step?}', config('rapidez.routing.controllers.checkout'))->middleware('auth:magento-cart')->name('checkout');
     Route::get('search', config('rapidez.routing.controllers.search'))->name('search');
     Route::fallback(config('rapidez.routing.controllers.fallback'));
