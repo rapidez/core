@@ -10,34 +10,23 @@
 
 <div class="min-h-screen">
     <listing
-        :additional-filters="{!! isset($query) ? "['query-filter', 'category', 'score-position']" : "['category', 'score-position']" !!}"
         :additional-sorting="[{
             label: window.config.translations.newest,
-            dataField: 'created_at',
-            sortBy: 'desc'
+            field: 'created_at',
+            order: 'desc',
+            value: config.index+'_created_at_desc',
+            key: '_created_at_desc'
         }]"
         v-cloak
     >
         <div slot-scope="{ loaded, filters, sortOptions, getQuery, _renderProxy: listingSlotProps }">
-            {{-- TODO: Implement $query and make sure the default product in category position is applied --}}
             <ais-instant-search
                 v-if="loaded"
                 :search-client="listingSlotProps.searchClient"
-                :index-name="config.es_prefix + '_products_' + config.store"
+                :index-name="config.index"
                 :routing="listingSlotProps.routing"
             >
-                {{-- :size="isNaN(parseInt(listingSlotProps.pageSize)) ? 10000 : parseInt(listingSlotProps.pageSize)" --}}
-                <ais-configure
-                    :filters="{{ $query }}"
-                    {{-- :query="getQuery" --}}
-                    {{-- :custom-query="function () {return {query: {{ $query }} } }" --}}
-                />
-
-                {{-- <reactive-component
-                    component-id="score-position"
-                    :custom-query="getQuery"
-                    :show-filter="false"
-                ></reactive-component> --}}
+                <ais-configure :filters="{{ $query }}"/>
 
                 {{ $before ?? '' }}
                 @if ($slot->isEmpty())

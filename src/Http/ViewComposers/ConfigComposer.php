@@ -16,7 +16,7 @@ class ConfigComposer
     {
         $exposedFrontendConfigValues = Arr::only(
             array_merge_recursive(config('rapidez'), config('rapidez.frontend')),
-            array_merge(config('rapidez.frontend.exposed'), ['store_code'])
+            array_merge(config('rapidez.frontend.exposed'), ['store_code', 'index'])
         );
 
         Config::set('frontend', array_merge(

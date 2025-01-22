@@ -15,6 +15,7 @@ import useAttributes from '../../stores/useAttributes.js'
 
 export default {
     props: {
+        // TODO: Do we still use/need this?
         additionalFilters: {
             type: Array,
             default: () => [],
@@ -28,9 +29,6 @@ export default {
     data: () => ({
         loaded: false,
         attributes: useAttributes(),
-        pageSize:
-            (Turbo?.navigator?.location?.searchParams || new URLSearchParams(window.location.search)).get('pageSize') ||
-            config.grid_per_page,
 
         // TODO: We need some finetuning here; the url isn't very clean.
         // Also after a refresh the filters aren't selected.
@@ -64,6 +62,8 @@ export default {
                             // if we want to add something to the
                             // "must" instead of "filter"?
                             sr.body.query.bool.filter.push(this.getQuery())
+                            // And, this is currently applied on all queries,
+                            // it's only relevant on the listing one.
                             return sr
                         })
                     },
@@ -96,20 +96,17 @@ export default {
                         { attribute: 'visibility', field: 'visibility', type: 'numeric' },
                     ],
 
-                    sorting: {
-                        default: {
-                            field: '_score',
-                            order: 'desc',
-                        },
-                        _rated_desc: {
-                            field: 'rated',
-                            order: 'desc',
-                        },
-                    },
+                    sorting: this.sortOptions.reduce((acc, item) => {
+                        acc[item.key] = {
+                            field: item.field,
+                            order: item.order
+                        };
+                        return acc;
+                    }),
                 },
             })
 
-            // console.log(this.facets)
+            // console.log(this.sortOptions)
 
             return searchkit
         },
@@ -159,49 +156,39 @@ export default {
                     return {
                         label: pages,
                         value: pages,
-                        default: index === 0,
+                        default: pages == config.grid_per_page,
                     }
                 })
                 .concat({ label: this.$root.config.translations.all, value: 10000 })
         },
 
         sortOptions: function () {
-            return [
-                {
-                    label: window.config.translations.relevance,
-                    dataField: '_score',
-                    sortBy: 'desc',
-                },
-            ]
-                .concat(
-                    this.sortings.flatMap(function (sorting) {
-                        return [
-                            ['asc', window.config.translations.asc],
-                            ['desc', window.config.translations.desc],
-                        ].map(function ([directionKey, directionLabel]) {
-                            return {
-                                label:
-                                    window.config.translations.sorting?.[sorting.code]?.[directionKey] ??
-                                    sorting.name + ' ' + directionLabel,
-                                dataField: sorting.code + (sorting.code != 'price' ? '.keyword' : ''),
-                                sortBy: directionKey,
-                            }
-                        })
-                    }),
-                )
-                .concat(this.additionalSorting)
+            return [{
+                label: window.config.translations.relevance,
+                field: '_score',
+                order: 'desc',
+                value: config.index,
+                key: 'default',
+            }].concat(this.sortings.flatMap(function (sorting) {
+                return [
+                    ['asc', window.config.translations.asc],
+                    ['desc', window.config.translations.desc],
+                ].map(function ([directionKey, directionLabel]) {
+                    return {
+                        label: window.config.translations.sorting?.[sorting.code]?.[directionKey] ?? sorting.name + ' ' + directionLabel,
+                        field: sorting.code + (sorting.code != 'price' ? '.keyword' : ''),
+                        order: directionKey,
+                        value: [config.index, sorting.code, directionKey].join('_'),
+                        key: '_'+[sorting.code, directionKey].join('_')
+                    }
+                })
+            })).concat(this.additionalSorting)
         },
     },
 
     watch: {
         attributes: function (value) {
             this.loaded = Object.keys(value).length > 0
-        },
-
-        pageSize: function (pageSize) {
-            let url = new URL(window.location)
-            url.searchParams.set('pageSize', pageSize)
-            window.history.pushState(window.history.state, '', url)
         },
     },
 
