@@ -15,6 +15,8 @@ import graphql from './components/Graphql.vue'
 Vue.component('graphql', graphql)
 import graphqlMutation from './components/GraphqlMutation.vue'
 Vue.component('graphql-mutation', graphqlMutation)
+import recursion from './components/Recursion.vue'
+Vue.component('recursion', recursion)
 
 import notifications from './components/Notifications/Notifications.vue'
 Vue.component('notifications', notifications)

@@ -18,7 +18,7 @@
         }]"
         v-cloak
     >
-        <div slot-scope="{ loaded, filters, sortOptions, reactiveFilters, getQuery, _renderProxy: listingSlotProps }">
+        <div slot-scope="{ loaded, filters, sortOptions, getQuery, _renderProxy: listingSlotProps }">
             {{-- TODO: Implement $query and make sure the default product in category position is applied --}}
             <ais-instant-search
                 v-if="loaded"

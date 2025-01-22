@@ -5,6 +5,11 @@
     show-more
 >
     <template v-slot="{ items, refine, isShowingMore, toggleShowMore, canToggleShowMore }">
+        {{--
+        TODO: Why do we need this pb-4 in here?
+        We also have padding in the heading?
+        Maybe handle that in 1 place?
+        --}}
         <div v-if="items.length" class="relative pb-4">
             <x-rapidez::filter.heading>
                 <ul class="flex flex-col gap-1">
@@ -13,6 +18,11 @@
                         class="flex justify-between text-base text-muted"
                     >
                         <div class="flex">
+                            {{--
+                            TODO: Maybe we should change these checkboxes
+                            to anchors so we can use createURL(item)
+                            within a href. Maybe useful for SEO?
+                            --}}
                             <x-rapidez::input.checkbox
                                 v-bind:checked="item.isRefined"
                                 v-on:change="refine(item.value)"

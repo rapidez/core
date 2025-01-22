@@ -1,3 +1,58 @@
+<ais-clear-refinements>
+    <template v-slot="{ canRefine, refine, createURL }">
+        <a
+            v-if="canRefine"
+            v-bind:href="createURL()"
+            v-on:click.prevent="refine"
+        >
+            @lang('Reset filters')
+        </a>
+
+        {{-- TODO: Without this the default renders... --}}
+        <div v-else></div>
+    </template>
+</ais-clear-refinements>
+
+<ais-current-refinements>
+    <template v-slot="{ items, createURL }">
+        <ul class="flex gap-2 flex-wrap">
+            <template v-for="item in items">
+                <li
+                    class="flex flex-wrap gap-2 relative"
+                    v-for="refinement in item.refinements"
+                    :key="[
+                      refinement.attribute,
+                      refinement.type,
+                      refinement.value,
+                      refinement.operator
+                    ].join(':')"
+                >
+                    <a
+                        :href="createURL(refinement)"
+                        v-on:click.prevent="item.refine(refinement)"
+                        class="flex justify-between items-center transition hover:opacity-80"
+                    >
+                        {{-- Why do we need an extra span here? --}}
+                        <span class="font-sans flex gap-1 p-1 items-center text-xs rounded-lg bg">
+                            {{--
+                            Having the label here is useful when filtering booleans,
+                            but the item label is currently the "code".
+                            --}}
+                            @{{ item.label }}:
+                            {{-- When the label is a boolean a yes/no would be nice --}}
+                            @{{ refinement.label }}
+                            <x-heroicon-o-x-mark class="size-3 shrink-0"/>
+                        </span>
+                    </a>
+                </li>
+            </template>
+        </ul>
+    </template>
+</ais-current-refinements>
+
+{{--
+TODO: Make sure all of this is implemented
+
 <selected-filters>
     <div
         slot-scope="{ clearValues, selectedValues, setValue, components }"
@@ -30,3 +85,4 @@
         </selected-filters-values>
     </div>
 </selected-filters>
+ --}}
