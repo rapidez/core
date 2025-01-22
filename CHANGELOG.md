@@ -1,6 +1,13 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/...2.19.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.19.1...2.19.1)
+## [2.19.1](https://github.com/rapidez/core/releases/tag/2.19.1) - 2025-01-21
+
+### Fixed
+
+- Only check for logged in state on mounted hook (#673)
+- Fallback fixes (#707)
+
 ## [2.19.0](https://github.com/rapidez/core/releases/tag/2.19.0) - 2024-12-11
 
 ### Added
