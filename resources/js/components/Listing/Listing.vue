@@ -99,9 +99,9 @@ export default {
                     sorting: this.sortOptions.reduce((acc, item) => {
                         acc[item.key] = {
                             field: item.field,
-                            order: item.order
-                        };
-                        return acc;
+                            order: item.order,
+                        }
+                        return acc
                     }),
                 },
             })
@@ -163,26 +163,34 @@ export default {
         },
 
         sortOptions: function () {
-            return [{
-                label: window.config.translations.relevance,
-                field: '_score',
-                order: 'desc',
-                value: config.index,
-                key: 'default',
-            }].concat(this.sortings.flatMap(function (sorting) {
-                return [
-                    ['asc', window.config.translations.asc],
-                    ['desc', window.config.translations.desc],
-                ].map(function ([directionKey, directionLabel]) {
-                    return {
-                        label: window.config.translations.sorting?.[sorting.code]?.[directionKey] ?? sorting.name + ' ' + directionLabel,
-                        field: sorting.code + (sorting.code != 'price' ? '.keyword' : ''),
-                        order: directionKey,
-                        value: [config.index, sorting.code, directionKey].join('_'),
-                        key: '_'+[sorting.code, directionKey].join('_')
-                    }
-                })
-            })).concat(this.additionalSorting)
+            return [
+                {
+                    label: window.config.translations.relevance,
+                    field: '_score',
+                    order: 'desc',
+                    value: config.index,
+                    key: 'default',
+                },
+            ]
+                .concat(
+                    this.sortings.flatMap(function (sorting) {
+                        return [
+                            ['asc', window.config.translations.asc],
+                            ['desc', window.config.translations.desc],
+                        ].map(function ([directionKey, directionLabel]) {
+                            return {
+                                label:
+                                    window.config.translations.sorting?.[sorting.code]?.[directionKey] ??
+                                    sorting.name + ' ' + directionLabel,
+                                field: sorting.code + (sorting.code != 'price' ? '.keyword' : ''),
+                                order: directionKey,
+                                value: [config.index, sorting.code, directionKey].join('_'),
+                                key: '_' + [sorting.code, directionKey].join('_'),
+                            }
+                        })
+                    }),
+                )
+                .concat(this.additionalSorting)
         },
     },
 
