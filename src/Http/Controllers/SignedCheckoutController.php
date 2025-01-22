@@ -10,7 +10,7 @@ class SignedCheckoutController
 {
     public function __invoke(Request $request)
     {
-        if (! $request->hasValidSignature() || !Cache::has('checkout-' . $request->get('key'))) {
+        if (! $request->hasValidSignature() || ! Cache::has('checkout-' . $request->get('key'))) {
             return redirect(config('rapidez.magento_url'), 301);
         }
 
@@ -19,7 +19,7 @@ class SignedCheckoutController
 
         $response = redirect()->to('checkout');
 
-        if (!Quote::whereQuoteIdOrCustomerToken($data['mask'] ?? $data['token'])->exists()) {
+        if (! Quote::whereQuoteIdOrCustomerToken($data['mask'] ?? $data['token'])->exists()) {
             return redirect(config('rapidez.magento_url'), 301);
         }
 
