@@ -56,13 +56,14 @@ export default {
                 let fields = data['fields'] ?? data
                 let size = data['size'] ?? self.size ?? undefined
                 let sort = data['sort'] ?? undefined
+                let fuzziness = data['fuzziness'] ?? 'AUTO'
 
                 let multimatch = self.multiMatchTypes.map((type) => ({
                     multi_match: {
                         query: query,
                         type: type,
                         fields: fields,
-                        fuzziness: type.includes('phrase') ? undefined : 'AUTO',
+                        fuzziness: type.includes('phrase') ? undefined : fuzziness,
                     },
                 }))
 
