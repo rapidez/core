@@ -1,7 +1,7 @@
 <script>
 import InstantSearch from 'vue-instantsearch'
 import Client from '@searchkit/instantsearch-client'
-import Searchkit from "searchkit"
+import Searchkit from 'searchkit'
 import deepmerge from 'deepmerge'
 
 import { history as historyRouter } from 'instantsearch.js/es/lib/routers'
@@ -100,14 +100,14 @@ export default {
                     sorting: {
                         default: {
                             field: '_score',
-                            order: 'desc'
+                            order: 'desc',
                         },
                         _rated_desc: {
                             field: 'rated',
-                            order: 'desc'
-                        }
+                            order: 'desc',
+                        },
                     },
-                }
+                },
             })
 
             // console.log(this.facets)
