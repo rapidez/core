@@ -42,29 +42,31 @@
                 height="80"
             />
 
-            <div
-                @unless (count($product->images) - $imageId - 1) v-cloak @endunless
-                v-if="images.length - {{ $imageId }} - 1"
-            >
-                <span
-                    @class([
-                        'absolute inset-0 hidden items-center justify-center bg-black/20',
-                        'xl:flex' => $imageId + 1 === $breakpoints['xl'],
-                        'lg:max-xl:flex' => $imageId + 1 === $breakpoints['lg'],
-                        'md:max-lg:flex' => $imageId + 1 === $breakpoints['md'],
-                        'sm:max-md:flex' => $imageId + 1 === $breakpoints['sm'],
-                        'max-sm:flex' => $imageId + 1 === $breakpoints['xs'],
-                    ])
-                    v-on:click="toggleZoom"
+            @if($imageId + 1 >= min($breakpoints))
+                <div
+                    @unless (count($product->images) - $imageId - 1) v-cloak @endunless
+                    v-if="images.length - {{ $imageId }} - 1"
                 >
                     <span
-                        class="size-9 flex items-center justify-center rounded-full bg-white text-sm font-bold text shadow-lg"
-                        v-text="'+' + (images.length - {{ $imageId }} - 1)"
+                        @class([
+                            'absolute inset-0 hidden items-center justify-center bg-black/20',
+                            'xl:flex' => $imageId + 1 === $breakpoints['xl'],
+                            'lg:max-xl:flex' => $imageId + 1 === $breakpoints['lg'],
+                            'md:max-lg:flex' => $imageId + 1 === $breakpoints['md'],
+                            'sm:max-md:flex' => $imageId + 1 === $breakpoints['sm'],
+                            'max-sm:flex' => $imageId + 1 === $breakpoints['xs'],
+                        ])
+                        v-on:click="toggleZoom"
                     >
-                        +{{ count($product->images) - $imageId - 1 }}
+                        <span
+                            class="size-9 flex items-center justify-center rounded-full bg-white text-sm font-bold text shadow-lg"
+                            v-text="'+' + (images.length - {{ $imageId }} - 1)"
+                        >
+                            +{{ count($product->images) - $imageId - 1 }}
+                        </span>
                     </span>
-                </span>
-            </div>
+                </div>
+            @endif
         </button>
     @endfor
 </div>
