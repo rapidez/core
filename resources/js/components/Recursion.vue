@@ -1,9 +1,6 @@
 <template>
     <div>
-        <slot
-            :data="data"
-            :component="childComponent"
-        />
+        <slot :data="data" :component="childComponent" />
     </div>
 </template>
 
@@ -24,8 +21,8 @@ export default {
                             data: this.data,
                         },
                     }),
-            };
+            }
         },
     },
-};
+}
 </script>

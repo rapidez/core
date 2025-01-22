@@ -66,7 +66,7 @@ export default {
                             sr.body.query.bool.filter.push(this.getQuery())
                             return sr
                         })
-                    }
+                    },
                 },
             })
 
@@ -84,8 +84,7 @@ export default {
                     // Are we using this? In the autocomplete maybe?
                     // highlight_attributes: ['title'],
 
-                    search_attributes: Object.entries(config.searchable)
-                        .map(([field, weight]) => ({ field, weight })),
+                    search_attributes: Object.entries(config.searchable).map(([field, weight]) => ({ field, weight })),
 
                     // We could make the response smaller with this
                     // result_attributes: ['title', 'actors', 'poster', 'plot'],
@@ -132,19 +131,20 @@ export default {
                 { attribute: 'category_lvl1', field: 'category_lvl1.keyword', type: 'string' },
                 { attribute: 'category_lvl2', field: 'category_lvl2.keyword', type: 'string' },
                 { attribute: 'category_lvl3', field: 'category_lvl3.keyword', type: 'string' },
-            ];
+            ]
 
-
-            return this.filters.map((filter) => ({
-                attribute: filter.code,
-                field: filter.code + (['price', 'boolean'].includes(filter.input) ? '' : '.keyword'),
-                type: ['price', 'boolean'].includes(filter.input) ? 'numeric' : 'string',
-            })).push([
-                { attribute: 'category_lvl0', field: 'category_lvl0.keyword', type: 'string' },
-                { attribute: 'category_lvl1', field: 'category_lvl1.keyword', type: 'string' },
-                { attribute: 'category_lvl2', field: 'category_lvl2.keyword', type: 'string' },
-                { attribute: 'category_lvl3', field: 'category_lvl3.keyword', type: 'string' },
-            ])
+            return this.filters
+                .map((filter) => ({
+                    attribute: filter.code,
+                    field: filter.code + (['price', 'boolean'].includes(filter.input) ? '' : '.keyword'),
+                    type: ['price', 'boolean'].includes(filter.input) ? 'numeric' : 'string',
+                }))
+                .push([
+                    { attribute: 'category_lvl0', field: 'category_lvl0.keyword', type: 'string' },
+                    { attribute: 'category_lvl1', field: 'category_lvl1.keyword', type: 'string' },
+                    { attribute: 'category_lvl2', field: 'category_lvl2.keyword', type: 'string' },
+                    { attribute: 'category_lvl3', field: 'category_lvl3.keyword', type: 'string' },
+                ])
             // TODO: Double check this and how it's used.
             // .concat(this.additionalFilters)
         },
@@ -213,13 +213,13 @@ export default {
 
             return {
                 // query: {
-                    function_score: {
-                        script_score: {
-                            script: {
-                                source: `Integer.parseInt(doc['positions.${window.config.category.entity_id}'].empty ? '0' : doc['positions.${window.config.category.entity_id}'].value)`,
-                            },
+                function_score: {
+                    script_score: {
+                        script: {
+                            source: `Integer.parseInt(doc['positions.${window.config.category.entity_id}'].empty ? '0' : doc['positions.${window.config.category.entity_id}'].value)`,
                         },
                     },
+                },
                 // },
             }
         },
