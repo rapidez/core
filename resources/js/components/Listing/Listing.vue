@@ -1,9 +1,8 @@
 <script>
 import InstantSearch from 'vue-instantsearch'
-
-// TODO: Maybe make this swappable, so users can switch?
 import Client from '@searchkit/instantsearch-client'
 import Searchkit from "searchkit"
+import deepmerge from 'deepmerge'
 
 import { history as historyRouter } from 'instantsearch.js/es/lib/routers'
 import { singleIndex as singleIndexMapping } from 'instantsearch.js/es/lib/stateMappings'
@@ -56,7 +55,20 @@ export default {
         // we don't want to load everything
         // directly due the JS size
         searchClient: function () {
-            let client = Client(this.searchkit)
+            let client = Client(this.searchkit, {
+                hooks: {
+                    beforeSearch: async (searchRequests) => {
+                        return searchRequests.map((sr) => {
+                            // TODO: Maybe use deepmerge here so it doesn't
+                            // really matter what query is used? What
+                            // if we want to add something to the
+                            // "must" instead of "filter"?
+                            sr.body.query.bool.filter.push(this.getQuery())
+                            return sr
+                        })
+                    }
+                },
+            })
 
             // console.log(client)
 
@@ -72,19 +84,13 @@ export default {
                     // Are we using this? In the autocomplete maybe?
                     // highlight_attributes: ['title'],
 
-                    // Should use: config.searchable
-                    // search_attributes: [{ field: 'title', weight: 3 }, 'actors', 'plot'],
+                    search_attributes: Object.entries(config.searchable)
+                        .map(([field, weight]) => ({ field, weight })),
 
                     // We could make the response smaller with this
                     // result_attributes: ['title', 'actors', 'poster', 'plot'],
 
-                    // TODO: Loop through all filters
-                    facet_attributes: [
-                        { attribute: 'activity', field: 'activity.keyword', type: 'string' },
-                        { attribute: 'material', field: 'material.keyword', type: 'string' },
-                        { attribute: 'style_bags', field: 'style_bags.keyword', type: 'string' },
-                        { attribute: 'gender', field: 'gender.keyword', type: 'string' },
-                    ],
+                    facet_attributes: this.facets,
 
                     filter_attributes: [
                         { attribute: 'category_ids', field: 'category_ids', type: 'numeric' },
@@ -104,21 +110,49 @@ export default {
                 }
             })
 
-            // console.log(searchkit)
+            // console.log(this.facets)
 
             return searchkit
         },
+
         filters: function () {
             return Object.values(this.attributes)
                 .filter((attribute) => attribute.filter)
                 .sort((a, b) => a.position - b.position)
         },
+
+        facets: function () {
+            return [
+                ...this.filters.map((filter) => ({
+                    attribute: filter.code,
+                    field: filter.code + (['price', 'boolean'].includes(filter.input) ? '' : '.keyword'),
+                    type: ['price', 'boolean'].includes(filter.input) ? 'numeric' : 'string',
+                })),
+                { attribute: 'category_lvl0', field: 'category_lvl0.keyword', type: 'string' },
+                { attribute: 'category_lvl1', field: 'category_lvl1.keyword', type: 'string' },
+                { attribute: 'category_lvl2', field: 'category_lvl2.keyword', type: 'string' },
+                { attribute: 'category_lvl3', field: 'category_lvl3.keyword', type: 'string' },
+            ];
+
+
+            return this.filters.map((filter) => ({
+                attribute: filter.code,
+                field: filter.code + (['price', 'boolean'].includes(filter.input) ? '' : '.keyword'),
+                type: ['price', 'boolean'].includes(filter.input) ? 'numeric' : 'string',
+            })).push([
+                { attribute: 'category_lvl0', field: 'category_lvl0.keyword', type: 'string' },
+                { attribute: 'category_lvl1', field: 'category_lvl1.keyword', type: 'string' },
+                { attribute: 'category_lvl2', field: 'category_lvl2.keyword', type: 'string' },
+                { attribute: 'category_lvl3', field: 'category_lvl3.keyword', type: 'string' },
+            ])
+            // TODO: Double check this and how it's used.
+            // .concat(this.additionalFilters)
+        },
+
         sortings: function () {
             return Object.values(this.attributes).filter((attribute) => attribute.sorting)
         },
-        reactiveFilters: function () {
-            return this.filters.map((filter) => filter.code).concat(this.additionalFilters)
-        },
+
         hitsPerPage: function () {
             return this.$root.config.grid_per_page_values
                 .map(function (pages, index) {
@@ -130,6 +164,7 @@ export default {
                 })
                 .concat({ label: this.$root.config.translations.all, value: 10000 })
         },
+
         sortOptions: function () {
             return [
                 {
@@ -157,6 +192,7 @@ export default {
                 .concat(this.additionalSorting)
         },
     },
+
     watch: {
         attributes: function (value) {
             this.loaded = Object.keys(value).length > 0
@@ -176,7 +212,7 @@ export default {
             }
 
             return {
-                query: {
+                // query: {
                     function_score: {
                         script_score: {
                             script: {
@@ -184,7 +220,7 @@ export default {
                             },
                         },
                     },
-                },
+                // },
             }
         },
     },
