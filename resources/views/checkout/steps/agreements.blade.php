@@ -1,8 +1,7 @@
 <graphql query="{ checkoutAgreements { agreement_id name checkbox_text content is_html mode } }" cache="checkout.agreements" v-cloak>
     <div slot-scope="{ data }" v-if="data">
         <div v-for="agreement in data.checkoutAgreements" :key="agreement.agreement_id">
-            <global-slideover :title="agreement.name"
-                v-slot="slideover">
+            <global-slideover :title="agreement.name" v-slot="slideover">
                 <div>
                     <div class="hidden">
                         <teleport to="#global-slideover-content" :disabled="!slideover.isCurrentSlideover">
