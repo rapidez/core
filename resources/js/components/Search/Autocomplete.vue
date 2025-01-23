@@ -1,9 +1,6 @@
 <script>
-// import { ReactiveBase, DataSearch } from '@appbaseio/reactivesearch-vue'
-// import { useDebounceFn } from '@vueuse/core'
-
-// Vue.use(ReactiveBase)
-// Vue.use(DataSearch)
+import client from '@searchkit/instantsearch-client'
+import { getAlgoliaResults } from '@algolia/autocomplete-js'
 
 export default {
     props: {
