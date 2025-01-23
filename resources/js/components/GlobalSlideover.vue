@@ -6,15 +6,15 @@ export default {
     },
     data() {
         return {
-            isCurrentSlideover: false
-        };
+            isCurrentSlideover: false,
+        }
     },
     render() {
         return this.$scopedSlots.default(this)
     },
     mounted() {
         this.$root.$on('global-slideover-open', (data) => {
-            this.isCurrentSlideover = data.initiator === this;
+            this.isCurrentSlideover = data.initiator === this
         })
     },
     methods: {
