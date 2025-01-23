@@ -1,4 +1,4 @@
-<div v-cloak v-if="images.length && zoomed" class="fixed inset-0 bg-white cursor-zoom-out flex z-popup">
+<div v-if="images.length && zoomed" class="fixed inset-0 bg-white cursor-zoom-out flex z-popup" v-cloak>
     <div class="flex flex-1 items-center justify-center" v-on:click.prevent="toggleZoom">
         <img
             :src="config.media_url + '/catalog/product' + images[active]"
