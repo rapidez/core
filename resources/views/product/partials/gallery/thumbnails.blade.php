@@ -43,7 +43,7 @@
             />
 
             {{-- Only include the showMore if it's actually possible to be visible --}}
-            @includeWhen(in_array($imageId + 1, $breakpoints), 'rapidez::product.partials.gallery.thumbnails.showMore')
+            @includeWhen(in_array($imageId + 1, $breakpoints), 'rapidez::product.partials.gallery.thumbnails.show-more')
         </button>
     @endfor
 </div>

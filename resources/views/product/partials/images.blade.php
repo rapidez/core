@@ -9,7 +9,7 @@
         <div class="flex-1" slot-scope="{ images, active, zoomed, toggleZoom, change }">
             <div class="sticky top-5 bg-white">
                 @include('rapidez::product.partials.gallery.slider')
-                @includeWhen(count($product->images) > 1, 'rapidez::product.partials.gallery.thumbnails')
+                @include('rapidez::product.partials.gallery.thumbnails')
             </div>
 
             @include('rapidez::product.partials.gallery.popup')
