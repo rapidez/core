@@ -27,4 +27,9 @@ return [
 
     // Should the stock qty be exposed and indexed within Elasticsearch?
     'expose_stock' => false,
+
+    'standalone_checkout' => [
+        // What cache store should be used to store temporary standalone checkout credentials
+        'cache_store' => env('STANDALONE_CHECKOUT_CACHE_STORE', config('cache.default'))
+    ]
 ];

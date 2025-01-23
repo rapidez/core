@@ -22,7 +22,7 @@ class GetSignedCheckoutController
             'token' => 'nullable',
         ]);
         $cachekey = (string) Str::uuid();
-        Cache::put('checkout-' . $cachekey, $data, static::URL_TIMEOUT);
+        Cache::store(config('rapidez.standalone_checkout.cache_store'))->put('checkout-' . $cachekey, $data, static::URL_TIMEOUT);
 
         return ['url' => URL::signedRoute('signed-checkout', ['key' => $cachekey], static::URL_TIMEOUT)];
     }

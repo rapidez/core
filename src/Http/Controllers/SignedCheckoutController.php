@@ -10,12 +10,13 @@ class SignedCheckoutController
 {
     public function __invoke(Request $request)
     {
-        if (! $request->hasValidSignature() || ! Cache::has('checkout-' . $request->get('key'))) {
+        $cache = Cache::store(config('rapidez.standalone_checkout.cache_store'));
+        if (! $request->hasValidSignature() || ! $cache->has('checkout-' . $request->get('key'))) {
             return redirect(config('rapidez.magento_url'), 301);
         }
 
-        $data = Cache::get('checkout-' . $request->get('key'));
-        Cache::forget('checkout-' . $request->get('key'));
+        $data = $cache->get('checkout-' . $request->get('key'));
+        $cache->forget('checkout-' . $request->get('key'));
 
         $response = redirect()->to('checkout');
 
