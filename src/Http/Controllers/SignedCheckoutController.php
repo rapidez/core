@@ -23,13 +23,8 @@ class SignedCheckoutController
             return redirect(config('rapidez.magento_url'), 301);
         }
 
-        if ($data['mask'] ?? false) {
-            $response->withCookie('mask', $data['mask'], 525949, null, null, null, false);
-        }
-
-        if ($data['token'] ?? false) {
-            $response->withCookie('token', $data['token'], 525949, null, null, null, false);
-        }
+        $response->withCookie('mask', $data['mask'] ?? null, 525949, null, null, null, false);
+        $response->withCookie('token', $data['token'] ?? null, 525949, null, null, null, false);
 
         return $response;
     }
