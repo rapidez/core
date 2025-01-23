@@ -76,9 +76,15 @@ export default {
         },
 
         searchkit: function () {
+            let url = new URL(config.es_url)
+
             let searchkit = new Searchkit({
                 connection: {
-                    host: config.es_url,
+                    host: url.origin,
+                    auth: {
+                        username: url.username,
+                        password: url.password,
+                    }
                 },
                 search_settings: {
                     // Are we using this? In the autocomplete maybe?
