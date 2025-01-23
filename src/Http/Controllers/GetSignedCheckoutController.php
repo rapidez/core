@@ -18,11 +18,11 @@ class GetSignedCheckoutController
     public function __invoke(Request $request)
     {
         $data = $request->validate([
-            'mask' => 'required',
+            'mask'  => 'required',
             'token' => 'nullable',
         ]);
-        $cachekey = (string)Str::uuid();
-        Cache::put('checkout-'.$cachekey, $data, static::URL_TIMEOUT);
+        $cachekey = (string) Str::uuid();
+        Cache::put('checkout-' . $cachekey, $data, static::URL_TIMEOUT);
 
         return ['url' => URL::signedRoute('signed-checkout', ['key' => $cachekey], static::URL_TIMEOUT)];
     }
