@@ -3,11 +3,11 @@ export default {
     props: {
         range: {
             type: Object,
-            default: () => ({min: 0, max: 100})
+            default: () => ({ min: 0, max: 100 }),
         },
         current: {
             type: Object,
-            default: () => ({min: undefined, max: undefined})
+            default: () => ({ min: undefined, max: undefined }),
         },
     },
 
@@ -24,23 +24,23 @@ export default {
 
     watch: {
         minValue() {
-            if(this.minValue >= this.maxValue) {
+            if (this.minValue >= this.maxValue) {
                 this.minValue = this.maxValue - 1
             }
         },
 
         maxValue() {
-            if(this.maxValue <= this.minValue) {
+            if (this.maxValue <= this.minValue) {
                 this.maxValue = this.minValue + 1
             }
         },
 
         range() {
-            if(this.range.min == this.range.max && this.range.min == 0) {
+            if (this.range.min == this.range.max && this.range.min == 0) {
                 return
             }
 
-            if(this.minValue === null && this.maxValue === null) {
+            if (this.minValue === null && this.maxValue === null) {
                 this.updateFromProps()
             }
         },
@@ -61,13 +61,13 @@ export default {
         },
 
         percentage(amount) {
-            return (amount - this.range.min) / (this.range.max - this.range.min) * 100
+            return ((amount - this.range.min) / (this.range.max - this.range.min)) * 100
         },
 
         updateRefinement() {
             this.$emit('change', {
                 min: this.minValue,
-                max: this.maxValue
+                max: this.maxValue,
             })
         },
     },
