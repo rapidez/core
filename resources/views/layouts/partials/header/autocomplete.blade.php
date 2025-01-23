@@ -1,3 +1,10 @@
+<autocomplete>
+
+</autocomplete>
+
+
+@return
+
 @php $inputClasses = 'relative z-header-autocomplete border !font-sans !border-default !text-sm !min-h-0 outline-0 ring-0 !h-auto rounded-xl !pl-5 !pr-24 !py-3.5 !bg-white w-full focus:ring-transparent search-input' @endphp
 
 <div v-if="!$root.loadAutocomplete" class="relative w-full">
@@ -20,7 +27,7 @@
     class="relative w-full"
     v-cloak
 >
-    <x-rapidez::reactive-base slot-scope="autocompleteScope">
+    {{-- <x-rapidez::reactive-base slot-scope="autocompleteScope"> --}}
         <div
             class="z-header-autocomplete-overlay pointer-events-none fixed inset-0 cursor-pointer bg-black/40 opacity-0 transition duration-500"
             :class="autocompleteScope.overlay ? 'pointer-events-auto opacity-100 prevent-scroll' : 'opacity-0 pointer-events-none '"
@@ -70,5 +77,5 @@
                 </div>
             </div>
         </data-search>
-    </x-rapidez::reactive-base>
+    {{-- </x-rapidez::reactive-base> --}}
 </autocomplete>

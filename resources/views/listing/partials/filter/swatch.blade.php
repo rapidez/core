@@ -5,7 +5,6 @@
     :inner-class="{
         title: 'capitalize text-sm font-medium text',
     }"
-    :react="{and: filter.input == 'multiselect' ? reactiveFilters : reactiveFilters.filter(item => item != filter.code) }"
     :query-format="filter.input == 'multiselect' ? 'and' : 'or'"
     :show-search="false"
     :show-checkbox="false"

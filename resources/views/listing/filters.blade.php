@@ -4,10 +4,11 @@
         {{-- On mobile the filters aren't immedately visible so we should defer loading --}}
         <lazy>
             @include('rapidez::listing.partials.filter.selected')
+            @include('rapidez::listing.partials.filter.search')
             @include('rapidez::listing.partials.filter.category')
             <template v-for="filter in filters">
                 @include('rapidez::listing.partials.filter.price')
-                @include('rapidez::listing.partials.filter.swatch')
+                {{-- @include('rapidez::listing.partials.filter.swatch') --}}
                 @include('rapidez::listing.partials.filter.boolean')
                 @include('rapidez::listing.partials.filter.select')
             </template>

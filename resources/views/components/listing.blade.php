@@ -10,28 +10,23 @@
 
 <div class="min-h-screen">
     <listing
-        :additional-filters="{!! isset($query) ? "['query-filter', 'category', 'score-position']" : "['category', 'score-position']" !!}"
         :additional-sorting="[{
             label: window.config.translations.newest,
-            dataField: 'created_at',
-            sortBy: 'desc'
+            field: 'created_at',
+            order: 'desc',
+            value: config.index+'_created_at_desc',
+            key: '_created_at_desc'
         }]"
         v-cloak
     >
-        <div slot-scope="{ loaded, filters, sortOptions, reactiveFilters, getQuery, _renderProxy: listingSlotProps }">
-            <x-rapidez::reactive-base v-if="loaded">
-                @isset($query)
-                    <reactive-component
-                        component-id="query-filter"
-                        :custom-query="function () {return {query: {{ $query }} } }"
-                        :show-filter="false"
-                    ></reactive-component>
-                @endisset
-                <reactive-component
-                    component-id="score-position"
-                    :custom-query="getQuery"
-                    :show-filter="false"
-                ></reactive-component>
+        <div slot-scope="{ loaded, filters, sortOptions, getQuery, _renderProxy: listingSlotProps }">
+            <ais-instant-search
+                v-if="loaded"
+                :search-client="listingSlotProps.searchClient"
+                :index-name="config.index"
+                :routing="listingSlotProps.routing"
+            >
+                <ais-configure :filters="{{ $query }}"/>
 
                 {{ $before ?? '' }}
                 @if ($slot->isEmpty())
@@ -47,7 +42,7 @@
                     {{ $slot }}
                 @endif
                 {{ $after ?? '' }}
-            </x-rapidez::reactive-base>
+            </ais-instant-search>
         </div>
     </listing>
 </div>

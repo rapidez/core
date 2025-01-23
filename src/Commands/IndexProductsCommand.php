@@ -128,6 +128,34 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
             }
         }
 
+        // TODO: It would be nice to migrate to Scout,
+        // so we've to do this somewhere else.
+        // And maybe refactor it a bit.
+        foreach ($data['category_paths'] as $categoryPath) {
+            $paths = explode('/', $categoryPath);
+            $paths = array_slice($paths, array_search(config('rapidez.root_category_id'), $paths) + 1);
+
+            $categoryHierarchy = [];
+            $currentPath = '';
+
+            foreach ($paths as $categoryId) {
+                if (isset($categories[$categoryId])) {
+                    $currentPath .= ($currentPath ? ' > ' : '') . $categories[$categoryId];
+                    $categoryHierarchy[] = $currentPath;
+                }
+            }
+
+            foreach ($categoryHierarchy as $level => $category) {
+                $data['category_lvl' . ($level + 1)][] = $category;
+            }
+        }
+
+        foreach ($data as $key => &$value) {
+            if (str_starts_with($key, 'category_lvl')) {
+                $value = array_values(array_unique($value));
+            }
+        }
+
         return $data;
     }
 }

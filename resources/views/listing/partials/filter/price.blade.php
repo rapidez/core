@@ -1,15 +1,38 @@
-<div v-if="filter.input == 'price'" class="relative pb-4">
-    <x-rapidez::filter.heading>
-        <dynamic-range-slider
-            :component-id="filter.code"
-            :data-field="filter.code"
-            :react="{and: ['query-filter']}"
-            :slider-options="{ dragOnClick: true, useKeyboard: false }"
-            :inner-class="{
-                slider: '!pt-4 !mt-0 mx-2',
-            }"
-            u-r-l-params
-        >
-        </dynamic-range-slider>
-    </x-rapidez::filter.heading>
-</div>
+<ais-range-input
+    v-if="filter.input == 'price'"
+    :attribute="filter.code"
+>
+    <template v-slot="{ currentRefinement, range, canRefine, refine, sendEvent }">
+        <x-rapidez::filter.heading>
+            {{-- TODO: This should become a slider --}}
+            <div class="flex">
+                <input
+                    class="w-1/2"
+                    type="number"
+                    :min="range.min"
+                    :max="range.max"
+                    :placeholder="range.min"
+                    :disabled="!canRefine"
+                    :value="currentRefinement.min"
+                    v-on:input="refine({
+                      min: $event.currentTarget.value,
+                      max: currentRefinement.max,
+                    })"
+                />
+                <input
+                    class="w-1/2"
+                    type="number"
+                    :min="range.min"
+                    :max="range.max"
+                    :placeholder="range.max"
+                    :disabled="!canRefine"
+                    :value="currentRefinement.max"
+                    v-on:input="refine({
+                      min: currentRefinement.min,
+                      max: $event.currentTarget.value,
+                    })"
+                />
+            </div>
+        </x-rapidez::filter.heading>
+    </template>
+</ais-range-input>
