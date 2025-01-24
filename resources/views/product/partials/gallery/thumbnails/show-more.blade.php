@@ -1,9 +1,9 @@
 {{-- This component shows an overlay on the last shown thumbnail if there are more thumbnails after it. --}}
 
-<div
-    @unless (count($product->images) - $imageId - 1) v-cloak @endunless
-    v-if="images.length - {{ $imageId }} - 1"
->
+<div @attributes([
+    'v-cloak' => !(count($product->images) - $imageId - 1),
+    'v-if' => 'images.length - ' . $imageId . ' - 1',
+])>
     <span
         @class([
             'absolute inset-0 hidden items-center justify-center bg-black/20',
