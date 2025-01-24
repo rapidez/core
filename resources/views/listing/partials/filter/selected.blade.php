@@ -16,7 +16,7 @@
 <ais-current-refinements>
     <template v-slot="{ items, createURL }">
         <ul class="flex gap-2 flex-wrap">
-            <template v-for="item in items">
+            <template v-for="item in withFilters(items)">
                 <li
                     class="flex flex-wrap gap-2 relative"
                     v-for="refinement in item.refinements"
@@ -28,7 +28,7 @@
                     ].join(':')"
                 >
                     <a
-                        :href="createURL(refinement)"
+                        v-bind:href="createURL(refinement)"
                         v-on:click.prevent="item.refine(refinement)"
                         class="flex justify-between items-center transition hover:opacity-80"
                     >
@@ -38,9 +38,14 @@
                             Having the label here is useful when filtering booleans,
                             but the item label is currently the "code".
                             --}}
+
                             @{{ item.label }}:
-                            {{-- When the label is a boolean a yes/no would be nice --}}
-                            @{{ refinement.label }}
+                            <template v-if="item.filter.input === 'boolean'">
+                                @{{ refinement.label == 1 ? 'Yes' : 'No' }}
+                            </template>
+                            <template v-else>
+                                @{{ refinement.label }}
+                            </template>
                             <x-heroicon-o-x-mark class="size-3 shrink-0"/>
                         </span>
                     </a>
