@@ -84,7 +84,7 @@ export default {
                     auth: {
                         username: url.username,
                         password: url.password,
-                    }
+                    },
                 },
                 search_settings: {
                     // Are we using this? In the autocomplete maybe?
@@ -213,11 +213,11 @@ export default {
         },
 
         withFilters(items) {
-            return items.map(item => ({
-                filter: this.filters.find(filter => filter.code === item.attribute),
+            return items.map((item) => ({
+                filter: this.filters.find((filter) => filter.code === item.attribute),
                 ...item,
             }))
-        }
+        },
     },
 }
 </script>
