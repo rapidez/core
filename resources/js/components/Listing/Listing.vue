@@ -84,7 +84,7 @@ export default {
                     auth: {
                         username: url.username,
                         password: url.password,
-                    }
+                    },
                 },
                 search_settings: {
                     // Are we using this? In the autocomplete maybe?
