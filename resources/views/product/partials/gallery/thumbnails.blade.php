@@ -1,7 +1,7 @@
 {{--
     In this component we avoid layout shifts on the page by pre-populating the possible amount of thumbnail slots.
-    On page load all of the images come from PHP, using `@unless (...) v-cloak @endunless` to hide things that
-    shouldn't be shown, but need a placeholder element.
+    On page load all of the images come from PHP, using `v-cloak` to hide things that shouldn't be shown, but need
+    a placeholder element.
     After Vue gets loaded in, it will take over and replace the `v-cloak`s with the `v-if`s, which means that
     the two conditionals should be identical to avoid layout shifts.
 
@@ -13,8 +13,10 @@
 <div class="mt-3 flex gap-2">
     @for ($imageId = 0; $imageId < max($breakpoints); $imageId++)
         <button
-            @unless ($imageId < count($product->images)) v-cloak @endunless
-            v-if="{{ $imageId }} < images.length"
+            @attributes([
+                'v-cloak' => !($imageId < count($product->images)),
+                'v-if' => $imageId . ' < images.length',
+            ])
             @class([
                 'max-w-24 relative flex aspect-square flex-1 items-center justify-center overflow-hidden rounded border bg-white p-1.5 outline-primary transition-all',
                 'outline outline-1 border-primary' => $imageId == 0,
