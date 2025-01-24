@@ -66,7 +66,7 @@
         </div>
     @endif
     <div class="container">
-        <x-rapidez::productlist title="Related products" field="id" :value="$product->relation_ids"/>
-        <x-rapidez::productlist title="We found other products you might like!" field="id" :value="$product->upsell_ids"/>
+        <x-rapidez::productlist title="Related products" field="entity_id" :value="$product->relation_ids"/>
+        <x-rapidez::productlist title="We found other products you might like!" field="entity_id" :value="$product->upsell_ids"/>
     </div>
 @endsection
