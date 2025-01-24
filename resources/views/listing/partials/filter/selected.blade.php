@@ -21,7 +21,7 @@
             <template v-for="item in withFilters(items)">
                 <li
                     class="flex flex-wrap gap-2 relative"
-                    v-for="refinement in item.refinements"
+                    v-for="refinement in withSwatches(item.refinements, item.filter)"
                     :key="[
                       refinement.attribute,
                       refinement.type,

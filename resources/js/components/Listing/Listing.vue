@@ -243,9 +243,9 @@ export default {
             }))
         },
 
-        withSwatches(items, filterCode) {
+        withSwatches(items, filter) {
             return items.map((item) => ({
-                swatch: this.$root.swatches[filterCode]?.options?.[item.value] ?? null,
+                swatch: this.$root.swatches[filter.base_code]?.options?.[item.value] ?? null,
                 ...item,
             }))
         },

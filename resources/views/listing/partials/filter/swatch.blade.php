@@ -8,7 +8,7 @@
         <div v-show="items.length" class="relative pb-4">
             <x-rapidez::filter.heading>
                 <ul class="flex flex-wrap gap-2 items-center my-1">
-                    <li v-for="item in withSwatches(items, filter.base_code)">
+                    <li v-for="item in withSwatches(items, filter)">
                         <label
                             v-if="filter.visual_swatch"
                             class="size-6 ring-1 ring-emphasis/10 ring-inset cursor-pointer flex items-center justify-center hover:opacity-75 rounded-full transition"
