@@ -2,7 +2,7 @@
     <template v-slot="{ canRefine, refine, createURL }">
         <div v-show="canRefine" class="flex flex-wrap items-baseline justify-between gap-2 w-full pb-2">
             <div class="font-semibold text-base">
-                @lang('You have filtered for:')
+                @lang('Selected filters:')
             </div>
             <a
                 v-bind:href="createURL()"
@@ -35,10 +35,9 @@
                         class="flex items-center gap-1 p-1 text-xs rounded-lg bg transition hover:opacity-80"
                     >
                         @{{ item.filter.name }}:
-                        <template v-if="item.filter.input === 'boolean'">
-                            <template v-if="refinement.label == '1'">@lang('Yes')</template>
-                            <template v-if="refinement.label == '0'">@lang('No')</template>
-                        </template>
+                        <template v-if="false"></template>
+                        @include('rapidez::listing.partials.filter.selected.boolean')
+                        @include('rapidez::listing.partials.filter.selected.swatch')
                         <template v-else>
                             @{{ refinement.label }}
                         </template>
