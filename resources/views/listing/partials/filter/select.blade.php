@@ -1,5 +1,5 @@
 <ais-refinement-list
-    v-if="['select', 'multiselect'].includes(filter.input)"
+    v-if="['select', 'multiselect'].includes(filter.input) && !(filter.text_swatch || filter.visual_swatch)"
     :operator="filter.input == 'multiselect' ? 'and' : 'or'"
     :attribute="filter.code"
     show-more

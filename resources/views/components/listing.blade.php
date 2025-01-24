@@ -19,7 +19,7 @@
         }]"
         v-cloak
     >
-        <div slot-scope="{ loaded, filters, sortOptions, getQuery, withFilters, _renderProxy: listingSlotProps }">
+        <div slot-scope="{ loaded, filters, sortOptions, getQuery, withFilters, withSwatches, filterPrefix, _renderProxy: listingSlotProps }">
             <ais-instant-search
                 v-if="loaded"
                 :search-client="listingSlotProps.searchClient"

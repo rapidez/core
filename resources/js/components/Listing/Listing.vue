@@ -120,6 +120,10 @@ export default {
         filters: function () {
             return Object.values(this.attributes)
                 .filter((attribute) => attribute.filter)
+                .map((filter) => ({ ...filter,
+                    code: this.filterPrefix(filter) + filter.code,
+                    base_code: filter.code,
+                }))
                 .sort((a, b) => a.position - b.position)
         },
 
@@ -127,8 +131,8 @@ export default {
             return [
                 ...this.filters.map((filter) => ({
                     attribute: filter.code,
-                    field: filter.code + (['price', 'boolean'].includes(filter.input) ? '' : '.keyword'),
-                    type: ['price', 'boolean'].includes(filter.input) ? 'numeric' : 'string',
+                    field: filter.code + (this.filterType(filter) == 'string' ? '.keyword' : ''),
+                    type: this.filterType(filter),
                 })),
                 { attribute: 'category_lvl0', field: 'category_lvl0.keyword', type: 'string' },
                 { attribute: 'category_lvl1', field: 'category_lvl1.keyword', type: 'string' },
@@ -194,6 +198,26 @@ export default {
     },
 
     methods: {
+        filterType(filter) {
+            if (filter.super) {
+                return 'numeric'
+            }
+
+            return ['price', 'boolean'].includes(filter.input) ? 'numeric' : 'string'
+        },
+
+        filterPrefix(filter) {
+            if (filter.super) {
+                return 'super_'
+            }
+
+            if (filter.visual_swatch) {
+                return 'visual_'
+            }
+
+            return ''
+        },
+
         getQuery() {
             if (!window.config.category?.entity_id) {
                 return
@@ -215,6 +239,13 @@ export default {
         withFilters(items) {
             return items.map((item) => ({
                 filter: this.filters.find((filter) => filter.code === item.attribute),
+                ...item,
+            }))
+        },
+
+        withSwatches(items, filterCode) {
+            return items.map((item) => ({
+                swatch: this.$root.swatches[filterCode]?.options?.[item.value] ?? null,
                 ...item,
             }))
         },

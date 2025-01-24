@@ -8,7 +8,7 @@
             @include('rapidez::listing.partials.filter.category')
             <template v-for="filter in filters">
                 @include('rapidez::listing.partials.filter.price')
-                {{-- @include('rapidez::listing.partials.filter.swatch') --}}
+                @include('rapidez::listing.partials.filter.swatch')
                 @include('rapidez::listing.partials.filter.boolean')
                 @include('rapidez::listing.partials.filter.select')
             </template>
