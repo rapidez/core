@@ -1,6 +1,6 @@
 <ais-clear-refinements>
     <template v-slot="{ canRefine, refine, createURL }">
-        <div v-if="canRefine" class="flex flex-wrap items-baseline justify-between gap-2 w-full pb-2">
+        <div v-show="canRefine" class="flex flex-wrap items-baseline justify-between gap-2 w-full pb-2">
             <div class="font-semibold text-base">
                 @lang('You have filtered for:')
             </div>
@@ -12,9 +12,6 @@
                 @lang('Reset filters')
             </a>
         </div>
-
-        {{-- TODO: Without this the default renders... --}}
-        <div v-else></div>
     </template>
 </ais-clear-refinements>
 
