@@ -173,6 +173,10 @@ export const user = computed({
 
 // If token gets changed or emptied we should update the user.
 watch(token, refresh)
+if (userStorage.value?.email && !token.value) {
+    token.value = ''
+    userStorage.value = {}
+}
 
 document.addEventListener('vue:loaded', function (event) {
     event.detail.vue.$on('logout', async function (data = {}) {
