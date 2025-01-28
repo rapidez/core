@@ -211,6 +211,13 @@ export default {
                 // },
             }
         },
+
+        withFilters(items) {
+            return items.map((item) => ({
+                filter: this.filters.find((filter) => filter.code === item.attribute),
+                ...item,
+            }))
+        },
     },
 }
 </script>
