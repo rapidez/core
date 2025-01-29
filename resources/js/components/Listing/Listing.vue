@@ -120,10 +120,7 @@ export default {
         filters: function () {
             return Object.values(this.attributes)
                 .filter((attribute) => attribute.filter)
-                .map((filter) => ({ ...filter,
-                    code: this.filterPrefix(filter) + filter.code,
-                    base_code: filter.code,
-                }))
+                .map((filter) => ({ ...filter, code: this.filterPrefix(filter) + filter.code, base_code: filter.code }))
                 .sort((a, b) => a.position - b.position)
         },
 
