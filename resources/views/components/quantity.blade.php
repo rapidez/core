@@ -6,6 +6,7 @@ is present on the input and the quantity select component.
 <quantity-select v-slot="qtySelect" {{ $attributes }}>
     <div class="flex items-center justify-center border rounded bg-white h-12 self-start">
         <button
+            disabled
             v-on:click.prevent="qtySelect.decrease"
             v-bind:disabled="!qtySelect.decreasable"
             aria-label="@lang('Decrease')"
@@ -17,6 +18,7 @@ is present on the input and the quantity select component.
             name="qty"
             type="number"
             dusk="qty"
+            value="1"
             class="outline-0 ring-0 border-none w-12 bg-transparent font-medium text-center px-0 sm:text-base focus:ring-transparent"
             aria-label="@lang('Quantity')"
             {{ $attributes }}
