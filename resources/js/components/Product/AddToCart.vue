@@ -357,7 +357,7 @@ export default {
 
                     if (!option.in_stock) {
                         if (Object.keys(this.product.super_attributes).length === 1) {
-                            disabledOptions['super_' + attribute.code].push(option[attribute.code]);
+                            disabledOptions['super_' + attribute.code].push(option[attribute.code])
                         }
 
                         return
