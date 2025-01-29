@@ -65,6 +65,9 @@
             }
         }
     },
+    "conflict": {
+        "rapidez/reviews": "<3.0"
+    },
     "scripts": {
         "analyse": "phpstan --memory-limit=256M",
         "dusk:prepare": [
