@@ -14,8 +14,8 @@
     @for ($imageId = 0; $imageId < max($breakpoints); $imageId++)
         <button
             @attributes([
-                'v-cloak' => !($imageId < count($product->images)),
-                'v-if' => $imageId . ' < images.length',
+                'v-cloak' => !($imageId < count($product->images) && count($product->images) > 1),
+                'v-if' => $imageId . ' < images.length && images.length > 1',
             ])
             @class([
                 'max-w-24 relative flex aspect-square flex-1 items-center justify-center overflow-hidden rounded border bg-white p-1.5 outline-primary transition-all',
