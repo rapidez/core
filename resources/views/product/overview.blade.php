@@ -11,11 +11,11 @@
         <div itemtype="https://schema.org/Product" itemscope>
             @include('rapidez::product.partials.microdata')
             @include('rapidez::product.partials.opengraph')
-            <div class="relative flex flex-col gap-8 sm:flex-row">
-                <div class="sm:w-1/2 flex flex-col shrink-0">
+            <div class="relative flex max-lg:flex-col gap-8">
+                <div class="flex-1 flex flex-col shrink-0">
                     @include('rapidez::product.partials.images')
                 </div>
-                <div class="flex flex-col gap-5 sm:w-1/2 shrink-0">
+                <div class="flex flex-col gap-5 flex-1 shrink-0">
                     @includeWhen($product->type_id == 'grouped', 'rapidez::product.partials.grouped')
                     @includeWhen($product->type_id !== 'grouped', 'rapidez::product.partials.addtocart')
                     @if (App::providerIsLoaded('Rapidez\Reviews\ReviewsServiceProvider'))
@@ -66,7 +66,7 @@
         </div>
     @endif
     <div class="container">
-        <x-rapidez::productlist title="Related products" field="id" :value="$product->relation_ids"/>
-        <x-rapidez::productlist title="We found other products you might like!" field="id" :value="$product->upsell_ids"/>
+        <x-rapidez::productlist title="Related products" field="entity_id" :value="$product->relation_ids"/>
+        <x-rapidez::productlist title="We found other products you might like!" field="entity_id" :value="$product->upsell_ids"/>
     </div>
 @endsection
