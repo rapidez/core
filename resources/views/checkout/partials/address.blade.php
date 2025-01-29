@@ -148,7 +148,7 @@
         <div class="col-span-12 sm:col-span-6">
             <label>
                 <x-rapidez::label>@lang('Country')</x-rapidez::label>
-                <x-rapidez::country-select
+                <x-rapidez::input.select.country
                     name="{{ $type }}_country"
                     dusk="{{ $type }}_country"
                     v-model="variables.country_code"
