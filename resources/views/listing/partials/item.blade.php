@@ -24,6 +24,9 @@
                                 <div class="text-sm line-through" v-if="item.special_price">@{{ item.price | price }}</div>
                             </div>
                         @endif
+                    @if (App::providerIsLoaded('Rapidez\Reviews\ReviewsServiceProvider'))
+                        <x-rapidez-reviews::stars v-if="item.reviews_count" count="item.reviews_count" score="item.reviews_score"/>
+                    @endif
                     </div>
                 </a>
                 @include('rapidez::listing.partials.item.addtocart')
