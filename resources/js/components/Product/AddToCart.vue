@@ -59,11 +59,7 @@ export default {
 
     methods: {
         async add() {
-            if (
-                window.location.pathname !== this.product.url &&
-                (this.product?.has_options ||
-                    ('children' in this.product && Object.values(this.product.children).length && !config.show_swatches))
-            ) {
+            if (this.shouldRedirectToProduct) {
                 Turbo.visit(window.url(this.product.url))
                 return
             }
@@ -173,6 +169,11 @@ export default {
 
         setCustomOptionFile(event, optionId) {
             let file = event.target.files[0]
+
+            if (!file) {
+                return
+            }
+
             let reader = new FileReader()
             reader.onerror = (error) => alert(error)
             reader.onload = () => {
@@ -257,6 +258,25 @@ export default {
     },
 
     computed: {
+        currentThumbnail: function () {
+            return this.simpleProduct?.thumbnail || this.simpleProduct?.images?.[0] || this.product?.thumbnail
+        },
+
+        shouldRedirectToProduct: function () {
+            // Never redirect if we're already on the product page
+            if (window.location.pathname === this.product.url) {
+                return false
+            }
+
+            // Products with product options always have to be set on the product page
+            if (this.product?.has_options) {
+                return true
+            }
+
+            // Check if all super_attributes have an option selected
+            return Object.keys(this.product?.super_attributes).join(',') !== Object.keys(this.options).join(',')
+        },
+
         simpleProduct: function () {
             var product = this.product
 

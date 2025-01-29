@@ -48,14 +48,16 @@
             <div slot="render" slot-scope="dataSearchScope">
                 <div
                     v-if="dataSearchScope.downshiftProps.isOpen && !autocompleteScope.searchLoading && !dataSearchScope.loading && dataSearchScope.value"
-                    class="z-header-autocomplete absolute -inset-x-5 top-14 overflow-x-hidden overflow-y-auto scrollbar-hide pt-4 pb-7 bg-white shadow-xl max-md:h-[calc(100svh-150px)] max-md:max-h-[calc(100svh-150px)] md:top-14 md:max-h-[calc(100svh-150px)] md:rounded-xl md:border md:inset-x-0 md:w-full md:-translate-y-px"
+                    class="z-header-autocomplete absolute -inset-x-5 top-14 overflow-x-hidden overflow-y-auto scrollbar-hide pt-4 pb-7 bg-white max-md:h-[calc(100svh-150px)] max-md:max-h-[calc(100svh-150px)] md:top-14 md:max-h-[calc(100svh-150px)] md:rounded-xl md:border md:inset-x-0 md:w-full md:-translate-y-px"
                 >
                     <div v-if="dataSearchScope.data.length || autocompleteScope.resultsCount">
                         <div class="flex flex-col prose-li:px-5 hover:prose-li:bg-muted">
                             {{-- The order can be changed with https://tailwindcss.com/docs/order --}}
                             <template v-for="(resultsData, resultsType) in autocompleteScope.results ?? {}" v-if="resultsData?.hits?.length">
                                 @foreach (config('rapidez.frontend.autocomplete.additionals') as $key => $fields)
-                                    @includeIf('rapidez::layouts.partials.header.autocomplete.' . $key)
+                                    <template v-if="resultsType == '{{ $key }}'">
+                                        @includeIf('rapidez::layouts.partials.header.autocomplete.' . $key)
+                                    </template>
                                 @endforeach
                             </template>
                             @include('rapidez::layouts.partials.header.autocomplete.products')

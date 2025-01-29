@@ -4,6 +4,14 @@
             <td class="w-24">
                 <a :href="item.product.url_key + item.product.url_suffix | url">
                     <img
+                        v-if="item.configured_variant?.image"
+                        class="mx-auto"
+                        :alt="item.product.name"
+                        :src="resizedPath(item.configured_variant.image.url + '.webp', '80x80')"
+                        height="80"
+                    />
+                    <img
+                        v-else-if="item.product.image"
                         class="mx-auto"
                         :alt="item.product.name"
                         :src="resizedPath(item.product.image.url + '.webp', '80x80')"

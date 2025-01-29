@@ -12,7 +12,7 @@
             >
                 <component :is="link ? 'a' : 'div'" v-if="show" class="relative flex items-end justify-center pointer-events-none mb-3 sm:items-start sm:justify-end" :class="{ 'pointer-events-none': !link }">
 
-                    <div class="max-w-sm w-full shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden border" :class="classes">
+                    <div class="max-w-sm w-full shadow-lg shadow-default rounded-lg pointer-events-auto ring-1 ring-emphasis/10 overflow-hidden border" :class="classes">
                         <div class="p-4">
                             <div class="flex items-start">
                                 <div class="flex-shrink-0">
