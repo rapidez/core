@@ -1,6 +1,6 @@
-<div class="size-full">
+<div class="size-full" v-bind:key="item.entity_id">
     <add-to-cart v-bind:product="item" v-slot="addToCart" v-cloak>
-        <div class="group relative flex flex-1 flex-col rounded border bg-white p-5" :key="item.entity_id">
+        <div class="group relative flex flex-1 flex-col rounded border bg-white p-5">
             @if (App::providerIsLoaded('Rapidez\Wishlist\WishlistServiceProvider'))
                 <div class="group absolute right-0 top-0 z-10 p-2">
                     @include('rapidez::wishlist.button')
