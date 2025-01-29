@@ -1,11 +1,7 @@
 {{--
-    In this component we avoid layout shifts on the page by pre-populating the possible amount of thumbnail slots.
-    On page load all of the images come from PHP, using `v-cloak` to hide things that shouldn't be shown, but need
-    a placeholder element.
-    After Vue gets loaded in, it will take over and replace the `v-cloak`s with the `v-if`s, which means that
-    the two conditionals should be identical to avoid layout shifts.
-
-    The `$breakpoints` variable determines how many images are shown on each individual breakpoint.
+This components initializes with data from PHP to avoid layout shifts.
+When Vue is loaded it takes over and all `v-cloak`'s show up.
+With `$breakpoints` you can control the amount of images.
 --}}
 
 @php($breakpoints = ['xl' => 7, 'lg' => 5, 'md' => 7, 'sm' => 5, 'xs' => 3])
@@ -33,7 +29,7 @@
             v-on:click="change({{ $imageId }})"
         >
             <img
-                {{-- Note: always put the base `src` before a `v-bind:src` or it will not work --}}
+                {{-- src should always be above v-bind:src --}}
                 @if ($imageId < count($product->images))
                     src="/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product/{{ $product->images[$imageId] }}.webp"
                 @endif
