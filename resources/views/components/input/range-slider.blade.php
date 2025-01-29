@@ -1,5 +1,5 @@
 <range-slider v-slot="rangeInputScope" {{ $attributes }}>
-    <div class="flex relative h-16 mx-5">
+    <div class="flex flex-1 relative h-16 mx-5">
         <input
             type="range"
             v-bind:disabled="!canRefine"
