@@ -62,7 +62,7 @@ Vue.prototype.updateCart = async function (data, response) {
     if (!response?.data) {
         return response?.data
     }
-    cart.value = 'cart' in Object.values(response.data)[0] ? Object.values(response.data)[0].cart : Object.values(response.data)[0]
+    cart.value = Object.values(response.data).map((queryResponse) => 'cart' in queryResponse ? queryResponse.cart : queryResponse).findLast((queryResponse) => queryResponse?.is_virtual !== undefined)
 
     return response.data
 }
