@@ -13,7 +13,7 @@
                             v-if="filter.visual_swatch"
                             class="size-6 ring-1 ring-emphasis/10 ring-inset cursor-pointer flex items-center justify-center hover:opacity-75 rounded-full transition"
                             v-bind:class="{ 'outline outline-2 outline-emphasis outline-offset-1': item.isRefined }"
-                            v-bind:style="{ background: item.swatch.swatch }"
+                            v-bind:style="{ background: item.swatch?.swatch ?? 'none' }"
                         >
                             <input
                                 type="checkbox"
@@ -27,7 +27,7 @@
                             class="border px-3 transition-all rounded cursor-pointer text-sm text-muted font-medium"
                             v-bind:class="{ 'outline outline-2 outline-emphasis outline-offset-1': item.isRefined }"
                         >
-                            @{{ item.swatch.swatch }}
+                            @{{ item.swatch?.swatch ?? item.value }}
                             <input
                                 type="checkbox"
                                 v-bind:checked="item.isRefined"
