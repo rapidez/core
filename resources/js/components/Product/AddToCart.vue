@@ -274,7 +274,7 @@ export default {
             }
 
             // Check if all super_attributes have an option selected
-            return Object.keys(this.product?.super_attributes).join(',') !== Object.keys(this.options).join(',')
+            return Object.keys(this.product?.super_attributes || {}).join(',') !== Object.keys(this.options).join(',')
         },
 
         simpleProduct: function () {
