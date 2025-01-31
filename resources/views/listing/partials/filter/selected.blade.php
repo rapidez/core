@@ -21,7 +21,7 @@
             <template v-for="item in withFilters(items)">
                 <li
                     class="flex flex-wrap gap-2 relative"
-                    v-for="refinement in item.refinements"
+                    v-for="refinement in withSwatches(item.refinements, item.filter)"
                     :key="[
                       refinement.attribute,
                       refinement.type,
@@ -41,10 +41,6 @@
                         <template v-else>
                             @{{ refinement.label }}
                         </template>
-                        {{--
-                            TODO: Check how we will display swatches here.
-                            Just the label or show an actual swatch?
-                        --}}
                         <x-heroicon-o-x-mark class="size-3 shrink-0"/>
                     </a>
                 </li>
