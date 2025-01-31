@@ -18,7 +18,7 @@ class SignedCheckoutController
         $data = $cache->get('checkout-' . $request->get('key'));
         $cache->forget('checkout-' . $request->get('key'));
 
-        $response = redirect()->to('checkout');
+        $response = redirect()->to('checkout', 301);
 
         if (! Quote::whereQuoteIdOrCustomerToken($data['mask'] ?? $data['token'])->exists()) {
             return redirect(config('rapidez.magento_url'), 301);
