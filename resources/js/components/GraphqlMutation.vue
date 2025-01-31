@@ -1,5 +1,4 @@
 <script>
-import { computed } from 'vue';
 import { GraphQLError, combiningGraphQL, magentoGraphQL } from '../fetch'
 
 export default {
