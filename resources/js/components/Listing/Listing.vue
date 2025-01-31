@@ -41,7 +41,7 @@ export default {
         routing: {
             router: history(),
             // stateMapping: singleIndex('rapidez_products_1'),
-            stateMapping: simple()
+            stateMapping: simple(),
         },
     }),
 
