@@ -97,8 +97,8 @@ class ConfigComposer
         // TODO: Maybe limit this to just the checkout pages?
         foreach ($checkoutQueries as $checkoutQuery) {
             Config::set(
-                'frontend.queries.'.$checkoutQuery,
-                view('rapidez::checkout.queries.'.$checkoutQuery)->renderOneliner()
+                'frontend.queries.' . $checkoutQuery,
+                view('rapidez::checkout.queries.' . $checkoutQuery)->renderOneliner()
             );
         }
 
@@ -128,7 +128,7 @@ class ConfigComposer
 
         // Map and merge them with the config.
         $searchableAttributes = collect($searchableAttributes)->map(fn ($attribute) => [
-            'field' => $attribute['code'],
+            'field'  => $attribute['code'],
             'weight' => $attribute['search_weight'],
         ])->merge(config('rapidez.searchkit.search_attributes'))->values()->toArray();
 
