@@ -31,7 +31,7 @@ But it currently doesn't work without it.
 
                     <ais-hits v-slot="{ items }">
                         <div v-if="items.length" class="flex flex-col gap-5">
-                            @if($title)
+                            @if ($title)
                                 <strong class="font-bold text-2xl">
                                     @lang($title)
                                 </strong>
