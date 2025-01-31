@@ -1,5 +1,5 @@
 <script>
-import { computed } from 'vue';
+import { computed } from 'vue'
 import { GraphQLError, combiningGraphQL, magentoGraphQL } from '../fetch'
 
 export default {
@@ -203,7 +203,7 @@ export default {
     computed: {
         running() {
             return this.mutating
-        }
-    }
+        },
+    },
 }
 </script>
