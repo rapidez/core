@@ -1,4 +1,4 @@
-<ais-search-box>
+<ais-search-box :value="listingSlotProps.searchTerm">
     <template v-slot="{ currentRefinement, isSearchStalled, refine }">
         <x-rapidez::input
             type="search"

@@ -4,8 +4,8 @@ import Client from '@searchkit/instantsearch-client'
 import Searchkit from 'searchkit'
 import deepmerge from 'deepmerge'
 
-import { history as historyRouter } from 'instantsearch.js/es/lib/routers'
-import { singleIndex as singleIndexMapping } from 'instantsearch.js/es/lib/stateMappings'
+import { history } from 'instantsearch.js/es/lib/routers'
+import { singleIndex, simple } from 'instantsearch.js/es/lib/stateMappings'
 // We should only import the components used!
 // https://www.algolia.com/doc/guides/building-search-ui/installation/vue/?client=Vue+2#optimize-your-build-with-tree-shaking
 Vue.use(InstantSearch)
@@ -30,12 +30,18 @@ export default {
         loaded: false,
         attributes: useAttributes(),
 
+        // TODO: Not sure yet if this is the right option,
+        // when the routing works properly we maybe
+        // don't need this.
+        searchTerm: new URLSearchParams(window.location.search).get('q'),
+
         // TODO: We need some finetuning here; the url isn't very clean.
         // Also after a refresh the filters aren't selected.
         // Maybe it conflicts with ReactiveSearch?
         routing: {
-            router: historyRouter(),
-            stateMapping: singleIndexMapping('products_1'),
+            router: history(),
+            // stateMapping: singleIndex('rapidez_products_1'),
+            stateMapping: simple()
         },
     }),
 
@@ -61,7 +67,9 @@ export default {
                             // really matter what query is used? What
                             // if we want to add something to the
                             // "must" instead of "filter"?
-                            sr.body.query.bool.filter.push(this.getQuery())
+                            if (this.getQuery()) {
+                                sr.body.query.bool.filter.push(this.getQuery())
+                            }
                             // And, this is currently applied on all queries,
                             // it's only relevant on the listing one.
                             return sr
@@ -97,7 +105,10 @@ export default {
 
                     facet_attributes: this.facets,
 
+                    // TODO: Do we really need this? With ReactiveSearch
+                    // we didn't need to keep a list to filter.
                     filter_attributes: [
+                        { attribute: 'entity_id', field: 'entity_id', type: 'numeric' },
                         { attribute: 'category_ids', field: 'category_ids', type: 'numeric' },
                         { attribute: 'visibility', field: 'visibility', type: 'numeric' },
                     ],
