@@ -1,37 +1,43 @@
-<multi-list
-    v-else-if="filter.text_swatch || filter.visual_swatch"
-    :component-id="filter.code"
-    :data-field="filter.super ? 'super_' + filter.code : (filter.visual_swatch ? 'visual_' + filter.code : filter.code)"
-    :inner-class="{
-        title: 'capitalize text-sm font-medium text',
-    }"
-    :query-format="filter.input == 'multiselect' ? 'and' : 'or'"
-    :show-search="false"
-    :show-checkbox="false"
-    u-r-l-params
+<ais-refinement-list
+    v-if="filter.text_swatch || filter.visual_swatch"
+    :limit="64"
+    :operator="filter.input == 'multiselect' ? 'and' : 'or'"
+    :attribute="filter.code"
 >
-    <div slot="render" class="pb-4" slot-scope="{ data, value, handleChange }">
-        <x-rapidez::filter.heading>
-            <div class="flex flex-wrap gap-2 items-center my-1">
-                <template v-for="swatch in data">
-                    <label
-                        v-if="filter.visual_swatch"
-                        class="size-6 ring-1 ring-emphasis/10 ring-inset cursor-pointer flex items-center justify-center hover:opacity-75 rounded-full transition"
-                        v-bind:class="{'outline outline-2 outline-emphasis outline-offset-1' : value[swatch.key]}"
-                        v-bind:style="{ background: $root.swatches[filter.code]?.options[swatch.key].swatch }"
-                    >
-                        <input type="checkbox" v-on:change="handleChange(swatch.key)" class="hidden" v-bind:checked="value[swatch.key]"/>
-                    </label>
-                    <label
-                        v-else
-                        class="border px-3 transition-all rounded cursor-pointer text-sm text-muted font-medium"
-                        v-bind:class="{'border text' : value[swatch.key]}"
-                    >
-                        @{{ $root.swatches[filter.code]?.options[swatch.key].swatch }}
-                        <input type="checkbox" v-on:change="handleChange(swatch.key)" class="hidden" v-bind:checked="value[swatch.key]"/>
-                    </label>
-                </template>
-            </div>
-        </x-rapidez::filter.heading>
-    </div>
-</multi-list>
+    <template v-slot="{ items, refine }">
+        <div v-show="items.length" class="relative pb-4">
+            <x-rapidez::filter.heading>
+                <ul class="flex flex-wrap gap-2 items-center my-1">
+                    <li v-for="item in withSwatches(items, filter)">
+                        <label
+                            v-if="filter.visual_swatch"
+                            class="size-6 ring-1 ring-emphasis/10 ring-inset cursor-pointer flex items-center justify-center hover:opacity-75 rounded-full transition"
+                            v-bind:class="{ 'outline outline-2 outline-emphasis outline-offset-1': item.isRefined }"
+                            v-bind:style="{ background: item.swatch?.swatch ?? 'none' }"
+                        >
+                            <input
+                                type="checkbox"
+                                v-bind:checked="item.isRefined"
+                                v-on:change="refine(item.value)"
+                                class="hidden"
+                            >
+                        </label>
+                        <label
+                            v-else
+                            class="border px-3 transition-all rounded cursor-pointer text-sm text-muted font-medium"
+                            v-bind:class="{ 'outline outline-2 outline-emphasis outline-offset-1': item.isRefined }"
+                        >
+                            @{{ item.swatch?.swatch ?? item.value }}
+                            <input
+                                type="checkbox"
+                                v-bind:checked="item.isRefined"
+                                v-on:change="refine(item.value)"
+                                class="hidden"
+                            >
+                        </label>
+                    </li>
+                </ul>
+            </x-rapidez::filter.heading>
+        </div>
+    </template>
+</ais-refinement-list>
