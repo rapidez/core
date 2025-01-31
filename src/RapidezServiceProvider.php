@@ -48,6 +48,7 @@ class RapidezServiceProvider extends ServiceProvider
         'jwt',
         'models',
         'routing',
+        'searchkit',
         'system',
     ];
 

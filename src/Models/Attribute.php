@@ -20,6 +20,7 @@ class Attribute extends Model
 
     protected function filter(): CastsAttribute
     {
+        // TODO: Double check; this config has been (re)moved.
         return CastsAttribute::make(
             get: fn ($value) => $value || in_array($this->code, config('rapidez.indexer.additional_filters')),
         )->shouldCache();

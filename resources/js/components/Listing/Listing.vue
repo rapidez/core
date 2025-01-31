@@ -16,6 +16,8 @@ import useAttributes from '../../stores/useAttributes.js'
 export default {
     props: {
         // TODO: Do we still use/need this?
+        // Maybe transform it to a callback
+        // so the items can be manipulated?
         additionalFilters: {
             type: Array,
             default: () => [],
@@ -94,25 +96,26 @@ export default {
                         password: url.password,
                     },
                 },
+
+                // TODO: Maybe just do: search_settings: config.searchkit
+                // so it's possible to add anything to the PHP config
+                // and that will appear here?
                 search_settings: {
-                    // Are we using this? In the autocomplete maybe?
-                    // highlight_attributes: ['title'],
+                    highlight_attributes: config.searchkit.highlight_attributes,
+                    search_attributes: config.searchkit.search_attributes,
+                    result_attributes: config.searchkit.result_attributes,
 
-                    search_attributes: Object.entries(config.searchable).map(([field, weight]) => ({ field, weight })),
-
-                    // We could make the response smaller with this
-                    // result_attributes: ['title', 'actors', 'poster', 'plot'],
-
+                    // TODO: For consistency maybe make it possible to do this:
+                    // facet_attributes: config.searchkit.facet_attributes,
                     facet_attributes: this.facets,
 
-                    // TODO: Do we really need this? With ReactiveSearch
-                    // we didn't need to keep a list to filter.
-                    filter_attributes: [
-                        { attribute: 'entity_id', field: 'entity_id', type: 'numeric' },
-                        { attribute: 'category_ids', field: 'category_ids', type: 'numeric' },
-                        { attribute: 'visibility', field: 'visibility', type: 'numeric' },
-                    ],
+                    filter_attributes: config.searchkit.filter_attributes,
 
+                    // TODO: Let's also change this to a PHP config.
+                    // So we start there and that will be merged
+                    // with the Magento configured attributes
+                    // and lastly from a prop it's possible
+                    // to manipulate it from a callback?
                     sorting: this.sortOptions.reduce((acc, item) => {
                         acc[item.key] = {
                             field: item.field,
@@ -128,6 +131,9 @@ export default {
             return searchkit
         },
 
+        // TODO: Maybe move this completely to PHP?
+        // Any drawbacks? A window.config that
+        // becomes to big? Is that an issue?
         filters: function () {
             return Object.values(this.attributes)
                 .filter((attribute) => attribute.filter)
