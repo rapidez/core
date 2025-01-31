@@ -202,7 +202,7 @@ export default {
     computed: {
         running() {
             return this.mutating
-        }
-    }
+        },
+    },
 }
 </script>
