@@ -64,7 +64,7 @@ export default {
     data: () => ({
         error: false,
         mutated: false,
-        mutating: false,
+        running: false,
         initialVariables: {},
         data: {},
     }),
@@ -73,6 +73,7 @@ export default {
         return this.$scopedSlots.default({
             mutate: this.mutate,
             mutated: this.mutated,
+            running: this.running,
             mutating: this.mutating,
             error: this.error,
             variables: this.data,
@@ -105,7 +106,7 @@ export default {
 
     methods: {
         async mutate() {
-            this.mutating = true
+            this.running = true
             this.error = false
 
             try {
@@ -185,7 +186,7 @@ export default {
                 Notify(window.config.translations.errors.wrong, 'warning')
                 throw error
             } finally {
-                this.mutating = false
+                this.running = false
             }
         },
 
@@ -197,6 +198,11 @@ export default {
                     })
                 })
             })
+        },
+    },
+    computed: {
+        mutating() {
+            return this.running
         },
     },
 }

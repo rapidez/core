@@ -41,6 +41,7 @@ export default {
     data: () => ({
         data: null,
         cachePrefix: 'graphql_',
+        running: false,
     }),
 
     render() {
@@ -68,6 +69,7 @@ export default {
         },
 
         async runQuery() {
+            this.running = true
             try {
                 let options = {
                     headers: {
@@ -81,6 +83,7 @@ export default {
 
                 if (this.check) {
                     if (!this.check(response?.data)) {
+                        this.running = false
                         Turbo.visit(window.url(this.redirect))
                         return false
                     }
@@ -94,6 +97,8 @@ export default {
             } catch (error) {
                 console.error(error)
                 this.errorCallback(this.variables, await error?.response?.json())
+            } finally {
+                this.running = false
             }
         },
     },
