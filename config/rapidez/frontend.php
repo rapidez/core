@@ -5,7 +5,6 @@ return [
     'exposed' => [
         'store',
         'es_url',
-        'es_prefix',
         'media_url',
         'magento_url',
         'notifications',

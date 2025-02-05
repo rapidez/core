@@ -26,10 +26,20 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
 
         IndexBeforeEvent::dispatch($this);
 
-        $productModel = config('rapidez.models.product');
         $stores = Rapidez::getStores($this->argument('store'));
         foreach ($stores as $store) {
+            Rapidez::setStore($store);
+
             $this->line('Store: ' . $store['name']);
+
+            $this->call('scout:import', [
+                'searchable' => config('rapidez.models.product'),
+            ]);
+
+            // TODO: (re)implement everything below.
+            // Maybe move it to the product model?
+            continue;
+
             $this->prepareIndexerWithStore($store, 'products', Eventy::filter('index.product.mapping', [
                 'properties' => [
                     'price' => [

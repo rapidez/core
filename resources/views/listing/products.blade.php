@@ -4,18 +4,16 @@
 
     <ais-hits>
         <template v-slot="{ items }">
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 md:gap-5 overflow-hidden">
+            <div v-if="items" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 md:gap-5 overflow-hidden">
                 <template v-for="(item, count) in items">
                     @include('rapidez::listing.partials.item')
                 </template>
             </div>
+            <div v-else>
+                @include('rapidez::listing.partials.no-results')
+            </div>
         </template>
     </ais-hits>
-
-    {{--
-    TODO: What do we get when there are no results?
-    @include('rapidez::listing.partials.no-results')
-    --}}
 
     @include('rapidez::listing.partials.pagination')
 </div>

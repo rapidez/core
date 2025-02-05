@@ -1,6 +1,6 @@
 <ais-pagination class="flex" v-on:page-change="scrollToElement('#products')">
     <template v-slot="{ currentRefinement, nbPages, pages, isFirstPage, isLastPage, refine, createURL }">
-        <ul class="flex gap-2 mx-auto">
+        <ul v-show="nbPages" class="flex gap-2 mx-auto">
             <li v-if="!isFirstPage">
                 <x-rapidez::button
                     ::href="createURL(0)"

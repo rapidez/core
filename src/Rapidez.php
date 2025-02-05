@@ -130,7 +130,7 @@ class Rapidez
         config()->set('rapidez.root_category_id', $store['root_category_id']);
         config()->set('frontend.base_url', url('/'));
         config()->set('rapidez.index', implode('_', array_values([
-            config('rapidez.es_prefix'),
+            config('scout.prefix'),
             'products',
             $store['store_id'],
         ])));

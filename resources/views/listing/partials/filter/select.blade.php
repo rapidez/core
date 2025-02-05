@@ -10,7 +10,7 @@
         We also have padding in the heading?
         Maybe handle that in 1 place?
         --}}
-        <div v-if="items.length" class="relative pb-4">
+        <div v-show="items.length" class="relative pb-4">
             <x-rapidez::filter.heading>
                 <ul class="flex flex-col gap-1">
                     <li
@@ -53,8 +53,5 @@
                 </button>
             </x-rapidez::filter.heading>
         </div>
-
-        {{-- TODO: Without this "Show more" appears as the default slot renders --}}
-        <div v-else></div>
     </template>
 </ais-refinement-list>

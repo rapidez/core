@@ -1,3 +1,4 @@
+{{-- TODO: Can/should we hide this filter when there are no results? --}}
 <ais-search-box :value="listingSlotProps.searchTerm">
     <template v-slot="{ currentRefinement, isSearchStalled, refine }">
         <x-rapidez::input

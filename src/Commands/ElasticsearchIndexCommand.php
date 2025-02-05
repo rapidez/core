@@ -52,7 +52,7 @@ abstract class ElasticsearchIndexCommand extends Command
     public function prepareIndexerWithStore(Store|array $store, string $indexName, array $mapping = [], array $settings = [], array $synonymsFor = []): void
     {
         Rapidez::setStore($store);
-        $this->indexer->prepare(config('rapidez.es_prefix') . '_' . $indexName . '_' . $store['store_id'], $mapping, $settings, $synonymsFor);
+        $this->indexer->prepare(config('scout.prefix') . '_' . $indexName . '_' . $store['store_id'], $mapping, $settings, $synonymsFor);
     }
 
     public function dataFrom(callable|iterable $items)

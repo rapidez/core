@@ -1,3 +1,2 @@
-<div slot="renderNoResults">
-    @lang('Sorry! We did not find any products.')
-</div>
+@lang('Sorry! We did not find any products.')
+{{-- TODO: Can we make this more useful? --}}

@@ -5,7 +5,7 @@ namespace Rapidez\Core\Commands;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
-use MailerLite\LaravelElasticsearch\Manager as Elasticsearch;
+// use MailerLite\LaravelElasticsearch\Manager as Elasticsearch;
 use Rapidez\Core\Jobs\IndexJob;
 
 class ElasticsearchIndexer
@@ -13,12 +13,12 @@ class ElasticsearchIndexer
     public string $alias;
     public string $index;
 
-    protected Elasticsearch $elasticsearch;
+    // protected Elasticsearch $elasticsearch;
 
-    public function __construct(Elasticsearch $elasticsearch)
-    {
-        $this->elasticsearch = $elasticsearch;
-    }
+    // public function __construct(Elasticsearch $elasticsearch)
+    // {
+    //     $this->elasticsearch = $elasticsearch;
+    // }
 
     public function deleteIndex(string $index): void
     {

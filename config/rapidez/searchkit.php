@@ -4,10 +4,10 @@
 return [
     // Attributes that are used to highlight the search results.
     'highlight_attributes' => [
-        // 'name',
+        'name',
     ],
 
-    // Attributes that are used to search the results.
+    // Additional attributes that are used to search the results.
     // This will be merged with the searchable
     // attributes configured in Magento.
     'search_attributes' => [
@@ -34,7 +34,7 @@ return [
         'reviews_score',
     ],
 
-    // Attributes that are used to create facets.
+    // Additional attributes that are used to create facets.
     // From Magento only "Yes/No, Dropdown, Multiple Select and Price" attribute types
     // can be configured as filter. If you'd like to have a filter for an attribute
     // with, for example, the type of "Text", you can specify the attribute_code here.

@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
-use Laravel\Scout\Searchable;
 use Rapidez\Core\Casts\Children;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
@@ -25,6 +24,7 @@ use Rapidez\Core\Models\Scopes\Product\WithProductSuperAttributesScope;
 use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
 use Rapidez\Core\Models\Traits\Product\CastMultiselectAttributes;
 use Rapidez\Core\Models\Traits\Product\CastSuperAttributes;
+use Rapidez\Core\Models\Traits\Product\Searchable;
 use Rapidez\Core\Models\Traits\Product\SelectAttributeScopes;
 use TorMorten\Eventy\Facades\Eventy;
 
@@ -87,59 +87,6 @@ class Product extends Model
         }
 
         return $this->casts;
-    }
-
-    // TODO: Maybe move all these search related
-    // methods to a separated trait?
-    public function toSearchableArray(): array
-    {
-        $product = $this->toArray();
-
-        // dd($product);
-
-        // TODO: Maybe double check / handle what attributes are
-        // getting indexed here. From makeAllSearchableUsing
-        // we're getting the correct data, but when you
-        // index just one; I don't think that query
-        // will be used resulting in all attrs.
-
-        // Customize the data array...
-        // cast to the correct types! (int), etc
-
-        return $product;
-    }
-
-    public function shouldBeSearchable(): bool
-    {
-        if (! in_array($this->visibility, config('rapidez.indexer.visibility'))) {
-            return false;
-        }
-
-        $showOutOfStock = (bool) Rapidez::config('cataloginventory/options/show_out_of_stock', 0);
-        if (! $showOutOfStock && ! $this->in_stock) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public function searchableAs(): string
-    {
-        return 'products_' . config('rapidez.store');
-    }
-
-    protected function makeAllSearchableUsing(Builder $query): Builder
-    {
-        return $query
-            ->selectOnlyIndexable()
-            ->with(['categoryProducts', 'reviewSummary'])
-            ->withEventyGlobalScopes('index.product.scopes')
-            ->withExists('options AS has_options');
-    }
-
-    public function makeSearchableUsing(Collection $models): Collection
-    {
-        return $models;
     }
 
     public function gallery(): BelongsToMany

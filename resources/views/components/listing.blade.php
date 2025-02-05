@@ -26,7 +26,7 @@
                 :index-name="config.index"
                 :routing="listingSlotProps.routing"
             >
-                <ais-configure :filters="{{ $query }}"/>
+                <ais-configure :filters="{!! $query !!}"/>
 
                 {{ $before ?? '' }}
                 @if ($slot->isEmpty())

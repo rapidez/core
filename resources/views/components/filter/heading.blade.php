@@ -1,6 +1,9 @@
 @slots(['title'])
 
-{{-- TODO: Can't we use <details> with <summary> for this? --}}
+{{--
+TODO: Can't we use <details> with <summary> for this?
+Or maybe is JS easier so we don't need an input?
+--}}
 <input class="peer hidden" type="checkbox" checked :set="id = Math.random().toString(36).slice(2)" :id="id" />
 
 {{--
@@ -19,6 +22,7 @@ it from the filters?
     <x-heroicon-o-chevron-down class="size-4 chevron transition" />
 </label>
 <div class="peer-checked:*:-my-1 peer-checked:*:py-1 grid grid-rows-[0fr] transition-all peer-checked:grid-rows-[1fr]">
+    {{-- TODO: Why do we need these classes? --}}
     <div class="-mx-1 overflow-hidden px-1">
         {{ $slot }}
     </div>

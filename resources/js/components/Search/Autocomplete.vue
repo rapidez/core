@@ -87,6 +87,7 @@ export default {
                     },
                 }
 
+                // es_prefix has been removed, Scout is used
                 rapidezFetch(`${baseUrl}/${config.es_prefix}_${name}_${config.store}/_search`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', Authorization: auth },

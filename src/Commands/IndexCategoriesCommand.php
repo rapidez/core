@@ -13,6 +13,10 @@ class IndexCategoriesCommand extends ElasticsearchIndexCommand
 
     public function handle(): int
     {
+        // TODO: (re)implement with Laravel Scout
+        // Move it to the caregory model?
+        return 0;
+
         $this->synonymsFor = ['name'];
 
         $this->indexStores(
