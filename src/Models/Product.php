@@ -4,7 +4,6 @@ namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -13,7 +12,6 @@ use Rapidez\Core\Casts\Children;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
 use Rapidez\Core\Casts\DecodeHtmlEntities;
-use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Scopes\Product\WithProductAttributesScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductCategoryInfoScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductChildrenScope;

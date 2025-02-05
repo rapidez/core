@@ -2,9 +2,9 @@
 
 namespace Rapidez\Core\Models\Traits\Product;
 
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Arr;
 use Laravel\Scout\Searchable as ScoutSearchable;
 use Rapidez\Core\Facades\Rapidez;
 
@@ -46,8 +46,8 @@ trait Searchable
 
     public function searchableAs(): string
     {
-        if (!config('rapidez.index')) {
-            throw new \Exception('Do not use Scout directly; please use `php artisan rapidez:index`');
+        if (! config('rapidez.index')) {
+            throw new Exception('Do not use Scout directly; please use `php artisan rapidez:index`');
         }
 
         return config('rapidez.index');
