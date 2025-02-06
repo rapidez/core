@@ -6,7 +6,7 @@
                 <span>@{{ Math.round(cart.total_quantity) }}</span>
             </span>
         </button>
-        <div v-if="isOpen" class="absolute right-0 bg-white border shadow rounded-xl p-5 z-header-minicart" v-cloak>
+        <div v-if="isOpen" class="absolute right-0 bg-white border rounded-xl p-5 z-header-minicart" v-cloak>
             <table class="w-full mb-3">
                 <tr v-for="item in cart.items" class="*:pb-3">
                     <td class="block w-48 truncate overflow-hidden">
