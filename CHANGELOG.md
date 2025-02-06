@@ -1,6 +1,17 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.19.1...2.19.1)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.20.0...2.20.0)
+## [2.20.0](https://github.com/rapidez/core/releases/tag/2.20.0) - 2025-01-29
+
+### Added
+
+- Autocomplete additionals fuzziness config (#709)
+
+### Fixed
+
+- Use the correct ID for related products and upsells (#715)
+- Fix the disabled options to work with one super attribute (#694)
+
 ## [2.19.1](https://github.com/rapidez/core/releases/tag/2.19.1) - 2025-01-21
 
 ### Fixed
