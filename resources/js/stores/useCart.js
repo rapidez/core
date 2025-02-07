@@ -137,18 +137,18 @@ export const cart = computed({
                         attribute.code,
                         {
                             label: attribute.label,
-                            options: Object.fromEntries(attribute.options.map((value) => [value.value, value.label]))
+                            options: Object.fromEntries(attribute.options.map((value) => [value.value, value.label])),
                         },
                     ]),
                 )
-                
+
                 value.items = value.items?.map((cartItem) => {
                     cartItem.is_available = checkAvailability(cartItem)
                     cartItem.product.attribute_values = {}
 
                     for (const key in mapping) {
                         cartItem.product.attribute_values[key] = cartItem.product[key]
-                        
+
                         if (cartItem.product.attribute_values[key] === null) {
                             continue
                         }
@@ -156,14 +156,14 @@ export const cart = computed({
                         if (typeof cartItem.product.attribute_values[key] === 'string') {
                             cartItem.product.attribute_values[key] = cartItem.product.attribute_values[key].split(',')
                         }
-                        
+
                         if (typeof cartItem.product.attribute_values[key] !== 'object') {
                             cartItem.product.attribute_values[key] = [cartItem.product.attribute_values[key]]
                         }
-                    
+
                         Vue.set(cartItem.product.attribute_values, key, {
                             options: cartItem.product.attribute_values[key].map((value) => mapping[key]?.options[value] || value),
-                            label: mapping[key]?.label
+                            label: mapping[key]?.label,
                         })
                     }
 
