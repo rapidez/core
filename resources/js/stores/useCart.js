@@ -1,5 +1,5 @@
 import { StorageSerializers, asyncComputed, useLocalStorage, useMemoize } from '@vueuse/core'
-import { computed, watch } from 'vue'
+import { computed } from 'vue'
 import { GraphQLError } from '../fetch'
 import { mask, clearMask } from './useMask'
 
@@ -59,16 +59,17 @@ export const fetchCustomerCart = async function () {
 
 export const fetchAttributeValues = async function (attributes = []) {
     if (!attributes.length) {
-        return { data: { customAttributeMetadata: { items: null } } }
+        return { data: { customAttributeMetadataV2: { items: null } } }
     }
 
     return await window.magentoGraphQL(
         `
             query attributeValues($attributes: [AttributeInput!]!) {
-                customAttributeMetadata(attributes: $attributes) {
+                customAttributeMetadataV2(attributes: $attributes) {
                     items {
-                        attribute_code
-                        attribute_options {
+                        label
+                        code
+                        options {
                             label
                             value
                         }
@@ -121,7 +122,7 @@ export const cart = computed({
     set(value) {
         getAttributeValues()
             .then((response) => {
-                if (!response?.data?.customAttributeMetadata?.items) {
+                if (!response?.data?.customAttributeMetadataV2?.items) {
                     value.items = value.items?.map((item) => {
                         item.is_available = checkAvailability(item)
 
@@ -132,18 +133,22 @@ export const cart = computed({
                 }
 
                 const mapping = Object.fromEntries(
-                    response.data.customAttributeMetadata.items.map((attribute) => [
-                        attribute.attribute_code,
-                        Object.fromEntries(attribute.attribute_options.map((value) => [value.value, value.label])),
+                    response.data.customAttributeMetadataV2.items.map((attribute) => [
+                        attribute.code,
+                        {
+                            label: attribute.label,
+                            options: Object.fromEntries(attribute.options.map((value) => [value.value, value.label]))
+                        },
                     ]),
                 )
-
+                
                 value.items = value.items?.map((cartItem) => {
                     cartItem.is_available = checkAvailability(cartItem)
                     cartItem.product.attribute_values = {}
 
                     for (const key in mapping) {
                         cartItem.product.attribute_values[key] = cartItem.product[key]
+                        
                         if (cartItem.product.attribute_values[key] === null) {
                             continue
                         }
@@ -151,14 +156,15 @@ export const cart = computed({
                         if (typeof cartItem.product.attribute_values[key] === 'string') {
                             cartItem.product.attribute_values[key] = cartItem.product.attribute_values[key].split(',')
                         }
-
+                        
                         if (typeof cartItem.product.attribute_values[key] !== 'object') {
                             cartItem.product.attribute_values[key] = [cartItem.product.attribute_values[key]]
                         }
-
-                        cartItem.product.attribute_values[key] = cartItem.product.attribute_values[key].map(
-                            (value) => mapping[key][value] || value,
-                        )
+                    
+                        Vue.set(cartItem.product.attribute_values, key, {
+                            options: cartItem.product.attribute_values[key].map((value) => mapping[key]?.options[value] || value),
+                            label: mapping[key]?.label
+                        })
                     }
 
                     return cartItem

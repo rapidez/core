@@ -27,7 +27,7 @@
                     </div>
                     <div v-for="option in config.cart_attributes">
                         <template v-if="item.product.attribute_values?.[option] && typeof item.product.attribute_values[option] === 'object'">
-                            @{{ option }}: <span v-html="item.product.attribute_values[option]?.join(', ')"></span>
+                            @{{ item.product.attribute_values[option].label }}: <span v-html="item.product.attribute_values[option].options?.join(', ')"></span>
                         </template>
                     </div>
                     @include('rapidez::cart.item.remove')
