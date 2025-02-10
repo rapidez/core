@@ -12,7 +12,7 @@ class Page extends Model
     protected $primaryKey = 'page_id';
 
     protected $casts = [
-        'updated_at' => 'datetime',
+        'update_time' => 'datetime',
     ];
 
     protected static function booting()
