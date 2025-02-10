@@ -11,6 +11,7 @@ class PageController
         $response = response()->view('rapidez::page.overview', compact('page'));
         $response->setCache(['etag' => md5($response->getContent() ?? ''), 'last_modified' => $page->updated_at]);
         $response->isNotModified(request());
+
         return $response;
     }
 }

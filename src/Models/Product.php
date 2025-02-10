@@ -42,7 +42,6 @@ class Product extends Model
 
     protected $appends = ['url'];
 
-
     protected static function booting(): void
     {
         static::addGlobalScope(new WithProductAttributesScope);

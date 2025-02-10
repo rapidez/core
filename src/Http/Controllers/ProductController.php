@@ -45,6 +45,7 @@ class ProductController
         $response = response()->view('rapidez::product.overview', compact('product'));
         $response->setCache(['etag' => md5($response->getContent() ?? ''), 'last_modified' => $product->updated_at]);
         $response->isNotModified(request());
+
         return $response;
     }
 }

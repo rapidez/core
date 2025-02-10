@@ -18,6 +18,7 @@ class CategoryController extends Controller
         $response = response()->view('rapidez::category.overview', compact('category'));
         $response->setCache(['etag' => md5($response->getContent() ?? ''), 'last_modified' => $category->updated_at]);
         $response->isNotModified(request());
+
         return $response;
     }
 }

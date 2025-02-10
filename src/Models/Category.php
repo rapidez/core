@@ -36,7 +36,7 @@ class Category extends Model
                 'children',
                 'children_count',
                 'position',
-                'updated_at'
+                'updated_at',
             ];
 
             $builder
