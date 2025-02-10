@@ -54,9 +54,9 @@ export default {
                 },
 
                 shadow: {
-                    emphasis: color('--shadow-emphasis', colors.slate[900]),
-                    DEFAULT: color('--shadow', colors.slate[700]),
-                    muted: color('--shadow-muted', colors.slate[500]),
+                    emphasis: color('--shadow-emphasis', colors.slate[500]),
+                    DEFAULT: color('--shadow', colors.slate[400]),
+                    muted: color('--shadow-muted', colors.slate[300]),
                 },
 
                 background: {
