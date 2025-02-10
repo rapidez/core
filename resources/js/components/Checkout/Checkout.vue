@@ -10,6 +10,7 @@ export default {
 
     data() {
         return {
+            placingOrder: false,
             backEvent: false,
             steps: [],
         }
@@ -211,6 +212,12 @@ export default {
                 return false
             }
 
+            if (this.placingOrder) {
+                return false
+            }
+
+            this.placingOrder = true
+
             try {
                 this.$root.$emit('before-checkout-payment-saved', {
                     order: {
@@ -241,12 +248,15 @@ export default {
                     },
                 })
 
+                this.placingOrder = false
                 return true
             } catch (error) {
                 if (FetchError.prototype.isPrototypeOf(error)) {
                     const response = await error.response.json()
                     Notify(response?.message, 'error', response?.parameters)
                 }
+
+                this.placingOrder = false
                 return false
             }
         },
