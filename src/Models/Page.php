@@ -11,8 +11,13 @@ class Page extends Model
 
     protected $primaryKey = 'page_id';
 
+    const CREATED_AT = 'creation_time';
+
+    const UPDATED_AT = 'update_time';
+
     protected $casts = [
-        'update_time' => 'datetime',
+        self::UPDATED_AT => 'datetime',
+        self::CREATED_AT => 'datetime',
     ];
 
     protected static function booting()

@@ -37,7 +37,8 @@ class Product extends Model
     protected $primaryKey = 'entity_id';
 
     protected $casts = [
-        'updated_at' => 'datetime',
+        self::UPDATED_AT => 'datetime',
+        self::CREATED_AT => 'datetime',
     ];
 
     protected $appends = ['url'];

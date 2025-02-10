@@ -13,7 +13,8 @@ class Category extends Model
     use HasAlternatesThroughRewrites;
 
     protected $casts = [
-        'updated_at' => 'datetime',
+        self::UPDATED_AT => 'datetime',
+        self::CREATED_AT => 'datetime',
     ];
 
     protected $appends = ['url'];
@@ -36,7 +37,7 @@ class Category extends Model
                 'children',
                 'children_count',
                 'position',
-                'updated_at',
+                self::UPDATED_AT,
             ];
 
             $builder
