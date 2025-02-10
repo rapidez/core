@@ -11,6 +11,10 @@ class Page extends Model
 
     protected $primaryKey = 'page_id';
 
+    protected $casts = [
+        'updated_at' => 'datetime',
+    ];
+
     protected static function booting()
     {
         static::addGlobalScope(new IsActiveScope);

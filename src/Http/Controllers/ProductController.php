@@ -42,6 +42,9 @@ class ProductController
 
         config(['frontend.product' => $product->only($attributes)]);
 
-        return view('rapidez::product.overview', compact('product'));
+        $response = response()->view('rapidez::product.overview', compact('product'));
+        $response->setCache(['etag' => md5($response->getContent() ?? ''), 'last_modified' => $product->updated_at]);
+        $response->isNotModified(request());
+        return $response;
     }
 }

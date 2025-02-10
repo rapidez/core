@@ -12,6 +12,10 @@ class Category extends Model
 {
     use HasAlternatesThroughRewrites;
 
+    protected $casts = [
+        'updated_at' => 'datetime',
+    ];
+
     protected $appends = ['url'];
 
     protected static function booting()
@@ -32,6 +36,7 @@ class Category extends Model
                 'children',
                 'children_count',
                 'position',
+                'updated_at'
             ];
 
             $builder

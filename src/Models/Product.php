@@ -36,7 +36,12 @@ class Product extends Model
 
     protected $primaryKey = 'entity_id';
 
+    protected $casts = [
+        'updated_at' => 'datetime',
+    ];
+
     protected $appends = ['url'];
+
 
     protected static function booting(): void
     {
