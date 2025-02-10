@@ -36,6 +36,11 @@ class Product extends Model
 
     protected $primaryKey = 'entity_id';
 
+    protected $casts = [
+        self::UPDATED_AT => 'datetime',
+        self::CREATED_AT => 'datetime',
+    ];
+
     protected $appends = ['url'];
 
     protected static function booting(): void
