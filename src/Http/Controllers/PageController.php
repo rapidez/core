@@ -9,8 +9,9 @@ class PageController
     public function show(Page $page)
     {
         $response = response()->view('rapidez::page.overview', compact('page'));
-        $response->setCache(['etag' => md5($response->getContent() ?? ''), 'last_modified' => $page->update_time]);
 
-        return $response;
+        return $response
+            ->setEtag(md5($response->getContent() ?? ''))
+            ->setLastModified($page->update_time);
     }
 }

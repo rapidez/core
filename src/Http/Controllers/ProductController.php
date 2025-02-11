@@ -43,8 +43,9 @@ class ProductController
         config(['frontend.product' => $product->only($attributes)]);
 
         $response = response()->view('rapidez::product.overview', compact('product'));
-        $response->setCache(['etag' => md5($response->getContent() ?? ''), 'last_modified' => $product->updated_at]);
 
-        return $response;
+        return $response
+            ->setEtag(md5($response->getContent() ?? ''))
+            ->setLastModified($product->updated_at);
     }
 }
