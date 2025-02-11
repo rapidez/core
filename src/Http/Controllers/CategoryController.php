@@ -2,9 +2,7 @@
 
 namespace Rapidez\Core\Http\Controllers;
 
-use Illuminate\Routing\Controller;
-
-class CategoryController extends Controller
+class CategoryController
 {
     public function show(int $categoryId)
     {
