@@ -42,6 +42,10 @@ class ProductController
 
         config(['frontend.product' => $product->only($attributes)]);
 
-        return view('rapidez::product.overview', compact('product'));
+        $response = response()->view('rapidez::product.overview', compact('product'));
+
+        return $response
+            ->setEtag(md5($response->getContent() ?? ''))
+            ->setLastModified($product->updated_at);
     }
 }

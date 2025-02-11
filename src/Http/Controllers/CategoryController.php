@@ -13,6 +13,10 @@ class CategoryController
         config(['frontend.subcategories' => $category->subcategories->pluck('name', 'entity_id')]);
         session(['latest_category_path' => $category->path]);
 
-        return view('rapidez::category.overview', compact('category'));
+        $response = response()->view('rapidez::category.overview', compact('category'));
+
+        return $response
+            ->setEtag(md5($response->getContent() ?? ''))
+            ->setLastModified($category->updated_at);
     }
 }
