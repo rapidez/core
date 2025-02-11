@@ -8,6 +8,10 @@ class PageController
 {
     public function show(Page $page)
     {
-        return view('rapidez::page.overview', compact('page'));
+        $response = response()->view('rapidez::page.overview', compact('page'));
+
+        return $response
+            ->setEtag(md5($response->getContent() ?? ''))
+            ->setLastModified($page->update_time);
     }
 }
