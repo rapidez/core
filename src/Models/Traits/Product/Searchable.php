@@ -55,11 +55,11 @@ trait Searchable
 
     protected function makeAllSearchableUsing(Builder $query): Builder
     {
-        return dd($query
+        return $query
             ->selectOnlyIndexable()
             ->with(['categoryProducts', 'reviewSummary'])
             ->withEventyGlobalScopes('index.product.scopes')
-            ->withExists('options AS has_options'));
+            ->withExists('options AS has_options');
     }
 
     public function makeSearchableUsing(Collection $models): Collection
