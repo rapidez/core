@@ -1,6 +1,16 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.20.0...2.20.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.21.0...2.21.0)
+## [2.21.0](https://github.com/rapidez/core/releases/tag/2.21.0) - 2025-02-11
+
+### Added
+
+- Etag and last modified headers (#731)
+
+### Changed
+
+- Sort countries in country select (#724, #730)
+
 ## [2.20.0](https://github.com/rapidez/core/releases/tag/2.20.0) - 2025-01-29
 
 ### Added
