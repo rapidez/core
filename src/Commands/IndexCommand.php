@@ -12,7 +12,7 @@ class IndexCommand extends Command
 {
     protected $signature = 'rapidez:index {--t|types= : To specify types of models to index, separated by commas} {--s|store= : To specify store IDs from Magento, separated by commas}';
 
-    protected $description = 'Index all searchable models in Elasticsearch';
+    protected $description = 'Index all searchable models into ElasticSearch';
 
     public function handle()
     {
