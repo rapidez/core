@@ -2,10 +2,9 @@
 
 namespace Rapidez\Core\Commands;
 
-use Rapidez\Core\Facades\Rapidez;
-use TorMorten\Eventy\Facades\Eventy;
+use Illuminate\Console\Command;
 
-class IndexCategoriesCommand extends ElasticsearchIndexCommand
+class IndexCategoriesCommand extends Command
 {
     protected $signature = 'rapidez:index:categories {store? : Store ID from Magento}';
 
@@ -17,25 +16,25 @@ class IndexCategoriesCommand extends ElasticsearchIndexCommand
         // Move it to the caregory model?
         return 0;
 
-        $this->synonymsFor = ['name'];
+        // $this->synonymsFor = ['name'];
 
-        $this->indexStores(
-            stores: Rapidez::getStores($this->argument('store')),
-            indexName: 'categories',
-            items: $this->getCategories(...),
-            dataFilter: fn ($data) => Eventy::filter('index.category.data', $data),
-        );
+        // $this->indexStores(
+        //     stores: Rapidez::getStores($this->argument('store')),
+        //     indexName: 'categories',
+        //     items: $this->getCategories(...),
+        //     dataFilter: fn ($data) => Eventy::filter('index.category.data', $data),
+        // );
 
-        return 0;
+        // return 0;
     }
 
-    public function getCategories()
-    {
-        return config('rapidez.models.category')::withEventyGlobalScopes('index.categories.scopes')
-            ->select((new (config('rapidez.models.category')))->qualifyColumns(['entity_id', 'name', 'url_path']))
-            ->whereNotNull('url_key')
-            ->whereNot('url_key', 'default-category')
-            ->has('products')
-            ->get() ?? [];
-    }
+    // public function getCategories()
+    // {
+    //     return config('rapidez.models.category')::withEventyGlobalScopes('index.categories.scopes')
+    //         ->select((new (config('rapidez.models.category')))->qualifyColumns(['entity_id', 'name', 'url_path']))
+    //         ->whereNotNull('url_key')
+    //         ->whereNot('url_key', 'default-category')
+    //         ->has('products')
+    //         ->get() ?? [];
+    // }
 }

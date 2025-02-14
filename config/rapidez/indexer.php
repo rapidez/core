@@ -10,4 +10,8 @@ return [
     // VISIBILITY_IN_SEARCH      = 3
     // VISIBILITY_BOTH           = 4
     'visibility' => [2, 3, 4],
+
+    'models' => [
+        'product',
+    ],
 ];

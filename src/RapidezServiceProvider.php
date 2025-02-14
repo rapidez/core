@@ -18,7 +18,7 @@ use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
 use Rapidez\Core\Auth\MagentoCartTokenGuard;
 use Rapidez\Core\Auth\MagentoCustomerTokenGuard;
 use Rapidez\Core\Commands\IndexCategoriesCommand;
-use Rapidez\Core\Commands\IndexProductsCommand;
+use Rapidez\Core\Commands\IndexCommand;
 use Rapidez\Core\Commands\InstallCommand;
 use Rapidez\Core\Commands\InstallTestsCommand;
 use Rapidez\Core\Commands\ValidateCommand;
@@ -89,7 +89,7 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootCommands(): self
     {
         $this->commands([
-            IndexProductsCommand::class,
+            IndexCommand::class,
             IndexCategoriesCommand::class,
             ValidateCommand::class,
             InstallCommand::class,

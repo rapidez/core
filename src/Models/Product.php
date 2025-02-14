@@ -8,10 +8,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Casts\Children;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
 use Rapidez\Core\Casts\DecodeHtmlEntities;
+use Rapidez\Core\Facades\Rapidez;
+use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
 use Rapidez\Core\Models\Scopes\Product\WithProductAttributesScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductCategoryInfoScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductChildrenScope;
@@ -19,11 +24,10 @@ use Rapidez\Core\Models\Scopes\Product\WithProductGroupedScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductRelationIdsScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductStockScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductSuperAttributesScope;
-use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
 use Rapidez\Core\Models\Traits\Product\CastMultiselectAttributes;
 use Rapidez\Core\Models\Traits\Product\CastSuperAttributes;
-use Rapidez\Core\Models\Traits\Product\Searchable;
 use Rapidez\Core\Models\Traits\Product\SelectAttributeScopes;
+use Rapidez\Core\Models\Traits\Searchable;
 use TorMorten\Eventy\Facades\Eventy;
 
 class Product extends Model
@@ -252,5 +256,106 @@ class Product extends Model
     public static function exist($productId): bool
     {
         return self::withoutGlobalScopes()->where('entity_id', $productId)->exists();
+    }
+
+    protected function makeAllSearchableUsing(Builder $query)
+    {
+        $query->selectOnlyIndexable()
+            ->with(['categoryProducts', 'reviewSummary'])
+            ->withEventyGlobalScopes('index.product.scopes');
+
+        return $query;
+    }
+
+    public function shouldBeSearchable(): bool
+    {
+        if (! in_array($this->visibility, config('rapidez.indexer.visibility'))) {
+            return false;
+        }
+
+        $showOutOfStock = (bool) Rapidez::config('cataloginventory/options/show_out_of_stock', 0);
+        if (! $showOutOfStock && ! $this->in_stock) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function searchableData($data, $product): array
+    {
+        $data['store'] = config('rapidez.store');
+
+        // TODO: Can we do this without having to cache this?
+        $maxPositions = Cache::driver('array')->rememberForever('max-positions-' . config('rapidez.store'), function() {
+            return CategoryProduct::query()
+                ->selectRaw('GREATEST(MAX(position), 0) as position')
+                ->addSelect('category_id')
+                ->groupBy('category_id')
+                ->pluck('position', 'category_id');
+        });
+
+        foreach ($product->super_attributes ?: [] as $superAttribute) {
+            $data['super_' . $superAttribute->code] = $superAttribute->text_swatch || $superAttribute->visual_swatch
+                ? array_keys((array) $product->{'super_' . $superAttribute->code})
+                : Arr::pluck($product->{'super_' . $superAttribute->code} ?: [], 'label');
+        }
+
+        $data = $this->withCategories($data);
+
+        $data['positions'] = $product->categoryProducts
+            ->pluck('position', 'category_id')
+            // Turn all positions positive
+            ->mapWithKeys(fn ($position, $category_id) => [$category_id => $maxPositions[$category_id] - $position]);
+
+        return $data;
+    }
+
+    public function withCategories(array $data): array
+    {
+        // TODO: Do we still need to do this in this way? Can we refactor this to be nicer now that we're using Scout?
+        $categories = Cache::driver('array')->rememberForever('categories-' . config('rapidez.store'), function() {
+            return Category::withEventyGlobalScopes('index.category.scopes')
+                ->where('catalog_category_flat_store_' . config('rapidez.store') . '.entity_id', '<>', Rapidez::config('catalog/category/root_id', 2))
+                ->pluck('name', 'entity_id');
+        });
+
+        foreach ($data['category_paths'] as $categoryPath) {
+            $category = [];
+            foreach (explode('/', $categoryPath) as $categoryId) {
+                if (isset($categories[$categoryId])) {
+                    $category[] = $categoryId . '::' . $categories[$categoryId];
+                }
+            }
+            if (! empty($category)) {
+                $data['categories'][] = implode(' /// ', $category);
+            }
+        }
+
+        foreach ($data['category_paths'] as $categoryPath) {
+            $paths = explode('/', $categoryPath);
+            $paths = array_slice($paths, array_search(config('rapidez.root_category_id'), $paths) + 1);
+
+            $categoryHierarchy = [];
+            $currentPath = '';
+
+            foreach ($paths as $categoryId) {
+                if (isset($categories[$categoryId])) {
+                    $currentPath .= ($currentPath ? ' > ' : '') . $categories[$categoryId];
+                    $categoryHierarchy[] = $currentPath;
+                }
+            }
+
+            foreach ($categoryHierarchy as $level => $category) {
+                $data['category_lvl' . ($level + 1)][] = $category;
+            }
+        }
+
+        foreach ($data as $key => &$value) {
+            if (str_starts_with($key, 'category_lvl')) {
+                $value = array_values(array_unique($value));
+            }
+        }
+
+        return $data;
     }
 }

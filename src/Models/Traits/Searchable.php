@@ -1,12 +1,12 @@
 <?php
 
-namespace Rapidez\Core\Models\Traits\Product;
+namespace Rapidez\Core\Models\Traits;
 
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Laravel\Scout\Searchable as ScoutSearchable;
-use Rapidez\Core\Facades\Rapidez;
+use TorMorten\Eventy\Facades\Eventy;
 
 trait Searchable
 {
@@ -14,9 +14,10 @@ trait Searchable
 
     public function toSearchableArray(): array
     {
-        $product = $this->toArray();
+        $data = $this->searchableData($this->toArray(), $this);
 
-        // dd($product);
+        $modelType = str(static::class)->afterLast('\\')->lower();
+        Eventy::filter('index.' . $modelType . '.data', $data, $this);
 
         // TODO: Maybe double check / handle what attributes are
         // getting indexed here. From makeAllSearchableUsing
@@ -27,39 +28,31 @@ trait Searchable
         // Customize the data array...
         // cast to the correct types! (int), etc
 
-        return $product;
+        return $data;
+    }
+
+    public function searchableData($data, $model): array
+    {
+        return $data;
     }
 
     public function shouldBeSearchable(): bool
     {
-        if (! in_array($this->visibility, config('rapidez.indexer.visibility'))) {
-            return false;
-        }
-
-        $showOutOfStock = (bool) Rapidez::config('cataloginventory/options/show_out_of_stock', 0);
-        if (! $showOutOfStock && ! $this->in_stock) {
-            return false;
-        }
-
         return true;
     }
 
     public function searchableAs(): string
     {
         if (! config('rapidez.index')) {
-            throw new Exception('Do not use Scout directly; please use `php artisan rapidez:index`');
+            throw new Exception('Do not use Scout directly. Please use `php artisan rapidez:index`.');
         }
 
         return config('rapidez.index');
     }
 
-    protected function makeAllSearchableUsing(Builder $query): Builder
+    protected function makeAllSearchableUsing(Builder $query)
     {
-        return $query
-            ->selectOnlyIndexable()
-            ->with(['categoryProducts', 'reviewSummary'])
-            ->withEventyGlobalScopes('index.product.scopes')
-            ->withExists('options AS has_options');
+        return $query;
     }
 
     public function makeSearchableUsing(Collection $models): Collection
