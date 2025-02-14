@@ -1,5 +1,19 @@
 <script>
-import { AisClearRefinements, AisConfigure, AisCurrentRefinements, AisHierarchicalMenu, AisHits, AisHitsPerPage, AisInstantSearch, AisPagination, AisRangeInput, AisRefinementList, AisSearchBox, AisSortBy, AisStats } from 'vue-instantsearch'
+import {
+    AisClearRefinements,
+    AisConfigure,
+    AisCurrentRefinements,
+    AisHierarchicalMenu,
+    AisHits,
+    AisHitsPerPage,
+    AisInstantSearch,
+    AisPagination,
+    AisRangeInput,
+    AisRefinementList,
+    AisSearchBox,
+    AisSortBy,
+    AisStats,
+} from 'vue-instantsearch'
 import Client from '@searchkit/instantsearch-client'
 import Searchkit from 'searchkit'
 import deepmerge from 'deepmerge'
@@ -7,19 +21,19 @@ import deepmerge from 'deepmerge'
 import { history } from 'instantsearch.js/es/lib/routers'
 import { simple } from 'instantsearch.js/es/lib/stateMappings'
 
-Vue.component('ais-instant-search', AisInstantSearch);
-Vue.component('ais-configure', AisConfigure);
-Vue.component('ais-refinement-list', AisRefinementList);
-Vue.component('ais-hierarchical-menu', AisHierarchicalMenu);
-Vue.component('ais-range-input', AisRangeInput);
-Vue.component('ais-search-box', AisSearchBox);
-Vue.component('ais-current-refinements', AisCurrentRefinements);
-Vue.component('ais-clear-refinements', AisClearRefinements);
-Vue.component('ais-hits', AisHits);
-Vue.component('ais-hits-per-page', AisHitsPerPage);
-Vue.component('ais-sort-by', AisSortBy);
-Vue.component('ais-pagination', AisPagination);
-Vue.component('ais-stats', AisStats);
+Vue.component('ais-instant-search', AisInstantSearch)
+Vue.component('ais-configure', AisConfigure)
+Vue.component('ais-refinement-list', AisRefinementList)
+Vue.component('ais-hierarchical-menu', AisHierarchicalMenu)
+Vue.component('ais-range-input', AisRangeInput)
+Vue.component('ais-search-box', AisSearchBox)
+Vue.component('ais-current-refinements', AisCurrentRefinements)
+Vue.component('ais-clear-refinements', AisClearRefinements)
+Vue.component('ais-hits', AisHits)
+Vue.component('ais-hits-per-page', AisHitsPerPage)
+Vue.component('ais-sort-by', AisSortBy)
+Vue.component('ais-pagination', AisPagination)
+Vue.component('ais-stats', AisStats)
 
 import categoryFilter from './Filters/CategoryFilter.vue'
 import useAttributes from '../../stores/useAttributes.js'

@@ -5,10 +5,10 @@ import Searchkit from 'searchkit'
 
 Vue.component('ais-instant-search', AisInstantSearch)
 Vue.component('ais-search-box', AisSearchBox)
-Vue.component('ais-hits', AisHits);
-Vue.component('ais-index', AisIndex);
-Vue.component('ais-configure', AisConfigure);
-Vue.component('ais-highlight', AisHighlight);
+Vue.component('ais-hits', AisHits)
+Vue.component('ais-index', AisIndex)
+Vue.component('ais-configure', AisConfigure)
+Vue.component('ais-highlight', AisHighlight)
 
 export default {
     data: () => ({
@@ -20,7 +20,10 @@ export default {
     },
 
     mounted() {
-        this.$nextTick(() => {this.$emit('mounted'); this.loaded = true})
+        this.$nextTick(() => {
+            this.$emit('mounted')
+            this.loaded = true
+        })
     },
 
     computed: {
@@ -32,32 +35,31 @@ export default {
             let client = Client(this.searchkit, {
                 hooks: {
                     beforeSearch: async (searchRequests) => {
-                        return searchRequests;
+                        return searchRequests
                     },
                 },
             })
 
             // Ensure no query is done if the search field is empty
-            const oldSearch = client.search;
+            const oldSearch = client.search
             client.search = async (requests) => {
                 if (requests.every(({ params }) => !params.query)) {
                     return Promise.resolve({
                         results: requests.map(() => ({
-                        hits: [],
-                        nbHits: 0,
-                        nbPages: 0,
-                        page: 0,
-                        processingTimeMS: 0,
-                        hitsPerPage: 0,
-                        exhaustiveNbHits: false,
-                        query: '',
-                        params: '',
+                            hits: [],
+                            nbHits: 0,
+                            nbPages: 0,
+                            page: 0,
+                            processingTimeMS: 0,
+                            hitsPerPage: 0,
+                            exhaustiveNbHits: false,
+                            query: '',
+                            params: '',
                         })),
-                    });
+                    })
                 }
 
-                return oldSearch
-                    .bind(client)(requests)
+                return oldSearch.bind(client)(requests)
             }
 
             return client
@@ -91,4 +93,3 @@ export default {
     },
 }
 </script>
-
