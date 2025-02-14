@@ -260,11 +260,9 @@ class Product extends Model
 
     protected function makeAllSearchableUsing(Builder $query)
     {
-        $query->selectOnlyIndexable()
+        return $query->selectOnlyIndexable()
             ->with(['categoryProducts', 'reviewSummary'])
             ->withEventyGlobalScopes('index.product.scopes');
-
-        return $query;
     }
 
     public function shouldBeSearchable(): bool
@@ -281,7 +279,7 @@ class Product extends Model
         return true;
     }
 
-    public function searchableData($data, $product): array
+    public function searchableData(array $data, Product $product): array
     {
         $data['store'] = config('rapidez.store');
 

@@ -17,12 +17,10 @@ use Illuminate\View\View as ViewComponent;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
 use Rapidez\Core\Auth\MagentoCartTokenGuard;
 use Rapidez\Core\Auth\MagentoCustomerTokenGuard;
-use Rapidez\Core\Commands\IndexCategoriesCommand;
 use Rapidez\Core\Commands\IndexCommand;
 use Rapidez\Core\Commands\InstallCommand;
 use Rapidez\Core\Commands\InstallTestsCommand;
 use Rapidez\Core\Commands\ValidateCommand;
-use Rapidez\Core\Events\IndexBeforeEvent;
 use Rapidez\Core\Events\ProductViewEvent;
 use Rapidez\Core\Facades\Rapidez as RapidezFacade;
 use Rapidez\Core\Http\Controllers\Fallback\CmsPageController;
@@ -90,15 +88,10 @@ class RapidezServiceProvider extends ServiceProvider
     {
         $this->commands([
             IndexCommand::class,
-            IndexCategoriesCommand::class,
             ValidateCommand::class,
             InstallCommand::class,
             InstallTestsCommand::class,
         ]);
-
-        Event::listen(IndexBeforeEvent::class, function ($event) {
-            $event->context->call('rapidez:index:categories');
-        });
 
         return $this;
     }

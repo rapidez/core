@@ -5,6 +5,7 @@ namespace Rapidez\Core\Models\Traits;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable as ScoutSearchable;
 use TorMorten\Eventy\Facades\Eventy;
 
@@ -16,23 +17,16 @@ trait Searchable
     {
         $data = $this->searchableData($this->toArray(), $this);
 
-        $modelType = str(static::class)->afterLast('\\')->lower();
-        Eventy::filter('index.' . $modelType . '.data', $data, $this);
-
-        // TODO: Maybe double check / handle what attributes are
-        // getting indexed here. From makeAllSearchableUsing
-        // we're getting the correct data, but when you
-        // index just one; I don't think that query
-        // will be used resulting in all attrs.
-
-        // Customize the data array...
-        // cast to the correct types! (int), etc
-
-        return $data;
+        return Eventy::filter('index.' . config('rapidez.index') . '.data', $data, $this);
     }
 
-    public function searchableData($data, $model): array
+    public function searchableData(array $data, Model $model): array
     {
+        // Customize the data with this function.
+        // - $data is the actual array with data.
+        // - $model is useful for when you want to retrieve data from the actual model (e.g. relations).
+        // Return the array with data that you want to send to ES.
+
         return $data;
     }
 
@@ -47,7 +41,11 @@ trait Searchable
             throw new Exception('Do not use Scout directly. Please use `php artisan rapidez:index`.');
         }
 
-        return config('rapidez.index');
+        return implode('_', array_values([
+            config('scout.prefix'),
+            config('rapidez.index'),
+            config('rapidez.store'),
+        ]));
     }
 
     protected function makeAllSearchableUsing(Builder $query)

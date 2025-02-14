@@ -129,11 +129,6 @@ class Rapidez
         config()->set('rapidez.group', $store['group_id']);
         config()->set('rapidez.root_category_id', $store['root_category_id']);
         config()->set('frontend.base_url', url('/'));
-        config()->set('rapidez.index', implode('_', array_values([
-            config('scout.prefix'),
-            'products',
-            $store['store_id'],
-        ])));
 
         if (config()->get('rapidez.magento_url_from_db', false)) {
             $magentoUrl = trim(

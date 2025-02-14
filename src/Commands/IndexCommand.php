@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Rapidez\Core\Events\IndexAfterEvent;
 use Rapidez\Core\Events\IndexBeforeEvent;
 use Rapidez\Core\Facades\Rapidez;
+use Rapidez\Core\Models\Traits\Searchable;
 
 class IndexCommand extends Command
 {
@@ -15,11 +16,13 @@ class IndexCommand extends Command
 
     public function handle()
     {
+        $baseSearchableModels = collect(config('rapidez.models'))
+            ->filter(fn($class) => in_array(Searchable::class, class_uses_recursive($class)))
+            ->merge(config('rapidez.indexer.extra_models'));
+
         $types = $this->option('types')
-            ? explode(',', $this->option('types'))
-            : config('rapidez.indexer.models');
-        // TODO: Where do we put the above configuration?
-        // Can (and should?) we dynamically retrieve which models have the Searchable trait?
+            ? $baseSearchableModels->only(explode(',', $this->option('types')))
+            : $baseSearchableModels;
 
         $stores = $this->option('store')
             ? Rapidez::getStores(explode(',', $this->option('store')))
@@ -34,9 +37,11 @@ class IndexCommand extends Command
 
             $this->line('Store: ' . $store['name']);
 
-            foreach($types as $type) {
+            foreach($types as $type => $model) {
+                config()->set('rapidez.index', $type);
+
                 $this->call('scout:import', [
-                    'searchable' => config('rapidez.models.' . $type),
+                    'searchable' => $model,
                 ]);
             }
         }

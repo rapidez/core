@@ -7,10 +7,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
 use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
+use Rapidez\Core\Models\Traits\Searchable;
 
 class Category extends Model
 {
     use HasAlternatesThroughRewrites;
+    use Searchable;
+
+    protected $primaryKey = 'entity_id';
 
     protected $appends = ['url'];
 
@@ -44,11 +48,6 @@ class Category extends Model
                 })
                 ->groupBy($builder->getQuery()->from . '.entity_id');
         });
-    }
-
-    public function getKeyName()
-    {
-        return $this->getTable() . '.entity_id';
     }
 
     public function getTable()
@@ -97,5 +96,14 @@ class Category extends Model
         return ! $categoryIds ? [] : Category::whereIn($this->getTable() . '.entity_id', $categoryIds)
             ->orderByRaw('FIELD(' . $this->getTable() . '.entity_id,' . implode(',', $categoryIds) . ')')
             ->get();
+    }
+
+    protected function makeAllSearchableUsing(Builder $query)
+    {
+        return $query->withEventyGlobalScopes('index.categories.scopes')
+            ->select((new (config('rapidez.models.category')))->qualifyColumns(['entity_id', 'name']))
+            ->whereNotNull('url_key')
+            ->whereNot('url_key', 'default-category')
+            ->has('products');
     }
 }
