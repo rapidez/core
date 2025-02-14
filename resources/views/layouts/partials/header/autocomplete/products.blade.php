@@ -18,7 +18,7 @@
                                 <ais-highlight
                                     attribute="name"
                                     :hit="item"
-                                    highlightedTagName="mark"
+                                    highlighted-tag-name="mark"
                                 />
                             </span>
 
