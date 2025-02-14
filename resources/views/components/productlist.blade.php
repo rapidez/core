@@ -22,7 +22,7 @@ But it currently doesn't work without it.
                 <ais-instant-search
                     v-if="loaded"
                     :search-client="searchClient"
-                    :index-name="config.index.product"
+                    :index-name="config.index"
                 >
                     <ais-configure :filters="'{{ $field }}:({{ is_array($value)
                         ? implode(' OR ', $value)
