@@ -86,7 +86,7 @@ class Rapidez
         return json_decode(str_replace(array_values($mapping), array_keys($mapping), $encodedString));
     }
 
-    public function getStores(callable|int|string|null $store = null): array
+    public function getStores(callable|array|int|string|null $store = null): array
     {
         $storeModel = config('rapidez.models.store');
 
@@ -94,7 +94,7 @@ class Rapidez
             return Arr::where($storeModel::getCached(),
                 fn ($s) => is_callable($store)
                     ? $store($s)
-                    : $s['store_id'] == $store || $s['code'] == $store
+                    : in_array($s['store_id'], Arr::wrap($store)) || in_array($s['code'], Arr::wrap($store))
             );
         }
 
@@ -129,11 +129,6 @@ class Rapidez
         config()->set('rapidez.group', $store['group_id']);
         config()->set('rapidez.root_category_id', $store['root_category_id']);
         config()->set('frontend.base_url', url('/'));
-        config()->set('rapidez.index', implode('_', array_values([
-            config('scout.prefix'),
-            'products',
-            $store['store_id'],
-        ])));
 
         if (config()->get('rapidez.magento_url_from_db', false)) {
             $magentoUrl = trim(

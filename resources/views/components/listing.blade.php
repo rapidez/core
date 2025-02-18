@@ -14,7 +14,8 @@
             label: window.config.translations.newest,
             field: 'created_at',
             order: 'desc',
-            value: config.index+'_created_at_desc',
+            {{-- TODO: Extract this somewhere? --}}
+            value: config.index_prefix + '_products_' + config.store + '_created_at_desc',
             key: '_created_at_desc'
         }]"
         v-cloak
@@ -23,7 +24,8 @@
             <ais-instant-search
                 v-if="loaded"
                 :search-client="listingSlotProps.searchClient"
-                :index-name="config.index"
+                {{-- TODO: Extract this somewhere? --}}
+                :index-name="config.index_prefix + '_products_' + config.store"
                 :routing="listingSlotProps.routing"
             >
                 <ais-configure :filters="{!! $query !!}"/>

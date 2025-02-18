@@ -10,4 +10,10 @@ return [
     // VISIBILITY_IN_SEARCH      = 3
     // VISIBILITY_BOTH           = 4
     'visibility' => [2, 3, 4],
+
+    // The Rapidez indexer will automatically start indexing any models with the Searchable trait that exist within `models.php`.
+    // If you want to add extra models you can add them here. Only Eloquent models are supported.
+    'extra_models' => [
+        // 'book' => \App\Models\Book::class,
+    ],
 ];

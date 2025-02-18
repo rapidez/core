@@ -35,7 +35,7 @@ class ConfigComposer
         Config::set('frontend', array_merge(
             config('frontend') ?: [],
             $exposedFrontendConfigValues,
-            $this->getConfig()
+            $this->getConfig(),
         ));
 
         Event::dispatch('rapidez:frontend-config-composed');
@@ -57,6 +57,7 @@ class ConfigComposer
             'show_tax'                     => (bool) Rapidez::config('tax/display/type', 1),
             'grid_per_page'                => Rapidez::config('catalog/frontend/grid_per_page', 12),
             'grid_per_page_values'         => explode(',', Rapidez::config('catalog/frontend/grid_per_page_values', '12,24,36')),
+
             // TODO: For the products we've the `rapidez.index` config
             // set from the `src/Rapidez.php` which is accessible
             // in the frontend with `config.index`, maybe we
