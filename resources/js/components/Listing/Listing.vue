@@ -1,14 +1,41 @@
 <script>
-import InstantSearch from 'vue-instantsearch'
+// TODO: How can we have this extendable in
+// case we want to use another component?
+import {
+    AisClearRefinements,
+    AisConfigure,
+    AisCurrentRefinements,
+    AisHierarchicalMenu,
+    AisHits,
+    AisHitsPerPage,
+    AisInstantSearch,
+    AisPagination,
+    AisRangeInput,
+    AisRefinementList,
+    AisSearchBox,
+    AisSortBy,
+    AisStats,
+} from 'vue-instantsearch'
 import Client from '@searchkit/instantsearch-client'
 import Searchkit from 'searchkit'
 import deepmerge from 'deepmerge'
 
 import { history } from 'instantsearch.js/es/lib/routers'
-import { singleIndex, simple } from 'instantsearch.js/es/lib/stateMappings'
-// We should only import the components used!
-// https://www.algolia.com/doc/guides/building-search-ui/installation/vue/?client=Vue+2#optimize-your-build-with-tree-shaking
-Vue.use(InstantSearch)
+import { simple } from 'instantsearch.js/es/lib/stateMappings'
+
+Vue.component('ais-instant-search', AisInstantSearch)
+Vue.component('ais-configure', AisConfigure)
+Vue.component('ais-refinement-list', AisRefinementList)
+Vue.component('ais-hierarchical-menu', AisHierarchicalMenu)
+Vue.component('ais-range-input', AisRangeInput)
+Vue.component('ais-search-box', AisSearchBox)
+Vue.component('ais-current-refinements', AisCurrentRefinements)
+Vue.component('ais-clear-refinements', AisClearRefinements)
+Vue.component('ais-hits', AisHits)
+Vue.component('ais-hits-per-page', AisHitsPerPage)
+Vue.component('ais-sort-by', AisSortBy)
+Vue.component('ais-pagination', AisPagination)
+Vue.component('ais-stats', AisStats)
 
 import categoryFilter from './Filters/CategoryFilter.vue'
 import useAttributes from '../../stores/useAttributes.js'

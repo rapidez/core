@@ -1,121 +1,94 @@
 <script>
-import client from '@searchkit/instantsearch-client'
-import { getAlgoliaResults } from '@algolia/autocomplete-js'
+import { AisConfigure, AisHighlight, AisHits, AisIndex, AisInstantSearch, AisSearchBox } from 'vue-instantsearch'
+import Client from '@searchkit/instantsearch-client'
+import Searchkit from 'searchkit'
+
+Vue.component('ais-instant-search', AisInstantSearch)
+Vue.component('ais-search-box', AisSearchBox)
+Vue.component('ais-hits', AisHits)
+Vue.component('ais-index', AisIndex)
+Vue.component('ais-configure', AisConfigure)
+Vue.component('ais-highlight', AisHighlight)
 
 export default {
-    props: {
-        additionals: Object,
-        debounce: {
-            type: Number,
-            default: 100,
-        },
-        size: {
-            type: Number,
-            default: 10,
-        },
-        multiMatchTypes: {
-            type: Array,
-            default: () => ['best_fields', 'phrase', 'phrase_prefix'],
-        },
-    },
+    data: () => ({
+        loaded: false,
+    }),
 
     render() {
         return this.$scopedSlots.default(this)
     },
 
-    data() {
-        return {
-            results: {},
-            resultsCount: 0,
-            searchAdditionals: () => null,
-            overlay: false,
-            searchLoading: false,
-        }
+    mounted() {
+        this.$nextTick(() => {
+            this.$emit('mounted')
+            this.loaded = true
+        })
     },
 
-    mounted() {
-        this.$nextTick(() => this.$emit('mounted'))
-        let self = this
+    computed: {
+        // TODO: Not sure if this is the right place,
+        // the autocomplete also needs this but
+        // we don't want to load everything
+        // directly due the JS size
+        searchClient: function () {
+            let client = Client(this.searchkit, {
+                hooks: {
+                    beforeSearch: async (searchRequests) => {
+                        return searchRequests
+                    },
+                },
+            })
 
-        // Define function here to gain access to the debounce prop
-        this.searchAdditionals = useDebounceFn(function (query) {
-            if (!self.additionals) {
-                return
+            // Ensure no query is done if the search field is empty
+            const oldSearch = client.search
+            client.search = async (requests) => {
+                if (requests.every(({ params }) => !params.query)) {
+                    return Promise.resolve({
+                        results: requests.map(() => ({
+                            hits: [],
+                            nbHits: 0,
+                            nbPages: 0,
+                            page: 0,
+                            processingTimeMS: 0,
+                            hitsPerPage: 0,
+                            exhaustiveNbHits: false,
+                            query: '',
+                            params: '',
+                        })),
+                    })
+                }
+
+                return oldSearch.bind(client)(requests)
             }
 
-            // Initialize with empty data to preserve additionals order
-            self.results = Object.fromEntries(Object.keys(self.additionals).map((indexName) => [indexName, []]))
-            self.resultsCount = 0
+            return client
+        },
 
+        // TODO: Maybe extract this so we have this once?
+        searchkit: function () {
             let url = new URL(config.es_url)
-            let auth = `Basic ${btoa(`${url.username}:${url.password}`)}`
-            let baseUrl = url.origin
 
-            Object.entries(self.additionals).forEach(([name, data]) => {
-                let stores = data['stores'] ?? null
-                if (stores && !stores.includes(window.config.store_code)) {
-                    return
-                }
-
-                let fields = data['fields'] ?? data
-                let size = data['size'] ?? self.size ?? undefined
-                let sort = data['sort'] ?? undefined
-
-                let multimatch = self.multiMatchTypes.map((type) => ({
-                    multi_match: {
-                        query: query,
-                        type: type,
-                        fields: fields,
-                        fuzziness: type.includes('phrase') ? undefined : 'AUTO',
+            let searchkit = new Searchkit({
+                connection: {
+                    host: url.origin,
+                    auth: {
+                        username: url.username,
+                        password: url.password,
                     },
-                }))
+                },
 
-                let esQuery = {
-                    size: size,
-                    sort: sort,
-                    query: {
-                        bool: {
-                            should: multimatch,
-                            minimum_should_match: 1,
-                        },
-                    },
-                    highlight: {
-                        pre_tags: ['<mark>'],
-                        post_tags: ['</mark>'],
-                        fields: Object.fromEntries(fields.map((field) => [field.split('^')[0], {}])),
-                        require_field_match: false,
-                    },
-                }
-
-                // es_prefix has been removed, Scout is used
-                rapidezFetch(`${baseUrl}/${config.es_prefix}_${name}_${config.store}/_search`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', Authorization: auth },
-                    body: JSON.stringify(esQuery),
-                }).then(async (response) => {
-                    const responseData = await response.json()
-
-                    self.results[name] = responseData?.hits ?? []
-                    self.results.count += self.results[name]?.hits?.length ?? 0
-                })
+                // TODO: Should we split this as it could
+                // diff from the settings on listings.
+                search_settings: {
+                    highlight_attributes: config.searchkit.highlight_attributes,
+                    search_attributes: config.searchkit.search_attributes,
+                    result_attributes: config.searchkit.result_attributes,
+                    filter_attributes: config.searchkit.filter_attributes,
+                },
             })
-        }, self.debounce)
-    },
 
-    methods: {
-        startLoading() {
-            this.searchLoading = true
-        },
-        stopLoading() {
-            this.searchLoading = false
-        },
-        highlight(hit, field) {
-            let source = hit._source ?? hit.source
-            let highlight = hit.highlight ?? source.highlight
-            return highlight?.[field]?.[0] ?? source?.[field] ?? ''
-        },
-        showOverlay(isOpen) {
-            this.overlay = isOpen
+            return searchkit
         },
     },
 }
