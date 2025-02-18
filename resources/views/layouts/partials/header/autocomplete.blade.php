@@ -11,13 +11,14 @@
     <x-rapidez::autocomplete.magnifying-glass />
 </div>
 <autocomplete v-else>
-    <div slot-scope="{ searchClient, loaded }" class="relative w-full"  v-if="loaded">
+    <div slot-scope="{ searchClient, loaded }" class="relative w-full" v-if="loaded">
         <ais-instant-search
             class="contents"
             :search-client="searchClient"
             :index-name="config.index"
         >
             <div class="contents">
+                <!-- TODO: This is a Vue 3 thing -->
                 <ais-configure :hits-per-page.camel="3"/>
                 <div class="searchbox">
                     <ais-search-box>
@@ -35,7 +36,9 @@
                                     v-on:input="refine($event.currentTarget.value)"
                                     :placeholder="__('What are you looking for?')"
                                 />
-                                <x-rapidez::button class="absolute right-0 bg-none border-none" type="submit"><x-rapidez::autocomplete.magnifying-glass /></x-rapidez::button>
+                                <x-rapidez::button class="absolute right-0 bg-none border-none" type="submit">
+                                    <x-rapidez::autocomplete.magnifying-glass />
+                                </x-rapidez::button>
                             </form>
                         </template>
                     </ais-search-box>

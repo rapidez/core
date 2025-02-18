@@ -65,6 +65,7 @@ export default {
             return client
         },
 
+        // TODO: Maybe extract this so we have this once?
         searchkit: function () {
             let url = new URL(config.es_url)
 
@@ -77,9 +78,8 @@ export default {
                     },
                 },
 
-                // TODO: Maybe just do: search_settings: config.searchkit
-                // so it's possible to add anything to the PHP config
-                // and that will appear here?
+                // TODO: Should we split this as it could
+                // diff from the settings on listings.
                 search_settings: {
                     highlight_attributes: config.searchkit.highlight_attributes,
                     search_attributes: config.searchkit.search_attributes,

@@ -1,4 +1,6 @@
 <script>
+// TODO: How can we have this extendable in 
+// case we want to use another component?
 import {
     AisClearRefinements,
     AisConfigure,
