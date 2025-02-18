@@ -1815,13 +1815,6 @@ vue-turbolinks@^2.2.2:
   resolved "https://registry.yarnpkg.com/vue-turbolinks/-/vue-turbolinks-2.2.2.tgz#6b7b5c4120f5586907ef977be4b63a734bf8cd36"
   integrity sha512-pPO2Fr+1UgdhUK9dc5OhjLSeYi5LZAm/VZBXOVQgLHCO31bRjAof/+W/e/6SHCbnb1xdZb1gW5T9MX0k9ejSAQ==
 
-vue-types@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/vue-types/-/vue-types-1.7.0.tgz#07b273342aba7cc43d9460d9c4f4a4cf5eeb00b1"
-  integrity sha512-MbhuWukmcBJHdfXAdLerbP29i3j2HAJoKwEv7No2Jh/YNl9dOKsNBfvMOkf0SS8VCuWd1/JBX4NnGaGUojbkUA==
-  dependencies:
-    is-plain-object "3.0.0"
-
 vue2-teleport@^1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/vue2-teleport/-/vue2-teleport-1.1.4.tgz#30c84b1005bf9c208b1c05f4b6147300c54ee846"
