@@ -17,9 +17,12 @@ trait Searchable
     {
         $data = $this->searchableData($this->toArray(), $this);
 
+        // TODO: Is this filter still useful? Overriding the model gives you full control
         return Eventy::filter('index.' . config('rapidez.index') . '.data', $data, $this);
     }
 
+    // TODO: Not sure if this is the best idea, we already
+    // have the toSearchableArray for this.
     public function searchableData(array $data, Model $model): array
     {
         // Customize the data with this function.
@@ -43,6 +46,7 @@ trait Searchable
 
         return implode('_', array_values([
             config('scout.prefix'),
+            // TODO: Maybe use the model name here?
             config('rapidez.index'),
             config('rapidez.store'),
         ]));

@@ -100,6 +100,8 @@ class Category extends Model
 
     protected function makeAllSearchableUsing(Builder $query)
     {
+        // TODO: Is this filter still useful? You could override and
+        // extend the existing model which gives you full control
         return $query->withEventyGlobalScopes('index.categories.scopes')
             ->select((new (config('rapidez.models.category')))->qualifyColumns(['entity_id', 'name']))
             ->whereNotNull('url_key')

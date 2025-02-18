@@ -307,6 +307,8 @@ class Product extends Model
         return $data;
     }
 
+    // TODO: With this and all methods above this model
+    // is getting pretty big... can we move this?
     public function withCategories(array $data): array
     {
         // TODO: Do we still need to do this in this way? Can we refactor this to be nicer now that we're using Scout?
