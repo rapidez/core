@@ -1,4 +1,5 @@
 <div v-if="!$root.loadAutocomplete" class="relative w-full">
+    {{-- TODO: Do we still need this double input? --}}
     <form method="get" action="{{ route('search') }}">
         <x-rapidez::input
             type="search"
@@ -10,6 +11,7 @@
     </form>
     <x-rapidez::autocomplete.magnifying-glass />
 </div>
+
 <autocomplete v-else>
     <div slot-scope="{ searchClient, loaded }" class="relative w-full" v-if="loaded">
         <ais-instant-search

@@ -37,7 +37,8 @@
         "vue-cookies": "^1.8.2",
         "vue-instantsearch": "^4.19.13",
         "vue-template-compiler": "^2.7.14",
-        "vue-turbolinks": "^2.2.2"
+        "vue-turbolinks": "^2.2.2",
+        "vue2-teleport": "^1.1.4"
     },
     "dependencies": {}
 }

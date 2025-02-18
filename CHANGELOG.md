@@ -1,6 +1,30 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/3.0.1...3.0.1)
+[Unreleased changes](https://github.com/rapidez/core/compare/3.1.0...3.1.0)
+## [3.1.0](https://github.com/rapidez/core/releases/tag/3.1.0) - 2025-01-24
+
+### Added
+
+- Shadow, outline and ring colors (#691)
+- Autocomplete additionals fuzziness config (#708)
+
+### Changed
+
+- Frontend improvements (#682)
+- Dynamic product listing image and redirect + swatch logic fix (#698)
+- Changed the default border color (#699)
+- Global slideover using teleport (#703)
+- Show configured variant image in the cart (#688)
+- Check the autocomplete resultsType outside of partial (#684)
+- Renamed the country select component (#678)
+
+### Fixed
+
+- ReactiveSearch update (#697)
+- Null coalescing for csrf token (#686)
+- Fix error on file removal (#687)
+- Slideover prevent-scroll (#700)
+
 ## [3.0.1](https://github.com/rapidez/core/releases/tag/3.0.1) - 2024-12-20
 
 ### Fixed

@@ -18,7 +18,7 @@
     <div class="container">
         <h1 class="mb-5 text-4xl font-bold">{{ $page->content_heading }}</h1>
         <div class="prose prose-green mb-5">
-            {!! $page->content !!}
+            @content($page->content)
         </div>
     </div>
 @endsection

@@ -16,6 +16,11 @@ class Category extends Model
 
     protected $primaryKey = 'entity_id';
 
+    protected $casts = [
+        self::UPDATED_AT => 'datetime',
+        self::CREATED_AT => 'datetime',
+    ];
+
     protected $appends = ['url'];
 
     protected static function booting()
@@ -36,6 +41,7 @@ class Category extends Model
                 'children',
                 'children_count',
                 'position',
+                self::UPDATED_AT,
             ];
 
             $builder

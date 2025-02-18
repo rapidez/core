@@ -274,7 +274,7 @@ export default {
             }
 
             // Check if all super_attributes have an option selected
-            return Object.keys(this.product?.super_attributes).join(',') !== Object.keys(this.options).join(',')
+            return Object.keys(this.product?.super_attributes || {}).join(',') !== Object.keys(this.options).join(',')
         },
 
         simpleProduct: function () {
@@ -356,6 +356,10 @@ export default {
                     }
 
                     if (!option.in_stock) {
+                        if (Object.keys(this.product.super_attributes).length === 1) {
+                            disabledOptions['super_' + attribute.code].push(option[attribute.code])
+                        }
+
                         return
                     }
 

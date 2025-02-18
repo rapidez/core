@@ -28,7 +28,7 @@
         "lcobucci/clock": "^2.0|^3.2",
         "lcobucci/jwt": "^4.0|^5.3",
         "matchish/laravel-scout-elasticsearch": "^7.10",
-        "rapidez/blade-components": "^1.4",
+        "rapidez/blade-components": "^1.5",
         "rapidez/blade-directives": "^1.0",
         "rapidez/laravel-multi-cache": "^1.0",
         "tormjens/eventy": "^0.8"
@@ -69,6 +69,9 @@
                 "Rapidez": "Rapidez\\Core\\Facades\\Rapidez"
             }
         }
+    },
+    "conflict": {
+        "rapidez/reviews": "<3.0"
     },
     "scripts": {
         "analyse": "phpstan --memory-limit=256M",

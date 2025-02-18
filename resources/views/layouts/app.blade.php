@@ -32,6 +32,7 @@
 </head>
 <body class="text antialiased has-[.prevent-scroll:checked]:overflow-clip">
     <div id="app" class="flex flex-col min-h-dvh">
+        @include('rapidez::layouts.partials.global-slideover')
         @includeWhen(!request()->routeIs('checkout'), 'rapidez::layouts.partials.header')
         @includeWhen(request()->routeIs('checkout'), 'rapidez::layouts.checkout.header')
         <main>
@@ -39,8 +40,6 @@
         </main>
         @includeWhen(!request()->routeIs('checkout'), 'rapidez::layouts.partials.footer')
         @includeWhen(request()->routeIs('checkout'), 'rapidez::layouts.checkout.footer')
-
-        @include('rapidez::layouts.partials.global-slideover')
         @stack('page_end')
     </div>
 
