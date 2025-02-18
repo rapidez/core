@@ -62,7 +62,7 @@ class ConfigComposer
             // set from the `src/Rapidez.php` which is accessible
             // in the frontend with `config.index`, maybe we
             // should change that to `config.index.TYPE`?
-            'index_prefix'                 => config('scout.prefix'),
+            'index_prefix' => config('scout.prefix'),
         ];
     }
 
