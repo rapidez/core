@@ -1,12 +1,10 @@
 <?php
 
-use Rapidez\Core\Facades\Rapidez;
-
 if (! function_exists('price')) {
     function price($price)
     {
-        $currency = Rapidez::config('currency/options/default');
-        $locale = Rapidez::config('general/locale/code', 'en_US');
+        $currency = \Rapidez\Core\Facades\Rapidez::config('currency/options/default');
+        $locale = \Rapidez\Core\Facades\Rapidez::config('general/locale/code', 'en_US');
         $formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
 
         return $formatter->formatCurrency($price, $currency);
