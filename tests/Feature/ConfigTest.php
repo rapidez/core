@@ -14,7 +14,7 @@ class ConfigTest extends TestCase
     public function config_can_be_intentionally_null()
     {
         $test = Config::create([
-            'path' => 'rapidez/test/value_null',
+            'path'  => 'rapidez/test/value_null',
             'value' => null,
         ]);
 
