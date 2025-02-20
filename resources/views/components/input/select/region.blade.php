@@ -1,4 +1,4 @@
-@props(['country' => ''])
+@props(['country'])
 <graphql
     v-if="{{ $country }}"
     query="query country($id: String) { country(id: $id) { available_regions { code id name } } }"
