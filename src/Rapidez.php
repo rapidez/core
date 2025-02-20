@@ -59,7 +59,7 @@ class Rapidez
 
     public function config(string $path, $default = null, bool $sensitive = false): ?string
     {
-        return config('rapidez.models.config')::getValue($path, options: ['cache' => true, 'decrypt' => $sensitive]) ?? $default;
+        return config('rapidez.models.config')::getValue($path, options: ['cache' => true, 'decrypt' => $sensitive, 'default' => $default]);
     }
 
     public function content($content)

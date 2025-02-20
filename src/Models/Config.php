@@ -57,9 +57,9 @@ class Config extends Model
     /**
      * @deprecated see: Config::getValue
      */
-    public static function getCachedByPath(string $path, $default = false, bool $sensitive = false): string|bool
+    public static function getCachedByPath(string $path, $default = false, bool $sensitive = false): string|bool|null
     {
-        return static::getValue($path, options: ['cache' => true, 'decrypt' => $sensitive]) ?? $default;
+        return static::getValue($path, options: ['cache' => true, 'decrypt' => $sensitive, 'default' => $default]);
     }
 
     /**
@@ -69,7 +69,7 @@ class Config extends Model
         string $path,
         ConfigScopes $scope = ConfigScopes::SCOPE_STORE,
         ?int $scopeId = null,
-        array $options = ['cache' => true, 'decrypt' => false]
+        array $options = ['cache' => true, 'decrypt' => false, 'default' => null]
     ): mixed {
         $scopeId ??= match ($scope) {
             ConfigScopes::SCOPE_WEBSITE => config('rapidez.website') ?? Rapidez::getStore(config('rapidez.store'))['website_id'],
@@ -101,7 +101,7 @@ class Config extends Model
 
         $websiteId = $scope === ConfigScopes::SCOPE_STORE ? Rapidez::getStore($scopeId)['website_id'] : $scopeId;
 
-        $result = static::query()
+        $resultObject = static::query()
             ->withoutGlobalScope('scope-fallback')
             ->where('path', $path)
             ->where(fn ($query) => $query
@@ -109,8 +109,9 @@ class Config extends Model
                 ->when($scope !== ConfigScopes::SCOPE_DEFAULT, fn ($query) => $query->orWhere(fn ($query) => $query->whereWebsite($websiteId)))
                 ->orWhere(fn ($query) => $query->whereDefault())
             )
-            ->first('value')
-            ?->value;
+            ->first('value');
+
+        $result = $resultObject ? $resultObject->value : ($options['default'] ?? null);
 
         if ($options['cache'] ?? true) {
             Arr::set($configCache, $cacheKey, $result);
