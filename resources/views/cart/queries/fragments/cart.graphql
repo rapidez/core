@@ -61,7 +61,7 @@ fragment cart on Cart {
         street
         city
         region {
-            code
+            region_id
             label
         }
         postcode

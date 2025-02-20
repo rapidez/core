@@ -154,20 +154,21 @@
                     v-model="variables.country_code"
                     v-on:change="$root.$nextTick(() => {
                         window.app.$emit('postcode-change', variables);
-                        variables.region.region_code = null
+                        variables.region_id = null
                     })"
                     required
                 />
             </label>
         </div>
-        <div class="col-span-12 sm:col-span-6">
+        <div class="col-span-12 sm:col-span-6 has-[.exists]:block hidden">
             <label>
                 <x-rapidez::label>@lang('Region')</x-rapidez::label>
                 <x-rapidez::input.select.region
+                    class="exists"
                     name="{{ $type }}_region"
                     dusk="{{ $type }}_region"
                     country="variables.country_code"
-                    {{-- v-model="variables.region.region_code" --}}
+                    v-model="variables.region_id"
                     required
                 />
             </label>

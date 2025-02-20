@@ -12,7 +12,7 @@
                 {{ $attributes }}
                 v-bind:required="'{{ Rapidez::config('general/region/state_required', '') }}'.split(',').includes({{ $country }})"
             >
-                <option v-for="region in data.country.available_regions" :value="region.code">
+                <option v-for="region in data.country.available_regions" :value="region.id">
                     @{{ region.name }}
                 </option>
             </x-rapidez::input.select>
