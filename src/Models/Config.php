@@ -61,7 +61,7 @@ class Config extends Model
     /**
      * @deprecated see: Config::getValue
      */
-    public static function getCachedByPath(string $path, $default = false, bool $sensitive = false): string|bool
+    public static function getCachedByPath(string $path, $default = false, bool $sensitive = false): string|bool|null
     {
         return static::getValue($path, options: ['cache' => true, 'decrypt' => $sensitive, 'default' => $default]);
     }
@@ -73,7 +73,7 @@ class Config extends Model
         string $path,
         ConfigScopes $scope = ConfigScopes::SCOPE_STORE,
         ?int $scopeId = null,
-        array $options = ['cache' => true, 'decrypt' => false]
+        array $options = ['cache' => true, 'decrypt' => false, 'default' => null]
     ): mixed {
         $scopeId ??= match ($scope) {
             ConfigScopes::SCOPE_WEBSITE => config('rapidez.website') ?? Rapidez::getStore(config('rapidez.store'))['website_id'],

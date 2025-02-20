@@ -5,6 +5,7 @@ namespace Rapidez\Core\Listeners\Healthcheck;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use PDOException;
+use Rapidez\Core\Facades\Rapidez;
 
 class MagentoSettingsHealthcheck extends Base
 {
@@ -25,8 +26,7 @@ class MagentoSettingsHealthcheck extends Base
             return $response;
         }
 
-        $configModel = config('rapidez.models.config');
-        if (! $configModel::getCachedByPath('catalog/frontend/flat_catalog_product', 0)) {
+        if (! Rapidez::config('catalog/frontend/flat_catalog_product', 0)) {
             $response['messages'][] = ['type' => 'error', 'value' => __(
                 'The product flat tables are disabled!' . PHP_EOL .
                 'Please enable them; see: https://docs.rapidez.io/3.x/installation.html#flat-tables'
@@ -40,7 +40,7 @@ class MagentoSettingsHealthcheck extends Base
             $response['messages'][] = ['type' => 'error', 'value' => __('Flat table ":flatTable" is missing! Don\'t forget to run bin/magento indexer:reindex', ['flatTable' => $flatTable])];
         }
 
-        if (! $configModel::getCachedByPath('catalog/frontend/flat_catalog_category', 0)) {
+        if (! Rapidez::config('catalog/frontend/flat_catalog_category', 0)) {
             $response['messages'][] = ['type' => 'error', 'value' => __('The category flat tables are disabled!')];
         }
 
