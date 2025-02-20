@@ -21,6 +21,9 @@ class Config extends Model
 
     protected $primaryKey = 'config_id';
 
+    const CREATED_AT = null;
+    protected $guarded = [];
+
     protected static function booting()
     {
         static::addGlobalScope('scope-fallback', function (Builder $builder) {
