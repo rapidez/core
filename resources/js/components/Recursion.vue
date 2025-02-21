@@ -1,10 +1,11 @@
 <template>
-    <div>
-        <slot :data="data" :component="childComponent" />
+    <div v-if="data?.length">
+        <slot :data="data" :components="childComponents"></slot>
     </div>
 </template>
 
 <script>
+
 export default {
     props: {
         data: {
@@ -13,15 +14,25 @@ export default {
         },
     },
     computed: {
-        childComponent() {
-            return {
-                render: (h) =>
-                    h('recursion', {
-                        props: {
-                            data: this.data,
-                        },
-                    }),
-            }
+        childComponents() {
+            const self = this;
+
+            return this.data.map((item) => {
+                return {
+                    render: (h) => {
+                        if(!item.data?.length) {
+                            return h('span');
+                        }
+
+                        return h('recursion', {
+                            props: {
+                                data: item.data,
+                            },
+                            scopedSlots: self.$scopedSlots
+                        });
+                    }
+                }
+            })
         },
     },
 }
