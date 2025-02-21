@@ -21,7 +21,6 @@ import Searchkit from 'searchkit'
 import deepmerge from 'deepmerge'
 
 import { history } from 'instantsearch.js/es/lib/routers'
-import { simple } from 'instantsearch.js/es/lib/stateMappings'
 
 Vue.component('ais-instant-search', AisInstantSearch)
 Vue.component('ais-configure', AisConfigure)
@@ -64,13 +63,37 @@ export default {
         // don't need this.
         searchTerm: new URLSearchParams(window.location.search).get('q'),
 
-        // TODO: We need some finetuning here; the url isn't very clean.
-        // Also after a refresh the filters aren't selected.
-        // Maybe it conflicts with ReactiveSearch?
         routing: {
-            router: history(),
+            router: history({
+                cleanUrlOnDispose: false,
+            }),
             // stateMapping: singleIndex('rapidez_products_1'),
-            stateMapping: simple(),
+            stateMapping: {
+                stateToRoute(uiState) {
+                    // TODO: Extract this somewhere?
+                    let index = config.index_prefix + '_products_' + config.store
+                    let data = uiState[index]
+
+                    let parameters = { ...(data.range || {}), ...(data.refinementList || {}) }
+
+                    return parameters
+                },
+
+                routeToState(routeState) {
+                    // TODO: Maybe allow other range-based attributes?
+                    let rangeAttributes = ['price']
+
+                    // TODO: Extract this somewhere?
+                    let index = config.index_prefix + '_products_' + config.store
+
+                    return {
+                        [index]: {
+                            refinementList: Object.fromEntries(Object.entries(routeState).filter(([key, _]) => !rangeAttributes.includes(key))),
+                            range: Object.fromEntries(Object.entries(routeState).filter(([key, _]) => rangeAttributes.includes(key))),
+                        }
+                    }
+                },
+            },
         },
     }),
 
