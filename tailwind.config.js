@@ -14,4 +14,4 @@ export default {
         './vendor/rapidez/menu/config/rapidez/menu.php',
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/tailwind.blade.php',
     ],
-};
+}
