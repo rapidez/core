@@ -5,7 +5,6 @@
 </template>
 
 <script>
-
 export default {
     props: {
         data: {
@@ -15,22 +14,22 @@ export default {
     },
     computed: {
         childComponents() {
-            const self = this;
+            const self = this
 
             return this.data.map((item) => {
                 return {
                     render: (h) => {
-                        if(!item.data?.length) {
-                            return h('span');
+                        if (!item.data?.length) {
+                            return h('span')
                         }
 
                         return h('recursion', {
                             props: {
                                 data: item.data,
                             },
-                            scopedSlots: self.$scopedSlots
-                        });
-                    }
+                            scopedSlots: self.$scopedSlots,
+                        })
+                    },
                 }
             })
         },
