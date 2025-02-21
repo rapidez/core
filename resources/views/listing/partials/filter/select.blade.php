@@ -4,7 +4,7 @@
     :data-field="filter.code+'.keyword'"
     :inner-class="{
         count: 'text-muted',
-        list: '!max-h-full [&>li]:!h-auto',
+        list: 'max-h-full! [&>li]:h-auto!',
         label: 'text-muted before:shrink-0'
     }"
     :react="{and: filter.input == 'multiselect' ? reactiveFilters : reactiveFilters.filter(item => item != filter.code) }"
