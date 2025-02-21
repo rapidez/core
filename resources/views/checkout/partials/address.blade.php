@@ -169,7 +169,6 @@
                     dusk="{{ $type }}_region"
                     country="variables.country_code"
                     v-model="variables.region_id"
-                    required
                 />
             </label>
         </div>
