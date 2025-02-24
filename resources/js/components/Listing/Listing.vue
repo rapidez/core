@@ -41,17 +41,6 @@ import useAttributes from '../../stores/useAttributes.js'
 
 export default {
     props: {
-        // TODO: Do we still use/need this?
-        // Maybe transform it to a callback
-        // so the items can be manipulated?
-        additionalFilters: {
-            type: Array,
-            default: () => [],
-        },
-        additionalSorting: {
-            type: Array,
-            default: () => [],
-        },
         index: {
             type: String,
         },
@@ -107,7 +96,9 @@ export default {
         },
 
         sortings: function () {
-            return Object.values(this.attributes).filter((attribute) => attribute.sorting)
+            return Object.values(this.attributes)
+                .filter((attribute) => attribute.sorting)
+                .concat(Object.entries(config.searchkit.additional_sorting).map(([code, directions]) => ({ code: code, directions: directions })))
         },
 
         hitsPerPage: function () {
@@ -125,32 +116,38 @@ export default {
         sortOptions: function () {
             return [
                 {
-                    label: window.config.translations.relevance,
+                    label: config.translations.relevance,
                     field: '_score',
                     order: 'desc',
-                    value: config.index,
+                    value: this.index,
                     key: 'default',
                 },
             ]
                 .concat(
-                    this.sortings.flatMap(function (sorting) {
-                        return [
-                            ['asc', window.config.translations.asc],
-                            ['desc', window.config.translations.desc],
-                        ].map(function ([directionKey, directionLabel]) {
+                    this.sortings.flatMap((sorting) =>
+                        (sorting.directions ?? ['asc', 'desc']).map(direction => {
+                            let label = ''
+                            if(config.translations.sorting?.[sorting.code]?.[direction]) {
+                                label = config.translations.sorting?.[sorting.code]?.[direction]
+                            } else {
+                                label = config.translations[sorting.code] ?? sorting.name ?? sorting.code
+
+                                // Add asc/desc if relevant
+                                if (sorting.directions?.length != 1) {
+                                    label += ' ' + (config.translations[direction] ?? direction)
+                                }
+                            }
+
                             return {
-                                label:
-                                    window.config.translations.sorting?.[sorting.code]?.[directionKey] ??
-                                    sorting.name + ' ' + directionLabel,
-                                field: sorting.code + (sorting.code != 'price' ? '.keyword' : ''),
-                                order: directionKey,
-                                value: [config.index, sorting.code, directionKey].join('_'),
-                                key: '_' + [sorting.code, directionKey].join('_'),
+                                label: label,
+                                field: sorting.code + (sorting.input == 'text' ? '.keyword' : ''),
+                                order: direction,
+                                value: [this.index, sorting.code, direction].join('_'),
+                                key: '_' + [sorting.code, direction].join('_'),
                             }
                         })
-                    }),
+                    ),
                 )
-                .concat(this.additionalSorting)
         },
 
         routing() {

@@ -42,6 +42,13 @@ return [
         // ['attribute' => 'brand', 'field' => 'brand.keyword', 'type' => 'string'],
     ],
 
+    // Additional sorting options to be added to the product listings
+    // Given directions can only be an array of 'asc' and/or 'desc'
+    // Order shown here will be the order shown in the dropdown (including the order of the given directions!)
+    'additional_sorting' => [
+        'created_at' => ['desc'],
+    ],
+
     // Attributes that are used to create filters.
     // TODO: Do we really need this? With ReactiveSearch
     // we didn't need to keep a list to filter.
@@ -50,7 +57,4 @@ return [
         ['attribute' => 'category_ids', 'field' => 'category_ids', 'type' => 'numeric'],
         ['attribute' => 'visibility', 'field' => 'visibility', 'type' => 'numeric'],
     ],
-
-    // TODO: Sorting...
-    // 'sorting' => []
 ];
