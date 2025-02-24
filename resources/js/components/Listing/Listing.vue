@@ -253,7 +253,7 @@ export default {
             }
 
             if ('query' in data) {
-                parameters['query'] = data['query']
+                parameters['q'] = data['query']
             }
 
             return parameters
@@ -265,14 +265,14 @@ export default {
             ))
 
             let refinementList = Object.fromEntries(Object.entries(routeState).filter(([key, _]) =>
-                key != 'query' && !this.rangeAttributes.includes(key)
+                key != 'q' && !this.rangeAttributes.includes(key)
             ))
 
             return {
                 [this.index]: {
                     refinementList: refinementList,
                     range: ranges,
-                    query: routeState.query,
+                    query: routeState.q,
                 }
             }
         },
