@@ -183,14 +183,10 @@ export default {
         // we don't want to load everything
         // directly due the JS size
         initSearchClient() {
-            let options = {}
-
-            options['getBaseFilters'] = this.getBaseFilters
-            if (this.query) {
-                options['getQuery'] = this.query
-            }
-
-            return Client(this.searchkit, options)
+            return Client(this.searchkit, {
+                getBaseFilters: this.getBaseFilters,
+                getQuery: this.query,
+            })
         },
 
         initSearchkit() {
