@@ -10,7 +10,7 @@
         <template v-if="data && data.country.available_regions">
             <x-rapidez::input.select
                 {{ $attributes }}
-                v-if="'{{ Rapidez::config('general/region/state_required') }}'.split(',').includes({{ $country }}) || {{ Rapidez::config('general/region/display_all', '0') }}"
+                v-if="{{ Rapidez::config('general/region/display_all', '0') }} || '{{ Rapidez::config('general/region/state_required') }}'.split(',').includes({{ $country }})"
                 v-bind:required="'{{ Rapidez::config('general/region/state_required') }}'.split(',').includes({{ $country }})"
             >
                 <option v-for="region in data.country.available_regions" :value="region.id">
