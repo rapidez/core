@@ -283,15 +283,17 @@ export default {
                 return []
             }
 
-            return [{
-                function_score: {
-                    script_score: {
-                        script: {
-                            source: `Integer.parseInt(doc['positions.${window.config.category.entity_id}'].empty ? '0' : doc['positions.${window.config.category.entity_id}'].value)`,
+            return [
+                {
+                    function_score: {
+                        script_score: {
+                            script: {
+                                source: `Integer.parseInt(doc['positions.${window.config.category.entity_id}'].empty ? '0' : doc['positions.${window.config.category.entity_id}'].value)`,
+                            },
                         },
                     },
                 },
-            }]
+            ]
         },
 
         withFilters(items) {
