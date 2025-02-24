@@ -54,7 +54,7 @@ export default {
         },
         index: {
             type: String,
-        }
+        },
     },
 
     data: () => ({
@@ -164,10 +164,8 @@ export default {
 
         // TODO: Do we want to make this extendable?
         rangeAttributes() {
-            return this.filters
-                .filter(filter => filter.input == 'price')
-                .map(filter => filter.code)
-        }
+            return this.filters.filter((filter) => filter.input == 'price').map((filter) => filter.code)
+        },
     },
 
     watch: {
@@ -260,20 +258,18 @@ export default {
         },
 
         routeToState(routeState) {
-            let ranges = Object.fromEntries(Object.entries(routeState).filter(([key, _]) =>
-                this.rangeAttributes.includes(key)
-            ))
+            let ranges = Object.fromEntries(Object.entries(routeState).filter(([key, _]) => this.rangeAttributes.includes(key)))
 
-            let refinementList = Object.fromEntries(Object.entries(routeState).filter(([key, _]) =>
-                key != 'query' && !this.rangeAttributes.includes(key)
-            ))
+            let refinementList = Object.fromEntries(
+                Object.entries(routeState).filter(([key, _]) => key != 'query' && !this.rangeAttributes.includes(key)),
+            )
 
             return {
                 [this.index]: {
                     refinementList: refinementList,
                     range: ranges,
                     query: routeState.query,
-                }
+                },
             }
         },
 
