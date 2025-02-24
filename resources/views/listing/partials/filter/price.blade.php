@@ -1,5 +1,5 @@
 <ais-range-input
-    v-if="filter.input == 'price'"
+    v-if="listingSlotProps.rangeAttributes.includes(filter.code)"
     :attribute="filter.code"
 >
     <template v-slot="{ currentRefinement, range, canRefine, refine, sendEvent }">

@@ -18,18 +18,16 @@
             value: config.index_prefix + '_products_' + config.store + '_created_at_desc',
             key: '_created_at_desc'
         }]"
+        :index="config.index_prefix + '_products_' + config.store"
         v-cloak
     >
         <div slot-scope="{ loaded, filters, sortOptions, getQuery, withFilters, withSwatches, filterPrefix, _renderProxy: listingSlotProps }">
             <ais-instant-search
                 v-if="loaded"
                 :search-client="listingSlotProps.searchClient"
-                {{-- TODO: Extract this somewhere? --}}
-                :index-name="config.index_prefix + '_products_' + config.store"
+                :index-name="listingSlotProps.index"
                 :routing="listingSlotProps.routing"
             >
-                <ais-configure :filters="{!! $query !!}"/>
-
                 {{ $before ?? '' }}
                 @if ($slot->isEmpty())
                     <div class="flex flex-col lg:flex-row gap-x-6 gap-y-3">
@@ -44,6 +42,9 @@
                     {{ $slot }}
                 @endif
                 {{ $after ?? '' }}
+
+                {{-- NOTE: Do not put this component above the filters if you want routing to work. --}}
+                <ais-configure :filters="{!! $query !!}"/>
             </ais-instant-search>
         </div>
     </listing>
