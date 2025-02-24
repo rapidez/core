@@ -181,22 +181,7 @@ export default {
         // directly due the JS size
         initSearchClient() {
             return Client(this.searchkit, {
-                hooks: {
-                    beforeSearch: async (searchRequests) => {
-                        return searchRequests.map((sr) => {
-                            // TODO: Maybe use deepmerge here so it doesn't
-                            // really matter what query is used? What
-                            // if we want to add something to the
-                            // "must" instead of "filter"?
-                            if (this.getQuery()) {
-                                sr.body.query.bool.filter.push(this.getQuery())
-                            }
-                            // And, this is currently applied on all queries,
-                            // it's only relevant on the listing one.
-                            return sr
-                        })
-                    },
-                },
+                getBaseFilters: this.getBaseFilters,
             })
         },
 
@@ -293,13 +278,12 @@ export default {
             return ''
         },
 
-        getQuery() {
+        getBaseFilters() {
             if (!window.config.category?.entity_id) {
-                return
+                return []
             }
 
-            return {
-                // query: {
+            return [{
                 function_score: {
                     script_score: {
                         script: {
@@ -307,8 +291,7 @@ export default {
                         },
                     },
                 },
-                // },
-            }
+            }]
         },
 
         withFilters(items) {
