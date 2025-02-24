@@ -55,6 +55,9 @@ export default {
         index: {
             type: String,
         },
+        query: {
+            type: Function,
+        }
     },
 
     data: () => ({
@@ -180,9 +183,14 @@ export default {
         // we don't want to load everything
         // directly due the JS size
         initSearchClient() {
-            return Client(this.searchkit, {
-                getBaseFilters: this.getBaseFilters,
-            })
+            let options = {}
+
+            options['getBaseFilters'] = this.getBaseFilters
+            if (this.query) {
+                options['getQuery'] = this.query
+            }
+
+            return Client(this.searchkit, options)
         },
 
         initSearchkit() {
