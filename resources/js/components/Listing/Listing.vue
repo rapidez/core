@@ -57,7 +57,7 @@ export default {
         },
         query: {
             type: Function,
-        }
+        },
     },
 
     data: () => ({
