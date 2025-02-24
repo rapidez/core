@@ -98,6 +98,9 @@ class Config extends Model
             // Catch the case it is intentionally set to null
             if (Arr::has($configCache, $cacheKey)) {
                 $result = Arr::get($configCache, $cacheKey);
+                if ($result === false) {
+                    $result = $options['default'] ?? null;
+                }
 
                 return (bool) $options['decrypt'] && is_string($result) ? static::decrypt($result) : $result;
             }
@@ -118,7 +121,7 @@ class Config extends Model
         $result = $resultObject ? $resultObject->value : ($options['default'] ?? null);
 
         if ($options['cache'] ?? true) {
-            Arr::set($configCache, $cacheKey, $result);
+            Arr::set($configCache, $cacheKey, $resultObject ? $result : false);
             Cache::driver('rapidez:multi')->set('magento.config', $configCache);
         }
 
