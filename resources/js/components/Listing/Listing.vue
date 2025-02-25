@@ -55,6 +55,11 @@ export default {
         index: {
             type: String,
         },
+
+        // TODO: Document these two props in the Rapidez docs
+        query: {
+            type: Function,
+        },
         baseFilters: {
             type: Function,
         },
@@ -185,6 +190,7 @@ export default {
         initSearchClient() {
             return Client(this.searchkit, {
                 getBaseFilters: this.baseFilters,
+                getQuery: this.query,
             })
         },
 

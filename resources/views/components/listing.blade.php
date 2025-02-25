@@ -8,6 +8,7 @@
 
 <div class="min-h-screen">
     <listing
+        {{ $attributes }}
         :additional-sorting="[{
             label: window.config.translations.newest,
             field: 'created_at',
@@ -20,7 +21,7 @@
         :index="config.index_prefix + '_products_' + config.store"
         v-cloak
     >
-        <div slot-scope="{ loaded, filters, sortOptions, getQuery, withFilters, withSwatches, filterPrefix, _renderProxy: listingSlotProps }">
+        <div slot-scope="{ loaded, filters, sortOptions, withFilters, withSwatches, filterPrefix, _renderProxy: listingSlotProps }">
             <ais-instant-search
                 v-if="loaded"
                 :search-client="listingSlotProps.searchClient"
