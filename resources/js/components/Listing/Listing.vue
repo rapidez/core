@@ -21,7 +21,6 @@ import Searchkit from 'searchkit'
 import deepmerge from 'deepmerge'
 
 import { history } from 'instantsearch.js/es/lib/routers'
-import { simple } from 'instantsearch.js/es/lib/stateMappings'
 
 Vue.component('ais-instant-search', AisInstantSearch)
 Vue.component('ais-configure', AisConfigure)
@@ -53,25 +52,20 @@ export default {
             type: Array,
             default: () => [],
         },
+        index: {
+            type: String,
+        },
+        baseFilters: {
+            type: Function,
+        },
     },
 
     data: () => ({
         loaded: false,
         attributes: useAttributes(),
 
-        // TODO: Not sure yet if this is the right option,
-        // when the routing works properly we maybe
-        // don't need this.
-        searchTerm: new URLSearchParams(window.location.search).get('q'),
-
-        // TODO: We need some finetuning here; the url isn't very clean.
-        // Also after a refresh the filters aren't selected.
-        // Maybe it conflicts with ReactiveSearch?
-        routing: {
-            router: history(),
-            // stateMapping: singleIndex('rapidez_products_1'),
-            stateMapping: simple(),
-        },
+        searchkit: null,
+        searchClient: null,
     }),
 
     render() {
@@ -79,85 +73,13 @@ export default {
     },
 
     mounted() {
+        this.searchkit = this.initSearchkit()
+        this.searchClient = this.initSearchClient()
+
         this.loaded = Object.keys(this.attributes).length > 0
     },
 
     computed: {
-        // TODO: Not sure if this is the right place,
-        // the autocomplete also needs this but
-        // we don't want to load everything
-        // directly due the JS size
-        searchClient: function () {
-            let client = Client(this.searchkit, {
-                hooks: {
-                    beforeSearch: async (searchRequests) => {
-                        return searchRequests.map((sr) => {
-                            // TODO: Maybe use deepmerge here so it doesn't
-                            // really matter what query is used? What
-                            // if we want to add something to the
-                            // "must" instead of "filter"?
-                            if (this.getQuery()) {
-                                sr.body.query.bool.filter.push(this.getQuery())
-                            }
-                            // And, this is currently applied on all queries,
-                            // it's only relevant on the listing one.
-                            return sr
-                        })
-                    },
-                },
-            })
-
-            // console.log(client)
-
-            return client
-        },
-
-        searchkit: function () {
-            let url = new URL(config.es_url)
-
-            let searchkit = new Searchkit({
-                connection: {
-                    host: url.origin,
-                    auth: {
-                        username: url.username,
-                        password: url.password,
-                    },
-                },
-
-                // TODO: Maybe just do: search_settings: config.searchkit
-                // so it's possible to add anything to the PHP config
-                // and that will appear here?
-                search_settings: {
-                    highlight_attributes: config.searchkit.highlight_attributes,
-                    search_attributes: config.searchkit.search_attributes,
-                    result_attributes: config.searchkit.result_attributes,
-
-                    // TODO: For consistency maybe make it possible to do this:
-                    // facet_attributes: config.searchkit.facet_attributes,
-                    facet_attributes: this.facets,
-
-                    filter_attributes: config.searchkit.filter_attributes,
-
-                    // TODO: Let's also change this to a PHP config.
-                    // So we start there and that will be merged
-                    // with the Magento configured attributes
-                    // and lastly from a prop it's possible
-                    // to manipulate it from a callback?
-                    sorting: this.sortOptions.reduce((acc, item) => {
-                        acc[item.key] = {
-                            field: item.field,
-                            order: item.order,
-                        }
-                        return acc
-                    }),
-                },
-            })
-
-            // console.log(this.sortOptions)
-
-            return searchkit
-        },
-
         // TODO: Maybe move this completely to PHP?
         // Any drawbacks? A window.config that
         // becomes to big? Is that an issue?
@@ -230,6 +152,23 @@ export default {
                 )
                 .concat(this.additionalSorting)
         },
+
+        routing() {
+            return {
+                router: history({
+                    cleanUrlOnDispose: false,
+                }),
+                stateMapping: {
+                    routeToState: this.routeToState,
+                    stateToRoute: this.stateToRoute,
+                },
+            }
+        },
+
+        // TODO: Do we want to make this extendable?
+        rangeAttributes() {
+            return this.filters.filter((filter) => filter.input == 'price').map((filter) => filter.code)
+        },
     },
 
     watch: {
@@ -239,6 +178,89 @@ export default {
     },
 
     methods: {
+        // TODO: Not sure if this is the right place,
+        // the autocomplete also needs this but
+        // we don't want to load everything
+        // directly due the JS size
+        initSearchClient() {
+            return Client(this.searchkit, {
+                getBaseFilters: this.baseFilters,
+            })
+        },
+
+        initSearchkit() {
+            let url = new URL(config.es_url)
+
+            return new Searchkit({
+                connection: {
+                    host: url.origin,
+                    auth: {
+                        username: url.username,
+                        password: url.password,
+                    },
+                },
+
+                // TODO: Maybe just do: search_settings: config.searchkit
+                // so it's possible to add anything to the PHP config
+                // and that will appear here?
+                search_settings: {
+                    highlight_attributes: config.searchkit.highlight_attributes,
+                    search_attributes: config.searchkit.search_attributes,
+                    result_attributes: config.searchkit.result_attributes,
+
+                    // TODO: For consistency maybe make it possible to do this:
+                    // facet_attributes: config.searchkit.facet_attributes,
+                    facet_attributes: this.facets,
+
+                    filter_attributes: config.searchkit.filter_attributes,
+
+                    // TODO: Let's also change this to a PHP config.
+                    // So we start there and that will be merged
+                    // with the Magento configured attributes
+                    // and lastly from a prop it's possible
+                    // to manipulate it from a callback?
+                    sorting: this.sortOptions.reduce((acc, item) => {
+                        acc[item.key] = {
+                            field: item.field,
+                            order: item.order,
+                        }
+                        return acc
+                    }),
+                },
+            })
+        },
+
+        stateToRoute(uiState) {
+            let data = uiState[this.index]
+
+            let parameters = {
+                ...(data.range || {}),
+                ...(data.refinementList || {}),
+            }
+
+            if ('query' in data) {
+                parameters['q'] = data['query']
+            }
+
+            return parameters
+        },
+
+        routeToState(routeState) {
+            let ranges = Object.fromEntries(Object.entries(routeState).filter(([key, _]) => this.rangeAttributes.includes(key)))
+
+            let refinementList = Object.fromEntries(
+                Object.entries(routeState).filter(([key, _]) => key != 'q' && !this.rangeAttributes.includes(key)),
+            )
+
+            return {
+                [this.index]: {
+                    refinementList: refinementList,
+                    range: ranges,
+                    query: routeState.q,
+                },
+            }
+        },
+
         filterType(filter) {
             if (filter.super) {
                 return 'numeric'
@@ -257,24 +279,6 @@ export default {
             }
 
             return ''
-        },
-
-        getQuery() {
-            if (!window.config.category?.entity_id) {
-                return
-            }
-
-            return {
-                // query: {
-                function_score: {
-                    script_score: {
-                        script: {
-                            source: `Integer.parseInt(doc['positions.${window.config.category.entity_id}'].empty ? '0' : doc['positions.${window.config.category.entity_id}'].value)`,
-                        },
-                    },
-                },
-                // },
-            }
         },
 
         withFilters(items) {
