@@ -18,6 +18,8 @@ import graphql from './components/Graphql.vue'
 Vue.component('graphql', graphql)
 import graphqlMutation from './components/GraphqlMutation.vue'
 Vue.component('graphql-mutation', graphqlMutation)
+import recursion from './components/Recursion.vue'
+Vue.component('recursion', recursion)
 
 import notifications from './components/Notifications/Notifications.vue'
 Vue.component('notifications', notifications)
@@ -39,3 +41,4 @@ Vue.component('listing', () => import('./components/Listing/Listing.vue'))
 Vue.component('checkout-success', () => import('./components/Checkout/CheckoutSuccess.vue'))
 Vue.component('popup', () => import('./components/Popup.vue'))
 Vue.component('selected-filters-values', () => import('./components/Listing/Filters/SelectedFiltersValues.vue'))
+Vue.component('range-slider', () => import('./components/Elements/RangeSlider.vue'))
