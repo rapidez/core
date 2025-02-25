@@ -10,9 +10,9 @@
 >
     <template v-slot="{ items, refine, createURL }">
         {{-- See the HierarchicalMenuList.vue --}}
-        <recursion :data="items" v-slot="{ data, component }">
+        <recursion :data="items" v-slot="{ data, components }">
             <ul>
-                <li v-for="item in data" :key="item.value">
+                <li class="pl-3" v-for="(item, index) in data" :key="item.value">
                     <a
                         :href="createURL(item.value)"
                         :class="{ 'font-bold': item.isRefined }"
@@ -21,14 +21,8 @@
                         @{{ item.label }}
                         (@{{ item.count }})
                     </a>
-                    {{--
-                    TODO: Double check this, the data updates,
-                    but the component doesn't. Tried to
-                    make everything working recursive
-                    plus keep it renderless.
-                    --}}
-                    {{-- @{{item.data}} --}}
-                    <component :data="item.data" :is="component" />
+
+                    <component :is="components[index]" />
                 </li>
             </ul>
         </recursion>
