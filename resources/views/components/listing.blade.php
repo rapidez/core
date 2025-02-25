@@ -9,6 +9,7 @@
 <div class="min-h-screen">
     <listing
         {{ $attributes }}
+        {{-- TODO: Extract this somewhere? --}}
         :index="config.index_prefix + '_products_' + config.store"
         v-cloak
     >

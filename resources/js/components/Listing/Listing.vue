@@ -47,6 +47,8 @@ export default {
         index: {
             type: String,
         },
+
+        // TODO: Document these two props in the Rapidez docs
         query: {
             type: Function,
         },

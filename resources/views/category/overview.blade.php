@@ -14,9 +14,9 @@
             <x-rapidez::listing
                 v-bind:base-filters="() => [{
                     query_string: {
-                        query: 'visibility:(2 OR 4) AND category_ids:'+config.category.entity_id
+                        query: 'visibility:(2 OR 4) AND category_ids:{{ $category->entity_id }}'
                     }
-                },{
+                }, {
                     function_score: {
                         script_score: {
                             script: {
