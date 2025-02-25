@@ -55,6 +55,9 @@ export default {
         index: {
             type: String,
         },
+        baseFilters: {
+            type: Function,
+        },
     },
 
     data: () => ({
@@ -181,7 +184,7 @@ export default {
         // directly due the JS size
         initSearchClient() {
             return Client(this.searchkit, {
-                getBaseFilters: this.getBaseFilters,
+                getBaseFilters: this.baseFilters,
             })
         },
 
@@ -276,24 +279,6 @@ export default {
             }
 
             return ''
-        },
-
-        getBaseFilters() {
-            if (!window.config.category?.entity_id) {
-                return []
-            }
-
-            return [
-                {
-                    function_score: {
-                        script_score: {
-                            script: {
-                                source: `Integer.parseInt(doc['positions.${window.config.category.entity_id}'].empty ? '0' : doc['positions.${window.config.category.entity_id}'].value)`,
-                            },
-                        },
-                    },
-                },
-            ]
         },
 
         withFilters(items) {

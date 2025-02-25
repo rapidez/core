@@ -8,7 +8,7 @@
     <div class="container">
         <h1 class="font-bold text-3xl">@lang('Search for'): {{ request()->q }}</h1>
 
-        <x-rapidez::listing query="'visibility:(3 OR 4)'"/>
+        <x-rapidez::listing v-bind:base-filters="() => [{ query_string: { query: 'visibility:(3 OR 4)' }}]"/>
 
 
         {{--
