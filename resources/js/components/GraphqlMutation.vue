@@ -101,6 +101,10 @@ export default {
 
     methods: {
         async mutate() {
+            if (this.mutating) {
+                return
+            }
+
             this.mutating = true
             this.error = false
 
