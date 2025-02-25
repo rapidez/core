@@ -1,5 +1,3 @@
-@props(['filters' => null])
-
 @pushOnce('head', 'es_url-preconnect')
     <link rel="preconnect" href="{{ config('rapidez.es_url') }}">
 
@@ -35,11 +33,6 @@
                     {{ $slot }}
                 @endif
                 {{ $after ?? '' }}
-
-                {{-- NOTE: Do not put this component above the filters if you want routing to work. --}}
-                @if ($filters)
-                    <ais-configure :filters="{!! $filters !!}"/>
-                @endif
             </ais-instant-search>
         </div>
     </listing>

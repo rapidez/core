@@ -41,10 +41,16 @@ import useAttributes from '../../stores/useAttributes.js'
 
 export default {
     props: {
+        sortOptionsCallback: {
+            type: Function,
+        },
         index: {
             type: String,
         },
         query: {
+            type: Function,
+        },
+        baseFilters: {
             type: Function,
         },
     },
@@ -114,7 +120,7 @@ export default {
         },
 
         sortOptions: function () {
-            return [
+            let sortOptions = [
                 {
                     label: config.translations.relevance,
                     field: '_score',
@@ -148,6 +154,12 @@ export default {
                         })
                     ),
                 )
+
+            if (this.sortOptionsCallback) {
+                sortOptions = this.sortOptionsCallback(sortOptions)
+            }
+
+            return sortOptions
         },
 
         routing() {
@@ -181,7 +193,7 @@ export default {
         // directly due the JS size
         initSearchClient() {
             return Client(this.searchkit, {
-                getBaseFilters: this.getBaseFilters,
+                getBaseFilters: this.baseFilters,
                 getQuery: this.query,
             })
         },
@@ -212,11 +224,6 @@ export default {
 
                     filter_attributes: config.searchkit.filter_attributes,
 
-                    // TODO: Let's also change this to a PHP config.
-                    // So we start there and that will be merged
-                    // with the Magento configured attributes
-                    // and lastly from a prop it's possible
-                    // to manipulate it from a callback?
                     sorting: this.sortOptions.reduce((acc, item) => {
                         acc[item.key] = {
                             field: item.field,
@@ -277,24 +284,6 @@ export default {
             }
 
             return ''
-        },
-
-        getBaseFilters() {
-            if (!window.config.category?.entity_id) {
-                return []
-            }
-
-            return [
-                {
-                    function_score: {
-                        script_score: {
-                            script: {
-                                source: `Integer.parseInt(doc['positions.${window.config.category.entity_id}'].empty ? '0' : doc['positions.${window.config.category.entity_id}'].value)`,
-                            },
-                        },
-                    },
-                },
-            ]
         },
 
         withFilters(items) {
