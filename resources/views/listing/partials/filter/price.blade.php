@@ -6,7 +6,7 @@
             :react="{and: ['query-filter']}"
             :slider-options="{ dragOnClick: true, useKeyboard: false }"
             :inner-class="{
-                slider: '!pt-4 !mt-0 mx-2',
+                slider: 'pt-4! mt-0! mx-2',
             }"
             u-r-l-params
         >

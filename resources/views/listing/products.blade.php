@@ -1,7 +1,7 @@
-@php $dropdownClasses = '!h-auto !py-3 !px-5 !border-solid !border !border-default !rounded-md !py-2 !ring-0 focus:!border-muted !text-sm !text !outline-none max-md:w-full' @endphp
+@php $dropdownClasses = 'h-auto! py-3! px-5! border-solid! border! border-default! rounded-md! py-2! ring-0! focus:border-muted! text-sm! text! outline-hidden! max-md:w-full' @endphp
 <reactive-list
     id="products"
-    class="*:flex-wrap *:gap-3 *:max-sm:gap-y-3 *:max-md:justify-end"
+    class="*:flex-wrap *:gap-3 max-sm:*:gap-y-3 max-md:*:justify-end"
     component-id="products"
     data-field="name.keyword"
     list-class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 md:gap-5 mt-5 overflow-hidden"

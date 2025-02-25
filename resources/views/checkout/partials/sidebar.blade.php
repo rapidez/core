@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-5">
-    <div class="rounded border p-3">
+    <div class="rounded-sm border p-3">
         <div class="flex w-full flex-col">
             <div v-for="item in cart.items" class="flex gap-x-1 border-b last:border-b-0 py-3">
                 <div class="w-7/12">@{{ item.product.name }}</div>
@@ -9,7 +9,7 @@
         </div>
     </div>
 
-    <dl class="flex w-full flex-col rounded border *:flex *:flex-wrap *:justify-between *:p-3 *:border-b last:*:border-none">
+    <dl class="flex w-full flex-col rounded-sm border *:flex *:flex-wrap *:justify-between *:p-3 *:border-b *:last:border-none">
         <div>
             <dt>@lang('Subtotal')</dt>
             <dd>@{{ cart.prices.subtotal_including_tax.value | price }}</dd>
@@ -35,7 +35,7 @@
         </div>
     </dl>
 
-    <div v-if="cart.shipping_addresses[0]" class="flex w-full flex-col gap-x-1 border p-3 rounded">
+    <div v-if="cart.shipping_addresses[0]" class="flex w-full flex-col gap-x-1 border p-3 rounded-sm">
         <p class="font-lg mb-2 font-bold">
             <template v-if="cart.billing_address?.same_as_shipping">@lang('Shipping & billing address')</template>
             <template v-else>@lang('Shipping address')</template>

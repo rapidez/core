@@ -3,9 +3,9 @@
 }
 
 .vue-slider-dot-tooltip-inner {
-    @apply border-primary bg-primary !important;
+    @apply border-primary! bg-primary!;
 }
 
 .vue-slider-process {
-    @apply bg-primary !important;
+    @apply bg-primary!;
 }

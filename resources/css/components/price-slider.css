@@ -4,19 +4,19 @@ div.vue-slider {
 
 div.vue-slider-process,
 div.vue-slider-rail {
-    @apply h-2 bg-primary !important;
+    @apply h-2! bg-primary!;
 }
 
 div.vue-slider-rail {
-    @apply bg-emphasis !important;
+    @apply bg-emphasis!;
 }
 
 div.vue-slider .vue-slider-dot {
-    @apply size-6 !important;
+    @apply size-6!;
 }
 
 div.vue-slider-dot-tooltip-inner {
-    @apply bg-white text border border-default px-1.5 !important;
+    @apply bg-white! text! border! border-default! px-1.5!;
 }
 
 span.vue-slider-dot-tooltip-text {
@@ -28,7 +28,7 @@ div.vue-slider-dot-tooltip::before {
 }
 
 div.vue-slider-dot .vue-slider-dot-handle {
-    @apply border border-border shadow;
+    @apply border border-border shadow-sm;
 }
 
 div.vue-slider-tooltip-wrap.vue-slider-tooltip-top {

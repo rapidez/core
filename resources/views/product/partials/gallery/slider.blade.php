@@ -2,7 +2,7 @@
     <a
         v-on:click.prevent="toggleZoom"
         v-bind:href="config.media_url + '/catalog/product' + images[active]"
-        class="flex h-[440px] cursor-zoom-in items-center justify-center rounded border p-5"
+        class="flex h-[440px] cursor-zoom-in items-center justify-center rounded-sm border p-5"
     >
         <img
             {{-- src should always be above v-bind:src --}}
@@ -25,4 +25,4 @@
     @endif
 </div>
 
-<x-rapidez::no-image v-else class="h-96 rounded" v-cloak />
+<x-rapidez::no-image v-else class="h-96 rounded-sm" v-cloak />

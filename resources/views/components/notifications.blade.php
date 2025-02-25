@@ -15,7 +15,7 @@
                     <div class="max-w-sm w-full shadow-lg shadow-default rounded-lg pointer-events-auto ring-1 ring-emphasis/10 overflow-hidden border" :class="classes">
                         <div class="p-4">
                             <div class="flex items-start">
-                                <div class="flex-shrink-0">
+                                <div class="shrink-0">
                                     <x-heroicon-o-check-circle class="size-6" v-if="type == 'success'"/>
                                     <x-heroicon-o-exclamation-circle class="size-6" v-if="type == 'error'"/>
                                     <x-heroicon-o-information-circle class="size-6" v-if="type == 'info'"/>
@@ -26,8 +26,8 @@
                                         @{{ message }}
                                     </p>
                                 </div>
-                                <div class="ml-4 flex-shrink-0 flex self-start">
-                                    <button @click.prevent="close()" class="rounded-md inline-flex focus:outline-none focus:ring-none focus:ring-offset-none">
+                                <div class="ml-4 shrink-0 flex self-start">
+                                    <button @click.prevent="close()" class="rounded-md inline-flex focus:outline-hidden focus:ring-none focus:ring-offset-none">
                                         <span class="sr-only">@lang('Close')</span>
                                         <x-heroicon-s-x-mark class="size-5"/>
                                     </button>
