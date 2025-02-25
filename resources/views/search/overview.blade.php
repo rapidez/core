@@ -9,7 +9,7 @@
         <h1 class="font-bold text-3xl">@lang('Search for'): {{ request()->q }}</h1>
 
         <x-rapidez::listing
-            filters="'visibility:(3 OR 4)'"
+            v-bind:base-filters="() => [{ query_string: { filters: 'visibility:(3 OR 4)' }}]"
             v-bind:query="(query, searchAttributes, config) => {
                 return {
                     bool: {
