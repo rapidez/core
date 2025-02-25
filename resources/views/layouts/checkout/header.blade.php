@@ -1,4 +1,4 @@
-<header class="relative mb-5 border-b shadow z-header">
+<header class="relative mb-5 border-b shadow-sm shadow-default z-header">
     <div class="justify-center container flex flex-wrap items-center max-sm:px-3">
         <div class="py-2">
             <div class="mr-3 flex items-center text-xl sm:text-3xl">
