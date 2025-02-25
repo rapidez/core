@@ -50,8 +50,8 @@ return [
     ],
 
     // Attributes that are used to create filters.
-    // TODO: Do we really need this? With ReactiveSearch
-    // we didn't need to keep a list to filter.
+    // Required so that SearchKit can keep track of the type and field of each attribute.
+    // TODO: Do the undocumented nestedPath and filterQuery parameters have any use case for us?
     'filter_attributes' => [
         ['attribute' => 'entity_id', 'field' => 'entity_id', 'type' => 'numeric'],
         ['attribute' => 'category_ids', 'field' => 'category_ids', 'type' => 'numeric'],
