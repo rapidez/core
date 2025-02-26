@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.21.0...2.21.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.21.1...2.21.1)
+## [2.21.1](https://github.com/rapidez/core/releases/tag/2.21.1) - 2025-02-25
+
+### Fixed
+
+- Use @content for 404 content (#733)
+- Make sure you can't do a mutation twice simultaneously (#727)
+- Only apply default value when config option is not found (#736)
+
 ## [2.21.0](https://github.com/rapidez/core/releases/tag/2.21.0) - 2025-02-11
 
 ### Added
