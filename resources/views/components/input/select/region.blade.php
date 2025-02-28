@@ -13,7 +13,7 @@
                 v-if="{{ Rapidez::config('general/region/display_all', '0') }} || '{{ Rapidez::config('general/region/state_required') }}'.split(',').includes({{ $country }})"
                 v-bind:required="'{{ Rapidez::config('general/region/state_required') }}'.split(',').includes({{ $country }})"
             >
-                <option v-for="region in data.country.available_regions" :value="region.id">
+                <option v-for="region in data.country.available_regions.toSorted((a, b) => a.name.localeCompare(b.name))" :value="region.id">
                     @{{ region.name }}
                 </option>
             </x-rapidez::input.select>
