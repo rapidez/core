@@ -26,6 +26,7 @@ fragment orderV2 on CustomerOrder {
         telephone
         fax
         country_code
+        region
     }
     shipping_address {
         prefix
@@ -40,6 +41,7 @@ fragment orderV2 on CustomerOrder {
         telephone
         fax
         country_code
+        region
     }
     items {
         ...orderItem
