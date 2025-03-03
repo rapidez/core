@@ -90,7 +90,7 @@ export default {
                         fields: Object.fromEntries(fields.map((field) => [field.split('^')[0], {}])),
                         require_field_match: false,
                     },
-                    ...options
+                    ...options,
                 }
 
                 rapidezFetch(`${baseUrl}/${config.es_prefix}_${name}_${config.store}/_search`, {
