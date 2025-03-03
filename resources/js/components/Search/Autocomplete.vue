@@ -64,6 +64,7 @@ export default {
                 let size = data['size'] ?? self.size ?? undefined
                 let sort = data['sort'] ?? undefined
                 let fuzziness = data['fuzziness'] ?? 'AUTO'
+                let options = data['options'] ?? {}
 
                 let multimatch = self.multiMatchTypes.map((type) => ({
                     multi_match: {
@@ -89,6 +90,7 @@ export default {
                         fields: Object.fromEntries(fields.map((field) => [field.split('^')[0], {}])),
                         require_field_match: false,
                     },
+                    ...options
                 }
 
                 rapidezFetch(`${baseUrl}/${config.es_prefix}_${name}_${config.store}/_search`, {
