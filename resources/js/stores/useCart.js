@@ -112,16 +112,16 @@ export const fetchCart = async function () {
 
 export const fetchAttributeValues = async function (attributes = []) {
     if (!attributes.length) {
-        return { data: { customAttributeMetadata: { items: null } } }
+        return { data: { customAttributeMetadataV2: { items: null } } }
     }
 
     return await window.magentoGraphQL(
         `
             query attributeValues($attributes: [AttributeInput!]!) {
-                customAttributeMetadata(attributes: $attributes) {
+                customAttributeMetadataV2(attributes: $attributes) {
                     items {
-                        attribute_code
-                        attribute_options {
+                        code
+                        options {
                             label
                             value
                         }
@@ -204,7 +204,7 @@ export const cart = computed({
 
         getAttributeValues()
             .then((response) => {
-                if (!response?.data?.customAttributeMetadata?.items) {
+                if (!response?.data?.customAttributeMetadataV2?.items) {
                     value.items = value.items.map((item) => {
                         item.is_available = checkAvailability(item)
 
@@ -215,9 +215,9 @@ export const cart = computed({
                 }
 
                 const mapping = Object.fromEntries(
-                    response.data.customAttributeMetadata.items.map((attribute) => [
-                        attribute.attribute_code,
-                        Object.fromEntries(attribute.attribute_options.map((value) => [value.value, value.label])),
+                    response.data.customAttributeMetadataV2.items.map((attribute) => [
+                        attribute.code,
+                        Object.fromEntries(attribute.options.map((value) => [value.value, value.label])),
                     ]),
                 )
 
