@@ -16,7 +16,7 @@ export default {
         nextUrl: {
             type: String,
             default: '',
-        }
+        },
     },
 
     data: () => ({
