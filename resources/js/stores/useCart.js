@@ -131,15 +131,14 @@ export const cart = computed({
 
                     return
                 }
-
+                
                 const mapping = Object.fromEntries(
-                    response.data.customAttributeMetadataV2.items.map((attribute) => [
-                        attribute.code,
-                        {
-                            label: attribute.label,
-                            options: Object.fromEntries(attribute.options.map((value) => [value.value, value.label])),
-                        },
-                    ]),
+                    response.data.customAttributeMetadataV2.items.map((attribute) => {
+                        return [
+                            attribute.code,
+                            Object.fromEntries(attribute.options.map((value) => [value.value, value.label])),
+                        ]
+                    })
                 )
 
                 value.items = value.items?.map((cartItem) => {
@@ -161,10 +160,9 @@ export const cart = computed({
                             cartItem.product.attribute_values[key] = [cartItem.product.attribute_values[key]]
                         }
 
-                        Vue.set(cartItem.product.attribute_values, key, {
-                            options: cartItem.product.attribute_values[key].map((value) => mapping[key]?.options[value] || value),
-                            label: mapping[key]?.label,
-                        })
+                        cartItem.product.attribute_values[key] = cartItem.product.attribute_values[key].map(
+                            (value) => mapping[key][value] || value,
+                        )
                     }
 
                     return cartItem
