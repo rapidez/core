@@ -16,6 +16,7 @@ class WithProductAttributesScope implements Scope
             $model->qualifyColumn('visibility'),
             $model->qualifyColumn('type_id'),
             $model->getQualifiedCreatedAtColumn(),
+            $model->getQualifiedUpdatedAtColumn(),
         ]);
 
         if (empty($model->attributesToSelect)) {

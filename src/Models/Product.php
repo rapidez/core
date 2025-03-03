@@ -12,6 +12,7 @@ use Rapidez\Core\Casts\Children;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
 use Rapidez\Core\Casts\DecodeHtmlEntities;
+use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Scopes\Product\WithProductAttributesScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductCategoryInfoScope;
 use Rapidez\Core\Models\Scopes\Product\WithProductChildrenScope;
@@ -35,6 +36,11 @@ class Product extends Model
     public array $attributesToSelect = [];
 
     protected $primaryKey = 'entity_id';
+
+    protected $casts = [
+        self::UPDATED_AT => 'datetime',
+        self::CREATED_AT => 'datetime',
+    ];
 
     protected $appends = ['url'];
 
@@ -196,9 +202,7 @@ class Product extends Model
 
     public function getUrlAttribute(): string
     {
-        $configModel = config('rapidez.models.config');
-
-        return '/' . ($this->url_key ? $this->url_key . $configModel::getCachedByPath('catalog/seo/product_url_suffix', '.html') : 'catalog/product/view/id/' . $this->entity_id);
+        return '/' . ($this->url_key ? $this->url_key . Rapidez::config('catalog/seo/product_url_suffix', '.html') : 'catalog/product/view/id/' . $this->entity_id);
     }
 
     public function getImagesAttribute(): array
