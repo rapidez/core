@@ -13,6 +13,10 @@ export default {
             type: Boolean,
             default: true,
         },
+        nextUrl: {
+            type: String,
+            default: '',
+        }
     },
 
     data: () => ({
@@ -27,6 +31,14 @@ export default {
 
     render() {
         return this.$scopedSlots.default(this)
+    },
+
+    async mounted() {
+        if (user.value.is_logged_in && config.checkout_steps[config.store_code].length > 1) {
+            this.$root.submitPartials(this.$el.form).then(() => {
+                window.Turbo.visit(this.nextUrl)
+            })
+        }
     },
 
     methods: {

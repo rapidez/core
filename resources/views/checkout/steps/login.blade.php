@@ -1,4 +1,4 @@
-<checkout-login v-slot="checkoutLogin">
+<checkout-login v-slot="checkoutLogin" next-url="{{ route('checkout', ['step' => 'credentials']) }}">
     <fieldset partial-submit="go" class="flex flex-col gap-3" v-cloak>
         <label>
             <x-rapidez::label>@lang('Email')</x-rapidez::label>
