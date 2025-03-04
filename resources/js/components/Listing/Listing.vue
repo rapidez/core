@@ -102,13 +102,18 @@ export default {
                     field: filter.code + (this.filterType(filter) == 'string' ? '.keyword' : ''),
                     type: this.filterType(filter),
                 })),
-                { attribute: 'category_lvl0', field: 'category_lvl0.keyword', type: 'string' },
-                { attribute: 'category_lvl1', field: 'category_lvl1.keyword', type: 'string' },
-                { attribute: 'category_lvl2', field: 'category_lvl2.keyword', type: 'string' },
-                { attribute: 'category_lvl3', field: 'category_lvl3.keyword', type: 'string' },
+                ...this.categoryAttributes.map(attribute => ({
+                    attribute: attribute,
+                    field: attribute + '.keyword',
+                    type: 'string'
+                })),
             ]
             // TODO: Double check this and how it's used.
             // .concat(this.additionalFilters)
+        },
+
+        categoryAttributes() {
+            return Array.from({length: config.max_category_level ?? 3}).map((_, index) => 'category_lvl' + (index + 1))
         },
 
         sortings: function () {

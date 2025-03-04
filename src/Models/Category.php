@@ -99,8 +99,8 @@ class Category extends Model
         $categoryIds = explode('/', $this->path);
         $categoryIds = array_slice($categoryIds, array_search(config('rapidez.root_category_id'), $categoryIds) + 1);
 
-        return ! $categoryIds ? [] : Category::whereIn($this->getTable() . '.entity_id', $categoryIds)
-            ->orderByRaw('FIELD(' . $this->getTable() . '.entity_id,' . implode(',', $categoryIds) . ')')
+        return ! $categoryIds ? [] : Category::whereIn($this->getQualifiedKeyName(), $categoryIds)
+            ->orderByRaw('FIELD(' . $this->getQualifiedKeyName() . ',' . implode(',', $categoryIds) . ')')
             ->get();
     }
 

@@ -1,3 +1,5 @@
+@props(['rootPath' => null])
+
 @pushOnce('head', 'es_url-preconnect')
     <link rel="preconnect" href="{{ config('rapidez.es_url') }}">
 
