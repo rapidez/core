@@ -102,10 +102,10 @@ export default {
                     field: filter.code + (this.filterType(filter) == 'string' ? '.keyword' : ''),
                     type: this.filterType(filter),
                 })),
-                ...this.categoryAttributes.map(attribute => ({
+                ...this.categoryAttributes.map((attribute) => ({
                     attribute: attribute,
                     field: attribute + '.keyword',
-                    type: 'string'
+                    type: 'string',
                 })),
             ]
             // TODO: Double check this and how it's used.
@@ -113,7 +113,7 @@ export default {
         },
 
         categoryAttributes() {
-            return Array.from({length: config.max_category_level ?? 3}).map((_, index) => 'category_lvl' + (index + 1))
+            return Array.from({ length: config.max_category_level ?? 3 }).map((_, index) => 'category_lvl' + (index + 1))
         },
 
         sortings: function () {
