@@ -15,7 +15,7 @@ class CheckoutController
             $step = $checkoutSteps[0];
         }
 
-        if (auth('magento-customer')->user()) {
+        if ($step === 'login' && auth('magento-customer')->user()) {
             $step = $checkoutSteps[array_search($step, $checkoutSteps) + 1];
         }
 
