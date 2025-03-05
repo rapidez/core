@@ -35,7 +35,7 @@ return [
 
     'sorting' => [
         'created_at' => [
-            'asc' => 'Oldest',
+            'asc'  => 'Oldest',
             'desc' => 'Newest',
         ],
         'name' => [

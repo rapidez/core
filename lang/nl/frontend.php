@@ -31,7 +31,7 @@ return [
 
     'sorting' => [
         'created_at' => [
-            'asc' => 'Oudste',
+            'asc'  => 'Oudste',
             'desc' => 'Nieuwste',
         ],
         'name' => [
