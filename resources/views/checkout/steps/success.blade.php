@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="flex flex-col mt-4 gap-x-4 md:flex-row">
-                <div class="w-full p-8 bg-white shadow-sm shadow-default rounded border border-l-2 border-l-primary md:w-1/2" v-if="order.billing_address">
+                <div class="w-full p-8 bg-white shadow-sm rounded border border-l-2 border-l-primary md:w-1/2" v-if="order.billing_address">
                     <p class="text font-lg font-bold mb-2">@lang('Billing address')</p>
                     <ul>
                         <li>@{{ order.billing_address.firstname }} @{{ order.billing_address.lastname }}</li>
@@ -53,7 +53,7 @@
                         <li>@{{ order.billing_address.telephone }}</li>
                     </ul>
                 </div>
-                <div class="w-full p-8 bg-white shadow-sm shadow-default rounded border-l-2 border border-l-primary mt-4 md:mt-0 md:w-1/2" v-if="order.shipping_address">
+                <div class="w-full p-8 bg-white shadow-sm rounded border-l-2 border border-l-primary mt-4 md:mt-0 md:w-1/2" v-if="order.shipping_address">
                     <p class="text font-lg font-bold mb-2">@lang('Shipping address')</p>
                     <ul>
                         <li>@{{ order.shipping_address.firstname }} @{{ order.shipping_address.lastname }}</li>
@@ -65,11 +65,11 @@
             </div>
 
             <div class="flex flex-col pb-1 mt-4 gap-x-4 md:flex-row">
-                <div class="w-full p-8 bg-white shadow-sm shadow-default rounded border-l-2 border border-l-primary md:w-1/2" v-if="order.shipping_method">
+                <div class="w-full p-8 bg-white shadow-sm rounded border-l-2 border border-l-primary md:w-1/2" v-if="order.shipping_method">
                     <p class="text font-lg font-bold mb-2">@lang('Shipping method')</p>
                     <p>@{{ order.shipping_method }}</p>
                 </div>
-                <div class="w-full p-8 bg-white shadow-sm shadow-default rounded border-l-2 border border-l-primary mt-4 md:mt-0 md:w-1/2">
+                <div class="w-full p-8 bg-white shadow-sm rounded border-l-2 border border-l-primary mt-4 md:mt-0 md:w-1/2">
                     <p class="text font-lg font-bold mb-2">@lang('Payment method')</p>
                     <p v-for="method in order.payment_methods">@{{ method.name || method.type }}</p>
                 </div>
