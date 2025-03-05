@@ -246,7 +246,7 @@ export default {
                 options['page'] = data.page
             }
             if (data.sortBy) {
-                options['sortBy'] = data.sortBy
+                options['sortBy'] = data.sortBy.replace(this.index, '')
             }
 
             let parameters = {
@@ -264,6 +264,9 @@ export default {
 
         routeToState(routeState) {
             let options = routeState.options ?? {}
+            if ('sortBy' in options) {
+                options.sortBy = this.index + options.sortBy
+            }
 
             let ranges = Object.fromEntries(Object.entries(routeState).filter(([key, _]) => this.rangeAttributes.includes(key)))
 
