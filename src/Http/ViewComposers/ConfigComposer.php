@@ -41,7 +41,7 @@ class ConfigComposer
         Config::set('frontend.recaptcha', Rapidez::config('recaptcha_frontend/type_recaptcha_v3/public_key', null, true));
         Config::set('frontend.searchable', array_merge($searchableAttributes, config('rapidez.indexer.searchable')));
         Config::set('frontend.show_customer_address_fields', $this->getCustomerAddressFields());
-        Config::set('frontend.show_tax', (bool) Rapidez::config('tax/display/type', 1));
+        Config::set('frontend.show_tax', in_array(Rapidez::config('tax/display/type', 1), [2, 3]));
         Config::set('frontend.grid_per_page', Rapidez::config('catalog/frontend/grid_per_page', 12));
         Config::set('frontend.grid_per_page_values', explode(',', Rapidez::config('catalog/frontend/grid_per_page_values', '12,24,36')));
         Config::set('frontend.queries.cart', view('rapidez::cart.queries.cart')->renderOneliner());
