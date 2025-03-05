@@ -61,6 +61,7 @@ export default {
 
         searchkit: null,
         searchClient: null,
+        sortBy: null,
     }),
 
     render() {
@@ -268,6 +269,7 @@ export default {
             let options = routeState.options ?? {}
             if ('sortBy' in options) {
                 options.sortBy = this.index + options.sortBy
+                this.sortBy = options.sortBy
             }
 
             let ranges = Object.fromEntries(Object.entries(routeState).filter(([key, _]) => this.rangeAttributes.includes(key)))
