@@ -293,10 +293,12 @@ export default {
         },
 
         withFilters(items) {
-            return items.map((item) => ({
-                filter: this.filters.find((filter) => filter.code === item.attribute),
-                ...item,
-            })).filter(item => item.filter)
+            return items
+                .map((item) => ({
+                    filter: this.filters.find((filter) => filter.code === item.attribute),
+                    ...item,
+                }))
+                .filter((item) => item.filter)
         },
 
         withSwatches(items, filter) {
