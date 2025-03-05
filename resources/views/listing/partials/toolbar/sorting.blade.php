@@ -1,3 +1,4 @@
+{{-- TODO: The routing value does not seem to get propagated properly and gets reset --}}
 <ais-sort-by :items="sortOptions">
     <template v-slot="{ items, currentRefinement, refine }">
         <x-rapidez::input.select
