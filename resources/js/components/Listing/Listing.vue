@@ -128,12 +128,13 @@ export default {
         },
 
         sortOptions: function () {
+            let index = this.index
             return [
                 {
                     label: window.config.translations.relevance,
                     field: '_score',
                     order: 'desc',
-                    value: config.index,
+                    value: index,
                     key: 'default',
                 },
             ]
@@ -149,7 +150,7 @@ export default {
                                     sorting.name + ' ' + directionLabel,
                                 field: sorting.code + (sorting.code != 'price' ? '.keyword' : ''),
                                 order: directionKey,
-                                value: [config.index, sorting.code, directionKey].join('_'),
+                                value: [index, sorting.code, directionKey].join('_'),
                                 key: '_' + [sorting.code, directionKey].join('_'),
                             }
                         })
@@ -160,9 +161,7 @@ export default {
 
         routing() {
             return {
-                router: history({
-                    cleanUrlOnDispose: false,
-                }),
+                router: history(),
                 stateMapping: {
                     routeToState: this.routeToState,
                     stateToRoute: this.stateToRoute,
@@ -239,9 +238,21 @@ export default {
         stateToRoute(uiState) {
             let data = uiState[this.index]
 
+            let options = {}
+            if (data.hitsPerPage != config.grid_per_page) {
+                options['hitsPerPage'] = data.hitsPerPage
+            }
+            if (data.page > 1) {
+                options['page'] = data.page
+            }
+            if (data.sortBy) {
+                options['sortBy'] = data.sortBy
+            }
+
             let parameters = {
                 ...(data.range || {}),
                 ...(data.refinementList || {}),
+                options: options,
             }
 
             if ('query' in data) {
@@ -252,6 +263,8 @@ export default {
         },
 
         routeToState(routeState) {
+            let options = routeState.options ?? {}
+
             let ranges = Object.fromEntries(Object.entries(routeState).filter(([key, _]) => this.rangeAttributes.includes(key)))
 
             let refinementList = Object.fromEntries(
@@ -263,6 +276,7 @@ export default {
                     refinementList: refinementList,
                     range: ranges,
                     query: routeState.q,
+                    ...options
                 },
             }
         },
