@@ -12,6 +12,7 @@
 
         @if ($category->is_anchor)
             <x-rapidez::listing
+                :root-path="$category->parentcategories->pluck('name')->join(' > ')"
                 v-bind:base-filters="() => [{
                     query_string: {
                         query: 'visibility:(2 OR 4) AND category_ids:{{ $category->entity_id }}'
