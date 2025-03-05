@@ -1,4 +1,4 @@
-<header class="relative mb-5 max-md:pb-4 border-b shadow bg/50 z-header">
+<header class="relative mb-5 max-md:pb-4 border-b shadow z-header">
     <div class="container flex flex-wrap items-center max-sm:px-3">
         <input id="navigation" class="peer hidden" type="checkbox" />
         <div class="py-2">
