@@ -1,5 +1,12 @@
 <script>
-import { AisConfigure, AisHighlight, AisHits, AisIndex, AisInstantSearch, AisSearchBox } from 'vue-instantsearch'
+import {
+    AisConfigure,
+    AisHighlight,
+    AisHits,
+    AisIndex,
+    AisInstantSearch,
+    AisSearchBox
+} from 'vue-instantsearch'
 import Client from '@searchkit/instantsearch-client'
 import Searchkit from 'searchkit'
 
