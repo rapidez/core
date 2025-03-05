@@ -82,6 +82,8 @@ export default {
 
                 'popup': '130',
                 'popup-actions': '10',
+
+                'cookie': '140'
             },
             textColor: (theme) => theme('colors.foreground'),
             borderColor: (theme) => ({
