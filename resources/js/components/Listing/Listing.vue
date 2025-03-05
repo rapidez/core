@@ -106,7 +106,12 @@ export default {
         sortings: function () {
             return Object.values(this.attributes)
                 .filter((attribute) => attribute.sorting)
-                .concat(Object.entries(config.searchkit.additional_sorting).map(([code, directions]) => ({ code: code, directions: directions })))
+                .concat(
+                    Object.entries(config.searchkit.additional_sorting).map(([code, directions]) => ({
+                        code: code,
+                        directions: directions,
+                    })),
+                )
         },
 
         hitsPerPage: function () {
@@ -130,32 +135,31 @@ export default {
                     value: this.index,
                     key: 'default',
                 },
-            ]
-                .concat(
-                    this.sortings.flatMap((sorting) =>
-                        (sorting.directions ?? ['asc', 'desc']).map(direction => {
-                            let label = ''
-                            if(config.translations.sorting?.[sorting.code]?.[direction]) {
-                                label = config.translations.sorting?.[sorting.code]?.[direction]
-                            } else {
-                                label = config.translations[sorting.code] ?? sorting.name ?? sorting.code
+            ].concat(
+                this.sortings.flatMap((sorting) =>
+                    (sorting.directions ?? ['asc', 'desc']).map((direction) => {
+                        let label = ''
+                        if (config.translations.sorting?.[sorting.code]?.[direction]) {
+                            label = config.translations.sorting?.[sorting.code]?.[direction]
+                        } else {
+                            label = config.translations[sorting.code] ?? sorting.name ?? sorting.code
 
-                                // Add asc/desc if relevant
-                                if (sorting.directions?.length != 1) {
-                                    label += ' ' + (config.translations[direction] ?? direction)
-                                }
+                            // Add asc/desc if relevant
+                            if (sorting.directions?.length != 1) {
+                                label += ' ' + (config.translations[direction] ?? direction)
                             }
+                        }
 
-                            return {
-                                label: label,
-                                field: sorting.code + (sorting.input == 'text' ? '.keyword' : ''),
-                                order: direction,
-                                value: [this.index, sorting.code, direction].join('_'),
-                                key: '_' + [sorting.code, direction].join('_'),
-                            }
-                        })
-                    ),
-                )
+                        return {
+                            label: label,
+                            field: sorting.code + (sorting.input == 'text' ? '.keyword' : ''),
+                            order: direction,
+                            value: [this.index, sorting.code, direction].join('_'),
+                            key: '_' + [sorting.code, direction].join('_'),
+                        }
+                    }),
+                ),
+            )
 
             if (this.sortOptionsCallback) {
                 sortOptions = this.sortOptionsCallback(sortOptions)
@@ -279,7 +283,7 @@ export default {
                     refinementList: refinementList,
                     range: ranges,
                     query: routeState.q,
-                    ...options
+                    ...options,
                 },
             }
         },
