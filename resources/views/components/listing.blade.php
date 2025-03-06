@@ -9,14 +9,6 @@
 <div class="min-h-screen">
     <listing
         {{ $attributes }}
-        :additional-sorting="[{
-            label: window.config.translations.newest,
-            field: 'created_at',
-            order: 'desc',
-            {{-- TODO: Extract this somewhere? --}}
-            value: config.index_prefix + '_{{ config('rapidez.models.product')::indexName() }}_' + config.store + '_created_at_desc',
-            key: '_created_at_desc'
-        }]"
         index-model="{{ config('rapidez.models.product')::indexName() }}"
         v-cloak
     >

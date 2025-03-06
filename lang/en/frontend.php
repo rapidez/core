@@ -28,16 +28,19 @@ return [
         'yes' => 'Yes',
     ],
 
-    'asc'       => 'asc',
-    'desc'      => 'desc',
+    'asc'       => 'ascending',
+    'desc'      => 'descending',
     'relevance' => 'Relevance',
-    'newest'    => 'Newest',
     'all'       => 'All',
 
-    // 'sorting' => [
-    //     'attribute' => [
-    //         'asc' => 'Attribute asc',
-    //         'desc' => 'Attrribute desc',
-    //     ],
-    // ],
+    'sorting' => [
+        'created_at' => [
+            'asc'  => 'Oldest',
+            'desc' => 'Newest',
+        ],
+        'name' => [
+            'asc'  => 'Name A-Z',
+            'desc' => 'Name Z-A',
+        ],
+    ],
 ];

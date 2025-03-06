@@ -26,13 +26,13 @@ return [
     'asc'       => 'oplopend',
     'desc'      => 'aflopend',
     'relevance' => 'Relevantie',
-    'newest'    => 'Nieuwste',
     'all'       => 'Alles',
+    'price'     => 'Prijs',
 
     'sorting' => [
-        'price' => [
-            'asc'  => 'Prijs oplopend',
-            'desc' => 'Prijs aflopend',
+        'created_at' => [
+            'asc'  => 'Oudste',
+            'desc' => 'Nieuwste',
         ],
         'name' => [
             'asc'  => 'Naam A-Z',
