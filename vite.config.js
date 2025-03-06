@@ -5,7 +5,6 @@ import vue from '@vitejs/plugin-vue2'
 import { visualizer } from 'rollup-plugin-visualizer'
 import tailwindcss from '@tailwindcss/vite'
 
-
 export default defineConfig({
     plugins: [
         laravel({
