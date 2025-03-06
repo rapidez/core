@@ -173,7 +173,9 @@ export const user = computed({
             if ('value' in attribute) {
                 userStorage.value[attribute.code] = attribute.value
             } else if ('selected_options' in attribute) {
-                userStorage.value[attribute.code] = Object.fromEntries(attribute.selected_options.map((option) => [option.value, option.label]))
+                userStorage.value[attribute.code] = Object.fromEntries(
+                    attribute.selected_options.map((option) => [option.value, option.label]),
+                )
             }
         })
 
