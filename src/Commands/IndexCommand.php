@@ -38,8 +38,6 @@ class IndexCommand extends Command
             $this->line('Store: ' . $store['name']);
 
             foreach ($types as $type => $model) {
-                config()->set('rapidez.index', $type);
-
                 $this->call('scout:import', [
                     'searchable' => $model,
                 ]);
