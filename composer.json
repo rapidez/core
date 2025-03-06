@@ -32,11 +32,10 @@
         "tormjens/eventy": "^0.8"
     },
     "require-dev": {
-        "larastan/larastan": "^2.9",
+        "larastan/larastan": "^3.1",
         "laravel/dusk": "^8.3",
         "orchestra/testbench": "^9.4|^10.0",
         "orchestra/testbench-dusk": "^9.7|^10.0",
-        "phpstan/phpstan": "^1.12",
         "phpunit/phpunit": "^11.3.5"
     },
     "autoload": {
