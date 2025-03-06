@@ -21,7 +21,7 @@ class IndexCommand extends Command
             ->merge(config('rapidez.indexer.extra_models'));
 
         $types = $this->option('types')
-            ? $baseSearchableModels->filter(fn($model) => in_array((new $model)->getIndexName(), explode(',', $this->option('types'))))
+            ? $baseSearchableModels->filter(fn ($model) => in_array((new $model)->getIndexName(), explode(',', $this->option('types'))))
             : $baseSearchableModels;
 
         $stores = $this->option('store')
