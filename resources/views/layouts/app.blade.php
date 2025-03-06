@@ -21,12 +21,6 @@
     <link rel="canonical" href="@yield('canonical', url()->current())" />
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    {{-- TODO fix nested lazy loading components --}}
-    @if ($file = vite_filename_path('Autocomplete.vue'))
-        @vite([$file])
-    @endif
-
     @stack('head')
     @config('design/head/includes')
 </head>

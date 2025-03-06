@@ -1,7 +1,14 @@
 <script>
-import { AisConfigure, AisHighlight, AisHits, AisIndex, AisInstantSearch, AisSearchBox } from 'vue-instantsearch'
 import Client from '@searchkit/instantsearch-client'
 import Searchkit from 'searchkit'
+
+// This is purely done to hint these will be used in the autocomplete.
+import AisInstantSearch from 'vue-instantsearch/vue2/es/src/components/InstantSearch'
+import AisSearchBox from 'vue-instantsearch/vue2/es/src/components/SearchBox.vue.js'
+import AisHits from 'vue-instantsearch/vue2/es/src/components/Hits.js'
+import AisIndex from 'vue-instantsearch/vue2/es/src/components/Index.js'
+import AisConfigure from 'vue-instantsearch/vue2/es/src/components/Configure.js'
+import AisHighlight from 'vue-instantsearch/vue2/es/src/components/Highlight.vue.js'
 
 Vue.component('ais-instant-search', AisInstantSearch)
 Vue.component('ais-search-box', AisSearchBox)

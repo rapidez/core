@@ -1,21 +1,6 @@
 <script>
 // TODO: How can we have this extendable in
 // case we want to use another component?
-import {
-    AisClearRefinements,
-    AisConfigure,
-    AisCurrentRefinements,
-    AisHierarchicalMenu,
-    AisHits,
-    AisHitsPerPage,
-    AisInstantSearch,
-    AisPagination,
-    AisRangeInput,
-    AisRefinementList,
-    AisSearchBox,
-    AisSortBy,
-    AisStats,
-} from 'vue-instantsearch'
 import Client from '@searchkit/instantsearch-client'
 import Searchkit from 'searchkit'
 import deepmerge from 'deepmerge'
@@ -23,15 +8,36 @@ import deepmerge from 'deepmerge'
 import { history } from 'instantsearch.js/es/lib/routers'
 import { simple } from 'instantsearch.js/es/lib/stateMappings'
 
+// This is purely done for the ability to preload these files when importing Listing.vue with the @vite directive
+import AisInstantSearch from 'vue-instantsearch/vue2/es/src/components/InstantSearch'
+import AisSearchBox from 'vue-instantsearch/vue2/es/src/components/SearchBox.vue.js'
+import AisHits from 'vue-instantsearch/vue2/es/src/components/Hits.js'
+import AisIndex from 'vue-instantsearch/vue2/es/src/components/Index.js'
+import AisConfigure from 'vue-instantsearch/vue2/es/src/components/Configure.js'
+import AisHighlight from 'vue-instantsearch/vue2/es/src/components/Highlight.vue.js'
+
+import AisRefinementList from 'vue-instantsearch/vue2/es/src/components/RefinementList.vue.js'
+import AisHierarchicalMenu from 'vue-instantsearch/vue2/es/src/components/HierarchicalMenu.vue.js'
+import AisRangeInput from 'vue-instantsearch/vue2/es/src/components/RangeInput.vue.js'
+import AisCurrentRefinements from 'vue-instantsearch/vue2/es/src/components/CurrentRefinements.vue.js'
+import AisClearRefinements from 'vue-instantsearch/vue2/es/src/components/ClearRefinements.vue.js'
+import AisHitsPerPage from 'vue-instantsearch/vue2/es/src/components/HitsPerPage.vue.js'
+import AisSortBy from 'vue-instantsearch/vue2/es/src/components/SortBy.vue.js'
+import AisPagination from 'vue-instantsearch/vue2/es/src/components/Pagination.vue.js'
+import AisStats from 'vue-instantsearch/vue2/es/src/components/Stats.vue.js'
+
 Vue.component('ais-instant-search', AisInstantSearch)
+Vue.component('ais-search-box', AisSearchBox)
+Vue.component('ais-hits', AisHits)
+Vue.component('ais-index', AisIndex)
 Vue.component('ais-configure', AisConfigure)
+Vue.component('ais-highlight', AisHighlight)
+
 Vue.component('ais-refinement-list', AisRefinementList)
 Vue.component('ais-hierarchical-menu', AisHierarchicalMenu)
 Vue.component('ais-range-input', AisRangeInput)
-Vue.component('ais-search-box', AisSearchBox)
 Vue.component('ais-current-refinements', AisCurrentRefinements)
 Vue.component('ais-clear-refinements', AisClearRefinements)
-Vue.component('ais-hits', AisHits)
 Vue.component('ais-hits-per-page', AisHitsPerPage)
 Vue.component('ais-sort-by', AisSortBy)
 Vue.component('ais-pagination', AisPagination)
@@ -69,7 +75,7 @@ export default {
         // Maybe it conflicts with ReactiveSearch?
         routing: {
             router: history(),
-            // stateMapping: singleIndex('rapidez_products_1'),
+            // stateMapping: singleIndex('rapidez_product_1'),
             stateMapping: simple(),
         },
     }),
@@ -175,7 +181,6 @@ export default {
                     field: filter.code + (this.filterType(filter) == 'string' ? '.keyword' : ''),
                     type: this.filterType(filter),
                 })),
-                { attribute: 'category_lvl0', field: 'category_lvl0.keyword', type: 'string' },
                 { attribute: 'category_lvl1', field: 'category_lvl1.keyword', type: 'string' },
                 { attribute: 'category_lvl2', field: 'category_lvl2.keyword', type: 'string' },
                 { attribute: 'category_lvl3', field: 'category_lvl3.keyword', type: 'string' },
@@ -285,7 +290,8 @@ export default {
         },
 
         withSwatches(items, filter) {
-            return items.map((item) => ({
+            return [];
+            items.map((item) => ({
                 swatch: this.$root.swatches[filter.base_code]?.options?.[item.value] ?? null,
                 ...item,
             }))
