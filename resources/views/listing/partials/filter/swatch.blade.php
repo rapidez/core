@@ -25,7 +25,7 @@
                     </label>
                     <label
                         v-else
-                        class="border px-3 transition-all rounded cursor-pointer text-sm text-muted font-medium"
+                        class="border px-3 transition-all rounded-sm cursor-pointer text-sm text-muted font-medium"
                         v-bind:class="{'border text' : value[swatch.key]}"
                     >
                         @{{ $root.swatches[filter.code]?.options[swatch.key].swatch }}

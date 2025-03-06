@@ -12,7 +12,7 @@
                     <div class="font-semibold text-base font-sans">
                         @lang('You have filtered for:')
                     </div>
-                    <button v-on:click="clearValues" class="!font-sans text-sm text-muted transition-all hover:underline">
+                    <button v-on:click="clearValues" class="font-sans! text-sm text-muted transition-all hover:underline">
                         @lang('Reset filters')
                     </button>
                 </div>
