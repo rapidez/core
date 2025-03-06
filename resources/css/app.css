@@ -1,9 +1,10 @@
+@import 'tailwindcss';
+
 @import './components/vue-slider.css' layer(base);
 @import './components/price-slider.css' layer(base);
 @import './components/pagination.css' layer(base);
 @import './components/autocomplete.css' layer(base);
 
-@import 'tailwindcss';
 @config "../../tailwind.config.js";
 
 @plugin '@tailwindcss/forms';
@@ -11,25 +12,57 @@
 @plugin 'tailwind-scrollbar-hide';
 
 @theme {
-    --color-primary: color-mix(in srgb, var(--primary, #2fbc85) calc(100% * 1), transparent);
-    --color-primary-text: color-mix(in srgb, var(--primary-text, #fff) calc(100% * 1), transparent);
-    --color-secondary: color-mix(in srgb, var(--secondary, #202f60) calc(100% * 1), transparent);
-    --color-secondary-text: color-mix(in srgb, var(--secondary-text, #fff) calc(100% * 1), transparent);
-    --color-conversion: color-mix(in srgb, var(--conversion, #22c55e) calc(100% * 1), transparent);
-    --color-conversion-text: color-mix(in srgb, var(--conversion-text, #fff) calc(100% * 1), transparent);
-    --color-foreground-emphasis: color-mix(in srgb, var(--foreground-emphasis, #0f172a) calc(100% * 1), transparent);
-    --color-foreground: color-mix(in srgb, var(--foreground, #1e293b) calc(100% * 1), transparent);
-    --color-foreground-muted: color-mix(in srgb, var(--foreground-muted, #475569) calc(100% * 1), transparent);
-    --color-border-emphasis: color-mix(in srgb, var(--border-emphasis, #94a3b8) calc(100% * 1), transparent);
-    --color-border: color-mix(in srgb, var(--border, #cbd5e1) calc(100% * 1), transparent);
-    --color-border-muted: color-mix(in srgb, var(--border-muted, #f1f5f9) calc(100% * 1), transparent);
-    --color-shadow-emphasis: color-mix(in srgb, var(--shadow-emphasis, #64748b) calc(100% * 1), transparent);
-    --color-shadow: color-mix(in srgb, var(--shadow, #94a3b8) calc(100% * 1), transparent);
-    --color-shadow-muted: color-mix(in srgb, var(--shadow-muted, #cbd5e1) calc(100% * 1), transparent);
-    --color-background-emphasis: color-mix(in srgb, var(--background-emphasis, #e2e8f0) calc(100% * 1), transparent);
-    --color-background: color-mix(in srgb, var(--background, #f1f5f9) calc(100% * 1), transparent);
-    --color-background-muted: color-mix(in srgb, var(--background-muted, #f8fafc) calc(100% * 1), transparent);
-    --color-backdrop: color-mix(in srgb, var(--backdrop, rgba(0, 0, 0, 0.4)) calc(100% * 1), transparent);
+    /* Our variables used by different utilities */
+    --primary: #2FBC85;
+    --primary-text: var(--color-white);
+
+    --secondary: #202F60;
+    --secondary-text: var(--color-white);
+
+    --conversion: var(--color-green-500);
+    --conversion-text: var(--color-white);
+
+    --foreground-emphasis: var(--color-slate-900);
+    --foreground: var(--color-slate-800);
+    --foreground-muted: var(--color-slate-600);
+
+    --border-emphasis: var(--color-slate-400);
+    --border: var(--color-slate-300);
+    --border-muted: var(--color-slate-100);
+
+    --background-emphasis: var(--color-slate-200);
+    --background: var(--color-slate-100);
+    --background-muted: var(--color-slate-50);
+
+      /* Utility colors linked to our variables */
+    --color-primary: var(--primary);
+    --color-primary-text: var(--primary-text);
+
+    --color-secondary: var(--secondary);
+    --color-secondary-text: var(--secondary-text);
+
+    --color-conversion: var(--conversion);
+    --color-conversion-text: var(--conversion-text);
+
+    --text-color-emphasis: var(--foreground-emphasis);
+    --text-color-default: var(--foreground);
+    --text-color-muted: var(--foreground-muted);
+
+    --border-color-emphasis: var(--border-emphasis);
+    --border-color-default: var(--border);
+    --border-color-muted: var(--border-muted);
+
+    --ring-color-emphasis: var(--border-emphasis);
+    --ring-color-default: var(--border);
+    --ring-color-muted: var(--border-muted);
+
+    --outline-color-emphasis: var(--border-emphasis);
+    --outline-color-default: var(--border);
+    --outline-color-muted: var(--border-muted);
+
+    --background-color-emphasis: var(--background-emphasis);
+    --background-color-default: var(--background);
+    --background-color-muted: var(--background-muted);
 
     --z-index-header: 100;
     --z-index-header-autocomplete-overlay: 10;
@@ -37,51 +70,17 @@
     --z-index-header-dropdown: 30;
     --z-index-header-minicart: 30;
     --z-index-header-autocomplete-button: 30;
+
     --z-index-notifications: 110;
+
     --z-index-slideover: 120;
     --z-index-slideover-overlay: 10;
     --z-index-slideover-sidebar: 20;
+
     --z-index-popup: 130;
     --z-index-popup-actions: 10;
 
-    --text-color-emphasis: color-mix(in srgb, var(--foreground-emphasis, #0f172a) calc(100% * 1), transparent);
-    --text-color: color-mix(in srgb, var(--foreground, #1e293b) calc(100% * 1), transparent);
-    --text-color-muted: color-mix(in srgb, var(--foreground-muted, #475569) calc(100% * 1), transparent);
-
-    --border-color-default-emphasis: color-mix(in srgb, var(--border-emphasis, #94a3b8) calc(100% * 1), transparent);
-    --border-color-default: color-mix(in srgb, var(--border, #cbd5e1) calc(100% * 1), transparent);
-    --border-color-default-muted: color-mix(in srgb, var(--border-muted, #f1f5f9) calc(100% * 1), transparent);
-
-    --border-color-emphasis: color-mix(in srgb, var(--border-emphasis, #94a3b8) calc(100% * 1), transparent);
-    --border-color-muted: color-mix(in srgb, var(--border-muted, #f1f5f9) calc(100% * 1), transparent);
-
-    --background-color-emphasis: color-mix(in srgb, var(--background-emphasis, #e2e8f0) calc(100% * 1), transparent);
-    --background-color: color-mix(in srgb, var(--background, #f1f5f9) calc(100% * 1), transparent);
-    --background-color-muted: color-mix(in srgb, var(--background-muted, #f8fafc) calc(100% * 1), transparent);
-
-    --ring-color-default-emphasis: color-mix(in srgb, var(--border-emphasis, #94a3b8) calc(100% * 1), transparent);
-    --ring-color-default: color-mix(in srgb, var(--border, #cbd5e1) calc(100% * 1), transparent);
-    --ring-color-default-muted: color-mix(in srgb, var(--border-muted, #f1f5f9) calc(100% * 1), transparent);
-
-    --ring-color-emphasis: color-mix(in srgb, var(--border-emphasis, #94a3b8) calc(100% * 1), transparent);
-    --ring-color: color-mix(in srgb, var(--border, #cbd5e1) calc(100% * 1), transparent);
-    --ring-color-muted: color-mix(in srgb, var(--border-muted, #f1f5f9) calc(100% * 1), transparent);
-
-    --outline-color-default-emphasis: color-mix(in srgb, var(--border-emphasis, #94a3b8) calc(100% * 1), transparent);
-    --outline-color-default: color-mix(in srgb, var(--border, #cbd5e1) calc(100% * 1), transparent);
-    --outline-color-default-muted: color-mix(in srgb, var(--border-muted, #f1f5f9) calc(100% * 1), transparent);
-
-    --outline-color-emphasis: color-mix(in srgb, var(--border-emphasis, #94a3b8) calc(100% * 1), transparent);
-    --outline-color: color-mix(in srgb, var(--border, #cbd5e1) calc(100% * 1), transparent);
-    --outline-color-muted: color-mix(in srgb, var(--border-muted, #f1f5f9) calc(100% * 1), transparent);
-
-    --box-shadow-color-default-emphasis: color-mix(in srgb, var(--shadow-emphasis, #64748b) calc(100% * 1), transparent);
-    --box-shadow-color-default: color-mix(in srgb, var(--shadow, #94a3b8) calc(100% * 1), transparent);
-    --box-shadow-color-default-muted: color-mix(in srgb, var(--shadow-muted, #cbd5e1) calc(100% * 1), transparent);
-
-    --box-shadow-color-emphasis: color-mix(in srgb, var(--shadow-emphasis, #0f172a) calc(100% * 1), transparent);
-    --box-shadow-color: color-mix(in srgb, var(--shadow, #334155) calc(100% * 1), transparent);
-    --box-shadow-color-muted: color-mix(in srgb, var(--shadow-muted, #64748b) calc(100% * 1), transparent);
+    --z-index-cookie: 140;
 }
 
 @utility container {
@@ -90,23 +89,11 @@
 }
 
 @utility text {
-    color: var(--text-color);
-}
-@utility text-emphasis {
-    color: var(--text-color-emphasis);
-}
-@utility text-muted {
-    color: var(--text-color-muted);
+    color: var(--text-color-default);
 }
 
 @utility bg {
-    background-color: var(--background-color);
-}
-@utility bg-emphasis {
-    background-color: var(--background-color-emphasis);
-}
-@utility bg-muted {
-    background-color: var(--background-color-muted);
+    background-color: var(--background-color-default);
 }
 
 /*
@@ -123,7 +110,12 @@
     ::before,
     ::backdrop,
     ::file-selector-button {
-        border-color: color-mix(in srgb, var(--border, #cbd5e1) calc(100% * 1), transparent);
+        border-color: var(--border);
+    }
+
+    button:not(:disabled),
+    [role="button"]:not(:disabled) {
+        cursor: pointer;
     }
 }
 

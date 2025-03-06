@@ -8,7 +8,7 @@
 }
 
 .pagination-button {
-    @apply font-semibold! font-sans! border! border-border! rounded-sm! bg-white! text! shadow-sm!;
+    @apply font-semibold! font-sans! border! border-default! rounded-sm! bg-white! text! shadow-sm!;
 }
 
 .pagination-button.active {

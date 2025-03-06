@@ -28,7 +28,7 @@ div.vue-slider-dot-tooltip::before {
 }
 
 div.vue-slider-dot .vue-slider-dot-handle {
-    @apply border border-border shadow-sm;
+    @apply border border-default shadow-sm;
 }
 
 div.vue-slider-tooltip-wrap.vue-slider-tooltip-top {
