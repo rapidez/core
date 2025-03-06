@@ -42,7 +42,7 @@ export default {
         sortOptionsCallback: {
             type: Function,
         },
-        indexModel: {
+        index: {
             type: String,
         },
 
@@ -181,10 +181,6 @@ export default {
         // TODO: Do we want to make this extendable?
         rangeAttributes() {
             return this.filters.filter((filter) => filter.input == 'price').map((filter) => filter.code)
-        },
-
-        index() {
-            return [config.index_prefix, this.indexModel, config.store].join('_')
         },
     },
 

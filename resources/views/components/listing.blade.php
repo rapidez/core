@@ -9,7 +9,7 @@
 <div class="min-h-screen">
     <listing
         {{ $attributes }}
-        index-model="{{ config('rapidez.models.product')::indexName() }}"
+        index="{{ (new (config('rapidez.models.product')))->searchableAs() }}"
         v-cloak
     >
         <div slot-scope="{ loaded, filters, sortOptions, withFilters, withSwatches, filterPrefix, _renderProxy: listingSlotProps }">

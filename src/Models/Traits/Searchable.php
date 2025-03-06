@@ -46,11 +46,6 @@ trait Searchable
         return $this->indexName ?? Str::snake(Str::pluralStudly(class_basename(static::class)));
     }
 
-    protected function indexName(): string
-    {
-        return $this->getIndexName();
-    }
-
     public function searchableAs(): string
     {
         if (! config('rapidez.store')) {
