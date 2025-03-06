@@ -163,6 +163,19 @@ export const user = computed({
         }
 
         userStorage.value.is_logged_in = Boolean(userStorage.value?.email)
+        userStorage.value.custom_attributes?.forEach((attribute) => {
+            // This should never happen, but if the attribute already exists in the user object,
+            // we should skip it as to not accidentally overwrite anything important.
+            if (attribute.code in userStorage.value) {
+                return
+            }
+
+            if ('value' in attribute) {
+                userStorage.value[attribute.code] = attribute.value
+            } else if ('selected_options' in attribute) {
+                userStorage.value[attribute.code] = Object.fromEntries(attribute.selected_options.map((option) => [option.value, option.label]))
+            }
+        })
 
         return userStorage.value
     },
