@@ -12,9 +12,7 @@ import { simple } from 'instantsearch.js/es/lib/stateMappings'
 import AisInstantSearch from 'vue-instantsearch/vue2/es/src/components/InstantSearch'
 import AisSearchBox from 'vue-instantsearch/vue2/es/src/components/SearchBox.vue.js'
 import AisHits from 'vue-instantsearch/vue2/es/src/components/Hits.js'
-import AisIndex from 'vue-instantsearch/vue2/es/src/components/Index.js'
 import AisConfigure from 'vue-instantsearch/vue2/es/src/components/Configure.js'
-import AisHighlight from 'vue-instantsearch/vue2/es/src/components/Highlight.vue.js'
 
 import AisRefinementList from 'vue-instantsearch/vue2/es/src/components/RefinementList.vue.js'
 import AisHierarchicalMenu from 'vue-instantsearch/vue2/es/src/components/HierarchicalMenu.vue.js'
@@ -29,10 +27,7 @@ import AisStats from 'vue-instantsearch/vue2/es/src/components/Stats.vue.js'
 Vue.component('ais-instant-search', AisInstantSearch)
 Vue.component('ais-search-box', AisSearchBox)
 Vue.component('ais-hits', AisHits)
-Vue.component('ais-index', AisIndex)
 Vue.component('ais-configure', AisConfigure)
-Vue.component('ais-highlight', AisHighlight)
-
 Vue.component('ais-refinement-list', AisRefinementList)
 Vue.component('ais-hierarchical-menu', AisHierarchicalMenu)
 Vue.component('ais-range-input', AisRangeInput)
@@ -75,7 +70,7 @@ export default {
         // Maybe it conflicts with ReactiveSearch?
         routing: {
             router: history(),
-            // stateMapping: singleIndex('rapidez_product_1'),
+            // stateMapping: singleIndex('rapidez_products_1'),
             stateMapping: simple(),
         },
     }),
@@ -290,7 +285,6 @@ export default {
         },
 
         withSwatches(items, filter) {
-            return [];
             items.map((item) => ({
                 swatch: this.$root.swatches[filter.base_code]?.options?.[item.value] ?? null,
                 ...item,
