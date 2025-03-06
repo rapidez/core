@@ -1,4 +1,4 @@
-@props(['query'])
+@props(['rootPath' => null])
 
 @pushOnce('head', 'es_url-preconnect')
     <link rel="preconnect" href="{{ config('rapidez.es_url') }}">
@@ -10,6 +10,7 @@
 
 <div class="min-h-screen">
     <listing
+        {{ $attributes }}
         :additional-sorting="[{
             label: window.config.translations.newest,
             field: 'created_at',
@@ -18,6 +19,8 @@
             value: config.index_prefix + '_products_' + config.store + '_created_at_desc',
             key: '_created_at_desc'
         }]"
+        {{-- TODO: Extract this somewhere? --}}
+        :index="config.index_prefix + '_products_' + config.store"
         inline-template
         v-cloak
     >
@@ -25,12 +28,9 @@
             <ais-instant-search
                 v-if="loaded"
                 :search-client="searchClient"
-                {{-- TODO: Extract this somewhere? --}}
-                :index-name="config.index_prefix + '_products_' + config.store"
+                :index-name="index"
                 :routing="routing"
             >
-                <ais-configure :filters="{!! $query !!}"/>
-
                 {{ $before ?? '' }}
                 @if ($slot->isEmpty())
                     <div class="flex flex-col lg:flex-row gap-x-6 gap-y-3">

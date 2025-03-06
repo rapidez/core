@@ -99,15 +99,21 @@ class Category extends Model
         $categoryIds = explode('/', $this->path);
         $categoryIds = array_slice($categoryIds, array_search(config('rapidez.root_category_id'), $categoryIds) + 1);
 
-        return ! $categoryIds ? [] : Category::whereIn($this->getTable() . '.entity_id', $categoryIds)
-            ->orderByRaw('FIELD(' . $this->getTable() . '.entity_id,' . implode(',', $categoryIds) . ')')
+        return ! $categoryIds ? [] : Category::whereIn($this->getQualifiedKeyName(), $categoryIds)
+            ->orderByRaw('FIELD(' . $this->getQualifiedKeyName() . ',' . implode(',', $categoryIds) . ')')
             ->get();
     }
 
     protected function makeAllSearchableUsing(Builder $query)
     {
         // TODO: Is this filter still useful? You could override and
-        // extend the existing model which gives you full control
+        // extend the existing model which gives you full control.
+        // But... that will be applied always, this one is just
+        // for the index. Another option could be to have 2
+        // category models; a default and one specificly
+        // for the index: Models/IndexCategory.php
+        // directly handy to give these Scout
+        // methods their own place...
         return $query->withEventyGlobalScopes('index.categories.scopes')
             ->select((new (config('rapidez.models.category')))->qualifyColumns(['entity_id', 'name']))
             ->whereNotNull('url_key')

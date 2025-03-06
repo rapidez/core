@@ -18,11 +18,6 @@
                         class="flex justify-between text-base text-muted"
                     >
                         <div class="flex">
-                            {{--
-                            TODO: Maybe we should change these checkboxes
-                            to anchors so we can use createURL(item)
-                            within a href. Maybe useful for SEO?
-                            --}}
                             <x-rapidez::input.checkbox
                                 v-bind:checked="item.isRefined"
                                 v-on:change="refine(item.value)"

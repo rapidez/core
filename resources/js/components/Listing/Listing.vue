@@ -5,7 +5,6 @@ import Client from '@searchkit/instantsearch-client'
 import Searchkit from 'searchkit'
 
 import { history } from 'instantsearch.js/es/lib/routers'
-import { simple } from 'instantsearch.js/es/lib/stateMappings'
 
 import AisInstantSearch from 'vue-instantsearch/vue2/es/src/components/InstantSearch'
 import AisSearchBox from 'vue-instantsearch/vue2/es/src/components/SearchBox.vue.js'
@@ -53,25 +52,25 @@ export default {
             type: Array,
             default: () => [],
         },
+        index: {
+            type: String,
+        },
+
+        // TODO: Document these two props in the Rapidez docs
+        query: {
+            type: Function,
+        },
+        baseFilters: {
+            type: Function,
+        },
     },
 
     data: () => ({
         loaded: false,
         attributes: useAttributes(),
 
-        // TODO: Not sure yet if this is the right option,
-        // when the routing works properly we maybe
-        // don't need this.
-        searchTerm: new URLSearchParams(window.location.search).get('q'),
-
-        // TODO: We need some finetuning here; the url isn't very clean.
-        // Also after a refresh the filters aren't selected.
-        // Maybe it conflicts with ReactiveSearch?
-        routing: {
-            router: history(),
-            // stateMapping: singleIndex('rapidez_products_1'),
-            stateMapping: simple(),
-        },
+        searchkit: null,
+        searchClient: null,
     }),
 
     render() {
@@ -79,43 +78,131 @@ export default {
     },
 
     mounted() {
+        this.searchkit = this.initSearchkit()
+        this.searchClient = this.initSearchClient()
+
         this.loaded = Object.keys(this.attributes).length > 0
     },
 
     computed: {
+        // TODO: Maybe move this completely to PHP?
+        // Any drawbacks? A window.config that
+        // becomes to big? Is that an issue?
+        filters() {
+            return Object.values(this.attributes)
+                .filter((attribute) => attribute.filter)
+                .map((filter) => ({ ...filter, code: this.filterPrefix(filter) + filter.code, base_code: filter.code }))
+                .sort((a, b) => a.position - b.position)
+        },
+
+        facets() {
+            return [
+                ...this.filters.map((filter) => ({
+                    attribute: filter.code,
+                    field: filter.code + (this.filterType(filter) == 'string' ? '.keyword' : ''),
+                    type: this.filterType(filter),
+                })),
+                ...this.categoryAttributes.map((attribute) => ({
+                    attribute: attribute,
+                    field: attribute + '.keyword',
+                    type: 'string',
+                })),
+            ]
+            // TODO: Double check this and how it's used.
+            // .concat(this.additionalFilters)
+        },
+
+        categoryAttributes() {
+            return Array.from({ length: config.max_category_level ?? 3 }).map((_, index) => 'category_lvl' + (index + 1))
+        },
+
+        sortings() {
+            return Object.values(this.attributes).filter((attribute) => attribute.sorting)
+        },
+
+        hitsPerPage() {
+            return this.$root.config.grid_per_page_values
+                .map(function (pages, index) {
+                    return {
+                        label: pages,
+                        value: pages,
+                        default: pages == config.grid_per_page,
+                    }
+                })
+                .concat({ label: this.$root.config.translations.all, value: 10000 })
+        },
+
+        sortOptions() {
+            return [
+                {
+                    label: window.config.translations.relevance,
+                    field: '_score',
+                    order: 'desc',
+                    value: config.index,
+                    key: 'default',
+                },
+            ]
+                .concat(
+                    this.sortings.flatMap(function (sorting) {
+                        return [
+                            ['asc', window.config.translations.asc],
+                            ['desc', window.config.translations.desc],
+                        ].map(function ([directionKey, directionLabel]) {
+                            return {
+                                label:
+                                    window.config.translations.sorting?.[sorting.code]?.[directionKey] ??
+                                    sorting.name + ' ' + directionLabel,
+                                field: sorting.code + (sorting.code != 'price' ? '.keyword' : ''),
+                                order: directionKey,
+                                value: [config.index, sorting.code, directionKey].join('_'),
+                                key: '_' + [sorting.code, directionKey].join('_'),
+                            }
+                        })
+                    }),
+                )
+                .concat(this.additionalSorting)
+        },
+
+        routing() {
+            return {
+                router: history({
+                    cleanUrlOnDispose: false,
+                }),
+                stateMapping: {
+                    routeToState: this.routeToState,
+                    stateToRoute: this.stateToRoute,
+                },
+            }
+        },
+
+        // TODO: Do we want to make this extendable?
+        rangeAttributes() {
+            return this.filters.filter((filter) => filter.input == 'price').map((filter) => filter.code)
+        },
+    },
+
+    watch: {
+        attributes(value) {
+            this.loaded = Object.keys(value).length > 0
+        },
+    },
+
+    methods: {
         // TODO: Not sure if this is the right place,
         // the autocomplete also needs this but
         // we don't want to load everything
         // directly due the JS size
-        searchClient: function () {
-            let client = Client(this.searchkit, {
-                hooks: {
-                    beforeSearch: async (searchRequests) => {
-                        return searchRequests.map((sr) => {
-                            // TODO: Maybe use deepmerge here so it doesn't
-                            // really matter what query is used? What
-                            // if we want to add something to the
-                            // "must" instead of "filter"?
-                            if (this.getQuery()) {
-                                sr.body.query.bool.filter.push(this.getQuery())
-                            }
-                            // And, this is currently applied on all queries,
-                            // it's only relevant on the listing one.
-                            return sr
-                        })
-                    },
-                },
+        initSearchClient() {
+            return Client(this.searchkit, {
+                getBaseFilters: this.baseFilters,
+                getQuery: this.query,
             })
-
-            // console.log(client)
-
-            return client
         },
 
-        searchkit: function () {
+        initSearchkit() {
             let url = new URL(config.es_url)
 
-            let searchkit = new Searchkit({
+            return new Searchkit({
                 connection: {
                     host: url.origin,
                     auth: {
@@ -152,92 +239,39 @@ export default {
                     }),
                 },
             })
-
-            // console.log(this.sortOptions)
-
-            return searchkit
         },
 
-        // TODO: Maybe move this completely to PHP?
-        // Any drawbacks? A window.config that
-        // becomes to big? Is that an issue?
-        filters: function () {
-            return Object.values(this.attributes)
-                .filter((attribute) => attribute.filter)
-                .map((filter) => ({ ...filter, code: this.filterPrefix(filter) + filter.code, base_code: filter.code }))
-                .sort((a, b) => a.position - b.position)
+        stateToRoute(uiState) {
+            let data = uiState[this.index]
+
+            let parameters = {
+                ...(data.range || {}),
+                ...(data.refinementList || {}),
+            }
+
+            if ('query' in data) {
+                parameters['q'] = data['query']
+            }
+
+            return parameters
         },
 
-        facets: function () {
-            return [
-                ...this.filters.map((filter) => ({
-                    attribute: filter.code,
-                    field: filter.code + (this.filterType(filter) == 'string' ? '.keyword' : ''),
-                    type: this.filterType(filter),
-                })),
-                { attribute: 'category_lvl1', field: 'category_lvl1.keyword', type: 'string' },
-                { attribute: 'category_lvl2', field: 'category_lvl2.keyword', type: 'string' },
-                { attribute: 'category_lvl3', field: 'category_lvl3.keyword', type: 'string' },
-            ]
-            // TODO: Double check this and how it's used.
-            // .concat(this.additionalFilters)
-        },
+        routeToState(routeState) {
+            let ranges = Object.fromEntries(Object.entries(routeState).filter(([key, _]) => this.rangeAttributes.includes(key)))
 
-        sortings: function () {
-            return Object.values(this.attributes).filter((attribute) => attribute.sorting)
-        },
+            let refinementList = Object.fromEntries(
+                Object.entries(routeState).filter(([key, _]) => key != 'q' && !this.rangeAttributes.includes(key)),
+            )
 
-        hitsPerPage: function () {
-            return this.$root.config.grid_per_page_values
-                .map(function (pages, index) {
-                    return {
-                        label: pages,
-                        value: pages,
-                        default: pages == config.grid_per_page,
-                    }
-                })
-                .concat({ label: this.$root.config.translations.all, value: 10000 })
-        },
-
-        sortOptions: function () {
-            return [
-                {
-                    label: window.config.translations.relevance,
-                    field: '_score',
-                    order: 'desc',
-                    value: config.index,
-                    key: 'default',
+            return {
+                [this.index]: {
+                    refinementList: refinementList,
+                    range: ranges,
+                    query: routeState.q,
                 },
-            ]
-                .concat(
-                    this.sortings.flatMap(function (sorting) {
-                        return [
-                            ['asc', window.config.translations.asc],
-                            ['desc', window.config.translations.desc],
-                        ].map(function ([directionKey, directionLabel]) {
-                            return {
-                                label:
-                                    window.config.translations.sorting?.[sorting.code]?.[directionKey] ??
-                                    sorting.name + ' ' + directionLabel,
-                                field: sorting.code + (sorting.code != 'price' ? '.keyword' : ''),
-                                order: directionKey,
-                                value: [config.index, sorting.code, directionKey].join('_'),
-                                key: '_' + [sorting.code, directionKey].join('_'),
-                            }
-                        })
-                    }),
-                )
-                .concat(this.additionalSorting)
+            }
         },
-    },
 
-    watch: {
-        attributes: function (value) {
-            this.loaded = Object.keys(value).length > 0
-        },
-    },
-
-    methods: {
         filterType(filter) {
             if (filter.super) {
                 return 'numeric'
@@ -258,34 +292,18 @@ export default {
             return ''
         },
 
-        getQuery() {
-            if (!window.config.category?.entity_id) {
-                return
-            }
-
-            return {
-                // query: {
-                function_score: {
-                    script_score: {
-                        script: {
-                            source: `Integer.parseInt(doc['positions.${window.config.category.entity_id}'].empty ? '0' : doc['positions.${window.config.category.entity_id}'].value)`,
-                        },
-                    },
-                },
-                // },
-            }
-        },
-
         withFilters(items) {
-            return items.map((item) => ({
-                filter: this.filters.find((filter) => filter.code === item.attribute),
-                ...item,
-            }))
+            return items
+                .map((item) => ({
+                    filter: this.filters.find((filter) => filter.code === item.attribute),
+                    ...item,
+                }))
+                .filter((item) => item.filter)
         },
 
         withSwatches(items, filter) {
-            items.map((item) => ({
-                swatch: this.$root.swatches[filter.base_code]?.options?.[item.value] ?? null,
+            return items.map((item) => ({
+                swatch: this.$root.swatches[filter?.base_code]?.options?.[item.value] ?? null,
                 ...item,
             }))
         },

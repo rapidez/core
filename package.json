@@ -7,7 +7,6 @@
         "prod": "vite build"
     },
     "devDependencies": {
-        "@algolia/autocomplete-js": "^1.17.9",
         "@babel/core": "^7.23.9",
         "@hotwired/turbo": "^8.0.2",
         "@searchkit/instantsearch-client": "^4.14.1",
