@@ -251,8 +251,8 @@ export default {
             if (this.filterQueryString) {
                 extraFilters.push({
                     query_string: {
-                        query: this.filterQueryString
-                    }
+                        query: this.filterQueryString,
+                    },
                 })
             }
 
