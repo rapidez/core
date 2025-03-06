@@ -16,7 +16,7 @@
         v-on:click="toggleZoom"
     >
         <span
-            class="size-9 flex items-center justify-center rounded-full bg-white text-sm font-bold text shadow-lg"
+            class="size-9 flex items-center justify-center rounded-full bg-white text-sm font-bold text shadow-md"
             v-text="'+' + (images.length - {{ $imageId }} - 1)"
         >
             +{{ count($product->images) - $imageId - 1 }}

@@ -6,11 +6,12 @@
                 <div class="absolute flex w-full h-0.5 top-5 left-1/2 {{ $currentStepKey > $checkoutStepKey ? 'bg-emphasis' : 'bg' }}"></div>
             @endif
             <a href="{{ route('checkout', $checkoutStep) }}" @class([
-                'relative flex size-10 mx-auto justify-center rounded-full font-bold items-center border',
+                'relative flex size-10 mx-auto justify-center rounded-full font-bold items-center',
                 'pointer-events-none cursor-default' => $currentStepKey < $checkoutStepKey,
-                'bg-emphasis' => $checkoutStepKey <= $currentStepKey,
-                'bg-white' => $checkoutStepKey > $currentStepKey,
-                'bg-emphasis shadow-md shadow-emphasis pointer-events-none cursor-default' => $checkoutStepKey === $currentStepKey
+                'bg-secondary' => $checkoutStepKey < $currentStepKey,
+                'text-white' => $checkoutStepKey <= $currentStepKey,
+                'bg-white border' => $checkoutStepKey > $currentStepKey,
+                'bg-primary pointer-events-none cursor-default' => $checkoutStepKey === $currentStepKey
             ])>
                 {{ $checkoutStepKey + 1 }}
             </a>
