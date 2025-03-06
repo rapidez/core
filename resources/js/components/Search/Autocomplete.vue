@@ -11,12 +11,12 @@ import AisHighlight from 'vue-instantsearch/vue2/es/src/components/Highlight.vue
 
 export default {
     components: {
-       'ais-instant-search': AisInstantSearch,
-       'ais-search-box': AisSearchBox,
-       'ais-hits': AisHits,
-       'ais-index': AisIndex,
-       'ais-configure': AisConfigure,
-       'ais-highlight': AisHighlight,
+        'ais-instant-search': AisInstantSearch,
+        'ais-search-box': AisSearchBox,
+        'ais-hits': AisHits,
+        'ais-index': AisIndex,
+        'ais-configure': AisConfigure,
+        'ais-highlight': AisHighlight,
     },
     data: () => ({
         loaded: false,
