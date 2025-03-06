@@ -13,10 +13,10 @@
 
 @theme {
     /* Our variables used by different utilities */
-    --primary: #2FBC85;
+    --primary: #2fbc85;
     --primary-text: var(--color-white);
 
-    --secondary: #202F60;
+    --secondary: #202f60;
     --secondary-text: var(--color-white);
 
     --conversion: var(--color-green-500);
@@ -34,7 +34,7 @@
     --background: var(--color-slate-100);
     --background-muted: var(--color-slate-50);
 
-      /* Utility colors linked to our variables */
+    /* Utility colors linked to our variables */
     --color-primary: var(--primary);
     --color-primary-text: var(--primary-text);
 
@@ -114,7 +114,7 @@
     }
 
     button:not(:disabled),
-    [role="button"]:not(:disabled) {
+    [role='button']:not(:disabled) {
         cursor: pointer;
     }
 }
