@@ -18,15 +18,16 @@
             value: config.index_prefix + '_products_' + config.store + '_created_at_desc',
             key: '_created_at_desc'
         }]"
+        inline-template
         v-cloak
     >
-        <div slot-scope="{ loaded, filters, sortOptions, getQuery, withFilters, withSwatches, filterPrefix, _renderProxy: listingSlotProps }">
+        <div>
             <ais-instant-search
                 v-if="loaded"
-                :search-client="listingSlotProps.searchClient"
+                :search-client="searchClient"
                 {{-- TODO: Extract this somewhere? --}}
                 :index-name="config.index_prefix + '_products_' + config.store"
-                :routing="listingSlotProps.routing"
+                :routing="routing"
             >
                 <ais-configure :filters="{!! $query !!}"/>
 
