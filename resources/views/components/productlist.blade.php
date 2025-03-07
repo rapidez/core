@@ -20,7 +20,7 @@ But it currently doesn't work without it.
             --}}
             <div>
                 <ais-instant-search
-                    v-if="loaded"
+                    v-if="loaded && searchClient"
                     :search-client="searchClient"
                     :index-name="config.index"
                 >
