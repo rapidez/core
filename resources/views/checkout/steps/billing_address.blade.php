@@ -5,7 +5,8 @@
         ...window.address_defaults,
         ...cart.billing_address,
         same_as_shipping: !cart.is_virtual && (cart?.billing_address?.same_as_shipping ?? true),
-        country_code: cart.billing_address?.country.code || window.address_defaults.country_code
+        country_code: cart.billing_address?.country.code || window.address_defaults.country_code,
+        region_id: cart.billing_address?.region.region_id || window.address_defaults.region_id,
     }))"
     :before-request="(query, variables, options) => [variables.customer_address_id ? config.queries.setExistingBillingAddressOnCart : query, variables, options]"
     :callback="updateCart"
