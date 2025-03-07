@@ -62,6 +62,13 @@ export default {
         },
         baseFilters: {
             type: Function,
+            default: () => [],
+        },
+        filterQueryString: {
+            type: String,
+        },
+        filterScoreScript: {
+            type: String,
         },
     },
 
@@ -194,7 +201,7 @@ export default {
         // directly due the JS size
         initSearchClient() {
             return Client(this.searchkit, {
-                getBaseFilters: this.baseFilters,
+                getBaseFilters: this.getBaseFilters,
                 getQuery: this.query,
             })
         },
@@ -239,6 +246,31 @@ export default {
                     }),
                 },
             })
+        },
+
+        getBaseFilters() {
+            let extraFilters = []
+            if (this.filterQueryString) {
+                extraFilters.push({
+                    query_string: {
+                        query: this.filterQueryString,
+                    },
+                })
+            }
+
+            if (this.filterScoreScript) {
+                extraFilters.push({
+                    function_score: {
+                        script_score: {
+                            script: {
+                                source: this.filterScoreScript,
+                            },
+                        },
+                    },
+                })
+            }
+
+            return this.baseFilters().concat(extraFilters)
         },
 
         stateToRoute(uiState) {
