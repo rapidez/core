@@ -37,4 +37,8 @@ export const attributes = computedAsync(
     { lazy: true, shallow: false },
 )
 
+window.attributeLabel = (attributeCode) => {
+    return Object.values(attributes.value)?.find((attribute) => attribute.code === attributeCode)?.name
+}
+
 export default () => attributes
