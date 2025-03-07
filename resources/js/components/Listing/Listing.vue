@@ -68,6 +68,7 @@ export default {
 
         searchkit: null,
         searchClient: null,
+        sortBy: null,
     }),
 
     render() {
@@ -180,9 +181,7 @@ export default {
 
         routing() {
             return {
-                router: history({
-                    cleanUrlOnDispose: false,
-                }),
+                router: history(),
                 stateMapping: {
                     routeToState: this.routeToState,
                     stateToRoute: this.stateToRoute,
@@ -279,9 +278,21 @@ export default {
         stateToRoute(uiState) {
             let data = uiState[this.index]
 
+            let options = {}
+            if (data.hitsPerPage != config.grid_per_page) {
+                options['hitsPerPage'] = data.hitsPerPage
+            }
+            if (data.page > 1) {
+                options['page'] = data.page
+            }
+            if (data.sortBy) {
+                options['sortBy'] = data.sortBy.replace(this.index, '')
+            }
+
             let parameters = {
                 ...(data.range || {}),
                 ...(data.refinementList || {}),
+                options: options,
             }
 
             if ('query' in data) {
@@ -292,6 +303,12 @@ export default {
         },
 
         routeToState(routeState) {
+            let options = routeState.options ?? {}
+            if ('sortBy' in options) {
+                options.sortBy = this.index + options.sortBy
+                this.sortBy = options.sortBy
+            }
+
             let ranges = Object.fromEntries(Object.entries(routeState).filter(([key, _]) => this.rangeAttributes.includes(key)))
 
             let refinementList = Object.fromEntries(
@@ -303,6 +320,7 @@ export default {
                     refinementList: refinementList,
                     range: ranges,
                     query: routeState.q,
+                    ...options,
                 },
             }
         },
