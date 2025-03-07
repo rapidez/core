@@ -1,22 +1,11 @@
-<div v-if="!$root.loadAutocomplete" class="relative w-full">
-    {{-- TODO: Do we still need this double input? --}}
-    <form method="get" action="{{ route('search') }}">
-        <x-rapidez::input
-            type="search"
-            name="q"
-            :placeholder="__('What are you looking for?')"
-            v-on:focus="$root.loadAutocomplete = true"
-            v-on:mouseover="$root.loadAutocomplete = true"
-        />
-    </form>
-    <x-rapidez::autocomplete.magnifying-glass />
-</div>
 
-<autocomplete v-else inline-template>
+<autocomplete inline-template>
     <div class="relative w-full">
         <ais-instant-search
+            v-if="searchClient"
+            v-cloak
             class="contents"
-            :search-client="searchClient"
+            :search-client="searchClient "
             :index-name="config.index_prefix + '_products_' + config.store"
         >
             <div class="contents">
@@ -50,5 +39,18 @@
                 </div>
             </div>
         </ais-instant-search>
+        <div v-else class="relative w-full">
+            {{-- TODO: Do we still need this double input? --}}
+            <form name="autocomplete-form" id="autocomplete-form" method="get" action="{{ route('search') }}" class="flex flex-row relative">
+                <x-rapidez::input
+                    type="search"
+                    name="q"
+                    :placeholder="__('What are you looking for?')"
+                    v-on:focus="window.document.dispatchEvent(new window.Event('loadAutoComplete'))"
+                    v-on:mouseover="window.document.dispatchEvent(new window.Event('loadAutoComplete'))"
+                />
+            </form>
+            <x-rapidez::autocomplete.magnifying-glass />
+        </div>
     </div>
 </autocomplete>

@@ -34,7 +34,24 @@ Vue.component('images', images)
 import quantitySelect from './components/Product/QuantitySelect.vue'
 Vue.component('quantity-select', quantitySelect)
 
-Vue.component('autocomplete', () => import('./components/Search/Autocomplete.vue'))
+Vue.component('autocomplete', () => ({
+    // https://v2.vuejs.org/v2/guide/components-dynamic-async.html#Async-Components
+    component: new Promise(function(resolve, reject) {
+       document.addEventListener('loadAutoComplete', () => import('./components/Search/Autocomplete.vue').then(resolve));
+    }),
+    // https://v2.vuejs.org/v2/guide/components-dynamic-async.html#Handling-Loading-State
+    loading: {
+        data: () => ({
+            loaded: false,
+            searchClient: null,
+        }),
+
+        render() {
+            return this.$scopedSlots.default(this)
+        },
+    },
+    delay: 0
+}))
 Vue.component('checkout-login', () => import('./components/Checkout/CheckoutLogin.vue'))
 Vue.component('login', () => import('./components/User/Login.vue'))
 Vue.component('listing', () => import('./components/Listing/Listing.vue'))
