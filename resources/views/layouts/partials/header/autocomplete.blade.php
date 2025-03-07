@@ -12,8 +12,8 @@
     <x-rapidez::autocomplete.magnifying-glass />
 </div>
 
-<autocomplete v-else>
-    <div slot-scope="{ searchClient, loaded }" class="relative w-full" v-if="loaded">
+<autocomplete v-else inline-template>
+    <div class="relative w-full">
         <ais-instant-search
             class="contents"
             :search-client="searchClient"

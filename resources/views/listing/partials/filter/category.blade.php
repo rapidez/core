@@ -1,5 +1,5 @@
 <ais-hierarchical-menu
-    v-bind:attributes="listingSlotProps.categoryAttributes"
+    v-bind:attributes="categoryAttributes"
     @attributes(['root-path' => $rootPath])
     show-more
 >

@@ -13,12 +13,12 @@ But it currently doesn't work without it.
 
 @if ($value)
     <lazy v-slot="{ intersected }">
-        <listing v-if="intersected" v-cloak>
+        <listing v-if="intersected" v-cloak inline-template>
             {{--
             TODO: Maybe better to have a wrapper
             component again like reactive-base?
             --}}
-            <div slot-scope="{ loaded, searchClient }">
+            <div>
                 <ais-instant-search
                     v-if="loaded"
                     :search-client="searchClient"
