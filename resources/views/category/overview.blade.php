@@ -12,19 +12,9 @@
 
         @if ($category->is_anchor)
             <x-rapidez::listing
-                v-bind:base-filters="() => [{
-                    query_string: {
-                        query: 'visibility:(2 OR 4) AND category_ids:{{ $category->entity_id }}'
-                    }
-                }, {
-                    function_score: {
-                        script_score: {
-                            script: {
-                                source: `Integer.parseInt(doc['positions.{{ $category->entity_id }}'].empty ? '0' : doc['positions.{{ $category->entity_id }}'].value)`,
-                            },
-                        },
-                    },
-                }]"
+                :root-path="$category->parentcategories->pluck('name')->join(' > ')"
+                filter-query-string="visibility:(2 OR 4) AND category_ids:{{ $category->entity_id }}"
+                filter-score-script="Integer.parseInt(doc['positions.{{ $category->entity_id }}'].empty ? '0' : doc['positions.{{ $category->entity_id }}'].value)"
             />
         @else
             <div class="flex max-md:flex-col">
