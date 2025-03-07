@@ -37,12 +37,12 @@ export default {
                     },
                 },
 
-                search_settings: await this.getSearchSettings()
+                search_settings: await this.getSearchSettings(),
             })
         },
 
         async getInstantSearchClientConfig() {
-            return {};
+            return {}
         },
 
         async getSearchSettings() {
@@ -54,8 +54,8 @@ export default {
                 search_attributes: config.searchkit.search_attributes,
                 result_attributes: config.searchkit.result_attributes,
                 filter_attributes: config.searchkit.filter_attributes,
-            };
+            }
         },
     },
-};
+}
 </script>

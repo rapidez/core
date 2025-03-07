@@ -14,7 +14,8 @@
     -webkit-tap-highlight-color: transparant;
 }
 
-listing, autocomplete {
+listing,
+autocomplete {
     /*  Reset browser added styling causing unexpected behavior */
     display: contents;
     font-family: unset;

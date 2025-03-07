@@ -36,8 +36,8 @@ Vue.component('quantity-select', quantitySelect)
 
 Vue.component('autocomplete', () => ({
     // https://v2.vuejs.org/v2/guide/components-dynamic-async.html#Async-Components
-    component: new Promise(function(resolve, reject) {
-       document.addEventListener('loadAutoComplete', () => import('./components/Search/Autocomplete.vue').then(resolve));
+    component: new Promise(function (resolve, reject) {
+        document.addEventListener('loadAutoComplete', () => import('./components/Search/Autocomplete.vue').then(resolve))
     }),
     // https://v2.vuejs.org/v2/guide/components-dynamic-async.html#Handling-Loading-State
     loading: {
@@ -50,7 +50,7 @@ Vue.component('autocomplete', () => ({
             return this.$scopedSlots.default(this)
         },
     },
-    delay: 0
+    delay: 0,
 }))
 Vue.component('checkout-login', () => import('./components/Checkout/CheckoutLogin.vue'))
 Vue.component('login', () => import('./components/User/Login.vue'))

@@ -184,16 +184,16 @@ export default {
 
     methods: {
         async getInstantSearchClientConfig() {
-            const config = await InstantSearchMixin.methods.getInstantSearchClientConfig.bind(this).call();
+            const config = await InstantSearchMixin.methods.getInstantSearchClientConfig.bind(this).call()
 
-            config.getBaseFilters = this.getBaseFilters;
-            config.getQuery = this.query;
+            config.getBaseFilters = this.getBaseFilters
+            config.getQuery = this.query
 
-            return config;
+            return config
         },
 
         async getSearchSettings() {
-            let config = await InstantSearchMixin.methods.getSearchSettings.bind(this).call();
+            let config = await InstantSearchMixin.methods.getSearchSettings.bind(this).call()
 
             return {
                 ...config,
@@ -214,7 +214,7 @@ export default {
                     }
                     return acc
                 }),
-            };
+            }
         },
 
         getBaseFilters() {

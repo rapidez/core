@@ -28,8 +28,8 @@ export default {
     },
 
     methods: {
-        async initSearchClient () {
-            const client = await InstantSearchMixin.methods.initSearchClient.bind(this).call();
+        async initSearchClient() {
+            const client = await InstantSearchMixin.methods.initSearchClient.bind(this).call()
 
             // Ensure no query is done if the search field is empty
             const oldSearch = client.search
