@@ -52,6 +52,13 @@ export default {
         },
         baseFilters: {
             type: Function,
+            default: () => [],
+        },
+        filterQueryString: {
+            type: String,
+        },
+        filterScoreScript: {
+            type: String,
         },
     },
 
@@ -79,30 +86,35 @@ export default {
         // TODO: Maybe move this completely to PHP?
         // Any drawbacks? A window.config that
         // becomes to big? Is that an issue?
-        filters: function () {
+        filters() {
             return Object.values(this.attributes)
                 .filter((attribute) => attribute.filter)
                 .map((filter) => ({ ...filter, code: this.filterPrefix(filter) + filter.code, base_code: filter.code }))
                 .sort((a, b) => a.position - b.position)
         },
 
-        facets: function () {
+        facets() {
             return [
                 ...this.filters.map((filter) => ({
                     attribute: filter.code,
                     field: filter.code + (this.filterType(filter) == 'string' ? '.keyword' : ''),
                     type: this.filterType(filter),
                 })),
-                { attribute: 'category_lvl0', field: 'category_lvl0.keyword', type: 'string' },
-                { attribute: 'category_lvl1', field: 'category_lvl1.keyword', type: 'string' },
-                { attribute: 'category_lvl2', field: 'category_lvl2.keyword', type: 'string' },
-                { attribute: 'category_lvl3', field: 'category_lvl3.keyword', type: 'string' },
+                ...this.categoryAttributes.map((attribute) => ({
+                    attribute: attribute,
+                    field: attribute + '.keyword',
+                    type: 'string',
+                })),
             ]
             // TODO: Double check this and how it's used.
             // .concat(this.additionalFilters)
         },
 
-        sortings: function () {
+        categoryAttributes() {
+            return Array.from({ length: config.max_category_level ?? 3 }).map((_, index) => 'category_lvl' + (index + 1))
+        },
+
+        sortings() {
             return Object.values(this.attributes)
                 .filter((attribute) => attribute.sorting)
                 .concat(
@@ -113,7 +125,7 @@ export default {
                 )
         },
 
-        hitsPerPage: function () {
+        hitsPerPage() {
             return this.$root.config.grid_per_page_values
                 .map(function (pages, index) {
                     return {
@@ -125,7 +137,7 @@ export default {
                 .concat({ label: this.$root.config.translations.all, value: 10000 })
         },
 
-        sortOptions: function () {
+        sortOptions() {
             let sortOptions = [
                 {
                     label: config.translations.relevance,
@@ -184,7 +196,7 @@ export default {
     },
 
     watch: {
-        attributes: function (value) {
+        attributes(value) {
             this.loaded = Object.keys(value).length > 0
         },
     },
@@ -196,7 +208,7 @@ export default {
         // directly due the JS size
         initSearchClient() {
             return Client(this.searchkit, {
-                getBaseFilters: this.baseFilters,
+                getBaseFilters: this.getBaseFilters,
                 getQuery: this.query,
             })
         },
@@ -236,6 +248,31 @@ export default {
                     }),
                 },
             })
+        },
+
+        getBaseFilters() {
+            let extraFilters = []
+            if (this.filterQueryString) {
+                extraFilters.push({
+                    query_string: {
+                        query: this.filterQueryString,
+                    },
+                })
+            }
+
+            if (this.filterScoreScript) {
+                extraFilters.push({
+                    function_score: {
+                        script_score: {
+                            script: {
+                                source: this.filterScoreScript,
+                            },
+                        },
+                    },
+                })
+            }
+
+            return this.baseFilters().concat(extraFilters)
         },
 
         stateToRoute(uiState) {
@@ -309,15 +346,17 @@ export default {
         },
 
         withFilters(items) {
-            return items.map((item) => ({
-                filter: this.filters.find((filter) => filter.code === item.attribute),
-                ...item,
-            }))
+            return items
+                .map((item) => ({
+                    filter: this.filters.find((filter) => filter.code === item.attribute),
+                    ...item,
+                }))
+                .filter((item) => item.filter)
         },
 
         withSwatches(items, filter) {
             return items.map((item) => ({
-                swatch: this.$root.swatches[filter.base_code]?.options?.[item.value] ?? null,
+                swatch: this.$root.swatches[filter?.base_code]?.options?.[item.value] ?? null,
                 ...item,
             }))
         },
