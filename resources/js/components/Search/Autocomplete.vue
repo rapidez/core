@@ -22,7 +22,7 @@ export default {
 
     mounted() {
         this.$nextTick(() => {
-            this.$emit('mounted')
+            window.setTimeout(() => this.$emit('mounted'));
             this.loaded = true
         })
     },

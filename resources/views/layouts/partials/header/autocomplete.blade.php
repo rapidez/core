@@ -1,5 +1,5 @@
 
-<autocomplete inline-template>
+<autocomplete inline-template v-on:mounted="() => window.document.getElementById('autocomplete-input').focus()">
     <div class="relative w-full">
         <ais-instant-search
             v-if="searchClient"
@@ -16,6 +16,7 @@
                         <template v-slot="{ currentRefinement, isSearchStalled, refine }">
                             <form name="autocomplete-form" id="autocomplete-form" method="get" action="{{ route('search') }}" class="flex flex-row relative">
                                 <x-rapidez::input
+                                    id="autocomplete-input"
                                     type="search"
                                     focus="true"
                                     autocomplete="off"
@@ -24,6 +25,11 @@
                                     spellcheck="false"
                                     name="q"
                                     v-bind:value="currentRefinement"
+                                    v-on:focus="() => {
+                                        refine($root.autocompleteFacadeQuery || currentRefinement);
+                                        $root.autocompleteFacadeQuery = null;
+                                    }
+                                    "
                                     v-on:input="refine($event.currentTarget.value)"
                                     :placeholder="__('What are you looking for?')"
                                 />
@@ -46,6 +52,7 @@
                     type="search"
                     name="q"
                     :placeholder="__('What are you looking for?')"
+                    v-model="$root.autocompleteFacadeQuery"
                     v-on:focus="window.document.dispatchEvent(new window.Event('loadAutoComplete'))"
                     v-on:mouseover="window.document.dispatchEvent(new window.Event('loadAutoComplete'))"
                 />
