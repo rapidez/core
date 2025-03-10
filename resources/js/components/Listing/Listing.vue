@@ -31,7 +31,7 @@ export default {
         'ais-stats': AisStats,
     },
     props: {
-        sortOptionsCallback: {
+        configCallback: {
             type: Function,
         },
         index: {
@@ -89,17 +89,6 @@ export default {
             return Array.from({ length: config.max_category_level ?? 3 }).map((_, index) => 'category_lvl' + (index + 1))
         },
 
-        sortings() {
-            return Object.values(config.filterable_attributes)
-                .filter((attribute) => attribute.sorting)
-                .concat(
-                    Object.entries(config.searchkit.sorting).map(([code, directions]) => ({
-                        code: code,
-                        directions: directions,
-                    })),
-                )
-        },
-
         hitsPerPage() {
             return this.$root.config.grid_per_page_values
                 .map(function (pages, index) {
@@ -110,48 +99,6 @@ export default {
                     }
                 })
                 .concat({ label: this.$root.config.translations.all, value: 10000 })
-        },
-
-        sortOptions() {
-            let sortOptions = [
-                {
-                    label: config.translations.relevance,
-                    field: '_score',
-                    order: 'desc',
-                    value: this.index,
-                    key: 'default',
-                },
-            ].concat(
-                this.sortings.flatMap((sorting) =>
-                    (sorting.directions ?? ['asc', 'desc']).map((direction) => {
-                        let label = ''
-                        if (config.translations.sorting?.[sorting.code]?.[direction]) {
-                            label = config.translations.sorting?.[sorting.code]?.[direction]
-                        } else {
-                            label = config.translations[sorting.code] ?? sorting.name ?? sorting.code
-
-                            // Add asc/desc if relevant
-                            if (sorting.directions?.length != 1) {
-                                label += ' ' + (config.translations[direction] ?? direction)
-                            }
-                        }
-
-                        return {
-                            label: label,
-                            field: sorting.code + (sorting.input == 'text' ? '.keyword' : ''),
-                            order: direction,
-                            value: [this.index, sorting.code, direction].join('_'),
-                            key: '_' + [sorting.code, direction].join('_'),
-                        }
-                    }),
-                ),
-            )
-
-            if (this.sortOptionsCallback) {
-                sortOptions = this.sortOptionsCallback(sortOptions)
-            }
-
-            return sortOptions
         },
 
         routing() {
@@ -186,27 +133,11 @@ export default {
 
         async getSearchSettings() {
             let config = await InstantSearchMixin.methods.getSearchSettings.bind(this).call()
-
-            return {
+            config = {
                 ...config,
-
-                // TODO: For consistency maybe make it possible to do this:
-                // facet_attributes: config.searchkit.facet_attributes,
                 facet_attributes: this.facets,
-
-                // TODO: Let's also change this to a PHP config.
-                // So we start there and that will be merged
-                // with the Magento configured attributes
-                // and lastly from a prop it's possible
-                // to manipulate it from a callback?
-                sorting: this.sortOptions.reduce((acc, item) => {
-                    acc[item.key] = {
-                        field: item.field,
-                        order: item.order,
-                    }
-                    return acc
-                }),
             }
+            return this.configCallback ? this.configCallback(config) : config
         },
 
         getBaseFilters() {

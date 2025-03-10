@@ -153,6 +153,40 @@ class ConfigComposer
 
         Config::set('rapidez.searchkit.search_attributes', $searchableAttributes);
 
+
+        // Get all sortable attributes from Magento
+        $sortableAttributes = $attributeModel::getCachedWhere(function ($attribute) {
+            return $attribute['sorting'] || in_array($attribute['code'], array_keys(config('rapidez.searchkit.sorting')));
+        });
+
+        foreach(config('rapidez.searchkit.sorting') as $code => $directions) {
+            $attribute = collect($sortableAttributes)->search(fn($attribute) => $attribute['code'] == $code);
+            if ($attribute) {
+                $sortableAttributes[$attribute]['directions'] = $directions;
+            }
+        }
+
+        $index = (new (config('rapidez.models.product')))->searchableAs();
+
+        $sortableAttributes = collect($sortableAttributes)
+            ->flatMap(fn ($attribute) => Arr::map(($attribute['directions'] ?? null) ?: ['asc', 'desc'], fn($direction) => [
+                'label' => __("{$attribute['code']} {$direction}"),
+                'field' => $attribute['code'] . ($attribute['input'] == 'text' ? '.keyword' : ''),
+                'order' => $direction,
+                'value' => "{$index}_{$attribute['code']}_{$direction}",
+                'key' => "_{$attribute['code']}_{$direction}",
+            ]));
+
+        $sortableAttributes->prepend([
+            'label' => 'relevance',
+            'field' => '_score',
+            'order' => 'desc',
+            'value' => $index,
+            'key' => 'default',
+        ]);
+
+        Config::set('rapidez.searchkit.sorting', $sortableAttributes->keyBy('key')->toArray());
+
         return $this;
     }
 }
