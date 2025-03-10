@@ -131,7 +131,7 @@ class Rapidez
         config()->set('frontend.base_url', url('/'));
 
         // Set all store-specific values
-        foreach(array_keys(config('rapidez')) as $config) {
+        foreach (array_keys(config('rapidez')) as $config) {
             foreach (config('rapidez.stores.' . $store['code'] . '.' . $config, []) as $key => $value) {
                 config()->set('rapidez.' . $config . '.' . $key, $value);
             }

@@ -32,7 +32,7 @@ class Attribute extends Model
     protected function prefix(): CastsAttribute
     {
         return CastsAttribute::make(
-            get: function() {
+            get: function () {
                 if ($this->super) {
                     return 'super_';
                 }

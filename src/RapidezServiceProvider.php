@@ -268,7 +268,7 @@ class RapidezServiceProvider extends ServiceProvider
             @[$store, $path] = explode('/', Str::after($configFile, '/config/rapidez/stores/'), 2);
             $path = str($path)->beforeLast('.php')->replace('/', '.')->toString();
 
-            if (!$store || !$path) {
+            if (! $store || ! $path) {
                 continue;
             }
 

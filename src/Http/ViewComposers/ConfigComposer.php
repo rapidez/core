@@ -92,9 +92,9 @@ class ConfigComposer
         });
 
         return collect($attributes)
-            ->map(fn($attribute) => [
+            ->map(fn ($attribute) => [
                 ...$attribute,
-                'code' => $attribute['prefix'] . $attribute['code'],
+                'code'      => $attribute['prefix'] . $attribute['code'],
                 'base_code' => $attribute['code'],
             ])
             ->sortBy('position')
@@ -145,10 +145,11 @@ class ConfigComposer
         $filterableAttributes = collect($this->getFilterableAttributes())
             ->map(function ($attribute) {
                 $isNumeric = $attribute['super'] || in_array($attribute['input'], ['boolean', 'price']);
+
                 return [
                     'attribute' => $attribute['code'],
-                    'field' => $attribute['code'] . ($isNumeric ? '' : '.keyword'),
-                    'type' => $isNumeric ? 'numeric' : 'string'
+                    'field'     => $attribute['code'] . ($isNumeric ? '' : '.keyword'),
+                    'type'      => $isNumeric ? 'numeric' : 'string',
                 ];
             });
 
@@ -156,8 +157,8 @@ class ConfigComposer
         $categoryLevels = collect(array_fill(1, $maxLevel, 'category_lvl'))
             ->map(fn ($value, $key) => [
                 'attribute' => $value . $key,
-                'field' => $value . $key . '.keyword',
-                'type' => 'string'
+                'field'     => $value . $key . '.keyword',
+                'type'      => 'string',
             ]);
 
         $facetAttributes = $filterableAttributes
@@ -200,8 +201,8 @@ class ConfigComposer
         });
 
         // Add `direction` to custom sortings
-        foreach(config('rapidez.searchkit.sorting') as $code => $directions) {
-            $attribute = collect($sortableAttributes)->search(fn($attribute) => $attribute['code'] == $code);
+        foreach (config('rapidez.searchkit.sorting') as $code => $directions) {
+            $attribute = collect($sortableAttributes)->search(fn ($attribute) => $attribute['code'] == $code);
             if ($attribute) {
                 $sortableAttributes[$attribute]['directions'] = $directions;
             }
@@ -209,12 +210,12 @@ class ConfigComposer
 
         $index = (new (config('rapidez.models.product')))->searchableAs();
         $sortableAttributes = collect($sortableAttributes)
-            ->flatMap(fn ($attribute) => Arr::map(($attribute['directions'] ?? null) ?: ['asc', 'desc'], fn($direction) => [
+            ->flatMap(fn ($attribute) => Arr::map(($attribute['directions'] ?? null) ?: ['asc', 'desc'], fn ($direction) => [
                 'label' => __("{$attribute['code']} {$direction}"),
                 'field' => $attribute['code'] . ($attribute['input'] == 'text' ? '.keyword' : ''),
                 'order' => $direction,
                 'value' => "{$index}_{$attribute['code']}_{$direction}",
-                'key' => "_{$attribute['code']}_{$direction}",
+                'key'   => "_{$attribute['code']}_{$direction}",
             ]));
 
         // Add default relevance sort
@@ -223,7 +224,7 @@ class ConfigComposer
             'field' => '_score',
             'order' => 'desc',
             'value' => $index,
-            'key' => 'default',
+            'key'   => 'default',
         ]);
 
         Config::set('rapidez.searchkit.sorting', $sortableAttributes->keyBy('key')->toArray());

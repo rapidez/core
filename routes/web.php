@@ -22,11 +22,9 @@ Route::middleware('web')->group(function () {
     Route::get('search', config('rapidez.routing.controllers.search'))->name('search');
     Route::fallback(config('rapidez.routing.controllers.fallback'));
 
-    Route::get('config.js', fn() =>
-        response()->view(
-            view: 'rapidez::layouts.config',
-            headers: ['Content-Type' => 'text/javascript'],
-        )
+    Route::get('config.js', fn () => response()->view(
+        view: 'rapidez::layouts.config',
+        headers: ['Content-Type' => 'text/javascript'],
+    )
     )->name('config');
 });
-
