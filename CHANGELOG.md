@@ -1,6 +1,39 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/3.1.0...3.1.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/3.2.0...3.2.0)
+## [3.2.0](https://github.com/rapidez/core/releases/tag/3.2.0) - 2025-02-26
+
+### Added
+
+- Standalone checkout signed endpoint (#711)
+- GraphQL component running state (#722)
+- Etag and last modified headers (#728)
+
+### Changed
+
+- Use slideover from rapidez/blade-components (#680)
+- Implemented the latest version of rapidez/reviews (#679)
+- Product image gallery thumbnails layout shift fixes (#710)
+- Use the backdrop color variable (#696)
+- Onestep checkout improvements (#721)
+- Sort countries in country select (#725, #729)
+
+### Fixed
+
+- Use the correct ID for related products and upsells (#714)
+- Use updateCart function (#689)
+- Use useEventListener and destroyed hook on success (#690)
+- Don't clear cart on invalid coupon code (#693)
+- Fix the disabled options to work with one super attribute (#695)
+- Pagesize Turbo fallback fix (#719)
+- Fallback fix (#720)
+- Redirect to checkout using a temporary redirect (8719e01)
+- Use @content for 404 content (#732)
+- Return type for phpstan (#739)
+- Make sure you can't do a mutation twice simultaneously (#740)
+- Only apply default value when config option is not found (#737)
+- Slideover position (#742)
+
 ## [3.1.0](https://github.com/rapidez/core/releases/tag/3.1.0) - 2025-01-24
 
 ### Added
