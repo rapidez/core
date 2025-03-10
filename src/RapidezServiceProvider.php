@@ -264,6 +264,7 @@ class RapidezServiceProvider extends ServiceProvider
         }
 
         // Find all store-specific config files and merge them in
+        // TODO: Add how to use this in the Rapidez documentation
         foreach (glob(__DIR__ . '../config/rapidez/stores/*/*.php') as $configFile) {
             @[$store, $path] = explode('/', Str::after($configFile, '/config/rapidez/stores/'), 2);
             $path = str($path)->beforeLast('.php')->replace('/', '.')->toString();
