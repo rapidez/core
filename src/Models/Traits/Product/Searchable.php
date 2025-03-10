@@ -53,8 +53,6 @@ trait Searchable
 
         $data['store'] = config('rapidez.store');
 
-        // TODO: Can we do this without having to cache this?
-        // Since this function is scoped to this product i don't think we can.
         $maxPositions = Cache::driver('array')->rememberForever('max-positions-' . config('rapidez.store'), function () {
             return CategoryProduct::query()
                 ->selectRaw('GREATEST(MAX(position), 0) as position')
@@ -84,8 +82,6 @@ trait Searchable
      */
     public function withCategories(array $data): array
     {
-        // TODO: Do we still need to do this in this way? Can we refactor this to be nicer now that we're using Scout?
-        // We could solve this using a relationship on the product. But it would be less efficient.
         $categories = Cache::driver('array')->rememberForever('categories-' . config('rapidez.store'), function () {
             return Category::withEventyGlobalScopes('index.category.scopes')
                 ->where('catalog_category_flat_store_' . config('rapidez.store') . '.entity_id', '<>', config('rapidez.root_category_id'))
