@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Category;
 use Rapidez\Core\Models\CategoryProduct;
-use Rapidez\Core\Models\Product;
 use Rapidez\Core\Models\Traits\Searchable as ParentSearchable;
 use TorMorten\Eventy\Facades\Eventy;
 
