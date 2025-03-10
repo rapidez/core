@@ -11,8 +11,7 @@
 <div class="min-h-screen">
     <listing
         {{ $attributes }}
-        {{-- TODO: Extract this somewhere? --}}
-        :index="config.index_prefix + '_products_' + config.store"
+        index="{{ (new (config('rapidez.models.product')))->searchableAs() }}"
         inline-template
         v-cloak
     >

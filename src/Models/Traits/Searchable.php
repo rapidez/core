@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Laravel\Scout\Searchable as ScoutSearchable;
 use TorMorten\Eventy\Facades\Eventy;
 
@@ -13,12 +14,14 @@ trait Searchable
 {
     use ScoutSearchable;
 
+    public ?string $indexName;
+
     public function toSearchableArray(): array
     {
         $data = $this->searchableData($this->toArray(), $this);
 
         // TODO: Is this filter still useful? Overriding the model gives you full control
-        return Eventy::filter('index.' . config('rapidez.index') . '.data', $data, $this);
+        return Eventy::filter('index.' . $this->getIndexName() . '.data', $data, $this);
     }
 
     // TODO: Not sure if this is the best idea, we already
@@ -38,16 +41,20 @@ trait Searchable
         return true;
     }
 
+    public function getIndexName(): string
+    {
+        return $this->indexName ?? Str::snake(Str::pluralStudly(class_basename(static::class)));
+    }
+
     public function searchableAs(): string
     {
-        if (! config('rapidez.index')) {
+        if (! config('rapidez.store')) {
             throw new Exception('Do not use Scout directly. Please use `php artisan rapidez:index`.');
         }
 
         return implode('_', array_values([
             config('scout.prefix'),
-            // TODO: Maybe use the model name here?
-            config('rapidez.index'),
+            $this->getIndexName(),
             config('rapidez.store'),
         ]));
     }
