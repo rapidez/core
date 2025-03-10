@@ -10,7 +10,7 @@ trait Searchable
     use ScoutSearchable;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function toSearchableArray(): array
     {
@@ -18,7 +18,7 @@ trait Searchable
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function searchableAs(): string
     {

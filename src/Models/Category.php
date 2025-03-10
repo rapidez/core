@@ -105,7 +105,7 @@ class Category extends Model
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function makeAllSearchableUsing(Builder $query)
     {
