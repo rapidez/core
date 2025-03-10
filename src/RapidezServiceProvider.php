@@ -196,9 +196,7 @@ class RapidezServiceProvider extends ServiceProvider
         });
 
         Blade::directive('config', function ($expression) {
-            $configModel = config('rapidez.models.config');
-
-            return "<?php echo {$configModel}::getCachedByPath({$expression}) ?>";
+            return "<?php echo Rapidez::config({$expression}) ?>";
         });
 
         Blade::if('storecode', function ($value) {

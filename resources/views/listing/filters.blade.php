@@ -1,5 +1,5 @@
 @php($id = uniqid('filters-'))
-<x-rapidez::slideover.mobile :$id :title="__('Filters')" position="right">
+<x-rapidez::slideover.mobile :$id :title="__('Filters')">
     <div class="w-full p-2 max-lg:bg-white max-lg:p-5">
         @include('rapidez::listing.partials.filter.selected')
         @include('rapidez::listing.partials.filter.search')

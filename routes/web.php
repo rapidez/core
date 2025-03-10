@@ -10,8 +10,8 @@ Route::get('robots.txt', fn () => response(Rapidez::config('design/search_engine
     ->header('Content-Type', 'text/plain; charset=UTF-8'));
 
 Route::middleware('web')->group(function () {
-    Route::get('catalog/product/view/id/{productId}', [config('rapidez.routing.controllers.product'), 'show']);
-    Route::get('catalog/category/view/id/{categoryId}', [config('rapidez.routing.controllers.category'), 'show']);
+    Route::get('catalog/product/view/id/{productId}', [config('rapidez.routing.controllers.product'), 'show'])->whereNumber('productId');
+    Route::get('catalog/category/view/id/{categoryId}', [config('rapidez.routing.controllers.category'), 'show'])->whereNumber('categoryId');
 
     Route::view('cart', 'rapidez::cart.overview')->name('cart');
     Route::get('checkout/success', config('rapidez.routing.controllers.checkout-success'))->name('checkout.success');

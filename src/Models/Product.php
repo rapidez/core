@@ -207,9 +207,7 @@ class Product extends Model
 
     public function getUrlAttribute(): string
     {
-        $configModel = config('rapidez.models.config');
-
-        return '/' . ($this->url_key ? $this->url_key . $configModel::getCachedByPath('catalog/seo/product_url_suffix', '.html') : 'catalog/product/view/id/' . $this->entity_id);
+        return '/' . ($this->url_key ? $this->url_key . Rapidez::config('catalog/seo/product_url_suffix', '.html') : 'catalog/product/view/id/' . $this->entity_id);
     }
 
     public function getImagesAttribute(): array
