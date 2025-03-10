@@ -1,20 +1,9 @@
-<div v-if="!$root.loadAutocomplete" class="relative w-full">
-    {{-- TODO: Do we still need this double input? --}}
-    <form method="get" action="{{ route('search') }}">
-        <x-rapidez::input
-            type="search"
-            name="q"
-            :placeholder="__('What are you looking for?')"
-            v-on:focus="$root.loadAutocomplete = true"
-            v-on:mouseover="$root.loadAutocomplete = true"
-        />
-    </form>
-    <x-rapidez::autocomplete.magnifying-glass />
-</div>
 
-<autocomplete v-else inline-template>
+<autocomplete inline-template v-on:mounted="() => window.document.getElementById('autocomplete-input').focus()">
     <div class="relative w-full">
         <ais-instant-search
+            v-if="searchClient"
+            v-cloak
             class="contents"
             :search-client="searchClient"
             index-name="{{ (new (config('rapidez.models.product')))->searchableAs() }}"
@@ -27,6 +16,7 @@
                         <template v-slot="{ currentRefinement, isSearchStalled, refine }">
                             <form name="autocomplete-form" id="autocomplete-form" method="get" action="{{ route('search') }}" class="flex flex-row relative">
                                 <x-rapidez::input
+                                    id="autocomplete-input"
                                     type="search"
                                     focus="true"
                                     autocomplete="off"
@@ -35,6 +25,10 @@
                                     spellcheck="false"
                                     name="q"
                                     v-bind:value="currentRefinement"
+                                    v-on:focus="() => {
+                                        refine($root.autocompleteFacadeQuery || currentRefinement);
+                                        $root.autocompleteFacadeQuery = null;
+                                    }"
                                     v-on:input="refine($event.currentTarget.value)"
                                     :placeholder="__('What are you looking for?')"
                                 />
@@ -50,5 +44,19 @@
                 </div>
             </div>
         </ais-instant-search>
+        <div v-else class="relative w-full">
+            {{-- TODO: Do we still need this double input? --}}
+            <form name="autocomplete-form" id="autocomplete-form" method="get" action="{{ route('search') }}" class="flex flex-row relative">
+                <x-rapidez::input
+                    type="search"
+                    name="q"
+                    :placeholder="__('What are you looking for?')"
+                    v-model="$root.autocompleteFacadeQuery"
+                    v-on:focus="window.document.dispatchEvent(new window.Event('loadAutoComplete'))"
+                    v-on:mouseover="window.document.dispatchEvent(new window.Event('loadAutoComplete'))"
+                />
+            </form>
+            <x-rapidez::autocomplete.magnifying-glass />
+        </div>
     </div>
 </autocomplete>

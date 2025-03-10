@@ -1,14 +1,7 @@
 <script>
-import Client from '@searchkit/instantsearch-client'
-import Searchkit from 'searchkit'
-
 import { history } from 'instantsearch.js/es/lib/routers'
 
-import AisInstantSearch from 'vue-instantsearch/vue2/es/src/components/InstantSearch'
 import AisSearchBox from 'vue-instantsearch/vue2/es/src/components/SearchBox.vue.js'
-import AisHits from 'vue-instantsearch/vue2/es/src/components/Hits.js'
-import AisConfigure from 'vue-instantsearch/vue2/es/src/components/Configure.js'
-
 import AisRefinementList from 'vue-instantsearch/vue2/es/src/components/RefinementList.vue.js'
 import AisHierarchicalMenu from 'vue-instantsearch/vue2/es/src/components/HierarchicalMenu.vue.js'
 import AisRangeInput from 'vue-instantsearch/vue2/es/src/components/RangeInput.vue.js'
@@ -21,12 +14,12 @@ import AisStats from 'vue-instantsearch/vue2/es/src/components/Stats.vue.js'
 
 import categoryFilter from './Filters/CategoryFilter.vue'
 
+import InstantSearchMixin from '../Search/InstantSearchMixin.vue'
+
 export default {
+    mixins: [InstantSearchMixin],
     components: {
-        'ais-instant-search': AisInstantSearch,
         'ais-search-box': AisSearchBox,
-        'ais-hits': AisHits,
-        'ais-configure': AisConfigure,
         'ais-refinement-list': AisRefinementList,
         'ais-hierarchical-menu': AisHierarchicalMenu,
         'ais-range-input': AisRangeInput,
@@ -45,7 +38,7 @@ export default {
             type: String,
         },
 
-        // TODO: Document these two props in the Rapidez docs
+        // TODO: Document these four props in the Rapidez docs
         query: {
             type: Function,
         },
@@ -73,9 +66,6 @@ export default {
     },
 
     mounted() {
-        this.searchkit = this.initSearchkit()
-        this.searchClient = this.initSearchClient()
-
         this.loaded = true
     },
 
@@ -182,11 +172,33 @@ export default {
                 .map((filter) => filter.code)
                 .concat(config.searchkit.range_attributes ?? [])
         },
+    },
 
-        searchSettings() {
+    methods: {
+        async getInstantSearchClientConfig() {
+            const config = await InstantSearchMixin.methods.getInstantSearchClientConfig.bind(this).call()
+
+            config.getBaseFilters = this.getBaseFilters
+            config.getQuery = this.query
+
+            return config
+        },
+
+        async getSearchSettings() {
+            let config = await InstantSearchMixin.methods.getSearchSettings.bind(this).call()
+
             return {
-                ...config.searchkit,
+                ...config,
+
+                // TODO: For consistency maybe make it possible to do this:
+                // facet_attributes: config.searchkit.facet_attributes,
                 facet_attributes: this.facets,
+
+                // TODO: Let's also change this to a PHP config.
+                // So we start there and that will be merged
+                // with the Magento configured attributes
+                // and lastly from a prop it's possible
+                // to manipulate it from a callback?
                 sorting: this.sortOptions.reduce((acc, item) => {
                     acc[item.key] = {
                         field: item.field,
@@ -195,38 +207,6 @@ export default {
                     return acc
                 }),
             }
-        },
-    },
-
-    methods: {
-        // TODO: Not sure if this is the right place,
-        // the autocomplete also needs this but
-        // we don't want to load everything
-        // directly due the JS size
-        initSearchClient() {
-            return Client(this.searchkit, {
-                getBaseFilters: this.getBaseFilters,
-                getQuery: this.query,
-            })
-        },
-
-        initSearchkit() {
-            let url = new URL(config.es_url)
-
-            return new Searchkit({
-                connection: {
-                    host: url.origin,
-                    auth: {
-                        username: url.username,
-                        password: url.password,
-                    },
-                },
-
-                // TODO: Maybe just do: search_settings: config.searchkit
-                // so it's possible to add anything to the PHP config
-                // and that will appear here?
-                search_settings: this.searchSettings,
-            })
         },
 
         getBaseFilters() {
