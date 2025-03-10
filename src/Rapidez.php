@@ -130,6 +130,13 @@ class Rapidez
         config()->set('rapidez.root_category_id', $store['root_category_id']);
         config()->set('frontend.base_url', url('/'));
 
+        // Set all store-specific values
+        foreach(array_keys(config('rapidez')) as $config) {
+            foreach (config('rapidez.stores.' . $store['code'] . '.' . $config, []) as $key => $value) {
+                config()->set('rapidez.' . $config . '.' . $key, $value);
+            }
+        }
+
         if (config()->get('rapidez.magento_url_from_db', false)) {
             $magentoUrl = trim(
                 Config::getValue('web/secure/base_url', ConfigScopes::SCOPE_WEBSITE) ?? config()->get('rapidez.magento_url'),
@@ -163,6 +170,16 @@ class Rapidez
             if ($mediaUrl !== url('/media')) {
                 config()->set('rapidez.media_url', $mediaUrl);
             }
+        }
+
+        $path = config('rapidez.frontend.theme', false);
+        if ($path) {
+            config([
+                'view.paths' => [
+                    $path,
+                    ...config('view.paths'),
+                ],
+            ]);
         }
 
         config()->set('frontend.base_url', url('/'));

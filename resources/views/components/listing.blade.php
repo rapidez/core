@@ -14,7 +14,7 @@
         index="{{ (new (config('rapidez.models.product')))->searchableAs() }}"
         v-cloak
     >
-        <div slot-scope="{ loaded, filters, sortOptions, withFilters, withSwatches, filterPrefix, _renderProxy: listingSlotProps }">
+        <div slot-scope="{ loaded, sortOptions, withFilters, withSwatches, filterPrefix, _renderProxy: listingSlotProps }">
             <ais-instant-search
                 v-if="loaded"
                 :search-client="listingSlotProps.searchClient"

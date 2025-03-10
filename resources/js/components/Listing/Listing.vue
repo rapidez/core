@@ -35,7 +35,6 @@ Vue.component('ais-pagination', AisPagination)
 Vue.component('ais-stats', AisStats)
 
 import categoryFilter from './Filters/CategoryFilter.vue'
-import useAttributes from '../../stores/useAttributes.js'
 
 export default {
     props: {
@@ -64,7 +63,6 @@ export default {
 
     data: () => ({
         loaded: false,
-        attributes: useAttributes(),
 
         searchkit: null,
         searchClient: null,
@@ -78,23 +76,13 @@ export default {
         this.searchkit = this.initSearchkit()
         this.searchClient = this.initSearchClient()
 
-        this.loaded = Object.keys(this.attributes).length > 0
+        this.loaded = true
     },
 
     computed: {
-        // TODO: Maybe move this completely to PHP?
-        // Any drawbacks? A window.config that
-        // becomes to big? Is that an issue?
-        filters() {
-            return Object.values(this.attributes)
-                .filter((attribute) => attribute.filter)
-                .map((filter) => ({ ...filter, code: this.filterPrefix(filter) + filter.code, base_code: filter.code }))
-                .sort((a, b) => a.position - b.position)
-        },
-
         facets() {
             return [
-                ...this.filters.map((filter) => ({
+                ...config.filterable_attributes.map((filter) => ({
                     attribute: filter.code,
                     field: filter.code + (this.filterType(filter) == 'string' ? '.keyword' : ''),
                     type: this.filterType(filter),
@@ -104,9 +92,7 @@ export default {
                     field: attribute + '.keyword',
                     type: 'string',
                 })),
-            ]
-            // TODO: Double check this and how it's used.
-            // .concat(this.additionalFilters)
+            ].concat(config.searchkit.facet_attributes)
         },
 
         categoryAttributes() {
@@ -114,10 +100,10 @@ export default {
         },
 
         sortings() {
-            return Object.values(this.attributes)
+            return Object.values(config.filterable_attributes)
                 .filter((attribute) => attribute.sorting)
                 .concat(
-                    Object.entries(config.searchkit.additional_sorting).map(([code, directions]) => ({
+                    Object.entries(config.searchkit.sorting).map(([code, directions]) => ({
                         code: code,
                         directions: directions,
                     })),
@@ -190,15 +176,25 @@ export default {
             }
         },
 
-        // TODO: Do we want to make this extendable?
         rangeAttributes() {
-            return this.filters.filter((filter) => filter.input == 'price').map((filter) => filter.code)
+            return config.filterable_attributes
+                .filter((filter) => filter.input == 'price')
+                .map((filter) => filter.code)
+                .concat(config.searchkit.range_attributes ?? [])
         },
-    },
 
-    watch: {
-        attributes(value) {
-            this.loaded = Object.keys(value).length > 0
+        searchSettings() {
+            return {
+                ...config.searchkit,
+                facet_attributes: this.facets,
+                sorting: this.sortOptions.reduce((acc, item) => {
+                    acc[item.key] = {
+                        field: item.field,
+                        order: item.order,
+                    }
+                    return acc
+                }),
+            }
         },
     },
 
@@ -229,25 +225,7 @@ export default {
                 // TODO: Maybe just do: search_settings: config.searchkit
                 // so it's possible to add anything to the PHP config
                 // and that will appear here?
-                search_settings: {
-                    highlight_attributes: config.searchkit.highlight_attributes,
-                    search_attributes: config.searchkit.search_attributes,
-                    result_attributes: config.searchkit.result_attributes,
-
-                    // TODO: For consistency maybe make it possible to do this:
-                    // facet_attributes: config.searchkit.facet_attributes,
-                    facet_attributes: this.facets,
-
-                    filter_attributes: config.searchkit.filter_attributes,
-
-                    sorting: this.sortOptions.reduce((acc, item) => {
-                        acc[item.key] = {
-                            field: item.field,
-                            order: item.order,
-                        }
-                        return acc
-                    }),
-                },
+                search_settings: this.searchSettings,
             })
         },
 
@@ -315,22 +293,10 @@ export default {
             return ['price', 'boolean'].includes(filter.input) ? 'numeric' : 'string'
         },
 
-        filterPrefix(filter) {
-            if (filter.super) {
-                return 'super_'
-            }
-
-            if (filter.visual_swatch) {
-                return 'visual_'
-            }
-
-            return ''
-        },
-
         withFilters(items) {
             return items
                 .map((item) => ({
-                    filter: this.filters.find((filter) => filter.code === item.attribute),
+                    filter: config.filterable_attributes.find((filter) => filter.code === item.attribute),
                     ...item,
                 }))
                 .filter((item) => item.filter)

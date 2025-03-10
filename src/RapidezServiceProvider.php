@@ -42,7 +42,6 @@ class RapidezServiceProvider extends ServiceProvider
     protected $configFiles = [
         'frontend',
         'healthcheck',
-        'indexer',
         'jwt',
         'models',
         'routing',
@@ -70,7 +69,6 @@ class RapidezServiceProvider extends ServiceProvider
         $this
             ->registerConfigs()
             ->registerBindings()
-            ->registerThemes()
             ->registerBladeDirectives()
             ->registerExceptionHandlers()
             ->registerBladeIconConfig();
@@ -154,33 +152,11 @@ class RapidezServiceProvider extends ServiceProvider
         return $this;
     }
 
-    protected function registerThemes(): self
-    {
-        if (app()->runningInConsole()) {
-            return $this;
-        }
-
-        $path = config('rapidez.frontend.themes.' . request()->server('MAGE_RUN_CODE', request()->has('_store') && ! app()->isProduction() ? request()->get('_store') : 'default'), false);
-
-        if (! $path) {
-            return $this;
-        }
-
-        config([
-            'view.paths' => [
-                $path,
-                ...config('view.paths'),
-            ],
-        ]);
-
-        return $this;
-    }
-
     protected function bootViews(): self
     {
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'rapidez');
 
-        View::composer('rapidez::layouts.app', ConfigComposer::class);
+        View::composer('rapidez::layouts.config', ConfigComposer::class);
 
         View::addExtension('graphql', 'blade');
 
@@ -285,6 +261,18 @@ class RapidezServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/rapidez.php', 'rapidez');
         foreach ($this->configFiles as $configFile) {
             $this->mergeConfigFrom(__DIR__ . '/../config/rapidez/' . $configFile . '.php', 'rapidez.' . $configFile);
+        }
+
+        // Find all store-specific config files and merge them in
+        foreach (glob(__DIR__ . '../config/rapidez/stores/*/*.php') as $configFile) {
+            @[$store, $path] = explode('/', Str::after($configFile, '/config/rapidez/stores/'), 2);
+            $path = str($path)->beforeLast('.php')->replace('/', '.')->toString();
+
+            if (!$store || !$path) {
+                continue;
+            }
+
+            $this->mergeConfigFrom($configFile, 'rapidez.stores.' . $store . '.' . $path);
         }
 
         if (! config('cache.stores.rapidez:multi', false)) {

@@ -1,4 +1,4 @@
-// TODO: In this file there is a lot of duplication compared to useAttributes. Can we improve that?
+// TODO: Should we move the swatches to the `config` data?
 import { computedAsync, useLocalStorage } from '@vueuse/core'
 
 export const swatchesStorage = useLocalStorage('swatches', {})

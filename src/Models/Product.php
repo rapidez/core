@@ -271,7 +271,11 @@ class Product extends Model
 
     public function shouldBeSearchable(): bool
     {
-        if (! in_array($this->visibility, config('rapidez.indexer.visibility'))) {
+        // VISIBILITY_NOT_VISIBLE    = 1
+        // VISIBILITY_IN_CATALOG     = 2
+        // VISIBILITY_IN_SEARCH      = 3
+        // VISIBILITY_BOTH           = 4
+        if (! in_array($this->visibility, [2, 3, 4])) {
             return false;
         }
 

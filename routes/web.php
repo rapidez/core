@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Http\Controllers\SignedCheckoutController;
 use Rapidez\Core\Http\Middleware\AuthenticateHealthCheck;
@@ -20,4 +21,12 @@ Route::middleware('web')->group(function () {
     Route::get('checkout/{step?}', config('rapidez.routing.controllers.checkout'))->middleware('auth:magento-cart')->name('checkout');
     Route::get('search', config('rapidez.routing.controllers.search'))->name('search');
     Route::fallback(config('rapidez.routing.controllers.fallback'));
+
+    Route::get('config.js', fn() =>
+        response()->view(
+            view: 'rapidez::layouts.config',
+            headers: ['Content-Type' => 'text/javascript'],
+        )
+    )->name('config');
 });
+
