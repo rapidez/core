@@ -5,12 +5,14 @@ import Searchkit from 'searchkit'
 import AisInstantSearch from 'vue-instantsearch/vue2/es/src/components/InstantSearch'
 import AisHits from 'vue-instantsearch/vue2/es/src/components/Hits.js'
 import AisConfigure from 'vue-instantsearch/vue2/es/src/components/Configure.js'
+import AisHighlight from 'vue-instantsearch/vue2/es/src/components/Highlight.vue.js'
 
 export default {
     components: {
         'ais-instant-search': AisInstantSearch,
         'ais-hits': AisHits,
         'ais-configure': AisConfigure,
+        'ais-highlight': AisHighlight,
     },
     data: () => ({
         searchkit: null,
