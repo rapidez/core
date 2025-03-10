@@ -5,8 +5,8 @@
             v-if="searchClient"
             v-cloak
             class="contents"
-            :search-client="searchClient "
-            :index-name="config.index_prefix + '_products_' + config.store"
+            :search-client="searchClient"
+            index-name="{{ (new (config('rapidez.models.product')))->searchableAs() }}"
         >
             <div class="contents">
                 <!-- TODO: This is a Vue 3 thing -->
