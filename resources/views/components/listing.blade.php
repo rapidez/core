@@ -13,14 +13,15 @@
         {{ $attributes }}
         {{-- TODO: Extract this somewhere? --}}
         :index="config.index_prefix + '_products_' + config.store"
+        inline-template
         v-cloak
     >
-        <div slot-scope="{ loaded, filters, sortOptions, withFilters, withSwatches, filterPrefix, _renderProxy: listingSlotProps }">
+        <div>
             <ais-instant-search
                 v-if="loaded"
-                :search-client="listingSlotProps.searchClient"
-                :index-name="listingSlotProps.index"
-                :routing="listingSlotProps.routing"
+                :search-client="searchClient"
+                :index-name="index"
+                :routing="routing"
             >
                 {{ $before ?? '' }}
                 @if ($slot->isEmpty())

@@ -1,43 +1,43 @@
 <script>
-import {
-    AisClearRefinements,
-    AisConfigure,
-    AisCurrentRefinements,
-    AisHierarchicalMenu,
-    AisHits,
-    AisHitsPerPage,
-    AisInstantSearch,
-    AisPagination,
-    AisRangeInput,
-    AisRefinementList,
-    AisSearchBox,
-    AisSortBy,
-    AisStats,
-} from 'vue-instantsearch'
 import Client from '@searchkit/instantsearch-client'
 import Searchkit from 'searchkit'
-import deepmerge from 'deepmerge'
 
 import { history } from 'instantsearch.js/es/lib/routers'
 
-Vue.component('ais-instant-search', AisInstantSearch)
-Vue.component('ais-configure', AisConfigure)
-Vue.component('ais-refinement-list', AisRefinementList)
-Vue.component('ais-hierarchical-menu', AisHierarchicalMenu)
-Vue.component('ais-range-input', AisRangeInput)
-Vue.component('ais-search-box', AisSearchBox)
-Vue.component('ais-current-refinements', AisCurrentRefinements)
-Vue.component('ais-clear-refinements', AisClearRefinements)
-Vue.component('ais-hits', AisHits)
-Vue.component('ais-hits-per-page', AisHitsPerPage)
-Vue.component('ais-sort-by', AisSortBy)
-Vue.component('ais-pagination', AisPagination)
-Vue.component('ais-stats', AisStats)
+import AisInstantSearch from 'vue-instantsearch/vue2/es/src/components/InstantSearch'
+import AisSearchBox from 'vue-instantsearch/vue2/es/src/components/SearchBox.vue.js'
+import AisHits from 'vue-instantsearch/vue2/es/src/components/Hits.js'
+import AisConfigure from 'vue-instantsearch/vue2/es/src/components/Configure.js'
+
+import AisRefinementList from 'vue-instantsearch/vue2/es/src/components/RefinementList.vue.js'
+import AisHierarchicalMenu from 'vue-instantsearch/vue2/es/src/components/HierarchicalMenu.vue.js'
+import AisRangeInput from 'vue-instantsearch/vue2/es/src/components/RangeInput.vue.js'
+import AisCurrentRefinements from 'vue-instantsearch/vue2/es/src/components/CurrentRefinements.vue.js'
+import AisClearRefinements from 'vue-instantsearch/vue2/es/src/components/ClearRefinements.vue.js'
+import AisHitsPerPage from 'vue-instantsearch/vue2/es/src/components/HitsPerPage.vue.js'
+import AisSortBy from 'vue-instantsearch/vue2/es/src/components/SortBy.vue.js'
+import AisPagination from 'vue-instantsearch/vue2/es/src/components/Pagination.vue.js'
+import AisStats from 'vue-instantsearch/vue2/es/src/components/Stats.vue.js'
 
 import categoryFilter from './Filters/CategoryFilter.vue'
 import useAttributes from '../../stores/useAttributes.js'
 
 export default {
+    components: {
+        'ais-instant-search': AisInstantSearch,
+        'ais-search-box': AisSearchBox,
+        'ais-hits': AisHits,
+        'ais-configure': AisConfigure,
+        'ais-refinement-list': AisRefinementList,
+        'ais-hierarchical-menu': AisHierarchicalMenu,
+        'ais-range-input': AisRangeInput,
+        'ais-current-refinements': AisCurrentRefinements,
+        'ais-clear-refinements': AisClearRefinements,
+        'ais-hits-per-page': AisHitsPerPage,
+        'ais-sort-by': AisSortBy,
+        'ais-pagination': AisPagination,
+        'ais-stats': AisStats,
+    },
     props: {
         sortOptionsCallback: {
             type: Function,
