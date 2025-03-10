@@ -2,10 +2,6 @@
 
 namespace Rapidez\Core\Models\Traits;
 
-use Exception;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable as ScoutSearchable;
 use TorMorten\Eventy\Facades\Eventy;
 
@@ -13,31 +9,18 @@ trait Searchable
 {
     use ScoutSearchable;
 
+    /**
+     * {@inheritdoc}
+     */
     public function toSearchableArray(): array
     {
-        $data = $this->searchableData($this->toArray(), $this);
-
-        // TODO: Is this filter still useful? Overriding the model gives you full control
-        return Eventy::filter('index.' . config('rapidez.index') . '.data', $data, $this);
+        // TODO: Maybe use the model name here?
+        return Eventy::filter('index.' . config('rapidez.index') . '.data', $this->toArray(), $this);
     }
 
-    // TODO: Not sure if this is the best idea, we already
-    // have the toSearchableArray for this.
-    public function searchableData(array $data, Model $model): array
-    {
-        // Customize the data with this function.
-        // - $data is the actual array with data.
-        // - $model is useful for when you want to retrieve data from the actual model (e.g. relations).
-        // Return the array with data that you want to send to ES.
-
-        return $data;
-    }
-
-    public function shouldBeSearchable(): bool
-    {
-        return true;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function searchableAs(): string
     {
         if (! config('rapidez.index')) {
@@ -50,15 +33,5 @@ trait Searchable
             config('rapidez.index'),
             config('rapidez.store'),
         ]));
-    }
-
-    protected function makeAllSearchableUsing(Builder $query)
-    {
-        return $query;
-    }
-
-    public function makeSearchableUsing(Collection $models): Collection
-    {
-        return $models;
     }
 }
