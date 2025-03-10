@@ -14,7 +14,8 @@ trait Searchable
      */
     public function toSearchableArray(): array
     {
-        return Eventy::filter('index.' . $this->getIndexName() . '.data', $this->toArray(), $this);
+        // TODO: Maybe use the model name here?
+        return Eventy::filter('index.' . config('rapidez.index') . '.data', $this->toArray(), $this);
     }
 
     /**
