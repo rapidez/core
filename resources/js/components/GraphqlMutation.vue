@@ -106,6 +106,10 @@ export default {
 
     methods: {
         async mutate() {
+            if (this.running) {
+                return
+            }
+
             this.running = true
             this.error = false
 
