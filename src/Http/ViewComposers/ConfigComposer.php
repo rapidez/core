@@ -211,7 +211,7 @@ class ConfigComposer
         $index = (new (config('rapidez.models.product')))->searchableAs();
         $sortableAttributes = collect($sortableAttributes)
             ->flatMap(fn ($attribute) => Arr::map(($attribute['directions'] ?? null) ?: ['asc', 'desc'], fn ($direction) => [
-                'label' => __("{$attribute['code']} {$direction}"),
+                'label' => __(ucfirst("{$attribute['code']} {$direction}")),
                 'field' => $attribute['code'] . ($attribute['input'] == 'text' ? '.keyword' : ''),
                 'order' => $direction,
                 'value' => "{$index}_{$attribute['code']}_{$direction}",
@@ -220,7 +220,7 @@ class ConfigComposer
 
         // Add default relevance sort
         $sortableAttributes->prepend([
-            'label' => 'relevance',
+            'label' => __('Relevance'),
             'field' => '_score',
             'order' => 'desc',
             'value' => $index,
