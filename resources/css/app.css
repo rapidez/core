@@ -31,5 +31,5 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 mark {
-    @apply bg-transparent font-bold
+    @apply bg-transparent font-bold;
 }
