@@ -19,7 +19,9 @@ class ConfigComposer
     {
         $this
             ->exposeGraphqlQueries()
-            ->configureSearchkit();
+            ->configureSearchkitFacetAttributes()
+            ->configureSearchkitSearchAttributes()
+            ->configureSearchkitSorting();
 
         $exposedFrontendConfigValues = Arr::only(
             array_merge_recursive(
@@ -135,7 +137,39 @@ class ConfigComposer
         return $this;
     }
 
-    public function configureSearchkit(): self
+    public function configureSearchkitFacetAttributes(): self
+    {
+        $attributeModel = config('rapidez.models.attribute');
+
+        // Get the filterable attributes and category levels
+        $filterableAttributes = collect($this->getFilterableAttributes())
+            ->map(function ($attribute) {
+                $isNumeric = $attribute['super'] || in_array($attribute['input'], ['boolean', 'price']);
+                return [
+                    'attribute' => $attribute['code'],
+                    'field' => $attribute['code'] . ($isNumeric ? '' : '.keyword'),
+                    'type' => $isNumeric ? 'numeric' : 'string'
+                ];
+            });
+
+        $maxLevel = Cache::rememberForever('max_category_level', fn () => Category::withoutGlobalScopes()->max('level'));
+        $categoryLevels = collect(array_fill(1, $maxLevel, 'category_lvl'))
+            ->map(fn ($value, $key) => [
+                'attribute' => $value . $key,
+                'field' => $value . $key . '.keyword',
+                'type' => 'string'
+            ]);
+
+        $facetAttributes = $filterableAttributes
+            ->concat($categoryLevels)
+            ->concat(config('rapidez.searchkit.facet_attributes'));
+
+        Config::set('rapidez.searchkit.facet_attributes', $facetAttributes->toArray());
+
+        return $this;
+    }
+
+    public function configureSearchkitSearchAttributes(): self
     {
         $attributeModel = config('rapidez.models.attribute');
 
@@ -153,12 +187,19 @@ class ConfigComposer
 
         Config::set('rapidez.searchkit.search_attributes', $searchableAttributes);
 
+        return $this;
+    }
 
-        // Get all sortable attributes from Magento
+    public function configureSearchkitSorting(): self
+    {
+        $attributeModel = config('rapidez.models.attribute');
+
+        // Get all sortable attributes from Magento and any that have been set manually in the config
         $sortableAttributes = $attributeModel::getCachedWhere(function ($attribute) {
             return $attribute['sorting'] || in_array($attribute['code'], array_keys(config('rapidez.searchkit.sorting')));
         });
 
+        // Add `direction` to custom sortings
         foreach(config('rapidez.searchkit.sorting') as $code => $directions) {
             $attribute = collect($sortableAttributes)->search(fn($attribute) => $attribute['code'] == $code);
             if ($attribute) {
@@ -167,7 +208,6 @@ class ConfigComposer
         }
 
         $index = (new (config('rapidez.models.product')))->searchableAs();
-
         $sortableAttributes = collect($sortableAttributes)
             ->flatMap(fn ($attribute) => Arr::map(($attribute['directions'] ?? null) ?: ['asc', 'desc'], fn($direction) => [
                 'label' => __("{$attribute['code']} {$direction}"),
@@ -177,6 +217,7 @@ class ConfigComposer
                 'key' => "_{$attribute['code']}_{$direction}",
             ]));
 
+        // Add default relevance sort
         $sortableAttributes->prepend([
             'label' => 'relevance',
             'field' => '_score',

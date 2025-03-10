@@ -70,21 +70,6 @@ export default {
     },
 
     computed: {
-        facets() {
-            return [
-                ...config.filterable_attributes.map((filter) => ({
-                    attribute: filter.code,
-                    field: filter.code + (this.filterType(filter) == 'string' ? '.keyword' : ''),
-                    type: this.filterType(filter),
-                })),
-                ...this.categoryAttributes.map((attribute) => ({
-                    attribute: attribute,
-                    field: attribute + '.keyword',
-                    type: 'string',
-                })),
-            ].concat(config.searchkit.facet_attributes)
-        },
-
         categoryAttributes() {
             return Array.from({ length: config.max_category_level ?? 3 }).map((_, index) => 'category_lvl' + (index + 1))
         },
@@ -133,10 +118,6 @@ export default {
 
         async getSearchSettings() {
             let config = await InstantSearchMixin.methods.getSearchSettings.bind(this).call()
-            config = {
-                ...config,
-                facet_attributes: this.facets,
-            }
             return this.configCallback ? this.configCallback(config) : config
         },
 
@@ -194,14 +175,6 @@ export default {
                     query: routeState.q,
                 },
             }
-        },
-
-        filterType(filter) {
-            if (filter.super) {
-                return 'numeric'
-            }
-
-            return ['price', 'boolean'].includes(filter.input) ? 'numeric' : 'string'
         },
 
         withFilters(items) {
