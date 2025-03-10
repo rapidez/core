@@ -22,7 +22,7 @@ export default {
 
     mounted() {
         this.$nextTick(() => {
-            window.setTimeout(() => this.$emit('mounted'));
+            requestAnimationFrame(() => this.$emit('mounted'));
             this.loaded = true
         })
     },

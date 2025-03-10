@@ -28,8 +28,7 @@
                                     v-on:focus="() => {
                                         refine($root.autocompleteFacadeQuery || currentRefinement);
                                         $root.autocompleteFacadeQuery = null;
-                                    }
-                                    "
+                                    }"
                                     v-on:input="refine($event.currentTarget.value)"
                                     :placeholder="__('What are you looking for?')"
                                 />
