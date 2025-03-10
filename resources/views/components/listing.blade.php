@@ -18,7 +18,7 @@
     >
         <div>
             <ais-instant-search
-                v-if="loaded"
+                v-if="loaded && searchClient"
                 :search-client="searchClient"
                 :index-name="index"
                 :routing="routing"
