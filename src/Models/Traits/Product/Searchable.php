@@ -17,7 +17,7 @@ trait Searchable
     use ParentSearchable;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function makeAllSearchableUsing(Builder $query)
     {
@@ -27,7 +27,7 @@ trait Searchable
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function shouldBeSearchable(): bool
     {
@@ -43,9 +43,8 @@ trait Searchable
         return true;
     }
 
-
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function toSearchableArray(): array
     {
