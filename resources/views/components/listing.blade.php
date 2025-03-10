@@ -1,3 +1,5 @@
+@props(['rootPath' => null])
+
 @pushOnce('head', 'es_url-preconnect')
     <link rel="preconnect" href="{{ config('rapidez.es_url') }}">
 
@@ -10,14 +12,15 @@
     <listing
         {{ $attributes }}
         index="{{ (new (config('rapidez.models.product')))->searchableAs() }}"
+        inline-template
         v-cloak
     >
-        <div slot-scope="{ loaded, filters, sortOptions, withFilters, withSwatches, filterPrefix, _renderProxy: listingSlotProps }">
+        <div>
             <ais-instant-search
                 v-if="loaded"
-                :search-client="listingSlotProps.searchClient"
-                :index-name="listingSlotProps.index"
-                :routing="listingSlotProps.routing"
+                :search-client="searchClient"
+                :index-name="index"
+                :routing="routing"
             >
                 {{ $before ?? '' }}
                 @if ($slot->isEmpty())
