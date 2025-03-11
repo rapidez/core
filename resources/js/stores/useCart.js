@@ -131,14 +131,11 @@ export const cart = computed({
 
                     return
                 }
-                
+
                 const mapping = Object.fromEntries(
                     response.data.customAttributeMetadataV2.items.map((attribute) => {
-                        return [
-                            attribute.code,
-                            Object.fromEntries(attribute.options.map((value) => [value.value, value.label])),
-                        ]
-                    })
+                        return [attribute.code, Object.fromEntries(attribute.options.map((value) => [value.value, value.label]))]
+                    }),
                 )
 
                 value.items = value.items?.map((cartItem) => {
