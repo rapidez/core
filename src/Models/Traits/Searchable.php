@@ -2,7 +2,6 @@
 
 namespace Rapidez\Core\Models\Traits;
 
-use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -48,9 +47,6 @@ trait Searchable
 
     public function searchableAs(): string
     {
-        if (! config('rapidez.store')) {
-            throw new Exception('Do not use Scout directly. Please use `php artisan rapidez:index`.');
-        }
 
         return implode('_', array_values([
             config('scout.prefix'),
