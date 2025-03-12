@@ -172,16 +172,6 @@ class Rapidez
             }
         }
 
-        $path = config('rapidez.frontend.theme', false);
-        if ($path) {
-            config([
-                'view.paths' => [
-                    $path,
-                    ...config('view.paths'),
-                ],
-            ]);
-        }
-
         config()->set('frontend.base_url', url('/'));
         App::setLocale(strtok(Rapidez::config('general/locale/code', 'en_US'), '_'));
 

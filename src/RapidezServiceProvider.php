@@ -294,6 +294,28 @@ class RapidezServiceProvider extends ServiceProvider
         return $this;
     }
 
+    protected function registerThemes(): self
+    {
+        if (app()->runningInConsole()) {
+            return $this;
+        }
+
+        $path = config('rapidez.frontend.theme', false);
+
+        if (!$path) {
+            return $this;
+        }
+
+        config([
+            'view.paths' => [
+                $path,
+                ...config('view.paths'),
+            ],
+        ]);
+
+        return $this;
+    }
+
     protected function registerBindings(): self
     {
         $this->app->singleton('rapidez', Rapidez::class);

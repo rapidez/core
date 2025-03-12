@@ -37,6 +37,11 @@ class Product extends Model
     use Searchable;
     use SelectAttributeScopes;
 
+    public const VISIBILITY_NOT_VISIBLE = 1;
+    public const VISIBILITY_IN_CATALOG = 2;
+    public const VISIBILITY_IN_SEARCH = 3;
+    public const VISIBILITY_BOTH = 4;
+
     public array $attributesToSelect = [];
 
     protected $primaryKey = 'entity_id';
@@ -269,11 +274,11 @@ class Product extends Model
 
     public function shouldBeSearchable(): bool
     {
-        // VISIBILITY_NOT_VISIBLE    = 1
-        // VISIBILITY_IN_CATALOG     = 2
-        // VISIBILITY_IN_SEARCH      = 3
-        // VISIBILITY_BOTH           = 4
-        if (! in_array($this->visibility, [2, 3, 4])) {
+        if (! in_array($this->visibility, [
+            static::VISIBILITY_IN_CATALOG,
+            static::VISIBILITY_IN_SEARCH,
+            static::VISIBILITY_BOTH
+        ])) {
             return false;
         }
 

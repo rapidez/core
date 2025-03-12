@@ -21,6 +21,7 @@
     <link rel="canonical" href="@yield('canonical', url()->current())" />
     <link href="{{ route('config') }}" rel="preload" as="script">
 
+    <script defer src="{{ route('config') }}"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
     @config('design/head/includes')
@@ -38,7 +39,6 @@
         @stack('page_end')
     </div>
 
-    <script src="{{ route('config') }}"></script>
     @if (session('notifications'))
         <script async>
             document.addEventListener('vue:loaded', function() {

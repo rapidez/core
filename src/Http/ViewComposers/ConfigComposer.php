@@ -59,7 +59,7 @@ class ConfigComposer
             'show_tax'                     => in_array(Rapidez::config('tax/display/type', 1), [2, 3]),
             'grid_per_page'                => Rapidez::config('catalog/frontend/grid_per_page', 12),
             'grid_per_page_values'         => explode(',', Rapidez::config('catalog/frontend/grid_per_page_values', '12,24,36')),
-            'max_category_level'           => Cache::rememberForever('max_category_level', fn () => Category::withoutGlobalScopes()->max('level')),
+            'max_category_level'           => $this->getMaxCategoryLevel(),
             'filterable_attributes'        => $this->getFilterableAttributes(),
         ];
     }
@@ -100,6 +100,11 @@ class ConfigComposer
             ->sortBy('position')
             ->values()
             ->toArray();
+    }
+
+    public function getMaxCategoryLevel(): int
+    {
+        return Cache::rememberForever('max_category_level_' . config('rapidez.store'), fn () => Category::withoutGlobalScopes()->max('level'));
     }
 
     public function exposeGraphqlQueries(): self
@@ -151,7 +156,7 @@ class ConfigComposer
                 ];
             });
 
-        $maxLevel = Cache::rememberForever('max_category_level', fn () => Category::withoutGlobalScopes()->max('level'));
+        $maxLevel = $this->getMaxCategoryLevel();
         $categoryLevels = collect(array_fill(1, $maxLevel, 'category_lvl'))
             ->map(fn ($value, $key) => [
                 'attribute' => $value . $key,
