@@ -130,9 +130,15 @@ class Rapidez
         config()->set('rapidez.root_category_id', $store['root_category_id']);
         config()->set('frontend.base_url', url('/'));
 
-        // Set all store-specific values
         foreach (array_keys(config('rapidez')) as $config) {
+            // Reset defaults if they've been set previously
+            foreach (config('rapidez.defaults.' . $config, []) as $key => $value) {
+                config()->set('rapidez.' . $config . '.' . $key, $value);
+            }
+
+            // Set all store-specific values and define the relevant defaults
             foreach (config('rapidez.stores.' . $store['code'] . '.' . $config, []) as $key => $value) {
+                config()->set('rapidez.defaults.' . $config . '.' . $key, config('rapidez.' . $config . '.' . $key));
                 config()->set('rapidez.' . $config . '.' . $key, $value);
             }
         }
