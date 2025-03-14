@@ -41,9 +41,9 @@ class WithProductSuperAttributesScope implements Scope
             ->selectRaw('JSON_OBJECTAGG(eav_attribute.attribute_id, JSON_OBJECT(
                 "code", `attribute_code`,
                 "label", COALESCE(NULLIF(`value`, ""), `frontend_label`),
-                "text_swatch", JSON_UNQUOTE(JSON_EXTRACT(additional_data, "$.swatch_input_type")) = "text",
-                "visual_swatch", JSON_UNQUOTE(JSON_EXTRACT(additional_data, "$.swatch_input_type")) = "visual",
-                "update_image", JSON_UNQUOTE(JSON_EXTRACT(additional_data, "$.update_product_preview_image")) = 1
+                "text_swatch", JSON_UNQUOTE(JSON_EXTRACT(IF(JSON_VALID(additional_data), additional_data, null), "$.swatch_input_type")) = "text",
+                "visual_swatch", JSON_UNQUOTE(JSON_EXTRACT(IF(JSON_VALID(additional_data), additional_data, null), "$.swatch_input_type")) = "visual",
+                "update_image", JSON_UNQUOTE(JSON_EXTRACT(IF(JSON_VALID(additional_data), additional_data, null), "$.update_product_preview_image")) = 1
             )) AS `super_attributes`')
             ->join('eav_attribute', 'eav_attribute.attribute_id', '=', 'catalog_product_super_attribute.attribute_id')
             ->join('catalog_eav_attribute', 'catalog_eav_attribute.attribute_id', '=', 'catalog_product_super_attribute.attribute_id')
