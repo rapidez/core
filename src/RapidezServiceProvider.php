@@ -69,6 +69,7 @@ class RapidezServiceProvider extends ServiceProvider
         $this
             ->registerConfigs()
             ->registerBindings()
+            ->registerThemes()
             ->registerBladeDirectives()
             ->registerExceptionHandlers()
             ->registerBladeIconConfig();
