@@ -303,7 +303,7 @@ class RapidezServiceProvider extends ServiceProvider
 
         $path = config('rapidez.frontend.theme', false);
 
-        if (!$path) {
+        if (! $path) {
             return $this;
         }
 

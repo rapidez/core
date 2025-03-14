@@ -277,7 +277,7 @@ class Product extends Model
         if (! in_array($this->visibility, [
             static::VISIBILITY_IN_CATALOG,
             static::VISIBILITY_IN_SEARCH,
-            static::VISIBILITY_BOTH
+            static::VISIBILITY_BOTH,
         ])) {
             return false;
         }
