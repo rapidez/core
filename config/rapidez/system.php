@@ -31,5 +31,6 @@ return [
     'standalone_checkout' => [
         // What cache store should be used to store temporary standalone checkout credentials
         'cache_store' => env('STANDALONE_CHECKOUT_CACHE_STORE', config('cache.default')),
+        'success_fail_redirect_path' => 'cart',
     ],
 ];
