@@ -27,4 +27,20 @@ return [
         'no'  => 'No',
         'yes' => 'Yes',
     ],
+
+    'asc'       => 'ascending',
+    'desc'      => 'descending',
+    'relevance' => 'Relevance',
+    'all'       => 'All',
+
+    'sorting' => [
+        'created_at' => [
+            'asc'  => 'Oldest',
+            'desc' => 'Newest',
+        ],
+        'name' => [
+            'asc'  => 'Name A-Z',
+            'desc' => 'Name Z-A',
+        ],
+    ],
 ];

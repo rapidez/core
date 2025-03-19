@@ -214,7 +214,10 @@ class ConfigComposer
         $index = (new (config('rapidez.models.product')))->searchableAs();
         $sortableAttributes = collect($sortableAttributes)
             ->flatMap(fn ($attribute) => Arr::map(($attribute['directions'] ?? null) ?: ['asc', 'desc'], fn ($direction) => [
-                'label' => __(ucfirst("{$attribute['code']} {$direction}")),
+                'label' => trans_fallback(
+                    "rapidez::frontend.sorting.{$attribute['code']}.{$direction}",
+                    trans_fallback("rapidez::frontend.{$attribute['code']}", $attribute['code']) . ' ' . trans_fallback("rapidez::frontend.{$direction}", $direction),
+                ),
                 'field' => $attribute['code'] . ($attribute['input'] == 'text' ? '.keyword' : ''),
                 'order' => $direction,
                 'value' => "{$index}_{$attribute['code']}_{$direction}",

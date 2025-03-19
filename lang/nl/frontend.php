@@ -22,4 +22,21 @@ return [
         'email_password'    => 'Je hebt geen email of wachtwoord opgegeven.',
         'email'             => 'Een email adres is verplicht.',
     ],
+
+    'asc'       => 'oplopend',
+    'desc'      => 'aflopend',
+    'relevance' => 'Relevantie',
+    'all'       => 'Alles',
+    'price'     => 'Prijs',
+
+    'sorting' => [
+        'created_at' => [
+            'asc'  => 'Oudste',
+            'desc' => 'Nieuwste',
+        ],
+        'name' => [
+            'asc'  => 'Naam A-Z',
+            'desc' => 'Naam Z-A',
+        ],
+    ],
 ];
