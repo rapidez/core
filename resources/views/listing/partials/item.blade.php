@@ -16,9 +16,7 @@
                 />
                 <x-rapidez::no-image v-else class="mb-3 h-48 rounded-t" />
                 <div class="px-2">
-                    <div class="text-base font-medium">
-                        <x-rapidez::highlight attribute="name"/>
-                    </div>
+                    <x-rapidez::highlight attribute="name" class="text-base font-medium"/>
                     @if (!Rapidez::config('catalog/frontend/show_swatches_in_product_list', 1))
                         <div class="flex items-center space-x-2">
                             <div class="font-semibold">@{{ (item.special_price || item.price) | price }}</div>
