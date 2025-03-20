@@ -1,126 +1,57 @@
 <script>
-import { ReactiveBase, DataSearch } from '@appbaseio/reactivesearch-vue'
-import { useDebounceFn } from '@vueuse/core'
+import AisSearchBox from 'vue-instantsearch/vue2/es/src/components/SearchBox.vue.js'
+import AisIndex from 'vue-instantsearch/vue2/es/src/components/Index.js'
 
-Vue.use(ReactiveBase)
-Vue.use(DataSearch)
+import InstantSearchMixin from './InstantSearchMixin.vue'
 
 export default {
-    props: {
-        additionals: Object,
-        debounce: {
-            type: Number,
-            default: 100,
-        },
-        size: {
-            type: Number,
-            default: 10,
-        },
-        multiMatchTypes: {
-            type: Array,
-            default: () => ['best_fields', 'phrase', 'phrase_prefix'],
-        },
+    mixins: [InstantSearchMixin],
+    components: {
+        'ais-search-box': AisSearchBox,
+        'ais-index': AisIndex,
     },
+    data: () => ({
+        loaded: false,
+    }),
 
     render() {
         return this.$scopedSlots.default(this)
     },
 
-    data() {
-        return {
-            results: {},
-            resultsCount: 0,
-            searchAdditionals: () => null,
-            overlay: false,
-            searchLoading: false,
-        }
-    },
-
     mounted() {
-        this.$nextTick(() => this.$emit('mounted'))
-        let self = this
-
-        // Define function here to gain access to the debounce prop
-        this.searchAdditionals = useDebounceFn(function (query) {
-            if (!self.additionals) {
-                return
-            }
-
-            // Initialize with empty data to preserve additionals order
-            self.results = Object.fromEntries(Object.keys(self.additionals).map((indexName) => [indexName, []]))
-            self.resultsCount = 0
-
-            let url = new URL(config.es_url)
-            let auth = `Basic ${btoa(`${url.username}:${url.password}`)}`
-            let baseUrl = url.origin
-
-            Object.entries(self.additionals).forEach(([name, data]) => {
-                let stores = data['stores'] ?? null
-                if (stores && !stores.includes(window.config.store_code)) {
-                    return
-                }
-
-                let fields = data['fields'] ?? data
-                let size = data['size'] ?? self.size ?? undefined
-                let sort = data['sort'] ?? undefined
-                let fuzziness = data['fuzziness'] ?? 'AUTO'
-                let options = data['options'] ?? {}
-
-                let multimatch = self.multiMatchTypes.map((type) => ({
-                    multi_match: {
-                        query: query,
-                        type: type,
-                        fields: fields,
-                        fuzziness: type.includes('phrase') ? undefined : fuzziness,
-                    },
-                }))
-
-                let esQuery = {
-                    size: size,
-                    sort: sort,
-                    query: {
-                        bool: {
-                            should: multimatch,
-                            minimum_should_match: 1,
-                        },
-                    },
-                    highlight: {
-                        pre_tags: ['<mark>'],
-                        post_tags: ['</mark>'],
-                        fields: Object.fromEntries(fields.map((field) => [field.split('^')[0], {}])),
-                        require_field_match: false,
-                    },
-                    ...options,
-                }
-
-                rapidezFetch(`${baseUrl}/${config.es_prefix}_${name}_${config.store}/_search`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', Authorization: auth },
-                    body: JSON.stringify(esQuery),
-                }).then(async (response) => {
-                    const responseData = await response.json()
-
-                    self.results[name] = responseData?.hits ?? []
-                    self.results.count += self.results[name]?.hits?.length ?? 0
-                })
-            })
-        }, self.debounce)
+        this.$nextTick(() => {
+            requestAnimationFrame(() => this.$emit('mounted'))
+            this.loaded = true
+        })
     },
 
     methods: {
-        startLoading() {
-            this.searchLoading = true
-        },
-        stopLoading() {
-            this.searchLoading = false
-        },
-        highlight(hit, field) {
-            let source = hit._source ?? hit.source
-            let highlight = hit.highlight ?? source.highlight
-            return highlight?.[field]?.[0] ?? source?.[field] ?? ''
-        },
-        showOverlay(isOpen) {
-            this.overlay = isOpen
+        async initSearchClient() {
+            const client = await InstantSearchMixin.methods.initSearchClient.bind(this).call()
+
+            // Ensure no query is done if the search field is empty
+            const oldSearch = client.search
+            client.search = async (requests) => {
+                if (requests.every(({ params }) => !params.query)) {
+                    return Promise.resolve({
+                        results: requests.map(() => ({
+                            hits: [],
+                            nbHits: 0,
+                            nbPages: 0,
+                            page: 0,
+                            processingTimeMS: 0,
+                            hitsPerPage: 0,
+                            exhaustiveNbHits: false,
+                            query: '',
+                            params: '',
+                        })),
+                    })
+                }
+
+                return oldSearch.bind(client)(requests)
+            }
+
+            return client
         },
     },
 }

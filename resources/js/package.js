@@ -100,7 +100,7 @@ function init() {
                 config: window.config,
                 loadingCount: 0,
                 loading: false,
-                loadAutocomplete: false,
+                autocompleteFacadeQuery: '',
                 csrfToken: document.querySelector('[name=csrf-token]')?.content,
                 cart: useCart(),
                 order: useOrder(),

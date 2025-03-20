@@ -11,7 +11,11 @@
         <h1 class="mb-5 text-3xl font-bold">{{ $category->name }}</h1>
 
         @if ($category->is_anchor)
-            <x-rapidez::listing query="{ bool: { must: [{ terms: { visibility: [2, 4] } }, { terms: { category_ids: [config.category.entity_id] } }] } }" />
+            <x-rapidez::listing
+                :root-path="$category->parentcategories->pluck('name')->join(' > ')"
+                filter-query-string="visibility:(2 OR 4) AND category_ids:{{ $category->entity_id }}"
+                filter-score-script="Integer.parseInt(doc['positions.{{ $category->entity_id }}'].empty ? '0' : doc['positions.{{ $category->entity_id }}'].value)"
+            />
         @else
             <div class="flex max-md:flex-col">
                 <div class="xl:w-1/5">
