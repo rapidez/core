@@ -31,7 +31,7 @@
                     </div>
                     <div>
                         <div class="mb-2 border-t pt-5 text-lg font-bold">@lang('Specifications')</div>
-                        <dl class="flex flex-col text-muted *:rounded *:p-2 odd:*:bg odd:*:font-semibold odd:*:text even:*:pl-4">
+                        <dl class="flex flex-col text-muted *:rounded-sm *:p-2 *:odd:bg *:odd:font-semibold *:odd:text *:even:pl-4">
                             <dt>ID</dt>
                             <dd>{{ $product->entity_id }}</dd>
                             <dt>SKU</dt>

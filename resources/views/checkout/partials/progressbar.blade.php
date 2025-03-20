@@ -1,7 +1,7 @@
 
 <nav class="flex my-5">
     @foreach ($checkoutSteps as $checkoutStepKey => $checkoutStep)
-        <div class="text-center w-full relative focus:outline-none">
+        <div class="text-center w-full relative focus:outline-hidden">
             @if (!$loop->last)
                 <div class="absolute flex w-full h-0.5 top-5 left-1/2 {{ $currentStepKey > $checkoutStepKey ? 'bg-emphasis' : 'bg' }}"></div>
             @endif

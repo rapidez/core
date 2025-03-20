@@ -14,7 +14,7 @@ With `$breakpoints` you can control the amount of images.
                 'v-if' => $imageId . ' < images.length && images.length > 1',
             ])
             @class([
-                'max-w-24 relative flex aspect-square flex-1 items-center justify-center overflow-hidden rounded border bg-white p-1.5 outline-primary transition-all',
+                'max-w-24 relative flex aspect-square flex-1 items-center justify-center overflow-hidden rounded-sm border bg-white p-1.5 outline-primary transition-all',
                 'outline outline-1 border-primary' => $imageId == 0,
                 'xl:hidden' => $imageId >= $breakpoints['xl'],
                 'lg:max-xl:hidden' => $imageId >= $breakpoints['lg'],
@@ -24,7 +24,7 @@ With `$breakpoints` you can control the amount of images.
             ])
             v-bind:class="{
                 'outline outline-1 border-primary': active === {{ $imageId }},
-                '!outline-transparent !outline-0 !border-border': active !== {{ $imageId }},
+                'outline-transparent! outline-0! border-border!': active !== {{ $imageId }},
             }"
             v-on:click="change({{ $imageId }})"
         >

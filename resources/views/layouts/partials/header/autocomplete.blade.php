@@ -1,4 +1,4 @@
-@php $inputClasses = 'relative z-header-autocomplete border !font-sans !border-default !text-sm !min-h-0 outline-0 ring-0 !h-auto rounded-xl !pl-5 !pr-24 !py-3.5 !bg-white w-full focus:ring-transparent search-input' @endphp
+@php $inputClasses = 'relative z-header-autocomplete border font-sans! border-default! text-sm! min-h-0! outline-0 ring-0 h-auto! rounded-xl pl-5! pr-24! py-3.5! bg-white! w-full focus:ring-transparent search-input' @endphp
 
 <div v-if="!$root.loadAutocomplete" class="relative w-full">
     <label for="autocomplete-input" class="sr-only">@lang('Search')</label>
@@ -31,7 +31,7 @@
             v-on:value-selected="search"
             component-id="autocomplete"
             :inner-class="{ input: '{{ $inputClasses }}' }"
-            class="relative [&_*]:!m-0"
+            class="relative **:m-0!"
             :data-field="Object.keys(config.searchable)"
             :field-weights="Object.values(config.searchable)"
             :show-icon="false"
@@ -51,7 +51,7 @@
                     class="z-header-autocomplete absolute -inset-x-5 top-14 overflow-x-hidden overflow-y-auto scrollbar-hide pt-4 pb-7 bg-white max-md:h-[calc(100svh-150px)] max-md:max-h-[calc(100svh-150px)] md:top-14 md:max-h-[calc(100svh-150px)] md:rounded-xl md:border md:inset-x-0 md:w-full md:-translate-y-px"
                 >
                     <div v-if="dataSearchScope.data.length || autocompleteScope.resultsCount">
-                        <div class="flex flex-col prose-li:px-5 hover:prose-li:bg-muted">
+                        <div class="flex flex-col prose-li:px-5 prose-li:hover:bg-muted">
                             {{-- The order can be changed with https://tailwindcss.com/docs/order --}}
                             <template v-for="(resultsData, resultsType) in autocompleteScope.results ?? {}" v-if="resultsData?.hits?.length">
                                 @foreach (config('rapidez.frontend.autocomplete.additionals') as $key => $fields)

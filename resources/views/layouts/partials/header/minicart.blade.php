@@ -1,12 +1,12 @@
 <toggler>
     <div class="relative" v-if="hasCart" v-on-click-away="close" slot-scope="{ toggle, close, isOpen }">
-        <button class="flex my-1 focus:outline-none" v-on:click="toggle">
+        <button class="flex my-1 focus:outline-hidden" v-on:click="toggle">
             <x-heroicon-o-shopping-cart class="size-6"/>
             <span class="bg-secondary text-secondary-text rounded-full size-6 text-center" dusk="minicart-count" v-cloak>
                 <span>@{{ Math.round(cart.total_quantity) }}</span>
             </span>
         </button>
-        <div v-if="isOpen" class="absolute right-0 bg-white border shadow rounded-xl p-5 z-header-minicart" v-cloak>
+        <div v-if="isOpen" class="absolute right-0 bg-white border shadow-muted shadow-sm rounded-xl p-5 z-header-minicart" v-cloak>
             <table class="w-full mb-3">
                 <tr v-for="item in cart.items" class="*:pb-3">
                     <td class="block w-48 truncate overflow-hidden">
