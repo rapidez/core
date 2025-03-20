@@ -38,9 +38,9 @@ class OnlyProductAttributesScope implements Scope
                     FROM catalog_product_super_attribute
                     WHERE catalog_product_super_attribute.attribute_id = eav_attribute.attribute_id
                 ) AS `super`'),
-                DB::raw("JSON_UNQUOTE(JSON_EXTRACT(additional_data, '$.swatch_input_type')) = 'text' AS `text_swatch`"),
-                DB::raw("JSON_UNQUOTE(JSON_EXTRACT(additional_data, '$.swatch_input_type')) = 'visual' AS `visual_swatch`"),
-                DB::raw("JSON_UNQUOTE(JSON_EXTRACT(additional_data, '$.update_product_preview_image')) = 1 AS `update_image`"),
+                DB::raw("JSON_UNQUOTE(JSON_EXTRACT(IF(JSON_VALID(additional_data), additional_data, null), '$.swatch_input_type')) = 'text' AS `text_swatch`"),
+                DB::raw("JSON_UNQUOTE(JSON_EXTRACT(IF(JSON_VALID(additional_data), additional_data, null), '$.swatch_input_type')) = 'visual' AS `visual_swatch`"),
+                DB::raw("JSON_UNQUOTE(JSON_EXTRACT(IF(JSON_VALID(additional_data), additional_data, null), '$.update_product_preview_image')) = 1 AS `update_image`"),
                 'position'
             )
             ->join('catalog_eav_attribute', 'eav_attribute.attribute_id', '=', 'catalog_eav_attribute.attribute_id')
