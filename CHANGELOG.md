@@ -1,6 +1,25 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/3.2.0...3.2.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/3.3.0...3.3.0)
+## [3.3.0](https://github.com/rapidez/core/releases/tag/3.3.0) - 2025-03-20
+
+### Added
+
+- Custom customer attributes directly on the user store (#767)
+
+### Changed
+
+- Remove custom shadow colors (#723)
+- Skip login checkout step when logged in (#759)
+
+### Fixed
+
+- Only allow catalog routes ids to be a number (#747)
+- Allow for arbitrary options in additionals (#751)
+- Cookie notice z-index (#761)
+- Use correct show_tax value (#753)
+- Only use special price when it's lower (#775)
+
 ## [3.2.0](https://github.com/rapidez/core/releases/tag/3.2.0) - 2025-02-26
 
 ### Added
