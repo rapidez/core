@@ -1,6 +1,15 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.21.1...2.21.1)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.21.2...2.21.2)
+## [2.21.2](https://github.com/rapidez/core/releases/tag/2.21.2) - 2025-03-20
+
+### Fixed
+
+- Only allow catalog routes ids to be a number (#748)
+- Allow for arbitrary options in additionals (#757)
+- Use correct show_tax value (#754)
+- Only use special price when it's lower (#776)
+
 ## [2.21.1](https://github.com/rapidez/core/releases/tag/2.21.1) - 2025-02-25
 
 ### Fixed
