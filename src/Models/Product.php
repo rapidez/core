@@ -181,7 +181,7 @@ class Product extends Model
                 return null;
             }
 
-            return $specialPrice !== $this->price ? $specialPrice : null;
+            return $specialPrice < $this->price ? $specialPrice : null;
         }
 
         return collect($this->type_id == 'configurable' ? $this->children : $this->grouped)->filter(function ($child) {
