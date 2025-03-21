@@ -34,6 +34,8 @@ export default {
         },
 
         superRefinements() {
+            // Note that `disjunctiveFacetsRefinements` is only one of 5 total sets of refinements that gets exposed by the state
+            // It looks like all super attributes will end up in there, so right now it's the only one we check
             let disjunctiveFacetsRefinements = this.instantSearchInstance.helper.state.disjunctiveFacetsRefinements
             return Object.fromEntries(
                 Object.entries(disjunctiveFacetsRefinements)
