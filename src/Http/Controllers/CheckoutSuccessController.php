@@ -13,7 +13,7 @@ class CheckoutSuccessController
         $success = Eventy::filter('checkout.checksuccess', true, $request);
 
         if (! $success) {
-            return redirect('cart');
+            return redirect(config('rapidez.frontend.checkout_success_fail_redirect_path', 'cart'));
         }
 
         if (is_object($success) && $success instanceof \Symfony\Component\HttpFoundation\Response) {
