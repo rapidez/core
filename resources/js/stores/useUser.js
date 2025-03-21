@@ -164,6 +164,24 @@ export const user = computed({
 
         userStorage.value.is_logged_in = Boolean(userStorage.value?.email)
 
+        // Adds all of the `custom_attributes` values of a user directly into the user object.
+        // This allows them to be easily retrieved without having to manually find the individual attributes.
+        userStorage.value.custom_attributes?.forEach((attribute) => {
+            if (attribute.code in userStorage.value) {
+                // A collision here should never happen, but if the attribute already exists in the user object,
+                // we should skip it as to not accidentally overwrite anything important.
+                return
+            }
+
+            if ('value' in attribute) {
+                userStorage.value[attribute.code] = attribute.value
+            } else if ('selected_options' in attribute) {
+                userStorage.value[attribute.code] = Object.fromEntries(
+                    attribute.selected_options.map((option) => [option.value, option.label]),
+                )
+            }
+        })
+
         return userStorage.value
     },
     set(value) {
