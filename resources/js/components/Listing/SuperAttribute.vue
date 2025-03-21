@@ -24,7 +24,7 @@ export default {
 
     methods: {
         isDisabled(optionId) {
-            this.parent.disabledOptions['super_'+this.attribute.code].includes(optionId)
+            this.parent.disabledOptions['super_' + this.attribute.code].includes(optionId)
         },
     },
 
@@ -40,7 +40,7 @@ export default {
             return Object.fromEntries(
                 Object.entries(disjunctiveFacetsRefinements)
                     .filter(([key, value]) => key.startsWith('super_') && value.length > 0)
-                    .map(([key, value]) => [key.replace('super_', ''), value])
+                    .map(([key, value]) => [key.replace('super_', ''), value]),
             )
         },
 
@@ -51,7 +51,7 @@ export default {
             }
 
             return refinement[0]
-        }
+        },
     },
 
     watch: {
@@ -62,6 +62,6 @@ export default {
         refinement() {
             this.option = this.refinement
         },
-    }
+    },
 }
 </script>
