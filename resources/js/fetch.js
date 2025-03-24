@@ -112,7 +112,7 @@ export const combiningGraphQL = (window.combiningGraphQL = async (query, variabl
 
                     pendingQuery[pendingQueryName] = null
 
-                    magentoGraphQL(query, variables, options).then(resolve)
+                    magentoGraphQL(query, variables, options).then(resolve).catch(reject)
                 }, 5),
             ),
         }
