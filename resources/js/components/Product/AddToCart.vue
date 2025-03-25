@@ -278,7 +278,7 @@ export default {
                 return isMatching
             })
 
-            if (Object.keys(this.product.children).length == simpleProducts.length) {
+            if (Object.keys(this.product.children).length == simpleProducts.length && simpleProducts.length > 1) {
                 return product
             }
 
