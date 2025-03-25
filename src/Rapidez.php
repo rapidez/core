@@ -133,6 +133,7 @@ class Rapidez
         // This loop goes through all the Rapidez config files and retrieves the store-specific values.
         // We also remember some `default` values along the way. This allows us to switch stores multiple
         // times in one session, without losing any data that got overwritten by the store-specific values.
+        // TODO: Add how to use this in the Rapidez documentation
         foreach (array_keys(config('rapidez')) as $config) {
             // Reset defaults if they've been set previously
             foreach (config('rapidez.defaults.' . $config, []) as $key => $value) {
