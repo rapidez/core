@@ -73,13 +73,17 @@ class Config extends Model
         string $path,
         ConfigScopes $scope = ConfigScopes::SCOPE_STORE,
         ?int $scopeId = null,
-        array $options = ['cache' => true, 'decrypt' => false, 'default' => null]
+        array $options = ['cache' => true, 'decrypt' => false, 'default' => false]
     ): mixed {
         $scopeId ??= match ($scope) {
             ConfigScopes::SCOPE_WEBSITE => config('rapidez.website') ?? Rapidez::getStore(config('rapidez.store'))['website_id'],
             ConfigScopes::SCOPE_STORE   => config('rapidez.store'),
             default                     => 0
         };
+
+        if ($options['default'] === false) {
+            $options['default'] = config('rapidez.magento-defaults.' . $path, null);
+        }
 
         if ($options['cache'] ?? true) {
             $configCache = Cache::driver('rapidez:multi')->get('magento.config', []);

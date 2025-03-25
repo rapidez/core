@@ -4,7 +4,7 @@ if (! function_exists('price')) {
     function price($price)
     {
         $currency = \Rapidez\Core\Facades\Rapidez::config('currency/options/default');
-        $locale = \Rapidez\Core\Facades\Rapidez::config('general/locale/code', 'en_US');
+        $locale = \Rapidez\Core\Facades\Rapidez::config('general/locale/code');
         $formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
 
         return $formatter->formatCurrency($price, $currency);

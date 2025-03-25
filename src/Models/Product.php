@@ -203,7 +203,7 @@ class Product extends Model
 
     public function getUrlAttribute(): string
     {
-        return '/' . ($this->url_key ? $this->url_key . Rapidez::config('catalog/seo/product_url_suffix', '.html') : 'catalog/product/view/id/' . $this->entity_id);
+        return '/' . ($this->url_key ? $this->url_key . Rapidez::config('catalog/seo/product_url_suffix') : 'catalog/product/view/id/' . $this->entity_id);
     }
 
     public function getImagesAttribute(): array
