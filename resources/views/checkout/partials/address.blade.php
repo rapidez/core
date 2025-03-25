@@ -145,15 +145,30 @@
                 />
             </label>
         </div>
-        <div class="col-span-12 sm:col-span-6">
+        <div class="col-span-12 sm:col-span-6 sm:col-start-1">
             <label>
                 <x-rapidez::label>@lang('Country')</x-rapidez::label>
                 <x-rapidez::input.select.country
                     name="{{ $type }}_country"
                     dusk="{{ $type }}_country"
                     v-model="variables.country_code"
-                    v-on:change="$root.$nextTick(() => window.app.$emit('postcode-change', variables))"
+                    v-on:change="$root.$nextTick(() => {
+                        window.app.$emit('postcode-change', variables);
+                        variables.region_id = null
+                    })"
                     required
+                />
+            </label>
+        </div>
+        <div class="col-span-12 sm:col-span-6 has-[.exists]:block hidden">
+            <label>
+                <x-rapidez::label>@lang('Region')</x-rapidez::label>
+                <x-rapidez::input.select.region
+                    class="exists"
+                    name="{{ $type }}_region"
+                    dusk="{{ $type }}_region"
+                    country="variables.country_code"
+                    v-model="variables.region_id"
                 />
             </label>
         </div>
