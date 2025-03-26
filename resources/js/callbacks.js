@@ -18,25 +18,22 @@ Vue.prototype.getCheckoutStep = (stepName) => {
 Vue.prototype.submitPartials = async function (form, sequential = false) {
     let promises = []
     for (const element of form.querySelectorAll('[partial-submit]')) {
-
         const partialFn = element?.getAttribute('partial-submit')
         if (!partialFn || !element?.__vue__) {
-            continue;
+            continue
         }
 
         const createdPromise = element.__vue__[partialFn]().then((result) => {
             if (result === false) {
                 throw new Error()
             }
-        });
+        })
 
         if (sequential) {
-            await createdPromise;
+            await createdPromise
         }
 
-        promises.push(
-            createdPromise
-        )
+        promises.push(createdPromise)
     }
 
     return await Promise.all(promises)
