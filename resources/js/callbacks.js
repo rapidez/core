@@ -15,22 +15,29 @@ Vue.prototype.getCheckoutStep = (stepName) => {
     return (config.checkout_steps[config.store_code] ?? config.checkout_steps['default'])?.indexOf(stepName)
 }
 
-Vue.prototype.submitPartials = async function (form) {
+Vue.prototype.submitPartials = async function (form, sequential = false) {
     let promises = []
-    form.querySelectorAll('[partial-submit]').forEach((element) => {
+    for (const element of form.querySelectorAll('[partial-submit]')) {
+
         const partialFn = element?.getAttribute('partial-submit')
         if (!partialFn || !element?.__vue__) {
-            return
+            continue;
+        }
+
+        const createdPromise = element.__vue__[partialFn]().then((result) => {
+            if (result === false) {
+                throw new Error()
+            }
+        });
+
+        if (sequential) {
+            await createdPromise;
         }
 
         promises.push(
-            element.__vue__[partialFn]().then((result) => {
-                if (result === false) {
-                    throw new Error()
-                }
-            }),
+            createdPromise
         )
-    })
+    }
 
     return await Promise.all(promises)
 }
