@@ -12,7 +12,7 @@
                 <div class="w-full rounded bg p-4 xl:p-8 xl:w-3/4">
                     <form
                         v-on:submit.prevent="(e) => {
-                            submitPartials(e.target?.form ?? e.target, true)
+                            submitPartials(e.target?.form ?? e.target, (cart?.billing_address?.same_as_shipping ?? true))
                                 .then((result) =>
                                     window.app.$emit('checkout-credentials-saved')
                                     && window.Turbo.visit(window.url('{{ route('checkout', ['step' => 'payment']) }}'))
