@@ -8,6 +8,7 @@
                     component-id="{{ md5(serialize($value)) }}"
                     data-field="{{ $field }}"
                     :size="999"
+                    :infinite-scroll="false"
                     :default-query="function () { return { query: { terms: { '{{ $field }}': {!!
                         is_array($value)
                             ? "['".implode("','", $value)."']"
