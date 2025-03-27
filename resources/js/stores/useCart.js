@@ -196,7 +196,7 @@ export const fixedProductTaxes = computed(() => {
 
 export const taxTotal = computed(() => {
     if (!cart?.value?.prices?.applied_taxes?.length) {
-        return
+        return 0
     }
 
     return cart.value.prices.applied_taxes.reduce((sum, tax) => sum + tax.amount.value, 0)
