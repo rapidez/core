@@ -59,6 +59,9 @@ return [
     'widgets' => [
         'Magento\Cms\Block\Widget\Block'                   => Rapidez\Core\Widgets\Block::class,
         'Magento\CatalogWidget\Block\Product\ProductsList' => Rapidez\Core\Widgets\ProductList::class,
+        'Magento\Catalog\Block\Category\Widget\Link'       => Rapidez\Core\Widgets\CategoryLink::class,
+        'Magento\Cms\Block\Widget\Page\Link'               => Rapidez\Core\Widgets\PageLink::class,
+        'Magento\Catalog\Block\Product\Widget\Link'        => Rapidez\Core\Widgets\ProductLink::class,
     ],
 
     'view_only_widget' => \Rapidez\Core\Widgets\ViewOnly::class,
