@@ -27,12 +27,13 @@ window.SessionExpired = SessionExpired
 
 export const rapidezFetch = (window.rapidezFetch = ((originalFetch) => {
     return (...args) => {
-        if (window.app.$data) {
+        let loadingTracked = !!window.app.$data
+        if (loadingTracked) {
             window.app.$data.loadingCount++
         }
         const result = originalFetch.apply(this, args)
         return result.finally((...args) => {
-            if (window.app.$data) {
+            if (loadingTracked) {
                 window.app.$data.loadingCount--
             }
 
