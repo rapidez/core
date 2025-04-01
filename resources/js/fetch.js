@@ -33,7 +33,7 @@ export const rapidezFetch = (window.rapidezFetch = ((originalFetch) => {
         }
         const result = originalFetch.apply(this, args)
         return result.finally((...args) => {
-            if (loadingTracked) {
+            if (loadingTracked && window.app.$data && window.app.$data.loadingCount > 0) {
                 window.app.$data.loadingCount--
             }
 
