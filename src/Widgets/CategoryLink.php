@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Widgets;
+namespace Rapidez\Core\Widgets;
 
 class CategoryLink
 {
@@ -20,7 +20,7 @@ class CategoryLink
 
     public function render()
     {
-        return view('widgets.link', [
+        return view('rapidez::widget.link', [
             'title' => $this->title,
             'url' => $this->idPath,
             'anchorText' => $this->anchorText,

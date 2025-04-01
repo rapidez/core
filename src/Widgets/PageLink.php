@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Widgets;
+namespace Rapidez\Core\Widgets;
 
 use Rapidez\Core\Models\Page;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
@@ -23,7 +23,7 @@ class PageLink
 
     public function render()
     {
-        return view('widgets.link', [
+        return view('rapidez::widget.link', [
             'title' => $this->title,
             'url' => $this->identifier,
             'anchorText' => $this->anchorText,
