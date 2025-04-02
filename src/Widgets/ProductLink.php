@@ -12,9 +12,9 @@ class ProductLink
 
     public function __construct($vars)
     {
-        $this->idPath = str($vars->id_path)->after('/')->prepend('catalog/product/view/id/');
-        $this->title = $vars->title;
-        $this->anchorText = $vars->anchor_text;
+        $this->idPath = str($vars->id_path ?? '')->after('/')->prepend('catalog/category/view/id/');
+        $this->title = $vars->title ?? 'category';
+        $this->anchorText = $vars->anchor_text ?? 'category';
     }
 
     public function render()

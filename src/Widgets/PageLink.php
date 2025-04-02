@@ -15,10 +15,15 @@ class PageLink
 
     public function __construct($vars)
     {
-        $this->title = $vars->title;
-        $this->anchorText = $vars->anchor_text;
-        $pageContent = Page::withoutGlobalScope(IsActiveScope::class)->find($vars->page_id);
-        $this->identifier = $pageContent['identifier'];
+        if ($pageContent = Page::withoutGlobalScope(IsActiveScope::class)->find($vars->page_id)) {
+            $this->identifier = $pageContent['identifier'];
+            $this->anchorText = $vars->anchor_text ?? $pageContent['title'] ?? 'link';
+            $this->title = $vars->title ?? $pageContent['title'] ?? 'title';
+        } else {
+            $this->identifier = '';
+            $this->anchorText = $vars->anchor_text  ?? 'link';
+            $this->title = $vars->title ?? 'title';
+        }
     }
 
     public function render()
