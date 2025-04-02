@@ -50,7 +50,7 @@ export default {
             return null
         }
 
-        return this.$scopedSlots.default({...this, variables: this.dataVariables})
+        return this.$scopedSlots.default({ ...this, variables: this.dataVariables })
     },
 
     created() {
