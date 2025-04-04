@@ -71,7 +71,10 @@
                 </div>
                 <div class="w-full p-8 bg-white shadow-sm rounded border-l-2 border border-l-primary mt-4 md:mt-0 md:w-1/2">
                     <p class="text font-lg font-bold mb-2">@lang('Payment method')</p>
-                    <p v-for="method in order.payment_methods">@{{ method.name || method.type }}</p>
+                    <template v-for="method in order.payment_methods">
+                        <p>@{{ method.name || method.type }}</p>
+                        <p v-for="additional_data in method.additional_data">@{{ additional_data.name }}: @{{ additional_data.value }}</p>
+                    </template>
                 </div>
             </div>
         </div>
