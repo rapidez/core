@@ -39,6 +39,7 @@ export default {
     },
 
     data: () => ({
+        dataVariables: {},
         data: null,
         cachePrefix: 'graphql_',
         running: false,
@@ -49,10 +50,12 @@ export default {
             return null
         }
 
-        return this.$scopedSlots.default(this)
+        return this.$scopedSlots.default({ ...this, variables: this.dataVariables })
     },
 
     created() {
+        this.dataVariables = this.variables
+
         if (!this.getCache()) {
             this.runQuery()
         }
@@ -78,8 +81,8 @@ export default {
                 }
 
                 let response = this.group
-                    ? await combiningGraphQL(this.query, this.variables, options, this.group)
-                    : await magentoGraphQL(this.query, this.variables, options)
+                    ? await combiningGraphQL(this.query, this.dataVariables, options, this.group)
+                    : await magentoGraphQL(this.query, this.dataVariables, options)
 
                 if (this.check) {
                     if (!this.check(response?.data)) {
@@ -89,14 +92,14 @@ export default {
                     }
                 }
 
-                this.data = this.callback ? await this.callback(this.variables, response) : response.data
+                this.data = this.callback ? await this.callback(this.dataVariables, response) : response.data
 
                 if (this.cache) {
                     useLocalStorage(this.cachePrefix + this.cache, null, { serializer: StorageSerializers.object }).value = this.data
                 }
             } catch (error) {
                 console.error(error)
-                this.errorCallback(this.variables, await error?.response?.json())
+                this.errorCallback(this.dataVariables, await error?.response?.json())
             } finally {
                 this.running = false
             }
