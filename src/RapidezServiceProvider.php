@@ -284,7 +284,7 @@ class RapidezServiceProvider extends ServiceProvider
                 array_map(
                     function ($filename) use ($manifest) {
                         foreach ($manifest as $path => $asset) {
-                            if (Str::endsWith($asset['name'] ?? '', $filename)|| Str::endsWith($path, $filename)) {
+                            if (Str::endsWith($asset['name'] ?? '', $filename) || Str::endsWith($path, $filename)) {
                                 return $path;
                             }
                         }
