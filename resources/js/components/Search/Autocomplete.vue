@@ -6,8 +6,7 @@ import Hits from 'vue-instantsearch/vue2/es/src/components/Hits.js'
 import Configure from 'vue-instantsearch/vue2/es/src/components/Configure.js'
 import highlight from 'vue-instantsearch/vue2/es/src/components/Highlight.vue.js'
 import SearchBox from 'vue-instantsearch/vue2/es/src/components/SearchBox.vue.js'
-import Index from 'vue-instantsearch/vue2/es/src/components/Index.js';
-
+import Index from 'vue-instantsearch/vue2/es/src/components/Index.js'
 
 export default {
     mixins: [InstantSearchMixin],

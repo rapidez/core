@@ -6,7 +6,7 @@ Vue.component('ais-highlight', () => import('vue-instantsearch/vue2/es/src/compo
 Vue.component('ais-search-box', () => import('vue-instantsearch/vue2/es/src/components/SearchBox.vue.js'))
 
 // Used by Autocomplete
-Vue.component('ais-index', () => import('vue-instantsearch/vue2/es/src/components/Index.js'));
+Vue.component('ais-index', () => import('vue-instantsearch/vue2/es/src/components/Index.js'))
 
 // Used by Listing
 Vue.component('ais-refinement-list', () => import('vue-instantsearch/vue2/es/src/components/RefinementList.vue.js'))
@@ -18,4 +18,3 @@ Vue.component('ais-hits-per-page', () => import('vue-instantsearch/vue2/es/src/c
 Vue.component('ais-sort-by', () => import('vue-instantsearch/vue2/es/src/components/SortBy.vue.js'))
 Vue.component('ais-pagination', () => import('vue-instantsearch/vue2/es/src/components/Pagination.vue.js'))
 Vue.component('ais-stats', () => import('vue-instantsearch/vue2/es/src/components/Stats.vue.js'))
-
