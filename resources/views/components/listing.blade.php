@@ -2,10 +2,7 @@
 
 @pushOnce('head', 'es_url-preconnect')
     <link rel="preconnect" href="{{ config('rapidez.es_url') }}">
-
-    @if ($file = vite_filename_path('Listing.vue'))
-        @vite([$file])
-    @endif
+    @vite(vite_filename_paths(['Listing.vue', 'InstantSearch']))
 @endPushOnce
 
 <div class="min-h-screen">

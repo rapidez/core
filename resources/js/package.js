@@ -21,6 +21,7 @@ import './mixins'
 import './cookies'
 import './callbacks'
 import './vue-components'
+import './instantsearch'
 ;(() => import('./turbolinks'))()
 
 if (import.meta.env.VITE_DEBUG === 'true') {

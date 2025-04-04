@@ -1,4 +1,17 @@
 @php($id = uniqid('filters-'))
+@pushOnce('head', 'listing-filters')
+    @vite(
+        vite_filename_paths([
+            'ClearRefinements.vue',
+            'CurrentRefinements.vue',
+            'SearchBox.vue',
+            'RangeInput.vue',
+            'RangeSlider.vue',
+            'RefinementList.vue',
+            'HierarchicalMenu.vue',
+        ])
+    )
+@endPushOnce
 <x-rapidez::slideover.mobile :$id :title="__('Filters')">
     <div class="w-full p-2 max-lg:bg-white max-lg:p-5">
         @include('rapidez::listing.partials.filter.selected')
