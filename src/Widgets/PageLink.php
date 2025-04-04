@@ -7,7 +7,7 @@ use Rapidez\Core\Models\Scopes\IsActiveScope;
 
 class PageLink
 {
-    protected $identifier;
+    protected $url;
 
     protected $title;
 
@@ -15,9 +15,9 @@ class PageLink
 
     public function __construct($vars)
     {
-        $page = Page::withoutGlobalScope(IsActiveScope::class)->find($vars->page_id)
+        $page = Page::withoutGlobalScope(IsActiveScope::class)->find($vars->page_id);
 
-        $this->identifier = $page->identifier ?? '/';
+        $this->url = $page->identifier ?? '/';
         $this->anchorText = $vars->anchor_text ?? $page->title ?? 'link';
         $this->title = $vars->title ?? $page->title ?? '';
     }
@@ -26,7 +26,7 @@ class PageLink
     {
         return view('rapidez::widget.link', [
             'title' => $this->title,
-            'url' => $this->identifier,
+            'url' => $this->url,
             'anchorText' => $this->anchorText,
         ]);
     }

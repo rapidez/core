@@ -4,7 +4,7 @@ namespace Rapidez\Core\Widgets;
 
 class ProductAndCategoryLink
 {
-    protected $idPath;
+    protected $url;
 
     protected $title;
 
@@ -15,7 +15,7 @@ class ProductAndCategoryLink
         $type = str($vars->id_path)->before('/')->value();
         $id = str($vars->id_path)->after('/');
 
-        $this->idPath = match ($type) {
+        $this->url = match ($type) {
             'category' => $id->prepend('catalog/category/view/id/'),
             'product' => $id->prepend('catalog/product/view/id/'),
         };
@@ -28,7 +28,7 @@ class ProductAndCategoryLink
     {
         return view('rapidez::widget.link', [
             'title' => $this->title,
-            'url' => $this->idPath,
+            'url' => $this->url,
             'anchorText' => $this->anchorText,
         ]);
     }
