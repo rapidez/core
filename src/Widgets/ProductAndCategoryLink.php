@@ -12,12 +12,15 @@ class ProductAndCategoryLink
 
     public function __construct($vars)
     {
-        $this->idPath = match (str($vars->id_path)->before('/')->value()) {
-            'category' => str($vars->id_path ?? '')->after('/')->prepend('catalog/category/view/id/'),
-            'product' => str($vars->id_path ?? '')->after('/')->prepend('catalog/product/view/id/'),
-            default => 'unknown'
+        $type = str($vars->id_path)->before('/')->value();
+        $id = str($vars->id_path)->after('/');
+
+        $this->idPath = match ($type) {
+            'category' => $id->prepend('catalog/category/view/id/'),
+            'product' => $id->prepend('catalog/product/view/id/'),
         };
-        $this->title = $vars->title ?? 'title';
+
+        $this->title = $vars->title ?? '';
         $this->anchorText = $vars->anchor_text ?? 'link';
     }
 
