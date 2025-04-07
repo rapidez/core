@@ -27,6 +27,8 @@ return [
     'general/country/default'                         => 'US',
     'general/locale/code'                             => 'en_US',
     'general/locale/timezone'                         => 'America/Los_Angeles',
+    'general/region/display_all'                      => '0',
+    'general/region/state_required'                   => '',
     'newsletter/general/active'                       => '1',
     'newsletter/subscription/allow_guest_subscribe'   => '1',
     'reports/options/enabled'                         => '0',
