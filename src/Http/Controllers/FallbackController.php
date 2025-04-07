@@ -68,7 +68,7 @@ class FallbackController extends Controller
                 ));
 
             // Null response is equal to no response or 404.
-            if (! $response->getContent() || $response->isNotFound()) {
+            if ($response->isNotFound() || (! $response->getContent() && ! $response->isEmpty())) {
                 abort(404);
             }
 

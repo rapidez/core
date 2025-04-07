@@ -1,6 +1,18 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/3.3.0...3.3.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/3.4.0...3.4.0)
+## [3.4.0](https://github.com/rapidez/core/releases/tag/3.4.0) - 2025-03-25
+
+### Added
+
+- Region select (#738)
+- Custom checkout success fail redirect path (#780)
+
+### Fixed
+
+- Fixed configurable products with 1 child product not selecting properly (#778)
+- Correctly handle combiningGraphql allowing catching (#783)
+
 ## [3.3.0](https://github.com/rapidez/core/releases/tag/3.3.0) - 2025-03-20
 
 ### Added

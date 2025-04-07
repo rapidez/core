@@ -91,4 +91,7 @@ return [
         'auto_select_configurable_options' => false,
         'auto_select_product_options'      => false,
     ],
+
+    // The path to redirect to after a failed checkout
+    'checkout_success_fail_redirect_path' => 'cart',
 ];
