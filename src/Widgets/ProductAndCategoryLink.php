@@ -12,6 +12,7 @@ class ProductAndCategoryLink
 
     public function __construct($vars)
     {
+        $vars->id_path = collect(explode('/', $vars->id_path))->take(2)->implode('/');
         $type = str($vars->id_path)->before('/')->value();
         $id = str($vars->id_path)->after('/');
 
@@ -20,8 +21,8 @@ class ProductAndCategoryLink
             'product' => $id->prepend('catalog/product/view/id/'),
         };
 
-        $this->title = $vars->title ?? '';
-        $this->anchorText = $vars->anchor_text ?? 'link';
+        $this->title = $vars->title ?? $type ?? '';
+        $this->anchorText = $vars->anchor_text ?? $type ?? 'link';
     }
 
     public function render()
