@@ -14,13 +14,7 @@
                         />
                         <x-rapidez::no-image v-else class="mb-3 h-48 rounded-t" />
                         <div class="flex flex-1 justify-center flex-col px-2">
-                            <span>
-                                <ais-highlight
-                                    attribute="name"
-                                    :hit="item"
-                                    highlighted-tag-name="mark"
-                                />
-                            </span>
+                            <x-rapidez::highlight attribute="name"/>
 
                             <div class="flex items-center gap-x-0.5 mt-0.5">
                                 <div v-if="item.special_price" class="text-muted font-sans line-through text-xs">
