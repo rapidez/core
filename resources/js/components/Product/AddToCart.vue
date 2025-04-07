@@ -15,7 +15,7 @@ export default {
                     },
                 }
             },
-        }
+        },
     },
 
     props: {
@@ -279,7 +279,7 @@ export default {
 
                 Vue.set(this.options, key, availableValue[0])
             })
-        }
+        },
     },
 
     computed: {
@@ -449,12 +449,16 @@ export default {
 
         refinementOptions() {
             // Options per super attribute that match the current refinements.
-            return Object.fromEntries(Object.entries(this.product.super_attributes).map(([index, attribute]) => {
-                return [
-                    index,
-                    (Object.entries(this.superRefinements).find(([key, value]) => key === attribute.code)?.[1] || [])
-                        .filter((val) => this.enabledOptions[index].includes(val * 1))] // Filter out disabled options
-            }))
+            return Object.fromEntries(
+                Object.entries(this.product.super_attributes).map(([index, attribute]) => {
+                    return [
+                        index,
+                        (Object.entries(this.superRefinements).find(([key, value]) => key === attribute.code)?.[1] || []).filter((val) =>
+                            this.enabledOptions[index].includes(val * 1),
+                        ),
+                    ] // Filter out disabled options
+                }),
+            )
         },
     },
 
