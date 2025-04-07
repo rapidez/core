@@ -1,7 +1,6 @@
 <script>
 import AisSearchBox from 'vue-instantsearch/vue2/es/src/components/SearchBox.vue.js'
 import AisIndex from 'vue-instantsearch/vue2/es/src/components/Index.js'
-import AisHighlight from 'vue-instantsearch/vue2/es/src/components/Highlight.vue.js'
 
 import InstantSearchMixin from './InstantSearchMixin.vue'
 
@@ -10,7 +9,6 @@ export default {
     components: {
         'ais-search-box': AisSearchBox,
         'ais-index': AisIndex,
-        'ais-highlight': AisHighlight,
     },
     data: () => ({
         loaded: false,
