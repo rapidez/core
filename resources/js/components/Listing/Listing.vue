@@ -11,7 +11,6 @@ import AisHitsPerPage from 'vue-instantsearch/vue2/es/src/components/HitsPerPage
 import AisSortBy from 'vue-instantsearch/vue2/es/src/components/SortBy.vue.js'
 import AisPagination from 'vue-instantsearch/vue2/es/src/components/Pagination.vue.js'
 import AisStats from 'vue-instantsearch/vue2/es/src/components/Stats.vue.js'
-import SuperAttribute from './SuperAttribute.vue'
 
 import categoryFilter from './Filters/CategoryFilter.vue'
 import useAttributes from '../../stores/useAttributes.js'
@@ -31,7 +30,6 @@ export default {
         'ais-sort-by': AisSortBy,
         'ais-pagination': AisPagination,
         'ais-stats': AisStats,
-        'super-attribute': SuperAttribute,
     },
     props: {
         // TODO: Do we still use/need this?
