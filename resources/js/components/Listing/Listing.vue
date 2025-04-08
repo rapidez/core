@@ -244,6 +244,10 @@ export default {
         },
 
         windowTitle(routeState) {
+            if (!routeState.q) {
+                return window.config.translations.search.title
+            }
+
             return window.config.translations.search.title + ': ' + routeState.q
         },
 
