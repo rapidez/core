@@ -157,6 +157,10 @@ function init() {
                 canOrder() {
                     return this.cart.items.every((item) => item.is_available)
                 },
+
+                queryParams() {
+                    return new URLSearchParams(window.location.search)
+                }
             },
             watch: {
                 loadingCount: function (count) {
