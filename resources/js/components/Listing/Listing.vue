@@ -91,8 +91,8 @@ export default {
         },
 
         isSearchPage: function () {
-            return this.$root.queryParams.has('q');
-        }
+            return this.$root.queryParams.has('q')
+        },
     },
     watch: {
         attributes: function (value) {

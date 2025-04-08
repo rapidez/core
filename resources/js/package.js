@@ -160,7 +160,7 @@ function init() {
 
                 queryParams() {
                     return new URLSearchParams(window.location.search)
-                }
+                },
             },
             watch: {
                 loadingCount: function (count) {
