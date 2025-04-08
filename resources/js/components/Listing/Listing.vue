@@ -261,16 +261,17 @@ export default {
                 q: data.query,
                 page: data.page > 0 ? String(data.page) : undefined,
                 sort: data.sortBy,
-                hits: data.hitsPerPage != config.grid_per_page ? data.hitsPerPage : undefined
+                hits: data.hitsPerPage != config.grid_per_page ? data.hitsPerPage : undefined,
             }
         },
 
         routeToState(routeState) {
             let ranges = Object.fromEntries(Object.entries(routeState).filter(([key]) => this.rangeAttributes.includes(key)))
 
-
             let refinementList = Object.fromEntries(
-                Object.entries(routeState).filter(([key]) => !['q', 'hits', 'sort', 'page', 'category'].includes(key) && !this.rangeAttributes.includes(key)),
+                Object.entries(routeState).filter(
+                    ([key]) => !['q', 'hits', 'sort', 'page', 'category'].includes(key) && !this.rangeAttributes.includes(key),
+                ),
             )
 
             return {
@@ -281,7 +282,7 @@ export default {
                     query: routeState.q,
                     page: Number(routeState.page),
                     sortBy: routeState.sort,
-                    hitsPerPage: Number(routeState.hits)
+                    hitsPerPage: Number(routeState.hits),
                 },
             }
         },
