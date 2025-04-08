@@ -175,6 +175,7 @@ export default {
 
             return {
                 ...config,
+                filter_attributes: window.config.searchkit.filter_attributes,
 
                 // TODO: For consistency maybe make it possible to do this:
                 // facet_attributes: config.searchkit.facet_attributes,

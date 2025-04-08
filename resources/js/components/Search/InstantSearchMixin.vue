@@ -44,7 +44,6 @@ export default {
                 highlight_attributes: config.searchkit.highlight_attributes,
                 search_attributes: config.searchkit.search_attributes,
                 result_attributes: config.searchkit.result_attributes,
-                filter_attributes: config.searchkit.filter_attributes,
             }
         },
     },
