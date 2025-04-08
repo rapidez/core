@@ -162,6 +162,7 @@ export default {
             return {
                 router: history({
                     cleanUrlOnDispose: false,
+                    windowTitle: this.windowTitle,
                 }),
                 stateMapping: {
                     routeToState: this.routeToState,
@@ -242,33 +243,41 @@ export default {
             return this.baseFilters().concat(extraFilters)
         },
 
+        windowTitle(routeState) {
+            return window.config.translations.search.title + ': ' + routeState.q
+        },
+
         stateToRoute(uiState) {
             let data = uiState[this.index]
 
-            let parameters = {
+            return {
                 ...(data.range || {}),
                 ...(data.refinementList || {}),
+                category: data.hierarchicalMenu?.category_lvl1?.join('--'),
+                q: data.query,
+                page: data.page > 0 ? String(data.page) : undefined,
+                sort: data.sortBy,
+                hits: data.hitsPerPage != config.grid_per_page ? data.hitsPerPage : undefined
             }
-
-            if ('query' in data) {
-                parameters['q'] = data['query']
-            }
-
-            return parameters
         },
 
         routeToState(routeState) {
-            let ranges = Object.fromEntries(Object.entries(routeState).filter(([key, _]) => this.rangeAttributes.includes(key)))
+            let ranges = Object.fromEntries(Object.entries(routeState).filter(([key]) => this.rangeAttributes.includes(key)))
+
 
             let refinementList = Object.fromEntries(
-                Object.entries(routeState).filter(([key, _]) => key != 'q' && !this.rangeAttributes.includes(key)),
+                Object.entries(routeState).filter(([key]) => !['q', 'hits', 'sort', 'page', 'category'].includes(key) && !this.rangeAttributes.includes(key)),
             )
 
             return {
                 [this.index]: {
-                    refinementList: refinementList,
                     range: ranges,
+                    refinementList: refinementList,
+                    hierarchicalMenu: { category_lvl1: routeState.category?.split('--') },
                     query: routeState.q,
+                    page: Number(routeState.page),
+                    sortBy: routeState.sort,
+                    hitsPerPage: Number(routeState.hits)
                 },
             }
         },

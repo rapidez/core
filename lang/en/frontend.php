@@ -40,4 +40,8 @@ return [
     //         'desc' => 'Attrribute desc',
     //     ],
     // ],
+
+    'search' => [
+        'title' => 'Search for',
+    ],
 ];
