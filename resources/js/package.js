@@ -145,10 +145,10 @@ function init() {
                         function_score: {
                             script_score: {
                                 script: {
-                                    source: `Integer.parseInt(doc['positions.${categoryId}'].empty ? '0' : doc['positions.${categoryId}'].value)`
-                                }
-                            }
-                        }
+                                    source: `Integer.parseInt(doc['positions.${categoryId}'].empty ? '0' : doc['positions.${categoryId}'].value)`,
+                                },
+                            },
+                        },
                     }
                 },
             },
