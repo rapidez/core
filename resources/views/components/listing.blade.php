@@ -20,7 +20,7 @@
             key: '_created_at_desc'
         }]"
         {{-- TODO: Extract this somewhere? --}}
-        :index="config.index_prefix + '_products_' + config.store"
+        :index="config.index_prefix + '_product_' + config.store"
         inline-template
         v-cloak
     >

@@ -6,7 +6,7 @@
             v-cloak
             class="contents"
             :search-client="searchClient "
-            :index-name="config.index_prefix + '_products_' + config.store"
+            :index-name="config.index_prefix + '_product_' + config.store"
         >
             <div class="contents">
                 <!-- TODO: This is a Vue 3 thing -->
