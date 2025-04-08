@@ -1,6 +1,4 @@
-@props([
-    'id' => 'autocomplete'
-])
+@props(['id' => 'autocomplete'])
 
 <form name="{{ $id }}-form" id="{{ $id }}-form" method="get" action="{{ route('search') }}" class="flex flex-row relative">
     <x-rapidez::input
