@@ -14,12 +14,6 @@
             'spellcheck' => 'false',
             'placeholder' => __('What are you looking for?'),
         ]) }}
-        v-bind:value="currentRefinement"
-        v-on:focus="() => {
-            refine($root.autocompleteFacadeQuery || currentRefinement);
-            $root.autocompleteFacadeQuery = null;
-        }"
-        v-on:input="refine($event.currentTarget.value)"
     />
     <x-rapidez::button class="absolute right-0 bg-opacity-0 hover:bg-opacity-0 border-none" type="submit">
         <x-rapidez::autocomplete.magnifying-glass />
