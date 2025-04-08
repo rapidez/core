@@ -5,7 +5,7 @@
             v-if="searchClient"
             v-cloak
             class="contents"
-            :search-client="searchClient "
+            :search-client="searchClient"
             :index-name="config.index_prefix + '_product_' + config.store"
         >
             <div class="contents">
