@@ -58,9 +58,6 @@ export default {
         filterQueryString: {
             type: String,
         },
-        filterScoreScript: {
-            type: String,
-        },
     },
 
     data: () => ({
@@ -223,18 +220,6 @@ export default {
                 extraFilters.push({
                     query_string: {
                         query: this.filterQueryString,
-                    },
-                })
-            }
-
-            if (this.filterScoreScript) {
-                extraFilters.push({
-                    function_score: {
-                        script_score: {
-                            script: {
-                                source: this.filterScoreScript,
-                            },
-                        },
                     },
                 })
             }
