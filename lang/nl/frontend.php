@@ -28,7 +28,7 @@ return [
     'relevance' => 'Relevantie',
     'newest'    => 'Nieuwste',
     'all'       => 'Alles',
-    
+
     'search' => [
         'title' => 'Zoeken naar',
     ],
