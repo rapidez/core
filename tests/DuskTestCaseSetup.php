@@ -97,8 +97,7 @@ trait DuskTestCaseSetup
             'url_key',
         ])->firstWhere(
             $this->flat . '.sku',
-            // phpcs:ignore
-            env('TEST_PRODUCT', '24-WB02')
+            config('rapidez.testing.product', '24-WB02')
         );
     }
 }
