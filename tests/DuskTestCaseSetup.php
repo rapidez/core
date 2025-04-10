@@ -97,7 +97,7 @@ trait DuskTestCaseSetup
             'url_key',
         ])->firstWhere(
             $this->flat . '.sku',
-            config('rapidez.testing.product')
+            config('rapidez.testing.product', '24-WB02')
         );
     }
 }
