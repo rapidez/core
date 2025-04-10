@@ -24,18 +24,16 @@ export class SessionExpired extends FetchError {
     }
 }
 window.SessionExpired = SessionExpired
-
+let fetches = []
 export const rapidezFetch = (window.rapidezFetch = ((originalFetch) => {
     return (...args) => {
-        let loadingTracked = !!window.app.$data
-        if (loadingTracked) {
-            window.app.$data.loadingCount++
-        }
         const result = originalFetch.apply(this, args)
+        fetches.push(result)
+        window.app.$data.loadingCount = fetches.length
+
         return result.finally((...args) => {
-            if (loadingTracked && window.app.$data && window.app.$data.loadingCount > 0) {
-                window.app.$data.loadingCount--
-            }
+            fetches = fetches.filter((fetch) => fetch !== result)
+            window.app.$data.loadingCount = fetches.length
 
             return args
         })
