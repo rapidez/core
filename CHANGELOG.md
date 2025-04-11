@@ -1,6 +1,27 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/3.4.0...3.4.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/3.5.0...3.5.0)
+## [3.5.0](https://github.com/rapidez/core/releases/tag/3.5.0) - 2025-04-10
+
+### Added
+
+- Laravel 12 and PHP 8.4 support (#763)
+- Show additional data at payments methods on the checkout success (#795)
+
+### Changed
+
+- Get option labels with attribute options in the cart (#755)
+- Search query param from JS for static caching (#802)
+
+### Fixed
+
+- Empty additional_data error fix (#772)
+- No content fallback controller fix (#785)
+- Return 0 instead of void when no taxes (#788)
+- Disable infinite-scroll on productlists (#790)
+- Removed unsupported applied_to and coupon keys (#789)
+- Fixed negative loadingCount (#793)
+
 ## [3.4.0](https://github.com/rapidez/core/releases/tag/3.4.0) - 2025-03-25
 
 ### Added
