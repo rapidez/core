@@ -1,6 +1,13 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/3.5.0...3.5.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/3.5.1...3.5.1)
+## [3.5.1](https://github.com/rapidez/core/releases/tag/3.5.1) - 2025-04-11
+
+### Fixed
+
+- Install additional package requirements from the install command (#809)
+- Just mention the Rapidez Statamic install command (#810)
+
 ## [3.5.0](https://github.com/rapidez/core/releases/tag/3.5.0) - 2025-04-10
 
 ### Added
