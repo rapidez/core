@@ -133,6 +133,17 @@ class InstallCommand extends Command
             hint: 'This will run `yarn` and `yarn run prod`'
         )) {
             passthru('yarn');
+
+            if ($this->selectedPackages->contains('rapidez/sentry')) {
+                $this->line('Sentry also needs @sentry/vue');
+                passthru('yarn add @sentry/vue -D');
+            }
+
+            if ($this->selectedPackages->contains('rapidez/openreplay')) {
+                $this->line('Openreplay also needs @openreplay/tracker');
+                passthru('yarn add @openreplay/tracker -D');
+            }
+
             passthru('yarn run prod');
         }
 
@@ -275,6 +286,16 @@ class InstallCommand extends Command
             $this->warn('As you did select some packages before, check the readme of each one!');
             foreach ($this->selectedPackages as $package) {
                 $this->line('- https://github.com/' . $package);
+            }
+        }
+
+        if ($this->selectedPackages->contains('rapidez/statamic')) {
+            $this->newLine();
+            if (confirm(
+                label: 'Run the Statamic integration installer?',
+                hint: 'This will run `php artisan rapidez-statamic:install`'
+            )) {
+                $this->call('rapidez-statamic:install');
             }
         }
 
