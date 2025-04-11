@@ -166,7 +166,7 @@ class Rapidez
         }
 
         config()->set('frontend.base_url', url('/'));
-        App::setLocale(strtok(Rapidez::config('general/locale/code', 'en_US'), '_'));
+        App::setLocale(strtok(Rapidez::config('general/locale/code'), '_'));
 
         Event::dispatch('rapidez:store-set', [$store]);
     }

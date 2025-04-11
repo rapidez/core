@@ -11,7 +11,6 @@ return [
         'notifications',
         'checkout_steps',
         'flushable_localstorage_keys',
-        'show_customer_address_fields',
         'cart_attributes',
     ],
 
