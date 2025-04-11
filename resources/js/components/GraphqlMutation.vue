@@ -1,4 +1,5 @@
 <script>
+import { useDebounceFn } from '@vueuse/core'
 import { GraphQLError, magentoGraphQL } from '../fetch'
 import InteractWithUser from './User/mixins/InteractWithUser'
 
@@ -58,6 +59,10 @@ export default {
             type: String,
             default: window.config.store_code,
         },
+        debounce: {
+            type: Number,
+            default: 0,
+        },
     },
 
     data: () => ({
@@ -66,6 +71,7 @@ export default {
         mutating: false,
         initialVariables: {},
         data: {},
+        mutate: () => null,
     }),
 
     render() {
@@ -81,6 +87,11 @@ export default {
     created() {
         this.initialVariables = JSON.parse(JSON.stringify(this.variables))
         this.data = this.variables
+        if (this.debounce) {
+            this.mutate = useDebounceFn(this.mutateFn, this.debounce)
+        } else {
+            this.mutate = this.mutateFn
+        }
     },
 
     watch: {
@@ -100,7 +111,7 @@ export default {
     },
 
     methods: {
-        async mutate() {
+        async mutateFn() {
             if (this.mutating) {
                 return
             }
