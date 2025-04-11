@@ -291,12 +291,7 @@ class InstallCommand extends Command
 
         if ($this->selectedPackages->contains('rapidez/statamic')) {
             $this->newLine();
-            if (confirm(
-                label: 'Run the Statamic integration installer?',
-                hint: 'This will run `php artisan rapidez-statamic:install`'
-            )) {
-                $this->call('rapidez-statamic:install');
-            }
+            $this->warn('Next thing to do manually, run: php artisan rapidez-statamic:install');
         }
 
         return $this;
