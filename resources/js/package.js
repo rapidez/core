@@ -20,7 +20,7 @@ import './mixins'
 import './cookies'
 import './callbacks'
 import './vue-components'
-;import { fetchCount } from './stores/useFetches.js'
+import { fetchCount } from './stores/useFetches.js'
 import './turbolinks'
 
 if (import.meta.env.VITE_DEBUG === 'true') {
