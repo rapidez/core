@@ -31,7 +31,7 @@ export const rapidezFetch = (window.rapidezFetch = ((originalFetch) => {
         const result = originalFetch.apply(this, args)
         addFetch(result)
 
-        return result;
+        return result
     }
 })(fetch))
 
