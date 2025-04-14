@@ -1,3 +1,4 @@
+import { addFetch } from './stores/useFetches.js'
 import { token } from './stores/useUser'
 
 export class FetchError extends Error {
@@ -24,19 +25,13 @@ export class SessionExpired extends FetchError {
     }
 }
 window.SessionExpired = SessionExpired
-let fetches = []
+
 export const rapidezFetch = (window.rapidezFetch = ((originalFetch) => {
     return (...args) => {
         const result = originalFetch.apply(this, args)
-        fetches.push(result)
-        window.app.$data.loadingCount = fetches.length
+        addFetch(result)
 
-        return result.finally((...args) => {
-            fetches = fetches.filter((fetch) => fetch !== result)
-            window.app.$data.loadingCount = fetches.length
-
-            return args
-        })
+        return result;
     }
 })(fetch))
 

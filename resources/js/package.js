@@ -21,7 +21,8 @@ import './mixins'
 import './cookies'
 import './callbacks'
 import './vue-components'
-;(() => import('./turbolinks'))()
+;import { fetchCount } from './stores/useFetches.js'
+(() => import('./turbolinks'))()
 
 if (import.meta.env.VITE_DEBUG === 'true') {
     document.addEventListener('vue:loaded', () => {
@@ -98,7 +99,7 @@ function init() {
             data: {
                 custom: {},
                 config: window.config,
-                loadingCount: 0,
+                loadingCount: fetchCount,
                 loading: false,
                 loadAutocomplete: false,
                 csrfToken: document.querySelector('[name=csrf-token]')?.content,
