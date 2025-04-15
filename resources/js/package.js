@@ -159,10 +159,6 @@ function init() {
 
                     return `/storage/${store}/resizes/${size}/magento${url}`
                 },
-
-                queryParams() {
-                    return new URLSearchParams(window.location.search)
-                },
             },
             computed: {
                 // Wrap the local storage in getter and setter functions so you do not have to interact using .value
@@ -180,6 +176,10 @@ function init() {
 
                 canOrder() {
                     return this.cart.items?.every((item) => item.is_available)
+                },
+
+                queryParams() {
+                    return new URLSearchParams(window.location.search)
                 },
             },
             watch: {
