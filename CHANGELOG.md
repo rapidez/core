@@ -1,6 +1,27 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.21.2...2.21.2)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.22.0...2.22.0)
+## [2.22.0](https://github.com/rapidez/core/releases/tag/2.22.0) - 2025-04-15
+
+### Added
+
+- Add debounce to GraphQL mutation (#804)
+
+### Changed
+
+- Get option labels with attribute options in the cart (#726)
+- Search query param from JS for static caching (#803)
+
+### Fixed
+
+- Fixed configurable products with 1 child product not selecting properly (#779)
+- Empty additional_data error fix (#773)
+- No content fallback controller fix (#786)
+- Return 0 instead of void when no taxes (#787)
+- Disable infinite-scroll on productlists (#791)
+- Fixed negative loadingCount (#798)
+- Maintain a list of fetches to ensure exact loading count (#807)
+
 ## [2.21.2](https://github.com/rapidez/core/releases/tag/2.21.2) - 2025-03-20
 
 ### Fixed
