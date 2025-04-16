@@ -12,9 +12,6 @@ export default {
         'ais-index': AisIndex,
         'ais-highlight': AisHighlight,
     },
-    data: () => ({
-        loaded: false,
-    }),
 
     render() {
         return this.$scopedSlots.default(this)
@@ -23,7 +20,6 @@ export default {
     mounted() {
         this.$nextTick(() => {
             requestAnimationFrame(() => this.$emit('mounted'))
-            this.loaded = true
         })
     },
 

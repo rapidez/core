@@ -55,18 +55,12 @@ export default {
     },
 
     data: () => ({
-        loaded: false,
-
         searchkit: null,
         searchClient: null,
     }),
 
     render() {
         return this.$scopedSlots.default(this)
-    },
-
-    mounted() {
-        this.loaded = true
     },
 
     computed: {
