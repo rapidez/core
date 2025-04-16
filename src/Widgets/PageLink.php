@@ -25,8 +25,8 @@ class PageLink
     public function render()
     {
         return view('rapidez::widget.link', [
-            'title' => $this->title,
-            'url' => $this->url,
+            'title'      => $this->title,
+            'url'        => $this->url,
             'anchorText' => $this->anchorText,
         ]);
     }

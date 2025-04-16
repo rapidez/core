@@ -18,7 +18,7 @@ class ProductAndCategoryLink
 
         $this->url = match ($type) {
             'category' => $id->prepend('catalog/category/view/id/'),
-            'product' => $id->prepend('catalog/product/view/id/'),
+            'product'  => $id->prepend('catalog/product/view/id/'),
         };
 
         $this->title = $vars->title ?? $type ?? '';
@@ -28,8 +28,8 @@ class ProductAndCategoryLink
     public function render()
     {
         return view('rapidez::widget.link', [
-            'title' => $this->title,
-            'url' => $this->url,
+            'title'      => $this->title,
+            'url'        => $this->url,
             'anchorText' => $this->anchorText,
         ]);
     }
