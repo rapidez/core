@@ -21,8 +21,8 @@ class ProductAndCategoryLink
             'product'  => $id->prepend('catalog/product/view/id/'),
         };
 
-        $this->title = $vars->title ?? $type ?? '';
-        $this->anchorText = $vars->anchor_text ?? $type ?? 'link';
+        $this->title = $vars->title ?? $type ?: '';
+        $this->anchorText = $vars->anchor_text ?? $type ?: 'link';
     }
 
     public function render()
