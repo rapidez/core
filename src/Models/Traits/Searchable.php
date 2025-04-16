@@ -47,7 +47,6 @@ trait Searchable
 
     public function searchableAs(): string
     {
-
         return implode('_', array_values([
             config('scout.prefix'),
             $this->getIndexName(),

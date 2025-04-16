@@ -11,7 +11,7 @@
 <div class="min-h-screen">
     <listing
         {{ $attributes }}
-        index="{{ (new (config('rapidez.models.product')))->searchableAs() }}"
+        v-bind:index="config.index.product"
         inline-template
         v-cloak
     >

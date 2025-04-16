@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Category;
+use Rapidez\Core\Models\Traits\Searchable;
 
 // TODO: Can we improve anything in this file?
 // It doesn't feel very clean currently.
@@ -61,7 +62,16 @@ class ConfigComposer
             'grid_per_page_values'         => explode(',', Rapidez::config('catalog/frontend/grid_per_page_values', '12,24,36')),
             'max_category_level'           => $this->getMaxCategoryLevel(),
             'filterable_attributes'        => $this->getFilterableAttributes(),
+            'index'                        => $this->getIndexNames(),
         ];
+    }
+
+    public function getIndexNames(): array
+    {
+        return collect(config('rapidez.models'))
+            ->filter(fn ($class) => in_array(Searchable::class, class_uses_recursive($class)))
+            ->map(fn ($class) => (new $class)->searchableAs())
+            ->toArray();
     }
 
     public function getCustomerAddressFields(): array
