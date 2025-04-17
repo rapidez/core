@@ -1,5 +1,5 @@
 import { cart, clear as clearCart } from './stores/useCart'
-import { fillFromGraphqlResponse as updateOrder, order } from './stores/useOrder'
+import { fillFromGraphqlResponse as updateOrder } from './stores/useOrder'
 import { runAfterPlaceOrderHandlers, runBeforePaymentMethodHandlers, runBeforePlaceOrderHandlers } from './stores/usePaymentHandlers'
 import { refresh as refreshUser, token } from './stores/useUser'
 
@@ -65,6 +65,12 @@ Vue.prototype.updateCart = async function (data, response) {
     cart.value = Object.values(response.data)
         .map((queryResponse) => ('cart' in queryResponse ? queryResponse.cart : queryResponse))
         .findLast((queryResponse) => queryResponse?.is_virtual !== undefined)
+
+    document.dispatchEvent(new CustomEvent('cart-updated', {
+        detail: {
+            cart: cart,
+        },
+    }))
 
     return response.data
 }
