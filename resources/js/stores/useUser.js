@@ -213,19 +213,18 @@ document.addEventListener('cart-updated', (event) => {
     // Can be removed once https://github.com/magento/magento2/issues/39828 is fixed
     setTimeout(() => {
         if (cart?.value?.shipping_addresses?.length > 0 || userStorage.value?.addresses?.length < 1) {
-            return;
+            return
         }
 
-        const defaultShipping = userStorage.value?.addresses?.find((address) => address.default_shipping);
+        const defaultShipping = userStorage.value?.addresses?.find((address) => address.default_shipping)
         if (!defaultShipping) {
-            return;
+            return
         }
 
         magentoGraphQL(config.queries.setExistingShippingAddressesOnCart, {
             cart_id: mask.value,
             customer_address_id: defaultShipping.id,
-        })
-            .then((response) => Vue.prototype.updateCart([], response))
+        }).then((response) => Vue.prototype.updateCart([], response))
     })
 })
 

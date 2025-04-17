@@ -66,11 +66,13 @@ Vue.prototype.updateCart = async function (data, response) {
         .map((queryResponse) => ('cart' in queryResponse ? queryResponse.cart : queryResponse))
         .findLast((queryResponse) => queryResponse?.is_virtual !== undefined)
 
-    document.dispatchEvent(new CustomEvent('cart-updated', {
-        detail: {
-            cart: cart,
-        },
-    }))
+    document.dispatchEvent(
+        new CustomEvent('cart-updated', {
+            detail: {
+                cart: cart,
+            },
+        }),
+    )
 
     return response.data
 }
