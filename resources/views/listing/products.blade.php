@@ -18,7 +18,7 @@
 
     <ais-hits>
         <template v-slot="{ items }">
-            <div v-if="items" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 md:gap-5 overflow-hidden">
+            <div v-if="items && items.length" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 md:gap-5 overflow-hidden">
                 <template v-for="(item, count) in items">
                     @include('rapidez::listing.partials.item')
                 </template>

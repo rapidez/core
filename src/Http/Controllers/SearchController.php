@@ -4,12 +4,17 @@ namespace Rapidez\Core\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Rapidez\Core\Models\Scopes\IsActiveScope;
 
 class SearchController
 {
     public function __invoke(Request $request)
     {
-        $searchQuery = config('rapidez.models.search_query')::firstOrNew([
+        if (!$request->q) {
+            return view('rapidez::search.overview');
+        }
+
+        $searchQuery = config('rapidez.models.search_query')::withoutGlobalScope(IsActiveScope::class)->firstOrNew([
             'query_text' => Str::lower($request->q),
             'store_id'   => config('rapidez.store'),
         ], ['popularity' => 1]);
