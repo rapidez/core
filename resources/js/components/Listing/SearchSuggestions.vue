@@ -42,7 +42,7 @@ export default {
                                 },
                                 {
                                     filter: { exists: { field: 'redirect' } },
-                                    weight: 10,
+                                    weight: 4,
                                 },
                                 {
                                     filter: { term: { display_in_terms: 1 } },
