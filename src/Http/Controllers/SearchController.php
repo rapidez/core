@@ -10,7 +10,7 @@ class SearchController
 {
     public function __invoke(Request $request)
     {
-        if (!$request->q) {
+        if (! $request->q) {
             return view('rapidez::search.overview');
         }
 
