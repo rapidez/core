@@ -102,7 +102,7 @@ export default {
     watch: {
         variables: function (variables, old) {
             if (this.watch) {
-                const diff = this.objectDiff(old, variables);
+                const diff = this.objectDiff(old, variables)
                 if (Object.keys(diff).length === 0) {
                     return
                 }
