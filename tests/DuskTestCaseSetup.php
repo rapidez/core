@@ -18,7 +18,7 @@ trait DuskTestCaseSetup
     {
         parent::setUp();
 
-        App::setLocale(strtok(Rapidez::config('general/locale/code', 'en_US'), '_'));
+        App::setLocale(strtok(Rapidez::config('general/locale/code'), '_'));
 
         Browser::macro('waitUntilTrueForDuration', function (string $script = 'true', $timeout = 120, $for = 0.5) {
             // Waits until the script is truthy for x seconds, supports await.
@@ -97,8 +97,7 @@ trait DuskTestCaseSetup
             'url_key',
         ])->firstWhere(
             $this->flat . '.sku',
-            // phpcs:ignore
-            env('TEST_PRODUCT', '24-WB02')
+            config('rapidez.testing.product', '24-WB02')
         );
     }
 }

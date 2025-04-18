@@ -6,7 +6,7 @@
     </div>
 
     <template v-if="cart.shipping_addresses?.length">
-        <div v-for="address in cart.shipping_addresses">
+        <div v-for="address in cart.shipping_addresses" v-if="address.selected_shipping_method">
             <dt>@lang('Shipping')</dt>
             <dd v-if="showTax">@{{ address.selected_shipping_method.price_incl_tax.value | price }}</dd>
             <dd v-else>@{{ address.selected_shipping_method.price_excl_tax.value | price }}</dd>
