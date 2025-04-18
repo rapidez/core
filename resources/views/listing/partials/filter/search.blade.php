@@ -9,6 +9,7 @@
         />
         {{--
         TODO: Maybe use this for a loading icon with the input?
+        But it's super duper fast, does it make sense?
         <span :hidden="!isSearchStalled">Loading...</span>
         --}}
     </template>

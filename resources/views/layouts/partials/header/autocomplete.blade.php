@@ -1,16 +1,15 @@
-
 <autocomplete inline-template v-on:mounted="() => window.document.getElementById('autocomplete-input').focus()">
     <div class="relative w-full">
         <ais-instant-search
             v-if="searchClient"
-            v-cloak
-            class="contents"
             :search-client="searchClient"
+            {{-- TODO: The index name should come from the model --}}
             :index-name="config.index_prefix + '_product_' + config.store"
+            class="contents"
+            v-cloak
         >
             <div class="contents">
-                <!-- TODO: This is a Vue 3 thing -->
-                <ais-configure :hits-per-page.camel="3"/>
+                <ais-configure :hitsPerPage="3" />
                 <div class="searchbox">
                     <ais-search-box>
                         <template v-slot="{ currentRefinement, isSearchStalled, refine }">

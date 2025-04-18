@@ -13,6 +13,7 @@
                     :search-client="searchClient"
                     :index-name="config.index"
                 >
+                    {{-- TODO: Is it possible to make this more readable? --}}
                     <ais-configure :filters="'{{ $field }}:({{ is_array($value)
                         ? implode(' OR ', $value)
                         : "'+".$value.".join(' OR ')+'"

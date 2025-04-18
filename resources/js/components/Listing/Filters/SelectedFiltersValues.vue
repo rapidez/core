@@ -1,3 +1,4 @@
+<!-- TODO: Is this one still in use and up-to-date? -->
 <script>
 import { swatches } from '../../../stores/useSwatches'
 
