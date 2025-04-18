@@ -43,8 +43,8 @@ class ConfigController
     public function getConfig(): array
     {
         return [
-            'cachekey'                     => Cache::rememberForever('cachekey', fn () => md5(Str::random())),
-            'translations'                 => __('rapidez::frontend'),
+            'cachekey'     => Cache::rememberForever('cachekey', fn () => md5(Str::random())),
+            'translations' => __('rapidez::frontend'),
 
             'index'                        => $this->getIndexNames(),
             'filterable_attributes'        => $this->getFilterableAttributes(),
@@ -56,16 +56,16 @@ class ConfigController
             'swatches'                     => $this->getSwatches(),
 
             // Magento config data
-            'currency'                     => Rapidez::config('currency/options/default'),
-            'default_country'              => Rapidez::config('general/country/default', 'NL'),
-            'grid_per_page'                => Rapidez::config('catalog/frontend/grid_per_page', 12),
-            'grid_per_page_values'         => explode(',', Rapidez::config('catalog/frontend/grid_per_page_values', '12,24,36')),
-            'locale'                       => Rapidez::config('general/locale/code', 'en_US'),
-            'recaptcha'                    => Rapidez::config('recaptcha_frontend/type_recaptcha_v3/public_key', null, true),
-            'redirect_cart'                => (bool) Rapidez::config('checkout/cart/redirect_to_cart'),
-            'street_lines'                 => Rapidez::config('customer/address/street_lines', 2),
-            'show_swatches'                => (bool) Rapidez::config('catalog/frontend/show_swatches_in_product_list'),
-            'show_tax'                     => in_array(Rapidez::config('tax/display/type', 1), [2, 3]),
+            'currency'             => Rapidez::config('currency/options/default'),
+            'default_country'      => Rapidez::config('general/country/default', 'NL'),
+            'grid_per_page'        => Rapidez::config('catalog/frontend/grid_per_page', 12),
+            'grid_per_page_values' => explode(',', Rapidez::config('catalog/frontend/grid_per_page_values', '12,24,36')),
+            'locale'               => Rapidez::config('general/locale/code', 'en_US'),
+            'recaptcha'            => Rapidez::config('recaptcha_frontend/type_recaptcha_v3/public_key', null, true),
+            'redirect_cart'        => (bool) Rapidez::config('checkout/cart/redirect_to_cart'),
+            'street_lines'         => Rapidez::config('customer/address/street_lines', 2),
+            'show_swatches'        => (bool) Rapidez::config('catalog/frontend/show_swatches_in_product_list'),
+            'show_tax'             => in_array(Rapidez::config('tax/display/type', 1), [2, 3]),
         ];
     }
 
@@ -141,7 +141,7 @@ class ConfigController
         ];
 
         // TODO: Maybe limit this to just the checkout pages?
-        $queries = Arr::mapWithKeys($checkoutQueries, fn($query) => [$query, view('rapidez::checkout.queries.' . $query)->renderOneliner()]);
+        $queries = Arr::mapWithKeys($checkoutQueries, fn ($query) => [$query, view('rapidez::checkout.queries.' . $query)->renderOneliner()]);
         $queries['customer'] = view('rapidez::customer.queries.customer')->renderOneliner();
 
         return $queries;
@@ -161,9 +161,9 @@ class ConfigController
         return array_merge(
             config('rapidez.searchkit'),
             [
-                'facet_attributes' => $this->getSearchkitFacetAttributes(),
+                'facet_attributes'  => $this->getSearchkitFacetAttributes(),
                 'search_attributes' => $this->getSearchkitSearchAttributes(),
-                'sorting' => $this->getSearchkitSorting(),
+                'sorting'           => $this->getSearchkitSorting(),
             ]
         );
 
