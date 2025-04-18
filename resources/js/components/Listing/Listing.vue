@@ -28,14 +28,14 @@ export default {
         query: {
             type: Function,
         },
+        categoryId: {
+            type: Number,
+        },
         baseFilters: {
             type: Function,
             default: () => [],
         },
         filterQueryString: {
-            type: String,
-        },
-        filterScoreScript: {
             type: String,
         },
     },
@@ -197,23 +197,18 @@ export default {
         },
 
         getBaseFilters() {
+            if (this.categoryId) {
+                return this.baseFilters().concat([
+                    { query_string: { query: 'visibility:(2 OR 4) AND category_ids:' + this.categoryId } },
+                    this.$root.categoryPositions(this.categoryId),
+                ])
+            }
+
             let extraFilters = []
             if (this.filterQueryString) {
                 extraFilters.push({
                     query_string: {
                         query: this.filterQueryString,
-                    },
-                })
-            }
-
-            if (this.filterScoreScript) {
-                extraFilters.push({
-                    function_score: {
-                        script_score: {
-                            script: {
-                                source: this.filterScoreScript,
-                            },
-                        },
                     },
                 })
             }
