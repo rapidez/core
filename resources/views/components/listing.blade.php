@@ -18,7 +18,7 @@
         }]"
         {{-- TODO: Extract this somewhere? --}}
         :index="config.index_prefix + '_product_' + config.store"
-        inline-template
+        v-slot="{ loaded, index, searchClient, rangeAttributes, categoryAttributes, hitsPerPage, filters, sortOptions, withFilters, withSwatches, routing }"
         v-cloak
     >
         <div>
