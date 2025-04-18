@@ -11,13 +11,13 @@
 <div class="min-h-screen">
     <listing
         {{ $attributes }}
-        index="{{ (new (config('rapidez.models.product')))->searchableAs() }}"
+        v-bind:index="config.index.product"
         inline-template
         v-cloak
     >
         <div>
             <ais-instant-search
-                v-if="loaded && searchClient"
+                v-if="searchClient"
                 :search-client="searchClient"
                 :index-name="index"
                 :routing="routing"

@@ -13,7 +13,6 @@ import AisPagination from 'vue-instantsearch/vue2/es/src/components/Pagination.v
 import AisStats from 'vue-instantsearch/vue2/es/src/components/Stats.vue.js'
 
 import categoryFilter from './Filters/CategoryFilter.vue'
-import useAttributes from '../../stores/useAttributes.js'
 
 import InstantSearchMixin from '../Search/InstantSearchMixin.vue'
 
@@ -32,14 +31,14 @@ export default {
         'ais-stats': AisStats,
     },
     props: {
-        sortOptionsCallback: {
+        configCallback: {
             type: Function,
         },
         index: {
             type: String,
         },
 
-        // TODO: Document these Four props in the Rapidez docs
+        // TODO: Document these four props in the Rapidez docs
         query: {
             type: Function,
         },
@@ -56,9 +55,6 @@ export default {
     },
 
     data: () => ({
-        loaded: false,
-        attributes: useAttributes(),
-
         searchkit: null,
         searchClient: null,
     }),
@@ -67,51 +63,9 @@ export default {
         return this.$scopedSlots.default(this)
     },
 
-    mounted() {
-        this.loaded = Object.keys(this.attributes).length > 0
-    },
-
     computed: {
-        // TODO: Maybe move this completely to PHP?
-        // Any drawbacks? A window.config that
-        // becomes to big? Is that an issue?
-        filters() {
-            return Object.values(this.attributes)
-                .filter((attribute) => attribute.filter)
-                .map((filter) => ({ ...filter, code: this.filterPrefix(filter) + filter.code, base_code: filter.code }))
-                .sort((a, b) => a.position - b.position)
-        },
-
-        facets() {
-            return [
-                ...this.filters.map((filter) => ({
-                    attribute: filter.code,
-                    field: filter.code + (this.filterType(filter) == 'string' ? '.keyword' : ''),
-                    type: this.filterType(filter),
-                })),
-                ...this.categoryAttributes.map((attribute) => ({
-                    attribute: attribute,
-                    field: attribute + '.keyword',
-                    type: 'string',
-                })),
-            ]
-            // TODO: Double check this and how it's used.
-            // .concat(this.additionalFilters)
-        },
-
         categoryAttributes() {
             return Array.from({ length: config.max_category_level ?? 3 }).map((_, index) => 'category_lvl' + (index + 1))
-        },
-
-        sortings() {
-            return Object.values(this.attributes)
-                .filter((attribute) => attribute.sorting)
-                .concat(
-                    Object.entries(config.searchkit.additional_sorting).map(([code, directions]) => ({
-                        code: code,
-                        directions: directions,
-                    })),
-                )
         },
 
         hitsPerPage() {
@@ -126,48 +80,6 @@ export default {
                 .concat({ label: this.$root.config.translations.all, value: 10000 })
         },
 
-        sortOptions() {
-            let sortOptions = [
-                {
-                    label: config.translations.relevance,
-                    field: '_score',
-                    order: 'desc',
-                    value: this.index,
-                    key: 'default',
-                },
-            ].concat(
-                this.sortings.flatMap((sorting) =>
-                    (sorting.directions ?? ['asc', 'desc']).map((direction) => {
-                        let label = ''
-                        if (config.translations.sorting?.[sorting.code]?.[direction]) {
-                            label = config.translations.sorting?.[sorting.code]?.[direction]
-                        } else {
-                            label = config.translations[sorting.code] ?? sorting.name ?? sorting.code
-
-                            // Add asc/desc if relevant
-                            if (sorting.directions?.length != 1) {
-                                label += ' ' + (config.translations[direction] ?? direction)
-                            }
-                        }
-
-                        return {
-                            label: label,
-                            field: sorting.code + (sorting.input == 'text' ? '.keyword' : ''),
-                            order: direction,
-                            value: [this.index, sorting.code, direction].join('_'),
-                            key: '_' + [sorting.code, direction].join('_'),
-                        }
-                    }),
-                ),
-            )
-
-            if (this.sortOptionsCallback) {
-                sortOptions = this.sortOptionsCallback(sortOptions)
-            }
-
-            return sortOptions
-        },
-
         routing() {
             return {
                 router: history({
@@ -180,15 +92,11 @@ export default {
             }
         },
 
-        // TODO: Do we want to make this extendable?
         rangeAttributes() {
-            return this.filters.filter((filter) => filter.input == 'price').map((filter) => filter.code)
-        },
-    },
-
-    watch: {
-        attributes(value) {
-            this.loaded = Object.keys(value).length > 0
+            return config.filterable_attributes
+                .filter((filter) => filter.input == 'price')
+                .map((filter) => filter.code)
+                .concat(config.searchkit.range_attributes ?? [])
         },
     },
 
@@ -204,27 +112,7 @@ export default {
 
         async getSearchSettings() {
             let config = await InstantSearchMixin.methods.getSearchSettings.bind(this).call()
-
-            return {
-                ...config,
-
-                // TODO: For consistency maybe make it possible to do this:
-                // facet_attributes: config.searchkit.facet_attributes,
-                facet_attributes: this.facets,
-
-                // TODO: Let's also change this to a PHP config.
-                // So we start there and that will be merged
-                // with the Magento configured attributes
-                // and lastly from a prop it's possible
-                // to manipulate it from a callback?
-                sorting: this.sortOptions.reduce((acc, item) => {
-                    acc[item.key] = {
-                        field: item.field,
-                        order: item.order,
-                    }
-                    return acc
-                }),
-            }
+            return this.configCallback ? this.configCallback(config) : config
         },
 
         getBaseFilters() {
@@ -283,30 +171,10 @@ export default {
             }
         },
 
-        filterType(filter) {
-            if (filter.super) {
-                return 'numeric'
-            }
-
-            return ['price', 'boolean'].includes(filter.input) ? 'numeric' : 'string'
-        },
-
-        filterPrefix(filter) {
-            if (filter.super) {
-                return 'super_'
-            }
-
-            if (filter.visual_swatch) {
-                return 'visual_'
-            }
-
-            return ''
-        },
-
         withFilters(items) {
             return items
                 .map((item) => ({
-                    filter: this.filters.find((filter) => filter.code === item.attribute),
+                    filter: config.filterable_attributes.find((filter) => filter.code === item.attribute),
                     ...item,
                 }))
                 .filter((item) => item.filter)

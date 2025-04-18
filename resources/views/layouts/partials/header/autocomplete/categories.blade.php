@@ -1,4 +1,4 @@
-<ais-index index-name="{{ (new (config('rapidez.models.category')))->searchableAs() }}">
+<ais-index v-bind:index-name="config.index.category">
     <ais-hits v-slot="{ items }">
         <div class="border-b p-2" v-if="items && items.length">
             <x-rapidez::autocomplete.title>@lang('Categories')</x-rapidez::autocomplete.title>

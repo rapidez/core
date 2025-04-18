@@ -37,6 +37,11 @@ class Product extends Model
     use Searchable;
     use SelectAttributeScopes;
 
+    public const VISIBILITY_NOT_VISIBLE = 1;
+    public const VISIBILITY_IN_CATALOG = 2;
+    public const VISIBILITY_IN_SEARCH = 3;
+    public const VISIBILITY_BOTH = 4;
+
     public array $attributesToSelect = [];
 
     protected $primaryKey = 'entity_id';
@@ -269,7 +274,11 @@ class Product extends Model
 
     public function shouldBeSearchable(): bool
     {
-        if (! in_array($this->visibility, config('rapidez.indexer.visibility'))) {
+        if (! in_array($this->visibility, [
+            static::VISIBILITY_IN_CATALOG,
+            static::VISIBILITY_IN_SEARCH,
+            static::VISIBILITY_BOTH,
+        ])) {
             return false;
         }
 

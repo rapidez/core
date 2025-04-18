@@ -21,12 +21,11 @@ return [
     ],
 
     // The checkout steps which are used to name the steps
-    // in the url and in the progressbar on steps. You can
-    // add different steps for different stores. Keep
+    // in the url and in the progressbar on steps. Keep
     // them lowercase and do not include any spaces.
     'checkout_steps' => [
-        // 'default' => ['onestep'],
-        'default' => ['login', 'credentials', 'payment'],
+        'login', 'credentials', 'payment',
+        // 'onestep',
     ],
 
     'autocomplete' => [
@@ -50,9 +49,7 @@ return [
 
     // Link store codes to theme folders
     // The structure is `'store_code' => 'folder_path'`
-    'themes' => [
-        'default' => resource_path('themes/default'),
-    ],
+    'theme' => resource_path('themes/default'),
 
     // The fully qualified class names of the widgets.
     'widgets' => [

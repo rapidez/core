@@ -19,7 +19,9 @@
     <meta name="description" content="@yield('description', Rapidez::config('design/head/default_description', ''))"/>
     <meta name="robots" content="@yield('robots', Rapidez::config('design/search_engine_robots/default_robots', 'INDEX,FOLLOW'))"/>
     <link rel="canonical" href="@yield('canonical', url()->current())" />
+    <link href="{{ route('config') }}" rel="preload" as="script">
 
+    <script defer src="{{ route('config') }}?v={{ Cache::rememberForever('cachekey', fn () => md5(Str::random())) }}"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
     @config('design/head/includes')
@@ -37,7 +39,6 @@
         @stack('page_end')
     </div>
 
-    <script>window.config = @json(config('frontend'));</script>
     @if (session('notifications'))
         <script async>
             document.addEventListener('vue:loaded', function() {
