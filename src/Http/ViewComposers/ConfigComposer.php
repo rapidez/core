@@ -53,7 +53,6 @@ class ConfigComposer
             'show_swatches'        => (bool) Rapidez::config('catalog/frontend/show_swatches_in_product_list'),
             'translations'         => __('rapidez::frontend'),
             'recaptcha'            => Rapidez::config('recaptcha_frontend/type_recaptcha_v3/public_key', null, true),
-            'searchable'           => array_merge($searchableAttributes, config('rapidez.indexer.searchable')),
             'street_lines'         => Rapidez::config('customer/address/street_lines'),
             'show_tax'             => in_array(Rapidez::config('tax/display/type'), [2, 3]),
             'grid_per_page'        => Rapidez::config('catalog/frontend/grid_per_page'),
