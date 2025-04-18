@@ -166,7 +166,7 @@ export default {
 
         withSwatches(items, filter) {
             return items.map((item) => ({
-                swatch: this.$root.swatches[filter?.base_code]?.options?.[item.value] ?? null,
+                swatch: window.config.swatches[filter?.base_code]?.options?.[item.value] ?? null,
                 ...item,
             }))
         },

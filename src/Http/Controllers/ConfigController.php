@@ -1,30 +1,34 @@
 <?php
 
-namespace Rapidez\Core\Http\ViewComposers;
+namespace Rapidez\Core\Http\Controllers;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
-use Illuminate\View\View;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Category;
 use Rapidez\Core\Models\Traits\Searchable;
 
-// TODO: Can we improve anything in this file?
-// It doesn't feel very clean currently.
-class ConfigComposer
+class ConfigController
 {
-    public function compose(View $view)
+    public function __invoke()
     {
-        $this
-            ->exposeGraphqlQueries()
-            ->configureSearchkitFacetAttributes()
-            ->configureSearchkitSearchAttributes()
-            ->configureSearchkitSorting();
+        $config = array_merge(
+            config('frontend') ?: [],
+            $this->getExposedConfigValues(),
+            $this->getConfig(),
+        );
 
-        $exposedFrontendConfigValues = Arr::only(
+        return response()->view(
+            view: 'rapidez::layouts.config',
+            headers: ['Content-Type' => 'text/javascript'],
+            data: ['config' => $config],
+        );
+    }
+
+    public function getExposedConfigValues(): array
+    {
+        return Arr::only(
             array_merge_recursive(
                 config('rapidez'),
                 config('rapidez.frontend'),
@@ -34,36 +38,42 @@ class ConfigComposer
                 ['store_code', 'index', 'searchkit'],
             ),
         );
-
-        Config::set('frontend', array_merge(
-            config('frontend') ?: [],
-            $exposedFrontendConfigValues,
-            $this->getConfig(),
-        ));
-
-        Event::dispatch('rapidez:frontend-config-composed');
     }
 
     public function getConfig(): array
     {
         return [
-            'locale'                       => Rapidez::config('general/locale/code', 'en_US'),
-            'default_country'              => Rapidez::config('general/country/default', 'NL'),
-            'currency'                     => Rapidez::config('currency/options/default'),
-            'cachekey'                     => Cache::rememberForever('cachekey', fn () => md5(Str::random())),
-            'redirect_cart'                => (bool) Rapidez::config('checkout/cart/redirect_to_cart'),
-            'show_swatches'                => (bool) Rapidez::config('catalog/frontend/show_swatches_in_product_list'),
-            'translations'                 => __('rapidez::frontend'),
-            'recaptcha'                    => Rapidez::config('recaptcha_frontend/type_recaptcha_v3/public_key', null, true),
-            'show_customer_address_fields' => $this->getCustomerAddressFields(),
-            'street_lines'                 => Rapidez::config('customer/address/street_lines', 2),
-            'show_tax'                     => in_array(Rapidez::config('tax/display/type', 1), [2, 3]),
-            'grid_per_page'                => Rapidez::config('catalog/frontend/grid_per_page', 12),
-            'grid_per_page_values'         => explode(',', Rapidez::config('catalog/frontend/grid_per_page_values', '12,24,36')),
-            'max_category_level'           => $this->getMaxCategoryLevel(),
-            'filterable_attributes'        => $this->getFilterableAttributes(),
+            'cachekey'     => Cache::rememberForever('cachekey', fn () => md5(Str::random())),
+            'translations' => __('rapidez::frontend'),
+
             'index'                        => $this->getIndexNames(),
+            'filterable_attributes'        => $this->getFilterableAttributes(),
+            'fragments'                    => $this->getGraphqlQueryFragments(),
+            'max_category_level'           => $this->getMaxCategoryLevel(),
+            'queries'                      => $this->getGraphqlQueries(),
+            'searchkit'                    => $this->getSearchkitConfig(),
+            'show_customer_address_fields' => $this->getCustomerAddressFields(),
+            'swatches'                     => $this->getSwatches(),
+
+            // Magento config data
+            'currency'             => Rapidez::config('currency/options/default'),
+            'default_country'      => Rapidez::config('general/country/default', 'NL'),
+            'grid_per_page'        => Rapidez::config('catalog/frontend/grid_per_page', 12),
+            'grid_per_page_values' => explode(',', Rapidez::config('catalog/frontend/grid_per_page_values', '12,24,36')),
+            'locale'               => Rapidez::config('general/locale/code', 'en_US'),
+            'recaptcha'            => Rapidez::config('recaptcha_frontend/type_recaptcha_v3/public_key', null, true),
+            'redirect_cart'        => (bool) Rapidez::config('checkout/cart/redirect_to_cart'),
+            'street_lines'         => Rapidez::config('customer/address/street_lines', 2),
+            'show_swatches'        => (bool) Rapidez::config('catalog/frontend/show_swatches_in_product_list'),
+            'show_tax'             => in_array(Rapidez::config('tax/display/type', 1), [2, 3]),
         ];
+    }
+
+    public function getSwatches(): array
+    {
+        $optionswatchModel = config('rapidez.models.option_swatch');
+
+        return $optionswatchModel::getCachedSwatchValues();
     }
 
     public function getIndexNames(): array
@@ -117,7 +127,7 @@ class ConfigComposer
         return Cache::rememberForever('max_category_level_' . config('rapidez.store'), fn () => Category::withoutGlobalScopes()->max('level'));
     }
 
-    public function exposeGraphqlQueries(): self
+    public function getGraphqlQueries(): array
     {
         $checkoutQueries = [
             'setGuestEmailOnCart',
@@ -131,28 +141,35 @@ class ConfigComposer
         ];
 
         // TODO: Maybe limit this to just the checkout pages?
-        foreach ($checkoutQueries as $checkoutQuery) {
-            Config::set(
-                'frontend.queries.' . $checkoutQuery,
-                view('rapidez::checkout.queries.' . $checkoutQuery)->renderOneliner()
-            );
-        }
+        $queries = Arr::mapWithKeys($checkoutQueries, fn ($query) => [$query, view('rapidez::checkout.queries.' . $query)->renderOneliner()]);
+        $queries['customer'] = view('rapidez::customer.queries.customer')->renderOneliner();
 
-        Config::set(
-            'frontend.queries.customer',
-            view('rapidez::customer.queries.customer')->renderOneliner()
-        );
+        return $queries;
+    }
 
-        Config::set('frontend.fragments', [
+    public function getGraphqlQueryFragments(): array
+    {
+        return [
             'cart'    => view('rapidez::cart.queries.fragments.cart')->renderOneliner(),
             'order'   => view('rapidez::checkout.queries.fragments.order')->renderOneliner(),
             'orderV2' => view('rapidez::checkout.queries.fragments.orderV2')->renderOneliner(),
-        ]);
-
-        return $this;
+        ];
     }
 
-    public function configureSearchkitFacetAttributes(): self
+    public function getSearchkitConfig(): array
+    {
+        return array_merge(
+            config('rapidez.searchkit'),
+            [
+                'facet_attributes'  => $this->getSearchkitFacetAttributes(),
+                'search_attributes' => $this->getSearchkitSearchAttributes(),
+                'sorting'           => $this->getSearchkitSorting(),
+            ]
+        );
+
+    }
+
+    public function getSearchkitFacetAttributes(): array
     {
         // Get the filterable attributes and category levels
         $filterableAttributes = collect($this->getFilterableAttributes())
@@ -178,12 +195,10 @@ class ConfigComposer
             ->concat($categoryLevels)
             ->concat(config('rapidez.searchkit.facet_attributes'));
 
-        Config::set('rapidez.searchkit.facet_attributes', $facetAttributes->toArray());
-
-        return $this;
+        return $facetAttributes->toArray();
     }
 
-    public function configureSearchkitSearchAttributes(): self
+    public function getSearchkitSearchAttributes(): array
     {
         $attributeModel = config('rapidez.models.attribute');
 
@@ -199,12 +214,10 @@ class ConfigComposer
             'weight' => $attribute['search_weight'],
         ])->merge(config('rapidez.searchkit.search_attributes'))->values()->toArray();
 
-        Config::set('rapidez.searchkit.search_attributes', $searchableAttributes);
-
-        return $this;
+        return $searchableAttributes;
     }
 
-    public function configureSearchkitSorting(): self
+    public function getSearchkitSorting(): array
     {
         $attributeModel = config('rapidez.models.attribute');
 
@@ -243,8 +256,6 @@ class ConfigComposer
             'key'   => 'default',
         ]);
 
-        Config::set('rapidez.searchkit.sorting', $sortableAttributes->keyBy('key')->toArray());
-
-        return $this;
+        return $sortableAttributes->keyBy('key')->toArray();
     }
 }

@@ -1,1 +1,1 @@
-window.config = @json(config('frontend'));
+window.config = @json($config);

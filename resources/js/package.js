@@ -12,7 +12,6 @@ import useOrder from './stores/useOrder.js'
 import useCart from './stores/useCart'
 import useUser from './stores/useUser'
 import useMask from './stores/useMask'
-import { swatches, clear as clearSwatches } from './stores/useSwatches'
 import './vue'
 import './fetch'
 import './filters'
@@ -41,14 +40,6 @@ if (import.meta.env.VITE_DEBUG === 'true') {
         })
     })
 }
-
-document.addEventListener('vue:loaded', () => {
-    const lastStoreCode = useLocalStorage('last_store_code', window.config.store_code)
-    if (lastStoreCode.value !== window.config.store_code) {
-        clearSwatches()
-        lastStoreCode.value = window.config.store_code
-    }
-})
 
 let booting = false
 function init() {
@@ -106,7 +97,6 @@ function init() {
                 user: useUser(),
                 mask: useMask(),
                 showTax: window.config.show_tax,
-                swatches: swatches,
                 scrollLock: useScrollLock(document.body),
             },
             methods: {
