@@ -3,17 +3,12 @@
 @if ($value)
     <lazy v-slot="{ intersected }">
         <listing v-if="intersected" v-cloak inline-template>
-            {{--
-            TODO: Maybe better to have a wrapper
-            component again like reactive-base?
-            --}}
             <div>
                 <ais-instant-search
                     v-if="searchClient"
                     :search-client="searchClient"
                     :index-name="config.index"
                 >
-                    {{-- TODO: Is it possible to make this more readable? --}}
                     <ais-configure :filters="'{{ $field }}:({{ is_array($value)
                         ? implode(' OR ', $value)
                         : "'+".$value.".join(' OR ')+'"

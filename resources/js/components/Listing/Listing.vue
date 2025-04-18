@@ -1,8 +1,5 @@
 <script>
 import { history } from 'instantsearch.js/es/lib/routers'
-
-import categoryFilter from './Filters/CategoryFilter.vue'
-
 import InstantSearchMixin from '../Search/InstantSearchMixin.vue'
 
 export default {
