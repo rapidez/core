@@ -57,7 +57,7 @@ class ConfigComposer
             'show_tax'             => in_array(Rapidez::config('tax/display/type'), [2, 3]),
             'grid_per_page'        => Rapidez::config('catalog/frontend/grid_per_page'),
             'grid_per_page_values' => explode(',', Rapidez::config('catalog/frontend/grid_per_page_values')),
-            'max_category_level'           => Cache::rememberForever('max_category_level', fn () => Category::withoutGlobalScopes()->max('level')),
+            'max_category_level'   => Cache::rememberForever('max_category_level', fn () => Category::withoutGlobalScopes()->max('level')),
 
             // TODO: For the products we've the `rapidez.index` config
             // set from the `src/Rapidez.php` which is accessible

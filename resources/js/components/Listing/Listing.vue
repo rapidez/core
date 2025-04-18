@@ -143,7 +143,6 @@ export default {
                     stateToRoute: this.stateToRoute,
                 },
             }
-
         },
 
         // TODO: Do we want to make this extendable?
