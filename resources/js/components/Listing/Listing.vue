@@ -146,7 +146,6 @@ export default {
                     stateToRoute: this.stateToRoute,
                 },
             }
-
         },
 
         isSearchPage: function () {
