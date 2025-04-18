@@ -21,7 +21,7 @@
     <link rel="canonical" href="@yield('canonical', url()->current())" />
     <link href="{{ route('config') }}" rel="preload" as="script">
 
-    <script defer src="{{ route('config') }}"></script>
+    <script defer src="{{ route('config') }}?v={{ Cache::get($cacheKey) }}"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
     @config('design/head/includes')
