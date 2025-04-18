@@ -1,6 +1,23 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/3.5.1...3.5.1)
+[Unreleased changes](https://github.com/rapidez/core/compare/3.6.0...3.6.0)
+## [3.6.0](https://github.com/rapidez/core/releases/tag/3.6.0) - 2025-04-18
+
+### Added
+
+- Magento link widgets (#792, #812)
+- Debounce to GraphQL mutation (#805)
+- Option to run partial-submit functions one by one (#784)
+
+### Changed
+
+- Central Magento config defaults (#782, #816, #817)
+- Reactive GraphQL component variables (#794)
+
+### Fixed
+
+- Select default shipping method if no shipping method is set (#814)
+
 ## [3.5.1](https://github.com/rapidez/core/releases/tag/3.5.1) - 2025-04-11
 
 ### Fixed
