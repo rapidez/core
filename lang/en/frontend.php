@@ -43,4 +43,8 @@ return [
             'desc' => 'Name Z-A',
         ],
     ],
+
+    'search' => [
+        'title' => 'Search for',
+    ],
 ];

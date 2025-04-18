@@ -20,6 +20,7 @@ import './mixins'
 import './cookies'
 import './callbacks'
 import './vue-components'
+import './instantsearch'
 ;(() => import('./turbolinks'))()
 
 if (import.meta.env.VITE_DEBUG === 'true') {
@@ -136,6 +137,18 @@ function init() {
                     url = url.pathname.replace('/media', '')
 
                     return `/storage/${store}/resizes/${size}/magento${url}`
+                },
+
+                categoryPositions(categoryId) {
+                    return {
+                        function_score: {
+                            script_score: {
+                                script: {
+                                    source: `Integer.parseInt(doc['positions.${categoryId}'].empty ? '0' : doc['positions.${categoryId}'].value)`,
+                                },
+                            },
+                        },
+                    }
                 },
             },
             computed: {

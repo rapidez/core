@@ -252,6 +252,25 @@ class RapidezServiceProvider extends ServiceProvider
                 ->squish();
         });
 
+        Vite::macro('getPathsByFilenames', function ($filenames) {
+            /** @var \Illuminate\Foundation\Vite $this */
+            $filenames = is_array($filenames) ? $filenames : func_get_args();
+            $manifest = $this->manifest($this->buildDirectory);
+
+            return array_filter(
+                array_map(
+                    function ($filename) use ($manifest) {
+                        foreach ($manifest as $path => $asset) {
+                            if (Str::endsWith($asset['name'] ?? '', $filename) || Str::endsWith($path, $filename)) {
+                                return $path;
+                            }
+                        }
+                    },
+                    $filenames
+                )
+            );
+        });
+
         return $this;
     }
 

@@ -1,7 +1,6 @@
 @extends('rapidez::layouts.app')
 
 @section('title', __('Search for').': '.request()->q)
-@section('description', __('Search for').': '.request()->q)
 @section('robots', 'NOINDEX,NOFOLLOW')
 
 @section('content')

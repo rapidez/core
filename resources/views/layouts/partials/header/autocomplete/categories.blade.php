@@ -1,17 +1,13 @@
 <ais-index v-bind:index-name="config.index.category">
     <ais-hits v-slot="{ items }">
         <div class="border-b p-2" v-if="items && items.length">
-            <x-rapidez::autocomplete.title>@lang('Categories')</x-rapidez::autocomplete.title>
+            <x-rapidez::autocomplete.title>
+                @lang('Categories')
+            </x-rapidez::autocomplete.title>
             <ul class="flex flex-col font-sans">
                 <li v-for="(item, count) in items" class="flex flex-1 items-center w-full">
                     <a v-bind:href="item.url" class="relative flex items-center group w-full py-2 text-sm gap-x-4">
-                        <span class="ml-2 line-clamp-2">
-                            <ais-highlight
-                                attribute="name"
-                                :hit="item"
-                                highlighted-tag-name="mark"
-                            />
-                        </span>
+                        <x-rapidez::highlight attribute="name" class="ml-2 line-clamp-2"/>
                     </a>
                 </li>
             </ul>

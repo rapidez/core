@@ -1,35 +1,12 @@
 <script>
 import { history } from 'instantsearch.js/es/lib/routers'
 
-import AisSearchBox from 'vue-instantsearch/vue2/es/src/components/SearchBox.vue.js'
-import AisRefinementList from 'vue-instantsearch/vue2/es/src/components/RefinementList.vue.js'
-import AisHierarchicalMenu from 'vue-instantsearch/vue2/es/src/components/HierarchicalMenu.vue.js'
-import AisRangeInput from 'vue-instantsearch/vue2/es/src/components/RangeInput.vue.js'
-import AisCurrentRefinements from 'vue-instantsearch/vue2/es/src/components/CurrentRefinements.vue.js'
-import AisClearRefinements from 'vue-instantsearch/vue2/es/src/components/ClearRefinements.vue.js'
-import AisHitsPerPage from 'vue-instantsearch/vue2/es/src/components/HitsPerPage.vue.js'
-import AisSortBy from 'vue-instantsearch/vue2/es/src/components/SortBy.vue.js'
-import AisPagination from 'vue-instantsearch/vue2/es/src/components/Pagination.vue.js'
-import AisStats from 'vue-instantsearch/vue2/es/src/components/Stats.vue.js'
-
 import categoryFilter from './Filters/CategoryFilter.vue'
 
 import InstantSearchMixin from '../Search/InstantSearchMixin.vue'
 
 export default {
     mixins: [InstantSearchMixin],
-    components: {
-        'ais-search-box': AisSearchBox,
-        'ais-refinement-list': AisRefinementList,
-        'ais-hierarchical-menu': AisHierarchicalMenu,
-        'ais-range-input': AisRangeInput,
-        'ais-current-refinements': AisCurrentRefinements,
-        'ais-clear-refinements': AisClearRefinements,
-        'ais-hits-per-page': AisHitsPerPage,
-        'ais-sort-by': AisSortBy,
-        'ais-pagination': AisPagination,
-        'ais-stats': AisStats,
-    },
     props: {
         configCallback: {
             type: Function,
@@ -42,14 +19,14 @@ export default {
         query: {
             type: Function,
         },
+        categoryId: {
+            type: Number,
+        },
         baseFilters: {
             type: Function,
             default: () => [],
         },
         filterQueryString: {
-            type: String,
-        },
-        filterScoreScript: {
             type: String,
         },
     },
@@ -84,6 +61,7 @@ export default {
             return {
                 router: history({
                     cleanUrlOnDispose: false,
+                    windowTitle: this.windowTitle,
                 }),
                 stateMapping: {
                     routeToState: this.routeToState,
@@ -112,10 +90,18 @@ export default {
 
         async getSearchSettings() {
             let config = await InstantSearchMixin.methods.getSearchSettings.bind(this).call()
+
             return this.configCallback ? this.configCallback(config) : config
         },
 
         getBaseFilters() {
+            if (this.categoryId) {
+                return this.baseFilters().concat([
+                    { query_string: { query: 'visibility:(2 OR 4) AND category_ids:' + this.categoryId } },
+                    this.$root.categoryPositions(this.categoryId),
+                ])
+            }
+
             let extraFilters = []
             if (this.filterQueryString) {
                 extraFilters.push({
@@ -125,48 +111,49 @@ export default {
                 })
             }
 
-            if (this.filterScoreScript) {
-                extraFilters.push({
-                    function_score: {
-                        script_score: {
-                            script: {
-                                source: this.filterScoreScript,
-                            },
-                        },
-                    },
-                })
+            return this.baseFilters().concat(extraFilters)
+        },
+
+        windowTitle(routeState) {
+            if (!routeState.q) {
+                return window.config.translations.search.title
             }
 
-            return this.baseFilters().concat(extraFilters)
+            return window.config.translations.search.title + ': ' + routeState.q
         },
 
         stateToRoute(uiState) {
             let data = uiState[this.index]
 
-            let parameters = {
+            return {
                 ...(data.range || {}),
                 ...(data.refinementList || {}),
+                category: data.hierarchicalMenu?.category_lvl1?.join('--'),
+                q: data.query,
+                page: data.page > 0 ? String(data.page) : undefined,
+                sort: data.sortBy,
+                hits: data.hitsPerPage != config.grid_per_page ? data.hitsPerPage : undefined,
             }
-
-            if ('query' in data) {
-                parameters['q'] = data['query']
-            }
-
-            return parameters
         },
 
         routeToState(routeState) {
-            let ranges = Object.fromEntries(Object.entries(routeState).filter(([key, _]) => this.rangeAttributes.includes(key)))
+            let ranges = Object.fromEntries(Object.entries(routeState).filter(([key]) => this.rangeAttributes.includes(key)))
 
             let refinementList = Object.fromEntries(
-                Object.entries(routeState).filter(([key, _]) => key != 'q' && !this.rangeAttributes.includes(key)),
+                Object.entries(routeState).filter(
+                    ([key]) => !['q', 'hits', 'sort', 'page', 'category'].includes(key) && !this.rangeAttributes.includes(key),
+                ),
             )
 
             return {
                 [this.index]: {
-                    refinementList: refinementList,
                     range: ranges,
+                    refinementList: refinementList,
+                    hierarchicalMenu: { category_lvl1: routeState.category?.split('--') },
                     query: routeState.q,
+                    page: Number(routeState.page),
+                    sortBy: routeState.sort,
+                    hitsPerPage: Number(routeState.hits),
                 },
             }
         },

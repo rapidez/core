@@ -1,16 +1,22 @@
 <script>
-import AisSearchBox from 'vue-instantsearch/vue2/es/src/components/SearchBox.vue.js'
-import AisIndex from 'vue-instantsearch/vue2/es/src/components/Index.js'
-import AisHighlight from 'vue-instantsearch/vue2/es/src/components/Highlight.vue.js'
-
 import InstantSearchMixin from './InstantSearchMixin.vue'
+
+import InstantSearch from 'vue-instantsearch/vue2/es/src/components/InstantSearch'
+import Hits from 'vue-instantsearch/vue2/es/src/components/Hits.js'
+import Configure from 'vue-instantsearch/vue2/es/src/components/Configure.js'
+import highlight from 'vue-instantsearch/vue2/es/src/components/Highlight.vue.js'
+import SearchBox from 'vue-instantsearch/vue2/es/src/components/SearchBox.vue.js'
+import Index from 'vue-instantsearch/vue2/es/src/components/Index.js'
 
 export default {
     mixins: [InstantSearchMixin],
     components: {
-        'ais-search-box': AisSearchBox,
-        'ais-index': AisIndex,
-        'ais-highlight': AisHighlight,
+        InstantSearch,
+        Hits,
+        Configure,
+        highlight,
+        SearchBox,
+        Index,
     },
 
     render() {

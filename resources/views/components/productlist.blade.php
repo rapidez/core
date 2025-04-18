@@ -1,16 +1,5 @@
 @props(['value', 'title' => false, 'field' => 'sku.keyword'])
 
-{{--
-TODO: We should NOT have this here! It should be loaded
-lazily when "intersected" by scrolling to down
-But it currently doesn't work without it.
---}}
-@pushOnce('head')
-    @if ($file = vite_filename_path('Listing.vue'))
-        @vite([$file])
-    @endif
-@endPushOnce
-
 @if ($value)
     <lazy v-slot="{ intersected }">
         <listing v-if="intersected" v-cloak inline-template>
@@ -24,6 +13,7 @@ But it currently doesn't work without it.
                     :search-client="searchClient"
                     :index-name="config.index"
                 >
+                    {{-- TODO: Is it possible to make this more readable? --}}
                     <ais-configure :filters="'{{ $field }}:({{ is_array($value)
                         ? implode(' OR ', $value)
                         : "'+".$value.".join(' OR ')+'"

@@ -1,3 +1,4 @@
+<!-- TODO: This one can be removed as it's not used anymore right? -->
 <template>
     <li :class="classes.li">
         <label :class="[classes.label, value === category.id ? classes.active : '']">
