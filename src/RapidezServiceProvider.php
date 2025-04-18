@@ -157,8 +157,6 @@ class RapidezServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'rapidez');
 
-        View::composer('rapidez::layouts.config', ConfigComposer::class);
-
         View::addExtension('graphql', 'blade');
 
         Vite::useScriptTagAttributes(fn (string $src, string $url, ?array $chunk, ?array $manifest) => [
