@@ -1,4 +1,3 @@
-{{-- TODO: Can/should we hide this filter when there are no results? --}}
 <ais-search-box>
     <template v-slot="{ currentRefinement, isSearchStalled, refine }">
         <x-rapidez::input
