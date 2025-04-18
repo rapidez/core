@@ -63,7 +63,15 @@ class ConfigComposer
             'max_category_level'           => $this->getMaxCategoryLevel(),
             'filterable_attributes'        => $this->getFilterableAttributes(),
             'index'                        => $this->getIndexNames(),
+            'swatches'                     => $this->getSwatches(),
         ];
+    }
+
+    public function getSwatches(): array
+    {
+        $optionswatchModel = config('rapidez.models.option_swatch');
+
+        return $optionswatchModel::getCachedSwatchValues();
     }
 
     public function getIndexNames(): array
