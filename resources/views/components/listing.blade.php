@@ -1,38 +1,33 @@
-@props(['query'])
+@props(['rootPath' => null])
 
 @pushOnce('head', 'es_url-preconnect')
     <link rel="preconnect" href="{{ config('rapidez.es_url') }}">
-
-    @if ($file = vite_filename_path('Listing.vue'))
-        @vite([$file])
-    @endif
+    @vite(vite_filename_paths(['Listing.vue', 'InstantSearch']))
 @endPushOnce
 
 <div class="min-h-screen">
     <listing
-        :additional-filters="{!! isset($query) ? "['query-filter', 'category', 'score-position']" : "['category', 'score-position']" !!}"
+        {{ $attributes }}
         :additional-sorting="[{
             label: window.config.translations.newest,
-            dataField: 'created_at',
-            sortBy: 'desc'
+            field: 'created_at',
+            order: 'desc',
+            {{-- TODO: Extract this somewhere? --}}
+            value: config.index_prefix + '_products_' + config.store + '_created_at_desc',
+            key: '_created_at_desc'
         }]"
+        {{-- TODO: Extract this somewhere? --}}
+        :index="config.index_prefix + '_product_' + config.store"
+        inline-template
         v-cloak
     >
-        <div slot-scope="{ loaded, filters, sortOptions, reactiveFilters, getQuery, _renderProxy: listingSlotProps }">
-            <x-rapidez::reactive-base v-if="loaded">
-                @isset($query)
-                    <reactive-component
-                        component-id="query-filter"
-                        :custom-query="function () {return {query: {{ $query }} } }"
-                        :show-filter="false"
-                    ></reactive-component>
-                @endisset
-                <reactive-component
-                    component-id="score-position"
-                    :custom-query="getQuery"
-                    :show-filter="false"
-                ></reactive-component>
-
+        <div>
+            <ais-instant-search
+                v-if="loaded && searchClient"
+                :search-client="searchClient"
+                :index-name="index"
+                :routing="routing"
+            >
                 {{ $before ?? '' }}
                 @if ($slot->isEmpty())
                     <div class="flex flex-col lg:flex-row gap-x-6 gap-y-3">
@@ -47,7 +42,7 @@
                     {{ $slot }}
                 @endif
                 {{ $after ?? '' }}
-            </x-rapidez::reactive-base>
+            </ais-instant-search>
         </div>
     </listing>
 </div>

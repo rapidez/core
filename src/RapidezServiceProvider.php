@@ -17,12 +17,10 @@ use Illuminate\View\View as ViewComponent;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
 use Rapidez\Core\Auth\MagentoCartTokenGuard;
 use Rapidez\Core\Auth\MagentoCustomerTokenGuard;
-use Rapidez\Core\Commands\IndexCategoriesCommand;
-use Rapidez\Core\Commands\IndexProductsCommand;
+use Rapidez\Core\Commands\IndexCommand;
 use Rapidez\Core\Commands\InstallCommand;
 use Rapidez\Core\Commands\InstallTestsCommand;
 use Rapidez\Core\Commands\ValidateCommand;
-use Rapidez\Core\Events\IndexBeforeEvent;
 use Rapidez\Core\Events\ProductViewEvent;
 use Rapidez\Core\Facades\Rapidez as RapidezFacade;
 use Rapidez\Core\Http\Controllers\Fallback\CmsPageController;
@@ -49,6 +47,7 @@ class RapidezServiceProvider extends ServiceProvider
         'magento-defaults',
         'models',
         'routing',
+        'searchkit',
         'system',
     ];
 
@@ -89,16 +88,11 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootCommands(): self
     {
         $this->commands([
-            IndexProductsCommand::class,
-            IndexCategoriesCommand::class,
+            IndexCommand::class,
             ValidateCommand::class,
             InstallCommand::class,
             InstallTestsCommand::class,
         ]);
-
-        Event::listen(IndexBeforeEvent::class, function ($event) {
-            $event->context->call('rapidez:index:categories');
-        });
 
         return $this;
     }
@@ -280,6 +274,25 @@ class RapidezServiceProvider extends ServiceProvider
             return Str::of($this->render())
                 ->replaceMatches('/#.*/m', '')
                 ->squish();
+        });
+
+        Vite::macro('getPathsByFilenames', function ($filenames) {
+            /** @var \Illuminate\Foundation\Vite $this */
+            $filenames = is_array($filenames) ? $filenames : func_get_args();
+            $manifest = $this->manifest($this->buildDirectory);
+
+            return array_filter(
+                array_map(
+                    function ($filename) use ($manifest) {
+                        foreach ($manifest as $path => $asset) {
+                            if (Str::endsWith($asset['name'] ?? '', $filename) || Str::endsWith($path, $filename)) {
+                                return $path;
+                            }
+                        }
+                    },
+                    $filenames
+                )
+            );
         });
 
         return $this;

@@ -21,6 +21,7 @@ import './mixins'
 import './cookies'
 import './callbacks'
 import './vue-components'
+import './instantsearch'
 ;(() => import('./turbolinks'))()
 
 if (import.meta.env.VITE_DEBUG === 'true') {
@@ -100,7 +101,7 @@ function init() {
                 config: window.config,
                 loadingCount: 0,
                 loading: false,
-                loadAutocomplete: false,
+                autocompleteFacadeQuery: '',
                 csrfToken: document.querySelector('[name=csrf-token]')?.content,
                 cart: useCart(),
                 order: useOrder(),
@@ -139,6 +140,18 @@ function init() {
 
                     return `/storage/${store}/resizes/${size}/magento${url}`
                 },
+
+                categoryPositions(categoryId) {
+                    return {
+                        function_score: {
+                            script_score: {
+                                script: {
+                                    source: `Integer.parseInt(doc['positions.${categoryId}'].empty ? '0' : doc['positions.${categoryId}'].value)`,
+                                },
+                            },
+                        },
+                    }
+                },
             },
             computed: {
                 // Wrap the local storage in getter and setter functions so you do not have to interact using .value
@@ -156,10 +169,6 @@ function init() {
 
                 canOrder() {
                     return this.cart.items.every((item) => item.is_available)
-                },
-
-                queryParams() {
-                    return new URLSearchParams(window.location.search)
                 },
             },
             watch: {

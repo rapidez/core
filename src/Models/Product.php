@@ -23,6 +23,7 @@ use Rapidez\Core\Models\Scopes\Product\WithProductSuperAttributesScope;
 use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
 use Rapidez\Core\Models\Traits\Product\CastMultiselectAttributes;
 use Rapidez\Core\Models\Traits\Product\CastSuperAttributes;
+use Rapidez\Core\Models\Traits\Product\Searchable;
 use Rapidez\Core\Models\Traits\Product\SelectAttributeScopes;
 use TorMorten\Eventy\Facades\Eventy;
 
@@ -31,6 +32,7 @@ class Product extends Model
     use CastMultiselectAttributes;
     use CastSuperAttributes;
     use HasAlternatesThroughRewrites;
+    use Searchable;
     use SelectAttributeScopes;
 
     public array $attributesToSelect = [];
