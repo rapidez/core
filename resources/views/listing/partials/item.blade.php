@@ -19,9 +19,14 @@
                     <x-rapidez::highlight attribute="name" class="text-base font-medium"/>
                     @if (!Rapidez::config('catalog/frontend/show_swatches_in_product_list'))
                         <div class="flex items-center space-x-2">
-                            <div class="font-semibold">@{{ (item.special_price || item.price) | price }}</div>
-                            <div class="text-sm line-through" v-if="item.special_price">@{{ item.price | price }}</div>
+                            <div class="font-semibold">
+                                @{{ (item.special_price || item.price) | price }}
+                            </div>
+                            <div class="text-sm line-through" v-if="item.special_price">
+                                @{{ item.price | price }}
+                            </div>
                         </div>
+                    @endif
                     @if (App::providerIsLoaded('Rapidez\Reviews\ReviewsServiceProvider'))
                         <x-dynamic-component component="rapidez-reviews::stars" v-if="item.reviews_count" count="item.reviews_count" score="item.reviews_score" />
                     @endif

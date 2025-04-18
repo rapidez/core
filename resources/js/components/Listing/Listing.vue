@@ -51,9 +51,6 @@ export default {
 
     mounted() {
         this.loaded = Object.keys(this.attributes).length > 0
-        if (this.isSearchPage) {
-            document.title = config.translations.search.title + ': ' + this.$root.queryParams.get('q')
-        }
     },
 
     computed: {
@@ -147,10 +144,6 @@ export default {
                 },
             }
 
-        },
-
-        isSearchPage: function () {
-            return this.$root.queryParams.has('q')
         },
 
         // TODO: Do we want to make this extendable?
