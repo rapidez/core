@@ -1,5 +1,4 @@
-{{-- TODO: The index name should come from the model --}}
-<ais-index :index-name="config.index_prefix + '_categories_' + config.store">
+<ais-index v-bind:index-name="config.index.category">
     <ais-hits v-slot="{ items }">
         <div class="border-b p-2" v-if="items && items.length">
             <x-rapidez::autocomplete.title>

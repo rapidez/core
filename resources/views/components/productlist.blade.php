@@ -5,7 +5,7 @@
         <listing v-if="intersected" v-cloak inline-template>
             <div>
                 <ais-instant-search
-                    v-if="loaded && searchClient"
+                    v-if="searchClient"
                     :search-client="searchClient"
                     :index-name="config.index"
                 >

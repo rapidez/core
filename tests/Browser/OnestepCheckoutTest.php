@@ -14,7 +14,7 @@ class OnestepCheckoutTest extends CheckoutTest
 
         $this->config = file_get_contents(__DIR__ . '/../../config/rapidez/frontend.php');
         $config = config('rapidez.frontend');
-        $config['checkout_steps']['default'] = ['onestep'];
+        $config['checkout_steps'] = ['onestep'];
         file_put_contents(__DIR__ . '/../../config/rapidez/frontend.php', '<?php return ' . var_export($config, true) . ';');
     }
 

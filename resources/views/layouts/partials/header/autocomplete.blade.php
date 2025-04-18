@@ -3,9 +3,10 @@
         <ais-instant-search
             v-if="searchClient"
             :search-client="searchClient"
-            {{-- TODO: The index name should come from the model --}}
-            :index-name="config.index_prefix + '_product_' + config.store"
+            :index-name="config.index.products"
             class="contents"
+            v-bind:search-client="searchClient"
+            v-bind:index-name="config.index.product"
             v-cloak
         >
             <div class="contents">

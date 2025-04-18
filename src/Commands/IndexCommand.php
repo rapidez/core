@@ -17,11 +17,10 @@ class IndexCommand extends Command
     public function handle()
     {
         $baseSearchableModels = collect(config('rapidez.models'))
-            ->filter(fn ($class) => in_array(Searchable::class, class_uses_recursive($class)))
-            ->merge(config('rapidez.indexer.extra_models'));
+            ->filter(fn ($class) => in_array(Searchable::class, class_uses_recursive($class)));
 
         $types = $this->option('types')
-            ? $baseSearchableModels->only(explode(',', $this->option('types')))
+            ? $baseSearchableModels->filter(fn ($model) => in_array((new $model)->getIndexName(), explode(',', $this->option('types'))))
             : $baseSearchableModels;
 
         $stores = $this->option('store')
@@ -38,8 +37,6 @@ class IndexCommand extends Command
             $this->line('Store: ' . $store['name']);
 
             foreach ($types as $type => $model) {
-                config()->set('rapidez.index', $type);
-
                 $this->call('scout:import', [
                     'searchable' => $model,
                 ]);

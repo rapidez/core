@@ -130,6 +130,23 @@ class Rapidez
         config()->set('rapidez.root_category_id', $store['root_category_id']);
         config()->set('frontend.base_url', url('/'));
 
+        // This loop goes through all the Rapidez config files and retrieves the store-specific values.
+        // We also remember some `default` values along the way. This allows us to switch stores multiple
+        // times in one session, without losing any data that got overwritten by the store-specific values.
+        // TODO: Add how to use this in the Rapidez documentation
+        foreach (array_keys(config('rapidez')) as $config) {
+            // Reset defaults if they've been set previously
+            foreach (config('rapidez.defaults.' . $config, []) as $key => $value) {
+                config()->set('rapidez.' . $config . '.' . $key, $value);
+            }
+
+            // Set all store-specific values and define the relevant defaults
+            foreach (config('rapidez.stores.' . $store['code'] . '.' . $config, []) as $key => $value) {
+                config()->set('rapidez.defaults.' . $config . '.' . $key, config('rapidez.' . $config . '.' . $key));
+                config()->set('rapidez.' . $config . '.' . $key, $value);
+            }
+        }
+
         if (config()->get('rapidez.magento_url_from_db', false)) {
             $magentoUrl = trim(
                 Config::getValue('web/secure/base_url', ConfigScopes::SCOPE_WEBSITE) ?? config()->get('rapidez.magento_url'),
