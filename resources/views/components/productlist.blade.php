@@ -9,10 +9,6 @@
             v-cloak
             v-slot="{ loaded, index, searchClient }"
         >
-            {{--
-            TODO: Maybe better to have a wrapper
-            component again like reactive-base?
-            --}}
             <div>
                 <ais-instant-search
                     v-if="loaded && searchClient"

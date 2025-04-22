@@ -1,4 +1,3 @@
-{{-- TODO: Can/should we hide this filter when there are no results? --}}
 <ais-search-box>
     <template v-slot="{ currentRefinement, isSearchStalled, refine }">
         <x-rapidez::input
@@ -9,6 +8,7 @@
         />
         {{--
         TODO: Maybe use this for a loading icon with the input?
+        But it's super duper fast, does it make sense?
         <span :hidden="!isSearchStalled">Loading...</span>
         --}}
     </template>
