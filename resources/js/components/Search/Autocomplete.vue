@@ -61,7 +61,7 @@ export default {
         },
 
         getMiddlewares() {
-            let middlewares = InstantSearchMixin.methods.getMiddlewares.bind(this).call();
+            let middlewares = InstantSearchMixin.methods.getMiddlewares.bind(this).call()
 
             const stateChanged = useDebounceFn((changes) => {
                 const query = Object.entries(changes.uiState).find(([id, state]) => {
@@ -83,7 +83,7 @@ export default {
                     onStateChange(changes) {
                         stateChanged(changes)
                     },
-                })
+                }),
             ]
         },
     },

@@ -26,7 +26,7 @@ class SearchController
 
     public function store(Request $request)
     {
-        if (!$request->q) {
+        if (! $request->q) {
             return response()->json(['success' => true]);
         }
 
@@ -46,7 +46,7 @@ class SearchController
                     'store_id'   => config('rapidez.store'),
                 ],
                 [
-                    'popularity' => 1
+                    'popularity' => 1,
                 ]
             );
 
