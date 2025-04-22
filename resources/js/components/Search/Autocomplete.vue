@@ -7,6 +7,8 @@ import Configure from 'vue-instantsearch/vue2/es/src/components/Configure.js'
 import highlight from 'vue-instantsearch/vue2/es/src/components/Highlight.vue.js'
 import SearchBox from 'vue-instantsearch/vue2/es/src/components/SearchBox.vue.js'
 import Index from 'vue-instantsearch/vue2/es/src/components/Index.js'
+import { useDebounceFn } from '@vueuse/core'
+import { rapidezAPI } from '../../fetch'
 
 export default {
     mixins: [InstantSearchMixin],
@@ -60,6 +62,33 @@ export default {
             }
 
             return client
+        },
+
+        getMiddlewares() {
+            let middlewares = InstantSearchMixin.methods.getMiddlewares.bind(this).call();
+
+            const stateChanged = useDebounceFn((changes) => {
+                const query = Object.entries(changes.uiState).find(([id, state]) => {
+                    return state?.query
+                })?.[1]?.query
+
+                if (!query) {
+                    return
+                }
+
+                rapidezAPI('post', '/search', {
+                    q: query,
+                })
+            }, 3000)
+
+            return [
+                ...middlewares,
+                () => ({
+                    onStateChange(changes) {
+                        stateChanged(changes)
+                    },
+                })
+            ]
         },
     },
 }

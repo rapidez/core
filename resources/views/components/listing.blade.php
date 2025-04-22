@@ -25,6 +25,7 @@
             <ais-instant-search
                 v-if="loaded && searchClient"
                 :search-client="searchClient"
+                :middlewares="middlewares"
                 :index-name="index"
                 :routing="routing"
             >

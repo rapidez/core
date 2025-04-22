@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core;
 
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
@@ -9,6 +10,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -133,6 +135,10 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function bootRoutes(): self
     {
+        RateLimiter::for('search-analytics', function (Request $request) {
+            return Limit::perMinute(30)->by($request->ip());
+        });
+
         if (config('rapidez.routing.enabled')) {
             $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
             $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');

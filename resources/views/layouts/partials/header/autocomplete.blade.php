@@ -3,6 +3,7 @@
         <ais-instant-search
             v-if="searchClient"
             :search-client="searchClient"
+            :middlewares="middlewares"
             {{-- TODO: The index name should come from the model --}}
             :index-name="config.index_prefix + '_product_' + config.store"
             class="contents"

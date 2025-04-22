@@ -8,6 +8,7 @@
                     v-if="loaded && searchClient"
                     :search-client="searchClient"
                     :index-name="config.index"
+                    :middlewares="middlewares"
                 >
                     <ais-configure :filters="'{{ $field }}:({{ is_array($value)
                         ? implode(' OR ', $value)

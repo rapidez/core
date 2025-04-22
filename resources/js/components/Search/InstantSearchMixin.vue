@@ -1,6 +1,7 @@
 <script>
 import Client from '@searchkit/instantsearch-client'
 import Searchkit from 'searchkit'
+import { instantsearchMiddlewares } from '../../stores/useInstantsearchMiddlewares'
 
 export default {
     data: () => ({
@@ -45,6 +46,15 @@ export default {
                 search_attributes: config.searchkit.search_attributes,
                 result_attributes: config.searchkit.result_attributes,
             }
+        },
+
+        getMiddlewares() {
+            return instantsearchMiddlewares;
+        },
+    },
+    computed: {
+        middlewares() {
+            return this.getMiddlewares()
         },
     },
 }

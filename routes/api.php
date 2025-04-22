@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Rapidez\Core\Http\Controllers\GetSignedCheckoutController;
 use Rapidez\Core\Http\Controllers\OrderController;
+use Rapidez\Core\Http\Controllers\SearchController;
 use Rapidez\Core\Http\Middleware\VerifyAdminToken;
 
 Route::middleware('api')->prefix('api')->group(function () {
@@ -20,6 +21,9 @@ Route::middleware('api')->prefix('api')->group(function () {
 
         return $optionswatchModel::getCachedSwatchValues();
     });
+
+    Route::post('search', [SearchController::class, 'store'])
+        ->middleware('throttle:search-analytics');
 
     Route::get('order', OrderController::class);
 
