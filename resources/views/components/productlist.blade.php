@@ -3,10 +3,6 @@
 @if ($value)
     <lazy v-slot="{ intersected }">
         <listing v-if="intersected" v-cloak inline-template>
-            {{--
-            TODO: Maybe better to have a wrapper
-            component again like reactive-base?
-            --}}
             <div>
                 <ais-instant-search
                     v-if="loaded && searchClient"

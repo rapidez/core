@@ -1,5 +1,5 @@
 import { cart, clear as clearCart } from './stores/useCart'
-import { fillFromGraphqlResponse as updateOrder, order } from './stores/useOrder'
+import { fillFromGraphqlResponse as updateOrder } from './stores/useOrder'
 import { runAfterPlaceOrderHandlers, runBeforePaymentMethodHandlers, runBeforePlaceOrderHandlers } from './stores/usePaymentHandlers'
 import { refresh as refreshUser, token } from './stores/useUser'
 
@@ -15,22 +15,26 @@ Vue.prototype.getCheckoutStep = (stepName) => {
     return (config.checkout_steps[config.store_code] ?? config.checkout_steps['default'])?.indexOf(stepName)
 }
 
-Vue.prototype.submitPartials = async function (form) {
+Vue.prototype.submitPartials = async function (form, sequential = false) {
     let promises = []
-    form.querySelectorAll('[partial-submit]').forEach((element) => {
+    for (const element of form.querySelectorAll('[partial-submit]')) {
         const partialFn = element?.getAttribute('partial-submit')
         if (!partialFn || !element?.__vue__) {
-            return
+            continue
         }
 
-        promises.push(
-            element.__vue__[partialFn]().then((result) => {
-                if (result === false) {
-                    throw new Error()
-                }
-            }),
-        )
-    })
+        const createdPromise = element.__vue__[partialFn]().then((result) => {
+            if (result === false) {
+                throw new Error()
+            }
+        })
+
+        if (sequential) {
+            await createdPromise
+        }
+
+        promises.push(createdPromise)
+    }
 
     return await Promise.all(promises)
 }
@@ -65,6 +69,14 @@ Vue.prototype.updateCart = async function (data, response) {
     cart.value = Object.values(response.data)
         .map((queryResponse) => ('cart' in queryResponse ? queryResponse.cart : queryResponse))
         .findLast((queryResponse) => queryResponse?.is_virtual !== undefined)
+
+    document.dispatchEvent(
+        new CustomEvent('cart-updated', {
+            detail: {
+                cart: cart,
+            },
+        }),
+    )
 
     return response.data
 }

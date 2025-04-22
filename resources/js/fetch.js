@@ -27,12 +27,13 @@ window.SessionExpired = SessionExpired
 
 export const rapidezFetch = (window.rapidezFetch = ((originalFetch) => {
     return (...args) => {
-        if (window.app.$data) {
+        let loadingTracked = !!window.app.$data
+        if (loadingTracked) {
             window.app.$data.loadingCount++
         }
         const result = originalFetch.apply(this, args)
         return result.finally((...args) => {
-            if (window.app.$data) {
+            if (loadingTracked && window.app.$data && window.app.$data.loadingCount > 0) {
                 window.app.$data.loadingCount--
             }
 
@@ -112,7 +113,7 @@ export const combiningGraphQL = (window.combiningGraphQL = async (query, variabl
 
                     pendingQuery[pendingQueryName] = null
 
-                    magentoGraphQL(query, variables, options).then(resolve)
+                    magentoGraphQL(query, variables, options).then(resolve).catch(reject)
                 }, 5),
             ),
         }

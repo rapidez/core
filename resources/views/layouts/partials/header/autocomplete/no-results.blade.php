@@ -1,5 +1,7 @@
 <div class="font-bold text text-lg break-all">
-    @lang('No results found for :searchterm', ['searchterm' => '<span class="text-primary">"@{{ value }}"</span>'])
+    @lang('No results found for :searchterm', [
+        'searchterm' => '<span class="text-primary">"@{{ value }}"</span>'
+    ])
 </div>
 <div class="flex flex-col text-sm pt-7">
     <span class="font-bold">@lang('Have you tried:')</span>

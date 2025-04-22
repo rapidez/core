@@ -4,7 +4,8 @@
         cart_id: mask,
         ...window.address_defaults,
         ...cart.shipping_addresses[0],
-        country_code: cart.shipping_addresses[0]?.country.code || window.address_defaults.country_code
+        country_code: cart.shipping_addresses[0]?.country.code || window.address_defaults.country_code,
+        region_id: cart.shipping_addresses[0]?.region.region_id || window.address_defaults.region_id,
     }"
     group="shipping"
     :before-request="(query, variables, options) => [variables.customer_address_id ? config.queries.setExistingShippingAddressesOnCart : query, variables, options]"

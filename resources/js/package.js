@@ -140,6 +140,18 @@ function init() {
 
                     return `/storage/${store}/resizes/${size}/magento${url}`
                 },
+
+                categoryPositions(categoryId) {
+                    return {
+                        function_score: {
+                            script_score: {
+                                script: {
+                                    source: `Integer.parseInt(doc['positions.${categoryId}'].empty ? '0' : doc['positions.${categoryId}'].value)`,
+                                },
+                            },
+                        },
+                    }
+                },
             },
             computed: {
                 // Wrap the local storage in getter and setter functions so you do not have to interact using .value

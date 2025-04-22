@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core\Models\Traits;
 
+use Exception;
 use Laravel\Scout\Searchable as ScoutSearchable;
 use TorMorten\Eventy\Facades\Eventy;
 
