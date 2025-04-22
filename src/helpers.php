@@ -37,6 +37,6 @@ if (! function_exists('vite_filename_path')) {
 if (! function_exists('vite_filename_paths')) {
     function vite_filename_paths($file)
     {
-        return Vite::getPathsByFilenames($file);
+        return Vite::getPathsByFilenames($file); // @phpstan-ignore-line This is a macro bind, which is not recognized by PHPStan.
     }
 }
