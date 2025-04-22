@@ -9,7 +9,7 @@
     <listing
         {{ $attributes }}
         v-bind:index="config.index.product"
-        inline-template
+        v-slot="{ loaded, index, searchClient, rangeAttributes, categoryAttributes, hitsPerPage, filters, sortOptions, withFilters, withSwatches, routing }"
         v-cloak
     >
         <div>
