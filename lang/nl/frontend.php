@@ -29,6 +29,10 @@ return [
     'all'       => 'Alles',
     'price'     => 'Prijs',
 
+    'search' => [
+        'title' => 'Zoeken naar',
+    ],
+
     'sorting' => [
         'created_at' => [
             'asc'  => 'Oudste',

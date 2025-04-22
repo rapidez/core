@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ strtok(Rapidez::config('general/locale/code', 'en_US'), '_') }}">
+<html lang="{{ strtok(Rapidez::config('general/locale/code'), '_') }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,8 +16,8 @@
         @endif
     </title>
 
-    <meta name="description" content="@yield('description', Rapidez::config('design/head/default_description', ''))"/>
-    <meta name="robots" content="@yield('robots', Rapidez::config('design/search_engine_robots/default_robots', 'INDEX,FOLLOW'))"/>
+    <meta name="description" content="@yield('description', Rapidez::config('design/head/default_description'))"/>
+    <meta name="robots" content="@yield('robots', Rapidez::config('design/search_engine_robots/default_robots'))"/>
     <link rel="canonical" href="@yield('canonical', url()->current())" />
 
     @php($configPath = route('config') . '?v=' . Cache::rememberForever('cachekey', fn () => md5(Str::random())) . '&s=' . config('rapidez.store'))

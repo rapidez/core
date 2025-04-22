@@ -6,7 +6,7 @@ if (! function_exists('price')) {
     function price($price)
     {
         $currency = \Rapidez\Core\Facades\Rapidez::config('currency/options/default');
-        $locale = \Rapidez\Core\Facades\Rapidez::config('general/locale/code', 'en_US');
+        $locale = \Rapidez\Core\Facades\Rapidez::config('general/locale/code');
         $formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
 
         return $formatter->formatCurrency($price, $currency);
@@ -37,7 +37,7 @@ if (! function_exists('vite_filename_path')) {
 if (! function_exists('vite_filename_paths')) {
     function vite_filename_paths($file)
     {
-        return Vite::getPathsByFilenames($file);
+        return Vite::getPathsByFilenames($file); // @phpstan-ignore-line This is a macro bind, which is not recognized by PHPStan.
     }
 }
 

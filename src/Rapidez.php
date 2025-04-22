@@ -58,7 +58,7 @@ class Rapidez
         return $this->routes->sortBy('position');
     }
 
-    public function config(string $path, $default = null, bool $sensitive = false): ?string
+    public function config(string $path, $default = false, bool $sensitive = false): ?string
     {
         return config('rapidez.models.config')::getValue($path, options: ['cache' => true, 'decrypt' => $sensitive, 'default' => $default]);
     }
@@ -183,7 +183,7 @@ class Rapidez
         }
 
         config()->set('frontend.base_url', url('/'));
-        App::setLocale(strtok(Rapidez::config('general/locale/code', 'en_US'), '_'));
+        App::setLocale(strtok(Rapidez::config('general/locale/code'), '_'));
 
         Event::dispatch('rapidez:store-set', [$store]);
     }
