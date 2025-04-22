@@ -7,12 +7,6 @@ use Rapidez\Core\Http\Controllers\OrderController;
 use Rapidez\Core\Http\Middleware\VerifyAdminToken;
 
 Route::middleware('api')->prefix('api')->group(function () {
-    Route::get('swatches', function () {
-        $optionswatchModel = config('rapidez.models.option_swatch');
-
-        return $optionswatchModel::getCachedSwatchValues();
-    });
-
     Route::get('order', OrderController::class);
 
     Route::post('get-checkout-url', GetSignedCheckoutController::class);
