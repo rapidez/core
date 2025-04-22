@@ -25,34 +25,34 @@ export default {
                             functions: [
                                 {
                                     filter: { match: { query_text: query } },
-                                    weight: 18
+                                    weight: 18,
                                 },
                                 {
                                     filter: { term: { redirect: query } },
-                                    weight: 24
+                                    weight: 24,
                                 },
                                 {
                                     field_value_factor: {
-                                        field: "popularity",
+                                        field: 'popularity',
                                         factor: 1,
-                                        modifier: "log1p",
-                                        missing: 0
+                                        modifier: 'log1p',
+                                        missing: 0,
                                     },
-                                    weight: 5
+                                    weight: 5,
                                 },
                                 {
-                                    filter: { exists: { field: "redirect" } },
-                                    weight: 10
+                                    filter: { exists: { field: 'redirect' } },
+                                    weight: 4,
                                 },
                                 {
                                     filter: { term: { display_in_terms: 1 } },
-                                    weight: 2
+                                    weight: 2,
                                 },
                                 {
                                     filter: { term: { is_processed: 1 } },
-                                    weight: 2
-                                }
-                            ]
+                                    weight: 2,
+                                },
+                            ],
                         },
                     },
                 ]
@@ -74,14 +74,7 @@ export default {
                         weight: 8.0,
                     },
                 ],
-                result_attributes: [
-                    'query_text',
-                    'redirect',
-                    'popularity',
-                    'num_results',
-                    'display_in_terms',
-                    'is_processed',
-                ],
+                result_attributes: ['query_text', 'redirect', 'popularity', 'num_results', 'display_in_terms', 'is_processed'],
             }
         },
     },

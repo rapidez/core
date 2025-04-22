@@ -2,9 +2,9 @@
 
 namespace Rapidez\Core\Models;
 
-use Rapidez\Core\Models\Traits\Searchable;
 use Illuminate\Database\Eloquent\Builder;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
+use Rapidez\Core\Models\Traits\Searchable;
 
 class SearchQuery extends Model
 {
