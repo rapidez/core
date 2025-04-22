@@ -26,7 +26,7 @@ class WithProductAttributesScope implements Scope
         $attributeModel = config('rapidez.models.attribute');
         $attributes = $attributeModel::getCachedWhere(function ($attribute) use ($model) {
             return in_array($attribute['code'], $model->attributesToSelect)
-                && !in_array($attribute['code'], ['visibility', 'sku', 'type_id', $model->getKeyName()]);
+                && ! in_array($attribute['code'], ['visibility', 'sku', 'type_id', $model->getKeyName()]);
         });
 
         $attributes = array_filter($attributes, fn ($a) => $a['type'] !== 'static');
