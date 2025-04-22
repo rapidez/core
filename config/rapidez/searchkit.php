@@ -34,6 +34,11 @@ return [
         'reviews_score',
     ],
 
+    // Extra attributes that should be a range slider. Only supports numeric values.
+    'range_attributes' => [
+        // 'attribute_code'
+    ],
+
     // Additional attributes that are used to create facets.
     // From Magento only "Yes/No, Dropdown, Multiple Select and Price" attribute types
     // can be configured as filter. If you'd like to have a filter for an attribute
@@ -43,8 +48,9 @@ return [
     ],
 
     // Attributes that are used to create filters.
-    // TODO: Do we really need this? With ReactiveSearch
-    // we didn't need to keep a list to filter.
+    // Required so that SearchKit can keep track of the type and field of each attribute.
+    // TODO: Does the undocumented nestedPath parameter have any use case for us?
+    // TODO: Should we pass the filterQuery parameter? If so, how?
     'filter_attributes' => [
         ['attribute' => 'entity_id', 'field' => 'entity_id', 'type' => 'numeric'],
         ['attribute' => 'sku', 'field' => 'sku.keyword', 'type' => 'string'],
@@ -52,6 +58,10 @@ return [
         ['attribute' => 'visibility', 'field' => 'visibility', 'type' => 'numeric'],
     ],
 
-    // TODO: Sorting...
-    // 'sorting' => []
+    // Additional sorting options to be added to the product listings
+    // Given directions can only be an array of 'asc' and/or 'desc'
+    // Order shown here will be the order shown in the dropdown (including the order of the given directions!)
+    'sorting' => [
+        'created_at' => ['desc'],
+    ],
 ];

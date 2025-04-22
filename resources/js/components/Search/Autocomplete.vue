@@ -18,9 +18,6 @@ export default {
         SearchBox,
         Index,
     },
-    data: () => ({
-        loaded: false,
-    }),
 
     render() {
         return this.$scopedSlots.default(this)
@@ -29,7 +26,6 @@ export default {
     mounted() {
         this.$nextTick(() => {
             requestAnimationFrame(() => this.$emit('mounted'))
-            this.loaded = true
         })
     },
 

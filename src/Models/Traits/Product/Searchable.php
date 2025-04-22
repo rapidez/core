@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Category;
 use Rapidez\Core\Models\CategoryProduct;
+use Rapidez\Core\Models\Product;
 use Rapidez\Core\Models\Traits\Searchable as ParentSearchable;
 use TorMorten\Eventy\Facades\Eventy;
 
@@ -30,7 +31,11 @@ trait Searchable
      */
     public function shouldBeSearchable(): bool
     {
-        if (! in_array($this->visibility, config('rapidez.indexer.visibility'))) {
+        if (! in_array($this->visibility, [
+            Product::VISIBILITY_IN_CATALOG,
+            Product::VISIBILITY_IN_SEARCH,
+            Product::VISIBILITY_BOTH,
+        ])) {
             return false;
         }
 

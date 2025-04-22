@@ -40,3 +40,12 @@ if (! function_exists('vite_filename_paths')) {
         return Vite::getPathsByFilenames($file); // @phpstan-ignore-line This is a macro bind, which is not recognized by PHPStan.
     }
 }
+
+if (! function_exists('trans_fallback')) {
+    function trans_fallback($key, $fallback, $replace = [], $locale = null)
+    {
+        $translator = app('translator');
+
+        return $translator->has($key) ? $translator->get($key, $replace, $locale) : $fallback;
+    }
+}

@@ -28,22 +28,21 @@ return [
         'yes' => 'Yes',
     ],
 
-    'asc'       => 'asc',
-    'desc'      => 'desc',
+    'asc'       => 'ascending',
+    'desc'      => 'descending',
     'relevance' => 'Relevance',
-    'newest'    => 'Newest',
     'all'       => 'All',
 
-    'search' => [
-        'title' => 'Search for',
+    'sorting' => [
+        'created_at' => [
+            'asc'  => 'Oldest',
+            'desc' => 'Newest',
+        ],
+        'name' => [
+            'asc'  => 'Name A-Z',
+            'desc' => 'Name Z-A',
+        ],
     ],
-
-    // 'sorting' => [
-    //     'attribute' => [
-    //         'asc' => 'Attribute asc',
-    //         'desc' => 'Attrribute desc',
-    //     ],
-    // ],
 
     'search' => [
         'title' => 'Search for',

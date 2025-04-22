@@ -42,7 +42,6 @@ class RapidezServiceProvider extends ServiceProvider
     protected $configFiles = [
         'frontend',
         'healthcheck',
-        'indexer',
         'jwt',
         'magento-defaults',
         'models',
@@ -155,33 +154,11 @@ class RapidezServiceProvider extends ServiceProvider
         return $this;
     }
 
-    protected function registerThemes(): self
-    {
-        if (app()->runningInConsole()) {
-            return $this;
-        }
-
-        $path = config('rapidez.frontend.themes.' . request()->server('MAGE_RUN_CODE', request()->has('_store') && ! app()->isProduction() ? request()->get('_store') : 'default'), false);
-
-        if (! $path) {
-            return $this;
-        }
-
-        config([
-            'view.paths' => [
-                $path,
-                ...config('view.paths'),
-            ],
-        ]);
-
-        return $this;
-    }
-
     protected function bootViews(): self
     {
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'rapidez');
 
-        View::composer('rapidez::layouts.app', ConfigComposer::class);
+        View::composer('rapidez::layouts.config', ConfigComposer::class);
 
         View::addExtension('graphql', 'blade');
 
@@ -321,6 +298,28 @@ class RapidezServiceProvider extends ServiceProvider
                 'sync_missed_stores' => true,
             ]);
         }
+
+        return $this;
+    }
+
+    protected function registerThemes(): self
+    {
+        if (app()->runningInConsole()) {
+            return $this;
+        }
+
+        $path = config('rapidez.frontend.theme', false);
+
+        if (! $path) {
+            return $this;
+        }
+
+        config([
+            'view.paths' => [
+                $path,
+                ...config('view.paths'),
+            ],
+        ]);
 
         return $this;
     }
