@@ -47,6 +47,7 @@ return [
     // we didn't need to keep a list to filter.
     'filter_attributes' => [
         ['attribute' => 'entity_id', 'field' => 'entity_id', 'type' => 'numeric'],
+        ['attribute' => 'sku', 'field' => 'sku.keyword', 'type' => 'string'],
         ['attribute' => 'category_ids', 'field' => 'category_ids', 'type' => 'numeric'],
         ['attribute' => 'visibility', 'field' => 'visibility', 'type' => 'numeric'],
     ],
