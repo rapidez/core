@@ -7,7 +7,7 @@
     <div class="mt-8 py-12 pt-8 border-t lg:py-16">
         <div class="flex flex-col justify-between lg:flex-row xl:gap-8">
             @include('rapidez::layouts.partials.footer.navigation')
-            @includeWhen(Rapidez::config('newsletter/general/active', 1), 'rapidez::layouts.partials.footer.newsletter')
+            @includeWhen(Rapidez::config('newsletter/general/active'), 'rapidez::layouts.partials.footer.newsletter')
         </div>
         <div class="mt-8 border-t py-8 md:flex md:items-center md:justify-between">
             @include('rapidez::layouts.partials.footer.social')

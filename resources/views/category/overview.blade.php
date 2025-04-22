@@ -13,8 +13,7 @@
         @if ($category->is_anchor)
             <x-rapidez::listing
                 :root-path="$category->parentcategories->pluck('name')->join(' > ')"
-                filter-query-string="visibility:(2 OR 4) AND category_ids:{{ $category->entity_id }}"
-                filter-score-script="Integer.parseInt(doc['positions.{{ $category->entity_id }}'].empty ? '0' : doc['positions.{{ $category->entity_id }}'].value)"
+                v-bind:category-id="{{ $category->entity_id }}"
             />
         @else
             <div class="flex max-md:flex-col">

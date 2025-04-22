@@ -1,5 +1,6 @@
 // TODO: In this file there is a lot of duplication compared to useSwatches. Can we improve that?
 import { computedAsync, useLocalStorage } from '@vueuse/core'
+import { computed } from 'vue'
 
 export const attributesStorage = useLocalStorage('attributes', {})
 let isRefreshing = false
@@ -36,5 +37,9 @@ export const attributes = computedAsync(
     attributesStorage.value,
     { lazy: true, shallow: false },
 )
+
+window.attributeLabel = computed((attributeCode) => {
+    return Object.values(attributes.value)?.find((attribute) => attribute.code === attributeCode)?.name
+})
 
 export default () => attributes

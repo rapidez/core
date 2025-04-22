@@ -34,6 +34,10 @@ return [
     'newest'    => 'Newest',
     'all'       => 'All',
 
+    'search' => [
+        'title' => 'Search for',
+    ],
+
     // 'sorting' => [
     //     'attribute' => [
     //         'asc' => 'Attribute asc',

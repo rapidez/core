@@ -10,6 +10,9 @@ Route::get('robots.txt', fn () => response(Rapidez::config('design/search_engine
 
 Route::middleware('web')->group(function () {
     Route::get('catalog/product/view/id/{productId}', [config('rapidez.routing.controllers.product'), 'show'])->whereNumber('productId');
+    Route::get('catalog/product/view/id/{productId}/{any?}', function ($productId) {
+        return redirect('catalog/product/view/id/' . $productId, 301);
+    })->where('any', '.*');
     Route::get('catalog/category/view/id/{categoryId}', [config('rapidez.routing.controllers.category'), 'show'])->whereNumber('categoryId');
 
     Route::view('cart', 'rapidez::cart.overview')->name('cart');
