@@ -166,8 +166,8 @@ export default {
         },
 
         getOptions: function (superAttributeCode) {
-            if (this.$root.swatches.hasOwnProperty(superAttributeCode)) {
-                let swatchOptions = this.$root.swatches[superAttributeCode].options
+            if (window.config.swatches.hasOwnProperty(superAttributeCode)) {
+                let swatchOptions = window.config.swatches[superAttributeCode].options
                 let values = {}
 
                 Object.entries(this.product['super_' + superAttributeCode]).forEach(([key, val]) => {

@@ -8,20 +8,6 @@ use Rapidez\Core\Http\Controllers\SearchController;
 use Rapidez\Core\Http\Middleware\VerifyAdminToken;
 
 Route::middleware('api')->prefix('api')->group(function () {
-    Route::get('attributes', function () {
-        $attributeModel = config('rapidez.models.attribute');
-
-        return $attributeModel::getCachedWhere(function ($attribute) {
-            return $attribute['filter'] || $attribute['sorting'];
-        });
-    });
-
-    Route::get('swatches', function () {
-        $optionswatchModel = config('rapidez.models.option_swatch');
-
-        return $optionswatchModel::getCachedSwatchValues();
-    });
-
     Route::post('search', [SearchController::class, 'store'])
         ->middleware('throttle:search-analytics');
 

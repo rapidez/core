@@ -38,14 +38,7 @@ export default {
         },
 
         async getSearchSettings() {
-            // TODO: Maybe just do: return config.searchkit;
-            // so it's possible to add anything to the PHP config
-            // and that will appear here?
-            return {
-                highlight_attributes: config.searchkit.highlight_attributes,
-                search_attributes: config.searchkit.search_attributes,
-                result_attributes: config.searchkit.result_attributes,
-            }
+            return config.searchkit
         },
 
         getMiddlewares() {

@@ -1,11 +1,10 @@
-<autocomplete inline-template v-on:mounted="() => window.document.getElementById('autocomplete-input').focus()">
+<autocomplete v-on:mounted="() => window.document.getElementById('autocomplete-input').focus()" v-slot="{ searchClient, middlewares }">
     <div class="relative w-full">
         <ais-instant-search
             v-if="searchClient"
             :search-client="searchClient"
             :middlewares="middlewares"
-            {{-- TODO: The index name should come from the model --}}
-            :index-name="config.index_prefix + '_product_' + config.store"
+            :index-name="config.index.product"
             class="contents"
             v-cloak
         >

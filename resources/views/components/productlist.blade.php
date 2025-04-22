@@ -2,12 +2,17 @@
 
 @if ($value)
     <lazy v-slot="{ intersected }">
-        <listing v-if="intersected" v-cloak inline-template>
+        <listing
+            v-if="intersected"
+            :index="config.index.product"
+            v-cloak
+            v-slot="{ loaded, index, searchClient, middlewares }"
+        >
             <div>
                 <ais-instant-search
-                    v-if="loaded && searchClient"
+                    v-if="searchClient"
                     :search-client="searchClient"
-                    :index-name="config.index"
+                    :index-name="index"
                     :middlewares="middlewares"
                 >
                     <ais-configure :filters="'{{ $field }}:({{ is_array($value)

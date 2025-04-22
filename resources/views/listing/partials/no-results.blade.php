@@ -3,8 +3,7 @@
 <search-suggestions v-slot="searchSuggestions">
     <ais-instant-search
         v-if="searchSuggestions.searchClient"
-        {{-- TODO: Use the new index names --}}
-        :index-name="config.index_prefix + '_search_query_' + config.store"
+        :index-name="config.index.search_query"
         :search-client="searchSuggestions.searchClient"
     >
         <ais-search-box value="{{ request()->q ?? ' ' }}" />

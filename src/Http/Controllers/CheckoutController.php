@@ -8,8 +8,7 @@ class CheckoutController
 {
     public function __invoke(Request $request, ?string $step = null)
     {
-        $checkoutSteps = config('rapidez.frontend.checkout_steps.' . config('rapidez.store_code'))
-            ?: config('rapidez.frontend.checkout_steps.default');
+        $checkoutSteps = config('rapidez.frontend.checkout_steps');
 
         if (! $step) {
             $step = $checkoutSteps[0];

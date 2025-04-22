@@ -8,22 +8,13 @@
 <div class="min-h-screen">
     <listing
         {{ $attributes }}
-        :additional-sorting="[{
-            label: window.config.translations.newest,
-            field: 'created_at',
-            order: 'desc',
-            {{-- TODO: Extract this somewhere? --}}
-            value: config.index_prefix + '_products_' + config.store + '_created_at_desc',
-            key: '_created_at_desc'
-        }]"
-        {{-- TODO: Extract this somewhere? --}}
-        :index="config.index_prefix + '_product_' + config.store"
-        inline-template
+        v-bind:index="config.index.product"
+        v-slot="{ loaded, index, searchClient, rangeAttributes, categoryAttributes, hitsPerPage, filters, sortOptions, withFilters, withSwatches, routing, middlewares }"
         v-cloak
     >
         <div>
             <ais-instant-search
-                v-if="loaded && searchClient"
+                v-if="searchClient"
                 :search-client="searchClient"
                 :middlewares="middlewares"
                 :index-name="index"

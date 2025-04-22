@@ -13,6 +13,8 @@ class Attribute extends Model
 
     protected $primaryKey = 'attribute_id';
 
+    protected $appends = ['prefix'];
+
     protected static function booting()
     {
         static::addGlobalScope(new OnlyProductAttributesScope);
@@ -20,10 +22,25 @@ class Attribute extends Model
 
     protected function filter(): CastsAttribute
     {
-        // TODO: Double check; this config has been (re)moved.
         return CastsAttribute::make(
-            get: fn ($value) => $value || []
-            // in_array($this->code, config('rapidez.indexer.additional_filters')),
+            get: fn ($value) => $value || in_array($this->code, Arr::pluck(config('rapidez.searchkit.filter_attributes'), 'field')),
+        )->shouldCache();
+    }
+
+    protected function prefix(): CastsAttribute
+    {
+        return CastsAttribute::make(
+            get: function () {
+                if ($this->super) {
+                    return 'super_';
+                }
+
+                if ($this->visual_swatch) {
+                    return 'visual_';
+                }
+
+                return '';
+            }
         )->shouldCache();
     }
 
