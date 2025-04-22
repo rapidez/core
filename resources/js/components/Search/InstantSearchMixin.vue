@@ -49,7 +49,7 @@ export default {
         },
 
         getMiddlewares() {
-            return instantsearchMiddlewares;
+            return instantsearchMiddlewares
         },
     },
     computed: {
