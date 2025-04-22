@@ -43,6 +43,7 @@ class RapidezServiceProvider extends ServiceProvider
         'frontend',
         'healthcheck',
         'jwt',
+        'magento-defaults',
         'models',
         'routing',
         'searchkit',
@@ -255,7 +256,7 @@ class RapidezServiceProvider extends ServiceProvider
         Vite::macro('getPathsByFilenames', function ($filenames) {
             /** @var \Illuminate\Foundation\Vite $this */
             $filenames = is_array($filenames) ? $filenames : func_get_args();
-            $manifest = $this->manifest($this->buildDirectory);
+            $manifest = $this->manifest($this->buildDirectory); // @phpstan-ignore-line False positive, the macro bind allows us to access protected properties.
 
             return array_filter(
                 array_map(

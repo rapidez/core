@@ -188,7 +188,7 @@ class Product extends Model
                 return null;
             }
 
-            return $specialPrice !== $this->price ? $specialPrice : null;
+            return $specialPrice < $this->price ? $specialPrice : null;
         }
 
         return collect($this->type_id == 'configurable' ? $this->children : $this->grouped)->filter(function ($child) {
@@ -210,7 +210,7 @@ class Product extends Model
 
     public function getUrlAttribute(): string
     {
-        return '/' . ($this->url_key ? $this->url_key . Rapidez::config('catalog/seo/product_url_suffix', '.html') : 'catalog/product/view/id/' . $this->entity_id);
+        return '/' . ($this->url_key ? $this->url_key . Rapidez::config('catalog/seo/product_url_suffix') : 'catalog/product/view/id/' . $this->entity_id);
     }
 
     public function getImagesAttribute(): array

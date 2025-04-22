@@ -18,10 +18,6 @@ fragment orderItem on OrderItemInterface {
             currency
             value
         }
-        applied_to
-        coupon {
-            code
-        }
         label
     }
     entered_options {

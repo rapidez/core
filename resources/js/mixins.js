@@ -15,5 +15,9 @@ Vue.mixin({
                 return await window.magentoAPI(method, 'guest-carts/' + mask.value + '/' + endpoint, data)
             }
         },
+
+        attributeLabel(attributeCode) {
+            return Object.values(window.config.attributes)?.find((attribute) => attribute.code === attributeCode)?.name
+        },
     },
 })
