@@ -47,7 +47,7 @@ class SearchController
                 ],
                 [
                     'num_results' => $request->results ?? 0,
-                    'popularity' => 1,
+                    'popularity'  => 1,
                 ]
             );
 
