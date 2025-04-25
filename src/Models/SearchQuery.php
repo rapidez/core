@@ -27,6 +27,9 @@ class SearchQuery extends Model
     protected function makeAllSearchableUsing(Builder $query)
     {
         return $query
-            ->where('popularity', '>', 10);
+            ->where(fn($subQuery) => $subQuery
+                ->where('num_results', '>', 0)
+                ->orWhereNotNull('redirect')
+            );
     }
 }

@@ -29,6 +29,27 @@ export default {
         this.$nextTick(() => {
             requestAnimationFrame(() => this.$emit('mounted'))
         })
+
+        const stateChanged = useDebounceFn((event) => {
+            const query = event?.payload?.query
+
+            if (!query) {
+                return
+            }
+
+            rapidezAPI('post', '/search', {
+                q: query,
+                results: event?.payload?.nbHits,
+            })
+        }, 3000)
+
+        this.$on('insights-event:viewedObjectIDs', (event) => {
+            if (event?.eventType !== 'search') {
+                return;
+            }
+
+            stateChanged(event);
+        })
     },
 
     methods: {

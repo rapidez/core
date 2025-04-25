@@ -9,7 +9,7 @@
             v-cloak
         >
             <div class="contents">
-                <ais-configure :hitsPerPage="3" />
+                <ais-configure :hits-per-page.camel="3" />
                 <div class="searchbox">
                     <ais-search-box>
                         <template v-slot="{ currentRefinement, isSearchStalled, refine }">
@@ -23,6 +23,7 @@
                             />
                         </template>
                     </ais-search-box>
+                    <ais-stats-analytics></ais-stats-analytics>
                 </div>
                 <div class="absolute inset-x-0 bg-white border">
                     @include('rapidez::layouts.partials.header.autocomplete.results')
