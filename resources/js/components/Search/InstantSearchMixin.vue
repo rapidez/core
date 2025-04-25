@@ -48,12 +48,15 @@ export default {
     },
     computed: {
         middlewares() {
-            return [createInsightsMiddleware({
-                insightsClient: null,
-                onEvent: (event) => {
-                    this.$emit('insights-event:' + event.insightsMethod, event);
-                },
-            }), ...this.getMiddlewares()]
+            return [
+                createInsightsMiddleware({
+                    insightsClient: null,
+                    onEvent: (event) => {
+                        this.$emit('insights-event:' + event.insightsMethod, event)
+                    },
+                }),
+                ...this.getMiddlewares(),
+            ]
         },
     },
 }

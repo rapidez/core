@@ -45,10 +45,10 @@ export default {
 
         this.$on('insights-event:viewedObjectIDs', (event) => {
             if (event?.eventType !== 'search') {
-                return;
+                return
             }
 
-            stateChanged(event);
+            stateChanged(event)
         })
     },
 
