@@ -9,6 +9,9 @@ use Rapidez\Core\Http\Middleware\AuthenticateHealthCheck;
 Route::get('healthcheck', config('rapidez.routing.controllers.healthcheck'))->middleware(AuthenticateHealthCheck::class);
 Route::get('robots.txt', fn () => response(Rapidez::config('design/search_engine_robots/custom_instructions'))
     ->header('Content-Type', 'text/plain; charset=UTF-8'));
+Route::middleware('cache.headers:public;max_age=3600;s_maxage=3600;stale_while_revalidate=3600;etag')->group(function () {
+    Route::get('config.js', ConfigController::class)->name('config');
+});
 
 Route::middleware('web')->group(function () {
     Route::get('catalog/product/view/id/{productId}', [config('rapidez.routing.controllers.product'), 'show'])->whereNumber('productId');
@@ -25,8 +28,4 @@ Route::middleware('web')->group(function () {
     Route::get('checkout/{step?}', config('rapidez.routing.controllers.checkout'))->middleware('auth:magento-cart')->name('checkout');
     Route::get('search', config('rapidez.routing.controllers.search'))->name('search');
     Route::fallback(config('rapidez.routing.controllers.fallback'));
-});
-
-Route::middleware('cache.headers:public;max_age=3600;s_maxage=3600;stale_while_revalidate=3600;etag')->group(function () {
-    Route::get('config.js', ConfigController::class)->name('config');
 });
