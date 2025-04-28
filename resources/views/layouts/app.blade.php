@@ -51,6 +51,7 @@
         </script>
     @endif
     @stack('foot')
+    <script>window.config = { ...window.config ?? {}, ...@json(config('frontend')) }</script>
     <svg hidden class="hidden">
         @stack('bladeicons')
     </svg>

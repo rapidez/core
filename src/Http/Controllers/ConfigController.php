@@ -14,7 +14,6 @@ class ConfigController
     public function __invoke()
     {
         $config = array_merge(
-            config('frontend') ?: [],
             $this->getExposedConfigValues(),
             $this->getConfig(),
         );
