@@ -14,7 +14,6 @@ trait HasAlternatesThroughRewrites
                 ->rewrites()
                 ->where('redirect_type', 0)
                 ->whereHas('store', fn ($query) => $query->where('store.group_id', config('rapidez.group')))
-                ->whereNot('store_id', config('rapidez.store'))
                 ->pluck('request_path', 'store_id')
                 ->mapWithKeys(function ($url, $storeId) {
                     return Rapidez::withStore($storeId, function () use ($url) {
