@@ -12,7 +12,6 @@
                             :src="'/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + item.thumbnail + '.webp'"
                             class="shrink-0 self-center object-contain size-16 mix-blend-multiply"
                             :alt="item.name"
-                            :loading="config.category && count <= 4 ? 'eager' : 'lazy'"
                             width="200"
                             height="200"
                         />

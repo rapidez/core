@@ -4,8 +4,7 @@
     <lazy v-slot="{ intersected }">
         <listing
             v-if="intersected"
-            {{-- TODO: Extract this somewhere? --}}
-            :index="config.index_prefix + '_product_' + config.store"
+            :index="config.index.product"
             v-cloak
             v-slot="{ loaded, index, searchClient }"
         >

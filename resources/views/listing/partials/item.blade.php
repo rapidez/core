@@ -10,7 +10,9 @@
                 <img
                     v-if="addToCart.currentThumbnail"
                     :src="'/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + addToCart.currentThumbnail + '.webp'"
-                    class="mb-3 h-48 w-full rounded-t object-contain" :alt="item.name" :loading="config.category && count <= 4 ? 'eager' : 'lazy'"
+                    class="mb-3 h-48 w-full rounded-t object-contain"
+                    :alt="item.name"
+                    :loading="config.category && count <= 4 ? 'eager' : 'lazy'"
                     width="200"
                     height="200"
                 />

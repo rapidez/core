@@ -1,1 +1,1 @@
-window.config = @json($config);
+window.config = { ...window.config ?? {}, ...@json($config) };
