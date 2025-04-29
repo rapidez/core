@@ -13,7 +13,7 @@ Route::middleware('api')->prefix('api')->group(function () {
             \Illuminate\Cookie\Middleware\EncryptCookies::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
-            'throttle:search-analytics'
+            'throttle:search-analytics',
         ]);
 
     Route::get('order', OrderController::class);
