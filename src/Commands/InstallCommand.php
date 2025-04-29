@@ -111,7 +111,6 @@ class InstallCommand extends Command
             'postcss.config.js',
             'tailwind.config.js',
             'vite.config.js',
-            'yarn.lock',
             '.prettierrc.js',
         ];
 
