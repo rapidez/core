@@ -20,8 +20,9 @@ class UpdateIndexCommand extends Command
 
     public function handle()
     {
-        if (!$this->getLatestIndexDate()) {
+        if (! $this->getLatestIndexDate()) {
             $this->error(__('No latest index date has been found yet, please run php artisan rapidez:index first.'));
+
             return;
         }
 
@@ -53,7 +54,7 @@ class UpdateIndexCommand extends Command
 
     protected function updateSearchable(string $model): void
     {
-        $model::where(fn($query) => $model::makeAllSearchableUsing($query))
+        $model::where(fn ($query) => $model::makeAllSearchableUsing($query))
             ->where(
                 (new $model)->getQualifiedUpdatedAtColumn(),
                 '>=',
@@ -68,7 +69,7 @@ class UpdateIndexCommand extends Command
             return $this->latestIndexDate;
         }
 
-        if(! Storage::disk('local')->exists('/.last-index')) {
+        if (! Storage::disk('local')->exists('/.last-index')) {
             return null;
         }
 
