@@ -20,6 +20,7 @@ use Rapidez\Core\Auth\MagentoCustomerTokenGuard;
 use Rapidez\Core\Commands\IndexCommand;
 use Rapidez\Core\Commands\InstallCommand;
 use Rapidez\Core\Commands\InstallTestsCommand;
+use Rapidez\Core\Commands\UpdateIndexCommand;
 use Rapidez\Core\Commands\ValidateCommand;
 use Rapidez\Core\Events\ProductViewEvent;
 use Rapidez\Core\Facades\Rapidez as RapidezFacade;
@@ -32,6 +33,7 @@ use Rapidez\Core\Listeners\Healthcheck\ElasticsearchHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\MagentoSettingsHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\ModelsHealthcheck;
 use Rapidez\Core\Listeners\ReportProductView;
+use Rapidez\Core\Listeners\UpdateLatestIndexDate;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -87,6 +89,7 @@ class RapidezServiceProvider extends ServiceProvider
     {
         $this->commands([
             IndexCommand::class,
+            UpdateIndexCommand::class,
             ValidateCommand::class,
             InstallCommand::class,
             InstallTestsCommand::class,
@@ -230,6 +233,7 @@ class RapidezServiceProvider extends ServiceProvider
         ModelsHealthcheck::register();
         MagentoSettingsHealthcheck::register();
         ElasticsearchHealthcheck::register();
+        UpdateLatestIndexDate::register();
 
         return $this;
     }
