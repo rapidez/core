@@ -28,7 +28,7 @@
                         </div>
                         <div class="flex-1">
                             {{ $title ?? '' }}
-                            
+
                             @include('rapidez::listing.products')
                         </div>
                     </div>
@@ -38,4 +38,4 @@
             </ais-instant-search>
         </div>
     </listing>
-</div>3
+</div>
