@@ -1,6 +1,7 @@
 <ais-range-input
     v-if="rangeAttributes.includes(filter.code)"
     :attribute="filter.code"
+    class="pb-5"
 >
     <template v-slot="{ currentRefinement, range, canRefine, refine, sendEvent }">
         <div v-show="range.max">
