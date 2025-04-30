@@ -2,26 +2,24 @@
 
 namespace Rapidez\Core\Http\Controllers;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Traits\Searchable;
-use ReflectionMethod;
 
 class IndexController
 {
     public function store(string $model, Request $request)
     {
         $request->validate([
-            'ids' => 'array|required',
+            'ids'   => 'array|required',
             'ids.*' => 'integer',
         ]);
 
-        abort_if(!($model = $this->resolveModel($model)), 404);
+        abort_if(! ($model = $this->resolveModel($model)), 404);
 
         $passedStores = $request->input('stores');
-        if (!$passedStores) {
+        if (! $passedStores) {
             return $this->updateSearchable($model, $request->input('ids'));
         }
 
@@ -43,14 +41,14 @@ class IndexController
     public function destroy(string $model, Request $request)
     {
         $request->validate([
-            'ids' => 'array|required',
+            'ids'   => 'array|required',
             'ids.*' => 'integer',
         ]);
 
-        abort_if(!($model = $this->resolveModel($model)), 404);
+        abort_if(! ($model = $this->resolveModel($model)), 404);
 
         $passedStores = $request->input('stores');
-        if (!$passedStores) {
+        if (! $passedStores) {
             return $this->deleteSearchable($model, $request->input('ids'));
         }
 
@@ -80,7 +78,7 @@ class IndexController
 
     protected function updateSearchable(string $model, array $ids): void
     {
-        $query = $model::where(fn($query) => $model::makeAllSearchableUsing($query));
+        $query = $model::where(fn ($query) => $model::makeAllSearchableUsing($query));
 
         if (empty($ids)) {
             $query->searchable();
@@ -93,7 +91,7 @@ class IndexController
     {
         $modelClass = Arr::get(config('rapidez.models'), $model);
 
-        if (!$modelClass || !in_array(Searchable::class, class_uses_recursive($modelClass))) {
+        if (! $modelClass || ! in_array(Searchable::class, class_uses_recursive($modelClass))) {
             return null;
         }
 
