@@ -46,7 +46,8 @@ class SearchController
                     'store_id'   => config('rapidez.store'),
                 ],
                 [
-                    'popularity' => 1,
+                    'num_results' => $request->results ?? 0,
+                    'popularity'  => 1,
                 ]
             );
 
@@ -56,7 +57,11 @@ class SearchController
             return $searchQuery;
         }
 
-        $searchQuery->increment('popularity');
+        $searchQuery->popularity++;
+        if ($request->has('results')) {
+            $searchQuery->num_results = $request->results;
+        }
+        $searchQuery->save();
 
         return $searchQuery;
     }
