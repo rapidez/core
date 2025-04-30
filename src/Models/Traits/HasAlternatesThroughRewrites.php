@@ -10,13 +10,13 @@ trait HasAlternatesThroughRewrites
     protected function alternates(): Attribute
     {
         return Attribute::make(
-            get: function() {
+            get: function () {
                 $rewrites = $this->rewrites()
                     ->where('redirect_type', 0)
                     ->whereHas('store', fn ($query) => $query->where('store.group_id', config('rapidez.group')))
                     ->pluck('request_path', 'store_id');
 
-                if (!$rewrites->keys()->contains(fn($store) => $store !== config('rapidez.store'))) {
+                if (! $rewrites->keys()->contains(fn ($store) => $store !== config('rapidez.store'))) {
                     return collect();
                 }
 
