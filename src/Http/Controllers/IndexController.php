@@ -20,7 +20,9 @@ class IndexController
 
         $passedStores = $request->input('stores');
         if (! $passedStores) {
-            return $this->updateSearchable($model, $request->input('ids'));
+            $this->updateSearchable($model, $request->input('ids'));
+
+            return;
         }
 
         $passedStores = Arr::wrap($passedStores);
@@ -49,7 +51,9 @@ class IndexController
 
         $passedStores = $request->input('stores');
         if (! $passedStores) {
-            return $this->deleteSearchable($model, $request->input('ids'));
+            $this->deleteSearchable($model, $request->input('ids'));
+
+            return;
         }
 
         $passedStores = Arr::wrap($passedStores);
