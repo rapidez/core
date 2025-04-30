@@ -16,7 +16,7 @@
                             <a
                                 class="hover:text inline-block py-1"
                                 :href="createURL(item.value)"
-                                :class="{ 
+                                :class="{
                                     'font-medium': item.isRefined,
                                     'text-muted': !item.isRefined,
                                 }"
