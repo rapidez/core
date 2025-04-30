@@ -1,10 +1,11 @@
 import { useLocalStorage, useSessionStorage, StorageSerializers } from '@vueuse/core'
 import { useCookies } from '@vueuse/integrations/useCookies'
-import { clear as clearCart, fetchCustomerCart, linkUserToCart } from './useCart'
+import { clear as clearCart, fetchCustomerCart, linkUserToCart, cart } from './useCart'
 import { clear as clearOrder } from './useOrder'
 import { computed, watch } from 'vue'
 import Jwt from '../jwt'
 import { mask } from './useMask'
+import { magentoGraphQL } from '../fetch'
 
 /**
  * @deprecated using localstorage to retrieve the token is deprecated, use the useUser.token instead
@@ -60,7 +61,7 @@ export const refresh = async function () {
 
     return (currentRefresh = (async function () {
         try {
-            userStorage.value = (await window.magentoGraphQL(`{ customer { ${config.queries.customer} } }`))?.data?.customer
+            userStorage.value = (await magentoGraphQL(`{ customer { ${config.queries.customer} } }`))?.data?.customer
         } catch (error) {
             if (error instanceof SessionExpired) {
                 await clear()
@@ -205,6 +206,25 @@ document.addEventListener('vue:loaded', function (event) {
         if (data?.redirect) {
             this.$nextTick(() => (window.location.href = window.url(data?.redirect)))
         }
+    })
+})
+
+document.addEventListener('cart-updated', (event) => {
+    // Can be removed once https://github.com/magento/magento2/issues/39828 is fixed
+    setTimeout(() => {
+        if (cart?.value?.shipping_addresses?.length > 0 || userStorage.value?.addresses?.length < 1) {
+            return
+        }
+
+        const defaultShipping = userStorage.value?.addresses?.find((address) => address.default_shipping)
+        if (!defaultShipping) {
+            return
+        }
+
+        magentoGraphQL(config.queries.setExistingShippingAddressesOnCart, {
+            cart_id: mask.value,
+            customer_address_id: defaultShipping.id,
+        }).then((response) => Vue.prototype.updateCart([], response))
     })
 })
 

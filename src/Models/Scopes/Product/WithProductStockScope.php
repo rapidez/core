@@ -15,7 +15,7 @@ class WithProductStockScope implements Scope
             $builder->selectRaw('ANY_VALUE(cataloginventory_stock_item.qty) AS qty');
         }
 
-        $configBackorder = Rapidez::config('cataloginventory/item_options/backorders', 0);
+        $configBackorder = Rapidez::config('cataloginventory/item_options/backorders');
 
         // TODO: These values should listen to:
         // - use_config_min_sale_qty
@@ -24,7 +24,7 @@ class WithProductStockScope implements Scope
         // - use_config_qty_increments
 
         $builder
-            ->selectRaw('ANY_VALUE(IF(cataloginventory_stock_item.use_config_backorders, ' . $configBackorder . ', cataloginventory_stock_item.backorders)) as backorder_type')
+            ->selectRaw('ANY_VALUE(IF(cataloginventory_stock_item.use_config_backorders, ' . ($configBackorder ?: '0') . ', cataloginventory_stock_item.backorders)) as backorder_type')
             ->selectRaw('ANY_VALUE(cataloginventory_stock_item.manage_stock) as manage_stock')
             ->selectRaw('ANY_VALUE(cataloginventory_stock_item.min_sale_qty) as min_sale_qty')
             ->selectRaw('ANY_VALUE(cataloginventory_stock_item.max_sale_qty) as max_sale_qty')

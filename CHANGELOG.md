@@ -1,6 +1,51 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/3.4.0...3.4.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/3.6.0...3.6.0)
+## [3.6.0](https://github.com/rapidez/core/releases/tag/3.6.0) - 2025-04-18
+
+### Added
+
+- Magento link widgets (#792, #812)
+- Debounce to GraphQL mutation (#805)
+- Option to run partial-submit functions one by one (#784)
+
+### Changed
+
+- Central Magento config defaults (#782, #816, #817)
+- Reactive GraphQL component variables (#794)
+
+### Fixed
+
+- Select default shipping method if no shipping method is set (#814)
+
+## [3.5.1](https://github.com/rapidez/core/releases/tag/3.5.1) - 2025-04-11
+
+### Fixed
+
+- Install additional package requirements from the install command (#809)
+- Just mention the Rapidez Statamic install command (#810)
+
+## [3.5.0](https://github.com/rapidez/core/releases/tag/3.5.0) - 2025-04-10
+
+### Added
+
+- Laravel 12 and PHP 8.4 support (#763)
+- Show additional data at payments methods on the checkout success (#795)
+
+### Changed
+
+- Get option labels with attribute options in the cart (#755)
+- Search query param from JS for static caching (#802)
+
+### Fixed
+
+- Empty additional_data error fix (#772)
+- No content fallback controller fix (#785)
+- Return 0 instead of void when no taxes (#788)
+- Disable infinite-scroll on productlists (#790)
+- Removed unsupported applied_to and coupon keys (#789)
+- Fixed negative loadingCount (#793)
+
 ## [3.4.0](https://github.com/rapidez/core/releases/tag/3.4.0) - 2025-03-25
 
 ### Added
