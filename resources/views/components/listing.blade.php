@@ -28,7 +28,7 @@
                         </div>
                         <div class="flex-1">
                             {{ $title ?? '' }}
-                            
+
                             @include('rapidez::listing.products')
                         </div>
                     </div>
