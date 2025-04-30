@@ -1,5 +1,4 @@
-{{-- TODO: Double check the responsiveness --}}
-<div class="flex gap-1 items-center text-sm">
+<div class="flex gap-1 sm:items-center text-sm max-sm:flex-col-reverse">
     <div class="flex-1">
         @include('rapidez::listing.partials.toolbar.stats')
     </div>

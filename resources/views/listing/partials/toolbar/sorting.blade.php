@@ -3,6 +3,7 @@
         <x-rapidez::input.select
             v-bind:value="items.find(item => item.value === currentRefinement)?.value"
             v-on:change="event => refine(event.target.value)"
+            class="pr-8"
         >
             <option
                 v-for="item in items"

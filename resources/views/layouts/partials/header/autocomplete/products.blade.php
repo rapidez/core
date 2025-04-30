@@ -1,12 +1,12 @@
 <ais-hits>
     <template v-slot="{ items }">
-        <div v-if="items && items.length" class="p-2">
+        <div v-if="items && items.length" class="py-2.5">
             <x-rapidez::autocomplete.title>
                 @lang('Products')
             </x-rapidez::autocomplete.title>
             <ul v-for="(item, count) in items" class="gap-2 flex flex-col">
-                <li>
-                    <a :href="item.url | url" class="group relative flex flex-wrap py-2">
+                <li class="hover:bg-muted">
+                    <a :href="item.url | url" class="group relative flex flex-wrap p-2">
                         <img
                             v-if="item.thumbnail"
                             :src="'/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + item.thumbnail + '.webp'"
