@@ -48,12 +48,14 @@ export default {
                 },
 
                 border: {
+                    'severe-emphasis': color('--border-severe-emphasis', colors.slate[800]),
                     emphasis: color('--border-emphasis', colors.slate[400]),
                     DEFAULT: color('--border', colors.slate[300]),
                     muted: color('--border-muted', colors.slate[100]),
                 },
 
                 background: {
+                    'severe-emphasis': color('--background-severe-emphasis', colors.slate[800]),
                     emphasis: color('--background-emphasis', colors.slate[200]),
                     DEFAULT: color('--background', colors.slate[100]),
                     muted: color('--background-muted', colors.slate[50]),
@@ -79,12 +81,18 @@ export default {
 
                 'cookie': '140',
             },
-            textColor: (theme) => theme('colors.foreground'),
+            textColor: (theme) => ({
+                default: theme('colors.foreground'),
+                ...theme('colors.foreground'),
+            }),
             borderColor: (theme) => ({
                 default: theme('colors.border'),
                 ...theme('colors.border'),
             }),
-            backgroundColor: (theme) => theme('colors.background'),
+            backgroundColor: (theme) => ({
+                default: theme('colors.background'),
+                ...theme('colors.background'),
+            }),
             ringColor: (theme) => ({
                 default: theme('colors.border'),
                 ...theme('colors.border'),

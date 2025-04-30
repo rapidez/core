@@ -11,16 +11,20 @@
     ]))
 @endPushOnce
 <x-rapidez::slideover.mobile :$id :title="__('Filters')">
-    <div class="w-full p-2 max-lg:bg-white max-lg:p-5">
+    <div class="max-lg:container max-lg:py-6">
+        <p class="text-xl/9 font-medium mb-3">@lang('Filters')</p>
+
         @include('rapidez::listing.partials.filter.selected')
         @include('rapidez::listing.partials.filter.search')
         @include('rapidez::listing.partials.filter.category')
+
         <template v-for="filter in config.filterable_attributes">
             @include('rapidez::listing.partials.filter.price')
             @include('rapidez::listing.partials.filter.swatch')
             @include('rapidez::listing.partials.filter.boolean')
             @include('rapidez::listing.partials.filter.select')
         </template>
+
         <x-rapidez::button.primary for="{{ $id }}" class="w-full text-sm lg:hidden">
             @lang('Show results')
         </x-rapidez::button.primary>

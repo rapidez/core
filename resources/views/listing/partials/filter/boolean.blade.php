@@ -4,36 +4,31 @@
     operator="and"
 >
     <template v-slot="{ items, refine }">
-        <div v-show="items.length" class="relative pb-4">
+        <div v-show="items.length" class="relative pb-5">
             <x-rapidez::filter.heading>
-                <ul class="flex flex-col gap-1">
-                    <li
-                        v-for="item in items"
-                        class="flex justify-between text-base text-muted"
-                    >
-                        <div class="flex">
-                            <x-rapidez::input.checkbox
-                                v-bind:checked="item.isRefined"
-                                v-on:change="refine(item.value)"
+                <div class="flex flex-col *:py-1 first:*:pt-0 last:*:pb-0">
+                    <template v-for="item in items">
+                        <x-rapidez::input.checkbox
+                            v-bind:checked="item.isRefined"
+                            v-on:change="refine(item.value)"
+                        >
+                            <span
+                                class="items-baseline flex text-base/5"
+                                :class="item.isRefined ? 'text' : 'text-muted hover:text'"
                             >
-                                <span
-                                    class="font-sans font-medium items-center text-sm flex"
-                                    :class="item.isRefined ? 'text' : 'text-muted'"
-                                >
-                                    <template v-if="item.value == '1'">
-                                        @lang('Yes')
-                                    </template>
-                                    <template v-if="item.value == '0'">
-                                        @lang('No')
-                                    </template>
-                                    <span class="block ml-0.5 text-xs">
-                                        (@{{ item.count }})
-                                    </span>
+                                <template v-if="item.value == '1'">
+                                    @lang('Yes')
+                                </template>
+                                <template v-if="item.value == '0'">
+                                    @lang('No')
+                                </template>
+                                <span class="block ml-0.5 text-xs">
+                                    (@{{ item.count }})
                                 </span>
-                            </x-rapidez::input.checkbox>
-                        </div>
-                    </li>
-                </ul>
+                            </span>
+                        </x-rapidez::input.checkbox>
+                    </template>
+                </div>
             </x-rapidez::filter.heading>
         </div>
     </template>
