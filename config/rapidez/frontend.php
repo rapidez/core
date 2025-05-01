@@ -39,7 +39,7 @@ return [
             // ],
         ],
 
-        'size'     => 3,
+        'size' => 3,
     ],
 
     // Link store codes to theme folders
