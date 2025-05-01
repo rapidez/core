@@ -15,7 +15,7 @@ class UpdateLatestIndexDate
             '/.last-index',
             // With this we're just making sure the comparison
             // is done within the same timezone in MySQL.
-            DB::selectOne('SELECT NOW() AS `current_time`')->current_time
+            DB::scalar('SELECT NOW()')
         );
     }
 
