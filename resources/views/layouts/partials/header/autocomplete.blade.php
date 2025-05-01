@@ -10,7 +10,7 @@
             v-cloak
         >
             <div class="contents">
-                <ais-configure :hitsPerPage="3" />
+                <ais-configure :hits-per-page.camel="{{ config('rapidez.frontend.autocomplete.size', 3) }}" />
                 <div class="searchbox">
                     <ais-search-box>
                         <template v-slot="{ currentRefinement, isSearchStalled, refine }">
