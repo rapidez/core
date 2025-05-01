@@ -1,6 +1,23 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/3.6.0...3.6.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/3.7.0...3.7.0)
+## [3.7.0](https://github.com/rapidez/core/releases/tag/3.7.0) - 2025-05-01
+
+### Added
+
+- Magento 2.4.7-p5 and 2.4.8 tests (#808)
+- Healthcheck warning for customer configuration (#821)
+
+### Changed
+
+- Removed yarn.lock (#825)
+- Alternate hreflang tags; also show current store (#827)
+
+### Fixed
+
+- Track fetches globally (#806)
+- Use the current fetch instead of a cached version (#829)
+
 ## [3.6.0](https://github.com/rapidez/core/releases/tag/3.6.0) - 2025-04-18
 
 ### Added
