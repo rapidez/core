@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.23.0...2.23.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/...2.23.1)
+## [2.23.1](https://github.com/rapidez/core/releases/tag/2.23.1) - 2025-05-01
+
+### Fixed
+
+- Fixed typo (41b93ee)
+
 ## [2.23.0](https://github.com/rapidez/core/releases/tag/2.23.0) - 2025-05-01
 
 ### Added
