@@ -1,3 +1,4 @@
+import { addFetch } from './stores/useFetches.js'
 import { token } from './stores/useUser'
 
 export class FetchError extends Error {
@@ -25,22 +26,12 @@ export class SessionExpired extends FetchError {
 }
 window.SessionExpired = SessionExpired
 
-export const rapidezFetch = (window.rapidezFetch = ((originalFetch) => {
-    return (...args) => {
-        let loadingTracked = !!window.app.$data
-        if (loadingTracked) {
-            window.app.$data.loadingCount++
-        }
-        const result = originalFetch.apply(this, args)
-        return result.finally((...args) => {
-            if (loadingTracked && window.app.$data && window.app.$data.loadingCount > 0) {
-                window.app.$data.loadingCount--
-            }
+export const rapidezFetch = (window.rapidezFetch = (...args) => {
+    const result = fetch.apply(this, args)
+    addFetch(result)
 
-            return args
-        })
-    }
-})(fetch))
+    return result
+})
 
 export const rapidezAPI = (window.rapidezAPI = async (method, endpoint, data = {}, options = {}) => {
     let response = await rapidezFetch(window.url('/api/' + endpoint.replace(/^\/+/, '')), {
