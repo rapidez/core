@@ -59,6 +59,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        debounce: {
+            type: Number,
+            default: 0,
+        },
     },
 
     data: () => ({
@@ -67,6 +71,7 @@ export default {
         running: false,
         initialVariables: {},
         data: {},
+        mutate: () => null,
     }),
 
     render() {
@@ -84,6 +89,12 @@ export default {
     created() {
         this.initialVariables = JSON.parse(JSON.stringify(this.variables))
         this.data = this.variables
+
+        if (this.debounce) {
+            this.mutate = useDebounceFn(this.mutateFn, this.debounce)
+        } else {
+            this.mutate = this.mutateFn
+        }
     },
 
     watch: {
@@ -105,7 +116,7 @@ export default {
     },
 
     methods: {
-        async mutate() {
+        async mutateFn() {
             if (this.running) {
                 return
             }
