@@ -27,7 +27,7 @@ export class SessionExpired extends FetchError {
 window.SessionExpired = SessionExpired
 
 export const rapidezFetch = (window.rapidezFetch = (...args) => {
-    const result = originalFetch.apply(this, args)
+    const result = fetch.apply(this, args)
     addFetch(result)
 
     return result
