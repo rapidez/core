@@ -1,6 +1,17 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.22.0...2.22.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.23.0...2.23.0)
+## [2.23.0](https://github.com/rapidez/core/releases/tag/2.23.0) - 2025-05-01
+
+### Added
+
+- Healthcheck warning for customer configuration (#822)
+
+### Fixed
+
+- Make queryParams a computed property (#811)
+- Use the current fetch instead of a cached version (#830)
+
 ## [2.22.0](https://github.com/rapidez/core/releases/tag/2.22.0) - 2025-04-15
 
 ### Added
