@@ -140,7 +140,7 @@ class ConfigController
         ];
 
         // TODO: Maybe limit this to just the checkout pages?
-        $queries = Arr::mapWithKeys($checkoutQueries, fn ($query) => [$query, view('rapidez::checkout.queries.' . $query)->renderOneliner()]);
+        $queries = Arr::mapWithKeys($checkoutQueries, fn ($query) => [$query => view('rapidez::checkout.queries.' . $query)->renderOneliner()]);
         $queries['customer'] = view('rapidez::customer.queries.customer')->renderOneliner();
 
         return $queries;
