@@ -26,14 +26,12 @@ export class SessionExpired extends FetchError {
 }
 window.SessionExpired = SessionExpired
 
-export const rapidezFetch = (window.rapidezFetch = ((originalFetch) => {
-    return (...args) => {
-        const result = originalFetch.apply(this, args)
-        addFetch(result)
+export const rapidezFetch = (window.rapidezFetch = (...args) => {
+    const result = originalFetch.apply(this, args)
+    addFetch(result)
 
-        return result
-    }
-})(fetch))
+    return result
+})
 
 export const rapidezAPI = (window.rapidezAPI = async (method, endpoint, data = {}, options = {}) => {
     let response = await rapidezFetch(window.url('/api/' + endpoint.replace(/^\/+/, '')), {
