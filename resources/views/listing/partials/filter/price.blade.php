@@ -23,7 +23,10 @@
                             v-bind:placeholder="range.min"
                             v-bind:disabled="!canRefine"
                             v-bind:value="currentRefinement.min ?? range.min"
-                            v-on:input="refine({ min: $event.currentTarget.value, max: currentRefinement.max })"
+                            v-on:input="if (!$event.currentTarget.validationMessage) {
+                                refine({ min: Math.max($event.currentTarget.value, range.min), max: currentRefinement.max })
+                            }"
+                            required
                         />
                         <x-rapidez::input
                             class="text-right"
@@ -33,7 +36,10 @@
                             v-bind:placeholder="range.max"
                             v-bind:disabled="!canRefine"
                             v-bind:value="currentRefinement.max ?? range.max"
-                            v-on:input="refine({ min: currentRefinement.min, max: $event.currentTarget.value })"
+                            v-on:input="if (!$event.currentTarget.validationMessage) {
+                                refine({ min: currentRefinement.min, max: Math.min($event.currentTarget.value, range.max) })
+                            }"
+                            required
                         />
                     </div>
                 </div>
