@@ -4,9 +4,8 @@
     <lazy v-slot="{ intersected }">
         <listing
             v-if="intersected"
-            :index="config.index.product"
-            v-cloak
             v-slot="{ loaded, index, searchClient }"
+            v-cloak
         >
             <div>
                 <ais-instant-search

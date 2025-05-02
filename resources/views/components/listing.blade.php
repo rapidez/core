@@ -8,7 +8,6 @@
 <div class="min-h-screen">
     <listing
         {{ $attributes }}
-        v-bind:index="config.index.product"
         v-slot="{ loaded, index, searchClient, rangeAttributes, categoryAttributes, hitsPerPage, filters, sortOptions, withFilters, withSwatches, routing }"
         v-cloak
     >

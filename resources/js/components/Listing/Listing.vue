@@ -5,14 +5,10 @@ import InstantSearchMixin from '../Search/InstantSearchMixin.vue'
 export default {
     mixins: [InstantSearchMixin],
     props: {
-        configCallback: {
-            type: Function,
-        },
         index: {
             type: String,
+            default: window.config.index.product
         },
-
-        // TODO: Document these four props in the Rapidez docs
         query: {
             type: Function,
         },
@@ -25,6 +21,9 @@ export default {
         },
         filterQueryString: {
             type: String,
+        },
+        configCallback: {
+            type: Function,
         },
     },
 
