@@ -10,20 +10,25 @@ trait HasAlternatesThroughRewrites
     protected function alternates(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this
-                ->rewrites()
-                ->where('redirect_type', 0)
-                ->whereHas('store', fn ($query) => $query->where('store.group_id', config('rapidez.group')))
-                ->whereNot('store_id', config('rapidez.store'))
-                ->pluck('request_path', 'store_id')
-                ->mapWithKeys(function ($url, $storeId) {
+            get: function () {
+                $rewrites = $this->rewrites()
+                    ->where('redirect_type', 0)
+                    ->whereHas('store', fn ($query) => $query->where('store.group_id', config('rapidez.group')))
+                    ->pluck('request_path', 'store_id');
+
+                if (! $rewrites->keys()->contains(fn ($store) => $store !== config('rapidez.store'))) {
+                    return collect();
+                }
+
+                return $rewrites->mapWithKeys(function ($url, $storeId) {
                     return Rapidez::withStore($storeId, function () use ($url) {
                         $locale = str(Rapidez::config('general/locale/code', 'en_US'))->replace('_', '-')->lower()->value();
                         $url = Rapidez::config('web/secure/base_url') . $url;
 
                         return [$locale => $url];
                     });
-                })
+                });
+            }
         );
     }
 }
