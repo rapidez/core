@@ -36,7 +36,15 @@ class IndexCommand extends Command
 
             $this->line('Store: ' . $store['name']);
 
-            foreach ($types as $type => $model) {
+            foreach ($types as $model) {
+                $searchableAs = (new $model)->searchableAs();
+                if ($model::getIndexMappings()) {
+                    config()->set('elasticsearch.indices.mappings.' . $searchableAs, $model::getIndexMappings());
+                }
+                if ($model::getIndexSettings()) {
+                    config()->set('elasticsearch.indices.settings.' . $searchableAs, $model::getIndexSettings());
+                }
+
                 $this->call('scout:import', [
                     'searchable' => $model,
                 ]);

@@ -37,4 +37,14 @@ trait Searchable
             config('rapidez.store'),
         ]));
     }
+
+    public static function getIndexMappings(): ?array
+    {
+        return null;
+    }
+
+    public static function getIndexSettings(): ?array
+    {
+        return null;
+    }
 }

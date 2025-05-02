@@ -119,4 +119,27 @@ trait Searchable
 
         return $data;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getIndexMappings(): ?array
+    {
+        return [
+            'properties' => [
+                'price' => [
+                    'type' => 'double',
+                ],
+                'children' => [
+                    'type' => 'flattened',
+                ],
+                'grouped' => [
+                    'type' => 'flattened',
+                ],
+                'positions' => [
+                    'type' => 'flattened',
+                ],
+            ],
+        ];
+    }
 }
