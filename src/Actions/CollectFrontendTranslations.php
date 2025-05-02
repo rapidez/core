@@ -14,34 +14,32 @@ class CollectFrontendTranslations
         $translator = app(Translator::class);
         $loader = $translator->getLoader();
 
-        $allTranslations = [];;
-
         $allTranslations = collect($loader->namespaces())
             ->filter(function (string $path, string $namespace): bool {
                 return str($namespace)->startsWith('rapidez');
             })->map(function (string $path, string $namespace): array {
-            $file = $path . '/' . App::getLocale() . '/frontend.php';
+                $file = $path . '/' . App::getLocale() . '/frontend.php';
 
-            if (File::exists($file)) {
-                $translations = collect(File::getRequire($file));
+                if (File::exists($file)) {
+                    $translations = collect(File::getRequire($file));
 
-                if ($namespace !== 'rapidez') {
-                    return [
-                        'packages' => [
-                            str($namespace)->after('rapidez-')->toString() => $translations->toArray(),
-                        ],
-                    ];
+                    if ($namespace !== 'rapidez') {
+                        return [
+                            'packages' => [
+                                str($namespace)->after('rapidez-')->toString() => $translations->toArray(),
+                            ],
+                        ];
+                    }
+
+                    return $translations->toArray();
                 }
 
-                return $translations->toArray();
-            }
-
-            return [];
-        })
-        ->filter()
-        ->reduce(function (array $allTranslations, array $translations): array {
-            return array_merge_recursive($allTranslations, $translations);
-        }, []);
+                return [];
+            })
+            ->filter()
+            ->reduce(function (array $allTranslations, array $translations): array {
+                return array_merge_recursive($allTranslations, $translations);
+            }, []);
 
         return $allTranslations;
     }
