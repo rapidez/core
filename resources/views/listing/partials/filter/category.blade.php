@@ -12,11 +12,7 @@
                 </x-slot:title>
                 <recursion :data="items" v-slot="{ data, components }">
                     <ul>
-                        <li
-                            class="pl-3"
-                            v-for="(item, index) in data"
-                            :key="item.value"
-                        >
+                        <li class="pl-3" v-for="(item, index) in data" :key="item.value">
                             <a
                                 :href="createURL(item.value)"
                                 :class="{ 'font-bold': item.isRefined }"
