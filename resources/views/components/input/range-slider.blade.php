@@ -1,4 +1,6 @@
-<range-slider v-slot="rangeInputScope" {{ $attributes }}>
+@slots(['value'])
+
+<range-slider v-slot="{ _renderProxy: rangeInputScope, value }" {{ $attributes }}>
     <div class="flex flex-1 relative h-16 mx-5">
         <input
             type="range"
@@ -25,11 +27,27 @@
             <div class="absolute z-20 inset-y-0 rounded-md bg-primary" v-bind:style="'right:'+rangeInputScope.maxThumb+'%; left:'+rangeInputScope.minThumb+'%'"></div>
             <div class="absolute z-30 size-5 top-0 left-0 bg-white border rounded-full -mt-2 -translate-x-1/2" v-bind:style="'left: '+rangeInputScope.minThumb+'%'"></div>
             <div class="absolute z-30 size-5 top-0 right-0 bg-white border rounded-full -mt-2 translate-x-1/2" v-bind:style="'right: '+rangeInputScope.maxThumb+'%'"></div>
-            <div class="absolute z-30 top-4 left-0 bg-white border px-2 py-0.5 rounded-full -translate-x-1/2" v-bind:style="'left: '+rangeInputScope.minThumb+'%'">
-                @{{ rangeInputScope.minValue }}
+            <div
+                class="absolute z-30 top-4 left-0 bg-white border px-2 py-0.5 rounded-full -translate-x-1/2"
+                v-bind:style="'left: '+rangeInputScope.minThumb+'%'"
+                v-bind:set="value = rangeInputScope.minValue"
+            >
+                @if ($value->isNotEmpty())
+                    {{ $value }}
+                @else
+                    <span v-text="value"></span>
+                @endif
             </div>
-            <div class="absolute z-30 top-4 right-0 bg-white border px-2 py-0.5 rounded-full translate-x-1/2" v-bind:style="'right: '+rangeInputScope.maxThumb+'%'">
-                @{{ rangeInputScope.maxValue }}
+            <div
+                class="absolute z-30 top-4 right-0 bg-white border px-2 py-0.5 rounded-full translate-x-1/2"
+                v-bind:style="'right: '+rangeInputScope.maxThumb+'%'"
+                v-bind:set="value = rangeInputScope.maxValue"
+            >
+                @if ($value->isNotEmpty())
+                    {{ $value }}
+                @else
+                    <span v-text="value"></span>
+                @endif
             </div>
         </div>
     </div>

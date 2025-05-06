@@ -12,11 +12,16 @@
                             v-bind:range="range"
                             v-bind:current="currentRefinement"
                             v-on:change="refine"
-                        />
+                        >
+                            <x-slot:value>
+                                @{{ window.price(value, { maximumFractionDigits: 0 }) }}
+                            </x-slot:value>
+                        </x-rapidez::input.range-slider>
                     </div>
 
                     <div class="flex gap-10">
                         <x-rapidez::input
+                            required
                             type="number"
                             v-bind:min="range.min"
                             v-bind:max="range.max"
@@ -26,10 +31,10 @@
                             v-on:input="if (!$event.currentTarget.validationMessage) {
                                 refine({ min: Math.max($event.currentTarget.value, range.min), max: currentRefinement.max })
                             }"
-                            required
                         />
                         <x-rapidez::input
                             class="text-right"
+                            required
                             type="number"
                             v-bind:min="range.min"
                             v-bind:max="range.max"
@@ -39,7 +44,6 @@
                             v-on:input="if (!$event.currentTarget.validationMessage) {
                                 refine({ min: currentRefinement.min, max: Math.min($event.currentTarget.value, range.max) })
                             }"
-                            required
                         />
                     </div>
                 </div>
