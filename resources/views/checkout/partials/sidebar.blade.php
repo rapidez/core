@@ -1,4 +1,4 @@
-<div class="shrink-0 max-lg:mt-6 max-lg:hidden max-lg:border-t max-lg:border-dashed max-lg:pt-6 lg:w-80">
+<div class="shrink-0 max-lg:mt-6 max-lg:border-t max-lg:border-dashed max-lg:pt-6 lg:w-80">
     <strong class="font-heading text-primary-emphasis mb-4 block text-xl font-bold">@lang('Order summary')</strong>
     <div class="mb-4 flex flex-col gap-1">
         <div v-for="item in cart.items" class="flex justify-between text-xs">
