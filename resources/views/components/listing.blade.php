@@ -8,13 +8,14 @@
 <div class="min-h-screen">
     <listing
         {{ $attributes }}
-        v-slot="{ loaded, index, searchClient, rangeAttributes, categoryAttributes, hitsPerPage, filters, sortOptions, withFilters, withSwatches, routing }"
+        v-slot="{ loaded, index, searchClient, rangeAttributes, categoryAttributes, hitsPerPage, filters, sortOptions, withFilters, withSwatches, routing, middlewares }"
         v-cloak
     >
         <div>
             <ais-instant-search
                 v-if="searchClient"
                 :search-client="searchClient"
+                :middlewares="middlewares"
                 :index-name="index"
                 :routing="routing"
             >

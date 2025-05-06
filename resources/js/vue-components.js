@@ -55,6 +55,7 @@ Vue.component('autocomplete', () => ({
 Vue.component('checkout-login', () => import('./components/Checkout/CheckoutLogin.vue'))
 Vue.component('login', () => import('./components/User/Login.vue'))
 Vue.component('listing', () => import('./components/Listing/Listing.vue'))
+Vue.component('search-suggestions', () => import('./components/Listing/SearchSuggestions.vue'))
 Vue.component('checkout-success', () => import('./components/Checkout/CheckoutSuccess.vue'))
 Vue.component('popup', () => import('./components/Popup.vue'))
 Vue.component('range-slider', () => import('./components/Elements/RangeSlider.vue'))
