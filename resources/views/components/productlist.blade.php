@@ -5,7 +5,6 @@
         <listing
             {{ $attributes }}
             v-if="intersected"
-            :index="config.index.product"
             v-slot="{ loaded, index, searchClient, middlewares }"
             v-cloak
         >
