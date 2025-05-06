@@ -19,3 +19,4 @@ Vue.component('ais-hits-per-page', () => import('vue-instantsearch/vue2/es/src/c
 Vue.component('ais-sort-by', () => import('vue-instantsearch/vue2/es/src/components/SortBy.vue.js'))
 Vue.component('ais-pagination', () => import('vue-instantsearch/vue2/es/src/components/Pagination.vue.js'))
 Vue.component('ais-stats', () => import('vue-instantsearch/vue2/es/src/components/Stats.vue.js'))
+Vue.component('ais-stats-analytics', () => import('./components/Search/AisStatsAnalytics.vue'))

@@ -13,3 +13,4 @@
         --}}
     </template>
 </ais-search-box>
+<ais-stats-analytics></ais-stats-analytics>

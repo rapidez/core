@@ -6,7 +6,7 @@
             {{ $attributes }}
             v-if="intersected"
             :index="config.index.product"
-            v-slot="{ loaded, index, searchClient }"
+            v-slot="{ loaded, index, searchClient, middlewares }"
             v-cloak
         >
             <div>
@@ -14,6 +14,7 @@
                     v-if="searchClient"
                     :search-client="searchClient"
                     :index-name="index"
+                    :middlewares="middlewares"
                 >
                     <ais-configure :filters="'{{ $field }}:({{ is_array($value)
                         ? implode(' OR ', $value)
