@@ -1,4 +1,4 @@
-<ais-clear-refinements>
+<ais-clear-refinements v-bind:excluded-attributes="[...categoryAttributes, 'query']">
     <template v-slot="{ canRefine, refine, createURL }">
         <div v-show="canRefine" class="flex flex-wrap items-baseline justify-between gap-2 w-full pb-2">
             <div class="font-semibold text-base">
@@ -6,6 +6,7 @@
             </div>
             <a
                 v-bind:href="createURL()"
+                v-if="canRefine"
                 v-on:click.prevent="refine"
                 class="text-sm text-muted transition-all hover:underline"
             >
