@@ -6,13 +6,14 @@
             v-if="intersected"
             :index="config.index.product"
             v-cloak
-            v-slot="{ loaded, index, searchClient }"
+            v-slot="{ loaded, index, searchClient, middlewares }"
         >
             <div>
                 <ais-instant-search
                     v-if="searchClient"
                     :search-client="searchClient"
                     :index-name="index"
+                    :middlewares="middlewares"
                 >
                     <ais-configure :filters="'{{ $field }}:({{ is_array($value)
                         ? implode(' OR ', $value)
