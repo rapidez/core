@@ -22,6 +22,13 @@ return [
         'email_password'    => 'Je hebt geen email of wachtwoord opgegeven.',
         'email'             => 'Een email adres is verplicht.',
     ],
+    'password' => [
+        'characters' => 'Bevat :minLength karakters',
+        'number' => 'Bevat een nummer',
+        'lowercase' => 'Bevat een kleine letter',
+        'uppercase' => 'Bevat een hoofdletter',
+        'special' => 'Bevat een leesteken',
+    ],
 
     'asc'       => 'oplopend',
     'desc'      => 'aflopend',

@@ -22,7 +22,13 @@ return [
         'email_password'    => 'You did not specify an email or password.',
         'email'             => 'An email address is required.',
     ],
-
+    'password' => [
+        'characters' => 'Contains :minLength characters.',
+        'number' => 'Contains a number',
+        'lowercase' => 'Contains a lowercase letter',
+        'uppercase' => 'Contains an uppercase letter',
+        'special' => 'Contains a special character',
+    ],
     'filters' => [
         'no'  => 'No',
         'yes' => 'Yes',
