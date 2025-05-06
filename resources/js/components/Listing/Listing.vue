@@ -88,7 +88,7 @@ export default {
                 .concat(this.additionalSorting)
         },
         isSearchPage: function () {
-            return this.$root.queryParams.has('q')
+            return this.$root.queryParams().has('q')
         },
     },
     watch: {
