@@ -1,16 +1,15 @@
-<autocomplete v-on:mounted="() => window.document.getElementById('autocomplete-input').focus()" v-slot="{ searchClient}">
+<autocomplete v-on:mounted="() => window.document.getElementById('autocomplete-input').focus()" v-slot="{ searchClient, middlewares }">
     <div class="relative w-full">
         <ais-instant-search
             v-if="searchClient"
             :search-client="searchClient"
-            :index-name="config.index.products"
+            :middlewares="middlewares"
+            :index-name="config.index.product"
             class="contents"
-            v-bind:search-client="searchClient"
-            v-bind:index-name="config.index.product"
             v-cloak
         >
             <div class="contents">
-                <ais-configure :hits-per-page.camel="3" />
+                <ais-configure :hits-per-page.camel="{{ config('rapidez.frontend.autocomplete.size', 3) }}" />
                 <div class="searchbox">
                     <ais-search-box>
                         <template v-slot="{ currentRefinement, isSearchStalled, refine }">
@@ -28,6 +27,7 @@
                             <div v-if="currentRefinement" v-on:click="refine('')" class="fixed inset-0 bg-backdrop z-header-autocomplete-overlay"></div>
                         </template>
                     </ais-search-box>
+                    <ais-stats-analytics></ais-stats-analytics>
                 </div>
             </div>
         </ais-instant-search>
