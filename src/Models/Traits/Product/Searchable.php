@@ -125,7 +125,7 @@ trait Searchable
      */
     public static function getIndexMappings(): ?array
     {
-        return [
+        return Eventy::filter('index.' . (new static)->getIndexName() . '.mapping', [
             'properties' => [
                 'price' => [
                     'type' => 'double',
@@ -140,6 +140,6 @@ trait Searchable
                     'type' => 'flattened',
                 ],
             ],
-        ];
+        ]);
     }
 }

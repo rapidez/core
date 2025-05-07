@@ -40,11 +40,11 @@ trait Searchable
 
     public static function getIndexMappings(): ?array
     {
-        return null;
+        return Eventy::filter('index.' . (new static)->getIndexName() . '.mapping', null);
     }
 
     public static function getIndexSettings(): ?array
     {
-        return null;
+        return Eventy::filter('index.' . (new static)->getIndexName() . '.settings', null);
     }
 }
