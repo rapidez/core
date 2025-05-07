@@ -125,7 +125,7 @@ trait Searchable
      */
     public static function getIndexMappings(): ?array
     {
-        return Eventy::filter('index.' . (new static)->getIndexName() . '.mapping', [
+        return Eventy::filter('index.' . static::indexName() . '.mapping', [
             'properties' => [
                 'price' => [
                     'type' => 'double',

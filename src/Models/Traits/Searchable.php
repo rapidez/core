@@ -29,6 +29,12 @@ trait Searchable
         return $this->indexName ?? Str::snake(Str::pluralStudly(class_basename(static::class)));
     }
 
+    public static function indexName(): string
+    {
+        // @phpstan-ignore-next-line
+        return (new static)->getIndexName();
+    }
+
     public function searchableAs(): string
     {
         return implode('_', array_values([
@@ -40,11 +46,11 @@ trait Searchable
 
     public static function getIndexMappings(): ?array
     {
-        return Eventy::filter('index.' . (new static)->getIndexName() . '.mapping', null);
+        return Eventy::filter('index.' . static::indexName() . '.mapping', null);
     }
 
     public static function getIndexSettings(): ?array
     {
-        return Eventy::filter('index.' . (new static)->getIndexName() . '.settings', null);
+        return Eventy::filter('index.' . static::indexName() . '.settings', null);
     }
 }
