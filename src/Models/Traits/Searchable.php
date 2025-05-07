@@ -10,7 +10,7 @@ trait Searchable
 {
     use ScoutSearchable;
 
-    public ?string $indexName;
+    public static ?string $indexName;
 
     /**
      * {@inheritdoc}
@@ -18,39 +18,30 @@ trait Searchable
     public function toSearchableArray(): array
     {
         // TODO: Maybe use the model name here?
-        return Eventy::filter('index.' . $this->getIndexName() . '.data', $this->toArray(), $this);
+        return Eventy::filter('index.' . static::getIndexName() . '.data', $this->toArray(), $this);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getIndexName(): string
+    public static function getIndexName(): string
     {
-        return $this->indexName ?? Str::snake(Str::pluralStudly(class_basename(static::class)));
-    }
-
-    public static function indexName(): string
-    {
-        // @phpstan-ignore-next-line
-        return (new static)->getIndexName();
+        return static::$indexName ?? Str::snake(Str::pluralStudly(class_basename(static::class)));
     }
 
     public function searchableAs(): string
     {
         return implode('_', array_values([
             config('scout.prefix'),
-            $this->getIndexName(),
+            static::getIndexName(),
             config('rapidez.store'),
         ]));
     }
 
     public static function getIndexMappings(): ?array
     {
-        return Eventy::filter('index.' . static::indexName() . '.mapping', null);
+        return Eventy::filter('index.' . static::getIndexName() . '.mapping', null);
     }
 
     public static function getIndexSettings(): ?array
     {
-        return Eventy::filter('index.' . static::indexName() . '.settings', null);
+        return Eventy::filter('index.' . static::getIndexName() . '.settings', null);
     }
 }

@@ -20,7 +20,7 @@ class IndexCommand extends Command
             ->filter(fn ($class) => in_array(Searchable::class, class_uses_recursive($class)));
 
         $types = $this->option('types')
-            ? $baseSearchableModels->filter(fn ($model) => in_array($model::indexName(), explode(',', $this->option('types'))))
+            ? $baseSearchableModels->filter(fn ($model) => in_array($model::getIndexName(), explode(',', $this->option('types'))))
             : $baseSearchableModels;
 
         $stores = $this->option('store')
