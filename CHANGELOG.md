@@ -1,6 +1,40 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/3.5.1...3.5.1)
+[Unreleased changes](https://github.com/rapidez/core/compare/3.7.0...3.7.0)
+## [3.7.0](https://github.com/rapidez/core/releases/tag/3.7.0) - 2025-05-01
+
+### Added
+
+- Magento 2.4.7-p5 and 2.4.8 tests (#808)
+- Healthcheck warning for customer configuration (#821)
+
+### Changed
+
+- Removed yarn.lock (#825)
+- Alternate hreflang tags; also show current store (#827)
+
+### Fixed
+
+- Track fetches globally (#806)
+- Use the current fetch instead of a cached version (#829)
+
+## [3.6.0](https://github.com/rapidez/core/releases/tag/3.6.0) - 2025-04-18
+
+### Added
+
+- Magento link widgets (#792, #812)
+- Debounce to GraphQL mutation (#805)
+- Option to run partial-submit functions one by one (#784)
+
+### Changed
+
+- Central Magento config defaults (#782, #816, #817)
+- Reactive GraphQL component variables (#794)
+
+### Fixed
+
+- Select default shipping method if no shipping method is set (#814)
+
 ## [3.5.1](https://github.com/rapidez/core/releases/tag/3.5.1) - 2025-04-11
 
 ### Fixed
