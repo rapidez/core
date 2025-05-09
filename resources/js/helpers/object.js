@@ -11,7 +11,7 @@ export function objectDiff(target, source) {
     return Object.fromEntries(
         Object.entries(source)
             .map(([key, val]) => {
-                if ((!key) in target) {
+                if (!target || !(key in target)) {
                     return [key, val]
                 }
 
