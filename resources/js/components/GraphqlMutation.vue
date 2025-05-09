@@ -1,9 +1,8 @@
 <script>
 import { GraphQLError, combiningGraphQL, magentoGraphQL } from '../fetch'
-import GraphqlBase from './Graphql/Base.vue'
+import { deepMerge, objectDiff } from '../helpers/object'
 
 export default {
-    mixins: [GraphqlBase],
     props: {
         query: {
             type: String,
@@ -102,12 +101,12 @@ export default {
     watch: {
         variables: function (variables, old) {
             if (this.watch) {
-                const diff = this.objectDiff(old, variables);
+                const diff = objectDiff(old, variables);
                 if (Object.keys(diff).length === 0) {
                     return
                 }
 
-                this.deepMerge(this.data, diff)
+                deepMerge(this.data, diff)
             }
         },
     },
