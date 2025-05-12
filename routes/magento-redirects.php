@@ -16,5 +16,5 @@ Route::middleware('web')->group(function () {
     });
 
     // Magento_Checkout
-    Route::permanentRedirect('checkout/cart', route('cart'));
+    Route::permanentRedirect('checkout/cart', '/cart');
 });
