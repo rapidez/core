@@ -29,12 +29,12 @@ listing {
 }
 
 /* Remove default browser arrows for input type="number" */
-input[type='number']::-webkit-inner-spin-button,
-input[type='number']::-webkit-outer-spin-button {
+.arrows-hidden[type='number']::-webkit-inner-spin-button,
+.arrows-hidden[type='number']::-webkit-outer-spin-button {
     @apply appearance-none m-0;
 }
 
 /* Firefox */
-input[type='number'] {
+.arrows-hidden[type='number'] {
     -moz-appearance: textfield;
 }
