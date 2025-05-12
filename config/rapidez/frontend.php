@@ -94,6 +94,6 @@ return [
         // Show inputs below a range slider (true/false)
         'range_slider' => [
             'inputs' => true,
-        ]
-    ]
+        ],
+    ],
 ];

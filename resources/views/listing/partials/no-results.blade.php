@@ -15,7 +15,7 @@
                         <ul class="flex flex-col font-sans">
                             <li v-for="(item, count) in items" class="flex flex-1 items-center w-full">
                                 <a
-                                    v-bind:href="window.url(item.redirect || '{{ route('search', ['q' => 'searchPlaceholder']) }}'.replace('searchPlaceholder', encodeURIComponent(item.query_text)))" 
+                                    v-bind:href="window.url(item.redirect || '{{ route('search', ['q' => 'searchPlaceholder']) }}'.replace('searchPlaceholder', encodeURIComponent(item.query_text)))"
                                     class="flex items-center group py-1 text-sm gap-x-0.5 hover:underline"
                                 >
                                     <x-heroicon-o-chevron-right class="size-3.5 shrink-0"/> <span v-text="item.query_text"></span>
