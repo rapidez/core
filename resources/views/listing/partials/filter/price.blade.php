@@ -19,33 +19,58 @@
                         </x-rapidez::input.range-slider>
                     </div>
 
-                    <div class="flex gap-10">
-                        <x-rapidez::input
-                            required
-                            type="number"
-                            v-bind:min="range.min"
-                            v-bind:max="range.max"
-                            v-bind:placeholder="range.min"
-                            v-bind:disabled="!canRefine"
-                            v-bind:value="currentRefinement.min ?? range.min"
-                            v-on:input="if (!$event.currentTarget.validationMessage) {
-                                refine({ min: Math.max($event.currentTarget.value, range.min), max: currentRefinement.max })
-                            }"
-                        />
-                        <x-rapidez::input
-                            class="text-right"
-                            required
-                            type="number"
-                            v-bind:min="range.min"
-                            v-bind:max="range.max"
-                            v-bind:placeholder="range.max"
-                            v-bind:disabled="!canRefine"
-                            v-bind:value="currentRefinement.max ?? range.max"
-                            v-on:input="if (!$event.currentTarget.validationMessage) {
-                                refine({ min: currentRefinement.min, max: Math.min($event.currentTarget.value, range.max) })
-                            }"
-                        />
-                    </div>
+                    <currency-display v-slot="{ shouldFormatCurrencyLeft, currencySymbol }">
+                        <div class="flex gap-10">
+                            <div class="relative w-full">
+                                <x-rapidez::input
+                                    class="text-right"
+                                    required
+                                    type="number"
+                                    v-bind:min="range.min"
+                                    v-bind:max="range.max"
+                                    v-bind:placeholder="range.min"
+                                    v-bind:disabled="!canRefine"
+                                    v-bind:value="currentRefinement.min ?? range.min"
+                                    v-on:input="if (!$event.currentTarget.validationMessage) {
+                                        refine({ min: Math.max($event.currentTarget.value, range.min), max: currentRefinement.max })
+                                    }"
+                                />
+                                <span
+                                    class="absolute bottom-1/2 translate-y-1/2"
+                                    v-bind:class="{
+                                        'left-2': shouldFormatCurrencyLeft,
+                                        'right-2': !shouldFormatCurrencyLeft
+                                    }"
+                                >
+                                    @{{ currencySymbol }}
+                                </span>
+                            </div>
+                            <div class="relative w-full">
+                                <x-rapidez::input
+                                    class="text-right"
+                                    required
+                                    type="number"
+                                    v-bind:min="range.min"
+                                    v-bind:max="range.max"
+                                    v-bind:placeholder="range.max"
+                                    v-bind:disabled="!canRefine"
+                                    v-bind:value="currentRefinement.max ?? range.max"
+                                    v-on:input="if (!$event.currentTarget.validationMessage) {
+                                        refine({ min: currentRefinement.min, max: Math.min($event.currentTarget.value, range.max) })
+                                    }"
+                                />
+                                <span
+                                    class="absolute bottom-1/2 translate-y-1/2"
+                                    v-bind:class="{
+                                        'left-2': shouldFormatCurrencyLeft,
+                                        'right-2': !shouldFormatCurrencyLeft
+                                    }"
+                                >
+                                    @{{ currencySymbol }}
+                                </span>
+                            </div>
+                        </div>
+                    </currency-display>
                 </div>
             </x-rapidez::filter.heading>
         </div>
