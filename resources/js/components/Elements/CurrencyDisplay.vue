@@ -6,10 +6,12 @@ export default {
 
     computed: {
         shouldFormatCurrencyLeft() {
-            return new Intl.NumberFormat(config.locale.replace('_', '-'), {
-                style: 'currency',
-                currency: config.currency,
-            }).formatToParts(1)?.[0]?.type === 'currency'
+            return (
+                new Intl.NumberFormat(config.locale.replace('_', '-'), {
+                    style: 'currency',
+                    currency: config.currency,
+                }).formatToParts(1)?.[0]?.type === 'currency'
+            )
         },
 
         currencySymbol() {
@@ -17,8 +19,11 @@ export default {
                 style: 'currency',
                 currency: config.currency,
                 maximumFractionDigits: 0,
-            }).format(0).replace(/\d/g, '').trim()
+            })
+                .format(0)
+                .replace(/\d/g, '')
+                .trim()
         },
-    }
+    },
 }
 </script>
