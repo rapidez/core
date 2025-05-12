@@ -125,7 +125,7 @@ trait Searchable
      */
     public static function getIndexMappings(): ?array
     {
-        return Eventy::filter('index.' . static::getIndexName() . '.mapping', [
+        return array_merge([
             'properties' => [
                 'price' => [
                     'type' => 'double',
@@ -140,6 +140,6 @@ trait Searchable
                     'type' => 'flattened',
                 ],
             ],
-        ]);
+        ], parent::getIndexMappings());
     }
 }
