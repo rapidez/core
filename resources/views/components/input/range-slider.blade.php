@@ -1,8 +1,12 @@
-@props(['inputs' => true])
+@props(['inputs' => config('rapidez.frontend.filters.range_slider.inputs')])
 
 <range-slider v-slot="rangeInputScope" {{ $attributes }}>
     <div class="w-full">
-        <div class="flex flex-1 relative">
+        <div @class([
+                'flex flex-1 relative',
+                'h-12 mx-1' => !$inputs
+            ])
+        >
             <input
                 type="range"
                 v-bind:disabled="!canRefine"
@@ -29,10 +33,10 @@
                 <div class="absolute z-30 size-4 top-1/2 left-0 bg-severe-emphasis rounded-full -translate-y-1/2 -translate-x-1/2" v-bind:style="'left: '+rangeInputScope.minThumb+'%'"></div>
                 <div class="absolute z-30 size-4 top-1/2 right-0 bg-severe-emphasis rounded-full -translate-y-1/2 translate-x-1/2" v-bind:style="'right: '+rangeInputScope.maxThumb+'%'"></div>
                 @if (!$inputs)
-                    <div class="absolute z-30 top-4 left-0 bg-white border px-2 py-0.5 rounded-full -translate-x-1/2" v-bind:style="'left: '+rangeInputScope.minThumb+'%'">
+                    <div class="absolute z-30 top-5 left-0 bg-severe-emphasis text-white px-2 py-0.5 rounded-md -translate-x-1/2" v-bind:style="'left: '+rangeInputScope.minThumb+'%'">
                         @{{ rangeInputScope.minValue }}
                     </div>
-                    <div class="absolute z-30 top-4 right-0 bg-white border px-2 py-0.5 rounded-full translate-x-1/2" v-bind:style="'right: '+rangeInputScope.maxThumb+'%'">
+                    <div class="absolute z-30 top-5 right-0 bg-severe-emphasis text-white px-2 py-0.5 rounded-md translate-x-1/2" v-bind:style="'right: '+rangeInputScope.maxThumb+'%'">
                         @{{ rangeInputScope.maxValue }}
                     </div>
                 @endif
@@ -47,7 +51,7 @@
                     v-bind:max="rangeInputScope.range.max"
                     v-model="rangeInputScope.minValue"
                     v-on:input="rangeInputScope.updateRefinement"
-                    class="text-center"
+                    class="text-center arrows-hidden"
                 />
                 <x-rapidez::input
                     type="number"
@@ -56,7 +60,7 @@
                     v-bind:max="rangeInputScope.range.max"
                     v-model="rangeInputScope.maxValue"
                     v-on:input="rangeInputScope.updateRefinement"
-                    class="text-center"
+                    class="text-center arrows-hidden"
                 />
             </div>
         @endif

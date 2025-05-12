@@ -21,7 +21,7 @@
                                 }"
                                 v-on:input="refine($event.currentTarget.value)"
                             />
-                            <div v-if="currentRefinement" class="absolute inset-x-0 top-14 bg-white border rounded-md z-header-autocomplete">
+                            <div v-if="currentRefinement" class="absolute inset-x-0 top-[52px] bg-white border rounded-md z-header-autocomplete">
                                 @include('rapidez::layouts.partials.header.autocomplete.results')
                             </div>
                             <div v-if="currentRefinement" v-on:click="refine('')" class="fixed inset-0 bg-backdrop z-header-autocomplete-overlay"></div>

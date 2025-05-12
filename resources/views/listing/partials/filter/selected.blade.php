@@ -33,7 +33,7 @@
                     <a
                         v-bind:href="createURL(refinement)"
                         v-on:click.prevent="item.refine(refinement)"
-                        class="flex items-center gap-1 p-1 text-xs rounded-lg bg transition hover:opacity-80"
+                        class="flex items-center gap-1 p-1 text-xs rounded-full bg transition hover:opacity-80"
                     >
                         @{{ item.filter.name }}:
                         <template v-if="false"></template>

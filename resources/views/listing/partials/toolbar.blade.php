@@ -8,5 +8,7 @@
         </x-rapidez::label>
         @include('rapidez::listing.partials.toolbar.pages')
     </label>
-    @include('rapidez::listing.partials.toolbar.sorting')
+    <div class="max-md:hidden">
+        @include('rapidez::listing.partials.toolbar.sorting')
+    </div>
 </div>

@@ -10,7 +10,11 @@
     ]))
 @endPushOnce
 <x-rapidez::slideover.mobile id="category-filters-slideover" :title="__('Filters')">
-    <div class="max-lg:container max-lg:py-6">
+    <div class="max-lg:container max-lg:pt-6">
+        <div class="max-md:mb-3 md:hidden">
+            <p class="text-xl/9 font-medium mb-1">@lang('Sort on'):</p>
+            @include('rapidez::listing.partials.toolbar.sorting')
+        </div>
         <p class="text-xl/9 font-medium mb-3">@lang('Filters')</p>
 
         @include('rapidez::listing.partials.filter.selected')
@@ -24,9 +28,11 @@
             @include('rapidez::listing.partials.filter.select')
         </template>
 
-        <x-rapidez::button.primary for="category-filters-slideover" class="w-full text-sm lg:hidden">
-            @lang('Show results')
-        </x-rapidez::button.primary>
+        <div class="bg-white -mx-5 p-5 sticky bottom-0 lg:hidden">
+            <x-rapidez::button.primary for="category-filters-slideover" class="w-full text-sm">
+                @lang('Show results')
+            </x-rapidez::button.primary>
+        </div>
     </div>
 </x-rapidez::slideover.mobile>
 
