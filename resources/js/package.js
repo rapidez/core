@@ -170,15 +170,14 @@ function init() {
                                 ? 'left'
                                 : 'right',
 
-                        symbol:
-                            new Intl.NumberFormat(config.locale.replace('_', '-'), {
-                                style: 'currency',
-                                currency: config.currency,
-                                maximumFractionDigits: 0,
-                            })
-                                .format(0)
-                                .replace(/\d/g, '')
-                                .trim(),
+                        symbol: new Intl.NumberFormat(config.locale.replace('_', '-'), {
+                            style: 'currency',
+                            currency: config.currency,
+                            maximumFractionDigits: 0,
+                        })
+                            .format(0)
+                            .replace(/\d/g, '')
+                            .trim(),
                     }
                 },
             },
