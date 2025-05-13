@@ -159,6 +159,21 @@ function init() {
                 canOrder() {
                     return this.cart.items.every((item) => item.is_available)
                 },
+
+                currencyDisplay() {
+                    return {
+                        symbolLocation: new Intl.NumberFormat(config.locale.replace('_', '-'), {
+                            style: 'currency',
+                            currency: config.currency,
+                        }).formatToParts(1)?.[0]?.type === 'currency' ? 'left' : 'right',
+
+                        symbol: new Intl.NumberFormat(config.locale.replace('_', '-'), {
+                            style: 'currency',
+                            currency: config.currency,
+                            maximumFractionDigits: 0,
+                        }).format(0).replace(/\d/g, '').trim()
+                    }
+                },
             },
             watch: {
                 loadingCount: function (count) {
