@@ -162,16 +162,22 @@ function init() {
 
                 currencyDisplay() {
                     return {
-                        symbolLocation: new Intl.NumberFormat(config.locale.replace('_', '-'), {
-                            style: 'currency',
-                            currency: config.currency,
-                        }).formatToParts(1)?.[0]?.type === 'currency' ? 'left' : 'right',
+                        symbolLocation:
+                            new Intl.NumberFormat(config.locale.replace('_', '-'), {
+                                style: 'currency',
+                                currency: config.currency,
+                            }).formatToParts(1)?.[0]?.type === 'currency'
+                                ? 'left'
+                                : 'right',
 
                         symbol: new Intl.NumberFormat(config.locale.replace('_', '-'), {
                             style: 'currency',
                             currency: config.currency,
                             maximumFractionDigits: 0,
-                        }).format(0).replace(/\d/g, '').trim()
+                        })
+                            .format(0)
+                            .replace(/\d/g, '')
+                            .trim(),
                     }
                 },
             },
