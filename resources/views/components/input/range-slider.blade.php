@@ -29,14 +29,14 @@
 
             <div class="relative z-10 w-full mx-2 h-4">
                 <div class="absolute top-1/2 -translate-y-1/2 h-1 z-10 -inset-x-2 rounded-md bg-emphasis"></div>
-                <div class="absolute top-1/2 -translate-y-1/2 h-1 z-20 rounded-md bg-severe-emphasis" v-bind:style="'right:'+rangeInputScope.maxThumb+'%; left:'+rangeInputScope.minThumb+'%'"></div>
-                <div class="absolute z-30 size-4 top-1/2 left-0 bg-severe-emphasis rounded-full -translate-y-1/2 -translate-x-1/2" v-bind:style="'left: '+rangeInputScope.minThumb+'%'"></div>
-                <div class="absolute z-30 size-4 top-1/2 right-0 bg-severe-emphasis rounded-full -translate-y-1/2 translate-x-1/2" v-bind:style="'right: '+rangeInputScope.maxThumb+'%'"></div>
+                <div class="absolute top-1/2 -translate-y-1/2 h-1 z-20 rounded-md bg-active" v-bind:style="'right:'+rangeInputScope.maxThumb+'%; left:'+rangeInputScope.minThumb+'%'"></div>
+                <div class="absolute z-30 size-4 top-1/2 left-0 bg-active rounded-full -translate-y-1/2 -translate-x-1/2" v-bind:style="'left: '+rangeInputScope.minThumb+'%'"></div>
+                <div class="absolute z-30 size-4 top-1/2 right-0 bg-active rounded-full -translate-y-1/2 translate-x-1/2" v-bind:style="'right: '+rangeInputScope.maxThumb+'%'"></div>
                 @if (!$inputs)
-                    <div class="absolute z-30 top-5 left-0 bg-severe-emphasis text-white px-2 py-0.5 rounded-md -translate-x-1/2" v-bind:style="'left: '+rangeInputScope.minThumb+'%'">
+                    <div class="absolute z-30 top-5 left-0 bg-active text-white px-2 py-0.5 rounded-md -translate-x-1/2" v-bind:style="'left: '+rangeInputScope.minThumb+'%'">
                         @{{ rangeInputScope.minValue }}
                     </div>
-                    <div class="absolute z-30 top-5 right-0 bg-severe-emphasis text-white px-2 py-0.5 rounded-md translate-x-1/2" v-bind:style="'right: '+rangeInputScope.maxThumb+'%'">
+                    <div class="absolute z-30 top-5 right-0 bg-active text-white px-2 py-0.5 rounded-md translate-x-1/2" v-bind:style="'right: '+rangeInputScope.maxThumb+'%'">
                         @{{ rangeInputScope.maxValue }}
                     </div>
                 @endif

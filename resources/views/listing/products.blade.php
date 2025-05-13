@@ -13,11 +13,11 @@
     )
 @endPushOnce
 
-<div id="products" class="flex flex-col gap-3 max-lg:mt-3 max-lg:flex-wrap">
+<div id="products" class="flex flex-col max-lg:mt-3 max-lg:flex-wrap">
     <x-rapidez::button.secondary for="category-filters-slideover" class="w-full lg:hidden">
         @lang('Filters')
     </x-rapidez::button.secondary>
-    <div class="*:flex-wrap *:gap-3 *:max-sm:gap-y-3 *:max-md:justify-end">
+    <div class="mt-2 mb-4 *:flex-wrap *:gap-3 *:max-sm:gap-y-3 *:max-md:justify-end">
         @include('rapidez::listing.partials.toolbar')
     </div>
     <ais-hits>
