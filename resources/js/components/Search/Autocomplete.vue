@@ -9,6 +9,7 @@ import SearchBox from 'vue-instantsearch/vue2/es/src/components/SearchBox.vue.js
 import Index from 'vue-instantsearch/vue2/es/src/components/Index.js'
 import { useDebounceFn } from '@vueuse/core'
 import { rapidezAPI } from '../../fetch'
+import { searchHistory } from '../../stores/useSearchHistory'
 
 export default {
     mixins: [InstantSearchMixin],
@@ -52,6 +53,13 @@ export default {
         })
     },
 
+    computed: {
+        searchHistory() {
+            return Object.entries(searchHistory.value).sort((a, b) => {
+                return Date.parse(b[1].lastSearched) - Date.parse(a[1].lastSearched)
+            })
+        },
+    },
     methods: {
         async initSearchClient() {
             const client = await InstantSearchMixin.methods.initSearchClient.bind(this).call()

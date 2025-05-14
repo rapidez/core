@@ -44,6 +44,7 @@ Vue.component('autocomplete', () => ({
         data: () => ({
             loaded: false,
             searchClient: null,
+            searchHistory: {},
         }),
 
         render() {

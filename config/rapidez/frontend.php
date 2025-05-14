@@ -31,6 +31,7 @@ return [
         // Attach additional indexes to the autocomplete
         // Uses the views in rapidez::layouts.partials.header.autocomplete
         'additionals' => [
+            'history' => [],
             'categories' => [],
 
             // For example:

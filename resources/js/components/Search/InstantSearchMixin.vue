@@ -53,6 +53,15 @@ export default {
                     insightsClient: null,
                     onEvent: (event) => {
                         this.$emit('insights-event:' + event.insightsMethod, event)
+                        this.$el.dispatchEvent(
+                            new CustomEvent(
+                                'insights-event:' + event.insightsMethod,
+                                {
+                                    bubbles: true,
+                                    detail: { insightsEvent: event }
+                                }
+                            )
+                        )
                     },
                 }),
                 ...this.getMiddlewares(),
