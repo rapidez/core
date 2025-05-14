@@ -89,11 +89,4 @@ return [
 
     // The path to redirect to after a failed checkout
     'checkout_success_fail_redirect_path' => 'cart',
-
-    'filters' => [
-        // Show inputs below a range slider (true/false)
-        'range_slider' => [
-            'inputs' => true,
-        ],
-    ],
 ];

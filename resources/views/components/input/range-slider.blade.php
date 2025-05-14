@@ -1,4 +1,4 @@
-@props(['inputs' => config('rapidez.frontend.filters.range_slider.inputs')])
+@props(['inputs' => true ])
 
 <range-slider v-slot="rangeInputScope" {{ $attributes }}>
     <div class="w-full">
