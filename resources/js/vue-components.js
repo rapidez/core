@@ -1,3 +1,6 @@
+import TurbolinksAdapter from 'vue-turbolinks'
+Vue.use(TurbolinksAdapter)
+
 import Teleport from 'vue2-teleport'
 Vue.component('teleport', Teleport)
 
