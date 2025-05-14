@@ -20,6 +20,7 @@ Vue.mixin({
             return Object.values(window.config.attributes)?.find((attribute) => attribute.code === attributeCode)?.name
         },
     },
+
     computed: {
         currencySymbolLocation() {
             return new Intl.NumberFormat(config.locale.replace('_', '-'), {
@@ -29,6 +30,7 @@ Vue.mixin({
                 ? 'left'
                 : 'right'
         },
+
         currencySymbol() {
             return new Intl.NumberFormat(config.locale.replace('_', '-'), {
                 style: 'currency',
