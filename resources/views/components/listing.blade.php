@@ -22,7 +22,7 @@
                 {{ $before ?? '' }}
 
                 @slotdefault('slot')
-                    <div class="flex flex-col lg:flex-row gap-x-12 gap-y-3">
+                    <div class="flex gap-x-12 gap-y-3 max-lg:flex-col">
                         <div class="lg:w-80 shrink-0">
                             @include('rapidez::listing.filters')
                         </div>
