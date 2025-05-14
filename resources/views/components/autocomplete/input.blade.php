@@ -1,4 +1,4 @@
-<form method="get" action="{{ route('search') }}" class="flex relative z-header-autocomplete">
+<form id="autocomplete-form" method="get" action="{{ route('search') }}" class="flex relative z-header-autocomplete">
     <x-rapidez::input
         {{ $attributes->merge([
             'id' => 'autocomplete-input',
