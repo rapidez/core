@@ -1,36 +1,68 @@
+@props(['inputs' => true ])
+
 <range-slider v-slot="rangeInputScope" {{ $attributes }}>
-    <div class="flex flex-1 relative h-16 mx-5">
-        <input
-            type="range"
-            v-bind:disabled="!canRefine"
-            v-bind:min="rangeInputScope.range.min"
-            v-bind:max="rangeInputScope.range.max"
-            v-model="rangeInputScope.minValue"
-            v-on:change="rangeInputScope.updateRefinement"
-            class="absolute pointer-events-none appearance-none z-20 h-5 w-full opacity-0 cursor-pointer [&::-moz-range-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:pointer-events-auto"
+    <div class="w-full">
+        <div @class([
+                'flex flex-1 relative',
+                'h-12 mx-1' => !$inputs
+            ])
         >
+            <input
+                type="range"
+                v-bind:disabled="!canRefine"
+                v-bind:min="rangeInputScope.range.min"
+                v-bind:max="rangeInputScope.range.max"
+                v-model="rangeInputScope.minValue"
+                v-on:change="rangeInputScope.updateRefinement"
+                class="absolute pointer-events-none appearance-none z-20 h-5 w-full opacity-0 cursor-pointer [&::-moz-range-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:pointer-events-auto"
+            >
 
-        <input
-            type="range"
-            v-bind:disabled="!canRefine"
-            v-bind:min="rangeInputScope.range.min"
-            v-bind:max="rangeInputScope.range.max"
-            v-model="rangeInputScope.maxValue"
-            v-on:change="rangeInputScope.updateRefinement"
-            class="absolute pointer-events-none appearance-none z-20 h-5 w-full opacity-0 cursor-pointer [&::-moz-range-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:pointer-events-auto"
-        >
+            <input
+                type="range"
+                v-bind:disabled="!canRefine"
+                v-bind:min="rangeInputScope.range.min"
+                v-bind:max="rangeInputScope.range.max"
+                v-model="rangeInputScope.maxValue"
+                v-on:change="rangeInputScope.updateRefinement"
+                class="absolute pointer-events-none appearance-none z-20 h-5 w-full opacity-0 cursor-pointer [&::-moz-range-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:pointer-events-auto"
+            >
 
-        <div class="relative z-10 h-1 w-full mt-2 mx-2">
-            <div class="absolute z-10 inset-0 rounded-md bg-border"></div>
-            <div class="absolute z-20 inset-y-0 rounded-md bg-primary" v-bind:style="'right:'+rangeInputScope.maxThumb+'%; left:'+rangeInputScope.minThumb+'%'"></div>
-            <div class="absolute z-30 size-5 top-0 left-0 bg-white border rounded-full -mt-2 -translate-x-1/2" v-bind:style="'left: '+rangeInputScope.minThumb+'%'"></div>
-            <div class="absolute z-30 size-5 top-0 right-0 bg-white border rounded-full -mt-2 translate-x-1/2" v-bind:style="'right: '+rangeInputScope.maxThumb+'%'"></div>
-            <div class="absolute z-30 top-4 left-0 bg-white border px-2 py-0.5 rounded-full -translate-x-1/2" v-bind:style="'left: '+rangeInputScope.minThumb+'%'">
-                @{{ rangeInputScope.minValue }}
-            </div>
-            <div class="absolute z-30 top-4 right-0 bg-white border px-2 py-0.5 rounded-full translate-x-1/2" v-bind:style="'right: '+rangeInputScope.maxThumb+'%'">
-                @{{ rangeInputScope.maxValue }}
+            <div class="relative z-10 w-full mx-2 h-4">
+                <div class="absolute top-1/2 -translate-y-1/2 h-1 z-10 -inset-x-2 rounded-md bg-emphasis"></div>
+                <div class="absolute top-1/2 -translate-y-1/2 h-1 z-20 rounded-md bg-active" v-bind:style="'right:'+rangeInputScope.maxThumb+'%; left:'+rangeInputScope.minThumb+'%'"></div>
+                <div class="absolute z-30 size-4 top-1/2 left-0 bg-active rounded-full -translate-y-1/2 -translate-x-1/2" v-bind:style="'left: '+rangeInputScope.minThumb+'%'"></div>
+                <div class="absolute z-30 size-4 top-1/2 right-0 bg-active rounded-full -translate-y-1/2 translate-x-1/2" v-bind:style="'right: '+rangeInputScope.maxThumb+'%'"></div>
+                @if (!$inputs)
+                    <div class="absolute z-30 top-5 left-0 bg-active text-white px-2 py-0.5 rounded-md -translate-x-1/2" v-bind:style="'left: '+rangeInputScope.minThumb+'%'">
+                        @{{ rangeInputScope.minValue }}
+                    </div>
+                    <div class="absolute z-30 top-5 right-0 bg-active text-white px-2 py-0.5 rounded-md translate-x-1/2" v-bind:style="'right: '+rangeInputScope.maxThumb+'%'">
+                        @{{ rangeInputScope.maxValue }}
+                    </div>
+                @endif
             </div>
         </div>
+        @if ($inputs)
+            <div class="flex items-center gap-x-4 mt-4">
+                <x-rapidez::input
+                    type="number"
+                    v-bind:disabled="!canRefine"
+                    v-bind:min="rangeInputScope.range.min"
+                    v-bind:max="rangeInputScope.range.max"
+                    v-model="rangeInputScope.minValue"
+                    v-on:input="rangeInputScope.updateRefinement"
+                    class="text-center arrows-hidden"
+                />
+                <x-rapidez::input
+                    type="number"
+                    v-bind:disabled="!canRefine"
+                    v-bind:min="rangeInputScope.range.min"
+                    v-bind:max="rangeInputScope.range.max"
+                    v-model="rangeInputScope.maxValue"
+                    v-on:input="rangeInputScope.updateRefinement"
+                    class="text-center arrows-hidden"
+                />
+            </div>
+        @endif
     </div>
-</range-input>
+</range-slider>
