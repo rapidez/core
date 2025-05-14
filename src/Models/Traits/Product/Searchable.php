@@ -77,8 +77,7 @@ trait Searchable
             // Turn all positions positive
             ->mapWithKeys(fn ($position, $category_id) => [$category_id => $maxPositions[$category_id] - $position]);
 
-        // TODO: Maybe use the model name here?
-        return Eventy::filter('index.' . config('rapidez.index') . '.data', $data, $this);
+        return Eventy::filter('index.' . static::getIndexName() . '.data', $data, $this);
     }
 
     /**
