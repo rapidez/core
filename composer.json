@@ -62,7 +62,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Rapidez\\Core\\RapidezServiceProvider"
+                "Rapidez\\Core\\RapidezServiceProvider",
+                "Matchish\\ScoutElasticSearch\\ElasticSearchServiceProvider"
             ],
             "aliases": {
                 "Rapidez": "Rapidez\\Core\\Facades\\Rapidez"
