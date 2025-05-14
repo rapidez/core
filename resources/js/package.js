@@ -171,6 +171,7 @@ function init() {
                     document.dispatchEvent(event)
                 })
             },
+            destroyEvent: 'turbo:before-cache-timeout',
         })
 
         setTimeout(() => {
@@ -182,4 +183,5 @@ function init() {
 }
 
 document.addEventListener('turbo:load', init)
+document.addEventListener('turbo:before-cache', () => setTimeout(() => document.dispatchEvent(new CustomEvent('turbo:before-cache-timeout'))))
 setTimeout(init)
