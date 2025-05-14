@@ -37,11 +37,11 @@
                             <span
                                 class="absolute bottom-1/2 translate-y-1/2"
                                 v-bind:class="{
-                                    'left-2': $root.currencyDisplay.symbolLocation === 'left',
-                                    'right-2': $root.currencyDisplay.symbolLocation === 'right',
+                                    'left-2': $root.currencySymbolLocation === 'left',
+                                    'right-2': $root.currencySymbolLocation === 'right',
                                 }"
                             >
-                                @{{ $root.currencyDisplay.symbol }}
+                                @{{ $root.currencySymbol }}
                             </span>
                         </div>
                         <div class="relative w-full">
@@ -61,11 +61,11 @@
                             <span
                                 class="absolute bottom-1/2 translate-y-1/2"
                                 v-bind:class="{
-                                    'left-2': $root.currencyDisplay.symbolLocation === 'left',
-                                    'right-2': $root.currencyDisplay.symbolLocation === 'right',
+                                    'left-2': $root.currencySymbolLocation === 'left',
+                                    'right-2': $root.currencySymbolLocation === 'right',
                                 }"
                             >
-                                @{{ $root.currencyDisplay.symbol }}
+                                @{{ $root.currencySymbol }}
                             </span>
                         </div>
                     </div>
