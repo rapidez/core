@@ -7,6 +7,7 @@ use Rapidez\Core\Events\IndexAfterEvent;
 use Rapidez\Core\Events\IndexBeforeEvent;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Traits\Searchable;
+use TorMorten\Eventy\Facades\Eventy;
 
 class IndexCommand extends Command
 {
@@ -38,11 +39,15 @@ class IndexCommand extends Command
 
             foreach ($types as $model) {
                 $searchableAs = (new $model)->searchableAs();
-                if ($model::getIndexMappings()) {
-                    config()->set('elasticsearch.indices.mappings.' . $searchableAs, $model::getIndexMappings());
+
+                $indexMappings = Eventy::filter('index.' . $model::getIndexName() . '.mapping', $model::getIndexMappings());
+                if ($indexMappings) {
+                    config()->set('elasticsearch.indices.mappings.' . $searchableAs, $indexMappings);
                 }
-                if ($model::getIndexSettings()) {
-                    config()->set('elasticsearch.indices.settings.' . $searchableAs, $model::getIndexSettings());
+
+                $indexSettings = Eventy::filter('index.' . $model::getIndexName() . '.settings', $model::getIndexSettings());
+                if ($indexSettings) {
+                    config()->set('elasticsearch.indices.settings.' . $searchableAs, $indexSettings);
                 }
 
                 $this->call('scout:import', [
