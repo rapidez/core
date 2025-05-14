@@ -63,6 +63,7 @@ class RapidezServiceProvider extends ServiceProvider
             ->bootViews()
             ->bootBladeComponents()
             ->bootMiddleware()
+            ->bootScout()
             ->bootTranslations()
             ->bootListeners()
             ->bootMacros();
@@ -221,6 +222,13 @@ class RapidezServiceProvider extends ServiceProvider
         $this->app->make(Kernel::class)->pushMiddleware(DetermineAndSetShop::class);
 
         $this->app['router']->aliasMiddleware('store_code', CheckStoreCode::class);
+
+        return $this;
+    }
+
+    protected function bootScout(): self
+    {
+        config()->set('scout.driver', 'Matchish\\ScoutElasticSearch\\Engines\\ElasticSearchEngine');
 
         return $this;
     }
