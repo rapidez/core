@@ -49,8 +49,6 @@ return [
 
     // Attributes that are used to create filters.
     // Required so that SearchKit can keep track of the type and field of each attribute.
-    // TODO: Does the undocumented nestedPath parameter have any use case for us?
-    // TODO: Should we pass the filterQuery parameter? If so, how?
     'filter_attributes' => [
         ['attribute' => 'entity_id', 'field' => 'entity_id', 'type' => 'numeric'],
         ['attribute' => 'sku', 'field' => 'sku.keyword', 'type' => 'string'],
