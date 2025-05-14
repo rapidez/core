@@ -1,3 +1,5 @@
+import { addQuery } from './stores/useSearchHistory'
+
 // Shared between Autocomplete and Listing
 Vue.component('ais-instant-search', () => import('vue-instantsearch/vue2/es/src/components/InstantSearch'))
 Vue.component('ais-hits', () => import('vue-instantsearch/vue2/es/src/components/Hits.js'))
@@ -20,3 +22,27 @@ Vue.component('ais-sort-by', () => import('vue-instantsearch/vue2/es/src/compone
 Vue.component('ais-pagination', () => import('vue-instantsearch/vue2/es/src/components/Pagination.vue.js'))
 Vue.component('ais-stats', () => import('vue-instantsearch/vue2/es/src/components/Stats.vue.js'))
 Vue.component('ais-stats-analytics', () => import('./components/Search/AisStatsAnalytics.vue'))
+
+document.addEventListener('insights-event:viewedObjectIDs', (event) => {
+    setTimeout(() => {
+        if (event?.detail?.insightsEvent?.eventType !== 'search') {
+            return
+        }
+
+        let url = new URL(window.location.href)
+        if (
+            url.pathname !== '/search' ||
+            !url.searchParams.has('q') ||
+            url.searchParams.get('q') !== event.detail.insightsEvent.payload.query
+        ) {
+            // Do not track autocomplete
+            return
+        }
+
+        if (event.detail.insightsEvent.payload.nbHits < 1) {
+            return
+        }
+
+        addQuery(event.detail.insightsEvent.payload.query, { hits: event.detail.insightsEvent.payload.nbHits })
+    })
+})
