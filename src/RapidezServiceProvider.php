@@ -140,8 +140,9 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootRoutes(): self
     {
         if (config('rapidez.routing.enabled')) {
-            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
             $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
+            $this->loadRoutesFrom(__DIR__ . '/../routes/magento-redirects.php');
+            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
         }
 
         RapidezFacade::addFallbackRoute(UrlRewriteController::class, 5);
