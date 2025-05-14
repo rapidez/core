@@ -12,14 +12,18 @@ export function objectDiff(target, source) {
         Object.entries({
             // Ensure keys no longer in source will be set to undefined
             ...Object.fromEntries(Object.keys(target).map((key) => [key, undefined])),
-            ...source
+            ...source,
         })
             .map(([key, val]) => {
                 if (!target || !(key in target)) {
                     return [key, val]
                 }
 
-                if (target[key] === val || ((val === null || val === undefined || isNaN(val)) && (target[key] === null || target[key] === undefined || isNaN(target[key])))) {
+                if (
+                    target[key] === val ||
+                    ((val === null || val === undefined || isNaN(val)) &&
+                        (target[key] === null || target[key] === undefined || isNaN(target[key])))
+                ) {
                     return null
                 }
 
