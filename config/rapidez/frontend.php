@@ -42,7 +42,6 @@ return [
         'size' => 3,
     ],
 
-    // Link store codes to theme folders
     // The structure is `'store_code' => 'folder_path'`
     'theme' => resource_path('themes/default'),
 
