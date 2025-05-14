@@ -12,7 +12,7 @@ why are they different? And why
 do we've pb-4 wrapped around
 it from the filters?
 --}}
-<label class="flex items-center justify-between gap-x-2 border-t pt-4 text cursor-pointer peer-checked:[&_svg]:rotate-180" :for="id">
+<label class="flex items-center justify-between gap-x-2 border-t pt-4 text cursor-pointer peer-checked:[&>svg]:rotate-180" :for="id">
     <span class="block font-sans font-medium">
         @slotdefault('title')
             @{{ filter?.name?.replace('_', ' ') }}
