@@ -1,16 +1,15 @@
-<autocomplete v-on:mounted="() => window.document.getElementById('autocomplete-input').focus()" v-slot="{ searchClient}">
+<autocomplete v-on:mounted="() => window.document.getElementById('autocomplete-input').focus()" v-slot="{ searchClient, middlewares }">
     <div class="relative w-full">
         <ais-instant-search
             v-if="searchClient"
             :search-client="searchClient"
-            :index-name="config.index.products"
+            :middlewares="middlewares"
+            :index-name="config.index.product"
             class="contents"
-            v-bind:search-client="searchClient"
-            v-bind:index-name="config.index.product"
             v-cloak
         >
             <div class="contents">
-                <ais-configure :hitsPerPage="3" />
+                <ais-configure :hits-per-page.camel="{{ config('rapidez.frontend.autocomplete.size', 3) }}" />
                 <div class="searchbox">
                     <ais-search-box>
                         <template v-slot="{ currentRefinement, isSearchStalled, refine }">
@@ -22,11 +21,13 @@
                                 }"
                                 v-on:input="refine($event.currentTarget.value)"
                             />
+                            <div v-if="currentRefinement" class="absolute inset-x-0 top-full mt-1 bg-white border rounded-md z-header-autocomplete">
+                                @include('rapidez::layouts.partials.header.autocomplete.results')
+                            </div>
+                            <div v-if="currentRefinement" v-on:click="refine('')" class="fixed inset-0 bg-backdrop z-header-autocomplete-overlay"></div>
                         </template>
                     </ais-search-box>
-                </div>
-                <div class="absolute inset-x-0 bg-white border">
-                    @include('rapidez::layouts.partials.header.autocomplete.results')
+                    <ais-stats-analytics></ais-stats-analytics>
                 </div>
             </div>
         </ais-instant-search>

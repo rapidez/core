@@ -38,6 +38,7 @@ export const rapidezAPI = (window.rapidezAPI = async (method, endpoint, data = {
         method: method.toUpperCase(),
         headers: Object.assign(
             {
+                Accept: 'application/json',
                 Store: window.config.store_code,
                 Authorization: token.value ? `Bearer ${token.value}` : null,
                 'Content-Type': 'application/json',

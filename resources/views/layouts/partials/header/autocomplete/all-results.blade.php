@@ -1,6 +1,6 @@
 <ais-hits>
     <template v-slot="{ items }">
-        <div v-if="items && items.length" class="font-sans px-5 py-2">
+        <div v-if="items && items.length" class="font-sans px-5 py-2.5">
             <x-rapidez::button.primary
                 type="submit"
                 form="autocomplete-form"

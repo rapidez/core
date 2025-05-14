@@ -8,30 +8,32 @@
 <div class="min-h-screen">
     <listing
         {{ $attributes }}
-        v-bind:index="config.index.product"
-        v-slot="{ loaded, index, searchClient, rangeAttributes, categoryAttributes, hitsPerPage, filters, sortOptions, withFilters, withSwatches, routing }"
+        v-slot="{ loaded, index, searchClient, rangeAttributes, categoryAttributes, hitsPerPage, filters, sortOptions, withFilters, withSwatches, routing, middlewares }"
         v-cloak
     >
         <div>
             <ais-instant-search
                 v-if="searchClient"
                 :search-client="searchClient"
+                :middlewares="middlewares"
                 :index-name="index"
                 :routing="routing"
             >
                 {{ $before ?? '' }}
-                @if ($slot->isEmpty())
-                    <div class="flex flex-col lg:flex-row gap-x-6 gap-y-3">
-                        <div class="xl:w-1/5">
+
+                @slotdefault('slot')
+                    <div class="flex gap-x-12 gap-y-3 max-lg:flex-col">
+                        <div class="lg:w-80 shrink-0">
                             @include('rapidez::listing.filters')
                         </div>
                         <div class="flex-1">
+                            {{ $title ?? '' }}
+
                             @include('rapidez::listing.products')
                         </div>
                     </div>
-                @else
-                    {{ $slot }}
-                @endif
+                @endslotdefault
+
                 {{ $after ?? '' }}
             </ais-instant-search>
         </div>
