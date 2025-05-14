@@ -12,7 +12,12 @@
                             v-bind:range="range"
                             v-bind:current="currentRefinement"
                             v-on:change="refine"
-                        />
+                            price
+                        >
+                            <x-slot:value>
+                                @{{ window.price(value, { maximumFractionDigits: 0 }) }}
+                            </x-slot:value>
+                        </x-rapidez::input.range-slider>
                     </div>
                 </div>
             </x-rapidez::filter.heading>
