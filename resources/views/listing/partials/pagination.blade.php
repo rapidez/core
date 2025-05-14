@@ -27,7 +27,7 @@
             </li>
             <li v-for="page in pages" :key="page">
                 <button
-                    href="createURL(page)"
+                    v-bind:href="createURL(page)"
                     v-bind:class="{ 'ring-1 bg-primary/10 ring-primary border-primary font-semibold hover:border-primary': page === currentRefinement }"
                     v-on:click.exact.left.prevent="refine(page)"
                     v-bind:aria-label="`{{ __('Page') }} ${page + 1}`"
@@ -41,7 +41,7 @@
             </li>
             <li v-if="!isLastPage && currentRefinement !== nbPages - 2">
                 <button
-                    href="createURL(nbPages)"
+                    v-bind:href="createURL(nbPages)"
                     v-on:click.exact.left.prevent="refine(nbPages)"
                     aria-label="@lang('Last Page')"
                     class="flex justify-center items-center size-9 sm:size-10 rounded border hover:border-emphasis"
@@ -51,7 +51,7 @@
             </li>
             <li v-if="!isLastPage">
                 <button
-                    href="createURL(currentRefinement + 1)"
+                    v-bind:href="createURL(currentRefinement + 1)"
                     v-on:click.exact.left.prevent="refine(currentRefinement + 1)"
                     aria-label="@lang('Next Page')"
                     class="flex justify-center items-center rounded border hover:border-emphasis max-sm:size-9 sm:pr-2 sm:pl-3 sm:h-full"
