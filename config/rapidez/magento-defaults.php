@@ -37,4 +37,6 @@ return [
     'trans_email/ident_general/email'                 => 'owner@example.com',
     'web/secure/base_url'                             => '{{unsecure_base_url}}',
     'web/url/catalog_media_url_format'                => 'hash',
+    'customer/password/required_character_classes_number' => '3',
+    'customer/password/minimum_password_length'       => '8',
 ];
