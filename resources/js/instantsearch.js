@@ -29,17 +29,20 @@ document.addEventListener('insights-event:viewedObjectIDs', (event) => {
             return
         }
 
-        let url = new URL(window.location.href);
-        if (url.pathname !== '/search' || !url.searchParams.has('q') || url.searchParams.get('q') !== event.detail.insightsEvent.payload.query) {
+        let url = new URL(window.location.href)
+        if (
+            url.pathname !== '/search' ||
+            !url.searchParams.has('q') ||
+            url.searchParams.get('q') !== event.detail.insightsEvent.payload.query
+        ) {
             // Do not track autocomplete
-            return;
+            return
         }
 
         if (event.detail.insightsEvent.payload.nbHits < 1) {
-            return;
+            return
         }
 
-        addQuery(event.detail.insightsEvent.payload.query, {hits: event.detail.insightsEvent.payload.nbHits})
+        addQuery(event.detail.insightsEvent.payload.query, { hits: event.detail.insightsEvent.payload.nbHits })
     })
 })
-

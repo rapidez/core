@@ -54,13 +54,10 @@ export default {
                     onEvent: (event) => {
                         this.$emit('insights-event:' + event.insightsMethod, event)
                         this.$el.dispatchEvent(
-                            new CustomEvent(
-                                'insights-event:' + event.insightsMethod,
-                                {
-                                    bubbles: true,
-                                    detail: { insightsEvent: event }
-                                }
-                            )
+                            new CustomEvent('insights-event:' + event.insightsMethod, {
+                                bubbles: true,
+                                detail: { insightsEvent: event },
+                            }),
                         )
                     },
                 }),
