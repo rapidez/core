@@ -9,11 +9,7 @@
  */
 export function objectDiff(target, source) {
     return Object.fromEntries(
-        Object.entries({
-            // Ensure keys no longer in source will be set to undefined
-            ...Object.fromEntries(Object.keys(target).map((key) => [key, undefined])),
-            ...source,
-        })
+        Object.entries(source)
             .map(([key, val]) => {
                 if (!target || !(key in target)) {
                     return [key, val]
