@@ -2,8 +2,8 @@
     <div class="col-span-12" v-if="$root.loggedIn">
         <graphql query="{ customer { addresses { id firstname lastname street city postcode country_code } } }">
             <div v-if="data" slot-scope="{ data }">
-                <x-rapidez::input.select v-model="variables.customer_address_id">
-                    <option v-for="address in data.customer.addresses" :value="address.id" dusk="{{ $type }}_address_select">
+                <x-rapidez::input.select v-model="variables.customer_address_id" dusk="{{ $type }}_address_select">
+                    <option v-for="address in data.customer.addresses" :value="address.id">
                         @{{ address.firstname }} @{{ address.lastname }}
                         - @{{ address.street[0] }} @{{ address.street[1] }} @{{ address.street[2] }}
                         - @{{ address.postcode }}
