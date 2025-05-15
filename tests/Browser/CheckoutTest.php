@@ -48,17 +48,20 @@ class CheckoutTest extends DuskTestCase
     public function doCheckout(Browser $browser, $email = false, $password = false, $register = false)
     {
         $this->doCheckoutLogin($browser, $email, $password, $register)
+            ->assertFormValid()
             ->click('@continue')
             ->waitUntilIdle();
 
         $this->doCheckoutShippingAddress($browser);
 
         $this->doCheckoutShippingMethod($browser)
+            ->assertFormValid()
             ->scrollIntoView('@continue')
             ->click('@continue') // go to payment step
             ->waitUntilIdle();
 
         $this->doCheckoutPaymentMethod($browser)
+            ->assertFormValid()
             ->click('@continue') // place order
             ->waitUntilIdle();
 
@@ -97,7 +100,8 @@ class CheckoutTest extends DuskTestCase
     public function doCheckoutShippingAddress(Browser $browser)
     {
         if ($browser->element('shipping_address_select')) {
-            $browser->select('shipping_address_select', '');
+            $browser->select('shipping_address_select', '')
+                ->waitUntilIdle();
         }
 
         $browser
