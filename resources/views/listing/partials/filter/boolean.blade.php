@@ -4,9 +4,9 @@
     operator="and"
 >
     <template v-slot="{ items, refine }">
-        <div v-show="items.length" class="relative pb-5">
-            <x-rapidez::filter.heading>
-                <div class="flex flex-col *:py-1 first:*:pt-0 last:*:pb-0">
+        <x-rapidez::details.filter>
+            <x-slot:content>
+                <div class="flex flex-col *:py-1 first:*:pt-0 last:*:pb-0 items-start">
                     <template v-for="item in items">
                         <x-rapidez::input.checkbox
                             v-bind:checked="item.isRefined"
@@ -29,8 +29,8 @@
                         </x-rapidez::input.checkbox>
                     </template>
                 </div>
-            </x-rapidez::filter.heading>
-        </div>
+            </x-slot:content>
+        </x-rapidez::details>
     </template>
 </ais-refinement-list>
 

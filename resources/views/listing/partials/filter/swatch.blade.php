@@ -1,12 +1,11 @@
 <ais-refinement-list
     v-if="filter.text_swatch || filter.visual_swatch"
-    :limit="64"
     :operator="filter.input == 'multiselect' ? 'and' : 'or'"
     :attribute="filter.code"
 >
-    <template v-slot="{ items, refine }">
-        <div v-show="items.length" class="relative pb-5">
-            <x-rapidez::filter.heading>
+    <template v-slot="{ items, refine, isShowingMore, toggleShowMore, canToggleShowMore }">
+        <x-rapidez::details.filter v-show="items.length">
+            <x-slot:content>
                 <ul class="flex flex-wrap gap-x-1.5 gap-y-2 items-center pr-14 pb-1">
                     <li v-for="item in withSwatches(items, filter)">
                         <label
@@ -38,7 +37,7 @@
                         </label>
                     </li>
                 </ul>
-            </x-rapidez::filter.heading>
-        </div>
+            </x-slot:content>
+        </x-rapidez::details.filter>
     </template>
 </ais-refinement-list>

@@ -49,3 +49,21 @@ input[type='search']::-webkit-search-results-decoration {
     background-position: right center;
     field-sizing: content;
 }
+
+
+/* Transition-details can be replaced with existing classes when Rapidez uses tailwind v4.0 */
+.transition-details::details-content {
+    transition: height .2s ease, content-visibility 0.2s ease allow-discrete;
+    height: 0;
+    overflow: clip;
+}
+
+@supports (interpolate-size: allow-keywords) {
+    :root {
+        interpolate-size: allow-keywords;
+    }
+
+    .transition-details[open]::details-content {
+        height: auto;
+    }
+}
