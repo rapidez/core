@@ -7,6 +7,10 @@ import Configure from 'vue-instantsearch/vue2/es/src/components/Configure.js'
 import highlight from 'vue-instantsearch/vue2/es/src/components/Highlight.vue.js'
 import SearchBox from 'vue-instantsearch/vue2/es/src/components/SearchBox.vue.js'
 import Index from 'vue-instantsearch/vue2/es/src/components/Index.js'
+import Stats from 'vue-instantsearch/vue2/es/src/components/Stats.vue.js'
+import StateResults from 'vue-instantsearch/vue2/es/src/components/StateResults.vue.js'
+import StatsAnalytics from './AisStatsAnalytics.vue'
+
 import { useDebounceFn } from '@vueuse/core'
 import { rapidezAPI } from '../../fetch'
 import { searchHistory } from '../../stores/useSearchHistory'
@@ -20,15 +24,34 @@ export default {
         highlight,
         SearchBox,
         Index,
+        Stats,
+        StateResults,
+        StatsAnalytics,
+    },
+
+    data() {
+        return {
+            focusId: null,
+        }
     },
 
     render() {
         return this.$scopedSlots.default(this)
     },
-
+    created() {
+        this.focusId = document.activeElement.id
+    },
     mounted() {
         this.$nextTick(() => {
-            requestAnimationFrame(() => this.$emit('mounted'))
+            this.$emit('mounted');
+            setTimeout(() => {
+                requestAnimationFrame(() => {
+                    let element = null
+                    if (this.focusId && (element = this.$el.querySelector('#' + this.focusId))) {
+                        element?.focus()
+                    }
+                })
+            })
         })
 
         const stateChanged = useDebounceFn((event) => {
