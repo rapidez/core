@@ -1,4 +1,4 @@
-<autocomplete v-on:mounted="() => window.document.getElementById('autocomplete-input').focus()" v-slot="{ searchClient, middlewares, searchHistory }">
+<autocomplete v-slot="{ searchClient, middlewares, searchHistory }">
     <div class="relative w-full">
         <ais-instant-search
             v-if="searchClient"
