@@ -43,7 +43,7 @@ export default {
     },
     mounted() {
         this.$nextTick(() => {
-            this.$emit('mounted');
+            this.$emit('mounted')
             setTimeout(() => {
                 requestAnimationFrame(() => {
                     let element = null
