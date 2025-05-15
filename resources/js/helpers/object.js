@@ -21,8 +21,8 @@ export function objectDiff(target, source) {
 
                 if (
                     target[key] === val ||
-                    ((val === null || val === undefined || isNaN(val)) &&
-                        (target[key] === null || target[key] === undefined || isNaN(target[key])))
+                    ((val === null || val === undefined || (typeof val === 'number' && isNaN(val))) &&
+                        (target[key] === null || target[key] === undefined || (typeof target[key] === 'number' && isNaN(target[key]))))
                 ) {
                     return null
                 }
