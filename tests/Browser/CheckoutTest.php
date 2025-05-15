@@ -48,20 +48,20 @@ class CheckoutTest extends DuskTestCase
     public function doCheckout(Browser $browser, $email = false, $password = false, $register = false)
     {
         $this->doCheckoutLogin($browser, $email, $password, $register)
-            ->assertFormValid()
+            ->assertFormValid('form')
             ->click('@continue')
             ->waitUntilIdle();
 
         $this->doCheckoutShippingAddress($browser);
 
         $this->doCheckoutShippingMethod($browser)
-            ->assertFormValid()
+            ->assertFormValid('form')
             ->scrollIntoView('@continue')
             ->click('@continue') // go to payment step
             ->waitUntilIdle();
 
         $this->doCheckoutPaymentMethod($browser)
-            ->assertFormValid()
+            ->assertFormValid('form')
             ->click('@continue') // place order
             ->waitUntilIdle();
 

@@ -34,7 +34,7 @@ class OnestepCheckoutTest extends CheckoutTest
 
         $browser
             ->waitUntilIdle()
-            ->assertFormValid()
+            ->assertFormValid('form')
             ->click('@continue') // place order
             ->waitUntilIdle()
             ->waitFor('@checkout-success', 15)
