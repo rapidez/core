@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core\Tests\Browser;
 
+use Exception;
 use Laravel\Dusk\Browser;
 use Rapidez\Core\Tests\DuskTestCase;
 
@@ -99,9 +100,11 @@ class CheckoutTest extends DuskTestCase
 
     public function doCheckoutShippingAddress(Browser $browser)
     {
-        if ($browser->element('shipping_address_select')) {
-            $browser->select('shipping_address_select', '')
+        try {
+            $browser->select('@shipping_address_select', '')
                 ->waitUntilIdle();
+        } catch (Exception $e) {
+            // How Dusk internally handles nonexistent elements.
         }
 
         $browser
