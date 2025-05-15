@@ -1,6 +1,8 @@
 <script>
 import Client from '@searchkit/instantsearch-client'
 import Searchkit from 'searchkit'
+import { instantsearchMiddlewares } from '../../stores/useInstantsearchMiddlewares'
+import { createInsightsMiddleware } from 'instantsearch.js/es/middlewares/createInsightsMiddleware'
 
 export default {
     data: () => ({
@@ -38,6 +40,29 @@ export default {
 
         async getSearchSettings() {
             return config.searchkit
+        },
+
+        getMiddlewares() {
+            return instantsearchMiddlewares
+        },
+    },
+    computed: {
+        middlewares() {
+            return [
+                createInsightsMiddleware({
+                    insightsClient: null,
+                    onEvent: (event) => {
+                        this.$emit('insights-event:' + event.insightsMethod, event)
+                        this.$el.dispatchEvent(
+                            new CustomEvent('insights-event:' + event.insightsMethod, {
+                                bubbles: true,
+                                detail: { insightsEvent: event },
+                            }),
+                        )
+                    },
+                }),
+                ...this.getMiddlewares(),
+            ]
         },
     },
 }

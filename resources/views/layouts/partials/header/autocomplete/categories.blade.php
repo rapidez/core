@@ -1,4 +1,7 @@
 <ais-index v-bind:index-name="config.index.category">
+    @if ($size = Arr::get($fields, 'size'))
+        <ais-configure :hits-per-page.camel="{{ $size }}" />
+    @endif
     <ais-hits v-slot="{ items }">
         <div class="border-b py-2.5" v-if="items && items.length">
             <x-rapidez::autocomplete.title>

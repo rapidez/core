@@ -1,9 +1,9 @@
 <ais-sort-by :items="Object.values(config.searchkit.sorting)">
     <template v-slot="{ items, currentRefinement, refine }">
-        <x-rapidez::input.select
+        <select
             v-bind:value="items.find(item => item.value === currentRefinement)?.value"
             v-on:change="event => refine(event.target.value)"
-            class="pr-8"
+            class="py-0 pr-5 border-none text text-sm focus:outline-none focus:ring-0 focus:ring-offset-0 custom-select"
         >
             <option
                 v-for="item in items"
@@ -12,6 +12,6 @@
             >
                 @{{ item.label }}
             </option>
-        </x-rapidez::input.select>
+        </select>
     </template>
 </ais-sort-by>

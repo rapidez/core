@@ -5,7 +5,7 @@
         'v-bind:hit' => $item,
         'attribute' => $attribute,
         'highlighted-tag-name' => $highlightTag,
-    ]) }}/>
+    ]) }}></ais-highlight>
 @else
     <span {{ $attributes }} v-text="{{ $item }}.{{ $attribute }}"></span>
 @endif

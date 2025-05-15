@@ -1,4 +1,4 @@
-<ais-clear-refinements>
+<ais-clear-refinements v-bind:excluded-attributes="[...categoryAttributes, 'query']">
     <template v-slot="{ canRefine, refine, createURL }">
         <div v-show="canRefine" class="flex flex-wrap items-baseline justify-between gap-2 w-full pb-2">
             <div class="font-medium text-base">
@@ -6,6 +6,7 @@
             </div>
             <a
                 v-bind:href="createURL()"
+                v-if="canRefine"
                 v-on:click.prevent="refine"
                 class="text-sm text-muted transition-all hover:underline"
             >
@@ -32,8 +33,9 @@
                     <a
                         v-bind:href="createURL(refinement)"
                         v-on:click.prevent="item.refine(refinement)"
-                        class="flex items-center gap-1 p-1 text-xs rounded-lg bg transition hover:opacity-80"
+                        class="flex items-center gap-1 p-1.5 text-xs font-medium text-white rounded-full bg-active transition hover:opacity-80"
                     >
+                        <x-heroicon-o-x-mark class="size-3.5 shrink-0 stroke-2"/>
                         @{{ item.filter.name }}:
                         <template v-if="false"></template>
                         @include('rapidez::listing.partials.filter.selected.boolean')
@@ -41,7 +43,6 @@
                         <template v-else>
                             @{{ refinement.label }}
                         </template>
-                        <x-heroicon-o-x-mark class="size-3 shrink-0"/>
                     </a>
                 </li>
             </template>

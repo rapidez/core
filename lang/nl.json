@@ -88,7 +88,8 @@
     "Sign up for our newsletter to stay up to date.": "Meld je aan voor onze nieuwsbrief om op de hoogte te blijven.",
     "Sorry! No image": "Sorry! Geen afbeelding",
     "Sorry! This product is currently out of stock.": "Sorry! Dit product is momenteel niet op voorraad.",
-    "Sorry! We did not find any products.": "Sorry! We hebben geen producten gevonden.",
+    "No products found.": "Geen producten gevonden.",
+    "Here are some suggestions:": "Hier zijn enkele suggesties:",
     "Specifications": "Specificaties",
     "Street": "Straat",
     "Subscribe": "Inschrijven",
@@ -105,6 +106,7 @@
     "Total": "Totaal",
     "Update": "Update",
     "Use other search terms": "Andere zoektermen te gebruiken",
+    "Previous Searches": "Vorige zoekopdrachten",
     "View all products": "Bekijk alle producten",
     "Want product news and updates?": "Wil je productnieuws en updates?",
     "We care about the protection of your data. Read our": "Wij geven om de bescherming van uw gegevens. Lees onze",
@@ -123,5 +125,6 @@
     "Previous Page": "Vorige pagina",
     "Page": "Pagina",
     "Next Page": "Volgende pagina",
-    "Last Page": "Laatste pagina"
+    "Last Page": "Laatste pagina",
+    "Clear the search query": "De zoekopdracht wissen"
 }

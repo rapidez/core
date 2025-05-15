@@ -25,7 +25,7 @@
                         <label
                             v-else
                             class="block border px-3 py-1.5 rounded-md cursor-pointer text-sm text-muted font-medium hover:border-emphasis"
-                            v-bind:class="{ 'bg-severe-emphasis !border-severe-emphasis text-white': item.isRefined }"
+                            v-bind:class="{ 'bg-active !border-active text-white': item.isRefined }"
                             v-bind:style="{ background: item.swatch?.swatch ?? 'none' }"
                         >
                             @{{ item.swatch?.swatch ?? item.value }}

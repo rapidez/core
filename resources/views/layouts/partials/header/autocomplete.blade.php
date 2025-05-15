@@ -1,17 +1,16 @@
-<autocomplete v-on:mounted="() => window.document.getElementById('autocomplete-input').focus()" v-slot="{ searchClient}">
+<autocomplete v-on:mounted="() => window.document.getElementById('autocomplete-input').focus()" v-slot="{ searchClient, middlewares, searchHistory }">
     <div class="relative w-full">
         <ais-instant-search
             v-if="searchClient"
             :search-client="searchClient"
-            :index-name="config.index.products"
+            :middlewares="middlewares"
+            :index-name="config.index.product"
             class="contents"
-            v-bind:search-client="searchClient"
-            v-bind:index-name="config.index.product"
             v-cloak
         >
             <div class="contents">
-                <ais-configure :hits-per-page.camel="3" />
-                <div class="searchbox">
+                <ais-configure :hits-per-page.camel="{{ config('rapidez.frontend.autocomplete.size', 3) }}" />
+                <div class="searchbox group/autocomplete">
                     <ais-search-box>
                         <template v-slot="{ currentRefinement, isSearchStalled, refine }">
                             <x-rapidez::autocomplete.input
@@ -21,13 +20,15 @@
                                     $root.autocompleteFacadeQuery = null;
                                 }"
                                 v-on:input="refine($event.currentTarget.value)"
+                                list="search-history"
                             />
-                            <div v-if="currentRefinement" class="absolute inset-x-0 top-14 bg-white border rounded-md z-header-autocomplete">
+                            <div v-bind:class="{hidden: !currentRefinement}" class="absolute inset-x-0 top-full mt-1 bg-white border rounded-md z-header-autocomplete group-has-[:focus]/autocomplete:block hover:block">
                                 @include('rapidez::layouts.partials.header.autocomplete.results')
                             </div>
-                            <div v-if="currentRefinement" class="fixed inset-0 bg-backdrop z-header-autocomplete-overlay"></div>
+                            <div v-if="currentRefinement" v-on:click="refine('')" class="fixed inset-0 bg-backdrop z-header-autocomplete-overlay"></div>
                         </template>
                     </ais-search-box>
+                    <ais-stats-analytics></ais-stats-analytics>
                 </div>
             </div>
         </ais-instant-search>

@@ -13,12 +13,16 @@
     )
 @endPushOnce
 
-<div id="products" class="flex flex-col gap-3 *:flex-wrap *:gap-3 *:max-sm:gap-y-3 *:max-md:justify-end">
-    @include('rapidez::listing.partials.toolbar')
-
+<div id="products" class="flex flex-col max-lg:mt-3 max-lg:flex-wrap">
+    <x-rapidez::button.secondary for="category-filters-slideover" class="w-full lg:hidden">
+        @lang('Filters')
+    </x-rapidez::button.secondary>
+    <div class="mt-2 mb-4 *:flex-wrap *:gap-3 *:max-sm:gap-y-3 *:max-md:justify-end">
+        @include('rapidez::listing.partials.toolbar')
+    </div>
     <ais-hits>
         <template v-slot="{ items }">
-            <div v-if="items.length" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 md:gap-5 overflow-hidden">
+            <div v-if="items && items.length" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 md:gap-5 overflow-hidden">
                 <template v-for="(item, count) in items">
                     @include('rapidez::listing.partials.item')
                 </template>
