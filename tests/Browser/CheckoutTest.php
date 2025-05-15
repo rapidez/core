@@ -96,8 +96,12 @@ class CheckoutTest extends DuskTestCase
 
     public function doCheckoutShippingAddress(Browser $browser)
     {
+        if ($browser->element('shipping_address_select')) {
+            $browser->select('shipping_address_select', '');
+        }
+
         $browser
-            ->type('shipping_firstname', 'Bruce')
+            ->type('shipping_firstname', 'Bruce' . mt_rand())
             ->type('shipping_lastname', 'Wayne')
             ->type('shipping_postcode', '72000')
             ->type('shipping_housenumber', '1007')
