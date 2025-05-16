@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Rapidez\Core\Actions\CollectFrontendTranslations;
 use Rapidez\Core\Facades\Rapidez;
 
 class ConfigComposer
@@ -63,7 +64,7 @@ class ConfigComposer
             'cachekey'             => Cache::rememberForever('cachekey', fn () => md5(Str::random())),
             'redirect_cart'        => (bool) Rapidez::config('checkout/cart/redirect_to_cart'),
             'show_swatches'        => (bool) Rapidez::config('catalog/frontend/show_swatches_in_product_list'),
-            'translations'         => __('rapidez::frontend'),
+            'translations'         => CollectFrontendTranslations::collect(),
             'recaptcha'            => Rapidez::config('recaptcha_frontend/type_recaptcha_v3/public_key', null, true),
             'searchable'           => array_merge($searchableAttributes, config('rapidez.indexer.searchable')),
             'street_lines'         => Rapidez::config('customer/address/street_lines'),
