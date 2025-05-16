@@ -70,7 +70,7 @@ input[type='search']::-webkit-search-results-decoration {
 }
 
 .details-content\:transition-\[height\,content-visibility\]::details-content {
-    transition-property: height,content-visibility;
+    transition-property: height, content-visibility;
 }
 
 .details-content\:transition-discrete::details-content {
