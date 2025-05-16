@@ -41,17 +41,16 @@
         </template>
     </template>
 
+    <x-rapidez::summary.divider />
+
     <template v-if="cart.prices?.discounts?.length">
         <template v-for="discount in cart.prices.discounts">
-            <x-rapidez::summary.divider />
             <x-rapidez::summary.row>
                 <x-rapidez::summary.title>@{{ discount.label }}</x-rapidez::summary.title>
                 <x-rapidez::summary.value class="text-green-700 font-semibold">- @{{ discount.amount.value | price }}</x-rapidez::summary.value>
             </x-rapidez::summary.row>
         </template>
     </template>
-
-    <x-rapidez::summary.divider />
 
     <x-rapidez::summary.row>
         <x-rapidez::summary.title class="text-base font-bold">@lang('Total')</x-rapidez::summary.title>
