@@ -6,11 +6,11 @@
     :limit="6"
 >
     <template v-slot="{ items, refine, createURL, isShowingMore, toggleShowMore, canToggleShowMore }">
-        <div v-show="items.length" class="relative pb-5">
-            <x-rapidez::filter.heading>
-                <x-slot:title>
-                    @lang('Category')
-                </x-slot:title>
+        <x-rapidez::details.filter v-show="items.length" :canToggleShowMore="true">
+            <x-slot:summary>
+                @lang('Category')
+            </x-slot:summary>
+            <x-slot:content>
                 <recursion :data="items" v-slot="{ data, components }" class="text-base/5">
                     <ul class="relative before:absolute before:left-0 before:border-l before:bottom-2.5 before:-translate-y-1 before:top-1.5 -my-1">
                         <li class="pl-6 relative before:absolute before:left-0 before:w-3 before:border-b before:top-3 before:translate-y-0.5" v-for="(item, index) in data" :key="item.value">
@@ -31,20 +31,7 @@
                         </li>
                     </ul>
                 </recursion>
-
-                <button
-                    v-if="canToggleShowMore"
-                    v-on:click="toggleShowMore"
-                    class="text-sm text-primary font-medium mt-3 hover:underline"
-                >
-                    <span v-if="isShowingMore" class="flex gap-x-4">
-                        @lang('Less options')
-                    </span>
-                    <span v-else class="flex gap-x-4">
-                        @lang('More options')
-                    </span>
-                </button>
-            </x-rapidez::filter.heading>
-        </div>
+            </x-slot:content>
+        </x-rapidez::details.filter>
     </template>
 </ais-hierarchical-menu>
