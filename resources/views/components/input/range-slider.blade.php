@@ -65,16 +65,13 @@
                     <div class="relative w-full">
                         <x-rapidez::input
                             required
-                            class="text-center arrows-hidden"
                             type="number"
-                            v-bind:min="range.min"
-                            v-bind:max="range.max"
-                            v-bind:placeholder="range.min"
                             v-bind:disabled="!canRefine"
-                            v-bind:value="currentRefinement.min ?? range.min"
-                            v-on:input="if (!$event.currentTarget.validationMessage) {
-                                refine({ min: Math.max($event.currentTarget.value, range.min), max: currentRefinement.max })
-                            }"
+                            v-bind:min="rangeInputScope.range.min"
+                            v-bind:max="rangeInputScope.range.max"
+                            v-model.lazy="rangeInputScope.minValue"
+                            v-on:input="rangeInputScope.updateRefinement"
+                            class="text-center arrows-hidden"
                         />
                         <span
                             class="absolute bottom-1/2 translate-y-1/2"
@@ -88,17 +85,13 @@
                     </div>
                     <div class="relative w-full">
                         <x-rapidez::input
-                            required
-                            class="text-center arrows-hidden"
                             type="number"
-                            v-bind:min="range.min"
-                            v-bind:max="range.max"
-                            v-bind:placeholder="range.max"
                             v-bind:disabled="!canRefine"
-                            v-bind:value="currentRefinement.max ?? range.max"
-                            v-on:input="if (!$event.currentTarget.validationMessage) {
-                                refine({ min: currentRefinement.min, max: Math.min($event.currentTarget.value, range.max) })
-                            }"
+                            v-bind:min="rangeInputScope.range.min"
+                            v-bind:max="rangeInputScope.range.max"
+                            v-model.lazy="rangeInputScope.maxValue"
+                            v-on:input="rangeInputScope.updateRefinement"
+                            class="text-center arrows-hidden"
                         />
                         <span
                             class="absolute bottom-1/2 translate-y-1/2"
@@ -116,7 +109,7 @@
                         v-bind:disabled="!canRefine"
                         v-bind:min="rangeInputScope.range.min"
                         v-bind:max="rangeInputScope.range.max"
-                        v-model="rangeInputScope.minValue"
+                        v-model.lazy="rangeInputScope.minValue"
                         v-on:input="rangeInputScope.updateRefinement"
                         class="text-center arrows-hidden"
                     />
@@ -125,7 +118,7 @@
                         v-bind:disabled="!canRefine"
                         v-bind:min="rangeInputScope.range.min"
                         v-bind:max="rangeInputScope.range.max"
-                        v-model="rangeInputScope.maxValue"
+                        v-model.lazy="rangeInputScope.maxValue"
                         v-on:input="rangeInputScope.updateRefinement"
                         class="text-center arrows-hidden"
                     />
