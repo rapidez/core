@@ -10,6 +10,7 @@
             v-bind:src="'/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product' + images[active] + '.webp'"
             alt="{{ $product->name }}"
             class="max-h-full object-contain"
+            style="view-transition-name: image-{{ $product->sku }}"
             width="400"
             height="400"
         />
