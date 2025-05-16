@@ -26,21 +26,25 @@ return [
     'asc'       => 'oplopend',
     'desc'      => 'aflopend',
     'relevance' => 'Relevantie',
-    'newest'    => 'Nieuwste',
     'all'       => 'Alles',
+    'price'     => 'Prijs',
 
     'search' => [
         'title' => 'Zoeken naar',
     ],
 
     'sorting' => [
-        'price' => [
-            'asc'  => 'Prijs oplopend',
-            'desc' => 'Prijs aflopend',
+        'created_at' => [
+            'asc'  => 'Oudste',
+            'desc' => 'Nieuwste',
         ],
         'name' => [
             'asc'  => 'Naam A-Z',
             'desc' => 'Naam Z-A',
         ],
+    ],
+
+    'search' => [
+        'title' => 'Zoeken naar',
     ],
 ];

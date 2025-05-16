@@ -1,12 +1,17 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use Rapidez\Core\Facades\Rapidez;
+use Rapidez\Core\Http\Controllers\ConfigController;
 use Rapidez\Core\Http\Controllers\SignedCheckoutController;
 use Rapidez\Core\Http\Middleware\AuthenticateHealthCheck;
 
 Route::get('healthcheck', config('rapidez.routing.controllers.healthcheck'))->middleware(AuthenticateHealthCheck::class);
 Route::get('robots.txt', fn () => response(Rapidez::config('design/search_engine_robots/custom_instructions'))
     ->header('Content-Type', 'text/plain; charset=UTF-8'));
+Route::middleware('cache.headers:public;max_age=3600;s_maxage=3600;stale_while_revalidate=3600;etag')->group(function () {
+    Route::get('config.js', ConfigController::class)->name('config');
+});
 
 Route::middleware('web')->group(function () {
     Route::view('cart', 'rapidez::cart.overview')->name('cart');
