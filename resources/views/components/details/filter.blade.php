@@ -1,4 +1,4 @@
-@slots(['content', 'summary'])
+@slots(['content', 'summary', 'icon'])
 @props(['canToggleShowMore' => false])
 
 <x-rapidez::details open class="border-t" :$attributes>

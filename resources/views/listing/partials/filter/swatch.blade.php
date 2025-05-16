@@ -4,16 +4,19 @@
     :attribute="filter.code"
 >
     <template v-slot="{ items, refine, isShowingMore, toggleShowMore, canToggleShowMore }">
-        <x-rapidez::details.filter v-show="items.length">
+        <x-rapidez::details.filter v-show="items.length" :canToggleShowMore="true">
             <x-slot:content>
-                <ul class="flex flex-wrap gap-x-1.5 gap-y-2 items-center pr-14 pb-1">
+                <ul class="flex flex-wrap gap-x-1.5 gap-y-2 items-center pr-14">
                     <li v-for="item in withSwatches(items, filter)">
                         <label
                             v-if="filter.visual_swatch"
-                            class="block size-6 cursor-pointer flex border items-center justify-center hover:opacity-75 rounded-full border-black/15"
-                            v-bind:class="{ 'ring-black ring-1 ring-offset-2': item.isRefined }"
-                            v-bind:style="{ background: item.swatch?.swatch ?? 'none' }"
+                            class="block cursor-pointer flex items-center justify-center p-1 rounded-full ring-inset ring-1"
+                            v-bind:class="{
+                                'ring-default ring-1 hover:ring-emphasis': !item.isRefined,
+                                'ring-active ring-2': item.isRefined  
+                            }"
                         >
+                            <span class="size-6 block border border-black/15 rounded-full m-px" v-bind:style="{ background: item.swatch?.swatch ?? 'none' }"></span>
                             <input
                                 type="checkbox"
                                 v-bind:checked="item.isRefined"
@@ -21,6 +24,7 @@
                                 class="hidden"
                             >
                         </label>
+                        
                         <label
                             v-else
                             class="block border px-3 py-1.5 rounded-md cursor-pointer text-sm text-muted font-medium hover:border-emphasis"

@@ -19,7 +19,7 @@
                 </x-slot:title>
             </x-rapidez::listing>
         @else
-            <div class="flex gap-x-12 gap-y-3 max-lg:flex-col">
+            <div class="scroll-mt-4 flex gap-x-12 gap-y-3 max-lg:flex-col">
                 <div class="lg:w-80 shrink-0">
                     <h1 class="mb-5 text-3xl font-medium">{{ $category->name }}</h1>
                     @widget('sidebar.main', 'anchor_categories', 'catalog_category_view_type_layered', $category->entity_id)
