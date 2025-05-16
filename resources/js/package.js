@@ -171,8 +171,8 @@ function init() {
                     document.dispatchEvent(event)
                 })
             },
-            // Chromium handles task scheduling differently than Firefox, so we need to use a different event for the destroy event.
-            destroyEvent: !!window.chrome ? 'turbo:before-cache-timeout' : 'turbo:before-cache',
+            // If we have view transitions, we need to make sure we destroy after render.
+            destroyEvent: !!document.startViewTransition ? 'turbo:before-cache-timeout' : 'turbo:before-cache',
         })
 
         setTimeout(() => {
