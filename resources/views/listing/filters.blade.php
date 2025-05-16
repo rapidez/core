@@ -26,7 +26,7 @@
             @include('rapidez::listing.partials.filter.boolean')
             @include('rapidez::listing.partials.filter.select')
         </template>
-        
+
         <div class="bg-white -mx-5 p-5 sticky bottom-0 lg:hidden">
             <x-rapidez::button.primary for="category-filters-slideover" class="w-full text-sm">
                 @lang('Show results')

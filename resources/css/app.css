@@ -50,7 +50,6 @@ input[type='search']::-webkit-search-results-decoration {
     field-sizing: content;
 }
 
-
 @supports (interpolate-size: allow-keywords) {
     :root {
         interpolate-size: allow-keywords;
