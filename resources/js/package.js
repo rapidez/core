@@ -171,7 +171,8 @@ function init() {
                     document.dispatchEvent(event)
                 })
             },
-            destroyEvent: 'turbo:before-cache-timeout',
+            // Chromium handles task scheduling differently than Firefox, so we need to use a different event for the destroy event.
+            destroyEvent: !!window.chrome ? 'turbo:before-cache-timeout' : 'turbo:before-cache',
         })
 
         setTimeout(() => {
