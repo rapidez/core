@@ -1,0 +1,1 @@
+<div {{ $attributes->twMerge('border-t mt-2.5 mb-2 w-full') }}></div>
