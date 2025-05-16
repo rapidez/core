@@ -6,7 +6,7 @@
     >
         <img
             {{-- src should always be above v-bind:src --}}
-            src="/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product/{{ Arr::first($product->images) }}.webp"
+            src="/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product{{ Arr::first($product->images) }}.webp"
             v-bind:src="'/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product' + images[active] + '.webp'"
             alt="{{ $product->name }}"
             class="max-h-full object-contain"
