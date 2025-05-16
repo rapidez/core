@@ -13,6 +13,7 @@
                     class="mb-3 h-48 w-full rounded-t object-contain"
                     :alt="item.name"
                     :loading="config.category && count <= 4 ? 'eager' : 'lazy'"
+                    v-bind:style="{ 'view-transition-name': 'image-' + item.sku }"
                     width="200"
                     height="200"
                 />
