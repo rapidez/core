@@ -5,7 +5,7 @@ import InstantSearch from 'vue-instantsearch/vue2/es/src/components/InstantSearc
 import Hits from 'vue-instantsearch/vue2/es/src/components/Hits.js'
 import Configure from 'vue-instantsearch/vue2/es/src/components/Configure.js'
 import highlight from 'vue-instantsearch/vue2/es/src/components/Highlight.vue.js'
-import SearchBox from 'vue-instantsearch/vue2/es/src/components/SearchBox.vue.js'
+import Autocomplete from 'vue-instantsearch/vue2/es/src/components/Autocomplete.vue.js'
 import Index from 'vue-instantsearch/vue2/es/src/components/Index.js'
 import Stats from 'vue-instantsearch/vue2/es/src/components/Stats.vue.js'
 import StateResults from 'vue-instantsearch/vue2/es/src/components/StateResults.vue.js'
@@ -22,7 +22,7 @@ export default {
         Hits,
         Configure,
         highlight,
-        SearchBox,
+        Autocomplete,
         Index,
         Stats,
         StateResults,

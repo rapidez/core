@@ -5,6 +5,7 @@ return [
     // Attributes that are used to highlight the search results.
     'highlight_attributes' => [
         'name',
+        'query_text',
     ],
 
     // Additional attributes that are used to search the results.
