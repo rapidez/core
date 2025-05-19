@@ -68,7 +68,7 @@ export default {
                     dsl.push(this.relevanceQueryMatch(query, search_attributes))
                 }
 
-                return dsl;
+                return dsl
             }
 
             return config
@@ -78,9 +78,9 @@ export default {
             // Copied from searchkit.js default behavior when getQuery is not defined.
             const getFieldsMap = (boostMultiplier) => {
                 return search_attributes.map((attribute) => {
-                    return typeof attribute === "string" ? attribute : `${attribute.field}^${(attribute.weight || 1) * boostMultiplier}`;
-                });
-            };
+                    return typeof attribute === 'string' ? attribute : `${attribute.field}^${(attribute.weight || 1) * boostMultiplier}`
+                })
+            }
 
             return {
                 bool: {
@@ -92,28 +92,28 @@ export default {
                                         multi_match: {
                                             query,
                                             fields: getFieldsMap(1),
-                                            fuzziness: "AUTO:4,8"
-                                        }
+                                            fuzziness: 'AUTO:4,8',
+                                        },
                                     },
                                     {
                                         multi_match: {
                                             query,
                                             fields: getFieldsMap(0.5),
-                                            type: "bool_prefix"
-                                        }
-                                    }
-                                ]
-                            }
+                                            type: 'bool_prefix',
+                                        },
+                                    },
+                                ],
+                            },
                         },
                         {
                             multi_match: {
                                 query,
-                                type: "phrase",
-                                fields: getFieldsMap(2)
-                            }
-                        }
-                    ]
-                }
+                                type: 'phrase',
+                                fields: getFieldsMap(2),
+                            },
+                        },
+                    ],
+                },
             }
         },
 
