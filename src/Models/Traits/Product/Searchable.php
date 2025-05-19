@@ -122,23 +122,21 @@ trait Searchable
     /**
      * {@inheritdoc}
      */
-    public static function getIndexMappings(): ?array
+    public function indexMapping(): array
     {
         return [
-            'properties' => [
-                'price' => [
-                    'type' => 'double',
-                ],
-                'children' => [
-                    'type' => 'flattened',
-                ],
-                'grouped' => [
-                    'type' => 'flattened',
-                ],
-                'positions' => [
-                    'type' => 'flattened',
-                ],
-            ],
+            'price' => 'double',
+            'children' => 'flattened',
+            'grouped' => 'flattened',
+            'positions' => 'flattened',
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function synonymFields(): array
+    {
+        return ['name'];
     }
 }

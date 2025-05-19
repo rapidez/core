@@ -229,7 +229,7 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function bootScout(): self
     {
-        config()->set('scout.driver', 'Matchish\\ScoutElasticSearch\\Engines\\ElasticSearchEngine');
+        config()->set('scout.driver', 'elastic');
 
         return $this;
     }

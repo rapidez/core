@@ -23,11 +23,11 @@
         "illuminate/events": "^11.0|^12.0",
         "illuminate/queue": "^11.0|^12.0",
         "illuminate/support": "^11.0|^12.0",
+        "jeroen-g/explorer": "^4.1",
         "justbetter/laravel-http3earlyhints": "^1.4",
         "laravel/scout": "^10.14",
         "lcobucci/clock": "^2.0|^3.2",
         "lcobucci/jwt": "^4.0|^5.3",
-        "matchish/laravel-scout-elasticsearch": "^7.11",
         "rapidez/blade-components": "^1.8",
         "rapidez/blade-directives": "^1.1",
         "rapidez/laravel-multi-cache": "^2.0",
@@ -62,8 +62,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Rapidez\\Core\\RapidezServiceProvider",
-                "Matchish\\ScoutElasticSearch\\ElasticSearchServiceProvider"
+                "Rapidez\\Core\\RapidezServiceProvider"
             ],
             "aliases": {
                 "Rapidez": "Rapidez\\Core\\Facades\\Rapidez"

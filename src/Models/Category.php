@@ -5,11 +5,14 @@ namespace Rapidez\Core\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use JeroenG\Explorer\Application\Aliased;
+use JeroenG\Explorer\Application\Explored;
+use JeroenG\Explorer\Application\IndexSettings;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
 use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
 use Rapidez\Core\Models\Traits\Searchable;
 
-class Category extends Model
+class Category extends Model implements Explored, IndexSettings, Aliased
 {
     use HasAlternatesThroughRewrites;
     use Searchable;

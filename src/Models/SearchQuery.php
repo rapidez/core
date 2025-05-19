@@ -3,10 +3,13 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use JeroenG\Explorer\Application\Aliased;
+use JeroenG\Explorer\Application\Explored;
+use JeroenG\Explorer\Application\IndexSettings;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
 use Rapidez\Core\Models\Traits\Searchable;
 
-class SearchQuery extends Model
+class SearchQuery extends Model implements Explored, IndexSettings, Aliased
 {
     use Searchable;
 

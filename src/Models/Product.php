@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use JeroenG\Explorer\Application\Aliased;
 use Rapidez\Core\Casts\Children;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
@@ -26,8 +27,10 @@ use Rapidez\Core\Models\Traits\Product\CastSuperAttributes;
 use Rapidez\Core\Models\Traits\Product\Searchable;
 use Rapidez\Core\Models\Traits\Product\SelectAttributeScopes;
 use TorMorten\Eventy\Facades\Eventy;
+use JeroenG\Explorer\Application\Explored;
+use JeroenG\Explorer\Application\IndexSettings;
 
-class Product extends Model
+class Product extends Model implements Explored, IndexSettings, Aliased
 {
     use CastMultiselectAttributes;
     use CastSuperAttributes;
