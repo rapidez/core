@@ -36,7 +36,7 @@ class IndexCommand extends Command
 
             $this->line('Store: ' . $store['name']);
 
-            foreach($types as $model) {
+            foreach ($types as $model) {
                 $this->call('elastic:update', [
                     'index' => (new $model)->searchableAs(),
                 ]);

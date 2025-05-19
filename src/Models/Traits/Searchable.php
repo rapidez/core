@@ -56,17 +56,17 @@ trait Searchable
         $synonymFields = Eventy::filter('index.' . static::getIndexName() . '.synonymfields', $this->synonymFields());
 
         $mappings = collect($synonymFields)
-            ->mapWithKeys(fn($field) => [
+            ->mapWithKeys(fn ($field) => [
                 $field => [
-                    'type' => 'text',
+                    'type'     => 'text',
                     'analyzer' => 'synonym',
-                    'fields' => [
+                    'fields'   => [
                         'keyword' => [
-                            'type' => 'keyword',
+                            'type'         => 'keyword',
                             'ignore_above' => 256,
                         ],
                     ],
-                ]
+                ],
             ])
             ->merge($this->indexMapping())
             ->toArray();
@@ -83,7 +83,7 @@ trait Searchable
             ->pluck('synonyms')
             ->toArray();
 
-        $synonymFilter = new SynonymFilter();
+        $synonymFilter = new SynonymFilter;
         $synonymFilter->setSynonyms($synonyms);
         $filters = Eventy::filter('index.' . static::getIndexName() . '.settings.filters', [$synonymFilter]);
 
@@ -91,9 +91,9 @@ trait Searchable
         $synonymAnalyzer->setFilters(['lowercase', $synonymFilter]);
         $analyzers = Eventy::filter('index.' . static::getIndexName() . '.settings.analyzers', [$synonymAnalyzer]);
 
-        $analysis = new Analysis();
+        $analysis = new Analysis;
 
-        foreach($filters as $filter) {
+        foreach ($filters as $filter) {
             $analysis->addFilter($filter);
         }
 

@@ -9,7 +9,7 @@ use JeroenG\Explorer\Application\IndexSettings;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
 use Rapidez\Core\Models\Traits\Searchable;
 
-class SearchQuery extends Model implements Explored, IndexSettings, Aliased
+class SearchQuery extends Model implements Aliased, Explored, IndexSettings
 {
     use Searchable;
 

@@ -12,7 +12,7 @@ use Rapidez\Core\Models\Scopes\IsActiveScope;
 use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
 use Rapidez\Core\Models\Traits\Searchable;
 
-class Category extends Model implements Explored, IndexSettings, Aliased
+class Category extends Model implements Aliased, Explored, IndexSettings
 {
     use HasAlternatesThroughRewrites;
     use Searchable;

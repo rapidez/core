@@ -125,9 +125,9 @@ trait Searchable
     public function indexMapping(): array
     {
         return [
-            'price' => 'double',
-            'children' => 'flattened',
-            'grouped' => 'flattened',
+            'price'     => 'double',
+            'children'  => 'flattened',
+            'grouped'   => 'flattened',
             'positions' => 'flattened',
         ];
     }
