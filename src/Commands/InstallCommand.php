@@ -210,6 +210,7 @@ class InstallCommand extends Command
                 null                   => 'No thanks',
                 'postcodeservice'      => 'Postcodeservice.com directly',
                 'experius-postcode-nl' => 'Postcode.nl, requires the `experius/module-postcode` Magento module',
+                'pro6pp-postcode'      => 'pro6pp.nl directly',
             ],
         );
 
