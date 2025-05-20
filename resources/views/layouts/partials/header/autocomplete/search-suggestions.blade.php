@@ -5,8 +5,9 @@
         :search-client="searchSuggestions.searchClient"
     >
         <ais-configure
-            :query="currentRefinement"
+            :query="currentRefinement || ' '"
             :hits-per-page.camel="{{ Arr::get($fields, 'size', config('rapidez.frontend.autocomplete.size', 3)) }}"
+            filters="display_in_terms:1"
         />
         <ais-hits v-slot="{ items }">
             <div class="border-b py-2.5" v-if="items && items.length">
