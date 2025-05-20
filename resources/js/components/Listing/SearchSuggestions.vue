@@ -64,7 +64,7 @@ export default {
                     },
                 ]
 
-                if (!this.forceResults && query && query !== " ") {
+                if (!this.forceResults && query && query !== ' ') {
                     dsl.push(this.relevanceQueryMatch(query, search_attributes))
                 }
 
@@ -131,13 +131,13 @@ export default {
                     },
                 ],
                 result_attributes: ['query_text', 'redirect', 'popularity', 'num_results', 'display_in_terms', 'is_processed'],
-                'filter_attributes': [
-                    {'attribute': 'query_text', 'field': 'query_text', 'type': 'string'},
-                    {'attribute': 'redirect', 'field': 'redirect', 'type': 'string'},
-                    {'attribute': 'popularity', 'field': 'popularity', 'type': 'numeric'},
-                    {'attribute': 'num_results', 'field': 'num_results', 'type': 'numeric'},
-                    {'attribute': 'display_in_terms', 'field': 'display_in_terms', 'type': 'numeric'},
-                    {'attribute': 'is_processed', 'field': 'is_processed', 'type': 'numeric'},
+                filter_attributes: [
+                    { attribute: 'query_text', field: 'query_text', type: 'string' },
+                    { attribute: 'redirect', field: 'redirect', type: 'string' },
+                    { attribute: 'popularity', field: 'popularity', type: 'numeric' },
+                    { attribute: 'num_results', field: 'num_results', type: 'numeric' },
+                    { attribute: 'display_in_terms', field: 'display_in_terms', type: 'numeric' },
+                    { attribute: 'is_processed', field: 'is_processed', type: 'numeric' },
                 ],
             }
         },
