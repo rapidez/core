@@ -13,7 +13,7 @@
 
 <autocomplete
     v-else
-    v-on:mounted="() => window.document.getElementById('autocomplete-input').focus()"
+    v-on:mounted="() => window.requestAnimationFrame(() => window.document.getElementById('autocomplete-input').focus())"
     v-bind:additionals="{{ json_encode(config('rapidez.frontend.autocomplete.additionals')) }}"
     v-bind:debounce="{{ config('rapidez.frontend.autocomplete.debounce') }}"
     v-bind:size="{{ config('rapidez.frontend.autocomplete.size') }}"
