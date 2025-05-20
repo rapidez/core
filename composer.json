@@ -19,10 +19,10 @@
         "php": "^8.2",
         "blade-ui-kit/blade-heroicons": "^2.6",
         "http-interop/http-factory-guzzle": "^1.2",
-        "illuminate/database": "^11.0|^12.0",
-        "illuminate/events": "^11.0|^12.0",
-        "illuminate/queue": "^11.0|^12.0",
-        "illuminate/support": "^11.0|^12.0",
+        "illuminate/database": "^12.0",
+        "illuminate/events": "^12.0",
+        "illuminate/queue": "^12.0",
+        "illuminate/support": "^12.0",
         "justbetter/laravel-http3earlyhints": "^1.4",
         "laravel/scout": "^10.14",
         "lcobucci/clock": "^2.0|^3.2",
@@ -30,7 +30,7 @@
         "matchish/laravel-scout-elasticsearch": "^7.11",
         "rapidez/blade-components": "^1.8",
         "rapidez/blade-directives": "^1.1",
-        "rapidez/laravel-multi-cache": "^2.0",
+        "illuminate/cache": "^12.9",
         "tormjens/eventy": "^0.8"
     },
     "require-dev": {
