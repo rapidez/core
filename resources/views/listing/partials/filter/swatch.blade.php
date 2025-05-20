@@ -11,7 +11,7 @@
                     <li v-for="item in withSwatches(items, filter)">
                         <label
                             v-if="filter.visual_swatch"
-                            class="block size-6 cursor-pointer flex border items-center justify-center hover:opacity-75 rounded-full border-black/15"
+                            class="block size-6 cursor-pointer flex border items-center justify-center hover:opacity-75 has-[:focus]:opacity-75 rounded-full border-black/15"
                             v-bind:class="{ 'ring-black ring-1 ring-offset-2': item.isRefined }"
                             v-bind:style="{ background: item.swatch?.swatch ?? 'none' }"
                         >
@@ -19,12 +19,12 @@
                                 type="checkbox"
                                 v-bind:checked="item.isRefined"
                                 v-on:change="refine(item.value)"
-                                class="hidden"
+                                class="opacity-0 size-0"
                             >
                         </label>
                         <label
                             v-else
-                            class="block border px-3 py-1.5 rounded-md cursor-pointer text-sm text-muted font-medium hover:border-emphasis"
+                            class="block border px-3 py-1.5 rounded-md cursor-pointer text-sm text-muted font-medium hover:border-emphasis has-[:focus]:border-emphasis"
                             v-bind:class="{ 'bg-active !border-active text-white': item.isRefined }"
                             v-bind:style="{ background: item.swatch?.swatch ?? 'none' }"
                         >
@@ -33,7 +33,7 @@
                                 type="checkbox"
                                 v-bind:checked="item.isRefined"
                                 v-on:change="refine(item.value)"
-                                class="hidden"
+                                class="opacity-0 size-0"
                             >
                         </label>
                     </li>
