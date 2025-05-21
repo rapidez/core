@@ -5,7 +5,7 @@
     <label class="flex items-center gap-x-1.5">
         @include('rapidez::listing.partials.toolbar.pages')
     </label>
-    <div class="max-md:hidden">
+    <div>
         @include('rapidez::listing.partials.toolbar.sorting')
     </div>
 </div>

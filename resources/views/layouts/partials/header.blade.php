@@ -1,20 +1,18 @@
-<header class="relative mb-5 max-md:pb-4 border-b shadow z-header">
+<header class="relative mb-6 max-md:pb-4 border-b shadow z-header pt-3">
     <div class="container flex flex-wrap items-center max-sm:px-3">
         <input id="navigation" class="peer hidden" type="checkbox" />
-        <div class="py-2">
-            <div class="mr-3 flex items-center text-xl max-sm:flex-row-reverse sm:text-3xl">
-                <a href="{{ url('/') }}" aria-label="@lang('Go to home')">
-                    <span class="hidden sm:inline">
-                        <img src="https://raw.githubusercontent.com/rapidez/art/master/logo.svg" alt="Rapidez logo" height="48" width="152">
-                    </span>
-                    <span class="inline sm:hidden">
-                        <img src="https://raw.githubusercontent.com/rapidez/art/master/r.svg" alt="Rapidez logo" height="30" width="30">
-                    </span>
-                </a>
-                <label for="navigation" class="mr-3 cursor-pointer sm:hidden">
-                    <x-heroicon-o-bars-3 class="inline w-7" />
-                </label>
-            </div>
+        <div class="mr-5 flex items-center text-xl max-sm:flex-row-reverse sm:text-3xl">
+            <a href="{{ url('/') }}" aria-label="@lang('Go to home')">
+                <span class="hidden sm:inline">
+                    <img src="https://raw.githubusercontent.com/rapidez/art/master/logo.svg" alt="Rapidez logo" height="48" width="152">
+                </span>
+                <span class="inline sm:hidden">
+                    <img src="https://raw.githubusercontent.com/rapidez/art/master/r.svg" alt="Rapidez logo" height="30" width="30">
+                </span>
+            </a>
+            <label for="navigation" class="mr-3 cursor-pointer sm:hidden">
+                <x-heroicon-o-bars-3 class="inline w-7" />
+            </label>
         </div>
         <div class="flex items-center h-12 max-md:order-last max-md:w-full md:max-w-lg md:flex-1">
             @include('rapidez::layouts.partials.header.autocomplete')

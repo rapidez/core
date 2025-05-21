@@ -16,7 +16,7 @@
                                 'ring-active ring-2': item.isRefined
                             }"
                         >
-                            <span class="size-6 block border border-black/15 rounded-full m-px" v-bind:style="{ background: item.swatch?.swatch ?? 'none' }"></span>
+                            <span class="size-5 block border border-black/15 rounded-full m-px" v-bind:style="{ background: item.swatch?.swatch ?? 'none' }"></span>
                             <input
                                 type="checkbox"
                                 v-bind:checked="item.isRefined"

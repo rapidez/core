@@ -67,7 +67,7 @@
         </div>
     @endif
 
-    <div class="container flex flex-col gap-5">
+    <div class="container flex flex-col gap-5 my-24">
         <x-rapidez::productlist
             title="Related products"
             field="entity_id"
