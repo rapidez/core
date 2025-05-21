@@ -8,7 +8,7 @@
             'Hits.vue',
             'Highlight.vue',
             'Pagination.vue',
-            'Hits'
+            'Hits.js'
         ])
     )
 @endPushOnce
