@@ -74,10 +74,10 @@
                             class="text-center arrows-hidden"
                         />
                         <span
-                            class="absolute bottom-1/2 translate-y-1/2"
+                            class="absolute bottom-1/2 translate-y-1/2 font-light text-muted"
                             v-bind:class="{
-                                'left-2': $root.currencySymbolLocation === 'left',
-                                'right-2': $root.currencySymbolLocation === 'right',
+                                'left-3': $root.currencySymbolLocation === 'left',
+                                'right-3': $root.currencySymbolLocation === 'right',
                             }"
                         >
                             @{{ $root.currencySymbol }}
@@ -94,10 +94,10 @@
                             class="text-center arrows-hidden"
                         />
                         <span
-                            class="absolute bottom-1/2 translate-y-1/2"
+                            class="absolute bottom-1/2 translate-y-1/2 font-light text-muted"
                             v-bind:class="{
-                                'left-2': $root.currencySymbolLocation === 'left',
-                                'right-2': $root.currencySymbolLocation === 'right',
+                                'left-3': $root.currencySymbolLocation === 'left',
+                                'right-3': $root.currencySymbolLocation === 'right',
                             }"
                         >
                             @{{ $root.currencySymbol }}
