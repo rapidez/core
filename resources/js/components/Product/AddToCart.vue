@@ -394,9 +394,9 @@ export default {
 
     watch: {
         simpleProduct: {
-            handler(oldProduct, newProduct) {
+            handler(newProduct, oldProduct) {
                 if (newProduct.sku !== oldProduct.sku) {
-                    this.$root.$emit('product-super-attribute-change', product)
+                    this.$root.$emit('product-super-attribute-change', newProduct)
                 }
             }
         },
