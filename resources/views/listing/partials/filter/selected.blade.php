@@ -33,7 +33,7 @@
                     <a
                         v-bind:href="createURL(refinement)"
                         v-on:click.prevent="item.refine(refinement)"
-                        class="flex items-center gap-1 p-1.5 text-xs font-medium text-white rounded-full bg-active transition hover:opacity-80"
+                        class="flex items-center gap-1 p-1.5 text-xs font-medium text-white rounded-full bg-active transition hover:opacity-80 focus:outline-emphasis"
                     >
                         <x-heroicon-o-x-mark class="size-3.5 shrink-0 stroke-2"/>
                         @{{ item.filter.name }}:
