@@ -398,7 +398,7 @@ export default {
                 if (newProduct.sku !== oldProduct.sku) {
                     this.$root.$emit('product-super-attribute-change', newProduct)
                 }
-            }
+            },
         },
         customOptions: {
             handler() {
