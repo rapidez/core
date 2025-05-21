@@ -450,7 +450,7 @@ export default {
         refinementOptions() {
             // Options per super attribute that match the current refinements.
             return Object.fromEntries(
-                Object.entries(this.product.super_attributes).map(([index, attribute]) => {
+                Object.entries(this.product?.super_attributes || {}).map(([index, attribute]) => {
                     return [
                         index,
                         (Object.entries(this.superRefinements).find(([key, value]) => key === attribute.code)?.[1] || []).filter((val) =>

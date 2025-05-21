@@ -6,7 +6,7 @@
                     @include('rapidez::wishlist.button')
                 </div>
             @endif
-            <a :href="item.url | url" class="block">
+            <a :href="item.url | url" v-on:click="sendEvent('click', item, 'Hit Clicked')" class="block">
                 <img
                     v-if="addToCart.currentThumbnail"
                     :src="'/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + addToCart.currentThumbnail + '.webp'"
