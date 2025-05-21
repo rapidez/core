@@ -1,6 +1,23 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/3.8.0...3.8.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/3.9.0...3.9.0)
+## [3.9.0](https://github.com/rapidez/core/releases/tag/3.9.0) - 2025-05-21
+
+### Added
+
+- pro6pp package in the install command (#863)
+
+### Changed
+
+- GraphQL mutation update only changed variables with watch (#815)
+
+### Fixed
+
+- Turbo navigate back fix (#851)
+- Navigation fix on Firefox (#857)
+- Autocomplete focus error fix (#858)
+- Only fire product attribute change when it's changed (#864)
+
 ## [3.8.0](https://github.com/rapidez/core/releases/tag/3.8.0) - 2025-05-14
 
 ### Added
