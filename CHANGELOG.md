@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.24.0...2.24.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.24.1...2.24.1)
+## [2.24.1](https://github.com/rapidez/core/releases/tag/2.24.1) - 2025-05-21
+
+### Fixed
+
+- Only fire product attribute change when it's changed (#865)
+
 ## [2.24.0](https://github.com/rapidez/core/releases/tag/2.24.0) - 2025-05-02
 
 ### Changed
