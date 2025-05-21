@@ -6,14 +6,9 @@
     show-more
 >
     <template v-slot="{ items, refine, isShowingMore, toggleShowMore, canToggleShowMore }">
-        {{--
-        TODO: Why do we need this pb-4 in here?
-        We also have padding in the heading?
-        Maybe handle that in 1 place?
-        --}}
-        <div v-show="items.length" class="relative pb-5">
-            <x-rapidez::filter.heading>
-                <div class="flex flex-col *:py-1 first:*:pt-0 last:*:pb-0">
+        <x-rapidez::details.filter v-show="items.length" :canToggleShowMore="true">
+            <x-slot:content>
+                <div class="flex flex-col *:py-1 first:*:pt-0 last:*:pb-0 items-start">
                     <template v-for="item in items">
                         <x-rapidez::input.checkbox
                             v-bind:checked="item.isRefined"
@@ -29,20 +24,7 @@
                         </x-rapidez::input.checkbox>
                     </template>
                 </div>
-
-                <button
-                    v-if="canToggleShowMore"
-                    v-on:click="toggleShowMore"
-                    class="text-sm text-primary font-medium mt-3 hover:underline"
-                >
-                    <span v-if="isShowingMore" class="flex gap-x-4">
-                        @lang('Less options')
-                    </span>
-                    <span v-else class="flex gap-x-4">
-                        @lang('More options')
-                    </span>
-                </button>
-            </x-rapidez::filter.heading>
-        </div>
+            </x-slot:content>
+        </x-rapidez::details.filter>
     </template>
 </ais-refinement-list>
