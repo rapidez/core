@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core\Tests\Browser;
 
+use Exception;
 use Laravel\Dusk\Browser;
 use Rapidez\Core\Tests\DuskTestCase;
 
@@ -48,17 +49,20 @@ class CheckoutTest extends DuskTestCase
     public function doCheckout(Browser $browser, $email = false, $password = false, $register = false)
     {
         $this->doCheckoutLogin($browser, $email, $password, $register)
+            ->assertFormValid('form')
             ->click('@continue')
             ->waitUntilIdle();
 
         $this->doCheckoutShippingAddress($browser);
 
         $this->doCheckoutShippingMethod($browser)
+            ->assertFormValid('form')
             ->scrollIntoView('@continue')
             ->click('@continue') // go to payment step
             ->waitUntilIdle();
 
         $this->doCheckoutPaymentMethod($browser)
+            ->assertFormValid('form')
             ->click('@continue') // place order
             ->waitUntilIdle();
 
@@ -96,8 +100,15 @@ class CheckoutTest extends DuskTestCase
 
     public function doCheckoutShippingAddress(Browser $browser)
     {
+        try {
+            $browser->select('@shipping_address_select', '')
+                ->waitUntilIdle();
+        } catch (Exception $e) {
+            // How Dusk internally handles nonexistent elements.
+        }
+
         $browser
-            ->type('shipping_firstname', 'Bruce')
+            ->type('shipping_firstname', 'Bruce' . mt_rand())
             ->type('shipping_lastname', 'Wayne')
             ->type('shipping_postcode', '72000')
             ->type('shipping_housenumber', '1007')

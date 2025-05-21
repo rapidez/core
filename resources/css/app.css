@@ -30,6 +30,7 @@ autocomplete {
     @apply appearance-none m-0;
 }
 
+/* Firefox */
 .arrows-hidden[type='number'] {
     -moz-appearance: textfield;
 }

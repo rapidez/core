@@ -1,4 +1,4 @@
-<autocomplete v-on:mounted="() => window.document.getElementById('autocomplete-input').focus()" v-slot="{ searchClient, middlewares, searchHistory }">
+<autocomplete v-slot="{ searchClient, middlewares, searchHistory }">
     <div class="relative w-full">
         <ais-instant-search
             v-if="searchClient"
@@ -11,8 +11,8 @@
             <div class="contents">
                 <ais-configure :hits-per-page.camel="{{ config('rapidez.frontend.autocomplete.size', 3) }}" />
                 <div class="searchbox group/autocomplete">
-                    <ais-search-box>
-                        <template v-slot="{ currentRefinement, isSearchStalled, refine }">
+                    <ais-autocomplete>
+                        <template v-slot="{ currentRefinement, refine }">
                             <x-rapidez::autocomplete.input
                                 v-bind:value="currentRefinement"
                                 v-on:focus="() => {
@@ -27,7 +27,7 @@
                             </div>
                             <div v-if="currentRefinement" v-on:click="refine('')" class="fixed inset-0 bg-backdrop z-header-autocomplete-overlay"></div>
                         </template>
-                    </ais-search-box>
+                    </ais-autocomplete>
                     <ais-stats-analytics></ais-stats-analytics>
                 </div>
             </div>

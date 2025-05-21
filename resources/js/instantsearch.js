@@ -5,6 +5,7 @@ Vue.component('ais-instant-search', () => import('vue-instantsearch/vue2/es/src/
 Vue.component('ais-hits', () => import('vue-instantsearch/vue2/es/src/components/Hits.js'))
 Vue.component('ais-configure', () => import('vue-instantsearch/vue2/es/src/components/Configure.js'))
 Vue.component('ais-highlight', () => import('vue-instantsearch/vue2/es/src/components/Highlight.vue.js'))
+Vue.component('ais-autocomplete', () => import('vue-instantsearch/vue2/es/src/components/Autocomplete.vue.js'))
 Vue.component('ais-search-box', () => import('vue-instantsearch/vue2/es/src/components/SearchBox.vue.js'))
 Vue.component('ais-state-results', () => import('vue-instantsearch/vue2/es/src/components/StateResults.vue.js'))
 

@@ -1,6 +1,17 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/3.7.0...3.7.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/3.8.0...3.8.0)
+## [3.8.0](https://github.com/rapidez/core/releases/tag/3.8.0) - 2025-05-14
+
+### Added
+
+- More Magento redirects (#845)
+- Password requirements config defaults (#846)
+
+### Fixed
+
+- Do not show the arrows on the quantity input fix (#844)
+
 ## [3.7.0](https://github.com/rapidez/core/releases/tag/3.7.0) - 2025-05-01
 
 ### Added

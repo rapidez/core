@@ -63,6 +63,7 @@ class RapidezServiceProvider extends ServiceProvider
             ->bootViews()
             ->bootBladeComponents()
             ->bootMiddleware()
+            ->bootScout()
             ->bootTranslations()
             ->bootListeners()
             ->bootMacros();
@@ -141,8 +142,9 @@ class RapidezServiceProvider extends ServiceProvider
         });
 
         if (config('rapidez.routing.enabled')) {
-            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
             $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
+            $this->loadRoutesFrom(__DIR__ . '/../routes/magento-redirects.php');
+            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
         }
 
         RapidezFacade::addFallbackRoute(UrlRewriteController::class, 5);
@@ -221,6 +223,13 @@ class RapidezServiceProvider extends ServiceProvider
         $this->app->make(Kernel::class)->pushMiddleware(DetermineAndSetShop::class);
 
         $this->app['router']->aliasMiddleware('store_code', CheckStoreCode::class);
+
+        return $this;
+    }
+
+    protected function bootScout(): self
+    {
+        config()->set('scout.driver', 'Matchish\\ScoutElasticSearch\\Engines\\ElasticSearchEngine');
 
         return $this;
     }

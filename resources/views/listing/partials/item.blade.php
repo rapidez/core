@@ -6,13 +6,14 @@
                     @include('rapidez::wishlist.button')
                 </div>
             @endif
-            <a :href="item.url | url" class="block mb-auto">
+            <a :href="item.url | url" v-on:click="sendEvent('click', item, 'Hit Clicked')" class="block mb-auto">
                 <img
                     v-if="addToCart.currentThumbnail"
                     :src="'/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + addToCart.currentThumbnail + '.webp'"
                     class="mb-3 h-48 w-full rounded-t object-contain"
                     :alt="item.name"
                     :loading="config.category && count <= 4 ? 'eager' : 'lazy'"
+                    v-bind:style="{ 'view-transition-name': 'image-' + item.sku }"
                     width="200"
                     height="200"
                 />

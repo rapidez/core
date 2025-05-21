@@ -8,7 +8,7 @@
             'Hits.vue',
             'Highlight.vue',
             'Pagination.vue',
-            'Hits'
+            'Hits.js'
         ])
     )
 @endPushOnce
@@ -21,7 +21,7 @@
         @include('rapidez::listing.partials.toolbar')
     </div>
     <ais-hits>
-        <template v-slot="{ items }">
+        <template v-slot="{ items, sendEvent }">
             <div class="overflow-hidden">
                 <div v-if="items && items.length" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 -mx-5 -mb-px">
                     <template v-for="(item, count) in items">

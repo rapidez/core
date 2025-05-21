@@ -1,5 +1,6 @@
 <script>
 import { GraphQLError, combiningGraphQL, magentoGraphQL } from '../fetch'
+import { deepMerge, objectDiff } from '../helpers/object'
 
 export default {
     props: {
@@ -98,9 +99,14 @@ export default {
     },
 
     watch: {
-        variables: function (variables) {
+        variables: function (variables, old) {
             if (this.watch) {
-                this.data = variables
+                const diff = objectDiff(old, variables)
+                if (Object.keys(diff).length === 0) {
+                    return
+                }
+
+                deepMerge(this.data, diff)
             }
         },
     },
