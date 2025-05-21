@@ -25,7 +25,7 @@ export default {
         async getInstantSearchClientConfig() {
             const config = await InstantSearchMixin.methods.getInstantSearchClientConfig.bind(this).call()
 
-            config.getQuery = (query, search_attributes) => {
+            config.getQuery = (query, search_attributes, config) => {
                 const dsl = [
                     {
                         function_score: {
@@ -65,7 +65,7 @@ export default {
                 ]
 
                 if (!this.forceResults && query && query !== " ") {
-                    dsl.push(this.relevanceQueryMatch(query, search_attributes))
+                    dsl.push(this.relevanceQueryMatch(query, search_attributes, config?.fuzziness))
                 }
 
                 return dsl
@@ -74,7 +74,7 @@ export default {
             return config
         },
 
-        relevanceQueryMatch(query, search_attributes) {
+        relevanceQueryMatch(query, search_attributes, fuzziness = 'AUTO:4,8') {
             // Copied from searchkit.js default behavior when getQuery is not defined.
             const getFieldsMap = (boostMultiplier) => {
                 return search_attributes.map((attribute) => {
@@ -92,7 +92,7 @@ export default {
                                         multi_match: {
                                             query,
                                             fields: getFieldsMap(1),
-                                            fuzziness: 'AUTO:4,8',
+                                            fuzziness: fuzziness,
                                         },
                                     },
                                     {
