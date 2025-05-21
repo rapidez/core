@@ -50,3 +50,35 @@ input[type='search']::-webkit-search-results-decoration {
     background-position: right center;
     field-sizing: content;
 }
+
+@supports (interpolate-size: allow-keywords) {
+    :root {
+        interpolate-size: allow-keywords;
+    }
+}
+
+/* All of the details-content can be removed when tailwind v4.0 is being used within the core */
+.details-content\:h-0::details-content {
+    height: 0;
+}
+
+.details-content\:overflow-clip::details-content {
+    overflow: clip;
+}
+
+.details-content\:duration-200::details-content {
+    transition-duration: 200ms;
+}
+
+.details-content\:transition-\[height\,content-visibility\]::details-content {
+    transition-property: height, content-visibility;
+}
+
+.details-content\:transition-discrete::details-content {
+    transition-behavior: allow-discrete;
+}
+
+.open\:details-content\:h-auto:is([open], :popover-open, :open)::details-content {
+    height: auto;
+}
+/* end details content */
