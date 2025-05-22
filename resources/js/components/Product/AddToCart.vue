@@ -45,7 +45,7 @@ export default {
         urlParams: {
             type: Boolean,
             default: false,
-        }
+        },
     },
 
     data: () => ({
@@ -306,15 +306,10 @@ export default {
                         attributeValues = [attributeValues]
                     }
 
-                    return [
-                        index,
-                        (attributeValues).filter((val) =>
-                            this.enabledOptions[index].includes(val * 1),
-                        ),
-                    ] // Filter out disabled options
+                    return [index, attributeValues.filter((val) => this.enabledOptions[index].includes(val * 1))] // Filter out disabled options
                 }),
             )
-        }
+        },
     },
 
     computed: {
@@ -386,10 +381,9 @@ export default {
         },
 
         productUrl: function () {
-            let namedOptions = Object.fromEntries(Object.entries(this.options).map(([key, value]) => [
-                this.product.super_attributes[key]?.code,
-                value
-            ]))
+            let namedOptions = Object.fromEntries(
+                Object.entries(this.options).map(([key, value]) => [this.product.super_attributes[key]?.code, value]),
+            )
 
             let params = new URLSearchParams(namedOptions)
             if (params.size) {
