@@ -306,7 +306,8 @@ export default {
                         attributeValues = [attributeValues]
                     }
 
-                    return [index, attributeValues.filter((val) => this.enabledOptions[index].includes(val * 1))] // Filter out disabled options
+                    // Filter out disabled options
+                    return [index, attributeValues.filter((val) => this.enabledOptions[index].includes(val * 1))]
                 }),
             )
         },
