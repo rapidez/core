@@ -70,7 +70,7 @@
                             v-bind:min="rangeInputScope.range.min"
                             v-bind:max="rangeInputScope.range.max"
                             v-model.lazy="rangeInputScope.minValue"
-                            v-on:input="rangeInputScope.updateRefinement"
+                            v-on:change="rangeInputScope.updateRefinement"
                             class="text-center arrows-hidden"
                         />
                         <span
@@ -90,7 +90,7 @@
                             v-bind:min="rangeInputScope.range.min"
                             v-bind:max="rangeInputScope.range.max"
                             v-model.lazy="rangeInputScope.maxValue"
-                            v-on:input="rangeInputScope.updateRefinement"
+                            v-on:change="rangeInputScope.updateRefinement"
                             class="text-center arrows-hidden"
                         />
                         <span
@@ -110,7 +110,7 @@
                         v-bind:min="rangeInputScope.range.min"
                         v-bind:max="rangeInputScope.range.max"
                         v-model.lazy="rangeInputScope.minValue"
-                        v-on:input="rangeInputScope.updateRefinement"
+                        v-on:change="rangeInputScope.updateRefinement"
                         class="text-center arrows-hidden"
                     />
                     <x-rapidez::input
@@ -119,7 +119,7 @@
                         v-bind:min="rangeInputScope.range.min"
                         v-bind:max="rangeInputScope.range.max"
                         v-model.lazy="rangeInputScope.maxValue"
-                        v-on:input="rangeInputScope.updateRefinement"
+                        v-on:change="rangeInputScope.updateRefinement"
                         class="text-center arrows-hidden"
                     />
                 @endif
