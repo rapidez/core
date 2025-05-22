@@ -389,9 +389,9 @@ export default {
             let params = new URLSearchParams(namedOptions)
             if (params.size) {
                 return this.product.url + '?' + params
-            } else {
-                return this.product.url
             }
+
+            return this.product.url
         },
 
         enteredOptions: function () {
