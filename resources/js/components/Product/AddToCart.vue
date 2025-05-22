@@ -298,7 +298,7 @@ export default {
             await this.setOptionsFromValues(this.optionsFromNamedOptions(options))
         },
         optionsFromNamedOptions(values) {
-            // Options per super attribute that match the current refinements.
+            // Options per super attribute that match the given named refinements
             return Object.fromEntries(
                 Object.entries(this.product?.super_attributes || {}).map(([index, attribute]) => {
                     let attributeValues = values.find(([key, value]) => key === attribute.code)?.[1] || []
