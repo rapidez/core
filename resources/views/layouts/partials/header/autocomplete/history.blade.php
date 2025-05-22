@@ -1,6 +1,6 @@
 <ais-state-results v-slot="{ state: { query: searchQuery } }">
     <div>
-        <div class="border-b py-2" v-if="searchHistory && searchHistory?.filter(([query, metadata]) => query.includes(searchQuery.toLowerCase())).length">
+        <div v-if="searchHistory && searchHistory?.filter(([query, metadata]) => query.includes(searchQuery.toLowerCase())).length" class="border-b py-2">
             <x-rapidez::autocomplete.title>
                 @lang('Previous Searches')
             </x-rapidez::autocomplete.title>
