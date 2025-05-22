@@ -17,15 +17,17 @@
     <x-rapidez::button.secondary for="category-filters-slideover" class="w-full lg:hidden">
         @lang('Filters')
     </x-rapidez::button.secondary>
-    <div class="mt-2 mb-4 *:flex-wrap *:gap-3 *:max-sm:gap-y-3 *:max-md:justify-end">
+    <div class="mt-4 lg:mt-2 pb-4 *:flex-wrap *:gap-3 *:max-sm:gap-y-3 *:max-md:justify-end border-b">
         @include('rapidez::listing.partials.toolbar')
     </div>
     <ais-hits>
         <template v-slot="{ items, sendEvent }">
-            <div v-if="items && items.length" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 md:gap-5 overflow-hidden">
-                <template v-for="(item, count) in items">
-                    @include('rapidez::listing.partials.item')
-                </template>
+            <div class="overflow-hidden">
+                <div v-if="items && items.length" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 -mx-5 -mb-px">
+                    <template v-for="(item, count) in items">
+                        @include('rapidez::listing.partials.item')
+                    </template>
+                </div>
             </div>
             <div v-else>
                 @include('rapidez::listing.partials.no-results')

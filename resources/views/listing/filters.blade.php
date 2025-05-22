@@ -14,7 +14,7 @@
         <div class="text-right max-md:mb-3 md:hidden">
             @include('rapidez::listing.partials.toolbar.sorting')
         </div>
-        <p class="text-xl/9 font-medium mb-3 max-lg:hidden">@lang('Filters')</p>
+        <p class="text-xl/9 font-medium mb-1.5 max-lg:hidden">@lang('Filters')</p>
 
         @include('rapidez::listing.partials.filter.selected')
         @include('rapidez::listing.partials.filter.search')

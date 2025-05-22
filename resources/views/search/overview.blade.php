@@ -12,7 +12,7 @@
             <x-slot:title>
                 <ais-state-results>
                     <template v-slot="{ state: { query } }">
-                        <h1 class="font-medium text-3xl">
+                        <h1 class="font-medium text-2xl">
                             <template v-if="query">
                                 @lang('Search for'): @{{ query }}
                             </template>

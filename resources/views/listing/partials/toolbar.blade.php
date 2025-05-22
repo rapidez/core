@@ -2,10 +2,10 @@
     <div class="flex-1">
         @include('rapidez::listing.partials.toolbar.stats')
     </div>
-    <label class="flex items-center gap-x-1.5">
+    <div class="flex items-center gap-x-1.5">
         @include('rapidez::listing.partials.toolbar.pages')
-    </label>
-    <div class="max-md:hidden">
+    </div>
+    <div>
         @include('rapidez::listing.partials.toolbar.sorting')
     </div>
 </div>
