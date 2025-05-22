@@ -10,7 +10,7 @@
             filters="display_in_terms:1"
         />
         <ais-hits v-slot="{ items }">
-            <div class="border-b py-2.5" v-if="items && items.length">
+            <div class="py-2.5" v-bind:class="{ 'border-b': currentRefinement }" v-if="items && items.length">
                 <x-rapidez::autocomplete.title>
                     @lang('Suggestions')
                 </x-rapidez::autocomplete.title>

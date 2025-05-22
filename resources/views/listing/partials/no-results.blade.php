@@ -1,4 +1,4 @@
-<div class="bg rounded-md p-10">
+<div class="bg rounded-md mt-6 p-10">
     <h2 class="font-sans text-xl font-medium">@lang('No products found.')</h2>
     <ais-state-results v-slot="{ state: { query: searchQuery } }">
         <search-suggestions v-slot="searchSuggestions">

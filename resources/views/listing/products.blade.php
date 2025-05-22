@@ -22,7 +22,7 @@
     </div>
     <ais-hits>
         <template v-slot="{ items, sendEvent }">
-            <div class="overflow-hidden" v-if="items && items.length">
+            <div v-if="items && items.length" class="overflow-hidden">
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 -mx-5 -mb-px">
                     <template v-for="(item, count) in items">
                         @include('rapidez::listing.partials.item')

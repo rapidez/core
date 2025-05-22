@@ -9,7 +9,7 @@
             'autocapitalize' => 'none',
             'spellcheck' => 'false',
             'placeholder' => __('What are you looking for?'),
-            'class' => 'h-12 peer',
+            'class' => 'text-base h-12 peer',
         ]) }}
     />
     <button

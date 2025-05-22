@@ -33,6 +33,14 @@
                     @if (App::providerIsLoaded('Rapidez\Reviews\ReviewsServiceProvider'))
                         <x-dynamic-component component="rapidez-reviews::stars" v-if="item.reviews_count" count="item.reviews_count" score="item.reviews_score" />
                     @endif
+                    <div class="flex items-center gap-x-2 mt-1">
+                        <div class="font-semibold text-lg">
+                            @{{ (addToCart.simpleProduct.special_price || addToCart.simpleProduct.price) | price }}
+                        </div>
+                        <div class="line-through text-sm" v-if="addToCart.simpleProduct.special_price">
+                            @{{ addToCart.simpleProduct.price | price }}
+                        </div>
+                    </div>
                 </div>
             </a>
             @include('rapidez::listing.partials.item.addtocart')

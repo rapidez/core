@@ -22,10 +22,10 @@
                                 v-on:input="refine($event.currentTarget.value)"
                                 list="search-history"
                             />
-                            <div v-bind:class="{hidden: !currentRefinement}" class="absolute inset-x-0 top-full mt-1 bg-white border rounded-md z-header-autocomplete group-has-[:focus]/autocomplete:block hover:block">
+                            <div v-bind:class="{hidden: !currentRefinement}" class="absolute inset-x-0 top-full mt-1 bg-white rounded-md z-header-autocomplete group-has-[:focus]/autocomplete:block hover:block">
                                 @include('rapidez::layouts.partials.header.autocomplete.results')
                             </div>
-                            <div v-if="currentRefinement" v-on:click="refine('')" class="fixed inset-0 bg-backdrop z-header-autocomplete-overlay"></div>
+                            <div v-bind:class="{hidden: !currentRefinement}" v-on:click="refine('')" class="fixed inset-0 bg-backdrop z-header-autocomplete-overlay group-has-[:focus]/autocomplete:block"></div>
                         </template>
                     </ais-autocomplete>
                     <ais-stats-analytics></ais-stats-analytics>
