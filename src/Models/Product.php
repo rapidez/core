@@ -25,6 +25,7 @@ use Rapidez\Core\Models\Traits\Product\CastMultiselectAttributes;
 use Rapidez\Core\Models\Traits\Product\CastSuperAttributes;
 use Rapidez\Core\Models\Traits\Product\Searchable;
 use Rapidez\Core\Models\Traits\Product\SelectAttributeScopes;
+use Rapidez\Core\Models\Traits\UsesSynonyms;
 use TorMorten\Eventy\Facades\Eventy;
 
 class Product extends Model
@@ -34,6 +35,7 @@ class Product extends Model
     use HasAlternatesThroughRewrites;
     use Searchable;
     use SelectAttributeScopes;
+    use UsesSynonyms;
 
     public const VISIBILITY_NOT_VISIBLE = 1;
     public const VISIBILITY_IN_CATALOG = 2;
@@ -261,5 +263,12 @@ class Product extends Model
     public static function exist($productId): bool
     {
         return self::withoutGlobalScopes()->where('entity_id', $productId)->exists();
+    }
+
+    public static function getSynonymFields(): array
+    {
+        return [
+            'name'
+        ];
     }
 }

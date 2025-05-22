@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core\Models\Traits;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable as ScoutSearchable;
 use TorMorten\Eventy\Facades\Eventy;
@@ -34,13 +35,27 @@ trait Searchable
         ]));
     }
 
-    public static function getIndexMappings(): ?array
+    public static function getIndexMapping(): array
     {
-        return null;
+        $mapping = [];
+
+        $methods = Arr::where(get_class_methods(static::class), fn($method) => str_starts_with($method, 'indexMapping'));
+        foreach($methods as $method) {
+            $mapping = array_merge_recursive($mapping, static::{$method}());
+        }
+
+        return $mapping;
     }
 
-    public static function getIndexSettings(): ?array
+    public static function getIndexSettings(): array
     {
-        return null;
+        $settings = [];
+
+        $methods = Arr::where(get_class_methods(static::class), fn($method) => str_starts_with($method, 'indexSettings'));
+        foreach($methods as $method) {
+            $settings = array_merge_recursive($settings, static::{$method}());
+        }
+
+        return $settings;
     }
 }
