@@ -126,7 +126,7 @@ export default {
 
             // Remove the root path from the category if it's in there
             let category = data.hierarchicalMenu?.category_lvl1
-            for(let i = 0; i < this.rootPath?.length && category?.length && category[0] == this.rootPath[i]; i++) {
+            for (let i = 0; i < this.rootPath?.length && category?.length && category[0] == this.rootPath[i]; i++) {
                 category.splice(0, 1)
             }
 
