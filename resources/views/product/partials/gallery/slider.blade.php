@@ -6,7 +6,7 @@
     >
         <img
             {{-- src should always be above v-bind:src --}}
-            src="/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product{{ Arr::first($product->images) }}.webp"
+            src="/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product{{ Arr::first($selectedChild->images) }}.webp"
             v-bind:src="'/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product' + images[active] + '.webp'"
             alt="{{ $product->name }}"
             class="max-h-full object-contain"
@@ -16,7 +16,7 @@
         />
     </a>
 
-    @if (count($product->images ?? []) > 1)
+    @if (count($selectedChild->images ?? []) > 1)
         <button v-if="active" v-on:click="change(active-1)" class="z-10 top-1/2 left-3 -translate-y-1/2 absolute" aria-label="@lang('Prev')" v-cloak>
             <x-heroicon-o-chevron-left class="size-8 text-inactive" />
         </button>
