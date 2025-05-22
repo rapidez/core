@@ -12,7 +12,7 @@
         <h1 class="text-2xl font-medium mb-5">{{ $category->name }}</h1>
 
         @if ($category->is_anchor)
-            @if(!$category->products()->exists())
+            @if (!$category->products()->exists())
                 @include('rapidez::listing.partials.no-products')
             @else
                 <x-rapidez::listing
