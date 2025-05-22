@@ -15,6 +15,9 @@ export default {
         categoryId: {
             type: Number,
         },
+        rootPath: {
+            type: Array,
+        },
         baseFilters: {
             type: Function,
             default: () => [],
@@ -121,10 +124,16 @@ export default {
         stateToRoute(uiState) {
             let data = uiState[this.index]
 
+            // Remove the root path from the category if it's in there
+            let category = data.hierarchicalMenu?.category_lvl1
+            for(let i = 0; i < this.rootPath?.length && category?.length && category[0] == this.rootPath[i]; i++) {
+                category.splice(0, 1)
+            }
+
             return {
                 ...(data.range || {}),
                 ...(data.refinementList || {}),
-                category: data.hierarchicalMenu?.category_lvl1?.join('--'),
+                category: category?.length ? category.join('--') : undefined,
                 q: data.query,
                 page: data.page > 0 ? String(data.page) : undefined,
                 sort: data.sortBy,
@@ -141,11 +150,13 @@ export default {
                 ),
             )
 
+            let rootPath = this.rootPath || []
+            let categoryPath = routeState.category?.split('--') || []
             return {
                 [this.index]: {
                     range: ranges,
                     refinementList: refinementList,
-                    hierarchicalMenu: { category_lvl1: routeState.category?.split('--') },
+                    hierarchicalMenu: { category_lvl1: [...rootPath, ...categoryPath] },
                     query: routeState.q,
                     page: Number(routeState.page),
                     sortBy: routeState.sort,

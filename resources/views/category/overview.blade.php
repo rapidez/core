@@ -11,7 +11,7 @@
 
         @if ($category->is_anchor)
             <x-rapidez::listing
-                :root-path="$category->parentcategories->pluck('name')->join(' > ')"
+                :root-path="$category->parentcategories->pluck('name')"
                 v-bind:category-id="{{ $category->entity_id }}"
             >
                 <x-slot:title>
