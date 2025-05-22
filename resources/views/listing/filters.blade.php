@@ -11,7 +11,7 @@
 @endPushOnce
 <x-rapidez::slideover.mobile id="category-filters-slideover" :title="__('Filters')">
     <div class="max-lg:container max-lg:pt-6">
-        <p class="text-xl/9 font-medium mb-3 max-lg:hidden">@lang('Filters')</p>
+        <p class="text-xl/9 font-medium mb-1.5 max-lg:hidden">@lang('Filters')</p>
 
         @include('rapidez::listing.partials.filter.selected')
         @include('rapidez::listing.partials.filter.search')
