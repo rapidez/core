@@ -6,7 +6,7 @@ use Illuminate\Support\Arr;
 
 trait UsesSynonyms
 {
-    public abstract static function getSynonymFields(): array;
+    abstract public static function getSynonymFields(): array;
 
     public static function indexSettingsSynonyms(): array
     {
@@ -26,17 +26,17 @@ trait UsesSynonyms
                 'analysis' => [
                     'filter' => [
                         'synonym' => [
-                            'type' => 'synonym_graph',
+                            'type'     => 'synonym_graph',
                             'synonyms' => $synonyms,
                         ],
                     ],
                     'analyzer' => [
                         'default' => [
-                            'filter' => ['lowercase', 'asciifolding'],
+                            'filter'    => ['lowercase', 'asciifolding'],
                             'tokenizer' => 'standard',
                         ],
                         'synonym' => [
-                            'filter' => ['lowercase', 'asciifolding', 'synonym'],
+                            'filter'    => ['lowercase', 'asciifolding', 'synonym'],
                             'tokenizer' => 'standard',
                         ],
                     ],
@@ -54,18 +54,18 @@ trait UsesSynonyms
         }
 
         return [
-            'properties' => Arr::mapWithKeys($fields, fn($field) => [
+            'properties' => Arr::mapWithKeys($fields, fn ($field) => [
                 $field => [
-                    'type' => 'text',
+                    'type'     => 'text',
                     'analyzer' => 'synonym',
-                    'fields' => [
+                    'fields'   => [
                         'keyword' => [
-                            'type' => 'keyword',
+                            'type'         => 'keyword',
                             'ignore_above' => 256,
                         ],
                     ],
                 ],
-            ])
+            ]),
         ];
     }
 }

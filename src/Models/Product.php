@@ -268,7 +268,7 @@ class Product extends Model
     public static function getSynonymFields(): array
     {
         return [
-            'name'
+            'name',
         ];
     }
 }

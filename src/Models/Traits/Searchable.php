@@ -39,8 +39,8 @@ trait Searchable
     {
         $mapping = [];
 
-        $methods = Arr::where(get_class_methods(static::class), fn($method) => str_starts_with($method, 'indexMapping'));
-        foreach($methods as $method) {
+        $methods = Arr::where(get_class_methods(static::class), fn ($method) => str_starts_with($method, 'indexMapping'));
+        foreach ($methods as $method) {
             $mapping = array_merge_recursive($mapping, static::{$method}());
         }
 
@@ -51,8 +51,8 @@ trait Searchable
     {
         $settings = [];
 
-        $methods = Arr::where(get_class_methods(static::class), fn($method) => str_starts_with($method, 'indexSettings'));
-        foreach($methods as $method) {
+        $methods = Arr::where(get_class_methods(static::class), fn ($method) => str_starts_with($method, 'indexSettings'));
+        foreach ($methods as $method) {
             $settings = array_merge_recursive($settings, static::{$method}());
         }
 
