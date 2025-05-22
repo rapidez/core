@@ -10,7 +10,7 @@
                     <li v-for="item in withSwatches(items, filter)">
                         <label
                             v-if="filter.visual_swatch"
-                            class="block cursor-pointer flex items-center justify-center p-1 rounded-full ring-inset ring-1 has-[:focus]:ring-emphasis relative"
+                            class="cursor-pointer flex items-center justify-center p-1 rounded-full ring-inset ring-1 has-[:focus]:ring-emphasis relative"
                             v-bind:class="{
                                 'ring-default ring-1 hover:ring-emphasis': !item.isRefined,
                                 'ring-active ring-2': item.isRefined

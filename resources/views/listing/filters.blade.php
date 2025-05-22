@@ -11,10 +11,6 @@
 @endPushOnce
 <x-rapidez::slideover.mobile id="category-filters-slideover" :title="__('Filters')">
     <div class="max-lg:container max-lg:pt-6">
-        <div class="text-right max-md:mb-3 md:hidden">
-            @include('rapidez::listing.partials.toolbar.sorting')
-        </div>
-
         @include('rapidez::listing.partials.filter.selected')
         @include('rapidez::listing.partials.filter.search')
         @include('rapidez::listing.partials.filter.category')

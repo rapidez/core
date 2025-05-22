@@ -24,12 +24,12 @@
                 </tr>
             </table>
             <div class="flex justify-between items-center">
-                <x-rapidez::button.outline href="{{ route('cart') }}" class="mr-5 whitespace-nowrap">
+                <x-rapidez::button.outline href="{{ route('cart') }}" class="mr-5 whitespace-nowrap flex-1">
                     @lang('Show cart')
                 </x-rapidez::button.outline>
 
-                <div class="w-full" :class="{ 'cursor-not-allowed': !canOrder }">
-                    <x-rapidez::button.conversion href="{{ route('checkout') }}" v-bind:class="{ 'pointer-events-none': !canOrder }">
+                <div class="flex flex-1" :class="{ 'cursor-not-allowed': !canOrder }">
+                    <x-rapidez::button.conversion href="{{ route('checkout') }}" v-bind:class="{ 'pointer-events-none': !canOrder }" class="flex-1">
                         @lang('Checkout')
                     </x-rapidez::button.conversion>
                 </div>
