@@ -14,7 +14,6 @@
         <div class="text-right max-md:mb-3 md:hidden">
             @include('rapidez::listing.partials.toolbar.sorting')
         </div>
-        <p class="text-xl/9 font-medium mb-1.5 max-lg:hidden">@lang('Filters')</p>
 
         @include('rapidez::listing.partials.filter.selected')
         @include('rapidez::listing.partials.filter.search')
@@ -35,4 +34,6 @@
     </div>
 </x-rapidez::slideover.mobile>
 
-
+<x-rapidez::button.secondary for="category-filters-slideover" class="w-full lg:hidden">
+    @lang('Filters')
+</x-rapidez::button.secondary>

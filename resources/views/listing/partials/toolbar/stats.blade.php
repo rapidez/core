@@ -1,4 +1,4 @@
-<ais-stats class="text-sm">
+<ais-stats>
     <template v-slot="{ nbPages, nbHits, page, processingTimeMS }">
         @{{ nbHits }} @lang('products')
         <template v-if="nbPages > 1">
