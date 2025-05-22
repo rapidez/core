@@ -2,7 +2,7 @@
     <div class="relative" v-if="hasCart" v-on-click-away="close" slot-scope="{ toggle, close, isOpen }">
         <button class="flex my-1 focus:outline-none" v-on:click="toggle">
             <x-heroicon-o-shopping-cart class="size-6"/>
-            <span class="bg-secondary text-secondary-text rounded-full size-6 text-center" dusk="minicart-count" v-cloak>
+            <span class="bg-secondary text-secondary-text text-sm font-bold flex items-center justify-center rounded-full size-6 text-center" dusk="minicart-count" v-cloak>
                 <span>@{{ Math.round(cart.total_quantity) }}</span>
             </span>
         </button>
