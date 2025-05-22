@@ -6,7 +6,7 @@
     show-more
 >
     <template v-slot="{ items, refine, isShowingMore, toggleShowMore, canToggleShowMore }">
-        <x-rapidez::details.filter v-show="items.length" :canToggleShowMore="true">
+        <x-rapidez::details.filter v-show="items.length" canToggleShowMore>
             <x-slot:content>
                 <div class="flex flex-col *:py-1 first:*:pt-0 last:*:pb-0 items-start">
                     <template v-for="item in items">

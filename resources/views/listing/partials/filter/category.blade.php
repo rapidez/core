@@ -6,7 +6,7 @@
     :limit="6"
 >
     <template v-slot="{ items, refine, createURL, isShowingMore, toggleShowMore, canToggleShowMore }">
-        <x-rapidez::details.filter v-show="items.length" :canToggleShowMore="true">
+        <x-rapidez::details.filter v-show="items.length" canToggleShowMore>
             <x-slot:summary>
                 @lang('Category')
             </x-slot:summary>

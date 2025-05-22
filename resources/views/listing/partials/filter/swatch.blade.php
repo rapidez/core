@@ -4,7 +4,7 @@
     :attribute="filter.code"
 >
     <template v-slot="{ items, refine, isShowingMore, toggleShowMore, canToggleShowMore }">
-        <x-rapidez::details.filter v-show="items.length" :canToggleShowMore="true">
+        <x-rapidez::details.filter v-show="items.length" canToggleShowMore>
             <x-slot:content>
                 <ul class="flex flex-wrap gap-x-1.5 gap-y-2 items-center pr-14">
                     <li v-for="item in withSwatches(items, filter)">
