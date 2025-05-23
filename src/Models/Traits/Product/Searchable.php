@@ -119,10 +119,7 @@ trait Searchable
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function getIndexMappings(): ?array
+    protected static function indexMapping(): array
     {
         return [
             'properties' => [
