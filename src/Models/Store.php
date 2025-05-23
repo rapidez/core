@@ -27,7 +27,7 @@ class Store extends Model
 
     public static function getCached(): array
     {
-        $stores = Cache::store('rapidez:multi')->rememberForever('stores', function () {
+        $stores = Cache::memo()->rememberForever('stores', function () {
             return self::select([
                 'store_id',
                 'store.name',
