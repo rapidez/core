@@ -6,7 +6,7 @@
             <span itemprop="name">{{ $slot }}</span>
             <meta itemprop="position" content="{{ $position }}" />
         </a>
-        <x-heroicon-s-chevron-right class="size-4 text-muted"/>
+        <x-heroicon-o-chevron-right class="size-3 text-muted translate-y-px mx-1" stroke-width="2" />
     @else
         <span class="text-sm" itemprop="name">{{ $slot }}</span>
         <meta itemprop="position" content="{{ $position }}" />

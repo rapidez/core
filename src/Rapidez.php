@@ -86,7 +86,7 @@ class Rapidez
         return json_decode(str_replace(array_values($mapping), array_keys($mapping), $encodedString));
     }
 
-    public function getStores(callable|int|string|null $store = null): array
+    public function getStores(callable|array|int|string|null $store = null): array
     {
         $storeModel = config('rapidez.models.store');
 
@@ -94,7 +94,7 @@ class Rapidez
             return Arr::where($storeModel::getCached(),
                 fn ($s) => is_callable($store)
                     ? $store($s)
-                    : $s['store_id'] == $store || $s['code'] == $store
+                    : in_array($s['store_id'], Arr::wrap($store)) || in_array($s['code'], Arr::wrap($store))
             );
         }
 
@@ -129,6 +129,22 @@ class Rapidez
         config()->set('rapidez.group', $store['group_id']);
         config()->set('rapidez.root_category_id', $store['root_category_id']);
         config()->set('frontend.base_url', url('/'));
+
+        // This loop goes through all the Rapidez config files and retrieves the store-specific values.
+        // We also remember some `default` values along the way. This allows us to switch stores multiple
+        // times in one session, without losing any data that got overwritten by the store-specific values.
+        foreach (array_keys(config('rapidez')) as $config) {
+            // Reset defaults if they've been set previously
+            foreach (config('rapidez.defaults.' . $config, []) as $key => $value) {
+                config()->set('rapidez.' . $config . '.' . $key, $value);
+            }
+
+            // Set all store-specific values and define the relevant defaults
+            foreach (config('rapidez.stores.' . $store['code'] . '.' . $config, []) as $key => $value) {
+                config()->set('rapidez.defaults.' . $config . '.' . $key, config('rapidez.' . $config . '.' . $key));
+                config()->set('rapidez.' . $config . '.' . $key, $value);
+            }
+        }
 
         if (config()->get('rapidez.magento_url_from_db', false)) {
             $magentoUrl = trim(

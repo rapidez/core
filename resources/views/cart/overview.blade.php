@@ -16,11 +16,11 @@
         >
         </graphql>
         <div v-if="hasCart" v-cloak>
-            <div class="flex flex-col gap-x-10 lg:flex-row">
+            <div class="flex gap-x-10 mb-8 max-lg:flex-col">
                 <div class="flex w-full flex-col" dusk="cart-content">
                     @include('rapidez::cart.item')
 
-                    <div class="mt-5 self-start">
+                    <div class="mt-5 lg:self-start">
                         @include('rapidez::cart.coupon')
                     </div>
                 </div>

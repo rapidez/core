@@ -53,7 +53,7 @@ trait SelectAttributeScopes
                 return false;
             }
 
-            if ($attribute['listing'] || $attribute['filter']) {
+            if ($attribute['listing'] || $attribute['filter'] || $attribute['search'] || $attribute['sorting']) {
                 return true;
             }
 

@@ -12,8 +12,6 @@ import useOrder from './stores/useOrder.js'
 import useCart from './stores/useCart'
 import useUser from './stores/useUser'
 import useMask from './stores/useMask'
-import { swatches, clear as clearSwatches } from './stores/useSwatches'
-import { clear as clearAttributes } from './stores/useAttributes.js'
 import './vue'
 import './fetch'
 import './filters'
@@ -21,6 +19,7 @@ import './mixins'
 import './cookies'
 import './callbacks'
 import './vue-components'
+import './instantsearch'
 import { fetchCount } from './stores/useFetches.js'
 ;(() => import('./turbolinks'))()
 
@@ -42,15 +41,6 @@ if (import.meta.env.VITE_DEBUG === 'true') {
         })
     })
 }
-
-document.addEventListener('vue:loaded', () => {
-    const lastStoreCode = useLocalStorage('last_store_code', window.config.store_code)
-    if (lastStoreCode.value !== window.config.store_code) {
-        clearAttributes()
-        clearSwatches()
-        lastStoreCode.value = window.config.store_code
-    }
-})
 
 let booting = false
 function init() {
@@ -101,14 +91,13 @@ function init() {
                 config: window.config,
                 loadingCount: fetchCount,
                 loading: false,
-                loadAutocomplete: false,
+                autocompleteFacadeQuery: '',
                 csrfToken: document.querySelector('[name=csrf-token]')?.content,
                 cart: useCart(),
                 order: useOrder(),
                 user: useUser(),
                 mask: useMask(),
                 showTax: window.config.show_tax,
-                swatches: swatches,
                 scrollLock: useScrollLock(document.body),
             },
             methods: {
@@ -140,6 +129,18 @@ function init() {
 
                     return `/storage/${store}/resizes/${size}/magento${url}`
                 },
+
+                categoryPositions(categoryId) {
+                    return {
+                        function_score: {
+                            script_score: {
+                                script: {
+                                    source: `Integer.parseInt(doc['positions.${categoryId}'].empty ? '0' : doc['positions.${categoryId}'].value)`,
+                                },
+                            },
+                        },
+                    }
+                },
             },
             computed: {
                 // Wrap the local storage in getter and setter functions so you do not have to interact using .value
@@ -157,10 +158,6 @@ function init() {
 
                 canOrder() {
                     return this.cart.items.every((item) => item.is_available)
-                },
-
-                queryParams() {
-                    return new URLSearchParams(window.location.search)
                 },
             },
             watch: {

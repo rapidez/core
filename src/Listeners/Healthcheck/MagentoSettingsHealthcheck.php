@@ -61,7 +61,7 @@ class MagentoSettingsHealthcheck extends Base
 
         $attributeModel = config('rapidez.models.attribute');
         $nonFlatAttributes = Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {
-            return ! $attribute['flat'] && ($attribute['listing'] || $attribute['filter'] || $attribute['productpage']);
+            return ! $attribute['flat'] && ($attribute['listing'] || $attribute['filter'] || $attribute['productpage'] || $attribute['search'] || $attribute['sorting']);
         }), 'code');
 
         if (! empty($nonFlatAttributes)) {

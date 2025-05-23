@@ -2,42 +2,27 @@
 
 @section('robots', 'NOINDEX,NOFOLLOW')
 
+@pushOnce('head', 'search-overview')
+    @vite(vite_filename_paths(['StateResults.vue']))
+@endPushOnce
+
 @section('content')
-    <div class="container" v-cloak>
-        <h1 class="font-bold text-3xl">@lang('Search for'): @{{ $root.queryParams.get('q') }}</h1>
-        <x-rapidez::listing query="{
-            bool: {
-                must: [
-                    { terms: { visibility: [3, 4] } },
-                    { bool: { should: [
-                        {
-                            multi_match: {
-                                query: $root.queryParams.get('q'),
-                                fields: Object.entries(config.searchable).map((value) => value[0]+'^'+value[1]),
-                                type: 'best_fields',
-                                operator: 'or',
-                                fuzziness: 'AUTO',
-                            },
-                        },
-                        {
-                            multi_match: {
-                                query: $root.queryParams.get('q'),
-                                fields: Object.entries(config.searchable).map((value) => value[0]+'^'+value[1]),
-                                type: 'phrase',
-                                operator: 'or',
-                            }
-                        },
-                        {
-                            multi_match: {
-                                query: $root.queryParams.get('q'),
-                                fields: Object.entries(config.searchable).map((value) => value[0]+'^'+value[1]),
-                                type: 'phrase_prefix',
-                                operator: 'or',
-                            }
-                        },
-                    ] } }
-                ],
-            }
-        }"/>
+    <div class="container">
+        <x-rapidez::listing filter-query-string="visibility:(3 OR 4)">
+            <x-slot:title>
+                <ais-state-results>
+                    <template v-slot="{ state: { query } }">
+                        <h1 class="font-medium text-2xl">
+                            <template v-if="query">
+                                @lang('Search for'): @{{ query }}
+                            </template>
+                            <template v-else>
+                                @lang('Search')
+                            </template>
+                        </h1>
+                    </template>
+                </ais-state-results>
+            </x-slot:title>
+        </x-rapidez::listing>
     </div>
 @endsection

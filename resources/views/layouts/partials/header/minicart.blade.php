@@ -2,7 +2,7 @@
     <div class="relative" v-if="hasCart" v-on-click-away="close" slot-scope="{ toggle, close, isOpen }">
         <button class="flex my-1 focus:outline-none" v-on:click="toggle">
             <x-heroicon-o-shopping-cart class="size-6"/>
-            <span class="bg-secondary text-secondary-text rounded-full size-6 text-center" dusk="minicart-count" v-cloak>
+            <span class="bg-secondary text-secondary-text text-sm font-bold flex items-center justify-center rounded-full size-6 text-center" dusk="minicart-count" v-cloak>
                 <span>@{{ Math.round(cart.total_quantity) }}</span>
             </span>
         </button>
@@ -24,12 +24,12 @@
                 </tr>
             </table>
             <div class="flex justify-between items-center">
-                <x-rapidez::button.outline href="{{ route('cart') }}" class="mr-5 whitespace-nowrap">
+                <x-rapidez::button.outline href="{{ route('cart') }}" class="mr-5 whitespace-nowrap flex-1">
                     @lang('Show cart')
                 </x-rapidez::button.outline>
 
-                <div class="w-full" :class="{ 'cursor-not-allowed': !canOrder }">
-                    <x-rapidez::button.conversion href="{{ route('checkout') }}" v-bind:class="{ 'pointer-events-none': !canOrder }">
+                <div class="flex flex-1" :class="{ 'cursor-not-allowed': !canOrder }">
+                    <x-rapidez::button.conversion href="{{ route('checkout') }}" v-bind:class="{ 'pointer-events-none': !canOrder }" class="flex-1">
                         @lang('Checkout')
                     </x-rapidez::button.conversion>
                 </div>
