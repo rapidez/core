@@ -329,8 +329,6 @@ export default {
                 product = simpleProducts[0]
             }
 
-            this.$root.$emit('product-super-attribute-change', product)
-
             return product
         },
 
@@ -463,6 +461,13 @@ export default {
     },
 
     watch: {
+        simpleProduct: {
+            handler(newProduct, oldProduct) {
+                if (newProduct.sku !== oldProduct.sku) {
+                    this.$root.$emit('product-super-attribute-change', newProduct)
+                }
+            },
+        },
         superRefinements: {
             handler(refinements) {
                 this.setOptionsFromRefinements()
