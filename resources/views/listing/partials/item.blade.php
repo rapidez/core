@@ -1,4 +1,4 @@
-<div v-bind:key="item.entity_id" class="border-b px-5 py-10">
+<div v-bind:key="item.entity_id" class="px-5 py-10">
     <add-to-cart v-bind:product="item" v-slot="addToCart" v-cloak>
         <div class="group relative flex flex-1 flex-col rounded bg-white h-full">
             @if (App::providerIsLoaded('Rapidez\Wishlist\WishlistServiceProvider'))
