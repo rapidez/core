@@ -20,17 +20,17 @@ class WithSynonyms
                 'analysis' => [
                     'filter' => [
                         'synonym' => [
-                            'type' => 'synonym_graph',
+                            'type'     => 'synonym_graph',
                             'synonyms' => $synonyms,
                         ],
                     ],
                     'analyzer' => [
                         'default' => [
-                            'filter' => ['lowercase', 'asciifolding'],
+                            'filter'    => ['lowercase', 'asciifolding'],
                             'tokenizer' => 'standard',
                         ],
                         'synonym' => [
-                            'filter' => ['lowercase', 'asciifolding', 'synonym'],
+                            'filter'    => ['lowercase', 'asciifolding', 'synonym'],
                             'tokenizer' => 'standard',
                         ],
                     ],
@@ -48,16 +48,16 @@ class WithSynonyms
         return [
             'properties' => Arr::mapWithKeys($this->fields, fn($field) => [
                 $field => [
-                    'type' => 'text',
+                    'type'     => 'text',
                     'analyzer' => 'synonym',
-                    'fields' => [
+                    'fields'   => [
                         'keyword' => [
-                            'type' => 'keyword',
+                            'type'         => 'keyword',
                             'ignore_above' => 256,
                         ],
                     ],
                 ],
-            ])
+            ]),
         ];
     }
 }
