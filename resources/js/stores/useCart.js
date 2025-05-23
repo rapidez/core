@@ -182,7 +182,7 @@ export const virtualItems = computed(() => {
 })
 
 export const hasOnlyVirtualItems = computed(() => {
-    return cart.value.total_quantity === virtualItems.value.length
+    return cart.value.total_quantity === virtualItems?.value?.length
 })
 
 export const fixedProductTaxes = computed(() => {
