@@ -10,6 +10,7 @@
         {{ $attributes }}
         v-slot="{ loaded, index, searchClient, rangeAttributes, categoryAttributes, hitsPerPage, filters, sortOptions, withFilters, withSwatches, routing, middlewares }"
         v-cloak
+        v-bind:root-path='@json($rootPath)'
     >
         <div>
             <ais-instant-search
