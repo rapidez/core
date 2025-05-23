@@ -1,4 +1,4 @@
-<div class="bg rounded-md p-10">
+<div class="bg rounded-md mt-6 p-10">
     <h2 class="font-sans text-xl font-medium">@lang('No products found.')</h2>
     <ais-state-results v-slot="{ state: { query: searchQuery } }">
         <search-suggestions v-slot="searchSuggestions">
@@ -24,7 +24,7 @@
                                 </a>
                             </li>
                         </ul>
-                        <x-rapidez::button.outline class="mt-4 bg-white" href="/" aria-label="@lang('Go to home')">
+                        <x-rapidez::button.outline href="/" class="mt-4 bg-white" aria-label="@lang('Go to home')">
                             @lang('Go to home')
                         </x-rapidez::button.outline>
                     </div>

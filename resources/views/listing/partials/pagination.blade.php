@@ -12,7 +12,7 @@
                     <span class="max-sm:hidden">@lang('Prev')</span>
                 </button>
             </li>
-            <li v-if="!isFirstPage && currentRefinement !== 1">
+            <li v-if="!isFirstPage && currentRefinement !== 1 && nbPages !== 3">
                 <button
                     href="createURL(0)"
                     v-on:click.exact.left.prevent="refine(0)"
@@ -39,7 +39,7 @@
             <li v-if="!isLastPage && currentRefinement !== nbPages - 2 && currentRefinement !== nbPages - 3" class="flex items-center text-muted max-sm:text-xs">
                 ...
             </li>
-            <li v-if="!isLastPage && currentRefinement !== nbPages - 2">
+            <li v-if="!isLastPage && currentRefinement !== nbPages - 2 && nbPages !== 3">
                 <button
                     v-bind:href="createURL(nbPages)"
                     v-on:click.exact.left.prevent="refine(nbPages)"

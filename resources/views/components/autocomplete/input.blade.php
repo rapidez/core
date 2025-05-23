@@ -1,4 +1,11 @@
-<form id="autocomplete-form" method="get" action="{{ route('search') }}" class="flex relative z-header-autocomplete">
+<form
+    id="autocomplete-form"
+    method="get"
+    action="{{ route('search') }}"
+    class="flex relative z-header-autocomplete"
+    {{-- Turbo does not understand redirects to external URLs yet --}}
+    data-turbo="false"
+>
     <x-rapidez::input
         {{ $attributes->merge([
             'id' => 'autocomplete-input',
@@ -9,7 +16,7 @@
             'autocapitalize' => 'none',
             'spellcheck' => 'false',
             'placeholder' => __('What are you looking for?'),
-            'class' => 'h-12 peer',
+            'class' => 'text-base h-12 peer',
         ]) }}
     />
     <button

@@ -89,6 +89,7 @@
     "Sorry! No image": "Sorry! Geen afbeelding",
     "Sorry! This product is currently out of stock.": "Sorry! Dit product is momenteel niet op voorraad.",
     "No products found.": "Geen producten gevonden.",
+    "There are currently no products in this category.": "Er zijn momenteel geen producten in deze categorie.",
     "Here are some suggestions:": "Hier zijn enkele suggesties:",
     "Suggestions": "Suggesties",
     "Specifications": "Specificaties",
@@ -127,5 +128,6 @@
     "Page": "Pagina",
     "Next Page": "Volgende pagina",
     "Last Page": "Laatste pagina",
-    "Clear the search query": "De zoekopdracht wissen"
+    "Clear the search query": "De zoekopdracht wissen",
+    "Sort options": "Sorteer opties"
 }
