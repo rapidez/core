@@ -36,7 +36,7 @@
                                         to a grid, do we also need that here? As
                                         the item partials is shared.
                                         --}}
-                                        <div ref="slider" class="*:sm:w-1/2 *:md:w-1/3 *:xl:w-1/3 *:px-0.5 *:sm:px-2 *:shrink-0 *:snap-start -mx-2 -mx-4 flex snap-x snap-mandatory overflow-x-auto scroll-smooth scrollbar-hide sm:-mx-1">
+                                        <div ref="slider" class="*:w-1/2 *:md:w-1/3 *:xl:w-1/4 *:px-5 *:shrink-0 *:snap-start -mx-5 flex snap-x snap-mandatory overflow-x-auto scrollbar-hide">
                                             <template v-for="(item, count) in items">
                                                 @include('rapidez::listing.partials.item', ['slider' => true])
                                             </template>
