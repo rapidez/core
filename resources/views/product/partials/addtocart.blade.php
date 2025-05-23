@@ -1,4 +1,8 @@
-<add-to-cart :default-qty="{{ $product->min_sale_qty > $product->qty_increments ? $product->min_sale_qty : $product->qty_increments }}" v-slot="addToCart">
+<add-to-cart
+    v-bind:default-qty="{{ $product->min_sale_qty > $product->qty_increments ? $product->min_sale_qty : $product->qty_increments }}"
+    url-params
+    v-slot="addToCart"
+>
     <form v-on:submit.prevent="addToCart.add" class="flex flex-col gap-5">
         <h1 class="text-3xl font-bold" itemprop="name">{{ $product->name }}</h1>
         @if (!$product->in_stock && $product->backorder_type === 0)

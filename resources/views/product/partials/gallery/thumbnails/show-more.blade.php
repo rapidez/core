@@ -1,7 +1,7 @@
 {{-- This component shows an overlay on the last shown thumbnail if there are more thumbnails after it. --}}
 
 <div @attributes([
-    'v-cloak' => !(count($product->images) - $imageId - 1),
+    'v-cloak' => !(count($selectedChild->images) - $imageId - 1),
     'v-if' => 'images.length - ' . $imageId . ' - 1',
 ])>
     <span
@@ -19,7 +19,7 @@
             class="size-9 flex items-center justify-center rounded-full bg-white text-sm font-bold text shadow-md"
             v-text="'+' + (images.length - {{ $imageId }} - 1)"
         >
-            +{{ count($product->images) - $imageId - 1 }}
+            +{{ count($selectedChild->images) - $imageId - 1 }}
         </span>
     </span>
 </div>

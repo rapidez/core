@@ -32,17 +32,30 @@ class ProductController
             'qty_increments',
         ];
 
+        $queryOptions = request()->query;
+        $selectedOptions = [];
+
         $attributes = Eventy::filter('productpage.frontend.attributes', $attributes);
 
-        foreach ($product->super_attributes ?: [] as $superAttribute) {
+        foreach ($product->super_attributes ?: [] as $superAttributeId => $superAttribute) {
             $attributes[] = 'super_' . $superAttribute->code;
+
+            // Make sure we only check for query options that exist
+            if ($queryOptions->has($superAttribute->code)) {
+                $selectedOptions[$superAttribute->code] = $queryOptions->get($superAttribute->code);
+            }
         }
+
+        // Find the first child that matches the given product options
+        $selectedChild = collect($product->children)->firstWhere(function ($child) use ($selectedOptions) {
+            return collect($selectedOptions)->every(fn ($value, $code) => $child->{$code} == $value);
+        }) ?? $product;
 
         ProductViewEvent::dispatch($product);
 
         config(['frontend.product' => $product->only($attributes)]);
 
-        $response = response()->view('rapidez::product.overview', compact('product'));
+        $response = response()->view('rapidez::product.overview', compact('product', 'selectedChild'));
 
         return $response
             ->setEtag(md5($response->getContent() ?? ''))
