@@ -40,12 +40,12 @@ class IndexCommand extends Command
             foreach ($types as $model) {
                 $searchableAs = (new $model)->searchableAs();
 
-                $indexMappings = Eventy::filter('index.' . $model::getIndexName() . '.mapping', $model::getIndexMapping());
-                if ($indexMappings) {
-                    config()->set('elasticsearch.indices.mappings.' . $searchableAs, $indexMappings);
+                $indexMapping = $model::getIndexMapping();
+                if ($indexMapping) {
+                    config()->set('elasticsearch.indices.mappings.' . $searchableAs, $indexMapping);
                 }
 
-                $indexSettings = Eventy::filter('index.' . $model::getIndexName() . '.settings', $model::getIndexSettings());
+                $indexSettings = $model::getIndexSettings();
                 if ($indexSettings) {
                     config()->set('elasticsearch.indices.settings.' . $searchableAs, $indexSettings);
                 }

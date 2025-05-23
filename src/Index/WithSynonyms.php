@@ -1,21 +1,15 @@
 <?php
 
-namespace Rapidez\Core\Models\Traits;
+namespace Rapidez\Core\Index;
 
 use Illuminate\Support\Arr;
 
-trait UsesSynonyms
+class WithSynonyms
 {
-    public abstract static function getSynonymFields(): array;
+    public function __construct(public ?array $fields) {}
 
-    public static function indexSettingsSynonyms(): array
+    public function getSettings(): array
     {
-        $fields = static::getSynonymFields();
-
-        if (! count($fields)) {
-            return [];
-        }
-
         $synonyms = config('rapidez.models.search_synonym')::whereIn('store_id', [0, config('rapidez.store')])
             ->get()
             ->map(fn ($synonym) => $synonym->synonyms)
@@ -45,16 +39,14 @@ trait UsesSynonyms
         ];
     }
 
-    public static function indexMappingSynonyms(): array
+    public function getMapping(): array
     {
-        $fields = static::getSynonymFields();
-
-        if (! count($fields)) {
+        if (! count($this->fields ?? [])) {
             return [];
         }
 
         return [
-            'properties' => Arr::mapWithKeys($fields, fn($field) => [
+            'properties' => Arr::mapWithKeys($this->fields, fn($field) => [
                 $field => [
                     'type' => 'text',
                     'analyzer' => 'synonym',

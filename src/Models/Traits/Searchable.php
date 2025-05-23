@@ -35,27 +35,45 @@ trait Searchable
         ]));
     }
 
+    protected static function indexMapping(): array
+    {
+        return [];
+    }
+
+    protected static function indexSettings(): array
+    {
+        return [];
+    }
+
     public static function getIndexMapping(): array
     {
-        $mapping = [];
-
-        $methods = Arr::where(get_class_methods(static::class), fn($method) => str_starts_with($method, 'indexMapping'));
-        foreach($methods as $method) {
-            $mapping = array_merge_recursive($mapping, static::{$method}());
-        }
-
-        return $mapping;
+        return static::filter('mapping', static::indexMapping());
     }
 
     public static function getIndexSettings(): array
     {
-        $settings = [];
+        return static::filter('settings', static::indexSettings());
+    }
 
-        $methods = Arr::where(get_class_methods(static::class), fn($method) => str_starts_with($method, 'indexSettings'));
-        foreach($methods as $method) {
-            $settings = array_merge_recursive($settings, static::{$method}());
-        }
+    private static function filter($type, $initialValue): array
+    {
+        [$data, $classes] = Arr::partition(
+            Eventy::filter('index.' . static::getIndexName() . '.' . $type, $initialValue),
+            fn($value, $key) => is_string($key)
+        );
 
-        return $settings;
+        // Execute all the classes and merge their output with the data
+        collect($classes)
+            ->map(Arr::wrap(...))
+            ->filter(fn($class) => count($class))
+            ->each(function($class) use ($type, &$data) {
+                $object = app($class[0], array_slice($class, 1));
+                $function = 'get' . ucfirst($type);
+                if (method_exists($object, $function)) {
+                    $data = array_merge_recursive($data, $object->{$function}());
+                }
+            });
+
+        return $data;
     }
 }

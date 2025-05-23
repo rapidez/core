@@ -31,6 +31,7 @@ use Rapidez\Core\Http\Controllers\Fallback\LegacyFallbackController;
 use Rapidez\Core\Http\Controllers\Fallback\UrlRewriteController;
 use Rapidez\Core\Http\Middleware\CheckStoreCode;
 use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
+use Rapidez\Core\Index\WithSynonyms;
 use Rapidez\Core\Listeners\Healthcheck\ElasticsearchHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\MagentoSettingsHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\ModelsHealthcheck;
@@ -39,6 +40,7 @@ use Rapidez\Core\Listeners\UpdateLatestIndexDate;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use TorMorten\Eventy\Facades\Eventy;
 
 class RapidezServiceProvider extends ServiceProvider
 {
@@ -66,7 +68,8 @@ class RapidezServiceProvider extends ServiceProvider
             ->bootScout()
             ->bootTranslations()
             ->bootListeners()
-            ->bootMacros();
+            ->bootMacros()
+            ->bootFilters();
     }
 
     public function register()
@@ -287,6 +290,19 @@ class RapidezServiceProvider extends ServiceProvider
                 )
             );
         });
+
+        return $this;
+    }
+
+    protected function bootFilters(): self
+    {
+        $productSynonymFields = Eventy::filter('index.products.synonym-fields', ['name']);
+        Eventy::addFilter('index.products.settings', fn($filters) => array_merge($filters ?: [], [WithSynonyms::class]));
+        Eventy::addFilter('index.products.mapping', fn($filters) => array_merge($filters ?: [], [[WithSynonyms::class, 'fields' => $productSynonymFields]]));
+
+        $categorySynonymFields = Eventy::filter('index.categories.synonym-fields', ['name']);
+        Eventy::addFilter('index.categories.settings', fn($filters) => array_merge($filters ?: [], [WithSynonyms::class]));
+        Eventy::addFilter('index.categories.mapping', fn($filters) => array_merge($filters ?: [], [[WithSynonyms::class, 'fields' => $categorySynonymFields]]));
 
         return $this;
     }

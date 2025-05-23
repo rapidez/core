@@ -119,7 +119,7 @@ trait Searchable
         return $data;
     }
 
-    public static function indexMappingProduct(): array
+    protected static function indexMapping(): array
     {
         return [
             'properties' => [
