@@ -59,14 +59,14 @@ trait Searchable
     {
         [$data, $classes] = Arr::partition(
             Eventy::filter('index.' . static::getIndexName() . '.' . $type, $initialValue),
-            fn($value, $key) => is_string($key)
+            fn ($value, $key) => is_string($key)
         );
 
         // Execute all the classes and merge their output with the data
         collect($classes)
             ->map(Arr::wrap(...))
-            ->filter(fn($class) => count($class))
-            ->each(function($class) use ($type, &$data) {
+            ->filter(fn ($class) => count($class))
+            ->each(function ($class) use ($type, &$data) {
                 $object = app($class[0], array_slice($class, 1));
                 $function = 'get' . ucfirst($type);
                 if (method_exists($object, $function)) {

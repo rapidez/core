@@ -297,12 +297,12 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootFilters(): self
     {
         $productSynonymFields = Eventy::filter('index.products.synonym-fields', ['name']);
-        Eventy::addFilter('index.products.settings', fn($filters) => array_merge($filters ?: [], [WithSynonyms::class]));
-        Eventy::addFilter('index.products.mapping', fn($filters) => array_merge($filters ?: [], [[WithSynonyms::class, 'fields' => $productSynonymFields]]));
+        Eventy::addFilter('index.products.settings', fn ($filters) => array_merge($filters ?: [], [WithSynonyms::class]));
+        Eventy::addFilter('index.products.mapping', fn ($filters) => array_merge($filters ?: [], [[WithSynonyms::class, 'fields' => $productSynonymFields]]));
 
         $categorySynonymFields = Eventy::filter('index.categories.synonym-fields', ['name']);
-        Eventy::addFilter('index.categories.settings', fn($filters) => array_merge($filters ?: [], [WithSynonyms::class]));
-        Eventy::addFilter('index.categories.mapping', fn($filters) => array_merge($filters ?: [], [[WithSynonyms::class, 'fields' => $categorySynonymFields]]));
+        Eventy::addFilter('index.categories.settings', fn ($filters) => array_merge($filters ?: [], [WithSynonyms::class]));
+        Eventy::addFilter('index.categories.mapping', fn ($filters) => array_merge($filters ?: [], [[WithSynonyms::class, 'fields' => $categorySynonymFields]]));
 
         return $this;
     }
