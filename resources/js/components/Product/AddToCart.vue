@@ -42,6 +42,10 @@ export default {
         callback: {
             type: Function,
         },
+        urlParams: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data: () => ({
@@ -65,7 +69,12 @@ export default {
         this.$nextTick(() => {
             this.setDefaultOptions()
             this.setDefaultCustomSelectedOptions()
-            this.setOptionsFromRefinements()
+
+            if (this.urlParams) {
+                this.setOptionsFromUrlParams()
+            } else {
+                this.setOptionsFromRefinements()
+            }
         })
     },
 
@@ -271,14 +280,36 @@ export default {
                 Vue.set(this.customSelectedOptions, option.option_id, value)
             })
         },
-        async setOptionsFromRefinements() {
-            Object.entries(this.refinementOptions).forEach(([key, availableValue]) => {
-                if (!availableValue.length) {
+        async setOptionsFromValues(options) {
+            Object.entries(options).forEach(([key, values]) => {
+                if (!key || !values?.length) {
                     return
                 }
 
-                Vue.set(this.options, key, availableValue[0])
+                Vue.set(this.options, key, values[0])
             })
+        },
+        async setOptionsFromRefinements() {
+            let options = Object.entries(this.refinementOptions)
+            await this.setOptionsFromValues(Object.fromEntries(options))
+        },
+        async setOptionsFromUrlParams() {
+            let options = new URLSearchParams(window.location.search).entries().toArray()
+            await this.setOptionsFromValues(this.optionsFromNamedOptions(options))
+        },
+        optionsFromNamedOptions(values) {
+            // Options per super attribute that match the given named refinements
+            return Object.fromEntries(
+                Object.entries(this.product?.super_attributes || {}).map(([index, attribute]) => {
+                    let attributeValues = values.find(([key, value]) => key === attribute.code)?.[1] || []
+                    if (!Array.isArray(attributeValues)) {
+                        attributeValues = [attributeValues]
+                    }
+
+                    // Filter out disabled options
+                    return [index, attributeValues.filter((val) => this.enabledOptions[index].includes(val * 1))]
+                }),
+            )
         },
     },
 
@@ -346,6 +377,19 @@ export default {
             })
 
             return selectedOptions
+        },
+
+        productUrl: function () {
+            let namedOptions = Object.fromEntries(
+                Object.entries(this.options).map(([key, value]) => [this.product.super_attributes[key]?.code, value]),
+            )
+
+            let params = new URLSearchParams(namedOptions)
+            if (params.size) {
+                return this.product.url + '?' + params
+            }
+
+            return this.product.url
         },
 
         enteredOptions: function () {
@@ -446,17 +490,7 @@ export default {
         },
 
         refinementOptions() {
-            // Options per super attribute that match the current refinements.
-            return Object.fromEntries(
-                Object.entries(this.product?.super_attributes || {}).map(([index, attribute]) => {
-                    return [
-                        index,
-                        (Object.entries(this.superRefinements).find(([key, value]) => key === attribute.code)?.[1] || []).filter((val) =>
-                            this.enabledOptions[index].includes(val * 1),
-                        ),
-                    ] // Filter out disabled options
-                }),
-            )
+            return this.optionsFromNamedOptions(Object.entries(this.superRefinements))
         },
     },
 
