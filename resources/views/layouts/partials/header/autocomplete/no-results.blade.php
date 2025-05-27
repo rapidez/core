@@ -1,6 +1,7 @@
 <ais-state-results v-slot="{ status }">
-    <div v-if="status === 'stalled'" class="mx-auto py-2.5">
-        <x-heroicon-o-arrow-path class="w-full animate-spin size-6" />
+    <div v-if="status === 'stalled'" class="flex items-center mx-auto px-5 py-2.5">
+        <span class="mr-2">@lang('Searching...')</span>
+        <x-heroicon-o-arrow-path class="animate-spin size-3" />
     </div>
     <ais-hits>
         <template v-slot="{ items }">
