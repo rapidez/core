@@ -7,7 +7,6 @@ use Rapidez\Core\Events\IndexAfterEvent;
 use Rapidez\Core\Events\IndexBeforeEvent;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Traits\Searchable;
-use TorMorten\Eventy\Facades\Eventy;
 
 class IndexCommand extends Command
 {

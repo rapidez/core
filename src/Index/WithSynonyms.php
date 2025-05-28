@@ -46,7 +46,7 @@ class WithSynonyms
         }
 
         return [
-            'properties' => Arr::mapWithKeys($this->fields, fn($field) => [
+            'properties' => Arr::mapWithKeys($this->fields, fn ($field) => [
                 $field => [
                     'type'     => 'text',
                     'analyzer' => 'synonym',
