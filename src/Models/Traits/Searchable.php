@@ -5,6 +5,7 @@ namespace Rapidez\Core\Models\Traits;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable as ScoutSearchable;
+use Rapidez\Core\Index\WithSynonyms;
 use TorMorten\Eventy\Facades\Eventy;
 
 trait Searchable
@@ -35,6 +36,11 @@ trait Searchable
         ]));
     }
 
+    public static function synonymFields(): array
+    {
+        return [];
+    }
+
     protected static function indexMapping(): array
     {
         return [];
@@ -47,12 +53,13 @@ trait Searchable
 
     public static function getIndexMapping(): array
     {
-        return static::filter('mapping', static::indexMapping());
+        $synonymFields = Eventy::filter('index.' .  static::getIndexName() . '.synonym-fields', static::synonymFields());
+        return static::filter('mapping', [...static::indexMapping(), [WithSynonyms::class, 'fields' => $synonymFields]]);
     }
 
     public static function getIndexSettings(): array
     {
-        return static::filter('settings', static::indexSettings());
+        return static::filter('settings', [...static::indexSettings(), WithSynonyms::class]);
     }
 
     private static function filter($type, $initialValue): array
