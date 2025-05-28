@@ -141,6 +141,6 @@ trait Searchable
 
     public static function synonymFields(): array
     {
-        return ['name', 'short_description'];
+        return ['name', 'short_description', 'description'];
     }
 }
