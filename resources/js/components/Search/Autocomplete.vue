@@ -116,7 +116,7 @@ export default {
                 requests = requests.map((request) => {
                     request.params.hitsPerPage = request.params.hitsPerPage || this.hitsPerPage
 
-                    return request;
+                    return request
                 })
 
                 return oldSearch.bind(client)(requests)
