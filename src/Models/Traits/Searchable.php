@@ -53,7 +53,8 @@ trait Searchable
 
     public static function getIndexMapping(): array
     {
-        $synonymFields = Eventy::filter('index.' .  static::getIndexName() . '.synonym-fields', static::synonymFields());
+        $synonymFields = Eventy::filter('index.' . static::getIndexName() . '.synonym-fields', static::synonymFields());
+
         return static::filter('mapping', [...static::indexMapping(), [WithSynonyms::class, 'fields' => $synonymFields]]);
     }
 

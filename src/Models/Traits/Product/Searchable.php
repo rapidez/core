@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Facades\Rapidez;
-use Rapidez\Core\Index\WithSynonyms;
 use Rapidez\Core\Models\Category;
 use Rapidez\Core\Models\CategoryProduct;
 use Rapidez\Core\Models\Product;
