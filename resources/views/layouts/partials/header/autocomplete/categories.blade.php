@@ -1,4 +1,4 @@
-<ais-index v-bind:index-name="config.index.category">
+<ais-index v-bind:index-name="config.index.category" v-bind:index-id="'autocomplete_' + config.index.category">
     @if ($size = Arr::get($fields, 'size'))
         <ais-configure :hits-per-page.camel="{{ $size }}" />
     @endif

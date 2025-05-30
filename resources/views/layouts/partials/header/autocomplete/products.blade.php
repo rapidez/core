@@ -1,4 +1,4 @@
-<ais-hits v-bind:index-name="config.index.product">
+<ais-hits v-bind:index-name="config.index.product" v-bind:index-id="'autocomplete_' + config.index.product">
     <template v-slot="{ items, sendEvent }">
         <div v-if="items && items.length" class="py-2.5">
             <x-rapidez::autocomplete.title>
