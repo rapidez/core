@@ -96,7 +96,14 @@ export default {
         getBaseFilters() {
             if (this.categoryId) {
                 return this.baseFilters().concat([
-                    { query_string: { query: '(visibility:(2 OR 4) OR (NOT _exists_:visibility)) AND (category_ids:' + this.categoryId + ' OR (NOT _exists_:category_ids))' } },
+                    {
+                        query_string: {
+                            query:
+                                '(visibility:(2 OR 4) OR (NOT _exists_:visibility)) AND (category_ids:' +
+                                this.categoryId +
+                                ' OR (NOT _exists_:category_ids))',
+                        },
+                    },
                     this.$root.categoryPositions(this.categoryId),
                 ])
             }
