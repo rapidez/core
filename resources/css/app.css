@@ -10,6 +10,10 @@
     @apply animate-pulse blur;
 }
 
+@view-transition {
+    navigation: auto;
+}
+
 * {
     -webkit-tap-highlight-color: transparant;
 }
