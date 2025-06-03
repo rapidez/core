@@ -1,4 +1,4 @@
-<autocomplete v-slot="{ searchClient, middlewares, searchHistory }">
+<autocomplete v-slot="{ searchClient, middlewares, searchHistory }" :hits-per-page="{{ config('rapidez.frontend.autocomplete.size', 3) }}">
     <div class="relative w-full">
         <ais-instant-search
             v-if="searchClient"
@@ -9,7 +9,6 @@
             v-cloak
         >
             <div class="contents">
-                <ais-configure :hits-per-page.camel="{{ config('rapidez.frontend.autocomplete.size', 3) }}" />
                 <div class="searchbox group/autocomplete">
                     <ais-autocomplete>
                         <template v-slot="{ currentRefinement, refine }">

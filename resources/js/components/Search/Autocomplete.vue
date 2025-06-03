@@ -29,6 +29,13 @@ export default {
         StatsAnalytics,
     },
 
+    props: {
+        hitsPerPage: {
+            type: Number,
+            default: 3,
+        },
+    },
+
     data() {
         return {
             focusId: null,
@@ -105,6 +112,12 @@ export default {
                         })),
                     })
                 }
+
+                requests = requests.map((request) => {
+                    request.params.hitsPerPage = request.params.hitsPerPage || this.hitsPerPage
+
+                    return request
+                })
 
                 return oldSearch.bind(client)(requests)
             }
