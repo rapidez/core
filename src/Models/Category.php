@@ -115,4 +115,9 @@ class Category extends Model
             ->whereNot('url_key', 'default-category')
             ->has('products');
     }
+
+    public static function synonymFields(): array
+    {
+        return ['name'];
+    }
 }
