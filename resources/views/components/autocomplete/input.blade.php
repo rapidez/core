@@ -23,7 +23,7 @@
         v-on:click="refine('')"
         class="absolute right-14 top-1/2 -translate-y-1/2 transition-opacity opacity-100 peer-placeholder-shown:opacity-0"
         type="reset"
-        title="{{ __('Clear the search query') }}"
+        title="@lang('Clear the search query')"
         v-cloak
     >
         <x-heroicon-s-x-mark class="size-7" />
