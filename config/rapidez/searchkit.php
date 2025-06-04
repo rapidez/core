@@ -33,6 +33,7 @@ return [
         'super_*',
         'reviews_count',
         'reviews_score',
+        'parents',
     ],
 
     // Extra attributes that should be a range slider. Only supports numeric values.
