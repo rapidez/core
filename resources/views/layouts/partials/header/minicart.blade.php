@@ -7,7 +7,7 @@
             </span>
         </button>
         <div v-if="isOpen" class="absolute right-0 bg-white border shadow rounded-xl p-5 z-header-minicart" v-cloak>
-            <table class="w-full mb-3">
+            <table class="w-full mb-3 *:block *:max-h-96 *:overflow-y-auto *:scrollbar-hide">
                 <tr v-for="item in cart.items" class="*:pb-3">
                     <td class="block w-48 truncate overflow-hidden">
                         @{{ item.product.name }}
@@ -23,16 +23,15 @@
                     <td class="text-right">@{{ cart.prices.grand_total.value | price }}</td>
                 </tr>
             </table>
-            <div class="flex justify-between items-center">
-                <x-rapidez::button.outline href="{{ route('cart') }}" class="mr-5 whitespace-nowrap flex-1">
-                    @lang('Show cart')
-                </x-rapidez::button.outline>
-
-                <div class="flex flex-1" :class="{ 'cursor-not-allowed': !canOrder }">
+            <div class="flex flex-col gap-y-2 items-center">
+                <div class="flex w-full" :class="{ 'cursor-not-allowed': !canOrder }">
                     <x-rapidez::button.conversion href="{{ route('checkout') }}" v-bind:class="{ 'pointer-events-none': !canOrder }" class="flex-1">
                         @lang('Checkout')
                     </x-rapidez::button.conversion>
                 </div>
+                <x-rapidez::button.outline href="{{ route('cart') }}" class="w-full whitespace-nowrap flex-1">
+                    @lang('Show cart')
+                </x-rapidez::button.outline>
             </div>
         </div>
     </div>

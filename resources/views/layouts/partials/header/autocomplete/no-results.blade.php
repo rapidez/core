@@ -1,6 +1,6 @@
 <ais-state-results v-slot="{ status }">
     <div v-if="status === 'stalled'" class="flex items-center mx-auto px-5 py-2.5">
-        <x-rapidez::loading-icon />
+        <x-rapidez-loading class="size-5 text-gray-200 animate-spin fill-primary" />
         <span class="ml-2">@lang('Searching...')</span>
     </div>
     <ais-hits>

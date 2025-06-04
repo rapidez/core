@@ -15,7 +15,7 @@
                     @lang('Suggestions')
                 </x-rapidez::autocomplete.title>
                 <ul class="flex flex-col font-sans">
-                    <li v-for="(item, count) in items" class="flex flex-1 items-center w-full hover:bg-muted">
+                    <li v-for="(item, count) in items" class="flex flex-1 items-center w-full">
                         <a
                             v-bind:href="window.url(item.redirect || '{{ route('search', ['q' => 'searchPlaceholder']) }}'.replace('searchPlaceholder', encodeURIComponent(item.query_text)))"
                             class="relative flex items-center group w-full px-5 py-2 text-sm gap-x-4"

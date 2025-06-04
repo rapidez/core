@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core;
 
+use BladeUI\Icons\Factory;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Http\Kernel;
@@ -369,6 +370,12 @@ class RapidezServiceProvider extends ServiceProvider
     {
         config()->set('blade-icons.attributes.defer', config('blade-icons.attributes.defer', true));
 
+        $this->callAfterResolving(Factory::class, function (Factory $factory) {
+            $factory->add('rapidez', [
+                'path' => __DIR__.'/../resources/svg',
+                'prefix' => 'rapidez',
+            ]);
+        });
         return $this;
     }
 }
