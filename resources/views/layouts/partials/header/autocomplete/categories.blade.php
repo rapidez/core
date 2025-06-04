@@ -10,7 +10,7 @@
             <ul class="flex flex-col font-sans">
                 <li v-for="(item, count) in items" class="flex flex-1 items-center w-full hover:bg-muted">
                     <a v-bind:href="item.url" class="relative flex items-center group w-full px-5 py-2 text-sm gap-x-2">
-                        <template v-for="parent in item.parents.slice(0,-1)">
+                        <template v-for="parent in item.parents">
                             <span>@{{ parent }}</span>
                             <span>&gt;</span>
                         </template>

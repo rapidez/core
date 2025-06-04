@@ -123,7 +123,7 @@ class Category extends Model
     public function toSearchableArray(): array
     {
         $data = $this->toArray();
-        $data['parents'] = $this->parentcategories->pluck('name')->toArray();
+        $data['parents'] = $this->parentcategories->pluck('name')->slice(0, -1)->toArray();
 
         return Eventy::filter('index.' . static::getIndexName() . '.data', $data, $this);
     }
