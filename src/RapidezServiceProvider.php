@@ -372,10 +372,11 @@ class RapidezServiceProvider extends ServiceProvider
 
         $this->callAfterResolving(Factory::class, function (Factory $factory) {
             $factory->add('rapidez', [
-                'path' => __DIR__.'/../resources/svg',
+                'path'   => __DIR__ . '/../resources/svg',
                 'prefix' => 'rapidez',
             ]);
         });
+
         return $this;
     }
 }
