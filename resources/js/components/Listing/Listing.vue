@@ -157,10 +157,7 @@ export default {
                 ),
             )
 
-            const categories = [
-                ...(this.rootPath || []),
-                ...(routeState.category?.split('--') || [])
-            ];
+            const categories = [...(this.rootPath || []), ...(routeState.category?.split('--') || [])]
 
             return {
                 [this.index]: {
