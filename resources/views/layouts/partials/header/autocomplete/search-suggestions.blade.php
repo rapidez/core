@@ -8,6 +8,8 @@
             :query="currentRefinement || ' '"
             :hits-per-page.camel="{{ Arr::get($fields, 'size', config('rapidez.frontend.autocomplete.size', 3)) }}"
             filters="display_in_terms:1"
+            :highlight-pre-tag.camel="'__ais-highlight__'"
+            :highlight-post-tag.camel="'__/ais-highlight__'"
         />
         <ais-hits v-slot="{ items }">
             <div v-if="items && items.length" v-bind:class="{ 'border-b': currentRefinement }" class="py-2.5">
