@@ -157,13 +157,16 @@ export default {
                 ),
             )
 
-            let rootPath = this.rootPath || []
-            let categoryPath = routeState.category?.split('--') || []
+            const categories = [
+                ...(this.rootPath || []),
+                ...(routeState.category?.split('--') || [])
+            ];
+
             return {
                 [this.index]: {
                     range: ranges,
                     refinementList: refinementList,
-                    hierarchicalMenu: { category_lvl1: [...rootPath, ...categoryPath] },
+                    hierarchicalMenu: { category_lvl1: categories.length ? categories : null },
                     query: routeState.q,
                     page: Number(routeState.page),
                     sortBy: routeState.sort,
