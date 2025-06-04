@@ -124,6 +124,7 @@ class Category extends Model
     {
         $data = $this->toArray();
         $data['parents'] = $this->parentcategories->pluck('name')->toArray();
+
         return Eventy::filter('index.' . static::getIndexName() . '.data', $data, $this);
     }
 
