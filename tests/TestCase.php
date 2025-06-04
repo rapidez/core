@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\RapidezServiceProvider;
-use Rapidez\LaravelMultiCache\MultiStoreServiceProvider;
 use TorMorten\Eventy\EventServiceProvider;
 
 class TestCase extends BaseTestCase
@@ -22,7 +21,6 @@ class TestCase extends BaseTestCase
     {
         return [
             EventServiceProvider::class,
-            MultiStoreServiceProvider::class,
             RapidezServiceProvider::class,
         ];
     }
