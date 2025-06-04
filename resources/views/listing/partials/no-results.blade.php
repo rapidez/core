@@ -4,9 +4,9 @@
     <ais-index v-bind:index-name="config.index.category" v-bind:index-id="'listing_' + config.index.category">
         <ais-hits v-slot="{ items }">
             <div class="border-b py-2.5" v-if="items && items.length">
-                @lang('Categories'):
+                <strong>@lang('Categories'):</strong>
                 <ul class="flex flex-col font-sans">
-                    <li v-for="(item, count) in items" class="flex flex-1 items-center w-full hover:bg-muted">
+                    <li v-for="(item, count) in items" class="flex flex-1 items-center w-full">
                         <a v-bind:href="item.url" class="flex items-center group py-1 gap-x-0.5 hover:underline">
                             <x-heroicon-o-chevron-right class="text-primary size-3.5 shrink-0"/> <x-rapidez::highlight attribute="name" class="line-clamp-2"/>
                         </a>

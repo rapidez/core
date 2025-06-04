@@ -9,10 +9,10 @@
 @section('content')
     <div class="container">
         <x-rapidez::listing filter-query-string="(visibility:(3 OR 4) OR (NOT _exists_:visibility))">
-            <x-slot:title>
+            <x-slot:before>
                 <ais-state-results>
                     <template v-slot="{ state: { query } }">
-                        <h1 class="font-medium text-2xl">
+                        <h1 class="font-medium text-2xl mb-5">
                             <template v-if="query">
                                 @lang('Search for'): @{{ query }}
                             </template>
@@ -22,7 +22,7 @@
                         </h1>
                     </template>
                 </ais-state-results>
-            </x-slot:title>
+            </x-slot:before>
         </x-rapidez::listing>
     </div>
 @endsection
