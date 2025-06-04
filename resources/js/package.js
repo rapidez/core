@@ -171,7 +171,8 @@ function init() {
                     document.dispatchEvent(event)
                 })
             },
-            destroyEvent: 'turbo:before-cache-timeout',
+            // If we have view transitions, we need to make sure we destroy after render.
+            destroyEvent: !!document.startViewTransition ? 'turbo:before-cache-timeout' : 'turbo:before-cache',
         })
 
         setTimeout(() => {

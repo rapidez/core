@@ -16,7 +16,7 @@
                 @include('rapidez::listing.partials.no-products')
             @else
                 <x-rapidez::listing
-                    :root-path="$category->parentcategories->pluck('name')->join(' > ')"
+                    :root-path="$category->parentcategories->pluck('name')"
                     v-bind:category-id="{{ $category->entity_id }}"
                 />
             @endif

@@ -8,7 +8,7 @@
 
 @section('content')
     <div class="container">
-        <x-rapidez::listing filter-query-string="visibility:(3 OR 4)">
+        <x-rapidez::listing filter-query-string="(visibility:(3 OR 4) OR (NOT _exists_:visibility))">
             <x-slot:title>
                 <ais-state-results>
                     <template v-slot="{ state: { query } }">

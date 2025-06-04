@@ -119,10 +119,7 @@ trait Searchable
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function getIndexMappings(): ?array
+    protected static function indexMapping(): array
     {
         return [
             'properties' => [
@@ -140,5 +137,10 @@ trait Searchable
                 ],
             ],
         ];
+    }
+
+    public static function synonymFields(): array
+    {
+        return ['name', 'short_description', 'description'];
     }
 }
