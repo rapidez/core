@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
 use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
 use Rapidez\Core\Models\Traits\Searchable;
+use TorMorten\Eventy\Facades\Eventy;
 
 class Category extends Model
 {
@@ -114,6 +115,17 @@ class Category extends Model
             ->whereNotNull('url_key')
             ->whereNot('url_key', 'default-category')
             ->has('products');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toSearchableArray(): array
+    {
+        $data = $this->toArray();
+        $data['parents'] = $this->parentcategories->pluck('name')->slice(0, -1)->toArray();
+
+        return Eventy::filter('index.' . static::getIndexName() . '.data', $data, $this);
     }
 
     public static function synonymFields(): array

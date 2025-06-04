@@ -9,7 +9,11 @@
             </x-rapidez::autocomplete.title>
             <ul class="flex flex-col font-sans">
                 <li v-for="(item, count) in items" class="flex flex-1 items-center w-full hover:bg-muted">
-                    <a v-bind:href="item.url" class="relative flex items-center group w-full px-5 py-2 text-sm gap-x-4">
+                    <a v-bind:href="item.url" class="relative flex items-center group w-full px-5 py-2 text-sm gap-x-2">
+                        <template v-for="parent in item.parents">
+                            <span>@{{ parent }}</span>
+                            <span>&gt;</span>
+                        </template>
                         <x-rapidez::highlight attribute="name" class="line-clamp-2"/>
                     </a>
                 </li>
