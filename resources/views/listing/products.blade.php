@@ -1,26 +1,35 @@
-@php $dropdownClasses = '!h-auto !py-3 !px-5 !border-solid !border !border-default !rounded-md !py-2 !ring-0 focus:!border-muted !text-sm !text !outline-none max-md:w-full' @endphp
-<reactive-list
-    id="products"
-    class="*:flex-wrap *:gap-3 *:max-sm:gap-y-3 *:max-md:justify-end"
-    component-id="products"
-    data-field="name.keyword"
-    list-class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 md:gap-5 mt-5 overflow-hidden"
-    :pagination="true"
-    v-on:page-click="scrollToElement('#products')"
-    :size="isNaN(parseInt(listingSlotProps.pageSize)) ? 10000 : parseInt(listingSlotProps.pageSize)"
-    :react="{and: reactiveFilters}"
-    :sort-options="sortOptions"
-    :inner-class="{
-        button: 'pagination-button',
-        current: 'current-button',
-        sortOptions: '{{ $dropdownClasses }}',
-        pagination: 'pagination'
-    }"
-    prev-label="@lang('Prev')"
-    next-label="@lang('Next')"
-    u-r-l-params
->
-    @include('rapidez::listing.partials.stats', compact('dropdownClasses'))
-    @include('rapidez::listing.partials.item')
-    @include('rapidez::listing.partials.no-results')
-</reactive-list>
+@pushOnce('head', 'listing-products')
+    @vite(
+        vite_filename_paths([
+            'HitsPerPage.vue',
+            'SortBy.vue',
+            'Stats.vue',
+            'Hits.vue',
+            'Highlight.vue',
+            'Pagination.vue',
+            'Hits.js'
+        ])
+    )
+@endPushOnce
+
+<div id="products" class="flex flex-col max-lg:flex-wrap">
+    <div class="pb-4 border-b">
+        @include('rapidez::listing.partials.toolbar')
+    </div>
+    <ais-hits>
+        <template v-slot="{ items, sendEvent }">
+            <div v-if="items && items.length" class="overflow-hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 -mx-5 -mb-px *:border-b">
+                    <template v-for="(item, count) in items">
+                        @include('rapidez::listing.partials.item')
+                    </template>
+                </div>
+            </div>
+            <div v-else>
+                @include('rapidez::listing.partials.no-results')
+            </div>
+        </template>
+    </ais-hits>
+
+    @include('rapidez::listing.partials.pagination')
+</div>

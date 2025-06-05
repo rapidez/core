@@ -1,35 +1,36 @@
-<multi-list
-    v-else-if="filter.input == 'boolean'"
-    :component-id="filter.code"
-    :data-field="filter.code+(filter.type != 'int' ? '.keyword' : '')"
-    :react="{and: reactiveFilters}"
-    :show-search="false"
-    u-r-l-params
+<ais-refinement-list
+    v-if="filter.input == 'boolean'"
+    :attribute="filter.code"
+    operator="and"
 >
-    <div
-        slot="render"
-        class="relative pb-4"
-        slot-scope="{ data, handleChange, value }"
-        v-if="data.length > 0"
-    >
-        <x-rapidez::filter.heading>
-            <ul class="flex flex-col gap-1">
-                <li class="flex" v-for="item in data">
-                    <x-rapidez::input.checkbox
-                        v-bind:checked="value[item.key]"
-                        v-on:change="handleChange(item.key)"
-                    >
-                        <div
-                            class="font-sans font-medium text-sm items-center flex"
-                            :class="value[item.key] ? 'text' : 'text-muted'"
+    <template v-slot="{ items, refine }">
+        <x-rapidez::details.filter v-show="items.length">
+            <x-slot:content>
+                <div class="flex flex-col *:py-1 first:*:pt-0 last:*:pb-0 items-start">
+                    <template v-for="item in items">
+                        <x-rapidez::input.checkbox
+                            v-bind:checked="item.isRefined"
+                            v-on:change="refine(item.value)"
                         >
-                            <template v-if="item.key">@lang('Yes')</template>
-                            <template v-if="!item.key">@lang('No')</template>
-                            <span class="block ml-0.5 text-xs">(@{{ item.doc_count }})</span>
-                        </div>
-                    </x-rapidez::input.checkbox>
-                </li>
-            </ul>
-        </x-rapidez::filter.heading>
-    </div>
-</multi-list>
+                            <span
+                                class="items-baseline flex text-base/5"
+                                :class="item.isRefined ? 'text' : 'text-muted hover:text'"
+                            >
+                                <template v-if="item.value == '1'">
+                                    @lang('Yes')
+                                </template>
+                                <template v-if="item.value == '0'">
+                                    @lang('No')
+                                </template>
+                                <span class="block ml-0.5 text-xs">
+                                    (@{{ item.count }})
+                                </span>
+                            </span>
+                        </x-rapidez::input.checkbox>
+                    </template>
+                </div>
+            </x-slot:content>
+        </x-rapidez::details>
+    </template>
+</ais-refinement-list>
+

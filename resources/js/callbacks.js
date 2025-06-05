@@ -3,16 +3,18 @@ import { fillFromGraphqlResponse as updateOrder } from './stores/useOrder'
 import { runAfterPlaceOrderHandlers, runBeforePaymentMethodHandlers, runBeforePlaceOrderHandlers } from './stores/usePaymentHandlers'
 import { refresh as refreshUser, token } from './stores/useUser'
 
-Vue.prototype.scrollToElement = (selector) => {
+Vue.prototype.scrollToElement = (selector, offset = 0) => {
     let el = window.document.querySelector(selector)
-    window.scrollTo({
-        top: el.offsetTop,
-        behavior: 'smooth',
-    })
+    if (el) {
+        window.scrollTo({
+            top: el.offsetTop - offset,
+            behavior: 'smooth',
+        })
+    }
 }
 
 Vue.prototype.getCheckoutStep = (stepName) => {
-    return (config.checkout_steps[config.store_code] ?? config.checkout_steps['default'])?.indexOf(stepName)
+    return config.checkout_steps?.indexOf(stepName)
 }
 
 Vue.prototype.submitPartials = async function (form, sequential = false) {

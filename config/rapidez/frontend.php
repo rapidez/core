@@ -5,7 +5,6 @@ return [
     'exposed' => [
         'store',
         'es_url',
-        'es_prefix',
         'media_url',
         'magento_url',
         'notifications',
@@ -21,38 +20,32 @@ return [
     ],
 
     // The checkout steps which are used to name the steps
-    // in the url and in the progressbar on steps. You can
-    // add different steps for different stores. Keep
+    // in the url and in the progressbar on steps. Keep
     // them lowercase and do not include any spaces.
     'checkout_steps' => [
-        // 'default' => ['onestep'],
-        'default' => ['login', 'credentials', 'payment'],
+        'login', 'credentials', 'payment',
+        // 'onestep',
     ],
 
     'autocomplete' => [
         // Attach additional indexes to the autocomplete
         // Uses the views in rapidez::layouts.partials.header.autocomplete
         'additionals' => [
-            'categories' => ['name^3', 'description'],
+            'history'            => [],
+            'search-suggestions' => [],
+            'categories'         => [],
 
             // For example:
             // 'blogs' => [
-            //     'fields' => ['title^3', 'description'],  // Required
             //     'size' => 3,                             // Optional; Overrides the default `size` as defined below
-            //     'stores' => ['my_second_store'],         // Optional; Define this only if you want to specify which stores use this index
-            //     'sort' => ['date' => 'desc'],            // Optional; See: https://www.elastic.co/guide/en/elasticsearch/reference/7.17/sort-search-results.html)
             // ],
         ],
 
-        'debounce' => 500,
-        'size'     => 3,
+        'size' => 3,
     ],
 
-    // Link store codes to theme folders
     // The structure is `'store_code' => 'folder_path'`
-    'themes' => [
-        'default' => resource_path('themes/default'),
-    ],
+    'theme' => resource_path('themes/default'),
 
     // The fully qualified class names of the widgets.
     'widgets' => [

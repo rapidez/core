@@ -2,24 +2,21 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Route;
 use Rapidez\Core\Http\Controllers\GetSignedCheckoutController;
+use Rapidez\Core\Http\Controllers\IndexController;
 use Rapidez\Core\Http\Controllers\OrderController;
+use Rapidez\Core\Http\Controllers\SearchController;
 use Rapidez\Core\Http\Middleware\VerifyAdminToken;
 
 Route::middleware('api')->prefix('api')->group(function () {
-    Route::get('attributes', function () {
-        $attributeModel = config('rapidez.models.attribute');
-
-        return $attributeModel::getCachedWhere(function ($attribute) {
-            return $attribute['filter'] || $attribute['sorting'];
-        });
-    });
-
-    Route::get('swatches', function () {
-        $optionswatchModel = config('rapidez.models.option_swatch');
-
-        return $optionswatchModel::getCachedSwatchValues();
-    });
+    Route::post('search', [SearchController::class, 'store'])
+        ->middleware([
+            \Illuminate\Cookie\Middleware\EncryptCookies::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
+            'throttle:search-analytics',
+        ]);
 
     Route::get('order', OrderController::class);
 
@@ -33,5 +30,11 @@ Route::middleware('api')->prefix('api')->group(function () {
                 'store' => $request->store ?: false,
             ]);
         });
+
+        Route::post('index/{model}', [IndexController::class, 'store'])
+            ->where('model', '[a-zA-Z0-9_]+');
+
+        Route::delete('index/{model}', [IndexController::class, 'destroy'])
+            ->where('model', '[a-zA-Z0-9_]+');
     });
 });

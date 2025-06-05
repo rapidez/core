@@ -2,6 +2,8 @@
 
 namespace Rapidez\Core;
 
+use BladeUI\Icons\Factory;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
@@ -9,6 +11,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -17,12 +20,11 @@ use Illuminate\View\View as ViewComponent;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
 use Rapidez\Core\Auth\MagentoCartTokenGuard;
 use Rapidez\Core\Auth\MagentoCustomerTokenGuard;
-use Rapidez\Core\Commands\IndexCategoriesCommand;
-use Rapidez\Core\Commands\IndexProductsCommand;
+use Rapidez\Core\Commands\IndexCommand;
 use Rapidez\Core\Commands\InstallCommand;
 use Rapidez\Core\Commands\InstallTestsCommand;
+use Rapidez\Core\Commands\UpdateIndexCommand;
 use Rapidez\Core\Commands\ValidateCommand;
-use Rapidez\Core\Events\IndexBeforeEvent;
 use Rapidez\Core\Events\ProductViewEvent;
 use Rapidez\Core\Facades\Rapidez as RapidezFacade;
 use Rapidez\Core\Http\Controllers\Fallback\CmsPageController;
@@ -30,11 +32,11 @@ use Rapidez\Core\Http\Controllers\Fallback\LegacyFallbackController;
 use Rapidez\Core\Http\Controllers\Fallback\UrlRewriteController;
 use Rapidez\Core\Http\Middleware\CheckStoreCode;
 use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
-use Rapidez\Core\Http\ViewComposers\ConfigComposer;
 use Rapidez\Core\Listeners\Healthcheck\ElasticsearchHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\MagentoSettingsHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\ModelsHealthcheck;
 use Rapidez\Core\Listeners\ReportProductView;
+use Rapidez\Core\Listeners\UpdateLatestIndexDate;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -44,11 +46,11 @@ class RapidezServiceProvider extends ServiceProvider
     protected $configFiles = [
         'frontend',
         'healthcheck',
-        'indexer',
         'jwt',
         'magento-defaults',
         'models',
         'routing',
+        'searchkit',
         'system',
     ];
 
@@ -62,6 +64,7 @@ class RapidezServiceProvider extends ServiceProvider
             ->bootViews()
             ->bootBladeComponents()
             ->bootMiddleware()
+            ->bootScout()
             ->bootTranslations()
             ->bootListeners()
             ->bootMacros();
@@ -89,16 +92,12 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootCommands(): self
     {
         $this->commands([
-            IndexProductsCommand::class,
-            IndexCategoriesCommand::class,
+            IndexCommand::class,
+            UpdateIndexCommand::class,
             ValidateCommand::class,
             InstallCommand::class,
             InstallTestsCommand::class,
         ]);
-
-        Event::listen(IndexBeforeEvent::class, function ($event) {
-            $event->context->call('rapidez:index:categories');
-        });
 
         return $this;
     }
@@ -139,6 +138,10 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function bootRoutes(): self
     {
+        RateLimiter::for('search-analytics', function (Request $request) {
+            return Limit::perMinute(30)->by($request->ip());
+        });
+
         if (config('rapidez.routing.enabled')) {
             $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
             $this->loadRoutesFrom(__DIR__ . '/../routes/magento-redirects.php');
@@ -162,33 +165,9 @@ class RapidezServiceProvider extends ServiceProvider
         return $this;
     }
 
-    protected function registerThemes(): self
-    {
-        if (app()->runningInConsole()) {
-            return $this;
-        }
-
-        $path = config('rapidez.frontend.themes.' . request()->server('MAGE_RUN_CODE', request()->has('_store') && ! app()->isProduction() ? request()->get('_store') : 'default'), false);
-
-        if (! $path) {
-            return $this;
-        }
-
-        config([
-            'view.paths' => [
-                $path,
-                ...config('view.paths'),
-            ],
-        ]);
-
-        return $this;
-    }
-
     protected function bootViews(): self
     {
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'rapidez');
-
-        View::composer('rapidez::layouts.app', ConfigComposer::class);
 
         View::addExtension('graphql', 'blade');
 
@@ -249,6 +228,13 @@ class RapidezServiceProvider extends ServiceProvider
         return $this;
     }
 
+    protected function bootScout(): self
+    {
+        config()->set('scout.driver', 'Matchish\\ScoutElasticSearch\\Engines\\ElasticSearchEngine');
+
+        return $this;
+    }
+
     protected function bootTranslations(): self
     {
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'rapidez');
@@ -263,6 +249,7 @@ class RapidezServiceProvider extends ServiceProvider
         ModelsHealthcheck::register();
         MagentoSettingsHealthcheck::register();
         ElasticsearchHealthcheck::register();
+        UpdateLatestIndexDate::register();
 
         return $this;
     }
@@ -281,6 +268,25 @@ class RapidezServiceProvider extends ServiceProvider
             return Str::of($this->render())
                 ->replaceMatches('/#.*/m', '')
                 ->squish();
+        });
+
+        Vite::macro('getPathsByFilenames', function ($filenames) {
+            /** @var \Illuminate\Foundation\Vite $this */
+            $filenames = is_array($filenames) ? $filenames : func_get_args();
+            $manifest = $this->manifest($this->buildDirectory); // @phpstan-ignore-line False positive, the macro bind allows us to access protected properties.
+
+            return array_filter(
+                array_map(
+                    function ($filename) use ($manifest) {
+                        foreach ($manifest as $path => $asset) {
+                            if (Str::endsWith($asset['name'] ?? '', $filename) || Str::endsWith($path, $filename)) {
+                                return $path;
+                            }
+                        }
+                    },
+                    $filenames
+                )
+            );
         });
 
         return $this;
@@ -313,6 +319,28 @@ class RapidezServiceProvider extends ServiceProvider
         return $this;
     }
 
+    protected function registerThemes(): self
+    {
+        if (app()->runningInConsole()) {
+            return $this;
+        }
+
+        $path = config('rapidez.frontend.theme', false);
+
+        if (! $path) {
+            return $this;
+        }
+
+        config([
+            'view.paths' => [
+                $path,
+                ...config('view.paths'),
+            ],
+        ]);
+
+        return $this;
+    }
+
     protected function registerBindings(): self
     {
         $this->app->singleton('rapidez', Rapidez::class);
@@ -341,6 +369,13 @@ class RapidezServiceProvider extends ServiceProvider
     protected function registerBladeIconConfig(): self
     {
         config()->set('blade-icons.attributes.defer', config('blade-icons.attributes.defer', true));
+
+        $this->callAfterResolving(Factory::class, function (Factory $factory) {
+            $factory->add('rapidez', [
+                'path'   => __DIR__ . '/../resources/svg',
+                'prefix' => 'rapidez',
+            ]);
+        });
 
         return $this;
     }

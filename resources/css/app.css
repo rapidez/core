@@ -1,8 +1,3 @@
-@import 'components/vue-slider';
-@import 'components/price-slider';
-@import 'components/pagination';
-@import 'components/autocomplete';
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -15,11 +10,16 @@
     @apply animate-pulse blur;
 }
 
+@view-transition {
+    navigation: auto;
+}
+
 * {
     -webkit-tap-highlight-color: transparant;
 }
 
-listing {
+listing,
+autocomplete {
     /*  Reset browser added styling causing unexpected behavior */
     display: contents;
     font-family: unset;
@@ -38,3 +38,51 @@ listing {
 .arrows-hidden[type='number'] {
     -moz-appearance: textfield;
 }
+
+mark {
+    @apply bg-transparent font-bold;
+}
+
+input[type='search']::-webkit-search-decoration,
+input[type='search']::-webkit-search-cancel-button,
+input[type='search']::-webkit-search-results-button,
+input[type='search']::-webkit-search-results-decoration {
+    display: none;
+}
+
+.custom-select {
+    background-position: right center;
+    field-sizing: content;
+}
+
+@supports (interpolate-size: allow-keywords) {
+    :root {
+        interpolate-size: allow-keywords;
+    }
+}
+
+/* All of the details-content can be removed when tailwind v4.0 is being used within the core */
+.details-content\:h-0::details-content {
+    height: 0;
+}
+
+.details-content\:overflow-clip::details-content {
+    overflow: clip;
+}
+
+.details-content\:duration-200::details-content {
+    transition-duration: 200ms;
+}
+
+.details-content\:transition-\[height\,content-visibility\]::details-content {
+    transition-property: height, content-visibility;
+}
+
+.details-content\:transition-discrete::details-content {
+    transition-behavior: allow-discrete;
+}
+
+.open\:details-content\:h-auto:is([open], :popover-open, :open)::details-content {
+    height: auto;
+}
+/* end details content */

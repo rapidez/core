@@ -8,16 +8,24 @@
 @section('content')
     <div class="container">
         @include('rapidez::category.partials.breadcrumbs')
-        <h1 class="mb-5 text-3xl font-bold">{{ $category->name }}</h1>
+
+        <h1 class="text-2xl font-medium mb-5">{{ $category->name }}</h1>
 
         @if ($category->is_anchor)
-            <x-rapidez::listing query="{ bool: { must: [{ terms: { visibility: [2, 4] } }, { terms: { category_ids: [config.category.entity_id] } }] } }" />
+            @if (!$category->products()->exists())
+                @include('rapidez::listing.partials.no-products')
+            @else
+                <x-rapidez::listing
+                    :root-path="$category->parentcategories->pluck('name')"
+                    v-bind:category-id="{{ $category->entity_id }}"
+                />
+            @endif
         @else
-            <div class="flex max-md:flex-col">
-                <div class="xl:w-1/5">
+            <div class="flex gap-x-20 gap-y-3 max-lg:flex-col">
+                <div class="lg:w-80 shrink-0">
                     @widget('sidebar.main', 'anchor_categories', 'catalog_category_view_type_layered', $category->entity_id)
                 </div>
-                <div class="xl:w-4/5">
+                <div class="flex-1">
                     @widget('content.top', 'anchor_categories', 'catalog_category_view_type_layered', $category->entity_id)
                 </div>
             </div>

@@ -3,6 +3,21 @@ import { GraphQLError } from '../../fetch'
 import { mask, refreshMask } from '../../stores/useMask'
 
 export default {
+    inject: {
+        instantSearchInstance: {
+            from: '$_ais_instantSearchInstance',
+            default: () => {
+                return {
+                    helper: {
+                        state: {
+                            disjunctiveFacetsRefinements: {},
+                        },
+                    },
+                }
+            },
+        },
+    },
+
     props: {
         product: {
             type: Object,
@@ -27,6 +42,10 @@ export default {
         callback: {
             type: Function,
         },
+        urlParams: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data: () => ({
@@ -50,6 +69,12 @@ export default {
         this.$nextTick(() => {
             this.setDefaultOptions()
             this.setDefaultCustomSelectedOptions()
+
+            if (this.urlParams) {
+                this.setOptionsFromUrlParams()
+            } else {
+                this.setOptionsFromRefinements()
+            }
         })
     },
 
@@ -150,8 +175,8 @@ export default {
         },
 
         getOptions: function (superAttributeCode) {
-            if (this.$root.swatches.hasOwnProperty(superAttributeCode)) {
-                let swatchOptions = this.$root.swatches[superAttributeCode].options
+            if (window.config.swatches.hasOwnProperty(superAttributeCode)) {
+                let swatchOptions = window.config.swatches[superAttributeCode].options
                 let values = {}
 
                 Object.entries(this.product['super_' + superAttributeCode]).forEach(([key, val]) => {
@@ -255,6 +280,37 @@ export default {
                 Vue.set(this.customSelectedOptions, option.option_id, value)
             })
         },
+        async setOptionsFromValues(options) {
+            Object.entries(options).forEach(([key, values]) => {
+                if (!key || !values?.length) {
+                    return
+                }
+
+                Vue.set(this.options, key, values[0])
+            })
+        },
+        async setOptionsFromRefinements() {
+            let options = Object.entries(this.refinementOptions)
+            await this.setOptionsFromValues(Object.fromEntries(options))
+        },
+        async setOptionsFromUrlParams() {
+            let options = new URLSearchParams(window.location.search).entries().toArray()
+            await this.setOptionsFromValues(this.optionsFromNamedOptions(options))
+        },
+        optionsFromNamedOptions(values) {
+            // Options per super attribute that match the given named refinements
+            return Object.fromEntries(
+                Object.entries(this.product?.super_attributes || {}).map(([index, attribute]) => {
+                    let attributeValues = values.find(([key, value]) => key === attribute.code)?.[1] || []
+                    if (!Array.isArray(attributeValues)) {
+                        attributeValues = [attributeValues]
+                    }
+
+                    // Filter out disabled options
+                    return [index, attributeValues.filter((val) => this.enabledOptions[index].includes(val * 1))]
+                }),
+            )
+        },
     },
 
     computed: {
@@ -321,6 +377,19 @@ export default {
             })
 
             return selectedOptions
+        },
+
+        productUrl: function () {
+            let namedOptions = Object.fromEntries(
+                Object.entries(this.options).map(([key, value]) => [this.product.super_attributes[key]?.code, value]),
+            )
+
+            let params = new URLSearchParams(namedOptions)
+            if (params.size) {
+                return this.product.url + '?' + params
+            }
+
+            return this.product.url
         },
 
         enteredOptions: function () {
@@ -408,6 +477,21 @@ export default {
             })
             return valuesPerAttribute
         },
+
+        superRefinements() {
+            // Note that `disjunctiveFacetsRefinements` is only one of 5 total sets of refinements that gets exposed by the state
+            // It looks like all super attributes will end up in there, so right now it's the only one we check
+            let disjunctiveFacetsRefinements = this.instantSearchInstance.helper.state.disjunctiveFacetsRefinements
+            return Object.fromEntries(
+                Object.entries(disjunctiveFacetsRefinements)
+                    .filter(([key, value]) => key.startsWith('super_') && value.length > 0)
+                    .map(([key, value]) => [key.replace('super_', ''), value]),
+            )
+        },
+
+        refinementOptions() {
+            return this.optionsFromNamedOptions(Object.entries(this.superRefinements))
+        },
     },
 
     watch: {
@@ -417,6 +501,12 @@ export default {
                     this.$root.$emit('product-super-attribute-change', newProduct)
                 }
             },
+        },
+        superRefinements: {
+            handler(refinements) {
+                this.setOptionsFromRefinements()
+            },
+            deep: true,
         },
         customOptions: {
             handler() {

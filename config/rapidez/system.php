@@ -7,9 +7,6 @@ return [
     // Elasticsearch url.
     'es_url' => env('ELASTICSEARCH_URL', 'http://localhost:9200'),
 
-    // Elasticsearch prefix.
-    'es_prefix' => env('ELASTICSEARCH_PREFIX', 'rapidez'),
-
     // Get Magento url from Database
     'magento_url_from_db' => env('GET_MAGENTO_URL_FROM_DATABASE', false),
 

@@ -10,7 +10,6 @@ class CategoryController
         $category = $categoryModel::findOrFail($categoryId);
 
         config(['frontend.category' => $category->only('entity_id')]);
-        config(['frontend.subcategories' => $category->subcategories->pluck('name', 'entity_id')]);
         session(['latest_category_path' => $category->path]);
 
         $response = response()->view('rapidez::category.overview', compact('category'));

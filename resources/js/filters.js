@@ -8,10 +8,11 @@ window.truncate = function (value, limit) {
 
 Vue.filter('truncate', window.truncate)
 
-window.price = function (value) {
+window.price = function (value, extra = {}) {
     return new Intl.NumberFormat(config.locale.replace('_', '-'), {
         style: 'currency',
         currency: config.currency,
+        ...extra,
     }).format(value)
 }
 

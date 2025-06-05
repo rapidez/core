@@ -7,10 +7,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
 use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
+use Rapidez\Core\Models\Traits\Searchable;
+use TorMorten\Eventy\Facades\Eventy;
 
 class Category extends Model
 {
     use HasAlternatesThroughRewrites;
+    use Searchable;
+
+    protected $primaryKey = 'entity_id';
 
     protected $casts = [
         self::UPDATED_AT => 'datetime',
@@ -50,11 +55,6 @@ class Category extends Model
                 })
                 ->groupBy($builder->getQuery()->from . '.entity_id');
         });
-    }
-
-    public function getKeyName()
-    {
-        return $this->getTable() . '.entity_id';
     }
 
     public function getTable()
@@ -100,8 +100,36 @@ class Category extends Model
         $categoryIds = explode('/', $this->path);
         $categoryIds = array_slice($categoryIds, array_search(config('rapidez.root_category_id'), $categoryIds) + 1);
 
-        return ! $categoryIds ? [] : Category::whereIn($this->getTable() . '.entity_id', $categoryIds)
-            ->orderByRaw('FIELD(' . $this->getTable() . '.entity_id,' . implode(',', $categoryIds) . ')')
+        return ! $categoryIds ? [] : Category::whereIn($this->getQualifiedKeyName(), $categoryIds)
+            ->orderByRaw('FIELD(' . $this->getQualifiedKeyName() . ',' . implode(',', $categoryIds) . ')')
             ->get();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function makeAllSearchableUsing(Builder $query)
+    {
+        return $query->withEventyGlobalScopes('index.categories.scopes')
+            ->select((new (config('rapidez.models.category')))->qualifyColumns(['entity_id', 'name']))
+            ->whereNotNull('url_key')
+            ->whereNot('url_key', 'default-category')
+            ->has('products');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toSearchableArray(): array
+    {
+        $data = $this->toArray();
+        $data['parents'] = $this->parentcategories->pluck('name')->slice(0, -1)->toArray();
+
+        return Eventy::filter('index.' . static::getIndexName() . '.data', $data, $this);
+    }
+
+    public static function synonymFields(): array
+    {
+        return ['name'];
     }
 }

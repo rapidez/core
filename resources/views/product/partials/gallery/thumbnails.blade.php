@@ -10,7 +10,7 @@ With `$breakpoints` you can control the amount of images.
     @for ($imageId = 0; $imageId < max($breakpoints); $imageId++)
         <button
             @attributes([
-                'v-cloak' => !($imageId < count($product->images) && count($product->images) > 1),
+                'v-cloak' => !($imageId < count($selectedChild->images) && count($selectedChild->images) > 1),
                 'v-if' => $imageId . ' < images.length && images.length > 1',
             ])
             @class([
@@ -30,10 +30,10 @@ With `$breakpoints` you can control the amount of images.
         >
             <img
                 {{-- src should always be above v-bind:src --}}
-                @if ($imageId < count($product->images))
-                    src="/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product/{{ $product->images[$imageId] }}.webp"
+                @if ($imageId < count($selectedChild->images))
+                    src="/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product{{ $selectedChild->images[$imageId] }}.webp"
                 @endif
-                v-bind:src="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product/' + images[{{ $imageId }}] + '.webp'"
+                v-bind:src="'/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product' + images[{{ $imageId }}] + '.webp'"
                 alt="{{ $product->name }}"
                 class="block max-h-full w-auto object-contain"
                 width="80"

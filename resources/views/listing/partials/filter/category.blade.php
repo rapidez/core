@@ -1,31 +1,37 @@
-<reactive-component
-    component-id="category"
-    :default-query="() => ({ aggs: {
-        categories: { terms: { field: 'categories.keyword' } },
-        category_paths: { terms: { field: 'category_paths.keyword' } }
-    }})"
-    :react="{and: reactiveFilters.filter(item => item != 'category') }"
-    u-r-l-params
+<ais-hierarchical-menu
+    v-bind:attributes="categoryAttributes"
+    v-bind:sort-by="['count','name']"
+    @attributes(['root-path' => $rootPath?->join(' > ')])
+    show-more
+    :limit="6"
 >
-    <div slot-scope="{ aggregations, setQuery, value }">
-        <category-filter :aggregations="aggregations" :value="value" :set-query="setQuery">
-            <div slot-scope="{ hasResults, results }" class="pb-4">
-                <x-rapidez::filter.heading>
-                    <x-slot:title>
-                        @lang('Category')
-                    </x-slot:title>
-                    <input class="hidden" type="radio" name="category" value="" :checked="!value" v-on:change="setQuery({})"/>
-                    <ul>
-                        <category-filter-category
-                            v-for="category in results"
-                            v-bind:key="category.key"
-                            :category="category"
-                            :value="(value || config.category?.entity_id) + ''"
-                            :set-query="setQuery"
-                        />
+    <template v-slot="{ items, refine, createURL, isShowingMore, toggleShowMore, canToggleShowMore }">
+        <x-rapidez::details.filter v-show="items.length" canToggleShowMore>
+            <x-slot:summary>
+                @lang('Category')
+            </x-slot:summary>
+            <x-slot:content>
+                <recursion :data="items" v-slot="{ data, components }" class="text-base/5">
+                    <ul class="relative before:absolute before:left-0 before:border-l before:bottom-2.5 before:-translate-y-1 before:top-1.5 -my-1">
+                        <li class="pl-6 relative before:absolute before:left-0 before:w-3 before:border-b before:top-3 before:translate-y-0.5" v-for="(item, index) in data" :key="item.value">
+                            <a
+                                class="break-words inline-block py-1 hover:text"
+                                :href="createURL(item.value)"
+                                :class="{
+                                    'font-medium': item.isRefined,
+                                    'text-muted': !item.isRefined,
+                                }"
+                                v-on:click.exact.left.prevent="refine(item.value)"
+                            >
+                                @{{ item.label }}
+                                <span class="text-xs">(@{{ item.count }})</span>
+                            </a>
+
+                            <component :is="components[index]" class="mt-1.5 mb-2.5 text-sm/5" />
+                        </li>
                     </ul>
-                </x-rapidez::filter.heading>
-            </div>
-        </category-filter>
-    </div>
-</reactive-component>
+                </recursion>
+            </x-slot:content>
+        </x-rapidez::details.filter>
+    </template>
+</ais-hierarchical-menu>

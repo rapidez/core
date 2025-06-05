@@ -1,126 +1,155 @@
 <script>
-import { ReactiveBase, DataSearch } from '@appbaseio/reactivesearch-vue'
-import { useDebounceFn } from '@vueuse/core'
+import InstantSearchMixin from './InstantSearchMixin.vue'
 
-Vue.use(ReactiveBase)
-Vue.use(DataSearch)
+import InstantSearch from 'vue-instantsearch/vue2/es/src/components/InstantSearch'
+import Hits from 'vue-instantsearch/vue2/es/src/components/Hits.js'
+import Configure from 'vue-instantsearch/vue2/es/src/components/Configure.js'
+import highlight from 'vue-instantsearch/vue2/es/src/components/Highlight.vue.js'
+import Autocomplete from 'vue-instantsearch/vue2/es/src/components/Autocomplete.vue.js'
+import Index from 'vue-instantsearch/vue2/es/src/components/Index.js'
+import Stats from 'vue-instantsearch/vue2/es/src/components/Stats.vue.js'
+import StateResults from 'vue-instantsearch/vue2/es/src/components/StateResults.vue.js'
+import StatsAnalytics from './AisStatsAnalytics.vue'
+
+import { useDebounceFn } from '@vueuse/core'
+import { rapidezAPI } from '../../fetch'
+import { searchHistory } from '../../stores/useSearchHistory'
 
 export default {
+    mixins: [InstantSearchMixin],
+    components: {
+        InstantSearch,
+        Hits,
+        Configure,
+        highlight,
+        Autocomplete,
+        Index,
+        Stats,
+        StateResults,
+        StatsAnalytics,
+    },
+
     props: {
-        additionals: Object,
-        debounce: {
+        hitsPerPage: {
             type: Number,
-            default: 100,
+            default: 3,
         },
-        size: {
-            type: Number,
-            default: 10,
-        },
-        multiMatchTypes: {
-            type: Array,
-            default: () => ['best_fields', 'phrase', 'phrase_prefix'],
-        },
+    },
+
+    data() {
+        return {
+            focusId: null,
+        }
     },
 
     render() {
         return this.$scopedSlots.default(this)
     },
-
-    data() {
-        return {
-            results: {},
-            resultsCount: 0,
-            searchAdditionals: () => null,
-            overlay: false,
-            searchLoading: false,
-        }
+    created() {
+        this.focusId = document.activeElement.id
     },
-
     mounted() {
-        this.$nextTick(() => this.$emit('mounted'))
-        let self = this
+        this.$nextTick(() => {
+            this.$emit('mounted')
+            setTimeout(() => {
+                requestAnimationFrame(() => {
+                    let element = null
+                    if (this.focusId && (element = this.$el.querySelector('#' + this.focusId))) {
+                        element?.focus()
+                    }
+                })
+            })
+        })
 
-        // Define function here to gain access to the debounce prop
-        this.searchAdditionals = useDebounceFn(function (query) {
-            if (!self.additionals) {
+        const stateChanged = useDebounceFn((event) => {
+            const query = event?.payload?.query
+
+            if (!query) {
                 return
             }
 
-            // Initialize with empty data to preserve additionals order
-            self.results = Object.fromEntries(Object.keys(self.additionals).map((indexName) => [indexName, []]))
-            self.resultsCount = 0
+            rapidezAPI('post', '/search', {
+                q: query,
+                results: event?.payload?.nbHits,
+            })
+        }, 3000)
 
-            let url = new URL(config.es_url)
-            let auth = `Basic ${btoa(`${url.username}:${url.password}`)}`
-            let baseUrl = url.origin
+        this.$on('insights-event:viewedObjectIDs', (event) => {
+            if (event?.eventType !== 'search') {
+                return
+            }
 
-            Object.entries(self.additionals).forEach(([name, data]) => {
-                let stores = data['stores'] ?? null
-                if (stores && !stores.includes(window.config.store_code)) {
+            stateChanged(event)
+        })
+    },
+
+    computed: {
+        searchHistory() {
+            return Object.entries(searchHistory.value).sort((a, b) => {
+                return Date.parse(b[1].lastSearched) - Date.parse(a[1].lastSearched)
+            })
+        },
+    },
+    methods: {
+        async initSearchClient() {
+            const client = await InstantSearchMixin.methods.initSearchClient.bind(this).call()
+
+            // Ensure no query is done if the search field is empty
+            const oldSearch = client.search
+            client.search = async (requests) => {
+                if (requests.every(({ params }) => !params.query)) {
+                    return Promise.resolve({
+                        results: requests.map(() => ({
+                            hits: [],
+                            nbHits: 0,
+                            nbPages: 0,
+                            page: 0,
+                            processingTimeMS: 0,
+                            hitsPerPage: 0,
+                            exhaustiveNbHits: false,
+                            query: '',
+                            params: '',
+                        })),
+                    })
+                }
+
+                requests = requests.map((request) => {
+                    request.params.hitsPerPage = request.params.hitsPerPage || this.hitsPerPage
+
+                    return request
+                })
+
+                return oldSearch.bind(client)(requests)
+            }
+
+            return client
+        },
+
+        getMiddlewares() {
+            let middlewares = InstantSearchMixin.methods.getMiddlewares.bind(this).call()
+
+            const stateChanged = useDebounceFn((changes) => {
+                const query = Object.entries(changes.uiState).find(([id, state]) => {
+                    return state?.query
+                })?.[1]?.query
+
+                if (!query) {
                     return
                 }
 
-                let fields = data['fields'] ?? data
-                let size = data['size'] ?? self.size ?? undefined
-                let sort = data['sort'] ?? undefined
-                let fuzziness = data['fuzziness'] ?? 'AUTO'
-                let options = data['options'] ?? {}
-
-                let multimatch = self.multiMatchTypes.map((type) => ({
-                    multi_match: {
-                        query: query,
-                        type: type,
-                        fields: fields,
-                        fuzziness: type.includes('phrase') ? undefined : fuzziness,
-                    },
-                }))
-
-                let esQuery = {
-                    size: size,
-                    sort: sort,
-                    query: {
-                        bool: {
-                            should: multimatch,
-                            minimum_should_match: 1,
-                        },
-                    },
-                    highlight: {
-                        pre_tags: ['<mark>'],
-                        post_tags: ['</mark>'],
-                        fields: Object.fromEntries(fields.map((field) => [field.split('^')[0], {}])),
-                        require_field_match: false,
-                    },
-                    ...options,
-                }
-
-                rapidezFetch(`${baseUrl}/${config.es_prefix}_${name}_${config.store}/_search`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', Authorization: auth },
-                    body: JSON.stringify(esQuery),
-                }).then(async (response) => {
-                    const responseData = await response.json()
-
-                    self.results[name] = responseData?.hits ?? []
-                    self.results.count += self.results[name]?.hits?.length ?? 0
+                rapidezAPI('post', '/search', {
+                    q: query,
                 })
-            })
-        }, self.debounce)
-    },
+            }, 3000)
 
-    methods: {
-        startLoading() {
-            this.searchLoading = true
-        },
-        stopLoading() {
-            this.searchLoading = false
-        },
-        highlight(hit, field) {
-            let source = hit._source ?? hit.source
-            let highlight = hit.highlight ?? source.highlight
-            return highlight?.[field]?.[0] ?? source?.[field] ?? ''
-        },
-        showOverlay(isOpen) {
-            this.overlay = isOpen
+            return [
+                ...middlewares,
+                () => ({
+                    onStateChange(changes) {
+                        stateChanged(changes)
+                    },
+                }),
+            ]
         },
     },
 }
