@@ -7,10 +7,11 @@ use TorMorten\Eventy\Facades\Eventy;
 
 trait HasEventyGlobalScopeFilter
 {
+    public abstract static function getEventyName(): string;
+
     public static function bootHasEventyGlobalScopeFilter()
     {
-        $eventyName = strtolower(collect(explode('\\', get_called_class()))->last());
-        $scopes = Eventy::filter($eventyName . '.scopes', []);
+        $scopes = Eventy::filter(static::getEventyName() . '.scopes', []);
 
         foreach ($scopes as $scope) {
             static::addGlobalScope(new $scope);
