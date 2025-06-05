@@ -22,7 +22,7 @@ trait Searchable
         return Eventy::filter('index.' . static::getEventyName() . '.data', $this->toArray(), $this);
     }
 
-    public abstract static function getEventyName(): string;
+    abstract public static function getEventyName(): string;
 
     public static function getIndexName(): string
     {

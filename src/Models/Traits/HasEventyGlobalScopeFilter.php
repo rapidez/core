@@ -7,7 +7,7 @@ use TorMorten\Eventy\Facades\Eventy;
 
 trait HasEventyGlobalScopeFilter
 {
-    public abstract static function getEventyName(): string;
+    abstract public static function getEventyName(): string;
 
     public static function bootHasEventyGlobalScopeFilter()
     {
