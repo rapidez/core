@@ -237,7 +237,7 @@ class ConfigController
             ->flatMap(fn ($attribute) => Arr::map(($attribute['directions'] ?? null) ?: ['asc', 'desc'], fn ($direction) => [
                 'label' => trans_fallback(
                     "rapidez::frontend.sorting.{$attribute['code']}.{$direction}",
-                    trans_fallback("rapidez::frontend.{$attribute['code']}", $attribute['code']) . ' ' . trans_fallback("rapidez::frontend.{$direction}", $direction),
+                    trans_fallback("rapidez::frontend.{$attribute['code']}", ucfirst($attribute['code'])) . ' ' . trans_fallback("rapidez::frontend.{$direction}", $direction),
                 ),
                 'field' => $attribute['code'] . ($attribute['input'] == 'text' ? '.keyword' : ''),
                 'order' => $direction,
