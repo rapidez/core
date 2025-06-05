@@ -48,7 +48,7 @@ class ProductController
 
         // Find the first child that matches the given product options
         $selectedChild = collect($product->children)->firstWhere(function ($child) use ($selectedOptions) {
-            return collect($selectedOptions)->every(fn ($value, $code) => $child->{$code} == $value);
+            return count($selectedOptions) && collect($selectedOptions)->every(fn ($value, $code) => $child->{$code} == $value);
         }) ?? $product;
 
         ProductViewEvent::dispatch($product);
