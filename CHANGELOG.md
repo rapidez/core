@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/3.9.0...3.9.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.0.0...4.0.0)
+## [4.0.0](https://github.com/rapidez/core/releases/tag/4.0.0) - 2025-06-05
+
+See the upgrade guide: https://docs.rapidez.io/4.x/upgrading.html
+
+### Changed
+
+- InstantSearch migration (#706)
+
 ## [3.9.0](https://github.com/rapidez/core/releases/tag/3.9.0) - 2025-05-21
 
 ### Added
