@@ -135,7 +135,7 @@ export default {
         },
 
         windowTitle(routeState) {
-            if(this.destroyed) {
+            if (this.destroyed) {
                 return null
             }
 
