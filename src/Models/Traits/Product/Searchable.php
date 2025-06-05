@@ -23,7 +23,7 @@ trait Searchable
     {
         return $query->selectOnlyIndexable()
             ->with(['categoryProducts', 'reviewSummary'])
-            ->withEventyGlobalScopes('index.' . static::getEventyName() . '.scopes');
+            ->withEventyGlobalScopes('index.' . static::getModelName() . '.scopes');
     }
 
     /**
@@ -77,7 +77,7 @@ trait Searchable
             // Turn all positions positive
             ->mapWithKeys(fn ($position, $category_id) => [$category_id => $maxPositions[$category_id] - $position]);
 
-        return Eventy::filter('index.' . static::getEventyName() . '.data', $data, $this);
+        return Eventy::filter('index.' . static::getModelName() . '.data', $data, $this);
     }
 
     /**
@@ -86,7 +86,7 @@ trait Searchable
     public function withCategories(array $data): array
     {
         $categories = Cache::driver('array')->rememberForever('categories-' . config('rapidez.store'), function () {
-            return Category::withEventyGlobalScopes('index.' . config('rapidez.models.category')::getEventyName() . '.scopes')
+            return Category::withEventyGlobalScopes('index.' . config('rapidez.models.category')::getModelName() . '.scopes')
                 ->where('catalog_category_flat_store_' . config('rapidez.store') . '.entity_id', '<>', config('rapidez.root_category_id'))
                 ->pluck('name', 'entity_id');
         });

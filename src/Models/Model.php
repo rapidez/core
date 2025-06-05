@@ -15,7 +15,7 @@ class Model extends BaseModel
         Macroable::__callStatic as macroCallStatic;
     }
 
-    public static ?string $eventyName;
+    public static ?string $modelName;
 
     public function __call($method, $parameters)
     {
@@ -35,8 +35,8 @@ class Model extends BaseModel
         return parent::__callStatic($method, $parameters);
     }
 
-    public static function getEventyName(): string
+    public static function getModelName(): string
     {
-        return static::$eventyName ?? Str::snake(Str::studly(class_basename(static::class)));
+        return static::$modelName ?? Str::snake(Str::studly(class_basename(static::class)));
     }
 }

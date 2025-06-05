@@ -91,7 +91,7 @@ class Product extends Model
                 ],
                 $this->getSuperAttributeCasts(),
                 $this->getMultiselectAttributeCasts(),
-                Eventy::filter(static::getEventyName() . '.casts', []),
+                Eventy::filter(static::getModelName() . '.casts', []),
             );
         }
 

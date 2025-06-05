@@ -19,10 +19,10 @@ trait Searchable
      */
     public function toSearchableArray(): array
     {
-        return Eventy::filter('index.' . static::getEventyName() . '.data', $this->toArray(), $this);
+        return Eventy::filter('index.' . static::getModelName() . '.data', $this->toArray(), $this);
     }
 
-    abstract public static function getEventyName(): string;
+    abstract public static function getModelName(): string;
 
     public static function getIndexName(): string
     {
@@ -55,7 +55,7 @@ trait Searchable
 
     public static function getIndexMapping(): array
     {
-        $synonymFields = Eventy::filter('index.' . static::getEventyName() . '.synonym-fields', static::synonymFields());
+        $synonymFields = Eventy::filter('index.' . static::getModelName() . '.synonym-fields', static::synonymFields());
 
         return static::filter('mapping', [...static::indexMapping(), [WithSynonyms::class, 'fields' => $synonymFields]]);
     }
@@ -68,7 +68,7 @@ trait Searchable
     private static function filter($type, $initialValue): array
     {
         [$data, $classes] = Arr::partition(
-            Eventy::filter('index.' . static::getEventyName() . '.' . $type, $initialValue),
+            Eventy::filter('index.' . static::getModelName() . '.' . $type, $initialValue),
             fn ($value, $key) => is_string($key)
         );
 

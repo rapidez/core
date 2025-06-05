@@ -110,7 +110,7 @@ class Category extends Model
      */
     protected function makeAllSearchableUsing(Builder $query)
     {
-        return $query->withEventyGlobalScopes('index.' . static::getEventyName() . '.scopes')
+        return $query->withEventyGlobalScopes('index.' . static::getModelName() . '.scopes')
             ->select((new (config('rapidez.models.category')))->qualifyColumns(['entity_id', 'name']))
             ->whereNotNull('url_key')
             ->whereNot('url_key', 'default-category')
@@ -125,7 +125,7 @@ class Category extends Model
         $data = $this->toArray();
         $data['parents'] = $this->parentcategories->pluck('name')->slice(0, -1)->toArray();
 
-        return Eventy::filter('index.' . static::getEventyName() . '.data', $data, $this);
+        return Eventy::filter('index.' . static::getModelName() . '.data', $data, $this);
     }
 
     public static function synonymFields(): array
