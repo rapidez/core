@@ -110,7 +110,7 @@ class Category extends Model
      */
     protected function makeAllSearchableUsing(Builder $query)
     {
-        return $query->withEventyGlobalScopes('index.category.scopes')
+        return $query->withEventyGlobalScopes('index.' . static::getEventyName() . '.scopes')
             ->select((new (config('rapidez.models.category')))->qualifyColumns(['entity_id', 'name']))
             ->whereNotNull('url_key')
             ->whereNot('url_key', 'default-category')

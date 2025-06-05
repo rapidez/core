@@ -23,7 +23,7 @@ trait Searchable
     {
         return $query->selectOnlyIndexable()
             ->with(['categoryProducts', 'reviewSummary'])
-            ->withEventyGlobalScopes('index.product.scopes');
+            ->withEventyGlobalScopes('index.' . static::getEventyName() . '.scopes');
     }
 
     /**
@@ -86,7 +86,7 @@ trait Searchable
     public function withCategories(array $data): array
     {
         $categories = Cache::driver('array')->rememberForever('categories-' . config('rapidez.store'), function () {
-            return Category::withEventyGlobalScopes('index.category.scopes')
+            return Category::withEventyGlobalScopes('index.' . config('rapidez.models.category')::getEventyName() . '.scopes')
                 ->where('catalog_category_flat_store_' . config('rapidez.store') . '.entity_id', '<>', config('rapidez.root_category_id'))
                 ->pluck('name', 'entity_id');
         });
