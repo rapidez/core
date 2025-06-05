@@ -31,7 +31,7 @@ export default {
         useSearchTitle: {
             type: Boolean,
             default: false,
-        }
+        },
     },
 
     data: () => ({
