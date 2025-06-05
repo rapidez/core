@@ -6,10 +6,10 @@
     :limit="6"
 >
     <template v-slot="{ items, refine, createURL, isShowingMore, toggleShowMore, canToggleShowMore }">
-        <x-rapidez::details.filter v-show="items.length" canToggleShowMore>
-            <x-slot:summary>
+        <x-rapidez::accordion.filter v-show="items.length" canToggleShowMore>
+            <x-slot:label>
                 @lang('Category')
-            </x-slot:summary>
+            </x-slot:label>
             <x-slot:content>
                 <recursion :data="items" v-slot="{ data, components }" class="text-base/5">
                     <ul class="relative before:absolute before:left-0 before:border-l before:bottom-2.5 before:-translate-y-1 before:top-1.5 -my-1">
@@ -32,6 +32,6 @@
                     </ul>
                 </recursion>
             </x-slot:content>
-        </x-rapidez::details.filter>
+        </x-rapidez::accordion.filter>
     </template>
 </ais-hierarchical-menu>

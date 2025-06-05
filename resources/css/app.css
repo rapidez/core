@@ -61,28 +61,6 @@ input[type='search']::-webkit-search-results-decoration {
     }
 }
 
-/* All of the details-content can be removed when tailwind v4.0 is being used within the core */
-.details-content\:h-0::details-content {
-    height: 0;
+.turbo-progress-bar {
+    @apply bg-primary;
 }
-
-.details-content\:overflow-clip::details-content {
-    overflow: clip;
-}
-
-.details-content\:duration-200::details-content {
-    transition-duration: 200ms;
-}
-
-.details-content\:transition-\[height\,content-visibility\]::details-content {
-    transition-property: height, content-visibility;
-}
-
-.details-content\:transition-discrete::details-content {
-    transition-behavior: allow-discrete;
-}
-
-.open\:details-content\:h-auto:is([open], :popover-open, :open)::details-content {
-    height: auto;
-}
-/* end details content */
