@@ -12,8 +12,9 @@
                     class="flex flex-1 items-center w-full hover:bg-muted"
                 >
                     <a
-                        v-bind:href="'{{ route('search', ['q' => '%query%']) }}'.replaceAll('%25query%25', query)"
+                        v-bind:href="'{{ route('search', ['q' => 'searchPlaceholder']) }}'.replace('searchPlaceholder', encodeURIComponent(query))"
                         class="relative flex items-center group w-full px-5 py-2 text-sm gap-x-4"
+                        data-turbo="false"
                     >
                         @{{ query }}
                     </a>

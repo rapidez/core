@@ -21,6 +21,7 @@
                         <a
                             v-bind:href="window.url(item.redirect || '{{ route('search', ['q' => 'searchPlaceholder']) }}'.replace('searchPlaceholder', encodeURIComponent(item.query_text)))"
                             class="relative flex items-center group w-full px-5 py-2 text-sm gap-x-4"
+                            data-turbo="false"
                         >
                             <x-rapidez::highlight attribute="query_text" class="line-clamp-2"/>
                         </a>
