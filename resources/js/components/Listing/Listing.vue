@@ -28,6 +28,10 @@ export default {
         configCallback: {
             type: Function,
         },
+        useSearchTitle: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data: () => ({
@@ -57,11 +61,16 @@ export default {
         },
 
         routing() {
+            let routerParams = {
+                cleanUrlOnDispose: false,
+            }
+
+            if (this.useSearchTitle) {
+                routerParams['windowTitle'] = this.windowTitle
+            }
+
             return {
-                router: history({
-                    cleanUrlOnDispose: false,
-                    windowTitle: this.windowTitle,
-                }),
+                router: history(routerParams),
                 stateMapping: {
                     routeToState: this.routeToState,
                     stateToRoute: this.stateToRoute,
