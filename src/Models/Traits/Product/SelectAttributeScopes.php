@@ -57,7 +57,7 @@ trait SelectAttributeScopes
                 return true;
             }
 
-            $alwaysInFlat = array_merge(['sku'], Eventy::filter('index.product.attributes', []));
+            $alwaysInFlat = array_merge(['sku'], Eventy::filter('index.' . static::getModelName() . '.attributes', []));
             if (in_array($attribute['code'], $alwaysInFlat)) {
                 return true;
             }

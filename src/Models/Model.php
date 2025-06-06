@@ -3,6 +3,7 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Model as BaseModel;
+use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
 use Rapidez\Core\Models\Traits\HasEventyGlobalScopeFilter;
 
@@ -13,6 +14,8 @@ class Model extends BaseModel
         Macroable::__call as macroCall;
         Macroable::__callStatic as macroCallStatic;
     }
+
+    public static ?string $modelName;
 
     public function __call($method, $parameters)
     {
@@ -30,5 +33,10 @@ class Model extends BaseModel
         }
 
         return parent::__callStatic($method, $parameters);
+    }
+
+    public static function getModelName(): string
+    {
+        return static::$modelName ?? Str::snake(Str::studly(class_basename(static::class)));
     }
 }
