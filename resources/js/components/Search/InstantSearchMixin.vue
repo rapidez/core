@@ -43,8 +43,8 @@ export default {
                             sr.request.params.highlightPostTag = '</mark>'
                             return sr
                         })
-                    }
-                }
+                    },
+                },
             }
         },
 
