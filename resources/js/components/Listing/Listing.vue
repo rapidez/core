@@ -37,10 +37,15 @@ export default {
     data: () => ({
         searchkit: null,
         searchClient: null,
+        destroyed: false,
     }),
 
     render() {
         return this.$scopedSlots.default(this)
+    },
+
+    destroyed() {
+        this.destroyed = true
     },
 
     computed: {
@@ -130,6 +135,10 @@ export default {
         },
 
         windowTitle(routeState) {
+            if (this.destroyed) {
+                return null
+            }
+
             if (!routeState.q) {
                 return window.config.translations.search.title
             }
