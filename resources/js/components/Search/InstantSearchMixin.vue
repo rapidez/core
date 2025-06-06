@@ -35,7 +35,17 @@ export default {
         },
 
         async getInstantSearchClientConfig() {
-            return {}
+            return {
+                hooks: {
+                    beforeSearch: async (searchRequests) => {
+                        return searchRequests.map((sr) => {
+                            sr.request.params.highlightPreTag = '<mark>'
+                            sr.request.params.highlightPostTag = '</mark>'
+                            return sr
+                        })
+                    }
+                }
+            }
         },
 
         async getSearchSettings() {
