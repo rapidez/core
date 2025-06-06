@@ -4,7 +4,7 @@
 >
     <template v-slot="{ currentRefinement, range, canRefine, refine, sendEvent }">
         <div v-show="range.max">
-            <x-rapidez::details.filter>
+            <x-rapidez::accordion.filter>
                 <x-slot:content>
                     <div class="flex flex-col">
                         <div class="flex flex-1">
@@ -21,7 +21,7 @@
                         </div>
                     </div>
                 </x-slot:content>
-            </x-rapidez::details.filter>
+            </x-rapidez::accordion.filter>
         </div>
     </template>
 </ais-range-input>

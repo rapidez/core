@@ -1,12 +1,12 @@
-@slots(['content', 'summary', 'icon'])
+@slots(['content', 'label', 'icon'])
 @props(['canToggleShowMore' => false])
 
-<x-rapidez::details open class="border-t" :$attributes :$icon>
-    <x-slot:summary>
-        @slotdefault('summary')
+<x-rapidez::accordion open class="border-t" :$attributes :$icon>
+    <x-slot:label>
+        @slotdefault('label')
             @{{ filter?.name?.replace('_', ' ') }}
         @endslotdefault
-    </x-slot:summary>
+    </x-slot:label>
 
     <x-slot:content>
         {{ $content }}
@@ -26,4 +26,4 @@
             </button>
         @endif
     </x-slot:content>
-</x-rapidez::details>
+</x-rapidez::accordion>
