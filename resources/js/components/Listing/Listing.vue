@@ -100,13 +100,13 @@ export default {
             // config.getQuery = this.query
             config.getQuery = (query) => {
                 return {
-                    'neural': {
-                        'semantic_embedding': {
-                            'query_text': query,
-                            'model_id': 'dQVEX5cBgyMB7yQW0T7w',
-                            'k': 3
-                        }
-                    }
+                    neural: {
+                        semantic_embedding: {
+                            query_text: query,
+                            model_id: 'dQVEX5cBgyMB7yQW0T7w',
+                            k: 3,
+                        },
+                    },
                 }
             }
 
