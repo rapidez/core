@@ -96,7 +96,19 @@ export default {
             const config = await InstantSearchMixin.methods.getInstantSearchClientConfig.bind(this).call()
 
             config.getBaseFilters = this.getBaseFilters
-            config.getQuery = this.query
+            // TODO: This should be combined!
+            // config.getQuery = this.query
+            config.getQuery = (query) => {
+                return {
+                    'neural': {
+                        'semantic_embedding': {
+                            'query_text': query,
+                            'model_id': 'dQVEX5cBgyMB7yQW0T7w',
+                            'k': 3
+                        }
+                    }
+                }
+            }
 
             return config
         },

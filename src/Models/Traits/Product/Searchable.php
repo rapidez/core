@@ -77,6 +77,21 @@ trait Searchable
             // Turn all positions positive
             ->mapWithKeys(fn ($position, $category_id) => [$category_id => $maxPositions[$category_id] - $position]);
 
+        // TODO: This should be dynamic!
+        $data['semantic'] = implode(' - ', [
+            'Product name: '.$data['name'],
+            'SKU: '.$data['sku'],
+            'Price: '.$data['price'].' euro',
+            'Activity: '.implode(', ', $data['activity'] ?? []),
+            'Material: '.implode(', ', $data['material'] ?? []),
+            'Style general: '.implode(', ', $data['style_general'] ?? []),
+            'Style bottom: '.implode(', ', $data['style_bottom'] ?? []),
+            'Climate: '.implode(', ', $data['climate'] ?? []),
+            'Pattern: '.implode(', ', $data['pattern'] ?? []),
+            'Gender: '.implode(', ', $data['gender'] ?? []),
+            'Description: '.strip_tags($data['description']),
+        ]);
+
         return Eventy::filter('index.' . static::getModelName() . '.data', $data, $this);
     }
 
@@ -127,15 +142,33 @@ trait Searchable
                     'type' => 'double',
                 ],
                 'children' => [
-                    'type' => 'flattened',
+                    'type' => 'flat_object',
                 ],
                 'grouped' => [
-                    'type' => 'flattened',
+                    'type' => 'flat_object',
                 ],
                 'positions' => [
-                    'type' => 'flattened',
+                    'type' => 'flat_object',
+                ],
+                'semantic_embedding' => [
+                    'type' => 'knn_vector',
+                    'dimension' => 512,
+                    'method' => [
+                        'name' => 'hnsw',
+                        'space_type' => 'innerproduct',
+                        'engine' => 'nmslib'
+                    ]
                 ],
             ],
+        ];
+    }
+
+    protected static function indexSettings(): array
+    {
+        return [
+            'index.knn' => true,
+            'default_pipeline' => 'embedding-ingest-pipeline',
+            'index.search.default_pipeline' => 'hybrid-search-pipeline'
         ];
     }
 
