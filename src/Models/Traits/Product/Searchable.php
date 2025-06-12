@@ -79,17 +79,17 @@ trait Searchable
 
         // TODO: This should be dynamic!
         $data['semantic'] = implode(' - ', [
-            'Product name: '.$data['name'],
-            'SKU: '.$data['sku'],
-            'Price: '.$data['price'].' euro',
-            'Activity: '.implode(', ', $data['activity'] ?? []),
-            'Material: '.implode(', ', $data['material'] ?? []),
-            'Style general: '.implode(', ', $data['style_general'] ?? []),
-            'Style bottom: '.implode(', ', $data['style_bottom'] ?? []),
-            'Climate: '.implode(', ', $data['climate'] ?? []),
-            'Pattern: '.implode(', ', $data['pattern'] ?? []),
-            'Gender: '.implode(', ', $data['gender'] ?? []),
-            'Description: '.strip_tags($data['description']),
+            'Product name: ' . $data['name'],
+            'SKU: ' . $data['sku'],
+            'Price: ' . $data['price'] . ' euro',
+            'Activity: ' . implode(', ', $data['activity'] ?? []),
+            'Material: ' . implode(', ', $data['material'] ?? []),
+            'Style general: ' . implode(', ', $data['style_general'] ?? []),
+            'Style bottom: ' . implode(', ', $data['style_bottom'] ?? []),
+            'Climate: ' . implode(', ', $data['climate'] ?? []),
+            'Pattern: ' . implode(', ', $data['pattern'] ?? []),
+            'Gender: ' . implode(', ', $data['gender'] ?? []),
+            'Description: ' . strip_tags($data['description']),
         ]);
 
         return Eventy::filter('index.' . static::getModelName() . '.data', $data, $this);
@@ -151,13 +151,13 @@ trait Searchable
                     'type' => 'flat_object',
                 ],
                 'semantic_embedding' => [
-                    'type' => 'knn_vector',
+                    'type'      => 'knn_vector',
                     'dimension' => 512,
-                    'method' => [
-                        'name' => 'hnsw',
+                    'method'    => [
+                        'name'       => 'hnsw',
                         'space_type' => 'innerproduct',
-                        'engine' => 'nmslib'
-                    ]
+                        'engine'     => 'nmslib',
+                    ],
                 ],
             ],
         ];
@@ -166,9 +166,9 @@ trait Searchable
     protected static function indexSettings(): array
     {
         return [
-            'index.knn' => true,
-            'default_pipeline' => 'embedding-ingest-pipeline',
-            'index.search.default_pipeline' => 'hybrid-search-pipeline'
+            'index.knn'                     => true,
+            'default_pipeline'              => 'embedding-ingest-pipeline',
+            'index.search.default_pipeline' => 'hybrid-search-pipeline',
         ];
     }
 
