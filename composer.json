@@ -92,7 +92,7 @@
             "yarn install --frozen-lockfile",
             "yarn run prod",
             "cp -r public/. vendor/orchestra/testbench-dusk/laravel/public/",
-            "cp tests/playwright/.env.testing vendor/orchestra/testbench-dusk/laravel/"
+            "cp tests/playwright/.env.testing vendor/orchestra/testbench-dusk/laravel/.env"
         ]
     }
 }
