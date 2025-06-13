@@ -16,7 +16,11 @@
     v-slot="{ mutate, variables }"
 >
     <div partial-submit="mutate">
-        <fieldset v-on:change="function (e) {e.target.closest('fieldset').querySelector(':invalid') === null && window.app.$emit('setBillingAddressOnCart')}">
+        <fieldset v-on:change="function (e) {
+            e.target.closest('fieldset').querySelector(':invalid') === null
+            && (!variables.same_as_shipping || !!cart?.shipping_addresses?.[0]?.postcode)
+            && window.app.$emit('setBillingAddressOnCart')
+        }">
             <template v-if="!cart.is_virtual">
                 <x-rapidez::input.checkbox v-model="variables.same_as_shipping">
                     @lang('My billing and shipping address are the same')
