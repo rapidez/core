@@ -1,9 +1,9 @@
-name: Prettier Fix
+name: Prettier
 
 on:
   push:
   workflow_run:
-    workflows: ["Duster Fix"]
+    workflows: ["Duster"]
     types:
       - completed
 

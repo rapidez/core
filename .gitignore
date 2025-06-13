@@ -8,3 +8,10 @@ yarn.lock
 phpunit.dusk.xml
 phpunit.xml
 stats.html
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
