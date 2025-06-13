@@ -126,6 +126,9 @@ trait Searchable
                 'price' => [
                     'type' => 'double',
                 ],
+                'special_price' => [
+                    'type' => 'double',
+                ],
                 'children' => [
                     'type' => 'flattened',
                 ],
