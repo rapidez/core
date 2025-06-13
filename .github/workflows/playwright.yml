@@ -1,0 +1,98 @@
+name: Playwright Tests
+
+on:
+  push:
+    branches:
+      - master
+      - '*.x'
+  pull_request:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # - magento-version: 2.4.7-p5
+          #   magento-php-version: php82-fpm
+          #   rapidez-php-version: 8.2
+          # - magento-version: 2.4.7-p5
+          #   magento-php-version: php83-fpm
+          #   rapidez-php-version: 8.3
+          # - magento-version: 2.4.7-p5
+          #   magento-php-version: php83-fpm
+          #   rapidez-php-version: 8.4
+          - magento-version: 2.4.8
+            magento-php-version: php84-fpm
+            rapidez-php-version: 8.4
+
+    services:
+      magento:
+        image: michielgerritsen/magento-project-community-edition:${{matrix.magento-php-version}}-magento${{matrix.magento-version}}-sample-data
+        env:
+          URL: http://localhost:1234/
+          FLAT_TABLES: true
+          CUSTOM_ENTRYPOINT_COMMAND: "php bin/magento encryption:key:change -k 5AM3SD5SkwT8iwIxL6L1q8XQhzK3wk51; magerun2 config:store:set system/smtp/disable 1; magerun2 config:store:set checkout/options/enable_guest_checkout_login 1"
+        ports:
+          - 3307:3306
+          - 9200:9200
+          - 1234:80
+
+    name: P${{ matrix.rapidez-php-version }} - M${{matrix.magento-version}} on ${{matrix.magento-php-version}}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.rapidez-php-version }}
+          extensions: mbstring, dom, fileinfo, mysql
+          coverage: none
+
+      - name: Install Yarn dependencies
+        run: npm install -g yarn && yarn
+
+      - name: Install Playwright Browsers
+        run: yarn playwright install --with-deps
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-interaction
+
+      - name: Prepare Playwright
+        run: composer run playwright:prepare
+
+      - name: Wait for index to finish
+        run: for i in {1..60}; do [[ $(mysql -h 127.0.0.1 -P 3307 -u magento -ppassword -ss -r -e "CALL sys.table_exists('magento', 'catalog_product_flat_1', @exists); SELECT @exists;") == *"BASE TABLE"* ]] && break || sleep 5; done
+
+      - name: Run Playwright tests
+        run: yarn playwright test
+
+      - name: Dump docker logs
+        if: failure()
+        uses: jwalton/gh-docker-logs@v2
+        with:
+          dest: './docker-logs'
+      - name: Dump magento logs
+        if: failure()
+        run: |
+          mkdir -p magento/var
+          docker cp ${{ job.services.magento.id }}:/data/var/log magento/var/log
+      - name: Upload Artifact
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact-P${{ matrix.rapidez-php-version }}-M${{matrix.magento-version}}-on-${{matrix.magento-php-version}}
+          path: |
+            playwright-report
+            vendor/orchestra/testbench-dusk/laravel/storage/logs/laravel.log
+            docker-logs
+            magento/var/log
