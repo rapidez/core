@@ -18,6 +18,13 @@
                     <td class="text-right px-4">@{{ item.quantity }}</td>
                     <td class="text-right">@{{ item.prices.row_total.value | price }}</td>
                 </tr>
+                <template v-if="cart.shipping_addresses?.length">
+                    <tr v-for="address in cart.shipping_addresses" v-if="address.selected_shipping_method">
+                        <td colspan="2">@lang('Shipping')</td>
+                        <td class="text-right" v-if="showTax">@{{ address.selected_shipping_method.price_incl_tax.value | price }}</td>
+                        <td class="text-right" v-else>@{{ address.selected_shipping_method.price_excl_tax.value | price }}</td>
+                    </tr>
+                </template>
                 <tr class="font-bold *:pt-3 border-t">
                     <td colspan="2">@lang('Total')</td>
                     <td class="text-right">@{{ cart.prices.grand_total.value | price }}</td>
