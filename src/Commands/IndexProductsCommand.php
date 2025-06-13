@@ -35,6 +35,9 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
                     'price' => [
                         'type' => 'double',
                     ],
+                    'special_price' => [
+                        'type' => 'double',
+                    ],
                     'children' => [
                         'type' => 'flattened',
                     ],
