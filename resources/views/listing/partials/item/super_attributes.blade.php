@@ -1,4 +1,4 @@
-<div v-for="(superAttribute, superAttributeId) in item.super_attributes" class="mt-2 block">
+<div v-for="(superAttribute, superAttributeId) in item.super_attributes" class="mt-2">
     <template v-if="superAttribute.visual_swatch">
         @include('rapidez::listing.partials.item.super-attributes.visual_swatch')
     </template>
