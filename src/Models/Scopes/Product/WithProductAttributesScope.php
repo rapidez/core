@@ -36,7 +36,7 @@ class WithProductAttributesScope implements Scope
             $attribute = (object) $attribute;
 
             if ($attribute->flat) {
-                if ($attribute->input == 'select' && $attribute->type === 'int' && ! in_array($attribute->source_model, [
+                if ($attribute->input === 'select' && $attribute->type === 'int' && ! in_array($attribute->source_model, [
                     'Magento\Tax\Model\TaxClass\Source\Product',
                     'Magento\Eav\Model\Entity\Attribute\Source\Boolean',
                 ])) {
@@ -45,7 +45,7 @@ class WithProductAttributesScope implements Scope
                     $builder->addSelect($builder->getQuery()->from . '.' . $attribute->code . ' AS ' . $attribute->code);
                 }
             } else {
-                if ($attribute->input == 'select') {
+                if ($attribute->input === 'select') {
                     $builder
                         ->selectRaw('COALESCE(ANY_VALUE(' . $grammar->wrap($attribute->code . '_option_value_' . config('rapidez.store') . '.value') . '), ANY_VALUE(' . $grammar->wrap($attribute->code . '_option_value_0.value') . ')) AS ' . $grammar->wrap($attribute->code))
                         ->leftJoin(
