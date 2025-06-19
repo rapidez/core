@@ -121,8 +121,51 @@ trait Searchable
 
     protected static function indexMapping(): array
     {
+        $attributeModel = config('rapidez.models.attribute');
+        $attributeTypeMapping = Arr::map(
+            Arr::pluck(
+                $attributeModel::getCachedWhere(function ($attribute) {
+                    if (in_array($attribute['code'], ['msrp_display_actual_price_type', 'price_view', 'shipment_type', 'status'])) {
+                        return false;
+                    }
+
+                    if (in_array($attribute['type'], ['varchar', 'text', 'gallery', 'static'])) {
+                        // Types best left up to ES to interperet the type.
+                        return false;
+                    }
+
+                    if (!empty($attribute['source_model'])) {
+                        // Due to the source model value can be mapped to any type, best to let ES interperet them.
+                        return false;
+                    }
+
+                    if ($attribute['listing'] || $attribute['filter'] || $attribute['search'] || $attribute['sorting']) {
+                        return true;
+                    }
+
+                    $alwaysInFlat = array_merge(['sku'], Eventy::filter('index.' . static::getModelName() . '.attributes', []));
+                    if (in_array($attribute['code'], $alwaysInFlat)) {
+                        return true;
+                    }
+
+                    return false;
+                }),
+                'type',
+                'code'
+            ),
+            fn ($type) => ['type' => match($type) {
+                'int' => 'integer',
+                'decimal' => 'double',
+                'datetime' => 'date',
+                'text' => 'text',
+                'varchar' => 'text',
+                default => 'text'
+            }]
+        );
+
         return [
             'properties' => [
+                ...$attributeTypeMapping,
                 'price' => [
                     'type' => 'double',
                 ],
