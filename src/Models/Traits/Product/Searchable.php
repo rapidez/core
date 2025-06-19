@@ -130,12 +130,12 @@ trait Searchable
                     }
 
                     if (in_array($attribute['type'], ['varchar', 'text', 'gallery', 'static'])) {
-                        // Types best left up to ES to interperet the type.
+                        // Types best left up to ES to interpret the type.
                         return false;
                     }
 
                     if (! empty($attribute['source_model'])) {
-                        // Due to the source model value can be mapped to any type, best to let ES interperet them.
+                        // Due to the source model value can be mapped to any type, best to let ES interpret them.
                         return false;
                     }
 
@@ -157,8 +157,6 @@ trait Searchable
                 'int'      => 'integer',
                 'decimal'  => 'double',
                 'datetime' => 'date',
-                'text'     => 'text',
-                'varchar'  => 'text',
                 default    => 'text'
             }]
         );
