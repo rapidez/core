@@ -1,4 +1,4 @@
-<div class="bg rounded-md mt-6 p-10">
+<div class="bg rounded-md mt-6 p-10 mb-6">
     <h2 class="font-sans text-xl font-medium">@lang('No products found.')</h2>
 
     <ais-index v-bind:index-name="config.index.category" v-bind:index-id="'listing_' + config.index.category">
@@ -49,3 +49,5 @@
         </search-suggestions>
     </search-suggestions>
 </div>
+
+@include('rapidez::listing.partials.popular-products')
