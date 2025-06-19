@@ -13,6 +13,7 @@
             <label for="navigation" class="mr-3 cursor-pointer sm:hidden">
                 <x-heroicon-o-bars-3 class="inline w-7" />
             </label>
+            test
         </div>
         <div class="flex items-center h-12 max-md:order-last max-md:w-full md:max-w-lg md:flex-1 max-lg:mt-2">
             @include('rapidez::layouts.partials.header.autocomplete')
