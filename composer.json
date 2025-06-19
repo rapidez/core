@@ -87,6 +87,12 @@
         ],
         "dusk:test": [
             "./vendor/bin/phpunit -c phpunit.dusk.xml --colors=always"
+        ],
+        "playwright:prepare": [
+            "yarn install --frozen-lockfile",
+            "yarn run prod",
+            "cp -r public/. vendor/orchestra/testbench-dusk/laravel/public/",
+            "cp tests/playwright/.env.testing vendor/orchestra/testbench-dusk/laravel/.env"
         ]
     }
 }

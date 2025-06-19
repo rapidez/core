@@ -1,4 +1,4 @@
-name: Dusk
+name: Playwright
 
 on:
   push:
@@ -10,7 +10,8 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  dusk:
+  test:
+    timeout-minutes: 60
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -44,11 +45,11 @@ jobs:
     name: P${{ matrix.rapidez-php-version }} - M${{matrix.magento-version}} on ${{matrix.magento-php-version}}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - name: Setup Yarn cache
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -57,23 +58,26 @@ jobs:
           extensions: mbstring, dom, fileinfo, mysql
           coverage: none
 
-      - name: Install dependencies
+      - name: Install Yarn dependencies
+        run: npm install -g yarn && yarn
+
+      - name: Install Playwright Browsers
+        run: yarn playwright install --with-deps
+
+      - name: Install Composer dependencies
         run: composer install --prefer-dist --no-interaction
 
-      - name: Publish icons
-        run: php ./vendor/bin/testbench-dusk vendor:publish --tag="payment-icons"
-
-      - name: Prepare Laravel Dusk
-        run: composer run dusk:prepare
-
-      - name: Compile assets
-        run: composer run dusk:assets
+      - name: Prepare Playwright
+        run: composer run playwright:prepare
 
       - name: Wait for index to finish
         run: for i in {1..60}; do [[ $(mysql -h 127.0.0.1 -P 3307 -u magento -ppassword -ss -r -e "CALL sys.table_exists('magento', 'catalog_product_flat_1', @exists); SELECT @exists;") == *"BASE TABLE"* ]] && break || sleep 5; done
 
-      - name: Execute tests
-        run: composer run dusk:test
+      - name: Start the webserver
+        run: ./vendor/bin/testbench-dusk serve &
+
+      - name: Run Playwright tests
+        run: yarn playwright test
 
       - name: Dump docker logs
         if: failure()
@@ -91,8 +95,7 @@ jobs:
         with:
           name: artifact-P${{ matrix.rapidez-php-version }}-M${{matrix.magento-version}}-on-${{matrix.magento-php-version}}
           path: |
-            tests/Browser/screenshots
-            tests/Browser/console
+            playwright-report
             vendor/orchestra/testbench-dusk/laravel/storage/logs/laravel.log
             docker-logs
             magento/var/log
