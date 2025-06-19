@@ -134,7 +134,7 @@ trait Searchable
                         return false;
                     }
 
-                    if (!empty($attribute['source_model'])) {
+                    if (! empty($attribute['source_model'])) {
                         // Due to the source model value can be mapped to any type, best to let ES interperet them.
                         return false;
                     }
@@ -153,13 +153,13 @@ trait Searchable
                 'type',
                 'code'
             ),
-            fn ($type) => ['type' => match($type) {
-                'int' => 'integer',
-                'decimal' => 'double',
+            fn ($type) => ['type' => match ($type) {
+                'int'      => 'integer',
+                'decimal'  => 'double',
                 'datetime' => 'date',
-                'text' => 'text',
-                'varchar' => 'text',
-                default => 'text'
+                'text'     => 'text',
+                'varchar'  => 'text',
+                default    => 'text'
             }]
         );
 
