@@ -50,7 +50,7 @@ jobs:
           ES_JAVA_OPTS: "-Xms512m -Xmx512m"
           http.cors.enabled: "true"
           http.cors.allow-credentials: "true"
-          http.cors.allow-origin: "*"
+          http.cors.allow-origin: "http://localhost:8000"
           http.cors.allow-headers: X-Requested-With, X-Auth-Token, Content-Type, Content-Length, Authorization, Access-Control-Allow-Headers, Accept
         options: >-
           --health-cmd="curl -f http://localhost:9200/_cluster/health || exit 1"
