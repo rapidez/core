@@ -30,6 +30,24 @@ jobs:
           - 3307:3306
           - 1234:80
 
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.18.2
+        ports:
+          - 9200:9200
+        env:
+          discovery.type: single-node
+          ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+          http.cors.enabled: "true"
+          http.cors.allow-credentials: "true"
+          http.cors.allow-origin: "http://localhost:8000"
+          http.cors.allow-headers: X-Requested-With, X-Auth-Token, Content-Type, Content-Length, Authorization, Access-Control-Allow-Headers, Accept
+          xpack.security.enabled: "false"
+        options: >-
+          --health-cmd="curl http://localhost:9200/_cluster/health"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -78,6 +96,9 @@ jobs:
 
       - name: Wait for index to finish
         run: for i in {1..60}; do [[ $(mysql -h 127.0.0.1 -P 3307 -u magento -ppassword -ss -r -e "CALL sys.table_exists('magento', 'catalog_product_flat_1', @exists); SELECT @exists;") == *"BASE TABLE"* ]] && break || sleep 5; done
+
+      - name: Rapidez index
+        run: ./vendor/bin/testbench-dusk rapidez:index
 
       - name: Start the webserver
         run: ./vendor/bin/testbench-dusk serve &
