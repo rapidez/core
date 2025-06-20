@@ -39,8 +39,24 @@ jobs:
           CUSTOM_ENTRYPOINT_COMMAND: "php bin/magento encryption:key:change -k 5AM3SD5SkwT8iwIxL6L1q8XQhzK3wk51; magerun2 config:store:set system/smtp/disable 1; magerun2 config:store:set checkout/options/enable_guest_checkout_login 1"
         ports:
           - 3307:3306
-          - 9200:9200
           - 1234:80
+
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.18.2
+        ports:
+          - 9200:9200
+        env:
+          discovery.type: single-node
+          ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+          http.cors.enabled: "true"
+          http.cors.allow-credentials: "true"
+          http.cors.allow-origin: "*"
+          http.cors.allow-headers: X-Requested-With, X-Auth-Token, Content-Type, Content-Length, Authorization, Access-Control-Allow-Headers, Accept
+        options: >-
+          --health-cmd="curl -f http://localhost:9200/_cluster/health || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     name: P${{ matrix.rapidez-php-version }} - M${{matrix.magento-version}} on ${{matrix.magento-php-version}}
 

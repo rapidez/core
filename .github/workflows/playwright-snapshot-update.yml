@@ -28,7 +28,6 @@ jobs:
           CUSTOM_ENTRYPOINT_COMMAND: "php bin/magento encryption:key:change -k 5AM3SD5SkwT8iwIxL6L1q8XQhzK3wk51; magerun2 config:store:set system/smtp/disable 1; magerun2 config:store:set checkout/options/enable_guest_checkout_login 1"
         ports:
           - 3307:3306
-          - 9200:9200
           - 1234:80
 
     steps:
