@@ -163,7 +163,7 @@ trait Searchable
 
         return [
             'properties' => [
-                ...Arr::where($attributeTypeMapping, fn($mapping) => $mapping['type'] !== null),
+                ...Arr::where($attributeTypeMapping, fn ($mapping) => $mapping['type'] !== null),
                 'price' => [
                     'type' => 'double',
                 ],
