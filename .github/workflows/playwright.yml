@@ -52,11 +52,12 @@ jobs:
           http.cors.allow-credentials: "true"
           http.cors.allow-origin: "http://localhost:8000"
           http.cors.allow-headers: X-Requested-With, X-Auth-Token, Content-Type, Content-Length, Authorization, Access-Control-Allow-Headers, Accept
+          xpack.security.enabled: "false"
         options: >-
-          --health-cmd="curl -f http://localhost:9200/_cluster/health || exit 1"
+          --health-cmd="curl http://localhost:9200/_cluster/health"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=5
+          --health-retries=10
 
     name: P${{ matrix.rapidez-php-version }} - M${{matrix.magento-version}} on ${{matrix.magento-php-version}}
 
