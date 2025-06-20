@@ -30,7 +30,7 @@
 
                 <x-rapidez::quantity
                     v-model.number="addToCart.qty"
-                    ::min="{{ $product->min_sale_qty }}"
+                    ::min="{{ max($product->min_sale_qty, $product->qty_increments) }}"
                     ::step="{{ $product->qty_increments }}"
                     ::max="{{ $product->max_sale_qty ?: 'null' }}"
                 />

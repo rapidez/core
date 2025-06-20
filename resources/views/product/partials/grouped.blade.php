@@ -20,7 +20,7 @@
                     @else
                         <x-rapidez::quantity
                             v-model.number="addToCart.qty"
-                            ::min="{{ $groupedProduct->min_sale_qty }}"
+                            ::min="{{ max($groupedProduct->min_sale_qty, $groupedProduct->qty_increments) }}"
                             ::step="{{ $groupedProduct->qty_increments }}"
                             ::max="{{ $groupedProduct->max_sale_qty ?: 'null' }}"
                         />
