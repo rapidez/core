@@ -158,7 +158,7 @@ trait Searchable
                     'decimal'  => 'double',
                     'datetime' => 'date',
                     default    => null
-                }
+                },
             ])
             ->whereNotNull('type');
 
