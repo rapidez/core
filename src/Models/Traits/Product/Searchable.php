@@ -157,13 +157,13 @@ trait Searchable
                 'int'      => 'integer',
                 'decimal'  => 'double',
                 'datetime' => 'date',
-                default    => 'text'
+                default    => null
             }]
         );
 
         return [
             'properties' => [
-                ...$attributeTypeMapping,
+                ...Arr::where($attributeTypeMapping, fn($mapping) => $mapping['type'] !== null),
                 'price' => [
                     'type' => 'double',
                 ],
