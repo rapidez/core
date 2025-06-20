@@ -257,13 +257,13 @@ class Product extends Model
             return $attribute['code'] == $key;
         });
 
-        if (!count($attributes) || !$attribute = reset($attributes)) {
+        if (! count($attributes) || ! $attribute = reset($attributes)) {
             return null;
         }
 
         $this->loadMissing('attrs');
         // TODO: Check for a custom value for a store. So if store 1 overwrites store 0.
-        if (!$value = optional($this->attrs->firstWhere('attribute_id', $attribute['id']))->value) {
+        if (! $value = optional($this->attrs->firstWhere('attribute_id', $attribute['id']))->value) {
             return null;
         }
 
@@ -272,10 +272,11 @@ class Product extends Model
                 $values[] = OptionValue::getCachedByOptionId($optionValueId);
             }
             $this->setAttribute($key, $values);
+
             return $values;
         }
 
-        if ($attribute['input'] == 'select' && $attribute['type'] == 'int' && !$attribute['system']) {
+        if ($attribute['input'] == 'select' && $attribute['type'] == 'int' && ! $attribute['system']) {
             $value = OptionValue::getCachedByOptionId($value);
         }
 
@@ -284,6 +285,7 @@ class Product extends Model
         }
 
         $this->setAttribute($key, $value);
+
         return $value;
     }
 
