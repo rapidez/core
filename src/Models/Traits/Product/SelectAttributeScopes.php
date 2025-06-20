@@ -19,7 +19,7 @@ trait SelectAttributeScopes
     {
         $attributeModel = config('rapidez.models.attribute');
         $this->attributesToSelect = Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {
-            return $attribute['productpage'] || in_array($attribute['code'], [
+            return $attribute['flat'] && $attribute['productpage'] || in_array($attribute['code'], [
                 'name',
                 'meta_title',
                 'meta_description',

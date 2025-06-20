@@ -233,6 +233,60 @@ class Product extends Model
         return $this->getImageAttribute($image);
     }
 
+    public function attrs(): HasMany
+    {
+        return $this->hasMany(
+            ProductAttribute::class,
+            'entity_id',
+            'entity_id',
+        );
+    }
+
+    public function getAttribute($key)
+    {
+        if (($value = parent::getAttribute($key)) !== null || $this->hasAttribute($key)) {
+            return $value;
+        }
+
+        // TOOD: Not sure if this is very efficient, first we're
+        // searching for the attribute by code for the id and
+        // after that we're searching for the attribute id
+        // between the product attributes for the value.
+        $attributeModel = config('rapidez.models.attribute');
+        $attributes = $attributeModel::getCachedWhere(function ($attribute) use ($key) {
+            return $attribute['code'] == $key;
+        });
+
+        if (!count($attributes) || !$attribute = reset($attributes)) {
+            return null;
+        }
+
+        $this->loadMissing('attrs');
+        // TODO: Check for a custom value for a store. So if store 1 overwrites store 0.
+        if (!$value = optional($this->attrs->firstWhere('attribute_id', $attribute['id']))->value) {
+            return null;
+        }
+
+        if ($attribute['input'] == 'multiselect') {
+            foreach (explode(',', $value) as $optionValueId) {
+                $values[] = OptionValue::getCachedByOptionId($optionValueId);
+            }
+            $this->setAttribute($key, $values);
+            return $values;
+        }
+
+        if ($attribute['input'] == 'select' && $attribute['type'] == 'int' && !$attribute['system']) {
+            $value = OptionValue::getCachedByOptionId($value);
+        }
+
+        if ($key == 'url_key') {
+            return '/' . $value . Config::getValue('catalog/seo/product_url_suffix', options: ['default' => '.html']);
+        }
+
+        $this->setAttribute($key, $value);
+        return $value;
+    }
+
     protected function breadcrumbCategories(): Attribute
     {
         return Attribute::make(
