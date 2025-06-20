@@ -3,8 +3,6 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
-use Rapidez\Core\Models\Model;
 
 class ProductAttribute extends Model
 {
@@ -27,9 +25,9 @@ class ProductAttribute extends Model
 
             $baseQuery = clone $builder->getQuery();
             foreach (['int', 'text', 'decimal'] as $type) {
-                $typeTable = 'catalog_product_entity_'.$type;
+                $typeTable = 'catalog_product_entity_' . $type;
                 $typeQuery = (clone $baseQuery)->from($typeTable);
-                $typeQuery->wheres[0]['column'] = $typeTable.'.entity_id';
+                $typeQuery->wheres[0]['column'] = $typeTable . '.entity_id';
                 $builder->unionAll($typeQuery);
             }
         });
