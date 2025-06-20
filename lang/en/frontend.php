@@ -21,6 +21,7 @@ return [
         'password_mismatch' => 'Please make sure your passwords match.',
         'email_password'    => 'You did not specify an email or password.',
         'email'             => 'An email address is required.',
+        'login_failed'      => 'This email address and password do not match.',
     ],
 
     'filters' => [
