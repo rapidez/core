@@ -210,7 +210,7 @@ class Product extends Model
 
     public function getMinSaleQtyAttribute(int $minSalesQty): int
     {
-        if (!$this->qty_increments) {
+        if (! $this->qty_increments) {
             return $minSalesQty;
         }
         $remainder = $minSalesQty % $this->qty_increments;
