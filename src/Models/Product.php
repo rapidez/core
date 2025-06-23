@@ -276,7 +276,7 @@ class Product extends Model
             return $values;
         }
 
-        if ($attribute['input'] == 'select' && $attribute['type'] == 'int' && ! $attribute['system']) {
+        if ($attribute['input'] == 'select' && $attribute['type'] == 'int' && ! ($attribute['system'] ?? false)) {
             $value = OptionValue::getCachedByOptionId($value);
         }
 
