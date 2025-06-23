@@ -5,6 +5,12 @@ export default {
             type: Object,
             default: () => ({ min: 0, max: 100 }),
         },
+        prefix: {
+            type: String
+        },
+        suffix: {
+            type: String
+        },
         current: {
             type: Object,
             default: () => ({ min: undefined, max: undefined }),
