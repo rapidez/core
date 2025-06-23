@@ -6,10 +6,10 @@ export default {
             default: () => ({ min: 0, max: 100 }),
         },
         prefix: {
-            type: String
+            type: String,
         },
         suffix: {
-            type: String
+            type: String,
         },
         current: {
             type: Object,
