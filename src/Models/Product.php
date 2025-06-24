@@ -208,6 +208,19 @@ class Product extends Model
         })->min->special_price;
     }
 
+    public function getMinSaleQtyAttribute(int $minSalesQty): int
+    {
+        if (! $this->qty_increments) {
+            return $minSalesQty;
+        }
+        $remainder = $minSalesQty % $this->qty_increments;
+        if ($remainder === 0) {
+            return $minSalesQty;
+        }
+
+        return $minSalesQty - $remainder + $this->qty_increments;
+    }
+
     public function getUrlAttribute(): string
     {
         return '/' . ($this->url_key ? $this->url_key . Rapidez::config('catalog/seo/product_url_suffix') : 'catalog/product/view/id/' . $this->entity_id);
