@@ -21,17 +21,21 @@
             <span>@lang('Please enter a shipping address first')</span>
         </label>
         <label class="flex items-center gap-x-1.5 p-5 border rounded bg-white cursor-pointer text-sm text" v-for="(method, index) in cart.shipping_addresses[0]?.available_shipping_methods">
-            <x-rapidez::input.radio.base
-                name="shipping_method"
-                v-model="variables.method"
-                v-bind:value="method.carrier_code+'/'+method.method_code"
-                v-bind:disabled="!method.available"
-                v-bind:dusk="'shipping-method-'+index"
-                v-on:change="mutate"
-                required
-            />
-            <span class="ml-1">@{{ method.method_title }}</span>
-            <span v-if="method.amount.value">- @{{ method.amount.value | price }}</span>
+            <template v-if="false"></template>
+                @stack('shipping_methods')
+            <template v-else>
+                <x-rapidez::input.radio.base
+                    name="shipping_method"
+                    v-model="variables.method"
+                    v-bind:value="method.carrier_code+'/'+method.method_code"
+                    v-bind:disabled="!method.available"
+                    v-bind:dusk="'shipping-method-'+index"
+                    v-on:change="mutate"
+                    required
+                />
+                <span class="ml-1">@{{ method.method_title }}</span>
+                <span v-if="method.amount.value">- @{{ method.amount.value | price }}</span>
+            </template>
         </label>
     </fieldset>
 </graphql-mutation>
