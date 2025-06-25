@@ -1,4 +1,4 @@
-<div class="grid grid-cols-12 gap-3">
+<div class="grid grid-cols-12 gap-5">
     <div class="col-span-12" v-if="$root.loggedIn">
         <graphql query="{ customer { addresses { id firstname lastname street city postcode country_code } } }">
             <div v-if="data" slot-scope="{ data }">
@@ -17,6 +17,35 @@
     </div>
 
     <div class="contents" v-if="!$root.loggedIn || !variables.customer_address_id">
+        @if ((Rapidez::config('customer/address/company_show')) || (Rapidez::config('customer/address/taxvat_show')))
+            <div class="grid col-span-12 grid-cols-12 gap-5">
+                @if (Rapidez::config('customer/address/company_show'))
+                    <div class="col-span-12 sm:col-span-6">
+                        <label>
+                            <x-rapidez::label>@lang('Company')</x-rapidez::label>
+                            <x-rapidez::input
+                                name="{{ $type }}_company"
+                                v-model="variables.company"
+                                :required="Rapidez::config('customer/address/company_show') == 'req'"
+                            />
+                        </label>
+                    </div>
+                @endif
+                @if (Rapidez::config('customer/address/taxvat_show'))
+                    <div class="col-span-12 sm:col-span-6">
+                        <label>
+                            <x-rapidez::label>@lang('Tax ID')</x-rapidez::label>
+                            <x-rapidez::input
+                                name="{{ $type }}_vat_id"
+                                v-model="variables.vat_id"
+                                v-on:change="window.app.$emit('vat-change', $event)"
+                                :required="Rapidez::config('customer/address/taxvat_show') == 'req'"
+                            />
+                        </label>
+                    </div>
+                @endif
+            </div>
+        @endif
         @if (Rapidez::config('customer/address/prefix_show') && strlen(Rapidez::config('customer/address/prefix_options')))
             <div class="col-span-12">
                 <label>
@@ -90,62 +119,7 @@
                 </label>
             </div>
         @endif
-        <div class="col-span-6 sm:col-span-3">
-            <label>
-                <x-rapidez::label>@lang('Postcode')</x-rapidez::label>
-                <x-rapidez::input
-                    name="{{ $type }}_postcode"
-                    v-model="variables.postcode"
-                    v-on:change="$root.$nextTick(() => window.app.$emit('postcode-change', variables))"
-                    required
-                />
-            </label>
-        </div>
-        @if (Rapidez::config('customer/address/street_lines') >= 2)
-            <div class="col-span-6 sm:col-span-3">
-                <label>
-                    <x-rapidez::label>@lang('Housenumber')</x-rapidez::label>
-                    <x-rapidez::input
-                        name="{{ $type }}_housenumber"
-                        v-model="variables.street[1]"
-                        v-on:change="$root.$nextTick(() => window.app.$emit('postcode-change', variables))"
-                        required
-                    />
-                </label>
-            </div>
-        @endif
-        @if (Rapidez::config('customer/address/street_lines') >= 3)
-            <div class="col-span-6 sm:col-span-3">
-                <label>
-                    <x-rapidez::label>@lang('Addition')</x-rapidez::label>
-                    <x-rapidez::input
-                        name="{{ $type }}_addition"
-                        v-model="variables.street[2]"
-                    />
-                </label>
-            </div>
-        @endif
-        <div class="col-span-6 sm:col-span-3">
-            <label>
-                <x-rapidez::label>@lang('Street')</x-rapidez::label>
-                <x-rapidez::input
-                    name="{{ $type }}_street"
-                    v-model="variables.street[0]"
-                    required
-                />
-            </label>
-        </div>
-        <div class="col-span-12 sm:col-span-6 sm:col-start-1">
-            <label>
-                <x-rapidez::label>@lang('City')</x-rapidez::label>
-                <x-rapidez::input
-                    name="{{ $type }}_city"
-                    v-model="variables.city"
-                    required
-                />
-            </label>
-        </div>
-        <div class="col-span-12 sm:col-span-6 sm:col-start-1">
+        <div class="col-span-12 sm:has-[+*_.region.exists]:col-span-3 sm:col-span-6">
             <label>
                 <x-rapidez::label>@lang('Country')</x-rapidez::label>
                 <x-rapidez::input.select.country
@@ -160,11 +134,11 @@
                 />
             </label>
         </div>
-        <div class="col-span-12 sm:col-span-6 has-[.exists]:block hidden">
+        <div class="col-span-12 sm:col-span-3 has-[.region.exists]:block hidden">
             <label>
                 <x-rapidez::label>@lang('Region')</x-rapidez::label>
                 <x-rapidez::input.select.region
-                    class="exists"
+                    class="region exists"
                     name="{{ $type }}_region"
                     dusk="{{ $type }}_region"
                     country="variables.country_code"
@@ -173,7 +147,7 @@
             </label>
         </div>
         @if (Rapidez::config('customer/address/telephone_show'))
-            <div class="col-span-12 sm:col-span-6 sm:col-start-1">
+            <div class="col-span-12 sm:col-span-6">
                 <label>
                     <x-rapidez::label>@lang('Telephone')</x-rapidez::label>
                     <x-rapidez::input
@@ -184,6 +158,61 @@
                 </label>
             </div>
         @endif
+        <div class="col-span-12 {{ Rapidez::config('customer/address/street_lines') >= 3 ? 'sm:col-span-4' : 'sm:col-span-6' }}">
+            <label>
+                <x-rapidez::label>@lang('Postcode')</x-rapidez::label>
+                <x-rapidez::input
+                    name="{{ $type }}_postcode"
+                    v-model="variables.postcode"
+                    v-on:change="$root.$nextTick(() => window.app.$emit('postcode-change', variables))"
+                    required
+                />
+            </label>
+        </div>
+        @if (Rapidez::config('customer/address/street_lines') >= 2)
+            <div class="{{ Rapidez::config('customer/address/street_lines') >= 3 ? 'col-span-6 sm:col-span-4' : 'col-span-12 sm:col-span-6' }}">
+                <label>
+                    <x-rapidez::label>@lang('Housenumber')</x-rapidez::label>
+                    <x-rapidez::input
+                        name="{{ $type }}_housenumber"
+                        v-model="variables.street[1]"
+                        v-on:change="$root.$nextTick(() => window.app.$emit('postcode-change', variables))"
+                        required
+                    />
+                </label>
+            </div>
+        @endif
+        @if (Rapidez::config('customer/address/street_lines') >= 3)
+            <div class="col-span-6 sm:col-span-4">
+                <label>
+                    <x-rapidez::label>@lang('Addition')</x-rapidez::label>
+                    <x-rapidez::input
+                        name="{{ $type }}_addition"
+                        v-model="variables.street[2]"
+                    />
+                </label>
+            </div>
+        @endif
+        <div class="col-span-12 sm:col-span-6">
+            <label>
+                <x-rapidez::label>@lang('Street')</x-rapidez::label>
+                <x-rapidez::input
+                    name="{{ $type }}_street"
+                    v-model="variables.street[0]"
+                    required
+                />
+            </label>
+        </div>
+        <div class="col-span-12 sm:col-span-6">
+            <label>
+                <x-rapidez::label>@lang('City')</x-rapidez::label>
+                <x-rapidez::input
+                    name="{{ $type }}_city"
+                    v-model="variables.city"
+                    required
+                />
+            </label>
+        </div>
         @if (Rapidez::config('customer/address/fax_show'))
             <div class="col-span-12 sm:col-span-6">
                 <label>
@@ -192,31 +221,6 @@
                         name="{{ $type }}_fax"
                         v-model="variables.fax"
                         :required="Rapidez::config('customer/address/fax_show') === 'req'"
-                    />
-                </label>
-            </div>
-        @endif
-        @if (Rapidez::config('customer/address/company_show'))
-            <div class="col-span-12 sm:col-span-6 sm:col-start-1">
-                <label>
-                    <x-rapidez::label>@lang('Company')</x-rapidez::label>
-                    <x-rapidez::input
-                        name="{{ $type }}_company"
-                        v-model="variables.company"
-                        :required="Rapidez::config('customer/address/company_show') == 'req'"
-                    />
-                </label>
-            </div>
-        @endif
-        @if (Rapidez::config('customer/address/taxvat_show'))
-            <div class="col-span-12 sm:col-span-6">
-                <label>
-                    <x-rapidez::label>@lang('Tax ID')</x-rapidez::label>
-                    <x-rapidez::input
-                        name="{{ $type }}_vat_id"
-                        v-model="variables.vat_id"
-                        v-on:change="window.app.$emit('vat-change', $event)"
-                        :required="Rapidez::config('customer/address/taxvat_show') == 'req'"
                     />
                 </label>
             </div>
