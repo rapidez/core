@@ -36,6 +36,8 @@ export default {
                 this.successfulLogin()
                 return true
             }
+
+            Notify(window.config.translations.account.login_failed)
             return false
         },
 
