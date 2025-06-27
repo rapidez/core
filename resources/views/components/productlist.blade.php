@@ -1,4 +1,4 @@
-@props(['value', 'dslQuery', 'limit' => 999, 'title' => false, 'field' => 'sku.keyword'])
+@props(['value' => null, 'dslQuery' => null, 'limit' => 999, 'title' => false, 'field' => 'sku.keyword'])
 @if ($value || $dslQuery)
     <lazy v-slot="{ intersected }">
         <listing v-if="intersected">
