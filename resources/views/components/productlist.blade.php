@@ -1,19 +1,23 @@
-@props(['value', 'title' => false, 'field' => 'sku.keyword'])
+@props(['value' => null, 'dslQuery' => null, 'limit' => 999, 'title' => false, 'field' => 'sku.keyword'])
 
-@if ($value)
+@if ($value || $dslQuery)
     <lazy v-slot="{ intersected }">
         <listing v-if="intersected">
             <x-rapidez::reactive-base>
                 <reactive-list
-                    component-id="{{ md5(serialize($value)) }}"
+                    component-id="{{ md5(serialize($value ?? $dslQuery)) }}"
                     data-field="{{ $field }}"
-                    :size="999"
+                    :size="{{ $limit }}"
                     :infinite-scroll="false"
-                    :default-query="function () { return { query: { terms: { '{{ $field }}': {!!
-                        is_array($value)
-                            ? "['".implode("','", $value)."']"
-                            : $value
-                    !!} } } } }"
+                    @if ($dslQuery)
+                        :default-query="function () { return { query: {{ $dslQuery }} } }"
+                    @else
+                        :default-query="function () { return { query: { terms: { '{{ $field }}': {!!
+                            is_array($value)
+                                ? "['".implode("','", $value)."']"
+                                : $value
+                        !!} } } } }"
+                    @endif
                 >
                     @if ($title)
                         <strong class="font-bold text-2xl mt-5" slot="renderResultStats">
