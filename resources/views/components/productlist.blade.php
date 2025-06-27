@@ -8,7 +8,7 @@
                     data-field="{{ $field }}"
                     :size="{{ $limit }}"
                     :infinite-scroll="false"
-                    @if($dslQuery)
+                    @if ($dslQuery)
                         :default-query="function () { return { query: {{ $dslQuery }} } }"
                     @else
                         :default-query="function () { return { query: { terms: { '{{ $field }}': {!!
