@@ -1,4 +1,5 @@
 @props(['value' => null, 'dslQuery' => null, 'limit' => 999, 'title' => false, 'field' => 'sku.keyword'])
+
 @if ($value || $dslQuery)
     <lazy v-slot="{ intersected }">
         <listing v-if="intersected">
@@ -28,36 +29,38 @@
 
                     <div slot="renderNoResults"></div>
 
-                    <div class="relative" slot="render" slot-scope="{ data, loading }" v-if="!loading && data?.length">
+                    <div class="mt-5" slot="render" slot-scope="{ data, loading }" v-if="!loading && data?.length">
                         <slider>
                             <div slot-scope="{ navigate, showLeft, showRight, currentSlide, slidesTotal }">
-                                <div class="-mx-2 flex mt-5 overflow-x-auto snap-x scrollbar-hide scroll-smooth snap-mandatory" ref="slider">
-                                    <template v-for="item in data">
-                                        @include('rapidez::listing.partials.item', ['slider' => true])
-                                    </template>
+                                <div class="relative">
+                                    <div ref="slider" class="*:sm:w-1/2 *:md:w-1/3 *:xl:w-1/3 *:px-0.5 *:sm:px-2 *:shrink-0 *:snap-start -mx-2 -mx-4 flex snap-x snap-mandatory overflow-x-auto scroll-smooth scrollbar-hide sm:-mx-1">
+                                        <template v-for="item in data">
+                                            @include('rapidez::listing.partials.item', ['slider' => true])
+                                        </template>
+                                    </div>
+                                    <x-rapidez::button.slider
+                                        class="absolute left-0 top-1/2 sm:-translate-x-1/2 -translate-y-1/2"
+                                        v-if="showLeft"
+                                        v-on:click="navigate(currentSlide - 1)"
+                                        :aria-label="__('Prev')"
+                                    >
+                                        <x-heroicon-o-chevron-left class="size-6 shrink-0"/>
+                                    </x-rapidez::button.slider>
+                                    <x-rapidez::button.slider
+                                        class="absolute right-0 top-1/2 sm:translate-x-1/2 -translate-y-1/2"
+                                        v-if="showRight"
+                                        v-on:click="navigate(currentSlide + 1)"
+                                        :aria-label="__('Next')"
+                                    >
+                                        <x-heroicon-o-chevron-right class="size-6 shrink-0"/>
+                                    </x-rapidez::button.slider>
                                 </div>
-                                <x-rapidez::button.slider
-                                    class="absolute left-0 top-1/2 sm:-translate-x-1/2 -translate-y-1/2"
-                                    v-if="showLeft"
-                                    v-on:click="navigate(currentSlide - 1)"
-                                    :aria-label="__('Prev')"
-                                >
-                                    <x-heroicon-o-chevron-left class="w-6 h-6 shrink-0"/>
-                                </x-rapidez::button.slider>
-                                <x-rapidez::button.slider
-                                    class="absolute right-0 top-1/2 sm:translate-x-1/2 -translate-y-1/2"
-                                    v-if="showRight"
-                                    v-on:click="navigate(currentSlide + 1)"
-                                    :aria-label="__('Next')"
-                                >
-                                    <x-heroicon-o-chevron-right class="w-6 h-6 shrink-0"/>
-                                </x-rapidez::button.slider>
                                 <div v-show="slidesTotal > 1" class="flex flex-row justify-center w-full mt-[35px]">
                                     <div
                                         v-for="slide, index in slidesTotal"
                                         v-on:click="navigate(index)"
-                                        class="relative bg-white rounded-full border w-[15px] h-[15px] mx-1 cursor-pointer"
-                                        :class="{ 'bg-neutral border-0': index === currentSlide }">
+                                        class="relative bg rounded-full border size-4 mx-1 cursor-pointer"
+                                        :class="{ 'bg-emphasis border-0': index === currentSlide }">
                                     </div>
                                 </div>
                             </div>
