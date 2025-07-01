@@ -1,6 +1,18 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.0.1...4.0.1)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.25.0...2.25.0)
+## [2.25.0](https://github.com/rapidez/core/releases/tag/2.25.0) - 2025-07-01
+
+### Added
+
+- Productlist dslQuery prop (#915)
+
+### Fixed
+
+- VirtualItems fallback (#876)
+- Special price mapping (#896)
+- Support negative product option prices (#911)
+
 ## [4.0.1](https://github.com/rapidez/core/releases/tag/4.0.1) - 2025-06-06
 
 ### Fixed
