@@ -1,6 +1,19 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/3.9.0...3.9.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/3.10.0...3.10.0)
+## [3.10.0](https://github.com/rapidez/core/releases/tag/3.10.0) - 2025-07-01
+
+### Added
+
+- Shipping cost in minicart (#897)
+- Productlist dslQuery prop (#914)
+
+### Fixed
+
+- Validate shipping address before sending same as shipping (#893)
+- Special price mapping (#895)
+- Support negative product option prices (#912)
+
 ## [3.9.0](https://github.com/rapidez/core/releases/tag/3.9.0) - 2025-05-21
 
 ### Added
