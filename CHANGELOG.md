@@ -13,236 +13,185 @@
 - Special price mapping (#896)
 - Support negative product option prices (#911)
 
-## [4.0.1](https://github.com/rapidez/core/releases/tag/4.0.1) - 2025-06-06
+## [2.24.1](https://github.com/rapidez/core/releases/tag/2.24.1) - 2025-05-21
 
 ### Fixed
 
-- Consistent Eventy filter names (#886)
-- Empty page title fix (#888)
-- Highlight tag flicker fix (#889)
+- Only fire product attribute change when it's changed (#865)
 
-## [4.0.0](https://github.com/rapidez/core/releases/tag/4.0.0) - 2025-06-05
-
-See the upgrade guide: https://docs.rapidez.io/4.x/upgrading.html
+## [2.24.0](https://github.com/rapidez/core/releases/tag/2.24.0) - 2025-05-02
 
 ### Changed
 
-- InstantSearch migration (#706)
+- Alternate hreflang tags; also show current store (#831)
 
-## [3.9.0](https://github.com/rapidez/core/releases/tag/3.9.0) - 2025-05-21
+## [2.23.1](https://github.com/rapidez/core/releases/tag/2.23.1) - 2025-05-01
+
+### Fixed
+
+- Fixed typo (41b93ee)
+
+## [2.23.0](https://github.com/rapidez/core/releases/tag/2.23.0) - 2025-05-01
 
 ### Added
 
-- pro6pp package in the install command (#863)
+- Healthcheck warning for customer configuration (#822)
+
+### Fixed
+
+- Make queryParams a computed property (#811)
+- Use the current fetch instead of a cached version (#830)
+
+## [2.22.0](https://github.com/rapidez/core/releases/tag/2.22.0) - 2025-04-15
+
+### Added
+
+- Add debounce to GraphQL mutation (#804)
 
 ### Changed
 
-- GraphQL mutation update only changed variables with watch (#815)
+- Get option labels with attribute options in the cart (#726)
+- Search query param from JS for static caching (#803)
 
 ### Fixed
 
-- Turbo navigate back fix (#851)
-- Navigation fix on Firefox (#857)
-- Autocomplete focus error fix (#858)
-- Only fire product attribute change when it's changed (#864)
+- Fixed configurable products with 1 child product not selecting properly (#779)
+- Empty additional_data error fix (#773)
+- No content fallback controller fix (#786)
+- Return 0 instead of void when no taxes (#787)
+- Disable infinite-scroll on productlists (#791)
+- Fixed negative loadingCount (#798)
+- Maintain a list of fetches to ensure exact loading count (#807)
 
-## [3.8.0](https://github.com/rapidez/core/releases/tag/3.8.0) - 2025-05-14
-
-### Added
-
-- More Magento redirects (#845)
-- Password requirements config defaults (#846)
+## [2.21.2](https://github.com/rapidez/core/releases/tag/2.21.2) - 2025-03-20
 
 ### Fixed
 
-- Do not show the arrows on the quantity input fix (#844)
+- Only allow catalog routes ids to be a number (#748)
+- Allow for arbitrary options in additionals (#757)
+- Use correct show_tax value (#754)
+- Only use special price when it's lower (#776)
 
-## [3.7.0](https://github.com/rapidez/core/releases/tag/3.7.0) - 2025-05-01
+## [2.21.1](https://github.com/rapidez/core/releases/tag/2.21.1) - 2025-02-25
+
+### Fixed
+
+- Use @content for 404 content (#733)
+- Make sure you can't do a mutation twice simultaneously (#727)
+- Only apply default value when config option is not found (#736)
+
+## [2.21.0](https://github.com/rapidez/core/releases/tag/2.21.0) - 2025-02-11
 
 ### Added
 
-- Magento 2.4.7-p5 and 2.4.8 tests (#808)
-- Healthcheck warning for customer configuration (#821)
+- Etag and last modified headers (#731)
 
 ### Changed
 
-- Removed yarn.lock (#825)
-- Alternate hreflang tags; also show current store (#827)
+- Sort countries in country select (#724, #730)
 
-### Fixed
-
-- Track fetches globally (#806)
-- Use the current fetch instead of a cached version (#829)
-
-## [3.6.0](https://github.com/rapidez/core/releases/tag/3.6.0) - 2025-04-18
+## [2.20.0](https://github.com/rapidez/core/releases/tag/2.20.0) - 2025-01-29
 
 ### Added
 
-- Magento link widgets (#792, #812)
-- Debounce to GraphQL mutation (#805)
-- Option to run partial-submit functions one by one (#784)
+- Autocomplete additionals fuzziness config (#709)
+
+### Fixed
+
+- Use the correct ID for related products and upsells (#715)
+- Fix the disabled options to work with one super attribute (#694)
+
+## [2.19.1](https://github.com/rapidez/core/releases/tag/2.19.1) - 2025-01-21
+
+### Fixed
+
+- Only check for logged in state on mounted hook (#673)
+- Fallback fixes (#707)
+
+## [2.19.0](https://github.com/rapidez/core/releases/tag/2.19.0) - 2024-12-11
+
+### Added
+
+- URLs from Magento option + config refactor with multi-cache (#567)
+- Global slideover (#619)
+
+## [2.18.3](https://github.com/rapidez/core/releases/tag/2.18.3) - 2024-11-28
+
+### Fixed
+
+- Use synonym graph instead of regular synonyms (#663)
+
+## [2.18.2](https://github.com/rapidez/core/releases/tag/2.18.2) - 2024-11-27
+
+### Fixed
+
+- Improved Vue/Turbo loading speed fix (#662)
+
+## [2.18.1](https://github.com/rapidez/core/releases/tag/2.18.1) - 2024-11-27
+
+### Fixed
+
+- Typo (#658)
+
+## [2.18.0](https://github.com/rapidez/core/releases/tag/2.18.0) - 2024-11-26
 
 ### Changed
 
-- Central Magento config defaults (#782, #816, #817)
-- Reactive GraphQL component variables (#794)
+- Improved Vue/Turbo loading speed (#653)
+
+Since Vue boots quicker on first load and doesn't block during subsequent loads, make sure you listen to `vue:loaded` instead of `turbo:load` if you want to interact with Vue.
+
+## [2.17.1](https://github.com/rapidez/core/releases/tag/2.17.1) - 2024-11-26
 
 ### Fixed
 
-- Select default shipping method if no shipping method is set (#814)
+- Reduce forced reflow with the slider (#609)
+- Clone address to remove reactivity (#656)
 
-## [3.5.1](https://github.com/rapidez/core/releases/tag/3.5.1) - 2025-04-11
-
-### Fixed
-
-- Install additional package requirements from the install command (#809)
-- Just mention the Rapidez Statamic install command (#810)
-
-## [3.5.0](https://github.com/rapidez/core/releases/tag/3.5.0) - 2025-04-10
+## [2.17.0](https://github.com/rapidez/core/releases/tag/2.17.0) - 2024-11-20
 
 ### Added
 
-- Laravel 12 and PHP 8.4 support (#763)
-- Show additional data at payments methods on the checkout success (#795)
+- Disable checkout button and add notice if not in stock (#627)
 
 ### Changed
 
-- Get option labels with attribute options in the cart (#755)
-- Search query param from JS for static caching (#802)
+- Apply middlewares from fallback routes (#643)
 
-### Fixed
-
-- Empty additional_data error fix (#772)
-- No content fallback controller fix (#785)
-- Return 0 instead of void when no taxes (#788)
-- Disable infinite-scroll on productlists (#790)
-- Removed unsupported applied_to and coupon keys (#789)
-- Fixed negative loadingCount (#793)
-
-## [3.4.0](https://github.com/rapidez/core/releases/tag/3.4.0) - 2025-03-25
-
-### Added
-
-- Region select (#738)
-- Custom checkout success fail redirect path (#780)
-
-### Fixed
-
-- Fixed configurable products with 1 child product not selecting properly (#778)
-- Correctly handle combiningGraphql allowing catching (#783)
-
-## [3.3.0](https://github.com/rapidez/core/releases/tag/3.3.0) - 2025-03-20
-
-### Added
-
-- Custom customer attributes directly on the user store (#767)
+## [2.16.0](https://github.com/rapidez/core/releases/tag/2.16.0) - 2024-11-19
 
 ### Changed
 
-- Remove custom shadow colors (#723)
-- Skip login checkout step when logged in (#759)
+- Resize path helper (#633, #648)
+- Extracted login to a loginByToken function (#637)
 
 ### Fixed
 
-- Only allow catalog routes ids to be a number (#747)
-- Allow for arbitrary options in additionals (#751)
-- Cookie notice z-index (#761)
-- Use correct show_tax value (#753)
-- Only use special price when it's lower (#775)
+- Image switching length fix (#641)
+- Fix error of undefined when extensions is not set (#634)
 
-## [3.2.0](https://github.com/rapidez/core/releases/tag/3.2.0) - 2025-02-26
+## [2.15.0](https://github.com/rapidez/core/releases/tag/2.15.0) - 2024-10-23
 
 ### Added
 
-- Standalone checkout signed endpoint (#711)
-- GraphQL component running state (#722)
-- Etag and last modified headers (#728)
+- VAT change event (#606)
+
+### Fixed
+
+- Use correct object structure in PostCSS config (#611)
+
+## [2.14.0](https://github.com/rapidez/core/releases/tag/2.14.0) - 2024-10-17
 
 ### Changed
 
-- Use slideover from rapidez/blade-components (#680)
-- Implemented the latest version of rapidez/reviews (#679)
-- Product image gallery thumbnails layout shift fixes (#710)
-- Use the backdrop color variable (#696)
-- Onestep checkout improvements (#721)
-- Sort countries in country select (#725, #729)
+- Updated the frontend dependencies including Vite 5 (#584)
+- Drop support for Magento 2.4.5 (#589)
 
 ### Fixed
 
-- Use the correct ID for related products and upsells (#714)
-- Use updateCart function (#689)
-- Use useEventListener and destroyed hook on success (#690)
-- Don't clear cart on invalid coupon code (#693)
-- Fix the disabled options to work with one super attribute (#695)
-- Pagesize Turbo fallback fix (#719)
-- Fallback fix (#720)
-- Redirect to checkout using a temporary redirect (8719e01)
-- Use @content for 404 content (#732)
-- Return type for phpstan (#739)
-- Make sure you can't do a mutation twice simultaneously (#740)
-- Only apply default value when config option is not found (#737)
-- Slideover position (#742)
-
-## [3.1.0](https://github.com/rapidez/core/releases/tag/3.1.0) - 2025-01-24
-
-### Added
-
-- Shadow, outline and ring colors (#691)
-- Autocomplete additionals fuzziness config (#708)
-
-### Changed
-
-- Frontend improvements (#682)
-- Dynamic product listing image and redirect + swatch logic fix (#698)
-- Changed the default border color (#699)
-- Global slideover using teleport (#703)
-- Show configured variant image in the cart (#688)
-- Check the autocomplete resultsType outside of partial (#684)
-- Renamed the country select component (#678)
-
-### Fixed
-
-- ReactiveSearch update (#697)
-- Null coalescing for csrf token (#686)
-- Fix error on file removal (#687)
-- Slideover prevent-scroll (#700)
-
-## [3.0.1](https://github.com/rapidez/core/releases/tag/3.0.1) - 2024-12-20
-
-### Fixed
-
-- Review stars closing (4bd7a4a)
-- Properly use of dt/dd within dl (#674)
-- Listen to newsletter/general/active (#676)
-- Small frontend fixes (#677)
-- Get pagesize from url if Turbo is not yet loaded (#681)
-
-## [3.0.0](https://github.com/rapidez/core/releases/tag/3.0.0) - 2024-12-13
-
-See the upgrade guide: https://docs.rapidez.io/3.x/upgrading.html
-
-### Added
-
-- Checkout refactor using GraphQL and added a onestep option (#503, #630, #631, #636, #647, #612)
-- Improved install command (#586)
-- Use design/head/default_description (#605)
-- Show selected/active filters (#587)
-- Moved the translations and added Dutch translations (#598)
-- HTTP/3 Early Hints support (#644)
-
-### Changed
-
-- Drop support for Magento 2.4.5 and 2.4.6 (#590)
-- Product gallery refactor with count overflow (#624)
-- Color names refactor (#622)
-- Named z-indexes refactor (#625)
-- Implemented rapidez/blade-components (#667)
-- Autocomplete styling (#670)
-- Quantity input refactor (#645)
-
-### Fixed
-
-- Reduce javascript bundle size (#604)
+- Filter out double slashes from API endpoints (#559)
+- Fix casts in quote model (#542)
+- Correct error message when placing an order fails (#599)
 
 ## [2.13.0](https://github.com/rapidez/core/releases/tag/2.13.0) - 2024-09-27
 
