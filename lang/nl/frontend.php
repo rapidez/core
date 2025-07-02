@@ -21,6 +21,7 @@ return [
         'password_mismatch' => 'De wachtwoorden komen niet overeen.',
         'email_password'    => 'Je hebt geen email of wachtwoord opgegeven.',
         'email'             => 'Een email adres is verplicht.',
+        'login_failed'      => 'Het gegeven e-mailadres en wachtwoord komen niet overeen.',
     ],
 
     'asc'       => 'oplopend',
