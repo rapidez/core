@@ -131,6 +131,7 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "[CI] Update Snapshots"
+          repository: rapidez/core
 
       - name: Dump docker logs
         if: failure()
