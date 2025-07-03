@@ -129,22 +129,23 @@ jobs:
       - name: Run Playwright tests
         run: yarn playwright test
 
-      # On failure
-      - name: Update snapshots
-        if: failure() && matrix.screenshots == true
+      # Screenshots
+      - name: Update screenshots
+        if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
         run: yarn playwright test --update-snapshots --reporter=list
 
       - name: Move the screenshots
-        if: failure() && matrix.screenshots == true
+        if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
         run: cp -r tests/playwright/. ../core/tests/playwright/
 
       - name: Commit the screenshots
-        if: failure() && matrix.screenshots == true
+        if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "[CI] Update Snapshots"
           repository: rapidez/core
 
+      # Artifact
       - name: Dump docker logs
         if: failure()
         uses: jwalton/gh-docker-logs@v2
