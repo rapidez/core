@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./rapidez/rapidez
+        working-directory: ../../rapidez/rapidez
 
     strategy:
       fail-fast: false
