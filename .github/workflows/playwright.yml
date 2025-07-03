@@ -129,7 +129,7 @@ jobs:
         run: yarn playwright test --update-snapshots --reporter=list
 
       - name: Move the screenshots
-        run: cp -r tests/playwright ../core/tests/playwright
+        run: cp -r tests/playwright/. ../core/tests/playwright/
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
