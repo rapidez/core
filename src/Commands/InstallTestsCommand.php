@@ -13,6 +13,8 @@ class InstallTestsCommand extends Command
 
     public function handle()
     {
+        // TODO SYMLINK!!
+
         // TODO: Maybe remove this file and move it to the install command?
         File::copyDirectory(base_path('vendor/rapidez/core/tests/playwright'), base_path('tests/playwright'));
         File::copy(base_path('vendor/rapidez/core/playwright.config.js'), base_path('playwright.config.js'));
