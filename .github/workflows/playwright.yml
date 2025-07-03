@@ -96,7 +96,7 @@ jobs:
         run: composer config repositories.core path ../core
 
       - name: Composer require the local rapidez/core
-        run: composer require rapidez/core:'dev-master as 4.0.0'
+        run: composer require rapidez/core:'dev-master as 4.1.0' -W
 
       - name: Install Rapidez command
         run: php artisan rapidez:install --frontendonly
