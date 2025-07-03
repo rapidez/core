@@ -17,7 +17,6 @@ class InstallTestsCommand extends Command
 
         shell_exec('cd ' . base_path() . ' && yarn add -D @playwright/test');
 
-
         File::copyDirectory(base_path('vendor/rapidez/core/tests/Browser'), base_path('tests/Browser'));
         File::copyDirectory(base_path('vendor/rapidez/core/tests/Feature'), base_path('tests/Feature'));
 
