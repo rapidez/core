@@ -9,6 +9,11 @@ jobs:
     if: ${{ github.event.issue.pull_request && github.event.comment.body == '/update-snapshots'}}
     timeout-minutes: 60
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./rapidez/rapidez
+
     strategy:
       fail-fast: false
       matrix:
@@ -51,8 +56,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          path: rapidez/core
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/checkout@v4
+        with:
+          repository: rapidez/rapidez
+          path: rapidez/rapidez
 
       - name: Get SHA and branch name
         id: get-branch-and-sha
@@ -69,6 +80,7 @@ jobs:
         run: git fetch
 
       - name: Checkout Branch
+        working-directory: ./rapidez/core
         run: git checkout ${{ steps.get-branch-and-sha.outputs.branch }}
 
       - uses: actions/setup-node@v4
@@ -82,30 +94,50 @@ jobs:
           extensions: mbstring, dom, fileinfo, mysql
           coverage: none
 
+      - name: Copy testing .env
+        run: cp ../core/tests/playwright/.env.testing .env
+
+      - name: Use rapidez/core from source
+        run: composer config repositories.core path ../core
+
+      - name: Get commit hash of core
+        working-directory: ./rapidez/core
+        run: echo "CORE_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
+
+      - name: Composer require the local rapidez/core
+        run: composer require rapidez/core:"dev-${{ env.CORE_HASH }} as 4.1.0"
+
+      - name: Install Rapidez command
+        run: php artisan rapidez:install --frontendonly
+
       - name: Install Yarn dependencies
         run: npm install -g yarn && yarn
 
       - name: Install Playwright Browsers
         run: yarn playwright install --with-deps
 
-      - name: Install Composer dependencies
-        run: composer install --prefer-dist --no-interaction
+      - name: Frontend Build
+        run: yarn run prod
 
-      - name: Prepare Playwright
-        run: composer run playwright:prepare
+      - name: Install Playwright tests
+        run: php artisan rapidez:install:tests
 
       - name: Wait for index to finish
         run: for i in {1..60}; do [[ $(mysql -h 127.0.0.1 -P 3307 -u magento -ppassword -ss -r -e "CALL sys.table_exists('magento', 'catalog_product_flat_1', @exists); SELECT @exists;") == *"BASE TABLE"* ]] && break || sleep 5; done
 
       - name: Rapidez index
-        run: ./vendor/bin/testbench-dusk rapidez:index
+        run: php artisan rapidez:index
 
       - name: Start the webserver
-        run: ./vendor/bin/testbench-dusk serve &
+        run: php artisan serve &
 
       - name: Update snapshots
         run: yarn playwright test --update-snapshots --reporter=list
 
+      - name: Move the screenshots
+        run: cp -r tests/playwright/. ../core/tests/playwright/
+
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "[CI] Update Snapshots"
+          repository: rapidez/core

@@ -13,11 +13,13 @@ class InstallTestsCommand extends Command
 
     public function handle()
     {
-        // TODO: Maybe remove this file and move it to the install command?
+        // For the Playwright tests
+        // TODO: Maybe move this to a composer script
+        // when we remove the Dusk tests?
         File::copyDirectory(base_path('vendor/rapidez/core/tests/playwright'), base_path('tests/playwright'));
         File::copy(base_path('vendor/rapidez/core/playwright.config.js'), base_path('playwright.config.js'));
 
-        // With Playwright we don't need this anymore
+        // For the Dusk tests
         File::copyDirectory(base_path('vendor/rapidez/core/tests/Browser'), base_path('tests/Browser'));
         File::copyDirectory(base_path('vendor/rapidez/core/tests/Feature'), base_path('tests/Feature'));
 

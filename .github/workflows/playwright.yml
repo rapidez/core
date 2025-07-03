@@ -13,6 +13,7 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+
     defaults:
       run:
         working-directory: ./rapidez/rapidez
@@ -24,15 +25,15 @@ jobs:
           - magento-version: 2.4.7-p6
             magento-php-version: php82-fpm
             rapidez-php-version: 8.2
-          # - magento-version: 2.4.7-p6
-          #   magento-php-version: php83-fpm
-          #   rapidez-php-version: 8.3
-          # - magento-version: 2.4.7-p6
-          #   magento-php-version: php83-fpm
-          #   rapidez-php-version: 8.4
-          # - magento-version: 2.4.8-p1
-          #   magento-php-version: php84-fpm
-          #   rapidez-php-version: 8.4
+          - magento-version: 2.4.7-p6
+            magento-php-version: php83-fpm
+            rapidez-php-version: 8.3
+          - magento-version: 2.4.7-p6
+            magento-php-version: php83-fpm
+            rapidez-php-version: 8.4
+          - magento-version: 2.4.8-p1
+            magento-php-version: php84-fpm
+            rapidez-php-version: 8.4
 
     services:
       magento:
@@ -124,17 +125,7 @@ jobs:
         run: php artisan serve &
 
       - name: Run Playwright tests
-        # run: yarn playwright test
-        # Just for now so we see the screenshots directly in the PR
-        run: yarn playwright test --update-snapshots --reporter=list
-
-      - name: Move the screenshots
-        run: cp -r tests/playwright/. ../core/tests/playwright/
-
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "[CI] Update Snapshots"
-          repository: rapidez/core
+        run: yarn playwright test
 
       - name: Dump docker logs
         if: failure()
@@ -152,5 +143,7 @@ jobs:
         with:
           name: artifact-P${{ matrix.rapidez-php-version }}-M${{matrix.magento-version}}-on-${{matrix.magento-php-version}}
           path: |
-            playwright-report
+            rapidez/rapidez/playwright-report
+            rapidez/rapidez/storage/logs/laravel.log
             docker-logs
+            magento/var/log
