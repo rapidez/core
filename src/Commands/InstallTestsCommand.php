@@ -13,6 +13,11 @@ class InstallTestsCommand extends Command
 
     public function handle()
     {
+        File::copyDirectory(base_path('vendor/rapidez/core/tests/playwright'), base_path('tests/playwright'));
+
+        shell_exec('cd ' . base_path() . ' && yarn add -D @playwright/test');
+
+
         File::copyDirectory(base_path('vendor/rapidez/core/tests/Browser'), base_path('tests/Browser'));
         File::copyDirectory(base_path('vendor/rapidez/core/tests/Feature'), base_path('tests/Feature'));
 

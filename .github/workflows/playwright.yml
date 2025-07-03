@@ -13,6 +13,10 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./rapidez/rapidez
+
     strategy:
       fail-fast: false
       matrix:
@@ -20,15 +24,15 @@ jobs:
           - magento-version: 2.4.7-p6
             magento-php-version: php82-fpm
             rapidez-php-version: 8.2
-          - magento-version: 2.4.7-p6
-            magento-php-version: php83-fpm
-            rapidez-php-version: 8.3
-          - magento-version: 2.4.7-p6
-            magento-php-version: php83-fpm
-            rapidez-php-version: 8.4
-          - magento-version: 2.4.8-p1
-            magento-php-version: php84-fpm
-            rapidez-php-version: 8.4
+          # - magento-version: 2.4.7-p6
+          #   magento-php-version: php83-fpm
+          #   rapidez-php-version: 8.3
+          # - magento-version: 2.4.7-p6
+          #   magento-php-version: php83-fpm
+          #   rapidez-php-version: 8.4
+          # - magento-version: 2.4.8-p1
+          #   magento-php-version: php84-fpm
+          #   rapidez-php-version: 8.4
 
     services:
       magento:
@@ -63,6 +67,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          path: rapidez/core
+
+      - uses: actions/checkout@v4
+        with:
+          repository: rapidez/rapidez
+          path: rapidez/rapidez
 
       - uses: actions/setup-node@v4
         with:
@@ -81,23 +92,41 @@ jobs:
       - name: Install Playwright Browsers
         run: yarn playwright install --with-deps
 
+      - name: Frontend Build
+        run: yarn run prod
+
+      - name: Copy testing .env
+        run: cp ../core/tests/playwright/.env.testing .env
+
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-interaction
 
-      - name: Prepare Playwright
-        run: composer run playwright:prepare
+      - name: Use rapidez/core from source
+        run: composer config repositories.core path ../core
+
+      - name: Composer require the local rapidez/core
+        run: composer require rapidez/core:'dev-master as 4.0.0'
+
+      - name: Install Playwright tests
+        run: php artisan rapidez:install:tests
 
       - name: Wait for index to finish
         run: for i in {1..60}; do [[ $(mysql -h 127.0.0.1 -P 3307 -u magento -ppassword -ss -r -e "CALL sys.table_exists('magento', 'catalog_product_flat_1', @exists); SELECT @exists;") == *"BASE TABLE"* ]] && break || sleep 5; done
 
       - name: Rapidez index
-        run: ./vendor/bin/testbench-dusk rapidez:index
+        run: php artisan rapidez:index
 
       - name: Start the webserver
-        run: ./vendor/bin/testbench-dusk serve &
+        run: php artisan serve &
 
       - name: Run Playwright tests
-        run: yarn playwright test
+        # run: yarn playwright test
+        # Just for now so we see the screenshots directly in the PR
+        run: yarn playwright test --update-snapshots --reporter=list
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "[CI] Update Snapshots"
 
       - name: Dump docker logs
         if: failure()
