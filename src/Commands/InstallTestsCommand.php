@@ -13,10 +13,10 @@ class InstallTestsCommand extends Command
 
     public function handle()
     {
+        // TODO: Remove this file and move it to the install command?
         File::copyDirectory(base_path('vendor/rapidez/core/tests/playwright'), base_path('tests/playwright'));
 
-        shell_exec('cd ' . base_path() . ' && yarn add -D @playwright/test');
-
+        // With Playwright we don't need this anymore
         File::copyDirectory(base_path('vendor/rapidez/core/tests/Browser'), base_path('tests/Browser'));
         File::copyDirectory(base_path('vendor/rapidez/core/tests/Feature'), base_path('tests/Feature'));
 

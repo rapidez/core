@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ../../rapidez/rapidez
+        working-directory: ./rapidez/rapidez
 
     strategy:
       fail-fast: false
@@ -86,15 +86,6 @@ jobs:
           extensions: mbstring, dom, fileinfo, mysql
           coverage: none
 
-      - name: Install Yarn dependencies
-        run: npm install -g yarn && yarn
-
-      - name: Install Playwright Browsers
-        run: yarn playwright install --with-deps
-
-      - name: Frontend Build
-        run: yarn run prod
-
       - name: Copy testing .env
         run: cp ../core/tests/playwright/.env.testing .env
 
@@ -106,6 +97,18 @@ jobs:
 
       - name: Composer require the local rapidez/core
         run: composer require rapidez/core:'dev-master as 4.0.0'
+
+      - name: Install Rapidez command
+        run: php artisan rapidez:install --frontendonly
+
+      - name: Install Yarn dependencies
+        run: npm install -g yarn && yarn
+
+      - name: Install Playwright Browsers
+        run: yarn playwright install --with-deps
+
+      - name: Frontend Build
+        run: yarn run prod
 
       - name: Install Playwright tests
         run: php artisan rapidez:install:tests
