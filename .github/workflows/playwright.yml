@@ -102,8 +102,12 @@ jobs:
       - name: Install Rapidez command
         run: php artisan rapidez:install --frontendonly
 
-      - name: Install Yarn dependencies
+      - name: Install Yarn dependencies in rapidez/rapidez
         run: npm install -g yarn && yarn
+
+      - name: Install Yarn dependencies in rapidez/core
+        working-directory: ./rapidez/core
+        run: yarn
 
       - name: Install Playwright Browsers
         run: yarn playwright install --with-deps
