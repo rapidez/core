@@ -89,14 +89,11 @@ jobs:
       - name: Copy testing .env
         run: cp ../core/tests/playwright/.env.testing .env
 
-      - name: Install Composer dependencies
-        run: composer install --prefer-dist --no-interaction
-
       - name: Use rapidez/core from source
         run: composer config repositories.core path ../core
 
       - name: Composer require the local rapidez/core
-        run: composer require rapidez/core:'dev-master as 4.1.0' -W
+        run: composer require rapidez/core:'dev-master as 4.1.0'
 
       - name: Install Rapidez command
         run: php artisan rapidez:install --frontendonly
