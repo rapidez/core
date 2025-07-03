@@ -92,8 +92,12 @@ jobs:
       - name: Use rapidez/core from source
         run: composer config repositories.core path ../core
 
+      - name: Get commit hash of core
+        working-directory: ./rapidez/core
+        run: echo "CORE_HASH=$(git rev-parse --short=12 HEAD)" >> $GITHUB_ENV
+
       - name: Composer require the local rapidez/core
-        run: composer require rapidez/core:'dev-master as 4.1.0'
+        run: composer require rapidez/core:"dev-${{ env.CORE_HASH }} as 4.1.0"
 
       - name: Install Rapidez command
         run: php artisan rapidez:install --frontendonly
