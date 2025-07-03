@@ -8,6 +8,7 @@ on:
   pull_request:
   schedule:
     - cron: '0 0 * * *'
+  workflow_dispatch:
 
 jobs:
   test:
@@ -34,6 +35,7 @@ jobs:
           - magento-version: 2.4.8-p1
             magento-php-version: php84-fpm
             rapidez-php-version: 8.4
+            screenshots: true
 
     services:
       magento:
@@ -127,16 +129,35 @@ jobs:
       - name: Run Playwright tests
         run: yarn playwright test
 
+      # On failure
+      - name: Update snapshots
+        if: failure() && matrix.screenshots == true
+        run: yarn playwright test --update-snapshots --reporter=list
+
+      - name: Move the screenshots
+        if: failure() && matrix.screenshots == true
+        run: cp -r tests/playwright/. ../core/tests/playwright/
+
+      - name: Commit the screenshots
+        if: failure() && matrix.screenshots == true
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "[CI] Update Snapshots"
+          repository: rapidez/core
+
       - name: Dump docker logs
         if: failure()
         uses: jwalton/gh-docker-logs@v2
         with:
           dest: './docker-logs'
+
       - name: Dump magento logs
         if: failure()
+        working-directory: ${{ github.workspace }}
         run: |
           mkdir -p magento/var
           docker cp ${{ job.services.magento.id }}:/data/var/log magento/var/log
+
       - name: Upload Artifact
         if: failure()
         uses: actions/upload-artifact@v4
