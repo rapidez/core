@@ -8,6 +8,7 @@ on:
   pull_request:
   schedule:
     - cron: '0 0 * * *'
+  workflow_dispatch:
 
 jobs:
   test:
@@ -34,6 +35,7 @@ jobs:
           - magento-version: 2.4.8-p1
             magento-php-version: php84-fpm
             rapidez-php-version: 8.4
+            screenshots: true
 
     services:
       magento:
@@ -70,6 +72,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           path: rapidez/core
+          fetch-depth: 0
 
       - uses: actions/checkout@v4
         with:
@@ -93,12 +96,14 @@ jobs:
       - name: Use rapidez/core from source
         run: composer config repositories.core path ../core
 
-      - name: Get commit hash of core
+      - name: Get commit hash and tag of the core
         working-directory: ./rapidez/core
-        run: echo "CORE_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
+        run: |
+          echo "CORE_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
+          echo "LATEST_TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
       - name: Composer require the local rapidez/core
-        run: composer require rapidez/core:"dev-${{ env.CORE_HASH }} as 4.1.0"
+        run: composer require rapidez/core:"dev-${{ env.CORE_HASH }} as ${{ env.LATEST_TAG }}"
 
       - name: Install Rapidez command
         run: php artisan rapidez:install --frontendonly
@@ -127,16 +132,36 @@ jobs:
       - name: Run Playwright tests
         run: yarn playwright test
 
+      # Screenshots
+      - name: Update screenshots
+        if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
+        run: yarn playwright test --update-snapshots --reporter=list
+
+      - name: Move the screenshots
+        if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
+        run: cp -r tests/playwright/. ../core/tests/playwright/
+
+      - name: Commit the screenshots
+        if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "[CI] Update Snapshots"
+          repository: rapidez/core
+
+      # Artifact
       - name: Dump docker logs
         if: failure()
         uses: jwalton/gh-docker-logs@v2
         with:
           dest: './docker-logs'
+
       - name: Dump magento logs
         if: failure()
+        working-directory: ${{ github.workspace }}
         run: |
           mkdir -p magento/var
           docker cp ${{ job.services.magento.id }}:/data/var/log magento/var/log
+
       - name: Upload Artifact
         if: failure()
         uses: actions/upload-artifact@v4
