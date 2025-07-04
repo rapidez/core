@@ -8,37 +8,30 @@
             <x-slot:content>
                 <ul class="flex flex-wrap gap-x-1.5 gap-y-2 items-center pr-14">
                     <li v-for="item in withSwatches(items, filter)">
-                        <label
-                            v-if="filter.visual_swatch"
-                            class="cursor-pointer flex items-center justify-center p-1 rounded-full ring-inset ring-1 has-[:focus]:ring-emphasis relative"
-                            v-bind:class="{
-                                'ring-default ring-1 hover:ring-emphasis': !item.isRefined,
-                                'ring-active ring-2': item.isRefined
-                            }"
-                        >
-                            <span class="size-5 block border border-black/15 rounded-full m-px" v-bind:style="{ background: item.swatch?.swatch ?? 'none' }"></span>
-                            <input
+                        <template v-if="filter.visual_swatch">
+                            <x-rapidez::input.swatch.visual
+                                color="item.swatch?.swatch ?? 'none'"
                                 type="checkbox"
-                                v-bind:checked="item.isRefined"
                                 v-on:change="refine(item.value)"
-                                class="opacity-0 size-0 absolute"
+                                v-bind:checked="item.isRefined"
+                                v-bind:name="filter.code"
+                                v-bind:aria-label="item.swatch?.label ?? item.value"
+                                v-bind:id="item.swatch?.label ?? item.value"
                             >
-                        </label>
-
-                        <label
-                            v-else
-                            class="block border px-3 py-1.5 rounded-md cursor-pointer text-sm text-muted font-medium hover:border-emphasis has-[:focus]:border-emphasis relative"
-                            v-bind:class="{ 'bg-active !border-active text-white': item.isRefined }"
-                            v-bind:style="{ background: item.swatch?.swatch ?? 'none' }"
-                        >
-                            @{{ item.swatch?.swatch ?? item.value }}
-                            <input
+                                @{{ item.swatch?.label ?? item.value }}
+                            </x-rapidez::input.swatch.visual>
+                        </template>
+                        <template v-else>
+                            <x-rapidez::input.swatch.text
                                 type="checkbox"
-                                v-bind:checked="item.isRefined"
                                 v-on:change="refine(item.value)"
-                                class="opacity-0 size-0 absolute"
+                                v-bind:checked="item.isRefined"
+                                v-bind:aria-label="item.swatch?.label ?? item.value"
+                                v-bind:id="item.swatch?.label ?? item.value"
                             >
-                        </label>
+                                @{{ item.swatch?.label ?? item.value }}
+                            </x-rapidez::input.swatch.text>
+                        </template>
                     </li>
                 </ul>
             </x-slot:content>
