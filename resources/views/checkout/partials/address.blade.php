@@ -18,32 +18,49 @@
 
     <div class="contents" v-if="!$root.loggedIn || !variables.customer_address_id">
         @if ((Rapidez::config('customer/address/company_show')) || (Rapidez::config('customer/address/taxvat_show')))
-            <div class="grid col-span-12 grid-cols-12 gap-5">
-                @if (Rapidez::config('customer/address/company_show'))
-                    <div class="col-span-12 sm:col-span-6">
-                        <label>
-                            <x-rapidez::label>@lang('Company')</x-rapidez::label>
-                            <x-rapidez::input
-                                name="{{ $type }}_company"
-                                v-model="variables.company"
-                                :required="Rapidez::config('customer/address/company_show') == 'req'"
-                            />
-                        </label>
-                    </div>
-                @endif
-                @if (Rapidez::config('customer/address/taxvat_show'))
-                    <div class="col-span-12 sm:col-span-6">
-                        <label>
-                            <x-rapidez::label>@lang('Tax ID')</x-rapidez::label>
-                            <x-rapidez::input
-                                name="{{ $type }}_vat_id"
-                                v-model="variables.vat_id"
-                                v-on:change="window.app.$emit('vat-change', $event)"
-                                :required="Rapidez::config('customer/address/taxvat_show') == 'req'"
-                            />
-                        </label>
-                    </div>
-                @endif
+            <div class="col-span-full">
+                <div class="font-bold mb-2">@lang('Order type')</div>
+                <input id="private" type="radio" class="peer/private hidden" name="order-type" checked/>
+                <label
+                    for="private"
+                    class="text-sm border bg-white p-2 rounded-md cursor-pointer mr-2 hover:border-active peer-checked/private:ring-1 peer-checked/private:ring-primary peer-checked/private:bg-primary/10 peer-checked/private:border-primary"
+                >
+                    @lang('Private')
+                </label>
+                <input id="business" type="radio" class="peer/business hidden" name="order-type"/>
+                <label
+                    for="business"
+                    class="text-sm border bg-white p-2 rounded-md cursor-pointer hover:border-active peer-checked/business:ring-1 peer-checked/business:ring-primary peer-checked/business:bg-primary/10 peer-checked/business:border-primary"
+                >
+                    @lang('Business')
+                </label>
+                <div class="grid col-span-12 grid-cols-12 gap-5 mt-3 transition-all duration-300 ease-in-out overflow-hidden opacity-100 h-auto peer-checked/private:opacity-0 peer-checked/private:h-0 peer-checked/private:invisible">
+                    @if (Rapidez::config('customer/address/company_show'))
+                        <div class="col-span-12 sm:col-span-6">
+                            <label>
+                                <x-rapidez::label>@lang('Company')</x-rapidez::label>
+                                <x-rapidez::input
+                                    name="{{ $type }}_company"
+                                    v-model="variables.company"
+                                    :required="Rapidez::config('customer/address/company_show') == 'req'"
+                                />
+                            </label>
+                        </div>
+                    @endif
+                    @if (Rapidez::config('customer/address/taxvat_show'))
+                        <div class="col-span-12 sm:col-span-6">
+                            <label>
+                                <x-rapidez::label>@lang('Tax ID')</x-rapidez::label>
+                                <x-rapidez::input
+                                    name="{{ $type }}_vat_id"
+                                    v-model="variables.vat_id"
+                                    v-on:change="window.app.$emit('vat-change', $event)"
+                                    :required="Rapidez::config('customer/address/taxvat_show') == 'req'"
+                                />
+                            </label>
+                        </div>
+                    @endif
+                </div>
             </div>
         @endif
         @if (Rapidez::config('customer/address/prefix_show') && strlen(Rapidez::config('customer/address/prefix_options')))
