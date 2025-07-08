@@ -20,16 +20,16 @@
         @if ((Rapidez::config('customer/address/company_show')) || (Rapidez::config('customer/address/taxvat_show')))
             <div class="col-span-full">
                 <div class="font-bold mb-2">@lang('Order type')</div>
-                <input id="private" type="radio" class="peer/private hidden" name="order-type" checked/>
+                <input id="private-{{ $type }}" type="radio" class="peer/private hidden" name="order-type-{{ $type }}" checked/>
                 <label
-                    for="private"
+                    for="private-{{ $type }}"
                     class="text-sm border bg-white p-2 rounded-md cursor-pointer mr-2 hover:border-active peer-checked/private:ring-1 peer-checked/private:ring-primary peer-checked/private:bg-primary/10 peer-checked/private:border-primary"
                 >
                     @lang('Private')
                 </label>
-                <input id="business" type="radio" class="peer/business hidden" name="order-type"/>
+                <input id="business-{{ $type }}" type="radio" class="peer/business hidden" name="order-type-{{ $type }}"/>
                 <label
-                    for="business"
+                    for="business-{{ $type }}"
                     class="text-sm border bg-white p-2 rounded-md cursor-pointer hover:border-active peer-checked/business:ring-1 peer-checked/business:ring-primary peer-checked/business:bg-primary/10 peer-checked/business:border-primary"
                 >
                     @lang('Business')
