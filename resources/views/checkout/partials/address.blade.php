@@ -20,20 +20,20 @@
         @if ((Rapidez::config('customer/address/company_show')) || (Rapidez::config('customer/address/taxvat_show')))
             <div class="col-span-full">
                 <div class="font-bold mb-2">@lang('Order type')</div>
-                <input id="private-{{ $type }}" type="radio" class="peer/private hidden" name="order-type-{{ $type }}" checked/>
-                <label
-                    for="private-{{ $type }}"
-                    class="text-sm border bg-white p-2 rounded-md cursor-pointer mr-2 hover:border-active peer-checked/private:ring-1 peer-checked/private:ring-primary peer-checked/private:bg-primary/10 peer-checked/private:border-primary"
-                >
-                    @lang('Private')
-                </label>
-                <input id="business-{{ $type }}" type="radio" class="peer/business hidden" name="order-type-{{ $type }}"/>
-                <label
-                    for="business-{{ $type }}"
-                    class="text-sm border bg-white p-2 rounded-md cursor-pointer hover:border-active peer-checked/business:ring-1 peer-checked/business:ring-primary peer-checked/business:bg-primary/10 peer-checked/business:border-primary"
-                >
-                    @lang('Business')
-                </label>
+                <x-rapidez::input.radio.base id="private-{{ $type }}" type="radio" name="order-type-{{ $type }}" class="peer/private hidden" v-bind:checked="!variables.company" />
+                <x-rapidez::button.toggle for="private-{{ $type }}" class="peer-checked/private:ring-1 peer-checked/private:ring-primary peer-checked/private:bg-primary/10 peer-checked/private:border-primary">
+                    <x-rapidez::label class="mb-0 inline">
+                        @lang('Private')
+                    </x-rapidez::label>
+                </x-rapidez::button.toggle>
+
+                <x-rapidez::input.radio.base id="business-{{ $type }}" type="radio" name="order-type-{{ $type }}" class="peer/business hidden" v-bind:checked="variables.company" />
+                <x-rapidez::button.toggle for="business-{{ $type }}" class="peer-checked/business:ring-1 peer-checked/business:ring-primary peer-checked/business:bg-primary/10 peer-checked/business:border-primary">
+                    <x-rapidez::label class="mb-0 inline">
+                        @lang('Business')
+                    </x-rapidez::label>
+                </x-rapidez::button.toggle>
+
                 <div class="grid col-span-12 grid-cols-12 gap-5 mt-3 transition-all duration-300 ease-in-out overflow-hidden opacity-100 h-auto peer-checked/private:opacity-0 peer-checked/private:h-0 peer-checked/private:invisible">
                     @if (Rapidez::config('customer/address/company_show'))
                         <div class="col-span-12 sm:col-span-6">
