@@ -180,6 +180,7 @@ export default {
 
                 return Object.values(this.product['super_' + superAttributeCode])
                     .map((value) => Object.values(swatchOptions).find((swatch) => swatch.value === value))
+                    .filter(Boolean)
                     .sort((a, b) => a.label.localeCompare(b.label))
                     .sort((a, b) => a.sort_order - b.sort_order)
             }
