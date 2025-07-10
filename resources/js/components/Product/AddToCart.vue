@@ -177,16 +177,11 @@ export default {
         getOptions: function (superAttributeCode) {
             if (window.config.swatches.hasOwnProperty(superAttributeCode)) {
                 let swatchOptions = window.config.swatches[superAttributeCode].options
-                let values = {}
 
-                Object.entries(this.product['super_' + superAttributeCode]).forEach(([key, val]) => {
-                    let swatch = Object.values(swatchOptions).find((swatch) => swatch.value === val)
-                    if (swatch) {
-                        values[val] = swatch
-                    }
-                })
-
-                return values
+                return Object.values(this.product['super_' + superAttributeCode])
+                    .map((value) => Object.values(swatchOptions).find((swatch) => swatch.value === value))
+                    .sort((a, b) => a.label.localeCompare(b.label))
+                    .sort((a, b) => a.sort_order - b.sort_order)
             }
 
             return {}

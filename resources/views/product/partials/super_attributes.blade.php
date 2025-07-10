@@ -14,7 +14,7 @@
                 @lang('Select') {{ strtolower($superAttribute->label) }}
             </option>
             <option
-                v-for="option in Object.values(config.product.super_{{ $superAttribute->code }}).sort((a, b) => a.sort_order - b.sort_order)"
+                v-for="option in Object.values(config.product.super_{{ $superAttribute->code }}).sort((a, b) => a.label.localeCompare(b.label)).sort((a, b) => a.sort_order - b.sort_order)"
                 v-text="option.label"
                 :value="option.value"
                 :disabled="addToCart.disabledOptions.super_{{ $superAttribute->code }}.includes(option.value)"
