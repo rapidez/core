@@ -277,7 +277,11 @@ export default {
                 this.checkout.step = this.steps.indexOf(window.location.hash.substring(1))
             })
 
-            history.replaceState({ turbo: { restorationIdentifier: Turbo.session.restorationIdentifier } }, null, '#' + this.steps[this.checkout.step])
+            history.replaceState(
+                { turbo: { restorationIdentifier: Turbo.session.restorationIdentifier } },
+                null,
+                '#' + this.steps[this.checkout.step],
+            )
         },
     },
 
@@ -332,7 +336,11 @@ export default {
         'checkout.step': function () {
             if (this.backEvent) {
                 this.backEvent = false
-                history.replaceState({ turbo: { restorationIdentifier: Turbo.session.restorationIdentifier } }, null, '#' + this.steps[this.checkout.step])
+                history.replaceState(
+                    { turbo: { restorationIdentifier: Turbo.session.restorationIdentifier } },
+                    null,
+                    '#' + this.steps[this.checkout.step],
+                )
                 return
             }
 
