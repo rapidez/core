@@ -18,32 +18,49 @@
 
     <div class="contents" v-if="!$root.loggedIn || !variables.customer_address_id">
         @if ((Rapidez::config('customer/address/company_show')) || (Rapidez::config('customer/address/taxvat_show')))
-            <div class="grid col-span-12 grid-cols-12 gap-5">
-                @if (Rapidez::config('customer/address/company_show'))
-                    <div class="col-span-12 sm:col-span-6">
-                        <label>
-                            <x-rapidez::label>@lang('Company')</x-rapidez::label>
-                            <x-rapidez::input
-                                name="{{ $type }}_company"
-                                v-model="variables.company"
-                                :required="Rapidez::config('customer/address/company_show') == 'req'"
-                            />
-                        </label>
-                    </div>
-                @endif
-                @if (Rapidez::config('customer/address/taxvat_show'))
-                    <div class="col-span-12 sm:col-span-6">
-                        <label>
-                            <x-rapidez::label>@lang('Tax ID')</x-rapidez::label>
-                            <x-rapidez::input
-                                name="{{ $type }}_vat_id"
-                                v-model="variables.vat_id"
-                                v-on:change="window.app.$emit('vat-change', $event)"
-                                :required="Rapidez::config('customer/address/taxvat_show') == 'req'"
-                            />
-                        </label>
-                    </div>
-                @endif
+            <div class="col-span-full">
+                <div class="font-bold mb-2">@lang('Order type')</div>
+                <x-rapidez::input.radio.base id="private-{{ $type }}" type="radio" name="order-type-{{ $type }}" class="peer/private hidden" v-bind:checked="!variables.company" />
+                <x-rapidez::button.toggle for="private-{{ $type }}" class="peer-checked/private:ring-1 peer-checked/private:ring-primary peer-checked/private:bg-primary/10 peer-checked/private:border-primary">
+                    <x-rapidez::label class="mb-0 inline">
+                        @lang('Private')
+                    </x-rapidez::label>
+                </x-rapidez::button.toggle>
+
+                <x-rapidez::input.radio.base id="business-{{ $type }}" type="radio" name="order-type-{{ $type }}" class="peer/business hidden" v-bind:checked="variables.company" />
+                <x-rapidez::button.toggle for="business-{{ $type }}" class="peer-checked/business:ring-1 peer-checked/business:ring-primary peer-checked/business:bg-primary/10 peer-checked/business:border-primary">
+                    <x-rapidez::label class="mb-0 inline">
+                        @lang('Business')
+                    </x-rapidez::label>
+                </x-rapidez::button.toggle>
+
+                <div class="grid col-span-12 grid-cols-12 gap-5 mt-3 transition-all duration-300 ease-in-out overflow-hidden opacity-100 h-auto peer-checked/private:opacity-0 peer-checked/private:h-0 peer-checked/private:invisible">
+                    @if (Rapidez::config('customer/address/company_show'))
+                        <div class="col-span-12 sm:col-span-6">
+                            <label>
+                                <x-rapidez::label>@lang('Company')</x-rapidez::label>
+                                <x-rapidez::input
+                                    name="{{ $type }}_company"
+                                    v-model="variables.company"
+                                    :required="Rapidez::config('customer/address/company_show') == 'req'"
+                                />
+                            </label>
+                        </div>
+                    @endif
+                    @if (Rapidez::config('customer/address/taxvat_show'))
+                        <div class="col-span-12 sm:col-span-6">
+                            <label>
+                                <x-rapidez::label>@lang('Tax ID')</x-rapidez::label>
+                                <x-rapidez::input
+                                    name="{{ $type }}_vat_id"
+                                    v-model="variables.vat_id"
+                                    v-on:change="window.app.$emit('vat-change', $event)"
+                                    :required="Rapidez::config('customer/address/taxvat_show') == 'req'"
+                                />
+                            </label>
+                        </div>
+                    @endif
+                </div>
             </div>
         @endif
         @if (Rapidez::config('customer/address/prefix_show') && strlen(Rapidez::config('customer/address/prefix_options')))
