@@ -224,14 +224,14 @@ class Product extends Model
     public function url(): Attribute
     {
         return Attribute::make(
-            get: fn() => '/' . ($this->url_key ? $this->url_key . Rapidez::config('catalog/seo/product_url_suffix') : 'catalog/product/view/id/' . $this->entity_id)
+            get: fn () => '/' . ($this->url_key ? $this->url_key . Rapidez::config('catalog/seo/product_url_suffix') : 'catalog/product/view/id/' . $this->entity_id)
         );
     }
 
     public function images(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->gallery->sortBy('productImageValue.position')->pluck('value')->toArray()
+            get: fn () => $this->gallery->sortBy('productImageValue.position')->pluck('value')->toArray()
         );
     }
 
