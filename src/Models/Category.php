@@ -3,6 +3,7 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
@@ -62,9 +63,11 @@ class Category extends Model
         return 'catalog_category_flat_store_' . config('rapidez.store');
     }
 
-    public function getUrlAttribute(): string
+    public function url(): Attribute
     {
-        return '/' . ($this->url_path ? $this->url_path : 'catalog/category/view/id/' . $this->entity_id);
+        return Attribute::make(
+            get: fn() => '/' . ($this->url_path ? $this->url_path : 'catalog/category/view/id/' . $this->entity_id)
+        );
     }
 
     public function subcategories()
@@ -95,14 +98,18 @@ class Category extends Model
             ->where('entity_type', 'category');
     }
 
-    public function getParentcategoriesAttribute()
+    public function parentcategories(): Attribute
     {
-        $categoryIds = explode('/', $this->path);
-        $categoryIds = array_slice($categoryIds, array_search(config('rapidez.root_category_id'), $categoryIds) + 1);
+        return Attribute::make(
+            get: function() {
+                $categoryIds = explode('/', $this->path);
+                $categoryIds = array_slice($categoryIds, array_search(config('rapidez.root_category_id'), $categoryIds) + 1);
 
-        return ! $categoryIds ? collect() : Category::whereIn($this->getQualifiedKeyName(), $categoryIds)
-            ->orderByRaw('FIELD(' . $this->getQualifiedKeyName() . ',' . implode(',', $categoryIds) . ')')
-            ->get();
+                return ! $categoryIds ? collect() : Category::whereIn($this->getQualifiedKeyName(), $categoryIds)
+                    ->orderByRaw('FIELD(' . $this->getQualifiedKeyName() . ',' . implode(',', $categoryIds) . ')')
+                    ->get();
+            }
+        );
     }
 
     /**

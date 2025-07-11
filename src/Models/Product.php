@@ -221,14 +221,18 @@ class Product extends Model
         return $minSalesQty - $remainder + $this->qty_increments;
     }
 
-    public function getUrlAttribute(): string
+    public function url(): Attribute
     {
-        return '/' . ($this->url_key ? $this->url_key . Rapidez::config('catalog/seo/product_url_suffix') : 'catalog/product/view/id/' . $this->entity_id);
+        return Attribute::make(
+            get: fn() => '/' . ($this->url_key ? $this->url_key . Rapidez::config('catalog/seo/product_url_suffix') : 'catalog/product/view/id/' . $this->entity_id)
+        );
     }
 
-    public function getImagesAttribute(): array
+    public function images(): Attribute
     {
-        return $this->gallery->sortBy('productImageValue.position')->pluck('value')->toArray();
+        return Attribute::make(
+            get: fn() => $this->gallery->sortBy('productImageValue.position')->pluck('value')->toArray()
+        );
     }
 
     public function getImageAttribute($image): ?string
