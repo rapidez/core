@@ -67,10 +67,10 @@ export default {
                     '0%': { left: '0%', width: '0%' },
                     '50%': { left: '0%', width: '100%' },
                     '100%': { left: '100%', width: '0%' },
-                }
+                },
             },
             animation: {
-                loading: 'loading 1s infinite'
+                loading: 'loading 1s infinite',
             },
             zIndex: {
                 'header': '100',
