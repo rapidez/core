@@ -1,0 +1,8 @@
+.button-loading {
+    @apply overflow-hidden bg-conversion/20 hover:bg-conversion/20 !cursor-progress before:absolute before:block before:h-1 before:bg-conversion before:top-0 before:left-0 before:w-4;
+}
+
+.button-loading:before {
+    @apply animate-loading;
+}
+

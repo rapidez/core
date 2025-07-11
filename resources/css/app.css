@@ -1,3 +1,5 @@
+@import '../components/add-to-cart-animation.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
