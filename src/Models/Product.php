@@ -167,7 +167,7 @@ class Product extends Model
     public function price(): Attribute
     {
         return Attribute::make(
-            get: function(?float $price): ?float {
+            get: function (?float $price): ?float {
                 if ($this->type_id == 'configurable') {
                     return collect($this->children)->min->price;
                 }
@@ -184,7 +184,7 @@ class Product extends Model
     public function specialPrice(): Attribute
     {
         return Attribute::make(
-            get: function(?float $specialPrice): ?float {
+            get: function (?float $specialPrice): ?float {
                 if (! in_array($this->type_id, ['configurable', 'grouped'])) {
                     if ($this->special_from_date && $this->special_from_date > now()->toDateTimeString()) {
                         return null;
@@ -219,7 +219,7 @@ class Product extends Model
     public function minSaleQty(): Attribute
     {
         return Attribute::make(
-            get: function(?int $minSaleQty): ?int {
+            get: function (?int $minSaleQty): ?int {
                 if (! $this->qty_increments) {
                     return $minSaleQty;
                 }
