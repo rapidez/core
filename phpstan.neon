@@ -10,4 +10,5 @@ parameters:
         - '#^Result of static method TorMorten\\Eventy\\Events::#'
         - "#Access to an undefined property#"
         - "#::waitUntilIdle#"
+    checkModelAppends: false
     level: 1
