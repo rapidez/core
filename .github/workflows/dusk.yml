@@ -1,4 +1,4 @@
-name: dusk
+name: Dusk
 
 on:
   push:
@@ -16,16 +16,16 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - magento-version: 2.4.7-p5
+          - magento-version: 2.4.7-p6
             magento-php-version: php82-fpm
             rapidez-php-version: 8.2
-          - magento-version: 2.4.7-p5
+          - magento-version: 2.4.7-p6
             magento-php-version: php83-fpm
             rapidez-php-version: 8.3
-          - magento-version: 2.4.7-p5
+          - magento-version: 2.4.7-p6
             magento-php-version: php83-fpm
             rapidez-php-version: 8.4
-          - magento-version: 2.4.8
+          - magento-version: 2.4.8-p1
             magento-php-version: php84-fpm
             rapidez-php-version: 8.4
 

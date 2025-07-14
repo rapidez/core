@@ -1,0 +1,174 @@
+name: Playwright
+
+on:
+  push:
+    branches:
+      - master
+      - '*.x'
+  pull_request:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./rapidez/rapidez
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - magento-version: 2.4.7-p6
+            magento-php-version: php82-fpm
+            rapidez-php-version: 8.2
+          - magento-version: 2.4.7-p6
+            magento-php-version: php83-fpm
+            rapidez-php-version: 8.3
+          - magento-version: 2.4.7-p6
+            magento-php-version: php83-fpm
+            rapidez-php-version: 8.4
+          - magento-version: 2.4.8-p1
+            magento-php-version: php84-fpm
+            rapidez-php-version: 8.4
+            screenshots: true
+
+    services:
+      magento:
+        image: michielgerritsen/magento-project-community-edition:${{matrix.magento-php-version}}-magento${{matrix.magento-version}}-sample-data
+        env:
+          URL: http://localhost:1234/
+          FLAT_TABLES: true
+          CUSTOM_ENTRYPOINT_COMMAND: "php bin/magento encryption:key:change -k 5AM3SD5SkwT8iwIxL6L1q8XQhzK3wk51; magerun2 config:store:set system/smtp/disable 1; magerun2 config:store:set checkout/options/enable_guest_checkout_login 1"
+        ports:
+          - 3307:3306
+          - 1234:80
+
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.18.2
+        ports:
+          - 9200:9200
+        env:
+          discovery.type: single-node
+          ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+          http.cors.enabled: "true"
+          http.cors.allow-credentials: "true"
+          http.cors.allow-origin: "http://localhost:8000"
+          http.cors.allow-headers: X-Requested-With, X-Auth-Token, Content-Type, Content-Length, Authorization, Access-Control-Allow-Headers, Accept
+          xpack.security.enabled: "false"
+        options: >-
+          --health-cmd="curl http://localhost:9200/_cluster/health"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    name: P${{ matrix.rapidez-php-version }} - M${{matrix.magento-version}} on ${{matrix.magento-php-version}}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: rapidez/core
+          fetch-depth: 0
+
+      - uses: actions/checkout@v4
+        with:
+          repository: rapidez/rapidez
+          path: rapidez/rapidez
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.rapidez-php-version }}
+          extensions: mbstring, dom, fileinfo, mysql
+          coverage: none
+
+      - name: Copy testing .env
+        run: cp ../core/tests/playwright/.env.testing .env
+
+      - name: Use rapidez/core from source
+        run: composer config repositories.core path ../core
+
+      - name: Get commit hash and tag of the core
+        working-directory: ./rapidez/core
+        run: |
+          echo "CORE_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
+          echo "LATEST_TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
+
+      - name: Composer require the local rapidez/core
+        run: composer require rapidez/core:"dev-${{ env.CORE_HASH }} as ${{ env.LATEST_TAG }}"
+
+      - name: Install Rapidez command
+        run: php artisan rapidez:install --frontendonly
+
+      - name: Install Yarn dependencies
+        run: npm install -g yarn && yarn
+
+      - name: Install Playwright Browsers
+        run: yarn playwright install --with-deps
+
+      - name: Frontend Build
+        run: yarn run prod
+
+      - name: Install Playwright tests
+        run: php artisan rapidez:install:tests
+
+      - name: Wait for index to finish
+        run: for i in {1..60}; do [[ $(mysql -h 127.0.0.1 -P 3307 -u magento -ppassword -ss -r -e "CALL sys.table_exists('magento', 'catalog_product_flat_1', @exists); SELECT @exists;") == *"BASE TABLE"* ]] && break || sleep 5; done
+
+      - name: Rapidez index
+        run: php artisan rapidez:index
+
+      - name: Start the webserver
+        run: php artisan serve &
+
+      - name: Run Playwright tests
+        run: yarn playwright test
+
+      # Screenshots
+      - name: Update screenshots
+        if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
+        run: yarn playwright test --update-snapshots --reporter=list
+
+      - name: Move the screenshots
+        if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
+        run: cp -r tests/playwright/. ../core/tests/playwright/
+
+      - name: Commit the screenshots
+        if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "[CI] Update Snapshots"
+          repository: rapidez/core
+
+      # Artifact
+      - name: Dump docker logs
+        if: failure()
+        uses: jwalton/gh-docker-logs@v2
+        with:
+          dest: './docker-logs'
+
+      - name: Dump magento logs
+        if: failure()
+        working-directory: ${{ github.workspace }}
+        run: |
+          mkdir -p magento/var
+          docker cp ${{ job.services.magento.id }}:/data/var/log magento/var/log
+
+      - name: Upload Artifact
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact-P${{ matrix.rapidez-php-version }}-M${{matrix.magento-version}}-on-${{matrix.magento-php-version}}
+          path: |
+            rapidez/rapidez/playwright-report
+            rapidez/rapidez/storage/logs/laravel.log
+            docker-logs
+            magento/var/log
