@@ -66,7 +66,7 @@ class Category extends Model
     public function url(): Attribute
     {
         return Attribute::make(
-            get: fn() => '/' . ($this->url_path ? $this->url_path : 'catalog/category/view/id/' . $this->entity_id)
+            get: fn () => '/' . ($this->url_path ? $this->url_path : 'catalog/category/view/id/' . $this->entity_id)
         );
     }
 
@@ -101,7 +101,7 @@ class Category extends Model
     public function parentcategories(): Attribute
     {
         return Attribute::make(
-            get: function() {
+            get: function () {
                 $categoryIds = explode('/', $this->path);
                 $categoryIds = array_slice($categoryIds, array_search(config('rapidez.root_category_id'), $categoryIds) + 1);
 

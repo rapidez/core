@@ -236,35 +236,35 @@ class Product extends Model
     public function url(): Attribute
     {
         return Attribute::make(
-            get: fn(): string => '/' . ($this->url_key ? $this->url_key . Rapidez::config('catalog/seo/product_url_suffix') : 'catalog/product/view/id/' . $this->entity_id)
+            get: fn (): string => '/' . ($this->url_key ? $this->url_key . Rapidez::config('catalog/seo/product_url_suffix') : 'catalog/product/view/id/' . $this->entity_id)
         );
     }
 
     public function images(): Attribute
     {
         return Attribute::make(
-            get: fn(): array => $this->gallery->sortBy('productImageValue.position')->pluck('value')->toArray()
+            get: fn (): array => $this->gallery->sortBy('productImageValue.position')->pluck('value')->toArray()
         );
     }
 
     public function image(): Attribute
     {
         return Attribute::make(
-            get: fn(?string $image): ?string => $image !== 'no_selection' ? $image : null
+            get: fn (?string $image): ?string => $image !== 'no_selection' ? $image : null
         );
     }
 
     public function smallImage(): Attribute
     {
         return Attribute::make(
-            get: fn(): ?string => $this->image
+            get: fn (): ?string => $this->image
         );
     }
 
     public function thumbnail(): Attribute
     {
         return Attribute::make(
-            get: fn(): ?string => $this->image
+            get: fn (): ?string => $this->image
         );
     }
 
