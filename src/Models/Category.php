@@ -63,7 +63,7 @@ class Category extends Model
         return 'catalog_category_flat_store_' . config('rapidez.store');
     }
 
-    public function url(): Attribute
+    protected function url(): Attribute
     {
         return Attribute::make(
             get: fn () => '/' . ($this->url_path ? $this->url_path : 'catalog/category/view/id/' . $this->entity_id)
@@ -98,7 +98,7 @@ class Category extends Model
             ->where('entity_type', 'category');
     }
 
-    public function parentcategories(): Attribute
+    protected function parentcategories(): Attribute
     {
         return Attribute::make(
             get: function () {

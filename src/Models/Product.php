@@ -164,7 +164,7 @@ class Product extends Model
         return $query->whereIn($this->getQualifiedKeyName(), $productIds);
     }
 
-    public function price(): Attribute
+    protected function price(): Attribute
     {
         return Attribute::make(
             get: function (?float $price): ?float {
@@ -181,7 +181,7 @@ class Product extends Model
         );
     }
 
-    public function specialPrice(): Attribute
+    protected function specialPrice(): Attribute
     {
         return Attribute::make(
             get: function (?float $specialPrice): ?float {
@@ -216,7 +216,7 @@ class Product extends Model
         );
     }
 
-    public function minSaleQty(): Attribute
+    protected function minSaleQty(): Attribute
     {
         return Attribute::make(
             get: function (?int $minSaleQty): ?int {
@@ -233,14 +233,14 @@ class Product extends Model
         );
     }
 
-    public function url(): Attribute
+    protected function url(): Attribute
     {
         return Attribute::make(
             get: fn (): string => '/' . ($this->url_key ? $this->url_key . Rapidez::config('catalog/seo/product_url_suffix') : 'catalog/product/view/id/' . $this->entity_id)
         );
     }
 
-    public function images(): Attribute
+    protected function images(): Attribute
     {
         return Attribute::make(
             get: fn (): array => $this->gallery->sortBy('productImageValue.position')->pluck('value')->toArray()
@@ -252,21 +252,21 @@ class Product extends Model
         return $image !== 'no_selection' ? $image : null;
     }
 
-    public function image(): Attribute
+    protected function image(): Attribute
     {
         return Attribute::make(
             get: $this->getImageFrom(...)
         );
     }
 
-    public function smallImage(): Attribute
+    protected function smallImage(): Attribute
     {
         return Attribute::make(
             get: $this->getImageFrom(...)
         );
     }
 
-    public function thumbnail(): Attribute
+    protected function thumbnail(): Attribute
     {
         return Attribute::make(
             get: $this->getImageFrom(...)
