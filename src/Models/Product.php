@@ -244,27 +244,32 @@ class Product extends Model
     {
         return Attribute::make(
             get: fn (): array => $this->gallery->sortBy('productImageValue.position')->pluck('value')->toArray()
-        );
+        )->shouldCache();
+    }
+
+    private function getImageFrom(?string $image): ?string
+    {
+        return $image !== 'no_selection' ? $image : null;
     }
 
     public function image(): Attribute
     {
         return Attribute::make(
-            get: fn (?string $image): ?string => $image !== 'no_selection' ? $image : null
+            get: $this->getImageFrom(...)
         );
     }
 
     public function smallImage(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => $this->image
+            get: $this->getImageFrom(...)
         );
     }
 
     public function thumbnail(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => $this->image
+            get: $this->getImageFrom(...)
         );
     }
 

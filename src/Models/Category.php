@@ -109,7 +109,7 @@ class Category extends Model
                     ->orderByRaw('FIELD(' . $this->getQualifiedKeyName() . ',' . implode(',', $categoryIds) . ')')
                     ->get();
             }
-        );
+        )->shouldCache();
     }
 
     /**
