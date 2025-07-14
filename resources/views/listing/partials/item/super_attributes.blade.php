@@ -12,10 +12,10 @@
             @lang('Select') @{{ superAttribute.label.toLowerCase() }}
         </option>
         <option
-            v-for="(option, optionId) in addToCart.getOptions(superAttribute.code)"
+            v-for="option in addToCart.getOptions(superAttribute.code)"
             v-text="option.label"
-            :value="optionId"
-            :disabled="addToCart.disabledOptions['super_'+superAttribute.code].includes(optionId)"
+            :value="option.value"
+            :disabled="addToCart.disabledOptions['super_'+superAttribute.code].includes(option.value)"
         />
     </x-rapidez::input.select>
 </label>

@@ -164,96 +164,114 @@ class Product extends Model
         return $query->whereIn($this->getQualifiedKeyName(), $productIds);
     }
 
-    public function getPriceAttribute($price)
+    public function price(): Attribute
     {
-        if ($this->type_id == 'configurable') {
-            return collect($this->children)->min->price;
-        }
+        return Attribute::make(
+            get: function(?float $price): ?float {
+                if ($this->type_id == 'configurable') {
+                    return collect($this->children)->min->price;
+                }
 
-        if ($this->type_id == 'grouped') {
-            return collect($this->grouped)->min->price;
-        }
+                if ($this->type_id == 'grouped') {
+                    return collect($this->grouped)->min->price;
+                }
 
-        return $price;
+                return $price;
+            }
+        );
     }
 
-    public function getSpecialPriceAttribute($specialPrice)
+    public function specialPrice(): Attribute
     {
-        if (! in_array($this->type_id, ['configurable', 'grouped'])) {
-            if ($this->special_from_date && $this->special_from_date > now()->toDateTimeString()) {
-                return null;
+        return Attribute::make(
+            get: function(?float $specialPrice): ?float {
+                if (! in_array($this->type_id, ['configurable', 'grouped'])) {
+                    if ($this->special_from_date && $this->special_from_date > now()->toDateTimeString()) {
+                        return null;
+                    }
+
+                    if ($this->special_to_date && $this->special_to_date < now()->toDateTimeString()) {
+                        return null;
+                    }
+
+                    return $specialPrice < $this->price ? $specialPrice : null;
+                }
+
+                return collect($this->type_id == 'configurable' ? $this->children : $this->grouped)->filter(function ($child) {
+                    if (! $child->special_price) {
+                        return false;
+                    }
+
+                    if (isset($child->special_from_date) && $child->special_from_date > now()->toDateTimeString()) {
+                        return false;
+                    }
+
+                    if (isset($child->special_to_date) && $child->special_to_date < now()->toDateTimeString()) {
+                        return false;
+                    }
+
+                    return true;
+                })->min->special_price;
             }
-
-            if ($this->special_to_date && $this->special_to_date < now()->toDateTimeString()) {
-                return null;
-            }
-
-            return $specialPrice < $this->price ? $specialPrice : null;
-        }
-
-        return collect($this->type_id == 'configurable' ? $this->children : $this->grouped)->filter(function ($child) {
-            if (! $child->special_price) {
-                return false;
-            }
-
-            if (isset($child->special_from_date) && $child->special_from_date > now()->toDateTimeString()) {
-                return false;
-            }
-
-            if (isset($child->special_to_date) && $child->special_to_date < now()->toDateTimeString()) {
-                return false;
-            }
-
-            return true;
-        })->min->special_price;
+        );
     }
 
-    public function getMinSaleQtyAttribute(int $minSalesQty): int
+    public function minSaleQty(): Attribute
     {
-        if (! $this->qty_increments) {
-            return $minSalesQty;
-        }
-        $remainder = $minSalesQty % $this->qty_increments;
-        if ($remainder === 0) {
-            return $minSalesQty;
-        }
+        return Attribute::make(
+            get: function(?int $minSaleQty): ?int {
+                if (! $this->qty_increments) {
+                    return $minSaleQty;
+                }
+                $remainder = $minSaleQty % $this->qty_increments;
+                if ($remainder === 0) {
+                    return $minSaleQty;
+                }
 
-        return $minSalesQty - $remainder + $this->qty_increments;
+                return $minSaleQty - $remainder + $this->qty_increments;
+            }
+        );
     }
 
     public function url(): Attribute
     {
         return Attribute::make(
-            get: fn() => '/' . ($this->url_key ? $this->url_key . Rapidez::config('catalog/seo/product_url_suffix') : 'catalog/product/view/id/' . $this->entity_id)
+            get: fn(): string => '/' . ($this->url_key ? $this->url_key . Rapidez::config('catalog/seo/product_url_suffix') : 'catalog/product/view/id/' . $this->entity_id)
         );
     }
 
     public function images(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->gallery->sortBy('productImageValue.position')->pluck('value')->toArray()
+            get: fn(): array => $this->gallery->sortBy('productImageValue.position')->pluck('value')->toArray()
         );
     }
 
-    public function getImageAttribute($image): ?string
+    public function image(): Attribute
     {
-        return $image !== 'no_selection' ? $image : null;
+        return Attribute::make(
+            get: fn(?string $image): ?string => $image !== 'no_selection' ? $image : null
+        );
     }
 
-    public function getSmallImageAttribute($image): ?string
+    public function smallImage(): Attribute
     {
-        return $this->getImageAttribute($image);
+        return Attribute::make(
+            get: fn(): ?string => $this->image
+        );
     }
 
-    public function getThumbnailAttribute($image): ?string
+    public function thumbnail(): Attribute
     {
-        return $this->getImageAttribute($image);
+        return Attribute::make(
+            get: fn(): ?string => $this->image
+        );
     }
 
     protected function breadcrumbCategories(): Attribute
     {
         return Attribute::make(
-            get: function () {
+            get: function (): iterable {
                 if (! $path = session('latest_category_path')) {
                     return [];
                 }
