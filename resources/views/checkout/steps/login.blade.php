@@ -21,7 +21,7 @@
                 placeholder="Password"
                 ref="password"
                 v-on:input="loginInputChange"
-                :required="!config('rapidez.frontend.allow_guest_on_existing_account'))"
+                :required="!config('rapidez.frontend.allow_guest_on_existing_account')"
             />
 
             <x-rapidez::button type="submit" class="w-full mt-5" dusk="continue">
