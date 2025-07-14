@@ -33,6 +33,8 @@ export default {
     mounted() {
         if (this.$root.loggedIn) {
             this.successfulLogin()
+        } else if (this.email) {
+            this.checkEmailAvailability()
         }
     },
 
