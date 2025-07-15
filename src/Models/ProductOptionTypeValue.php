@@ -50,11 +50,13 @@ class ProductOptionTypeValue extends Model
                     return;
                 }
 
+                $prefix = $this->price->price >= 0 ? '+ ' : '- ';
+
                 if ($this->price->price_type == 'percent') {
-                    return '+ ' . floatval($this->price->price) . '%';
+                    return $prefix . floatval($this->price->price) . '%';
                 }
 
-                return '+ ' . price($this->price->price);
+                return $prefix . price($this->price->price);
             },
         )->shouldCache();
     }

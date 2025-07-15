@@ -1,4 +1,4 @@
-name: analyse
+name: Analyse (PHPStan)
 
 on:
   push:

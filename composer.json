@@ -28,7 +28,7 @@
         "laravel/scout": "^10.14",
         "lcobucci/clock": "^2.0|^3.2",
         "lcobucci/jwt": "^4.0|^5.3",
-        "matchish/laravel-scout-elasticsearch": "^7.11",
+        "rapidez/laravel-scout-elasticsearch": "^1.0",
         "rapidez/blade-components": "^1.10",
         "rapidez/blade-directives": "^1.1",
         "rapidez/laravel-multi-cache": "^2.0",
@@ -64,7 +64,7 @@
         "laravel": {
             "providers": [
                 "Rapidez\\Core\\RapidezServiceProvider",
-                "Matchish\\ScoutElasticSearch\\ElasticSearchServiceProvider"
+                "Rapidez\\ScoutElasticSearch\\ElasticSearchServiceProvider"
             ],
             "aliases": {
                 "Rapidez": "Rapidez\\Core\\Facades\\Rapidez"
