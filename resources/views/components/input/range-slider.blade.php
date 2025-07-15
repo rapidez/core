@@ -1,7 +1,7 @@
-@props(['inputs' => true, 'price' => false])
+@props(['inputs' => true])
 @slots(['value'])
 
-<range-slider v-slot="{ _renderProxy: rangeInputScope, value }" {{ $attributes }}>
+<range-slider v-slot="{ _renderProxy: rangeInputScope, value, prefix, suffix }" {{ $attributes }}>
     <div class="w-full">
         <div @class([
                 'flex flex-1 relative group/range-slider',
@@ -42,7 +42,7 @@
                         @if ($value->isNotEmpty())
                             {{ $value }}
                         @else
-                            <span v-text="value"></span>
+                            @{{ prefix }} <span v-text="value"></span> @{{ suffix }}
                         @endif
                     </div>
                     <div
@@ -53,7 +53,7 @@
                         @if ($value->isNotEmpty())
                             {{ $value }}
                         @else
-                            <span v-text="value"></span>
+                            @{{ prefix }} <span v-text="value"></span> @{{ suffix }}
                         @endif
                     </div>
                 @endif
@@ -61,50 +61,9 @@
         </div>
         @if ($inputs)
             <div class="flex items-center gap-x-4 mt-4">
-                @if ($price)
-                    <div class="relative w-full">
-                        <x-rapidez::input
-                            required
-                            type="number"
-                            v-bind:disabled="!canRefine"
-                            v-bind:min="rangeInputScope.range.min"
-                            v-bind:max="rangeInputScope.range.max"
-                            v-model.lazy="rangeInputScope.minValue"
-                            v-on:change="rangeInputScope.updateRefinement"
-                            class="text-center arrows-hidden"
-                        />
-                        <span
-                            class="absolute bottom-1/2 translate-y-1/2 font-light text-muted"
-                            v-bind:class="{
-                                'left-3': $root.currencySymbolLocation === 'left',
-                                'right-3': $root.currencySymbolLocation === 'right',
-                            }"
-                        >
-                            @{{ $root.currencySymbol }}
-                        </span>
-                    </div>
-                    <div class="relative w-full">
-                        <x-rapidez::input
-                            type="number"
-                            v-bind:disabled="!canRefine"
-                            v-bind:min="rangeInputScope.range.min"
-                            v-bind:max="rangeInputScope.range.max"
-                            v-model.lazy="rangeInputScope.maxValue"
-                            v-on:change="rangeInputScope.updateRefinement"
-                            class="text-center arrows-hidden"
-                        />
-                        <span
-                            class="absolute bottom-1/2 translate-y-1/2 font-light text-muted"
-                            v-bind:class="{
-                                'left-3': $root.currencySymbolLocation === 'left',
-                                'right-3': $root.currencySymbolLocation === 'right',
-                            }"
-                        >
-                            @{{ $root.currencySymbol }}
-                        </span>
-                    </div>
-                @else
+                <div class="relative w-full">
                     <x-rapidez::input
+                        required
                         type="number"
                         v-bind:disabled="!canRefine"
                         v-bind:min="rangeInputScope.range.min"
@@ -113,6 +72,20 @@
                         v-on:change="rangeInputScope.updateRefinement"
                         class="text-center arrows-hidden"
                     />
+                    <span
+                        v-if="prefix"
+                        class="absolute bottom-1/2 translate-y-1/2 font-light text-muted left-3"
+                    >
+                        @{{ prefix }}
+                    </span>
+                    <span
+                        v-if="suffix"
+                        class="absolute bottom-1/2 translate-y-1/2 font-light text-muted right-3"
+                    >
+                        @{{ suffix }}
+                    </span>
+                </div>
+                <div class="relative w-full">
                     <x-rapidez::input
                         type="number"
                         v-bind:disabled="!canRefine"
@@ -122,7 +95,19 @@
                         v-on:change="rangeInputScope.updateRefinement"
                         class="text-center arrows-hidden"
                     />
-                @endif
+                    <span
+                        v-if="prefix"
+                        class="absolute bottom-1/2 translate-y-1/2 font-light text-muted left-3"
+                    >
+                        @{{ prefix }}
+                    </span>
+                    <span
+                        v-if="suffix"
+                        class="absolute bottom-1/2 translate-y-1/2 font-light text-muted right-3"
+                    >
+                        @{{ suffix }}
+                    </span>
+                </div>
             </div>
         @endif
     </div>

@@ -1,6 +1,29 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.0.1...4.0.1)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.1.0...4.1.0)
+## [4.1.0](https://github.com/rapidez/core/releases/tag/4.1.0) - 2025-07-01
+
+### Added
+
+- Dusk tests with 2.4.7-p6 and 2.4.8-p1 (#890)
+- Playwright visual tests (#891, #904, #905)
+- Shipping cost in minicart (#903)
+- Shipping methods stack (#908)
+
+### Changed
+
+- Accordion component, product slider split and social icon fix (#887)
+- Range slider configurable prefix and suffix (#909)
+- Checkout address form fields layout (#910)
+
+### Fixed
+
+- Validate shipping address before sending same as shipping (#892)
+- Special price mapping (#894)
+- Only select value fields for int select fields (#901)
+- Quantity step increments fix (#907)
+- Support negative product option prices (#913)
+
 ## [4.0.1](https://github.com/rapidez/core/releases/tag/4.0.1) - 2025-06-06
 
 ### Fixed

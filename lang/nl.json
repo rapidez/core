@@ -130,5 +130,8 @@
     "Last Page": "Laatste pagina",
     "Clear the search query": "De zoekopdracht wissen",
     "Sort options": "Sorteer opties",
-    "Searching...": "Zoeken..."
+    "Searching...": "Zoeken...",
+    "Order type": "Type bestelling",
+    "Private": "Particulier",
+    "Business": "Zakelijk"
 }
