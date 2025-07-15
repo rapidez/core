@@ -36,6 +36,10 @@
                 />
 
                 <x-rapidez::button.cart/>
+
+                @if (App::providerIsLoaded('Rapidez\Wishlist\WishlistServiceProvider'))
+                    @include('rapidez::wishlist.button')
+                @endif
             </div>
         @endif
     </form>
