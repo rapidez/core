@@ -27,7 +27,7 @@ trait HasAlternatesThroughRewrites
 
                         if ($storeId === config('rapidez.system.store')) {
                             return [
-                                $locale => $url,
+                                $locale     => $url,
                                 'x-default' => $url,
                             ];
                         }
