@@ -4,7 +4,7 @@
     <span class="size-5 block border border-black/15 rounded-full m-px" v-bind:style="{ background: {{ $color }} }"></span>
     <input {{ $attributes->class('opacity-0 size-0 absolute') }}>
     @if ($slot->isNotEmpty())
-        <span class="pointer-events-none absolute bottom-full mb-1 rounded px-1.5 py-0.5 bg-active text-white opacity-0 group-hover/swatch:opacity-100 transition-opacity">
+        <span class="pointer-events-none absolute left-0 bottom-full mb-1 rounded px-1.5 py-0.5 bg-active text-white opacity-0 group-hover/swatch:opacity-100 transition-opacity">
             {{ $slot }}
         </span>
     @endif
