@@ -25,6 +25,13 @@ trait HasAlternatesThroughRewrites
                         $locale = str(Rapidez::config('general/locale/code', 'en_US'))->replace('_', '-')->lower()->value();
                         $url = Rapidez::config('web/secure/base_url') . $url;
 
+                        if ($storeId === config('rapidez.system.store')) {
+                            return [
+                                $locale => $url,
+                                'x-default' => $url,
+                            ];
+                        }
+
                         return [$locale => $url];
                     });
                 });
