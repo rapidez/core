@@ -11,6 +11,7 @@ export default {
         },
         query: {
             type: Function,
+            default: () => [],
         },
         categoryId: {
             type: Number,
@@ -96,7 +97,7 @@ export default {
             const config = await InstantSearchMixin.methods.getInstantSearchClientConfig.bind(this).call()
 
             config.getBaseFilters = this.getBaseFilters
-            config.getQuery = this.query
+            config.getQuery = this.getQuery
 
             return config
         },
@@ -118,7 +119,6 @@ export default {
                                 ' OR (NOT _exists_:category_ids))',
                         },
                     },
-                    this.$root.categoryPositions(this.categoryId),
                 ])
             }
 
@@ -132,6 +132,21 @@ export default {
             }
 
             return this.baseFilters().concat(extraFilters)
+        },
+
+        getQuery(query, search_attributes) {
+            let extraQueries = []
+
+            if (this.categoryId) {
+                extraQueries.push(this.$root.categoryPositions(this.categoryId))
+            }
+
+            // __NO_QUERY__ is a temporary band-aid for https://github.com/searchkit/searchkit/pull/1407
+            if (query && query !== '__NO_QUERY__') {
+                extraQueries.push(this.relevanceQueryMatch(query, search_attributes, config?.fuzziness))
+            }
+
+            return this.query().concat(extraQueries)
         },
 
         windowTitle(routeState) {
