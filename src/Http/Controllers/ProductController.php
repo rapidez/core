@@ -12,7 +12,7 @@ class ProductController
         $productModel = config('rapidez.models.product');
         $product = $productModel::selectForProductPage()
             ->withEventyGlobalScopes('productpage.scopes')
-            ->with('options')
+            ->with('options', 'attrs')
             ->findOrFail($productId);
 
         $attributes = [
