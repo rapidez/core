@@ -39,7 +39,7 @@ class OpensearchHealthcheck extends Base
             return $response;
         }
 
-        if (!property_exists($data->version, 'distribution')
+        if (! property_exists($data->version, 'distribution')
             || $data->version->distribution !== 'opensearch'
         ) {
             $response['healthy'] = false;

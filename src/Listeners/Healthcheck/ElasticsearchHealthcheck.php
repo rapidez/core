@@ -53,7 +53,7 @@ class ElasticsearchHealthcheck extends Base
             return $response;
         }
 
-        if (!property_exists($data->version, 'distribution')
+        if (! property_exists($data->version, 'distribution')
             && $data->version->build_flavor !== 'oss'
             && ! version_compare($data->version->number, $this->esVersion, '>=')
         ) {
