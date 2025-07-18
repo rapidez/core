@@ -8,4 +8,4 @@
     <span v-if="!addToCart.adding && !addToCart.added">@lang('Add to cart')</span>
     <span v-if="addToCart.adding" v-cloak>@lang('Adding')...</span>
     <span v-if="addToCart.added" v-cloak>@lang('Added')</span>
-</x-rapidez::button.enhanced>
+</x-rapidez::button.conversion>

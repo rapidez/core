@@ -81,7 +81,7 @@ export const combineGraphqlQueries = (window.combineGraphqlQueries = async funct
     return print(document)
 })
 
-let pendingQuery = []
+let pendingQuery = {}
 
 export const combiningGraphQL = (window.combiningGraphQL = async (query, variables, options = {}, name) => {
     let pendingQueryName = name ?? 'nameless'
