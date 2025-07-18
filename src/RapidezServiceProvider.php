@@ -35,6 +35,7 @@ use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
 use Rapidez\Core\Listeners\Healthcheck\ElasticsearchHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\MagentoSettingsHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\ModelsHealthcheck;
+use Rapidez\Core\Listeners\Healthcheck\OpensearchHealthcheck;
 use Rapidez\Core\Listeners\ReportProductView;
 use Rapidez\Core\Listeners\UpdateLatestIndexDate;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
@@ -249,6 +250,7 @@ class RapidezServiceProvider extends ServiceProvider
         ModelsHealthcheck::register();
         MagentoSettingsHealthcheck::register();
         ElasticsearchHealthcheck::register();
+        OpensearchHealthcheck::register();
         UpdateLatestIndexDate::register();
 
         return $this;
