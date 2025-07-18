@@ -7,4 +7,4 @@
 >
     <x-heroicon-o-shopping-cart class="size-5" />
     <span>@lang('Add to cart')</span>
-</x-rapidez::button.enhanced>
+</x-rapidez::button.conversion>
