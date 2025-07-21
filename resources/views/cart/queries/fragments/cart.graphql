@@ -5,6 +5,9 @@ fragment cart on Cart {
     items {
         id
         quantity
+        @if (Rapidez::checkCompadreVersion('0.0.2'))
+            qty_backordered
+        @endif
         product {
             ...product
         }
@@ -20,6 +23,12 @@ fragment cart on Cart {
             }
             row_total_including_tax {
                 value
+            }
+            fixed_product_taxes {
+                amount {
+                    value
+                }
+                label
             }
         }
         ... on SimpleCartItem {
