@@ -67,13 +67,13 @@ trait Searchable
 
     private static function filter($type, $initialValue): array
     {
-        [$data, $classes] = Arr::partition(
-            Eventy::filter('index.' . static::getModelName() . '.' . $type, $initialValue),
-            fn ($value, $key) => is_string($key)
-        );
+        [$data, $classes] = collect(Eventy::filter('index.' . static::getModelName() . '.' . $type, $initialValue))
+            ->partition(fn ($value, $key) => is_string($key));
+
+        $data = $data->toArray();
 
         // Execute all the classes and merge their output with the data
-        collect($classes)
+        $classes
             ->map(Arr::wrap(...))
             ->filter(fn ($class) => count($class))
             ->each(function ($class) use ($type, &$data) {
