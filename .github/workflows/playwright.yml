@@ -218,6 +218,6 @@ jobs:
           destination_dir: ${{ env.HTML_REPORT_PATH }}
 
       - name: URL in summary
-        run: echo "### Test results: https://${{ github.repository_owner }}.github.io/playwright-reports/${{ env.HTML_REPORT_PATH }}/" >> $GITHUB_STEP_SUMMARY
+        run: echo "### Test results - https://${{ github.repository_owner }}.github.io/playwright-reports/${{ env.HTML_REPORT_PATH }}/" >> $GITHUB_STEP_SUMMARY
 
       # TODO: Remove old reports?
