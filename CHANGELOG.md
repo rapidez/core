@@ -1,6 +1,15 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/3.10.0...3.10.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/3.10.1...3.10.1)
+## [3.10.1](https://github.com/rapidez/core/releases/tag/3.10.1) - 2025-07-22
+
+### Fixed
+
+- Invalid login error (#900)
+- Add missing import for useDebounceFn (#931)
+- Small bugfixes (#934)
+- Backorder and fixed product taxes in cart query (#936)
+
 ## [3.10.0](https://github.com/rapidez/core/releases/tag/3.10.0) - 2025-07-01
 
 ### Added
