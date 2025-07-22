@@ -1,4 +1,4 @@
-@props(['value', 'title' => false, 'field' => 'sku.keyword'])
+@props(['value', 'title' => false, 'field' => 'sku'])
 
 @if ($value)
     <lazy v-slot="{ intersected }">
