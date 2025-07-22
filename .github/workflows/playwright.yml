@@ -179,6 +179,8 @@ jobs:
     if: always()
     needs: [test]
     runs-on: ubuntu-latest
+    env:
+      HTML_REPORT_PATH: ${{ github.repository }}/${{ github.ref_name }}/${{ github.run_id }}/${{ github.run_attempt }}
 
     steps:
       - uses: actions/checkout@v4
@@ -195,7 +197,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          path: reports
+          path: ${{ env.HTML_REPORT_PATH }}
           merge-multiple: true
 
       - name: Generate HTML report
@@ -213,9 +215,9 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./playwright-report
-          destination_dir: ${{ steps.timestampid.outputs.timestamp }}
+          destination_dir: ${{ env.HTML_REPORT_PATH }}
 
       - name: URL in summary
-        run: echo "### Test results: https://${{ github.repository_owner }}.github.io/playwright-reports/${{ steps.timestampid.outputs.timestamp }}/" >> $GITHUB_STEP_SUMMARY
+        run: echo "### Test results: https://${{ github.repository_owner }}.github.io/playwright-reports/${{ env.HTML_REPORT_PATH }}/" >> $GITHUB_STEP_SUMMARY
 
       # TODO: Remove old reports?
