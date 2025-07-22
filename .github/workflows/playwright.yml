@@ -130,9 +130,11 @@ jobs:
         run: php artisan serve &
 
       - name: Run Playwright tests
-        run: yarn playwright test
+        run: yarn playwright test --shard P${{ matrix.rapidez-php-version }}-M${{matrix.magento-version}}-on-${{matrix.magento-php-version}}
 
       # Screenshots
+      # TODO: Also move these to rapidez/playwright-reports
+      # So we have to clone these first!
       - name: Update screenshots
         if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
         run: yarn playwright test --update-snapshots --reporter=list
@@ -168,7 +170,52 @@ jobs:
         with:
           name: artifact-P${{ matrix.rapidez-php-version }}-M${{matrix.magento-version}}-on-${{matrix.magento-php-version}}
           path: |
-            rapidez/rapidez/playwright-report
+            rapidez/rapidez/blob-report
             rapidez/rapidez/storage/logs/laravel.log
             docker-logs
             magento/var/log
+
+  report:
+    if: always()
+    needs: [test]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: rapidez/playwright-reports
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: reports
+          merge-multiple: true
+
+      - name: Generate HTML report
+        run: npx playwright merge-reports --reporter html ./reports
+
+      - name: Upload Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+
+      - name: Push the new files to github pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./playwright-report
+          destination_dir: ${{ steps.timestampid.outputs.timestamp }}
+
+      - name: URL in summary
+        run: echo "### Test results: https://${{ github.repository_owner }}.github.io/playwright-reports/${{ steps.timestampid.outputs.timestamp }}/" >> $GITHUB_STEP_SUMMARY
+
+      # TODO: Remove old reports?
