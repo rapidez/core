@@ -77,6 +77,7 @@ jobs:
         with:
           path: rapidez/core
           fetch-depth: 0
+          lfs: true
 
       - uses: actions/checkout@v4
         with:
