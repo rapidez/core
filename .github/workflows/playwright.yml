@@ -201,11 +201,11 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          path: ${{ env.HTML_REPORT_PATH }}
+          path: ./reports
           merge-multiple: true
 
       - name: Generate HTML report
-        run: npx playwright merge-reports --reporter html ./reports
+        run: npx playwright merge-reports --reporter html ./reports/rapidez/rapidez/
 
       - name: Upload Artifact
         if: always()
