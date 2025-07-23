@@ -137,8 +137,6 @@ jobs:
         run: yarn playwright test --shard ${{ matrix.shard }}
 
       # Screenshots
-      # TODO: Also move these to rapidez/playwright-reports
-      # So we have to clone these first!
       - name: Update screenshots
         if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
         run: yarn playwright test --update-snapshots --reporter=list
@@ -208,7 +206,6 @@ jobs:
         run: npx playwright merge-reports --reporter html ./reports/rapidez/rapidez/blob-report
 
       - name: Upload Artifact
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
@@ -224,5 +221,3 @@ jobs:
 
       - name: URL in summary
         run: echo "### Test results - https://${{ github.repository_owner }}.github.io/playwright-reports/${{ env.HTML_REPORT_PATH }}/" >> $GITHUB_STEP_SUMMARY
-
-      # TODO: Remove old reports?
