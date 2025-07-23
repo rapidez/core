@@ -2,11 +2,9 @@
 
 namespace Rapidez\Core\Models\Product\Eav;
 
-use Rapidez\Core\Models\Product\EavAttribute;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Rapidez\Core\Models\Model;
+use Rapidez\Core\Models\Product\EavAttribute;
 
 class EavVarchar extends Model
 {

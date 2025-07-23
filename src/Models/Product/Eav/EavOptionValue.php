@@ -2,7 +2,6 @@
 
 namespace Rapidez\Core\Models\Product\Eav;
 
-use Rapidez\Core\Models\Product\EavAttribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Rapidez\Core\Models\Model;
 
