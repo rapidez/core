@@ -26,15 +26,19 @@ jobs:
           - magento-version: 2.4.7-p6
             magento-php-version: php82-fpm
             rapidez-php-version: 8.2
+            shard: 1/4
           - magento-version: 2.4.7-p6
             magento-php-version: php83-fpm
             rapidez-php-version: 8.3
+            shard: 2/4
           - magento-version: 2.4.7-p6
             magento-php-version: php83-fpm
             rapidez-php-version: 8.4
+            shard: 3/4
           - magento-version: 2.4.8-p1
             magento-php-version: php84-fpm
             rapidez-php-version: 8.4
+            shard: 4/4
             screenshots: true
 
     services:
@@ -130,7 +134,7 @@ jobs:
         run: php artisan serve &
 
       - name: Run Playwright tests
-        run: yarn playwright test --shard P${{ matrix.rapidez-php-version }}-M${{matrix.magento-version}}-on-${{matrix.magento-php-version}}
+        run: yarn playwright test --shard ${{ matrix.shard }}
 
       # Screenshots
       # TODO: Also move these to rapidez/playwright-reports
@@ -213,7 +217,8 @@ jobs:
       - name: Push the new files to github pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          personal_token: ${{ secrets.RAPIDEZ_ACTIONS_ACCOUNT_PAT }}
+          external_repository: rapidez/playwright-reports
           publish_dir: ./playwright-report
           destination_dir: ${{ env.HTML_REPORT_PATH }}
 
