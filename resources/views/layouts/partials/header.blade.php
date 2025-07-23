@@ -2,6 +2,7 @@
     <div class="container flex flex-wrap items-center">
         <input id="navigation" class="peer hidden" type="checkbox" />
         <div class="mr-5 flex items-center text-xl max-sm:flex-row-reverse sm:text-3xl">
+            test
             <a href="{{ url('/') }}" aria-label="@lang('Go to home')">
                 <span class="hidden sm:inline">
                     <img src="https://raw.githubusercontent.com/rapidez/art/master/logo.svg" alt="Rapidez logo" height="48" width="152">
