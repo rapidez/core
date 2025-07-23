@@ -208,7 +208,7 @@ jobs:
         run: ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
 
       - name: Generate HTML report
-        run: npx playwright merge-reports --reporter html ./reports/rapidez/rapidez/
+        run: npx playwright merge-reports --reporter html ./reports/rapidez/rapidez/blob-report
 
       - name: Upload Artifact
         if: always()
