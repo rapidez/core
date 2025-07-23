@@ -204,6 +204,9 @@ jobs:
           path: ./reports
           merge-multiple: true
 
+      - name: List files
+        run: ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
+
       - name: Generate HTML report
         run: npx playwright merge-reports --reporter html ./reports/rapidez/rapidez/
 
