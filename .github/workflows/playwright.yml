@@ -104,7 +104,7 @@ jobs:
       - name: Get commit hash and tag of the core
         working-directory: ./rapidez/core
         run: |
-          echo "CORE_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
+          echo "CORE_HASH=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse HEAD | sed 's|/|_|g')" >> $GITHUB_ENV
           echo "LATEST_TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
       - name: Composer require the local rapidez/core
