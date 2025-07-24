@@ -5,7 +5,6 @@ namespace Rapidez\Core\Models\Traits;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Rapidez\Core\Models\Attribute as ModelsAttribute;
 use Rapidez\Core\Models\AttributeDateTime;
 use Rapidez\Core\Models\AttributeDecimal;
 use Rapidez\Core\Models\AttributeInt;
@@ -29,13 +28,12 @@ trait HasCustomAttributes
     public function scopeWhereValue(Builder $builder, string $attributeCode, $operator = null, $value = null)
     {
         $type = EavAttribute::getCached()[$attributeCode]->backend_type ?? 'varchar';
-        $relation = match($type) {
+        $relation = match ($type) {
             'datetime' => 'attributeDateTime',
-            default => 'attribute' . ucfirst($type),
+            default    => 'attribute' . ucfirst($type),
         };
 
-        return $builder->whereHas($relation, fn ($query) =>
-            $query->where('value', $operator, $value)->where('attribute_code', $attributeCode)
+        return $builder->whereHas($relation, fn ($query) => $query->where('value', $operator, $value)->where('attribute_code', $attributeCode)
         );
     }
 

@@ -29,7 +29,7 @@ class EavAttribute extends Model
 
     public static function getCached()
     {
-        return Cache::rememberForever('eav_attributes', function() {
+        return Cache::rememberForever('eav_attributes', function () {
             return DB::table('eav_attribute')->get()->keyBy('attribute_code');
         });
     }

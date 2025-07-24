@@ -14,7 +14,8 @@ class ForCurrentStoreWithoutLimitScope implements Scope
 {
     public array $uniquePerStoreKeys;
 
-    public function __construct(string|array $uniquePerStoreKey, public $storeIdColumn = 'store_id') {
+    public function __construct(string|array $uniquePerStoreKey, public $storeIdColumn = 'store_id')
+    {
         $this->uniquePerStoreKeys = is_array($uniquePerStoreKey) ? $uniquePerStoreKey : [$uniquePerStoreKey];
     }
 
@@ -39,11 +40,11 @@ class ForCurrentStoreWithoutLimitScope implements Scope
                             $query
                                 ->select(DB::raw(1))
                                 ->from($model->getTable() . ' as comparison')
-                                ->where('comparison.'.$this->storeIdColumn, config('rapidez.store'));
-                            foreach($scope->uniquePerStoreKeys as $uniquePerStoreKey) {
-                                $query->whereColumn('comparison.'.$uniquePerStoreKey, $model->qualifyColumn($uniquePerStoreKey));
+                                ->where('comparison.' . $this->storeIdColumn, config('rapidez.store'));
+                            foreach ($scope->uniquePerStoreKeys as $uniquePerStoreKey) {
+                                $query->whereColumn('comparison.' . $uniquePerStoreKey, $model->qualifyColumn($uniquePerStoreKey));
                             }
-                    });
+                        });
                 })
                 // Unless the value IS the current store.
                 ->orWhere($query->qualifyColumn($this->storeIdColumn), config('rapidez.store'))
