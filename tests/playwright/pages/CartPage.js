@@ -2,7 +2,7 @@ import { expect } from '@playwright/test'
 
 export class CartPage {
     constructor(page) {
-        this.page = page;
+        this.page = page
     }
 
     async gotoCart() {
@@ -19,11 +19,11 @@ export class CartPage {
 
     async firstItemIs(product) {
         await this.gotoCart()
-        await expect(this.cartItem()).toContainText(product.name);
+        await expect(this.cartItem()).toContainText(product.name)
     }
 
     async firstItemQtyIs(qty) {
         await this.gotoCart()
-        await expect(this.cartItemQty()).toHaveValue(qty.toString());
+        await expect(this.cartItemQty()).toHaveValue(qty.toString())
     }
 }

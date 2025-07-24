@@ -2,7 +2,7 @@ import { expect } from '@playwright/test'
 
 export class CheckoutPage {
     constructor(page) {
-        this.page = page;
+        this.page = page
     }
 
     async gotoCheckout() {
@@ -11,7 +11,7 @@ export class CheckoutPage {
 
     async login(email, password = false, register = false) {
         await this.page.fill('[name=email]', email)
-        await this.page.waitForLoadState('networkidle');
+        await this.page.waitForLoadState('networkidle')
     }
 
     async shippingAddress() {
@@ -24,7 +24,7 @@ export class CheckoutPage {
         await this.page.selectOption('[name=shipping_country]', 'NL')
         await this.page.fill('[name=shipping_telephone]', '530-7972')
         await this.page.locator('input[name=shipping_telephone]').press('Tab')
-        await this.page.waitForLoadState('networkidle');
+        await this.page.waitForLoadState('networkidle')
     }
 
     async shippingMethod() {
@@ -35,7 +35,7 @@ export class CheckoutPage {
     async paymentMethod() {
         await this.page.getByTestId('payment-method').first().click()
         await this.page.waitForLoadState('networkidle')
-        await this.page.waitForTimeout(3000);
+        await this.page.waitForTimeout(3000)
     }
 
     async success() {
