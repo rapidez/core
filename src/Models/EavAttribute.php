@@ -30,7 +30,7 @@ class EavAttribute extends Model
 
     protected function value(): Attribute
     {
-        return Attribute::get(function($value) {
+        return Attribute::get(function ($value) {
             if ($this->frontend_input === 'select') {
                 return $this->options[$value] ?? $value;
             }

@@ -12,7 +12,7 @@ trait HasAttributeOptions
 
     protected function options(): Attribute
     {
-        return Attribute::get(fn() => $this->attributeOptions->keyBy('value_id'));
+        return Attribute::get(fn () => $this->attributeOptions->keyBy('value_id'));
     }
 
     public function attributeOptions(): HasMany

@@ -87,10 +87,11 @@ trait HasCustomAttributes
 
     public function customAttributes(): Attribute
     {
-        return Attribute::get(function() {
-            if (@!$this->attributeDateTime) {
+        return Attribute::get(function () {
+            if (@! $this->attributeDateTime) {
                 return collect();
             }
+
             return collect()
                 ->concat($this->attributeDateTime)
                 ->concat($this->attributeDecimal)
