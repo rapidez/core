@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Rapidez\Core\Models\Attribute as AttributeModel;
-use Rapidez\Core\Models\AttributeDateTime;
+use Rapidez\Core\Models\AttributeDatetime;
 use Rapidez\Core\Models\AttributeDecimal;
 use Rapidez\Core\Models\AttributeInt;
 use Rapidez\Core\Models\AttributeText;
@@ -17,7 +17,7 @@ trait HasCustomAttributes
     public function scopeWithCustomAttributes(Builder $builder)
     {
         $builder->with([
-            'attributeDateTime',
+            'attributeDatetime',
             'attributeDecimal',
             'attributeInt',
             'attributeText',
@@ -28,19 +28,17 @@ trait HasCustomAttributes
     public function scopeWhereValue(Builder $builder, string $attributeCode, $operator = null, $value = null)
     {
         $type = AttributeModel::getCached()[$attributeCode]->backend_type ?? 'varchar';
-        $relation = match ($type) {
-            'datetime' => 'attributeDateTime',
-            default    => 'attribute' . ucfirst($type),
-        };
 
-        return $builder->whereHas($relation, fn ($query) => $query->where('value', $operator, $value)->where('attribute_code', $attributeCode)
+        return $builder->whereHas(
+            'attribute' . ucfirst($type),
+            fn ($query) => $query->where('value', $operator, $value)->where('attribute_code', $attributeCode),
         );
     }
 
-    public function attributeDateTime(): HasMany
+    public function attributeDatetime(): HasMany
     {
         return $this->hasManyWithAttributeTypeTable(
-            AttributeDateTime::class,
+            AttributeDatetime::class,
             'datetime',
             'entity_id',
             'entity_id',
@@ -101,12 +99,12 @@ trait HasCustomAttributes
     public function customAttributes(): Attribute
     {
         return Attribute::get(function () {
-            if (@! $this->attributeDateTime) {
+            if (@! $this->attributeDatetime) {
                 return collect();
             }
 
             return collect()
-                ->concat($this->attributeDateTime)
+                ->concat($this->attributeDatetime)
                 ->concat($this->attributeDecimal)
                 ->concat($this->attributeInt)
                 ->concat($this->attributeText)
