@@ -3,6 +3,7 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Rapidez\Core\Models\Scopes\Product\ForCurrentWebsiteScope;
 use Rapidez\Core\Models\Traits\HasCustomAttributes;
@@ -18,6 +19,8 @@ class ProductEntity extends Model
         self::UPDATED_AT => 'datetime',
         self::CREATED_AT => 'datetime',
     ];
+
+    protected $with = ['stock'];
 
     protected static function boot(): void
     {
@@ -35,6 +38,15 @@ class ProductEntity extends Model
             'catalog_product_entity_media_gallery_value_to_entity',
             'entity_id',
             'value_id',
+        );
+    }
+
+    public function stock(): BelongsTo
+    {
+        return $this->belongsTo(
+            ProductStock::class,
+            'entity_id',
+            'product_id',
         );
     }
 
