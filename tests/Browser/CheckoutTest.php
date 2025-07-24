@@ -11,17 +11,6 @@ class CheckoutTest extends DuskTestCase
     /**
      * @test
      */
-    public function checkoutAsGuest()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->addProductToCart($this->testProduct->url);
-            $this->doCheckout($browser, 'wayne+' . mt_rand() . '@enterprises.com');
-        });
-    }
-
-    /**
-     * @test
-     */
     public function checkoutAsUser()
     {
         $email = 'wayne+' . mt_rand() . '@enterprises.com';

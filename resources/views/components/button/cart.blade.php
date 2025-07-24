@@ -2,6 +2,7 @@
         'type' => 'submit',
         'dusk' => 'add-to-cart',
         'class' => 'relative',
+        'data-testid' => 'add-to-cart',
     ]) }}
     v-bind:class="{'button-loading': addToCart.adding}"
 >
