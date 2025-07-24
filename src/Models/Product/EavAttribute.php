@@ -2,19 +2,16 @@
 
 namespace Rapidez\Core\Models\Product;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Rapidez\Core\Models\Product\Eav\EavDatetime;
 use Rapidez\Core\Models\Product\Eav\EavDecimal;
 use Rapidez\Core\Models\Product\Eav\EavInt;
 use Rapidez\Core\Models\Product\Eav\EavText;
 use Rapidez\Core\Models\Product\Eav\EavVarchar;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Support\Carbon;
 
 class EavAttribute extends Model
 {
@@ -28,12 +25,12 @@ class EavAttribute extends Model
     {
         return Attribute::make(
             fn () => match ($this->relatedModel) {
-                EavVarchar::class => $this->varcharValues,
-                EavText::class => $this->textValues,
-                EavInt::class => $this->intValues,
-                EavDecimal::class => $this->decimalValues,
+                EavVarchar::class  => $this->varcharValues,
+                EavText::class     => $this->textValues,
+                EavInt::class      => $this->intValues,
+                EavDecimal::class  => $this->decimalValues,
                 EavDatetime::class => $this->datetimeValues,
-                default => null,
+                default            => null,
             }
         );
     }

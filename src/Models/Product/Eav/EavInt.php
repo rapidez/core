@@ -2,10 +2,10 @@
 
 namespace Rapidez\Core\Models\Product\Eav;
 
-use Rapidez\Core\Models\Product\EavAttribute;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Rapidez\Core\Models\Model;
+use Rapidez\Core\Models\Product\EavAttribute;
 
 class EavInt extends AbstractEav
 {
@@ -34,6 +34,7 @@ class EavInt extends AbstractEav
                 if ($this->relationLoaded('optionValue') && $this->attribute->frontend_input === 'select' && $this->attribute->source_model === null) {
                     return $this->optionValue?->value ?? $value;
                 }
+
                 return (int) $value;
             }
         );

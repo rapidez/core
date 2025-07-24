@@ -2,14 +2,14 @@
 
 namespace Rapidez\Core\Models\Traits;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Rapidez\Core\Models\Product\Eav\EavDatetime;
 use Rapidez\Core\Models\Product\Eav\EavDecimal;
 use Rapidez\Core\Models\Product\Eav\EavInt;
 use Rapidez\Core\Models\Product\Eav\EavText;
 use Rapidez\Core\Models\Product\Eav\EavVarchar;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property Collection $eav_values
@@ -55,10 +55,10 @@ trait HasEavAttributes
 
         return $q->withAggregate(
             [
-                'varchar' => $cb,
-                'text' => $cb,
-                'int' => $cb,
-                'decimal' => $cb,
+                'varchar'  => $cb,
+                'text'     => $cb,
+                'int'      => $cb,
+                'decimal'  => $cb,
                 'datetime' => $cb,
             ],
             'value'

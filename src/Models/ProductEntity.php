@@ -2,9 +2,9 @@
 
 namespace Rapidez\Core\Models;
 
-use Rapidez\Core\Models\Traits\HasEavAttributes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Rapidez\Core\Models\Traits\HasEavAttributes;
 
 // TODO: Rename this to Product once finished, and extend the Rapidez base model.
 class ProductEntity extends Model
@@ -25,7 +25,8 @@ class ProductEntity extends Model
         self::CREATED_AT => 'datetime',
     ];
 
-    protected static function boot() {
+    protected static function boot()
+    {
         parent::boot();
 
         static::addGlobalScope('default', function (Builder $builder) {
