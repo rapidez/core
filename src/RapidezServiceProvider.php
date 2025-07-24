@@ -45,6 +45,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 class RapidezServiceProvider extends ServiceProvider
 {
     protected $configFiles = [
+        'attribute-models',
         'frontend',
         'healthcheck',
         'jwt',
