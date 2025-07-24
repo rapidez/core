@@ -8,7 +8,7 @@ test('as guest', async ({ page }) => {
 
     await checkoutPage.gotoCheckout()
     await expect(page).toHaveScreenshot({ fullPage: true })
-    await checkoutPage.login(`wayne+${ Date.now() }@enterprises.com`)
+    await checkoutPage.login(`wayne+${Date.now()}@enterprises.com`)
     await checkoutPage.continue()
     await expect(page).toHaveScreenshot({ fullPage: true })
     await checkoutPage.shippingAddress()

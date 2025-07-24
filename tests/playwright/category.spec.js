@@ -32,7 +32,7 @@ test('category filter', async ({ page }) => {
 
     const filter = page.getByTestId('listing-filters').locator('label', { hasText: process.env.CATEGORY_FILTER_LABEL })
     const countText = await filter.getByTestId('listing-filter-count').textContent()
-    const count = parseInt(countText.replace(/\D/g, ''));
+    const count = parseInt(countText.replace(/\D/g, ''))
 
     await filter.click()
     await expect(page.getByTestId('listing-item')).toHaveCount(count)

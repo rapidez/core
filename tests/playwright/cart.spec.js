@@ -19,7 +19,7 @@ test('change quantity', async ({ page }) => {
     await page.goto('/cart')
     await page.getByTestId('qty').fill('5')
     await page.getByTestId('qty').press('Tab')
-    await expect(page.getByTestId('cart-item')).toContainText((product.price * 5).toString());
+    await expect(page.getByTestId('cart-item')).toContainText((product.price * 5).toString())
 })
 
 test('remove product', async ({ page }) => {
@@ -30,5 +30,3 @@ test('remove product', async ({ page }) => {
     await page.waitForLoadState('networkidle')
     await expect(page.getByTestId('cart-item')).toHaveCount(0)
 })
-
-
