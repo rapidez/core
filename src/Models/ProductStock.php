@@ -14,7 +14,7 @@ class ProductStock extends Model
     {
         parent::boot();
 
-        static::addGlobalScope('onlyExposedColumns', fn(Builder $builder) => $builder->select(['product_id', ...config('rapidez.exposed_stock_columns')]));
+        static::addGlobalScope('onlyExposedColumns', fn (Builder $builder) => $builder->select(['product_id', ...config('rapidez.exposed_stock_columns')]));
     }
 
     public function __get($key)
