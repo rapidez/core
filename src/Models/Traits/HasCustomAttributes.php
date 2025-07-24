@@ -5,11 +5,13 @@ namespace Rapidez\Core\Models\Traits;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Rapidez\Core\Models\Attribute as ModelsAttribute;
 use Rapidez\Core\Models\AttributeDateTime;
 use Rapidez\Core\Models\AttributeDecimal;
 use Rapidez\Core\Models\AttributeInt;
 use Rapidez\Core\Models\AttributeText;
 use Rapidez\Core\Models\AttributeVarchar;
+use Rapidez\Core\Models\EavAttribute;
 
 trait HasCustomAttributes
 {
@@ -24,18 +26,16 @@ trait HasCustomAttributes
         ]);
     }
 
-    public function scopeWhereValueHas(Builder $builder, $callback)
+    public function scopeWhereValue(Builder $builder, string $attributeCode, $operator = null, $value = null)
     {
-        return $builder->whereHas('attributeDateTime', $callback)
-            ->orWhereHas('attributeDecimal', $callback)
-            ->orWhereHas('attributeInt', $callback)
-            ->orWhereHas('attributeText', $callback)
-            ->orWhereHas('attributeVarchar', $callback);
-    }
+        $type = EavAttribute::getCached()[$attributeCode]->backend_type ?? 'varchar';
+        $relation = match($type) {
+            'datetime' => 'attributeDateTime',
+            default => 'attribute' . ucfirst($type),
+        };
 
-    public function scopeWhereValue(Builder $builder, string $attribute, $operator = null, $value = null)
-    {
-        return $builder->whereValueHas(fn ($query) => $query->where('value', $operator, $value)->where('attribute_code', $attribute)
+        return $builder->whereHas($relation, fn ($query) =>
+            $query->where('value', $operator, $value)->where('attribute_code', $attributeCode)
         );
     }
 

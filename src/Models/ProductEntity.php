@@ -4,6 +4,7 @@ namespace Rapidez\Core\Models;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Rapidez\Core\Models\Scopes\Product\ForCurrentWebsiteScope;
 use Rapidez\Core\Models\Traits\HasCustomAttributes;
 
 class ProductEntity extends Model
@@ -22,9 +23,9 @@ class ProductEntity extends Model
     {
         parent::boot();
 
-        static::addGlobalScope('customAttributes', function (Builder $builder) {
-            $builder->withCustomAttributes();
-        });
+        static::addGlobalScope(ForCurrentWebsiteScope::class);
+        static::addGlobalScope('customAttributes', fn (Builder $builder) => $builder->withCustomAttributes());
+        static::addGlobalScope('onlyEnabled', fn (Builder $builder) => $builder->whereValue('status', 1));
     }
 
     public function gallery(): BelongsToMany

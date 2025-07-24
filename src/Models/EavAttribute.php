@@ -4,6 +4,8 @@ namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Rapidez\Core\Models\Scopes\ForCurrentStoreWithoutLimitScope;
 
 class EavAttribute extends Model
@@ -12,17 +14,24 @@ class EavAttribute extends Model
     {
         parent::boot();
 
-        static::addGlobalScope(new ForCurrentStoreWithoutLimitScope('value_id'));
+        static::addGlobalScope(new ForCurrentStoreWithoutLimitScope(['attribute_id', 'entity_id']));
 
         static::addGlobalScope('attribute', function (Builder $builder) {
             $builder->leftJoin('eav_attribute', $builder->qualifyColumn('attribute_id'), '=', 'eav_attribute.attribute_id');
         });
 
-        if (isset(static::$hasAttributeOptions)) {
+        if (isset(static::$hasAttributeOptions)) { // @phpstan-ignore-line
             static::addGlobalScope('attributeOptions', function (Builder $builder) {
-                $builder->with('attributeOptions');
+                $builder->with('attributeOptions'); // @phpstan-ignore-line
             });
         }
+    }
+
+    public static function getCached()
+    {
+        return Cache::rememberForever('eav_attributes', function() {
+            return DB::table('eav_attribute')->get()->keyBy('attribute_code');
+        });
     }
 
     public function getTable()
