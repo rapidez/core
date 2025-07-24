@@ -16,6 +16,14 @@ class ProductEntity extends Model
 {
     use HasCustomAttributes;
 
+    public const VISIBILITY_NOT_VISIBLE = 1;
+    public const VISIBILITY_IN_CATALOG = 2;
+    public const VISIBILITY_IN_SEARCH = 3;
+    public const VISIBILITY_BOTH = 4;
+
+    public const STATUS_ENABLED = 1;
+    public const STATUS_DISABLED = 2;
+
     protected $table = 'catalog_product_entity';
     protected $primaryKey = 'entity_id';
 
@@ -32,7 +40,7 @@ class ProductEntity extends Model
 
         static::addGlobalScope(ForCurrentWebsiteScope::class);
         static::addGlobalScope('customAttributes', fn (Builder $builder) => $builder->withCustomAttributes());
-        static::addGlobalScope('onlyEnabled', fn (Builder $builder) => $builder->whereValue('status', 1));
+        static::addGlobalScope('onlyEnabled', fn (Builder $builder) => $builder->whereValue('status', static::STATUS_ENABLED));
     }
 
     public function gallery(): BelongsToMany
