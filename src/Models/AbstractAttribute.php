@@ -49,8 +49,9 @@ class AbstractAttribute extends Model
 
     protected function sortOrder(): Attribute
     {
-        return Attribute::get(function() {
+        return Attribute::get(function () {
             $value = $this->getAttributeFromArray('value');
+
             return $this->options[$value]->sort_order ?? null;
         });
     }
