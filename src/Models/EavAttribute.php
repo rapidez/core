@@ -4,12 +4,15 @@ namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Rapidez\Core\Models\Scopes\ForCurrentStoreWithoutLimitScope;
 
 class EavAttribute extends Model
 {
     protected static function boot(): void
     {
         parent::boot();
+
+        static::addGlobalScope(new ForCurrentStoreWithoutLimitScope('value_id'));
 
         static::addGlobalScope('attribute', function (Builder $builder) {
             $builder->leftJoin('eav_attribute', $builder->qualifyColumn('attribute_id'), '=', 'eav_attribute.attribute_id');
@@ -32,10 +35,10 @@ class EavAttribute extends Model
     {
         return Attribute::get(function ($value) {
             if ($this->frontend_input === 'select') {
-                return $this->options[$value] ?? $value;
+                return $this->options[$value]?->value ?? $value;
             }
 
-            $class = config('rapidez.attribute-models')[$this->backend_model];
+            $class = config('rapidez.attribute-models')[$this->backend_model] ?? null;
             if ($class) {
                 return $class::value($value, $this);
             }

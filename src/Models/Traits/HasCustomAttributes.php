@@ -2,7 +2,7 @@
 
 namespace Rapidez\Core\Models\Traits;
 
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Rapidez\Core\Models\AttributeDateTime;
@@ -22,6 +22,22 @@ trait HasCustomAttributes
             'attributeText',
             'attributeVarchar',
         ]);
+    }
+
+    public function scopeWhereValueHas(Builder $builder, $callback)
+    {
+        return $builder->whereHas('attributeDateTime', $callback)
+            ->orWhereHas('attributeDecimal', $callback)
+            ->orWhereHas('attributeInt', $callback)
+            ->orWhereHas('attributeText', $callback)
+            ->orWhereHas('attributeVarchar', $callback);
+    }
+
+    public function scopeWhereValue(Builder $builder, string $attribute, $operator = null, $value = null)
+    {
+        return $builder->whereValueHas(fn ($query) =>
+            $query->where('value', $operator, $value)->where('attribute_code', $attribute)
+        );
     }
 
     public function attributeDateTime(): HasMany

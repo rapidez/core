@@ -12,7 +12,12 @@ trait HasAttributeOptions
 
     protected function options(): Attribute
     {
-        return Attribute::get(fn () => $this->attributeOptions->keyBy('value_id'));
+        // Sort by store_id first to always get the higher store id if there are two.
+        return Attribute::get(fn () =>
+            $this->attributeOptions
+                ->sortBy('store_id')
+                ->keyBy('option_id')
+        );
     }
 
     public function attributeOptions(): HasMany
