@@ -4,7 +4,6 @@ namespace Rapidez\Core\Models\Product\Eav;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Rapidez\Core\Models\Model;
-use Rapidez\Core\Models\Product\EavAttribute;
 use Rapidez\Core\Models\Scopes\ForCurrentStoreWithoutLimitScope;
 
 class EavOptionValue extends Model

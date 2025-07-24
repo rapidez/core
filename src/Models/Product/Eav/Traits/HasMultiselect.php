@@ -29,7 +29,7 @@ trait HasMultiselect
         $localKey = $localKey ?: $this->getKeyName();
 
         return new FindInSetMany(
-            $instance->newQuery(), $this, $instance->getTable().'.'.$foreignKey, $localKey, $index
+            $instance->newQuery(), $this, $instance->getTable() . '.' . $foreignKey, $localKey, $index
         );
     }
 
@@ -41,6 +41,7 @@ trait HasMultiselect
                     if ($this->optionValues?->isEmpty()) {
                         return $value;
                     }
+
                     return $this->optionValues->map?->value ?: $value;
                 }
 

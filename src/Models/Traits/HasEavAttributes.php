@@ -21,10 +21,10 @@ trait HasEavAttributes
         $cb = $cb ?: fn ($q) => null;
 
         return $q->with([
-            'varchar.attribute' => $cb,
-            'text.attribute' => $cb,
-            'int.attribute' => $cb,
-            'decimal.attribute' => $cb,
+            'varchar.attribute'  => $cb,
+            'text.attribute'     => $cb,
+            'int.attribute'      => $cb,
+            'decimal.attribute'  => $cb,
             'datetime.attribute' => $cb,
             'int.optionValue',
             'text.optionValues',

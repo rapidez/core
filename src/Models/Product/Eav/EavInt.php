@@ -4,8 +4,6 @@ namespace Rapidez\Core\Models\Product\Eav;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Rapidez\Core\Models\Model;
-use Rapidez\Core\Models\Product\EavAttribute;
 
 class EavInt extends AbstractEav
 {
