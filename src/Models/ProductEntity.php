@@ -84,7 +84,7 @@ class ProductEntity extends Model
 
     public function superAttributeValues(): Attribute
     {
-        return Attribute::get(function() {
+        return Attribute::get(function () {
             return $this->superAttributes->pluck('attribute_code')
                 ->mapWithKeys(fn ($attribute) => [
                     $attribute => $this->children->mapWithKeys(function ($child) use ($attribute) {
@@ -92,7 +92,7 @@ class ProductEntity extends Model
                             'label' => $child->{$attribute},
                             'value' => $child->customAttributes[$attribute]->value_id,
                         ]];
-                    })
+                    }),
                 ]);
         });
     }

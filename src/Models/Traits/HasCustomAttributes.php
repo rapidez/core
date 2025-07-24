@@ -99,7 +99,7 @@ trait HasCustomAttributes
     public function customAttributes(): Attribute
     {
         return Attribute::get(function () {
-            if (!$this->relationLoaded('attributeDatetime')) {
+            if (! $this->relationLoaded('attributeDatetime')) {
                 return collect();
             }
 
