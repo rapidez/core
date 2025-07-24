@@ -4,11 +4,9 @@ namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use Rapidez\Core\Models\Scopes\ForCurrentStoreWithoutLimitScope;
 
-class EavAttribute extends Model
+class AbstractAttribute extends Model
 {
     protected static function boot(): void
     {
@@ -25,13 +23,6 @@ class EavAttribute extends Model
                 $builder->with('attributeOptions'); // @phpstan-ignore-line
             });
         }
-    }
-
-    public static function getCached()
-    {
-        return Cache::rememberForever('eav_attributes', function () {
-            return DB::table('eav_attribute')->get()->keyBy('attribute_code');
-        });
     }
 
     public function getTable()

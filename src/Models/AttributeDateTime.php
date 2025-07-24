@@ -2,7 +2,7 @@
 
 namespace Rapidez\Core\Models;
 
-class AttributeDateTime extends EavAttribute
+class AttributeDateTime extends AbstractAttribute
 {
     protected $casts = ['value' => 'datetime'];
 }

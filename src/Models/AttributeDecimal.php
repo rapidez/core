@@ -2,7 +2,7 @@
 
 namespace Rapidez\Core\Models;
 
-class AttributeDecimal extends EavAttribute
+class AttributeDecimal extends AbstractAttribute
 {
     protected $casts = ['value' => 'float'];
 }

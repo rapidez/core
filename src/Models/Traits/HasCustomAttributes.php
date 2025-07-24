@@ -10,7 +10,7 @@ use Rapidez\Core\Models\AttributeDecimal;
 use Rapidez\Core\Models\AttributeInt;
 use Rapidez\Core\Models\AttributeText;
 use Rapidez\Core\Models\AttributeVarchar;
-use Rapidez\Core\Models\EavAttribute;
+use Rapidez\Core\Models\Attribute as AttributeModel;
 
 trait HasCustomAttributes
 {
@@ -27,7 +27,7 @@ trait HasCustomAttributes
 
     public function scopeWhereValue(Builder $builder, string $attributeCode, $operator = null, $value = null)
     {
-        $type = EavAttribute::getCached()[$attributeCode]->backend_type ?? 'varchar';
+        $type = AttributeModel::getCached()[$attributeCode]->backend_type ?? 'varchar';
         $relation = match ($type) {
             'datetime' => 'attributeDateTime',
             default    => 'attribute' . ucfirst($type),
