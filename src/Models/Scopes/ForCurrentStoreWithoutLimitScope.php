@@ -35,7 +35,7 @@ class ForCurrentStoreWithoutLimitScope implements Scope
             ->where(fn ($query) => $query
                 // Remove values where we already have values in the current store.
                 ->where(function ($query) use ($scope, $model) {
-                    $columnKey = DB::Raw('CONCAT(' . collect($scope->uniquePerStoreKeys)->map(fn ($key) => $query->qualifyColumn($key))->implode(",'-',") . ')');
+                    $columnKey = count($scope->uniquePerStoreKeys) === 1 ? $query->qualifyColumn($scope->uniquePerStoreKeys[0]) : DB::Raw('CONCAT(' . collect($scope->uniquePerStoreKeys)->map(fn ($key) => $query->qualifyColumn($key))->implode(",'-',") . ')');
 
                     $query
                         ->whereNotIn($columnKey, function ($query) use ($scope, $model, $columnKey) {
