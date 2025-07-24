@@ -35,7 +35,7 @@ class AbstractAttribute extends Model
     {
         return Attribute::get(function ($value) {
             if ($this->frontend_input === 'select') {
-                return $this->options[$value]?->value ?? $this->castAttribute('value', $value);;
+                return $this->options[$value]?->value ?? $this->castAttribute('value', $value);
             }
 
             $class = config('rapidez.attribute-models')[$this->backend_model] ?? null;
