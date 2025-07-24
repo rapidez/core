@@ -6,7 +6,7 @@ use Rapidez\Core\Models\Product\EavAttribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Rapidez\Core\Models\Model;
 
-class EavDecimal extends Model
+class EavDecimal extends AbstractEav
 {
     protected $table = 'catalog_product_entity_decimal';
 
@@ -15,9 +15,4 @@ class EavDecimal extends Model
     protected $casts = [
         'value' => 'float',
     ];
-
-    public function attribute(): BelongsTo
-    {
-        return $this->belongsTo(EavAttribute::class, 'attribute_id', 'attribute_id');
-    }
 }

@@ -24,9 +24,11 @@ trait HasEavAttributes
             'varchar.attribute' => $cb,
             'text.attribute' => $cb,
             'int.attribute' => $cb,
-            'int.optionValue',
             'decimal.attribute' => $cb,
             'datetime.attribute' => $cb,
+            'int.optionValue',
+            'text.optionValues',
+            'varchar.optionValues',
         ]);
     }
 
@@ -37,6 +39,14 @@ trait HasEavAttributes
             ->orWhereHas('decimal', $cb)
             ->orWhereHas('datetime', $cb)
             ->orWhereHas('text', $cb);
+    }
+
+    public function scopeWhereAttribute($q, $attribute, ...$args)
+    {
+        return $q->whereValueHas(function ($q) use ($attribute, $args) {
+            $q->whereHas('attribute', fn ($q) => $q->where('attribute_code', $attribute))
+                ->where('value', ...$args);
+        });
     }
 
     public function scopeOrderByEavValue($q, $direction = 'desc', ?callable $cb = null)
@@ -93,9 +103,11 @@ trait HasEavAttributes
                     'varchar.attribute',
                     'text.attribute',
                     'int.attribute',
-                    'int.optionValue',
                     'decimal.attribute',
                     'datetime.attribute',
+                    'int.optionValue',
+                    'text.optionValues',
+                    'varchar.optionValues',
                 ]);
 
                 return $this->varchar

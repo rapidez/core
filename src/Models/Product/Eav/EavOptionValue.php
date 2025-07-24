@@ -2,15 +2,23 @@
 
 namespace Rapidez\Core\Models\Product\Eav;
 
-use Rapidez\Core\Models\Product\EavAttribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Rapidez\Core\Models\Model;
+use Rapidez\Core\Models\Product\EavAttribute;
+use Rapidez\Core\Models\Scopes\ForCurrentStoreWithoutLimitScope;
 
 class EavOptionValue extends Model
 {
     protected $table = 'eav_attribute_option_value';
 
     protected $guarded = [];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new ForCurrentStoreWithoutLimitScope('option_id'));
+    }
 
     public function option(): BelongsTo
     {

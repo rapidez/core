@@ -7,15 +7,19 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Rapidez\Core\Models\Model;
 
-class EavInt extends Model
+class EavInt extends AbstractEav
 {
     protected $table = 'catalog_product_entity_int';
 
     protected $guarded = [];
 
-    public function attribute(): BelongsTo
+    protected static function boot()
     {
-        return $this->belongsTo(EavAttribute::class, 'attribute_id', 'attribute_id');
+        parent::boot();
+
+        static::addGlobalScope('default', function ($query) {
+            $query->with('optionValue');
+        });
     }
 
     public function optionValue(): BelongsTo
