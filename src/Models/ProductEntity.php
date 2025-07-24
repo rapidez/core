@@ -40,7 +40,7 @@ class ProductEntity extends Model
 
         static::addGlobalScope(ForCurrentWebsiteScope::class);
         static::addGlobalScope('customAttributes', fn (Builder $builder) => $builder->withCustomAttributes());
-        static::addGlobalScope('onlyEnabled', fn (Builder $builder) => $builder->whereValue('status', static::STATUS_ENABLED));
+        static::addGlobalScope('onlyEnabled', fn (Builder $builder) => $builder->whereAttribute('status', static::STATUS_ENABLED));
     }
 
     public function gallery(): BelongsToMany
@@ -93,12 +93,14 @@ class ProductEntity extends Model
     public function superAttributeValues(): Attribute
     {
         return Attribute::get(function () {
-            return $this->superAttributes->pluck('attribute_code')
+            return $this->superAttributes
+                ->sortBy('position')
                 ->mapWithKeys(fn ($attribute) => [
-                    $attribute => $this->children->mapWithKeys(function ($child) use ($attribute) {
+                    $attribute->attribute_code => $this->children->mapWithKeys(function ($child) use ($attribute) {
                         return [$child->entity_id => [
-                            'label' => $child->{$attribute},
-                            'value' => $child->customAttributes[$attribute]->value_id,
+                            'label' => $child->{$attribute->attribute_code},
+                            'value' => $child->customAttributes[$attribute->attribute_code]->value_id,
+                            'sort_order' => $child->customAttributes[$attribute->attribute_code]->sort_order,
                         ]];
                     }),
                 ]);

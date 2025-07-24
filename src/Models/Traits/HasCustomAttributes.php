@@ -25,7 +25,7 @@ trait HasCustomAttributes
         ]);
     }
 
-    public function scopeWhereValue(Builder $builder, string $attributeCode, $operator = null, $value = null)
+    public function scopeWhereAttribute(Builder $builder, string $attributeCode, $operator = null, $value = null)
     {
         $type = AttributeModel::getCached()[$attributeCode]->backend_type ?? 'varchar';
 

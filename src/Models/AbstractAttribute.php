@@ -46,4 +46,12 @@ class AbstractAttribute extends Model
             return array_key_exists('value', $this->getCasts()) ? $this->castAttribute('value', $value) : $value;
         });
     }
+
+    protected function sortOrder(): Attribute
+    {
+        return Attribute::get(function() {
+            $value = $this->getAttributeFromArray('value');
+            return $this->options[$value]->sort_order ?? null;
+        });
+    }
 }
