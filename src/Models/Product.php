@@ -27,7 +27,7 @@ use Rapidez\Core\Models\Traits\Product\Searchable;
 use Rapidez\Core\Models\Traits\Product\SelectAttributeScopes;
 use TorMorten\Eventy\Facades\Eventy;
 
-class Product1 extends Model
+class Product extends Model
 {
     use CastMultiselectAttributes;
     use CastSuperAttributes;
