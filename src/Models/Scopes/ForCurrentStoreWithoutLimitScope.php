@@ -14,7 +14,8 @@ class ForCurrentStoreWithoutLimitScope implements Scope
 {
     public array $uniquePerStoreKeys;
 
-    public function __construct(string|array $uniquePerStoreKey, public $storeIdColumn = 'store_id') {
+    public function __construct(string|array $uniquePerStoreKey, public $storeIdColumn = 'store_id')
+    {
         $this->uniquePerStoreKeys = is_array($uniquePerStoreKey) ? $uniquePerStoreKey : [$uniquePerStoreKey];
     }
 
@@ -34,7 +35,7 @@ class ForCurrentStoreWithoutLimitScope implements Scope
             ->where(fn ($query) => $query
                 // Remove values where we already have values in the current store.
                 ->where(function ($query) use ($scope, $model) {
-                    $columnKey = DB::Raw('CONCAT(' . collect($scope->uniquePerStoreKeys)->map(fn($key) => $query->qualifyColumn($key))->implode(",'-',") . ')');
+                    $columnKey = DB::Raw('CONCAT(' . collect($scope->uniquePerStoreKeys)->map(fn ($key) => $query->qualifyColumn($key))->implode(",'-',") . ')');
 
                     $query
                         ->whereNotIn($columnKey, function ($query) use ($scope, $model, $columnKey) {
@@ -42,10 +43,10 @@ class ForCurrentStoreWithoutLimitScope implements Scope
                                 ->select($columnKey)
                                 ->from($model->getTable())
                                 ->where($model->qualifyColumn($scope->storeIdColumn), config('rapidez.store'));
-                            foreach($scope->uniquePerStoreKeys as $uniquePerStoreKey) {
+                            foreach ($scope->uniquePerStoreKeys as $uniquePerStoreKey) {
                                 $query->whereColumn($model->qualifyColumn($uniquePerStoreKey), $model->qualifyColumn($uniquePerStoreKey));
                             }
-                    });
+                        });
                 })
                 // Unless the value IS the current store.
                 ->orWhere($query->qualifyColumn($this->storeIdColumn), config('rapidez.store'))
