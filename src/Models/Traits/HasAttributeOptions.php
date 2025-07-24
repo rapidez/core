@@ -13,10 +13,9 @@ trait HasAttributeOptions
     protected function options(): Attribute
     {
         // Sort by store_id first to always get the higher store id if there are two.
-        return Attribute::get(fn () =>
-            $this->attributeOptions
-                ->sortBy('store_id')
-                ->keyBy('option_id')
+        return Attribute::get(fn () => $this->attributeOptions
+            ->sortBy('store_id')
+            ->keyBy('option_id')
         );
     }
 

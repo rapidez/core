@@ -35,8 +35,7 @@ trait HasCustomAttributes
 
     public function scopeWhereValue(Builder $builder, string $attribute, $operator = null, $value = null)
     {
-        return $builder->whereValueHas(fn ($query) =>
-            $query->where('value', $operator, $value)->where('attribute_code', $attribute)
+        return $builder->whereValueHas(fn ($query) => $query->where('value', $operator, $value)->where('attribute_code', $attribute)
         );
     }
 
