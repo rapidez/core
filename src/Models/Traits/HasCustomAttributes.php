@@ -5,12 +5,12 @@ namespace Rapidez\Core\Models\Traits;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Rapidez\Core\Models\Attribute as AttributeModel;
 use Rapidez\Core\Models\AttributeDateTime;
 use Rapidez\Core\Models\AttributeDecimal;
 use Rapidez\Core\Models\AttributeInt;
 use Rapidez\Core\Models\AttributeText;
 use Rapidez\Core\Models\AttributeVarchar;
-use Rapidez\Core\Models\Attribute as AttributeModel;
 
 trait HasCustomAttributes
 {
