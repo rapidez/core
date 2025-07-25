@@ -13,7 +13,7 @@ export class CheckoutPage {
         await this.page.fill('[name=email]', email)
         await this.page.waitForLoadState('networkidle')
 
-        if (password && ! register) {
+        if (password && !register) {
             await this.page.fill('[name=password]', password)
         }
 
@@ -77,7 +77,7 @@ export class CheckoutPage {
         await this.page.getByTestId('continue').click()
         await this.page.waitForTimeout(100)
         await this.page.waitForLoadState('networkidle')
-        await this.page.waitForURL('**/'+expectedStep);
+        await this.page.waitForURL('**/' + expectedStep)
         if (expectedStep != 'success') {
             await this.continueButtonVisible()
         }
@@ -121,5 +121,3 @@ export class CheckoutPage {
         }
     }
 }
-
-
