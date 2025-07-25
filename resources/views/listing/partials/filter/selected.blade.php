@@ -1,4 +1,4 @@
-<ais-clear-refinements v-bind:excluded-attributes="[...categoryAttributes, 'query']">
+<ais-clear-refinements v-bind:excluded-attributes="[...listingSlotProps.categoryAttributes, 'query']">
     <template v-slot="{ canRefine, refine, createURL }">
         <div v-show="canRefine" class="flex flex-wrap items-baseline justify-between gap-2 w-full pb-2.5">
             <div class="text-sm">
@@ -19,10 +19,10 @@
 <ais-current-refinements>
     <template v-slot="{ items, createURL }">
         <ul class="flex gap-x-1.5 gap-y-2 flex-wrap has-[li]:pb-4">
-            <template v-for="item in withFilters(items)">
+            <template v-for="item in listingSlotProps.withFilters(items)">
                 <li
                     class="flex flex-wrap relative"
-                    v-for="refinement in withSwatches(item.refinements, item.filter)"
+                    v-for="refinement in listingSlotProps.withSwatches(item.refinements, item.filter)"
                     :key="[
                       refinement.attribute,
                       refinement.type,

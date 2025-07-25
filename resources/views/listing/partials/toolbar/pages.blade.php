@@ -1,4 +1,4 @@
-<ais-hits-per-page :items="hitsPerPage">
+<ais-hits-per-page :items="listingSlotProps.hitsPerPage">
     <template v-slot="{ items, refine }">
         <select
             v-bind:value="items.find(item => item.isRefined)?.value"

@@ -1,5 +1,5 @@
 <ais-hierarchical-menu
-    v-bind:attributes="categoryAttributes"
+    v-bind:attributes="listingSlotProps.categoryAttributes"
     v-bind:sort-by="['count','name']"
     @attributes(['root-path' => $rootPath?->join(' > ')])
     show-more

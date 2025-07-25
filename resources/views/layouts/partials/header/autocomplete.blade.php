@@ -1,9 +1,9 @@
-<autocomplete v-slot="{ searchClient, middlewares, searchHistory }" :hits-per-page="{{ config('rapidez.frontend.autocomplete.size', 3) }}">
+<autocomplete v-slot="autocompleteSlotProps" :hits-per-page="{{ config('rapidez.frontend.autocomplete.size', 3) }}">
     <div class="relative w-full">
         <ais-instant-search
-            v-if="searchClient"
-            :search-client="searchClient"
-            :middlewares="middlewares"
+            v-if="autocompleteSlotProps.searchClient"
+            :search-client="autocompleteSlotProps.searchClient"
+            :middlewares="autocompleteSlotProps.middlewares"
             :index-name="config.index.product"
             class="contents"
             v-cloak
