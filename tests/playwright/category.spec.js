@@ -3,6 +3,7 @@ import { test, expect } from '@playwright/test'
 test('category with simple products', async ({ page }) => {
     await page.goto(process.env.CATEGORY_URL_SIMPLE)
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
+    await expect(page.getByTestId('newsletter-email')).toBeVisible()
     await expect(page).toHaveScreenshot({ fullPage: true })
 })
 
