@@ -5,7 +5,7 @@
         <lazy>
             <graphql-mutation query="mutation visitor ($email: String!) { subscribeEmailToNewsletter(email: $email) { status } }" :alert="false" :clear="true">
                 <div slot-scope="{ mutate, variables, mutated, error }">
-                    <p v-if="mutated" class="text text-xl font-bold" v-cloak>
+                    <p v-if="mutated" class="text text-xl font-bold" data-testid="newsletter-success" v-cloak>
                         @lang('Thank you for subscribing!')
                     </p>
                     <div v-else>
@@ -29,7 +29,7 @@
                                 </x-rapidez::button.secondary>
                             </div>
                         </form>
-                        <p v-if="error" class="mt-3 text-sm text-red-700" v-cloak>
+                        <p v-if="error" class="mt-3 text-sm text-red-700" data-testid="newsletter-error" v-cloak>
                             @{{ error }}
                         </p>
                         <p class="mt-3 text-sm">

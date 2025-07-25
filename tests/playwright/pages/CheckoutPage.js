@@ -41,7 +41,7 @@ export class CheckoutPage {
             }
         }
 
-        await this.page.fill('[name=shipping_firstname]', 'Bruce' + Date.now())
+        await this.page.fill('[name=shipping_firstname]', 'Bruce')
         await this.page.fill('[name=shipping_lastname]', 'Wayne')
         await this.page.fill('[name=shipping_postcode]', '72000')
         await this.page.fill('[name=shipping_housenumber]', '1007')
@@ -114,7 +114,10 @@ export class CheckoutPage {
         await this.success()
 
         if (screenshots.includes('success')) {
-            await expect(this.page).toHaveScreenshot({ fullPage: true })
+            await expect(this.page).toHaveScreenshot({
+                fullPage: true,
+                mask: [await this.page.getByTestId('masked')]
+            })
         }
     }
 }
