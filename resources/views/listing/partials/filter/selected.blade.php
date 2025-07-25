@@ -22,7 +22,7 @@
             <template v-for="item in listingSlotProps.withFilters(items)">
                 <li
                     class="flex flex-wrap relative"
-                    v-for="refinement in listingSlotProps.ithSwatches(item.refinements, item.filter)"
+                    v-for="refinement in listingSlotProps.withSwatches(item.refinements, item.filter)"
                     :key="[
                       refinement.attribute,
                       refinement.type,
