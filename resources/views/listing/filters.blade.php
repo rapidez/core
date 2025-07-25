@@ -30,6 +30,6 @@
     </div>
 </x-rapidez::slideover.mobile>
 
-<x-rapidez::button.secondary for="category-filters-slideover" class="w-full lg:hidden">
+<x-rapidez::button.secondary for="category-filters-slideover" class="w-full lg:hidden" data-testid="listing-filters-toggle">
     @lang('Filters')
 </x-rapidez::button.secondary>

@@ -1,7 +1,7 @@
 <div class="mr-3">
     <toggler v-if="$root.loggedIn" v-cloak>
         <div slot-scope="{ toggle, close, isOpen }" v-on-click-away="close">
-            <button dusk="account_menu" class="flex my-1" v-on:click="toggle">
+            <button data-testid="account-menu" class="flex my-1" v-on:click="toggle">
                 <x-heroicon-o-user class="size-6"/>
                 @{{ $root.user.firstname }}
             </button>
@@ -16,7 +16,7 @@
                 <user>
                     <button
                         class="block hover:bg px-3 py-2 cursor-pointer w-full text-left"
-                        dusk="logout"
+                        data-testid="logout"
                         slot-scope="{ logout }"
                         @click="logout('/')"
                     >

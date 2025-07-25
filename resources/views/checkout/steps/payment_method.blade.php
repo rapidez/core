@@ -23,7 +23,7 @@
                     name="payment_method"
                     v-model="variables.code"
                     v-bind:value="method.code"
-                    v-bind:dusk="'payment-method-'+index"
+                    data-testid="payment-method"
                     v-on:change="mutate"
                     required
                 />
