@@ -116,7 +116,7 @@ export class CheckoutPage {
         if (screenshots.includes('success')) {
             await expect(this.page).toHaveScreenshot({
                 fullPage: true,
-                mask: [await this.page.getByTestId('masked')]
+                mask: [await this.page.getByTestId('masked')],
             })
         }
     }
