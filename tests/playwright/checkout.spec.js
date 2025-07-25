@@ -1,26 +1,34 @@
 import { test, expect } from '@playwright/test'
 import { ProductPage } from './pages/ProductPage'
 import { CheckoutPage } from './pages/CheckoutPage'
+import { AccountPage } from './pages/AccountPage'
 
 test('as guest', async ({ page }) => {
-    const product = await new ProductPage(page).addToCart(process.env.PRODUCT_URL_SIMPLE)
+    const productPage = new ProductPage(page)
     const checkoutPage = new CheckoutPage(page)
 
-    await checkoutPage.gotoCheckout()
-    await expect(page).toHaveScreenshot({ fullPage: true })
-    await checkoutPage.login(`wayne+${Date.now()}@enterprises.com`)
-    await checkoutPage.continue()
-    await expect(page).toHaveScreenshot({ fullPage: true })
-    await checkoutPage.shippingAddress()
-    await checkoutPage.shippingMethod()
-    await checkoutPage.continue()
-    await expect(page).toHaveScreenshot({ fullPage: true })
-    await checkoutPage.paymentMethod()
-    await checkoutPage.continue()
-    await checkoutPage.success()
-    await expect(page).toHaveScreenshot({ fullPage: true })
+    await productPage.addToCart(process.env.PRODUCT_URL_SIMPLE)
+    await checkoutPage.checkout(`wayne+${Date.now()}@enterprises.com`, false, false, ['login', 'credentials', 'payment', 'success'])
+})
+
+test('as user', async ({ page }) => {
+    const productPage = new ProductPage(page)
+    const checkoutPage = new CheckoutPage(page)
+    const accountPage = new AccountPage(page)
+
+    const email = `wayne+${Date.now()}@enterprises.com`
+    const password = 'IronManSucks.91939'
+
+    // Register
+    await productPage.addToCart(process.env.PRODUCT_URL_SIMPLE)
+    await checkoutPage.checkout(email, password, true, ['credentials'])
+
+    await accountPage.logout()
+
+    // Login
+    await productPage.addToCart(process.env.PRODUCT_URL_SIMPLE)
+    await checkoutPage.checkout(email, password)
 })
 
 // TODO:
-// as user
 // with onestep

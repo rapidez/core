@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test'
 
 test('category with simple products', async ({ page }) => {
     await page.goto(process.env.CATEGORY_URL_SIMPLE)
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
     await expect(page).toHaveScreenshot({ fullPage: true })
 })
 
@@ -15,6 +16,7 @@ test('category pagination', async ({ page }) => {
     await expect(page.getByTestId('listing-item')).toHaveCount(12)
     const firstProductPage1 = await page.getByTestId('listing-item').first().textContent()
     await page.getByTestId('pagination').getByRole('button', { name: '2' }).click()
+    await page.waitForLoadState('networkidle')
     const firstProductPage2 = await page.getByTestId('listing-item').first().textContent()
     expect(firstProductPage1).not.toBe(firstProductPage2)
     await expect(page).toHaveScreenshot({ fullPage: true })

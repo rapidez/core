@@ -7,6 +7,7 @@ export class CartPage {
 
     async gotoCart() {
         await this.page.goto('/cart')
+        await this.page.waitForLoadState('networkidle')
     }
 
     cartItem() {
