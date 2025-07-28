@@ -16,7 +16,7 @@
                                 v-model="variables.email"
                                 dusk="newsletter-email"
                                 autocomplete="email"
-                                placeholder="Enter your email"
+                                :placeholder="__('Enter your email')"
                                 required
                             />
                             <div class="mt-3 rounded-md sm:mt-0 sm:ml-3 sm:flex-shrink-0">
