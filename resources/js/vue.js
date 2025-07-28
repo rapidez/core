@@ -1,10 +1,10 @@
-import Vue from 'vue'
-window.Vue = Vue
+import { directive as onClickaway } from 'vue3-click-away'
 
-import { directive as onClickaway } from 'vue-clickaway'
-Vue.directive('on-click-away', onClickaway)
-Vue.directive('blur', (el) => {
-    el.removeAttribute('v-blur')
+document.addEventListener('vue:loaded', function (event) {
+    event.detail.vue.directive('on-click-away', onClickaway)
+    event.detail.vue.directive('blur', (el) => {
+        el.removeAttribute('v-blur')
+    })
 })
 
 /**

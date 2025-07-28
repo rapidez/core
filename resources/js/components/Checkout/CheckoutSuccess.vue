@@ -11,7 +11,7 @@ export default {
     },
 
     render() {
-        return this.$scopedSlots.default(this)
+        return this.$slots.default(this)
     },
 
     created() {
@@ -20,7 +20,7 @@ export default {
             return
         }
         refreshOrder()
-        this.$root.$emit('checkout-success', this.order)
+        document.dispatchEvent(new CustomEvent('rapidez:checkout-success', { detail: { order: this.order } }));
 
         useEventListener(window, 'beforeunload', this.beforeUnloadCallback, { once: true })
     },

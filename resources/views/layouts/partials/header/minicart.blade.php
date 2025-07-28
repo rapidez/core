@@ -1,5 +1,5 @@
-<toggler>
-    <div class="relative" v-if="hasCart" v-on-click-away="close" slot-scope="{ toggle, close, isOpen }">
+<toggler v-slot="{ toggle, close, isOpen }">
+    <div class="relative" v-if="hasCart" v-on-click-away="close">
         <button class="flex my-1 focus:outline-none" v-on:click="toggle">
             <x-heroicon-o-shopping-cart class="size-6"/>
             <span class="bg-secondary text-secondary-text text-sm font-bold flex items-center justify-center rounded-full size-6 text-center" dusk="minicart-count" v-cloak>
@@ -16,18 +16,18 @@
                         </div>
                     </td>
                     <td class="text-right px-4">@{{ item.quantity }}</td>
-                    <td class="text-right">@{{ item.prices.row_total.value | price }}</td>
+                    <td class="text-right">@{{ window.price(item.prices.row_total.value) }}</td>
                 </tr>
-                <template v-if="cart.shipping_addresses?.length">
-                    <tr v-for="address in cart.shipping_addresses" v-if="address.selected_shipping_method">
+                <template v-if="cart.shipping_addresses?.length" v-for="address in cart.shipping_addresses" >
+                    <tr v-if="address.selected_shipping_method">
                         <td colspan="2">@lang('Shipping')</td>
-                        <td class="text-right" v-if="showTax">@{{ address.selected_shipping_method.price_incl_tax.value | price }}</td>
-                        <td class="text-right" v-else>@{{ address.selected_shipping_method.price_excl_tax.value | price }}</td>
+                        <td class="text-right" v-if="showTax">@{{ window.price(address.selected_shipping_method.price_incl_tax.value) }}</td>
+                        <td class="text-right" v-else>@{{ window.price(address.selected_shipping_method.price_excl_tax.value) }}</td>
                     </tr>
                 </template>
                 <tr class="font-bold *:pt-3 border-t">
                     <td colspan="2">@lang('Total')</td>
-                    <td class="text-right">@{{ cart.prices.grand_total.value | price }}</td>
+                    <td class="text-right">@{{ window.price(cart.prices.grand_total.value) }}</td>
                 </tr>
             </table>
             <div class="flex flex-col gap-y-2 items-center">

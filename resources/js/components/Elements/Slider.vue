@@ -3,7 +3,7 @@ import { useElementHover, useIntervalFn, useEventListener, useThrottleFn, useRes
 
 export default {
     render() {
-        return this.$scopedSlots.default(this)
+        return this.$slots.default(this)
     },
     props: {
         reference: {
@@ -77,11 +77,11 @@ export default {
     },
     methods: {
         initSlider() {
-            this.slider = this.$scopedSlots.default()[0].context.$refs[this.reference]
+            this.slider = this.$slots.default(this)[0].ctx.refs[this.reference]
             if (Array.isArray(this.slider) && this.slider.length) {
                 this.slider = this.slider[0]
             }
-            this.container = this.containerReference ? this.$scopedSlots.default()[0].context.$refs[this.containerReference] : this.slider
+            this.container = this.containerReference ? this.$slots.default(this)[0].ctx.refs[this.containerReference] : this.slider
         },
         initLoop() {
             if (!this.loop) {

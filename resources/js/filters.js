@@ -6,8 +6,6 @@ window.truncate = function (value, limit) {
     return value
 }
 
-Vue.filter('truncate', window.truncate)
-
 window.price = function (value, extra = {}) {
     return new Intl.NumberFormat(config.locale.replace('_', '-'), {
         style: 'currency',
@@ -15,8 +13,6 @@ window.price = function (value, extra = {}) {
         ...extra,
     }).format(value)
 }
-
-Vue.filter('price', window.price)
 
 window.url = function (path = '') {
     // Transform urls starting with / into url with domain
@@ -26,5 +22,3 @@ window.url = function (path = '') {
 
     return (window.config.base_url || window.origin) + path
 }
-
-Vue.filter('url', window.url)

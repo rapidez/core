@@ -1,5 +1,5 @@
 <checkout-success>
-    <template slot-scope="{ order, refreshOrder, hideBilling, shipping, billing, items }">
+    <template v-slot="{ order, refreshOrder, hideBilling, shipping, billing, items }">
         <div v-if="order" dusk="checkout-success" class="container" v-cloak>
             <h1 class="font-bold text-4xl mb-5">@lang('Order placed succesfully')</h1>
             <div class="bg rounded p-8">
@@ -14,7 +14,7 @@
                     v-for="item in order.items"
                 >
                     <div class="w-1/6 sm:w-1/12 pr-3">
-                        <a :href="'/' + item.product.url_key + item.product.url_suffix | url" target="blank" class="block">
+                        <a :href="window.url('/' + item.product.url_key + item.product.url_suffix)" target="blank" class="block">
                             <img
                                 :alt="item.product_name"
                                 :src="'/storage/{{ config('rapidez.store') }}/resizes/200/sku/' + item.product_sku + '.webp'"
@@ -24,7 +24,7 @@
                         </a>
                     </div>
                     <div class="w-5/6 sm:w-5/12">
-                        <a :href="'/' + item.product.url_key + item.product.url_suffix | url" target="blank" dusk="cart-item-name" class="font-bold">@{{ item.product_name }}</a>
+                        <a :href="window.url('/' + item.product.url_key + item.product.url_suffix)" target="blank" dusk="cart-item-name" class="font-bold">@{{ item.product_name }}</a>
                         <div v-for="option in item.selected_options">
                             @{{ option.label }}: @{{ option.value }}
                         </div>
@@ -36,10 +36,10 @@
                         @{{ Math.round(item.quantity_ordered) }}
                     </div>
                     <div class="w-2/6 sm:w-1/6 lg:w-2/12 text-right pr-5">
-                        @{{ item.product_sale_price.value | price }}
+                        @{{ window.price(item.product_sale_price.value) }}
                     </div>
                     <div class="w-2/6 sm:w-1/6 lg:w-2/12 flex justify-end items-center text-right">
-                        @{{ item.product_sale_price.value * item.quantity_ordered | price }}
+                        @{{ window.price(item.product_sale_price.value * item.quantity_ordered) }}
                     </div>
                 </div>
             </div>

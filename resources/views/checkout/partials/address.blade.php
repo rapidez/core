@@ -1,7 +1,7 @@
 <div class="grid grid-cols-12 gap-5">
     <div class="col-span-12" v-if="$root.loggedIn">
-        <graphql query="{ customer { addresses { id firstname lastname street city postcode country_code } } }">
-            <div v-if="data" slot-scope="{ data }">
+        <graphql query="{ customer { addresses { id firstname lastname street city postcode country_code } } }" v-slot="{ data }">
+            <div v-if="data">
                 <x-rapidez::input.select v-model="variables.customer_address_id" dusk="{{ $type }}_address_select">
                     <option v-for="address in data.customer.addresses" :value="address.id">
                         @{{ address.firstname }} @{{ address.lastname }}

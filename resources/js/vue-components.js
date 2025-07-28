@@ -1,65 +1,68 @@
 import TurbolinksAdapter from 'vue-turbolinks'
-Vue.use(TurbolinksAdapter)
-
-import Teleport from 'vue2-teleport'
-Vue.component('teleport', Teleport)
-
 import toggler from './components/Elements/Toggler.vue'
-Vue.component('toggler', toggler)
-
 import addToCart from './components/Product/AddToCart.vue'
-Vue.component('add-to-cart', addToCart)
-
 import user from './components/User/User.vue'
-Vue.component('user', user)
-
 import slider from './components/Elements/Slider.vue'
-Vue.component('slider', slider)
 import lazy from './components/Lazy.vue'
-Vue.component('lazy', lazy)
 import graphql from './components/Graphql.vue'
-Vue.component('graphql', graphql)
 import graphqlMutation from './components/GraphqlMutation.vue'
-Vue.component('graphql-mutation', graphqlMutation)
 import recursion from './components/Recursion.vue'
-Vue.component('recursion', recursion)
-
 import notifications from './components/Notifications/Notifications.vue'
-Vue.component('notifications', notifications)
 import globalSlideover from './components/GlobalSlideover.vue'
-Vue.component('global-slideover', globalSlideover)
 import globalSlideoverInstance from './components/GlobalSlideoverInstance.vue'
-Vue.component('global-slideover-instance', globalSlideoverInstance)
-
 import images from './components/Product/Images.vue'
-Vue.component('images', images)
-
 import quantitySelect from './components/Product/QuantitySelect.vue'
-Vue.component('quantity-select', quantitySelect)
+import { defineAsyncComponent, defineComponent } from 'vue'
 
-Vue.component('autocomplete', () => ({
-    // https://v2.vuejs.org/v2/guide/components-dynamic-async.html#Async-Components
-    component: new Promise(function (resolve, reject) {
-        document.addEventListener('loadAutoComplete', () => import('./components/Search/Autocomplete.vue').then(resolve))
-    }),
-    // https://v2.vuejs.org/v2/guide/components-dynamic-async.html#Handling-Loading-State
-    loading: {
-        data: () => ({
-            loaded: false,
-            searchClient: null,
-            searchHistory: {},
+document.addEventListener('vue:loaded', function (event) {
+    const vue = event.detail.vue;
+    vue.use(TurbolinksAdapter)
+
+    vue.component('toggler', toggler)
+
+    vue.component('add-to-cart', addToCart)
+
+    vue.component('user', user)
+
+    vue.component('slider', slider)
+    vue.component('lazy', lazy)
+    vue.component('graphql', graphql)
+    vue.component('graphql-mutation', graphqlMutation)
+    vue.component('recursion', recursion)
+
+    vue.component('notifications', notifications)
+    vue.component('global-slideover', globalSlideover)
+    vue.component('global-slideover-instance', globalSlideoverInstance)
+
+    vue.component('images', images)
+
+    vue.component('quantity-select', quantitySelect)
+
+    vue.component('autocomplete', defineAsyncComponent({
+        // https://v2.vuejs.org/v2/guide/components-dynamic-async.html#Async-Components
+        loader: () => new Promise(function (resolve, reject) {
+            document.addEventListener('loadAutoComplete', () => import('./components/Search/Autocomplete.vue').then(resolve))
         }),
+        // https://v2.vuejs.org/v2/guide/components-dynamic-async.html#Handling-Loading-State
+        loadingComponent: {
+            data: () => ({
+                loaded: false,
+                searchClient: null,
+                searchHistory: {},
+            }),
 
-        render() {
-            return this.$scopedSlots.default(this)
+            render() {
+                // TODO: seems broken, replaced by <Suspense>
+                return this.$slots.default(this)
+            },
         },
-    },
-    delay: 0,
-}))
-Vue.component('checkout-login', () => import('./components/Checkout/CheckoutLogin.vue'))
-Vue.component('login', () => import('./components/User/Login.vue'))
-Vue.component('listing', () => import('./components/Listing/Listing.vue'))
-Vue.component('search-suggestions', () => import('./components/Listing/SearchSuggestions.vue'))
-Vue.component('checkout-success', () => import('./components/Checkout/CheckoutSuccess.vue'))
-Vue.component('popup', () => import('./components/Popup.vue'))
-Vue.component('range-slider', () => import('./components/Elements/RangeSlider.vue'))
+        delay: 0,
+    }))
+    vue.component('checkout-login', defineAsyncComponent(() => import('./components/Checkout/CheckoutLogin.vue')))
+    vue.component('login', defineAsyncComponent(() => import('./components/User/Login.vue')))
+    vue.component('listing', defineAsyncComponent(() => import('./components/Listing/Listing.vue')))
+    vue.component('search-suggestions', defineAsyncComponent(() => import('./components/Listing/SearchSuggestions.vue')))
+    vue.component('checkout-success', defineAsyncComponent(() => import('./components/Checkout/CheckoutSuccess.vue')))
+    vue.component('popup', defineAsyncComponent(() => import('./components/Popup.vue')))
+    vue.component('range-slider', defineAsyncComponent(() => import('./components/Elements/RangeSlider.vue')))
+})

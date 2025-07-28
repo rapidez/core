@@ -77,7 +77,7 @@ export default {
     }),
 
     render() {
-        return this.$scopedSlots.default({
+        return this.$slots.default({
             mutate: this.mutate,
             mutated: this.mutated,
             running: this.running,

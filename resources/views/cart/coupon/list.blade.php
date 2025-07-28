@@ -1,4 +1,4 @@
-<template v-if="cart.applied_coupons.length" v-for="coupon in cart.applied_coupons">
+<template v-if="cart.applied_coupons?.length" v-for="coupon in cart.applied_coupons">
     <graphql-mutation
         :query="'mutation ($cart_id: String!) { removeCouponFromCart(input: { cart_id: $cart_id }) { cart { ...cart } } } ' + config.fragments.cart"
         :variables="{ cart_id: mask }"
