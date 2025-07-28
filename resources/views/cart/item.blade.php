@@ -2,7 +2,7 @@
     <tbody class="divide-y">
         <tr v-for="(item, index) in cart.items" class="flex-wrap max-md:flex *:p-2 md:*:p-4">
             <td class="w-24">
-                <a :href="item.product.url_key + item.product.url_suffix | url">
+                <a :href="window.url(item.product.url_key + item.product.url_suffix)">
                     <img
                         v-if="item.configured_variant?.image"
                         class="mx-auto"
@@ -21,7 +21,7 @@
             </td>
             <td class="items-center max-md:flex flex-1">
                 <div class="flex flex-col items-start">
-                    <a :href="item.product.url_key + item.product.url_suffix | url" class="font-bold" dusk="cart-item-name">
+                    <a :href="window.url(item.product.url_key + item.product.url_suffix)" class="font-bold" dusk="cart-item-name">
                         @{{ item.product.name }}
                         <div class="text-red-600" v-if="!item.is_available">
                             @lang('This product is out of stock, remove it to continue your order.')
@@ -55,9 +55,9 @@
             </td>
             <td class="justify-center text-right max-md:flex max-md:w-full">
                 <div class="inline-flex flex-1 items-center justify-between gap-2 md:gap-5">
-                    <span class="w-20 text-left">@{{ item.prices.price_including_tax.value | price }}</span>
+                    <span class="w-20 text-left">@{{ window.price(item.prices.price_including_tax.value) }}</span>
                     @include('rapidez::cart.item.quantity')
-                    <span class="w-20">@{{ item.prices.row_total_including_tax.value | price }}</span>
+                    <span class="w-20">@{{ window.price(item.prices.row_total_including_tax.value) }}</span>
                 </div>
             </td>
         </tr>

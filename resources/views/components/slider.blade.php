@@ -1,12 +1,12 @@
 @props(['reference' => uniqid('slider')])
 @slots(['items', 'indicator'])
 
-<slider reference="{{ $reference }}">
-    <div slot-scope="{ navigate, showLeft, showRight, currentSlide, slidesTotal }">
+<slider reference="{{ $reference }}" v-slot="{ navigate, showLeft, showRight, currentSlide, slidesTotal }">
+    <div>
         <div {{ $attributes->twMerge('relative') }}>
             <div ref="{{ $reference }}" {{ $items->attributes->twMerge('*:w-1/2 *:md:w-1/3 *:xl:w-1/4 *:px-5 *:shrink-0 *:snap-start -mx-5 flex snap-x snap-mandatory overflow-x-auto scrollbar-hide') }}>
                 @slotdefault('items')
-                    <template v-for="(item, count) in items">
+                    <template v-for="(item, count) in items" v-bind:key="item.entity_id">
                         @include('rapidez::listing.partials.item', ['slider' => true])
                     </template>
                 @endslotdefault

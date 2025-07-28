@@ -4,7 +4,7 @@
             <div v-for="item in cart.items" class="flex gap-x-1 border-b last:border-b-0 py-3">
                 <div class="w-7/12">@{{ item.product.name }}</div>
                 <div class="w-2/12 px-4 text-right">@{{ item.quantity }}</div>
-                <div class="w-3/12 text-right">@{{ item.prices.row_total.value | price }}</div>
+                <div class="w-3/12 text-right">@{{ window.price(item.prices.row_total.value) }}</div>
             </div>
         </div>
     </div>
@@ -12,26 +12,26 @@
     <dl class="flex w-full flex-col rounded border *:flex *:flex-wrap *:justify-between *:p-3 *:border-b last:*:border-none">
         <div>
             <dt>@lang('Subtotal')</dt>
-            <dd>@{{ cart.prices.subtotal_including_tax.value | price }}</dd>
+            <dd>@{{ window.price(cart.prices.subtotal_including_tax.value) }}</dd>
         </div>
         <div v-if="cart.prices.applied_taxes.length">
             <dt>@lang('Tax')</dt>
-            <dd>@{{ cart.prices.applied_taxes[0].amount.value | price }}</dd>
+            <dd>@{{ window.price(cart.prices.applied_taxes[0].amount.value) }}</dd>
         </div>
         <div v-if="cart.shipping_addresses.length && cart.shipping_addresses[0]?.selected_shipping_method">
             <dt>
                 @lang('Shipping')<br>
                 <small>@{{ cart.shipping_addresses[0]?.selected_shipping_method.carrier_title }} - @{{ cart.shipping_addresses[0]?.selected_shipping_method.method_title }}</small>
             </dt>
-            <dd>@{{ cart.shipping_addresses[0]?.selected_shipping_method.amount.value | price }}</dd>
+            <dd>@{{ window.price(cart.shipping_addresses[0]?.selected_shipping_method.amount.value) }}</dd>
         </div>
         <div v-for="discount in cart.prices.discounts">
             <dt>@{{ discount.label }}</dt>
-            <dd>-@{{ discount.amount.value | price }}</dd>
+            <dd>-@{{ window.price(discount.amount.value) }}</dd>
         </div>
         <div class="font-bold">
             <dt>@lang('Total')</dt>
-            <dd>@{{ cart.prices.grand_total.value | price }}</dd>
+            <dd>@{{ window.price(cart.prices.grand_total.value) }}</dd>
         </div>
     </dl>
 

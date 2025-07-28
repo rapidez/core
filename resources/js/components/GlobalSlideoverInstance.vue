@@ -1,7 +1,7 @@
 <script>
 export default {
     render() {
-        return this.$scopedSlots.default(this)
+        return this.$slots.default(this)
     },
     data() {
         return {
@@ -10,7 +10,8 @@ export default {
         }
     },
     mounted() {
-        this.$root.$on('global-slideover-open', (data) => {
+        document.addEventListener('rapidez:global-slideover-open', (event) => {
+            const data = event.detail
             this.title = data.title || ''
             this.position = data.position || 'left'
             this.$el.querySelector('#slideover-global').checked = true

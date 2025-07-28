@@ -197,16 +197,14 @@ if (userStorage.value?.email && !token.value) {
     userStorage.value = {}
 }
 
-document.addEventListener('vue:loaded', function (event) {
-    event.detail.vue.$on('logout', async function (data = {}) {
-        await logout()
-        useLocalStorage('email', '').value = ''
-        Turbo.cache.clear()
+document.addEventListener('rapidez:logout', async function (event) {
+    await logout()
+    useLocalStorage('email', '').value = ''
+    Turbo.cache.clear()
 
-        if (data?.redirect) {
-            this.$nextTick(() => (window.location.href = window.url(data?.redirect)))
-        }
-    })
+    if (event.detail?.redirect) {
+        setTimeout(() => (window.location.href = window.url(event.detail?.redirect)))
+    }
 })
 
 document.addEventListener('cart-updated', (event) => {
@@ -224,7 +222,7 @@ document.addEventListener('cart-updated', (event) => {
         magentoGraphQL(config.queries.setExistingShippingAddressesOnCart, {
             cart_id: mask.value,
             customer_address_id: defaultShipping.id,
-        }).then((response) => Vue.prototype.updateCart([], response))
+        }).then((response) => window.app.config.globalProperties.updateCart([], response))
     })
 })
 

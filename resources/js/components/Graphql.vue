@@ -46,11 +46,11 @@ export default {
     }),
 
     render() {
-        if (!('default' in this.$scopedSlots)) {
+        if (!('default' in this.$slots)) {
             return null
         }
 
-        return this.$scopedSlots.default({ ...this, variables: this.dataVariables })
+        return this.$slots.default({ ...this, variables: this.dataVariables })
     },
 
     created() {

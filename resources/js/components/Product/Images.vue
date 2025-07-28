@@ -10,12 +10,13 @@ export default {
     }),
 
     render() {
-        return this.$scopedSlots.default(this)
+        return this.$slots.default(this)
     },
 
     created() {
         let self = this
-        this.$root.$on('product-super-attribute-change', function (simpleProduct) {
+        document.addEventListener('rapidez:product-super-attribute-change', function (event) {
+            const simpleProduct = event.detail.simpleProduct
             Object.values(window.config.product.children).forEach((child) => {
                 if (
                     child === simpleProduct &&

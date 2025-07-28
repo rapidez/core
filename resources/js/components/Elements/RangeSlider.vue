@@ -18,7 +18,7 @@ export default {
     },
 
     render() {
-        return this.$scopedSlots.default(this)
+        return this.$slots.default(this)
     },
 
     data() {
