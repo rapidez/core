@@ -33,7 +33,6 @@ export class CheckoutPage {
         const addressSelect = this.page.getByTestId('shipping-address-select')
         if (await addressSelect.isVisible()) {
             const addressCount = await addressSelect.locator('option').count()
-            console.log(addressCount)
 
             if (addressCount > 1) {
                 await addressSelect.selectOption({ index: 0 })
