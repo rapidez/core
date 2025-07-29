@@ -4,7 +4,7 @@ test('cookie', async ({ page }) => {
     const acceptCookiesButton = page.getByTestId('accept-cookies')
 
     await page.goto('/?show-cookie-notice')
-    await expect(page).toHaveScreenshot({ fullPage: true })
+    await expect(page).toHaveScreenshot()
     await acceptCookiesButton.click()
     await expect(acceptCookiesButton).not.toBeVisible()
 
