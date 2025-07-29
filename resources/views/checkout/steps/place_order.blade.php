@@ -1,6 +1,6 @@
 <graphql-mutation
     :query="config.queries.placeOrder"
-    :variables="{ cart_id: mask }"
+    :variables="{ cart_id: mask.value }"
     :before-request="handleBeforePlaceOrderHandlers"
     :callback="handlePlaceOrder"
     mutate-event="placeOrder"

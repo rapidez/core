@@ -75,7 +75,7 @@ document.addEventListener('vue:loaded', function (event) {
             .findLast((queryResponse) => queryResponse?.is_virtual !== undefined)
 
         document.dispatchEvent(
-            new CustomEvent('cart-updated', {
+            new CustomEvent('rapidez:cart-updated', {
                 detail: {
                     cart: cart,
                 },

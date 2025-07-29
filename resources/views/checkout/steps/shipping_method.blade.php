@@ -1,8 +1,8 @@
 <graphql-mutation
     :query="config.queries.setShippingMethodsOnCart"
     :variables="{
-        cart_id: mask,
-        method: cart.shipping_addresses[0]?.selected_shipping_method?.carrier_code+'/'+cart.shipping_addresses[0]?.selected_shipping_method?.method_code,
+        cart_id: mask.value,
+        method: cart.value.shipping_addresses[0]?.selected_shipping_method?.carrier_code + '/' + cart.value.shipping_addresses[0]?.selected_shipping_method?.method_code,
     }"
     group="shipping"
     :callback="updateCart"
@@ -14,13 +14,13 @@
     }"
     mutate-event="setShippingMethodsOnCart"
     v-slot="{ mutate, variables }"
-    v-if="!cart.is_virtual"
+    v-if="!cart.value.is_virtual"
 >
     <fieldset class="flex flex-col gap-3" partial-submit="mutate" v-on:change="window.app.$emit('setShippingAddressesOnCart')">
-        <label class="flex items-center p-5 border rounded relative bg-white" v-if="!cart.shipping_addresses[0]?.uid">
+        <label class="flex items-center p-5 border rounded relative bg-white" v-if="!cart.value.shipping_addresses[0]?.uid">
             <span>@lang('Please enter a shipping address first')</span>
         </label>
-        <label class="flex items-center gap-x-1.5 p-5 border rounded bg-white cursor-pointer text-sm text" v-for="(method, index) in cart.shipping_addresses[0]?.available_shipping_methods">
+        <label class="flex items-center gap-x-1.5 p-5 border rounded bg-white cursor-pointer text-sm text" v-for="(method, index) in cart.value.shipping_addresses?.[0]?.available_shipping_methods">
             <template v-if="false"></template>
                 @stack('shipping_methods')
             <template v-else>

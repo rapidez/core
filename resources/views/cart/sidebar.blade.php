@@ -1,11 +1,11 @@
 <dl class="mb-5 flex w-full flex-col rounded-lg border *:flex *:flex-wrap *:justify-between *:p-3 *:border-b last:*:border-none">
     <div>
         <dt>@lang('Subtotal')</dt>
-        <dd v-if="showTax">@{{ window.price(cart.prices.subtotal_including_tax.value) }}</dd>
-        <dd v-else>@{{ window.price(cart.prices.subtotal_excluding_tax.value) }}</dd>
+        <dd v-if="showTax">@{{ window.price(cart.value.prices.subtotal_including_tax.value) }}</dd>
+        <dd v-else>@{{ window.price(cart.value.prices.subtotal_excluding_tax.value) }}</dd>
     </div>
 
-    <template v-if="cart.shipping_addresses?.length" v-for="address in cart.shipping_addresses">
+    <template v-if="cart.value.shipping_addresses?.length" v-for="address in cart.value.shipping_addresses">
         <div v-if="address.selected_shipping_method">
             <dt>@lang('Shipping')</dt>
             <dd v-if="showTax">@{{ window.price(address.selected_shipping_method.price_incl_tax.value) }}</dd>
@@ -14,22 +14,22 @@
         </div>
     </template>
 
-    <template v-if="cart.prices?.applied_taxes?.length">
-        <div v-for="tax in cart.prices.applied_taxes">
+    <template v-if="cart.value.prices?.applied_taxes?.length">
+        <div v-for="tax in cart.value.prices.applied_taxes">
             <dt>@{{ tax.label }}</dt>
             <dd>@{{ window.price(tax.amount.value) }}</dd>
         </div>
     </template>
 
-    <template v-if="cart.fixedProductTaxes?.value">
-        <div v-for="value, label in cart.fixed_product_taxes">
+    <template v-if="cart.value.fixedProductTaxes?.value">
+        <div v-for="value, label in cart.value.fixed_product_taxes">
             <dt>@{{ label }}</dt>
             <dd>@{{ window.price(value) }}</dd>
         </div>
     </template>
 
-    <template v-if="cart.prices?.discounts?.length">
-        <div v-for="discount in cart.fixed_product_taxes">
+    <template v-if="cart.value.prices?.discounts?.length">
+        <div v-for="discount in cart.value.fixed_product_taxes">
             <dt>@{{ discount.label }}</dt>
             <dd>-@{{ window.price(discount.amount.value) }}</dd>
         </div>
@@ -37,8 +37,8 @@
 
     <div>
         <dt>@lang('Total')</dt>
-        <dd v-if="showTax">@{{ window.price(cart.prices.grand_total.value) }}</dd>
-        <dd v-else>@{{ window.price(cart.prices.grand_total.value - cart.taxTotal.value) }}</dd>
+        <dd v-if="showTax">@{{ window.price(cart.value.prices.grand_total.value) }}</dd>
+        <dd v-else>@{{ window.price(cart.value.prices.grand_total.value - cart.value.taxTotal.value) }}</dd>
     </div>
 </dl>
 

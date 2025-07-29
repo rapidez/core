@@ -10,8 +10,8 @@ if (!window.process) {
 import './polyfills'
 import { useLocalStorage, StorageSerializers, useScrollLock } from '@vueuse/core'
 import useOrder from './stores/useOrder.js'
-import useCart from './stores/useCart'
-import useUser from './stores/useUser'
+import { cart } from './stores/useCart'
+import { user } from './stores/useUser'
 import useMask from './stores/useMask'
 import './vue'
 import './fetch'
@@ -22,7 +22,7 @@ import './callbacks'
 import './vue-components'
 import './instantsearch'
 import { fetchCount } from './stores/useFetches.js'
-;import { createApp } from 'vue'
+;import { computed, createApp } from 'vue'
 (() => import('./turbolinks'))()
 
 if (import.meta.env.VITE_DEBUG === 'true') {
@@ -127,24 +127,6 @@ function init() {
                     }
                 },
             },
-            computed: {
-                // Wrap the local storage in getter and setter functions so you do not have to interact using .value
-                guestEmail: wrapValue(
-                    useLocalStorage('email', window.debug ? 'wayne@enterprises.com' : '', { serializer: StorageSerializers.string }),
-                ),
-
-                loggedIn() {
-                    return this.user?.is_logged_in
-                },
-
-                hasCart() {
-                    return this.cart?.id && this.cart.items.length
-                },
-
-                canOrder() {
-                    return this.cart.items.every((item) => item.is_available)
-                },
-            },
             watch: {
                 loadingCount: function (count) {
                     app.config.globalProperties.loading = count > 0
@@ -168,12 +150,34 @@ function init() {
             loading: false,
             autocompleteFacadeQuery: '',
             csrfToken: document.querySelector('[name=csrf-token]')?.content,
-            cart: useCart(),
+            cart: cart,
             order: useOrder(),
-            user: useUser(),
+            user: user,
             mask: useMask(),
             showTax: window.config.show_tax,
             scrollLock: useScrollLock(document.body),
+            // Wrap the local storage in getter and setter functions so you do not have to interact using .value
+            guestEmail: wrapValue(
+                useLocalStorage('email', window.debug ? 'wayne@enterprises.com' : '', { serializer: StorageSerializers.string }),
+            ),
+
+            loggedIn: computed(function () {
+                return user.value?.is_logged_in
+            }),
+
+            hasCart: computed(function () {
+                return cart.value?.id && cart.value.items.length
+            }),
+
+            canOrder: computed(function() {
+                return cart.value.items.every((item) => item.is_available)
+            }),
+            dispatchEvent: (event, ...args) => {
+                document.dispatchEvent(new CustomEvent(event, { detail: { args: args } }));
+            },
+            onEvent: (event, callback) => {
+                document.addEventListener(event, (eventData) => callback(...eventData.detail.args));
+            }
         };
         window.app.config.globalProperties.window = window
         window.app.config.globalProperties.config = window.config

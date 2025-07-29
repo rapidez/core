@@ -20,7 +20,7 @@
                         }"
                         class="flex flex-col gap-5"
                     >
-                        <template v-if="!cart.is_virtual">
+                        <template v-if="!cart.value.is_virtual">
                             <h2 class="text-xl font-bold">@lang('Shipping address')</h2>
                             @include('rapidez::checkout.steps.shipping_address')
                         </template>
@@ -28,7 +28,7 @@
                         <h2 class="text-xl font-bold">@lang('Billing address')</h2>
                         @include('rapidez::checkout.steps.billing_address')
 
-                        <template v-if="!cart.is_virtual">
+                        <template v-if="!cart.value.is_virtual">
                             <h2 class="text-xl font-bold">@lang('Shipping method')</h2>
                             @include('rapidez::checkout.steps.shipping_method')
                         </template>

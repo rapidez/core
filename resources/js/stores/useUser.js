@@ -207,7 +207,7 @@ document.addEventListener('rapidez:logout', async function (event) {
     }
 })
 
-document.addEventListener('cart-updated', (event) => {
+document.addEventListener('rapidez:cart-updated', (event) => {
     // Can be removed once https://github.com/magento/magento2/issues/39828 is fixed
     setTimeout(() => {
         if (cart?.value?.shipping_addresses?.length > 0 || userStorage.value?.addresses?.length < 1) {

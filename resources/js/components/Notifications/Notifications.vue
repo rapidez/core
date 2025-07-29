@@ -15,7 +15,8 @@ export default {
     },
     mounted() {
         document.addEventListener('rapidez:notification-message', (event) => {
-            const {message, type, params, link} = event.detail
+            const { message, type, params, link } = event.detail
+
             this.notifications.push({
                 message: message,
                 type: type,

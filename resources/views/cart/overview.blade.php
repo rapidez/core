@@ -10,12 +10,12 @@
         <graphql
             v-if="mask"
             :query="'query getCart($cart_id: String!) { cart (cart_id: $cart_id) { ...cart } } ' + config.fragments.cart"
-            :variables="{ cart_id: mask }"
+            :variables="{ cart_id: mask.value }"
             :callback="updateCart"
             :error-callback="checkResponseForExpiredCart"
         >
         </graphql>
-        <div v-if="hasCart" v-cloak>
+        <div v-if="hasCart.value" v-cloak>
             <div class="flex gap-x-10 mb-8 max-lg:flex-col">
                 <div class="flex w-full flex-col" dusk="cart-content">
                     @include('rapidez::cart.item')
@@ -31,13 +31,13 @@
             </div>
 
             <x-rapidez::productlist
-                value="cart.items.flatMap((item) => item.product.crosssell_products.map((crosssell) => crosssell.id))"
+                value="cart.value.items.flatMap((item) => item.product.crosssell_products.map((crosssell) => crosssell.id))"
                 title="More choices to go with your product"
                 field="entity_id"
             />
         </div>
 
-        <div v-if="!hasCart && !$root.loading" v-cloak>@lang('You don\'t have anything in your cart.')</div>
-        <div v-if="$root.loading">@lang('Loading')...</div>
+        <div v-if="!hasCart && !loading" v-cloak>@lang('You don\'t have anything in your cart.')</div>
+        <div v-if="loading">@lang('Loading')...</div>
     </div>
 @endsection
