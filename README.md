@@ -10,10 +10,10 @@ Just run `./vendor/bin/phpunit`
 
 ### Browser tests
 
-- Make sure you've got a Magento install running
-- Prepare Laravel Dusk with `composer run dusk:prepare`
-- Compile the assets with: `composer run dusk:assets` and re-run this when the assets are changed
-- Tests can be started with: `composer run dusk:test`
+- Make sure Rapidez is working in your browser
+- Run the tests with `yarn playwright test`
+- Run the tests from a UI `yarn playwright test --ui`
+- Update the screenshots with `yarn playwright test --update-snapshots`
 
 ## License
 

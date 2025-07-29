@@ -29,6 +29,3 @@ test('as user', async ({ page }) => {
     await productPage.addToCart(process.env.PRODUCT_URL_SIMPLE)
     await checkoutPage.checkout(email, password)
 })
-
-// TODO:
-// with onestep
