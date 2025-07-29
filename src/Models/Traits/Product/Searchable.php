@@ -152,14 +152,20 @@ trait Searchable
             })
         )
             ->pluck('type', 'code')
-            ->map(fn ($type) => [
-                'type' => match ($type) {
-                    'int'      => 'integer',
-                    'decimal'  => 'double',
-                    'datetime' => 'date',
-                    default    => null
-                },
-            ])
+            ->map(function ($type) {
+                return array_filter([
+                    'type' => match ($type) {
+                        'int'      => 'integer',
+                        'decimal'  => 'double',
+                        'datetime' => 'date',
+                        default    => null
+                    },
+                    'format' => match ($type) {
+                        'datetime' => 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||strict_date_optional_time||epoch_millis',
+                        default    => null
+                    },
+                ]);
+            })
             ->whereNotNull('type');
 
         return [
