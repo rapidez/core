@@ -5,15 +5,15 @@
         <listing
             {{ $attributes }}
             v-if="intersected"
-            v-slot="{ loaded, index, searchClient, middlewares }"
+            v-slot="listingSlotProps"
             v-cloak
         >
             <div>
                 <ais-instant-search
-                    v-if="searchClient"
-                    :search-client="searchClient"
-                    :index-name="index"
-                    :middlewares="middlewares"
+                    v-if="listingSlotProps.searchClient"
+                    :search-client="listingSlotProps.searchClient"
+                    :index-name="listingSlotProps.index"
+                    :middlewares="listingSlotProps.middlewares"
                 >
                     <ais-configure :filters="'{{ $field }}:({{ is_array($value)
                         ? implode(' OR ', $value)

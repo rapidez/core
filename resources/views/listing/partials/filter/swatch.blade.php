@@ -7,7 +7,7 @@
         <x-rapidez::accordion.filter v-show="items.length" canToggleShowMore>
             <x-slot:content>
                 <ul class="flex flex-wrap gap-x-1.5 gap-y-2 items-center pr-14">
-                    <li v-for="item in withSwatches(items, filter)">
+                    <li v-for="item in listingSlotProps.withSwatches(items, filter)">
                         <label
                             v-if="filter.visual_swatch"
                             class="cursor-pointer flex items-center justify-center p-1 rounded-full ring-inset ring-1 has-[:focus]:ring-emphasis relative"
