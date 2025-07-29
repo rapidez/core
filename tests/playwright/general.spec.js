@@ -9,7 +9,7 @@ test('cookie', async ({ page }) => {
     await expect(acceptCookiesButton).not.toBeVisible()
 
     const cookieNotice = await page.evaluate(() => {
-        return window.localStorage.getItem('cookie-notice');
+        return window.localStorage.getItem('cookie-notice')
     })
 
     await expect(cookieNotice).not.toBeNull()
