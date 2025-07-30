@@ -2,7 +2,6 @@ import { test, expect } from '@playwright/test'
 import { ProductPage } from './pages/ProductPage'
 import { CheckoutPage } from './pages/CheckoutPage'
 import { AccountPage } from './pages/AccountPage'
-
 ;['default', 'onestep'].forEach((type) => {
     test('as guest - ' + type, async ({ page }) => {
         const productPage = new ProductPage(page)
