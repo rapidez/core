@@ -23,7 +23,7 @@ class ConfigForTesting
 
         $config = config();
 
-        foreach($sessionConfig as $key => $values) {
+        foreach ($sessionConfig as $key => $values) {
             $config->set($key, array_merge_recursive(
                 $values ?? [], $config->get($key, [])
             ));
