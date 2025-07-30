@@ -1,12 +1,17 @@
 import { expect } from '@playwright/test'
 
 export class CheckoutPage {
-    constructor(page) {
+    constructor(page, type = 'default') {
         this.page = page
+        this.type = type
     }
 
     async gotoCheckout() {
-        await this.page.goto('/checkout')
+        const url = this.type === 'onestep'
+            ? '/checkout?checkout=onestep'
+            : '/checkout'
+
+        await this.page.goto(url)
     }
 
     async login(email, password = false, register = false) {
@@ -14,11 +19,19 @@ export class CheckoutPage {
         await this.page.waitForLoadState('networkidle')
 
         if (password && !register) {
+            await expect(this.page).toHaveScreenshot({
+                fullPage: true,
+                mask: [await this.page.locator('[name=email]')],
+            })
             await this.page.fill('[name=password]', password)
         }
 
         if (password && register) {
             await this.page.getByTestId('create-account').click()
+            await expect(this.page).toHaveScreenshot({
+                fullPage: true,
+                mask: [await this.page.locator('[name=email]')],
+            })
             await this.page.fill('[name=password]', password)
             await this.page.fill('[name=password_repeat]', password)
             await this.page.fill('[name=firstname]', 'Bruce')
@@ -87,6 +100,14 @@ export class CheckoutPage {
     }
 
     async checkout(email, password = false, register = false, screenshots = []) {
+        const method = this.type === 'onestep'
+            ? 'checkoutOnestep'
+            : 'checkoutDefault'
+
+        await this[method](email, password, register, screenshots)
+    }
+
+    async checkoutDefault(email, password = false, register = false, screenshots = []) {
         await this.gotoCheckout()
 
         if (screenshots.includes('login')) {
@@ -109,6 +130,36 @@ export class CheckoutPage {
         }
 
         await this.paymentMethod()
+        await this.continue('success')
+        await this.success()
+
+        if (screenshots.includes('success')) {
+            await expect(this.page).toHaveScreenshot({
+                fullPage: true,
+                mask: [await this.page.getByTestId('masked')],
+            })
+        }
+    }
+
+    async checkoutOnestep(email, password = false, register = false, screenshots = []) {
+        await this.gotoCheckout()
+
+        if (screenshots.includes('login')) {
+            await expect(this.page).toHaveScreenshot({ fullPage: true })
+        }
+
+        await this.login(email, password, register)
+        await this.shippingAddress()
+        await this.shippingMethod()
+        await this.paymentMethod()
+
+        if (screenshots.includes('payment')) {
+            await expect(this.page).toHaveScreenshot({
+                fullPage: true,
+                mask: [await this.page.locator('[name=email]')],
+            })
+        }
+
         await this.continue('success')
         await this.success()
 
