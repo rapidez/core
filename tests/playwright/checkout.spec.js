@@ -2,8 +2,11 @@ import { test, expect } from '@playwright/test'
 import { ProductPage } from './pages/ProductPage'
 import { CheckoutPage } from './pages/CheckoutPage'
 import { AccountPage } from './pages/AccountPage'
-;['default', 'onestep'].forEach((type) => {
-    test('as guest - ' + type, async ({ page }) => {
+
+const checkoutTypes = ['default', 'onestep']
+
+checkoutTypes.forEach((type) => {
+    test(type + '- as guest', async ({ page }) => {
         const productPage = new ProductPage(page)
         const checkoutPage = new CheckoutPage(page, type)
 
@@ -11,7 +14,7 @@ import { AccountPage } from './pages/AccountPage'
         await checkoutPage.checkout(`wayne+${Date.now()}@enterprises.com`, false, false, ['login', 'credentials', 'payment', 'success'])
     })
 
-    test('as user - ' + type, async ({ page }) => {
+    test(type + ' - as user', async ({ page }) => {
         const productPage = new ProductPage(page)
         const checkoutPage = new CheckoutPage(page, type)
         const accountPage = new AccountPage(page)
