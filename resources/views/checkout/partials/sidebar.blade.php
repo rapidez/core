@@ -49,7 +49,7 @@
             <dd class="text-right">@{{ item.prices.row_total.value | price }}</dd>
         </div>
     </x-rapidez::summary>
-    
+
     <x-rapidez::summary class="border-t pt-4 mt-5 mb-5">
         <div>
             <dt>
