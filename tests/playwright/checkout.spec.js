@@ -3,7 +3,7 @@ import { ProductPage } from './pages/ProductPage'
 import { CheckoutPage } from './pages/CheckoutPage'
 import { AccountPage } from './pages/AccountPage'
 
-['default', 'onestep'].forEach((type) => {
+;['default', 'onestep'].forEach((type) => {
     test('as guest - ' + type, async ({ page }) => {
         const productPage = new ProductPage(page)
         const checkoutPage = new CheckoutPage(page, type)

@@ -7,9 +7,7 @@ export class CheckoutPage {
     }
 
     async gotoCheckout() {
-        const url = this.type === 'onestep'
-            ? '/checkout?checkout=onestep'
-            : '/checkout'
+        const url = this.type === 'onestep' ? '/checkout?checkout=onestep' : '/checkout'
 
         await this.page.goto(url)
     }
@@ -100,9 +98,7 @@ export class CheckoutPage {
     }
 
     async checkout(email, password = false, register = false, screenshots = []) {
-        const method = this.type === 'onestep'
-            ? 'checkoutOnestep'
-            : 'checkoutDefault'
+        const method = this.type === 'onestep' ? 'checkoutOnestep' : 'checkoutDefault'
 
         await this[method](email, password, register, screenshots)
     }
