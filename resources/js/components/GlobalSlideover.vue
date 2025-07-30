@@ -13,13 +13,13 @@ export default {
         return this.$slots.default(this)
     },
     mounted() {
-        document.addEventListener('rapidez:global-slideover-open', (event) => {
-            this.isCurrentSlideover = event.detail.initiator === this
+        window.$on('rapidez:global-slideover-open', (data) => {
+            this.isCurrentSlideover = data.initiator === this
         })
     },
     methods: {
         open() {
-            document.dispatchEvent(new CustomEvent('rapidez:global-slideover-open', { detail: { title: this.title, position: this.position, initiator: this } }));
+            window.$emit('rapidez:global-slideover-open', { title: this.title, position: this.position, initiator: this });
         },
     },
 }

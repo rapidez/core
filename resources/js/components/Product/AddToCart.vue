@@ -138,7 +138,7 @@ export default {
                     await this.callback(this.product, this.qty)
                 }
 
-                document.dispatchEvent(new CustomEvent('rapidez:cart-add', { detail: { product: this.product, qty: this.qty } }));
+                window.$emit('rapidez:cart-add', { product: this.product, qty: this.qty });
 
                 if (this.notifySuccess) {
                     Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success', [], window.url('/cart'))
@@ -494,7 +494,7 @@ export default {
         simpleProduct: {
             handler(newProduct, oldProduct) {
                 if (newProduct.sku !== oldProduct.sku) {
-                    document.dispatchEvent(new CustomEvent('rapidez:product-super-attribute-change', { detail: { newProduct: newProduct } }));
+                    window.$emit('rapidez:product-super-attribute-change', newProduct);
                 }
             },
         },

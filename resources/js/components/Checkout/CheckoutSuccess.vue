@@ -20,7 +20,7 @@ export default {
             return
         }
         refreshOrder()
-        document.dispatchEvent(new CustomEvent('rapidez:checkout-success', { detail: { order: this.order } }));
+        window.$emit('rapidez:checkout-success', this.order);
 
         useEventListener(window, 'beforeunload', this.beforeUnloadCallback, { once: true })
     },

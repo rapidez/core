@@ -1,16 +1,16 @@
 <checkout-login v-slot="checkoutLogin">
-    <fieldset partial-submit="go" class="flex flex-col gap-3" v-cloak>
+    <fieldset partial-submit v-on:partial-submit="async () => await go()" class="flex flex-col gap-3" v-cloak>
         <label>
             <x-rapidez::label>@lang('Email')</x-rapidez::label>
             <x-rapidez::input
                 name="email"
                 type="email"
                 v-model="checkoutLogin.email"
-                v-bind:disabled="loggedIn"
+                v-bind:disabled="window.app.config.globalProperties.loggedIn.value"
                 required
             />
         </label>
-        <template v-if="!loggedIn && (!checkoutLogin.isEmailAvailable || checkoutLogin.createAccount)">
+        <template v-if="!window.app.config.globalProperties.loggedIn.value && (!checkoutLogin.isEmailAvailable || checkoutLogin.createAccount)">
             <label>
                 <x-rapidez::label>@lang('Password')</x-rapidez::label>
                 <x-rapidez::input.password
@@ -25,7 +25,7 @@
                 @lang('Forgot your password?')
             </a>
         @endif
-        <template v-if="!loggedIn && checkoutLogin.createAccount">
+        <template v-if="!window.app.config.globalProperties.loggedIn.value && checkoutLogin.createAccount">
             <label>
                 <x-rapidez::label>@lang('Repeat password')</x-rapidez::label>
                 <x-rapidez::input.password
@@ -53,7 +53,7 @@
                 />
             </label>
         </template>
-        <template v-if="!loggedIn && checkoutLogin.isEmailAvailable">
+        <template v-if="!window.app.config.globalProperties.loggedIn.value && checkoutLogin.isEmailAvailable">
             <x-rapidez::input.checkbox v-model="checkoutLogin.createAccount" dusk="create_account">
                 @lang('Create an account')
             </x-rapidez::input.checkbox>

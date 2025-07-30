@@ -14,7 +14,7 @@ export default {
 
     methods: {
         logout(redirect = false) {
-            document.dispatchEvent(new CustomEvent('rapidez:logout', { detail: { redirect: redirect } }));
+            window.$emit('rapidez:logout', { redirect: redirect });
         },
     },
 }

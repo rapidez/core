@@ -15,8 +15,7 @@ export default {
 
     created() {
         let self = this
-        document.addEventListener('rapidez:product-super-attribute-change', function (event) {
-            const simpleProduct = event.detail.simpleProduct
+        window.$on('rapidez:product-super-attribute-change', function (simpleProduct) {
             Object.values(window.config.product.children).forEach((child) => {
                 if (
                     child === simpleProduct &&

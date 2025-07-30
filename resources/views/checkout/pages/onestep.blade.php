@@ -9,11 +9,11 @@
         <div v-if="hasCart" class="flex gap-5 max-xl:flex-col" v-cloak>
             <div class="w-full bg rounded p-4 xl:p-8 xl:w-3/4">
                 <form class="grid gap-5 lg:grid-cols-2" v-on:submit.prevent="(e) => {
-                    submitPartials(e.target?.form ?? e.target)
+                    window.app.config.globalProperties.submitPartials(e.target?.form ?? e.target)
                         .then((result) =>
-                            window.app.$emit('checkout-credentials-saved')
-                            && window.app.$emit('checkout-payment-saved')
-                            && window.app.$emit('placeOrder')
+                            window.$emit('checkout-credentials-saved')
+                            && window.$emit('checkout-payment-saved')
+                            && window.$emit('placeOrder')
                         ).catch();
                 }">
                     <div class="lg:w-1/2 lg:pr-2.5 lg:col-span-2">

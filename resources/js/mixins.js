@@ -10,7 +10,7 @@ document.addEventListener('vue:loaded', function (event) {
             },
 
             async magentoCart(method, endpoint, data) {
-                if (this.$root.loggedIn) {
+                if (this.$root.config.globalProperties.loggedIn.value) {
                     return await window.magentoAPI(method, 'carts/mine/' + endpoint, data)
                 } else {
                     return await window.magentoAPI(method, 'guest-carts/' + mask.value + '/' + endpoint, data)

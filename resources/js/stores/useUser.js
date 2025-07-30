@@ -6,7 +6,7 @@ import { computed, watch } from 'vue'
 import Jwt from '../jwt'
 import { mask } from './useMask'
 import { magentoGraphQL } from '../fetch'
-
+import { on, emit } from '../polyfills/emit'
 /**
  * @deprecated using localstorage to retrieve the token is deprecated, use the useUser.token instead
  */
@@ -110,7 +110,7 @@ export const register = async function (email, firstname, lastname, password, in
         },
     }).then(async (response) => {
         if (response.data?.createCustomerV2?.customer?.email) {
-            window.app.$emit('registered', {
+            emit('registered', {
                 email: email,
                 firstname: firstname,
                 lastname: lastname,
@@ -145,14 +145,14 @@ export const loginByToken = async function (customerToken) {
         await fetchCustomerCart()
     }
 
-    window.app.$emit('logged-in')
+    emit('logged-in')
 }
 
 export const logout = async function () {
     await magentoGraphQL('mutation { revokeCustomerToken { result } }', {}, { notifyOnError: false, redirectOnExpiration: false }).finally(
         async () => {
             await clear()
-            window.app.$emit('logged-out')
+            emit('logged-out')
         },
     )
 }
@@ -197,17 +197,17 @@ if (userStorage.value?.email && !token.value) {
     userStorage.value = {}
 }
 
-document.addEventListener('rapidez:logout', async function (event) {
+on('rapidez:logout', async function (data) {
     await logout()
     useLocalStorage('email', '').value = ''
     Turbo.cache.clear()
 
-    if (event.detail?.redirect) {
-        setTimeout(() => (window.location.href = window.url(event.detail?.redirect)))
+    if (data?.redirect) {
+        setTimeout(() => (window.location.href = window.url(data?.redirect)))
     }
-})
+}, {autoRemove: false, defer: false})
 
-document.addEventListener('rapidez:cart-updated', (event) => {
+on('rapidez:cart-updated', () => {
     // Can be removed once https://github.com/magento/magento2/issues/39828 is fixed
     setTimeout(() => {
         if (cart?.value?.shipping_addresses?.length > 0 || userStorage.value?.addresses?.length < 1) {
@@ -224,6 +224,6 @@ document.addEventListener('rapidez:cart-updated', (event) => {
             customer_address_id: defaultShipping.id,
         }).then((response) => window.app.config.globalProperties.updateCart([], response))
     })
-})
+}, {autoRemove: false})
 
 export default () => user

@@ -1,5 +1,5 @@
 window.debug = import.meta.env.VITE_DEBUG == 'true'
-window.Notify = (message, type, params = [], link = null) => setTimeout(() => document.dispatchEvent(new CustomEvent('rapidez:notification-message', { detail: { message: message, type: type, params: params, link: link } })))
+window.Notify = (message, type, params = [], link = null) => setTimeout(() => window.$emit('rapidez:notification-message', message, type, params, link))
 
 if (!window.process) {
     // Workaround for process missing, if data is actually needed from here you should apply the following polyfill.
@@ -26,9 +26,7 @@ import { fetchCount } from './stores/useFetches.js'
 (() => import('./turbolinks'))()
 
 if (import.meta.env.VITE_DEBUG === 'true') {
-    document.addEventListener('rapidez:notification-message', function (event) {
-        const {message, type, params, link} = event.detail
-
+    window.$on('rapidez:notification-message', function (message, type, params, link) {
         switch (type) {
             case 'error':
                 console.error(message, type, params, link)
@@ -41,7 +39,7 @@ if (import.meta.env.VITE_DEBUG === 'true') {
             default:
                 console.log(message, type, params, link)
         }
-    })
+    }, {autoRemove: false})
 }
 
 let booting = false
@@ -172,12 +170,6 @@ function init() {
             canOrder: computed(function() {
                 return cart.value.items.every((item) => item.is_available)
             }),
-            dispatchEvent: (event, ...args) => {
-                document.dispatchEvent(new CustomEvent(event, { detail: { args: args } }));
-            },
-            onEvent: (event, callback) => {
-                document.addEventListener(event, (eventData) => callback(...eventData.detail.args));
-            }
         };
         window.app.config.globalProperties.window = window
         window.app.config.globalProperties.config = window.config

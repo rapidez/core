@@ -10,8 +10,7 @@ export default {
         }
     },
     mounted() {
-        document.addEventListener('rapidez:global-slideover-open', (event) => {
-            const data = event.detail
+        window.$on('rapidez:global-slideover-open', (data) => {
             this.title = data.title || ''
             this.position = data.position || 'left'
             this.$el.querySelector('#slideover-global').checked = true

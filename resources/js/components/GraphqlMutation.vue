@@ -115,9 +115,9 @@ export default {
     mounted() {
         if (this.mutateEvent) {
             this.$nextTick(() =>
-                window.app.$on(this.mutateEvent, () => {
+                window.$on(this.mutateEvent, () => {
                     this.mutate()
-                }),
+                }, {defer: false}),
             )
         }
     },

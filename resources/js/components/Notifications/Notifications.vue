@@ -14,9 +14,7 @@ export default {
         return this.$slots.default(this)
     },
     mounted() {
-        document.addEventListener('rapidez:notification-message', (event) => {
-            const { message, type, params, link } = event.detail
-
+        window.$on('rapidez:notification-message', (message, type, params, link) => {
             this.notifications.push({
                 message: message,
                 type: type,

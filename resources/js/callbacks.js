@@ -1,3 +1,4 @@
+import { useEventListener } from '@vueuse/core';
 import { cart, clear as clearCart } from './stores/useCart'
 import { fillFromGraphqlResponse as updateOrder } from './stores/useOrder'
 import { runAfterPlaceOrderHandlers, runBeforePaymentMethodHandlers, runBeforePlaceOrderHandlers } from './stores/usePaymentHandlers'
@@ -22,12 +23,12 @@ document.addEventListener('vue:loaded', function (event) {
     vue.config.globalProperties.submitPartials = async function (form, sequential = false) {
         let promises = []
         for (const element of form.querySelectorAll('[partial-submit]')) {
-            const partialFn = element?.getAttribute('partial-submit')
-            if (!partialFn || !element?.__vue__) {
+
+            if (!element.__vnode.props.onPartialSubmit) {
                 continue
             }
 
-            const createdPromise = element.__vue__[partialFn]().then((result) => {
+            const createdPromise = element.__vnode.props.onPartialSubmit().then((result) => {
                 if (result === false) {
                     throw new Error()
                 }
@@ -74,12 +75,11 @@ document.addEventListener('vue:loaded', function (event) {
             .map((queryResponse) => ('cart' in queryResponse ? queryResponse.cart : queryResponse))
             .findLast((queryResponse) => queryResponse?.is_virtual !== undefined)
 
-        document.dispatchEvent(
-            new CustomEvent('rapidez:cart-updated', {
-                detail: {
-                    cart: cart,
-                },
-            }),
+        window.$emit(
+            'rapidez:cart-updated',
+            {
+                cart: cart,
+            }
         )
 
         return response.data
