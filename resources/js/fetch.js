@@ -82,7 +82,7 @@ export const combineGraphqlQueries = (window.combineGraphqlQueries = async funct
     return print(document)
 })
 
-let pendingQuery = []
+let pendingQuery = {}
 
 export const combiningGraphQL = (window.combiningGraphQL = async (query, variables, options = {}, name) => {
     let pendingQueryName = name ?? 'nameless'
@@ -156,7 +156,7 @@ export const magentoGraphQL = (window.magentoGraphQL = async (
             }
 
             if (options?.notifyOnError ?? true) {
-                Notify(window.config.translations.errors.session_expired)
+                Notify(window.config.translations.errors.session_expired, 'error')
             }
 
             if (options?.redirectOnExpiration ?? true) {
@@ -199,7 +199,7 @@ export const magentoAPI = (window.magentoAPI = async (
     if (!response.ok) {
         if ([401, 404].includes(response.status)) {
             if (options?.notifyOnError ?? true) {
-                Notify(window.config.translations.errors.session_expired)
+                Notify(window.config.translations.errors.session_expired, 'error')
             }
 
             if (options?.redirectOnExpiration ?? true) {
@@ -210,7 +210,7 @@ export const magentoAPI = (window.magentoAPI = async (
         }
 
         if (options?.notifyOnError ?? true) {
-            Notify(window.config.translations.errors.wrong)
+            Notify(window.config.translations.errors.wrong, 'error')
         }
 
         throw new FetchError(window.config.translations.errors.wrong, response)

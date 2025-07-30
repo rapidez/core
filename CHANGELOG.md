@@ -1,6 +1,32 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.1.0...4.1.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.2.0...4.2.0)
+## [4.2.0](https://github.com/rapidez/core/releases/tag/4.2.0) - 2025-07-22
+
+### Added
+
+- OpenSearch support (#916, #933)
+- Private / Business toggle in checkout (#919)
+
+### Changed
+
+- Playwright tests from rapidez/rapidez (#917)
+- Playwright screenshots update in one workflow (#918)
+- Wishlist position (#930)
+- Improved add to cart button loader (#922)
+- Use new accessors and mutators syntax (#923)
+
+### Fixed
+
+- Invalid login error (#899)
+- Sort super attributes correctly (#920)
+- Raise scout elasticsearch version (#925)
+- Add missing import for useDebounceFn (#932)
+- Small bugfixes (#935)
+- Backorder and fixed product taxes in cart query (#937)
+- Bugfixes (#938)
+- Use collect()->partition() to keep L11 support (#939)
+
 ## [4.1.0](https://github.com/rapidez/core/releases/tag/4.1.0) - 2025-07-01
 
 ### Added

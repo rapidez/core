@@ -9,7 +9,7 @@
             <x-rapidez::accordion.filter class="details-content:overflow-visible" v-show="items.length" canToggleShowMore>
                 <x-slot:content>
                     <ul class="flex flex-wrap gap-x-1.5 gap-y-2 items-center pr-14">
-                        <li v-for="item in withSwatches(items, filter)">
+                        <li v-for="item in listingSlotProps.withSwatches(items, filter)">
                             <template v-if="filter.visual_swatch">
                                 <x-rapidez::input.swatch.visual
                                     color="item.swatch?.swatch ?? 'none'"

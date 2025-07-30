@@ -28,7 +28,7 @@ export default {
     methods: {
         async go() {
             if (!this.email || !this.password) {
-                Notify(window.config.translations.account.email_password)
+                Notify(window.config.translations.account.email_password, 'error')
                 return false
             }
 
@@ -37,7 +37,7 @@ export default {
                 return true
             }
 
-            Notify(window.config.translations.account.login_failed)
+            Notify(window.config.translations.account.login_failed, 'error')
             return false
         },
 

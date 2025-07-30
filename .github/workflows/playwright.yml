@@ -26,15 +26,19 @@ jobs:
           - magento-version: 2.4.7-p6
             magento-php-version: php82-fpm
             rapidez-php-version: 8.2
+            shard: 1/4
           - magento-version: 2.4.7-p6
             magento-php-version: php83-fpm
             rapidez-php-version: 8.3
+            shard: 2/4
           - magento-version: 2.4.7-p6
             magento-php-version: php83-fpm
             rapidez-php-version: 8.4
+            shard: 3/4
           - magento-version: 2.4.8-p1
             magento-php-version: php84-fpm
             rapidez-php-version: 8.4
+            shard: 4/4
             screenshots: true
 
     services:
@@ -73,6 +77,7 @@ jobs:
         with:
           path: rapidez/core
           fetch-depth: 0
+          lfs: true
 
       - uses: actions/checkout@v4
         with:
@@ -99,7 +104,7 @@ jobs:
       - name: Get commit hash and tag of the core
         working-directory: ./rapidez/core
         run: |
-          echo "CORE_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
+          echo "CORE_HASH=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse HEAD | sed 's|/|_|g')" >> $GITHUB_ENV
           echo "LATEST_TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
       - name: Composer require the local rapidez/core
@@ -130,7 +135,7 @@ jobs:
         run: php artisan serve &
 
       - name: Run Playwright tests
-        run: yarn playwright test
+        run: yarn playwright test --shard ${{ matrix.shard }}
 
       # Screenshots
       - name: Update screenshots
@@ -168,7 +173,52 @@ jobs:
         with:
           name: artifact-P${{ matrix.rapidez-php-version }}-M${{matrix.magento-version}}-on-${{matrix.magento-php-version}}
           path: |
-            rapidez/rapidez/playwright-report
+            rapidez/rapidez/blob-report
             rapidez/rapidez/storage/logs/laravel.log
             docker-logs
             magento/var/log
+
+  report:
+    if: failure()
+    needs: [test]
+    runs-on: ubuntu-latest
+    env:
+      HTML_REPORT_PATH: ${{ github.repository }}/${{ github.ref_name }}/${{ github.run_id }}/${{ github.run_attempt }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: rapidez/playwright-reports
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./reports
+          merge-multiple: true
+
+      - name: Generate HTML report
+        run: npx playwright merge-reports --reporter html ./reports/rapidez/rapidez/blob-report
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+
+      - name: Push the new files to github pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.RAPIDEZ_ACTIONS_ACCOUNT_PAT }}
+          external_repository: rapidez/playwright-reports
+          publish_dir: ./playwright-report
+          destination_dir: ${{ env.HTML_REPORT_PATH }}
+
+      - name: URL in summary
+        run: echo "### Test results - https://${{ github.repository_owner }}.github.io/playwright-reports/${{ env.HTML_REPORT_PATH }}/" >> $GITHUB_STEP_SUMMARY
