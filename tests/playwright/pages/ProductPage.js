@@ -12,7 +12,8 @@ export class ProductPage {
         const product = await this.goto(url)
 
         if (qty > 1) {
-            await this.page.getByTestId('qty').fill(qty.toString())
+            await this.page.getByTestId('qty').fill('')
+            await this.page.getByTestId('qty').pressSequentially(qty.toString())
         }
 
         await this.page.getByTestId('add-to-cart').click()

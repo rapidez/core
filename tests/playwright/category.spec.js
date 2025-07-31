@@ -1,15 +1,14 @@
 import { test, expect } from '@playwright/test'
+import { BasePage } from './pages/BasePage'
 
 test('category with simple products', async ({ page }) => {
     await page.goto(process.env.CATEGORY_URL_SIMPLE)
-    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
-    await expect(page.getByTestId('newsletter-email')).toBeVisible()
-    await expect(page).toHaveScreenshot({ fullPage: true })
+    await new BasePage(page).screenshot('fullpage-footer')
 })
 
 test('category with configurable products', async ({ page }) => {
     await page.goto(process.env.CATEGORY_URL_CONFIGURABLE)
-    await expect(page).toHaveScreenshot({ fullPage: true })
+    await new BasePage(page).screenshot('fullpage-footer')
 })
 
 test('category pagination', async ({ page }) => {
@@ -20,7 +19,7 @@ test('category pagination', async ({ page }) => {
     await page.waitForLoadState('networkidle')
     const firstProductPage2 = await page.getByTestId('listing-item').first().textContent()
     expect(firstProductPage1).not.toBe(firstProductPage2)
-    await expect(page).toHaveScreenshot({ fullPage: true })
+    await new BasePage(page).screenshot('fullpage-footer')
 })
 
 test('category filter', async ({ page }) => {
@@ -39,5 +38,5 @@ test('category filter', async ({ page }) => {
 
     await filter.click()
     await expect(page.getByTestId('listing-item')).toHaveCount(count)
-    await expect(page).toHaveScreenshot({ fullPage: true })
+    await new BasePage(page).screenshot('fullpage-footer')
 })

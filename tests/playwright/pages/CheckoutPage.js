@@ -38,12 +38,15 @@ export class CheckoutPage {
     }
 
     async shippingAddress() {
+        await this.page.waitForLoadState('networkidle')
+
         const addressSelect = this.page.getByTestId('shipping-address-select')
         if (await addressSelect.isVisible()) {
             const addressCount = await addressSelect.locator('option').count()
 
             if (addressCount > 1) {
                 await addressSelect.selectOption({ index: 0 })
+                await this.page.waitForLoadState('networkidle')
                 return
             }
         }
@@ -62,11 +65,13 @@ export class CheckoutPage {
 
     async shippingMethod() {
         await this.page.getByTestId('shipping-method').first().click()
+        await this.page.waitForTimeout(200)
         await this.page.waitForLoadState('networkidle')
     }
 
     async paymentMethod() {
         await this.page.getByTestId('payment-method').first().click()
+        await this.page.waitForTimeout(200)
         await this.page.waitForLoadState('networkidle')
     }
 
@@ -76,7 +81,7 @@ export class CheckoutPage {
 
     async continue(expectedStep) {
         await this.page.getByTestId('continue').click()
-        await this.page.waitForTimeout(100)
+        await this.page.waitForTimeout(200)
         await this.page.waitForLoadState('networkidle')
         await this.page.waitForURL('**/' + expectedStep)
         if (expectedStep != 'success') {
