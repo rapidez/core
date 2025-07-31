@@ -38,9 +38,6 @@ export class CheckoutPage {
     }
 
     async shippingAddress() {
-        // TODO: Remove this timeout!
-        await this.page.waitForTimeout(500)
-
         const addressSelect = this.page.getByTestId('shipping-address-select')
         if (await addressSelect.isVisible()) {
             const addressCount = await addressSelect.locator('option').count()
@@ -61,22 +58,16 @@ export class CheckoutPage {
         await this.page.fill('[name=shipping_telephone]', '530-7972')
         await this.page.locator('input[name=shipping_telephone]').press('Tab')
         await this.page.waitForLoadState('networkidle')
-        // TODO: Remove this timeout!
-        await this.page.waitForTimeout(500)
     }
 
     async shippingMethod() {
         await this.page.getByTestId('shipping-method').first().click()
         await this.page.waitForLoadState('networkidle')
-        // TODO: Remove this timeout!
-        await this.page.waitForTimeout(500)
     }
 
     async paymentMethod() {
         await this.page.getByTestId('payment-method').first().click()
         await this.page.waitForLoadState('networkidle')
-        // TODO: Remove this timeout!
-        await this.page.waitForTimeout(500)
     }
 
     async success() {
