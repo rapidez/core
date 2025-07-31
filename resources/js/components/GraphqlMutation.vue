@@ -145,7 +145,9 @@ export default {
                     ;[query, variables, options] = await this.beforeRequest(query, variables, options)
                 }
 
-                const graphqlPromise = this.group ? combiningGraphQL(query, variables, options, this.group) : magentoGraphQL(query, variables, options);
+                const graphqlPromise = this.group
+                    ? combiningGraphQL(query, variables, options, this.group)
+                    : magentoGraphQL(query, variables, options)
                 let response = await graphqlPromise.catch(async (error) => {
                     if (!GraphQLError.prototype.isPrototypeOf(error)) {
                         throw error
