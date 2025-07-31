@@ -11,7 +11,7 @@ checkoutTypes.forEach((type) => {
         const checkoutPage = new CheckoutPage(page, type)
 
         await productPage.addToCart(process.env.PRODUCT_URL_SIMPLE)
-        await checkoutPage.checkout(`wayne+${Date.now() + Math.random()}@enterprises.com`, false, false, [
+        await checkoutPage.checkout(`wayne+${crypto.randomUUID()}@enterprises.com`, false, false, [
             'login',
             'credentials',
             'payment',
@@ -24,7 +24,7 @@ checkoutTypes.forEach((type) => {
         const checkoutPage = new CheckoutPage(page, type)
         const accountPage = new AccountPage(page)
 
-        const email = `wayne+${Date.now() + Math.random()}@enterprises.com`
+        const email = `wayne+${crypto.randomUUID()}@enterprises.com`
         const password = 'IronManSucks.91939'
 
         // Register
