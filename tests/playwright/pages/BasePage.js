@@ -34,5 +34,7 @@ export class BasePage {
             await expect(img).toHaveJSProperty('complete', true)
             await expect(img).not.toHaveJSProperty('naturalWidth', 0)
         }
+
+        await this.page.evaluate(() => window.scrollTo(0, 0))
     }
 }
