@@ -24,5 +24,6 @@ export class BasePage {
         await this.page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
         await this.page.waitForLoadState('networkidle')
         await this.page.evaluate(() => window.scrollTo(0, 0))
+        await this.page.waitForLoadState('networkidle')
     }
 }

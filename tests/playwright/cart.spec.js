@@ -1,11 +1,12 @@
 import { test, expect } from '@playwright/test'
 import { ProductPage } from './pages/ProductPage'
 import { CartPage } from './pages/CartPage'
+import { BasePage } from './pages/BasePage'
 
 test('add product simple', async ({ page }) => {
     const product = await new ProductPage(page).addToCart(process.env.PRODUCT_URL_SIMPLE)
     await new CartPage(page).firstItemIs(product)
-    await expect(page).toHaveScreenshot({ fullPage: true })
+    await new BasePage(page).screenshot('fullpage-footer')
 })
 
 test('add product simple twice', async ({ page }) => {
