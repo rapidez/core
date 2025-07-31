@@ -1,6 +1,27 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.2.0...4.2.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.3.0...4.3.0)
+## [4.3.0](https://github.com/rapidez/core/releases/tag/4.3.0) - 2025-07-29
+
+### Added
+
+- Popular products on no search results page + category position fix (#926)
+- Optional checkout login option (#950)
+- Automatically determine field mappings (#902)
+
+### Changed
+
+- Playwright reports on Github pages + screenshots in LFS (#940)
+- Use non destructuring slot props on InstantSearch components (#946)
+
+### Fixed
+
+- Playwright run on branch fix (#941)
+- Slider index fix (#947)
+- Default notification types (#948)
+- Newsletter input translation (#949)
+- Field date mapping format (#952)
+
 ## [4.2.0](https://github.com/rapidez/core/releases/tag/4.2.0) - 2025-07-22
 
 ### Added
