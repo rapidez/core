@@ -10,6 +10,7 @@ export class BasePage {
 
         if (['fullpage', 'fullpage-footer'].includes(type)) {
             await this.scrolldown()
+            await this.waitForImages()
             options = { fullPage: true }
         }
 
@@ -25,5 +26,13 @@ export class BasePage {
         await this.page.waitForLoadState('networkidle')
         await this.page.evaluate(() => window.scrollTo(0, 0))
         await this.page.waitForLoadState('networkidle')
+    }
+
+    async waitForImages() {
+        for (const img of await this.page.locator('img[loading="lazy"]:visible').all()) {
+            await img.scrollIntoViewIfNeeded()
+            await expect(img).toHaveJSProperty('complete', true)
+            await expect(img).not.toHaveJSProperty('naturalWidth', 0)
+        }
     }
 }
