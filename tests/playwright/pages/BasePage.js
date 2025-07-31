@@ -23,5 +23,6 @@ export class BasePage {
     async scrolldown() {
         await this.page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
         await this.page.waitForLoadState('networkidle')
+        await this.page.evaluate(() => window.scrollTo(0, 0))
     }
 }
