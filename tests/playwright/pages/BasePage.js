@@ -29,7 +29,12 @@ export class BasePage {
     }
 
     async waitForImages() {
-        for (const img of await this.page.locator('img[loading="lazy"]:visible').all()) {
+        const images = await this.page.locator('img[loading="lazy"]:visible').evaluateAll((imgs) =>
+            // naturalWidth doesn't work with Firefox on svgs
+            imgs.filter(img => !img.src.endsWith('.svg'))
+        )
+
+        for (const img of images) {
             await img.scrollIntoViewIfNeeded()
             await expect(img).toHaveJSProperty('complete', true)
             await expect(img).not.toHaveJSProperty('naturalWidth', 0)
