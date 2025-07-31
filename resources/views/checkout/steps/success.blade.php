@@ -4,7 +4,7 @@
             <h1 class="font-bold text-4xl mb-5">@lang('Order placed succesfully')</h1>
             <div class="bg rounded p-8">
                 <p>@lang('We will get to work for you right away')</p>
-                <p>@lang('We will send a confirmation of your order to') <span class="font-bold" data-testid="masked">@{{ order.email }}</span></p>
+                <p data-testid="masked">@lang('We will send a confirmation of your order to') <span class="font-bold">@{{ order.email }}</span></p>
                 <p>@lang('Your order is currently:') <span class="font-bold">@{{ order.status }}</span> <a class="inline-block" href="#" v-on:click.prevent="(e) => {e.target.classList.add('animate-spin'); refreshOrder().finally(() => e.target.classList.remove('animate-spin'))}">&#8635;</a></p>
             </div>
 
