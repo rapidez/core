@@ -5,3 +5,8 @@ test('homepage', async ({ page }) => {
     await page.goto('/')
     await new BasePage(page).screenshot('fullpage-footer')
 })
+
+test('wcag', async ({ page }, testInfo) => {
+    await page.goto('/')
+    await new BasePage(page).wcag(testInfo, 'page-has-heading-one')
+})

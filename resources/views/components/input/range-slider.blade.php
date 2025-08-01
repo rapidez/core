@@ -16,6 +16,7 @@
                 v-model="rangeInputScope.minValue"
                 v-on:change="rangeInputScope.updateRefinement"
                 class="range-min absolute pointer-events-none appearance-none z-20 h-5 w-full opacity-0 cursor-pointer [&::-moz-range-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:pointer-events-auto"
+                aria-label="@lang('Price from')"
             >
 
             <input
@@ -26,6 +27,7 @@
                 v-model="rangeInputScope.maxValue"
                 v-on:change="rangeInputScope.updateRefinement"
                 class="range-max absolute pointer-events-none appearance-none z-20 h-5 w-full opacity-0 cursor-pointer [&::-moz-range-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:pointer-events-auto"
+                aria-label="@lang('Price to')"
             >
 
             <div class="relative z-10 w-full mx-2 h-4">
@@ -71,6 +73,7 @@
                         v-model.lazy="rangeInputScope.minValue"
                         v-on:change="rangeInputScope.updateRefinement"
                         class="text-center arrows-hidden"
+                        aria-label="@lang('Price from')"
                     />
                     <span
                         v-if="prefix"
@@ -94,6 +97,7 @@
                         v-model.lazy="rangeInputScope.maxValue"
                         v-on:change="rangeInputScope.updateRefinement"
                         class="text-center arrows-hidden"
+                        aria-label="@lang('Price to')"
                     />
                     <span
                         v-if="prefix"

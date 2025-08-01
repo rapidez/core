@@ -40,3 +40,8 @@ test('category filter', async ({ page }) => {
     await expect(page.getByTestId('listing-item')).toHaveCount(count)
     await new BasePage(page).screenshot('fullpage-footer-images')
 })
+
+test('wcag', async ({ page }, testInfo) => {
+    await page.goto(process.env.CATEGORY_URL_SIMPLE)
+    await new BasePage(page).wcag(testInfo)
+})
