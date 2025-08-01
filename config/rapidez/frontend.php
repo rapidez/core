@@ -27,6 +27,9 @@ return [
         // 'onestep',
     ],
 
+    // If set to false, you will be required to log in when attempting to check out with an existing email address
+    'allow_guest_on_existing_account' => false,
+
     'autocomplete' => [
         // Attach additional indexes to the autocomplete
         // Uses the views in rapidez::layouts.partials.header.autocomplete

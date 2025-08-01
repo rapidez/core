@@ -32,9 +32,9 @@
             <div v-if="slidesTotal > 1" class="flex flex-row justify-center w-full mt-9">
                 <div
                     v-for="index in slidesTotal"
-                    v-on:click="navigate(index)"
+                    v-on:click="navigate(index - 1)"
                     class="relative bg rounded-full border size-4 mx-1 cursor-pointer"
-                    :class="{ 'bg-active border-active': index === currentSlide }">
+                    :class="{ 'bg-active border-active': index - 1 === currentSlide }">
                 </div>
             </div>
         @endslotdefault

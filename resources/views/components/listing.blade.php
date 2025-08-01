@@ -8,17 +8,17 @@
 <div class="min-h-screen">
     <listing
         {{ $attributes }}
-        v-slot="{ loaded, index, searchClient, rangeAttributes, categoryAttributes, hitsPerPage, filters, sortOptions, withFilters, withSwatches, routing, middlewares }"
+        v-slot="listingSlotProps"
         v-cloak
         v-bind:root-path='@json($rootPath)'
     >
         <div>
             <ais-instant-search
-                v-if="searchClient"
-                :search-client="searchClient"
-                :middlewares="middlewares"
-                :index-name="index"
-                :routing="routing"
+                v-if="listingSlotProps.searchClient"
+                :search-client="listingSlotProps.searchClient"
+                :middlewares="listingSlotProps.middlewares"
+                :index-name="listingSlotProps.index"
+                :routing="listingSlotProps.routing"
             >
                 {{ $before ?? '' }}
 

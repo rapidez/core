@@ -1,12 +1,12 @@
 <ais-state-results v-slot="{ state: { query: searchQuery } }">
     <div>
-        <div v-if="searchHistory && searchHistory?.filter(([query, metadata]) => query.includes(searchQuery.toLowerCase())).length" class="border-b py-2">
+        <div v-if="autocompleteSlotProps.searchHistory && autocompleteSlotProps.searchHistory?.filter(([query, metadata]) => query.includes(searchQuery.toLowerCase())).length" class="border-b py-2">
             <x-rapidez::autocomplete.title>
                 @lang('Previous Searches')
             </x-rapidez::autocomplete.title>
             <ul class="flex flex-col font-sans">
                 <li
-                    v-for="[query, metadata] in searchHistory
+                    v-for="[query, metadata] in autocompleteSlotProps.searchHistory
                         .filter(([query, metadata]) => query.includes(searchQuery.toLowerCase()))
                         .slice(0, {{ Arr::get($fields, 'size', config('rapidez.frontend.autocomplete.size', 3)) }})"
                     class="flex flex-1 items-center w-full hover:bg-muted"
@@ -22,7 +22,7 @@
             </ul>
             {{-- Add search suggestions to the phone's keyboard --}}
             <datalist id="search-history" v-if="window.matchMedia('(pointer:coarse)').matches">
-                <option v-bind:value="query" v-for="[query, metadata] in searchHistory"></option>
+                <option v-bind:value="query" v-for="[query, metadata] in autocompleteSlotProps.searchHistory"></option>
             </datalist>
         </div>
     </div>
