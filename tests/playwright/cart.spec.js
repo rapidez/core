@@ -31,3 +31,9 @@ test('remove product', async ({ page }) => {
     await page.waitForLoadState('networkidle')
     await expect(page.getByTestId('cart-item')).toHaveCount(0)
 })
+
+test('wcag', async ({ page }, testInfo) => {
+    const product = await new ProductPage(page).addToCart(process.env.PRODUCT_URL_SIMPLE)
+    await new CartPage(page).gotoCart()
+    await new BasePage(page).wcag(testInfo)
+})

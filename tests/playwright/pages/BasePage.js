@@ -1,4 +1,5 @@
 import { expect } from '@playwright/test'
+import AxeBuilder from '@axe-core/playwright'
 
 export class BasePage {
     constructor(page) {
@@ -39,5 +40,19 @@ export class BasePage {
         }
 
         await this.page.evaluate(() => window.scrollTo(0, 0))
+    }
+
+    async wcag(testInfo, disabledRules = []) {
+        const page = this.page
+        const accessibilityScanResults = await new AxeBuilder({ page })
+            .disableRules(disabledRules)
+            .analyze()
+
+        await testInfo.attach('accessibility-scan-results', {
+            body: JSON.stringify(accessibilityScanResults, null, 2),
+            contentType: 'application/json'
+        })
+
+        expect(accessibilityScanResults.violations).toEqual([])
     }
 }
