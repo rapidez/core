@@ -47,7 +47,6 @@
         href="{{ route('checkout') }}"
         class="w-full text-center"
         v-bind:class="{ 'pointer-events-none': !canOrder }"
-        dusk="checkout"
     >
         @lang('Checkout')
     </x-rapidez::button.conversion>
