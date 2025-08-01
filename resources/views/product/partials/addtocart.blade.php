@@ -8,7 +8,7 @@
         @if (!$product->in_stock && $product->backorder_type === 0)
             <p class="text-red-600">@lang('Sorry! This product is currently out of stock.')</p>
         @else
-            @include('rapidez::product.partials.super_attributes')
+            @include('rapidez::product.partials.super-attributes')
             @include('rapidez::product.partials.options')
 
             @if ($product->qty <= 0 && $product->backorder_type == 2)
