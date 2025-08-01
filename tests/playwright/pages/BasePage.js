@@ -44,13 +44,11 @@ export class BasePage {
 
     async wcag(testInfo, disabledRules = []) {
         const page = this.page
-        const accessibilityScanResults = await new AxeBuilder({ page })
-            .disableRules(disabledRules)
-            .analyze()
+        const accessibilityScanResults = await new AxeBuilder({ page }).disableRules(disabledRules).analyze()
 
         await testInfo.attach('accessibility-scan-results', {
             body: JSON.stringify(accessibilityScanResults, null, 2),
-            contentType: 'application/json'
+            contentType: 'application/json',
         })
 
         expect(accessibilityScanResults.violations).toEqual([])
