@@ -30,7 +30,7 @@
                     </template>
                 </div>
             </x-slot:content>
-        </x-rapidez::details>
+        </x-rapidez::accordion.filter>
     </template>
 </ais-refinement-list>
 
