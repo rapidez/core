@@ -31,7 +31,7 @@ export class BasePage {
     async waitForImages() {
         const images = await this.page.locator('img[loading="lazy"]:visible').evaluateAll((imgs) =>
             // naturalWidth doesn't work with Firefox on svgs
-            imgs.filter(img => !img.src.endsWith('.svg'))
+            imgs.filter((img) => !img.src.endsWith('.svg')),
         )
 
         for (const img of images) {
