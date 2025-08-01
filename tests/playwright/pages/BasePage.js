@@ -8,14 +8,17 @@ export class BasePage {
     async screenshot(type) {
         let options = {}
 
-        if (['fullpage', 'fullpage-footer'].includes(type)) {
+        if (type.startsWith('fullpage')) {
             await this.scrolldown()
-            await this.waitForImages()
             options = { fullPage: true }
         }
 
-        if (type == 'fullpage-footer') {
+        if (type.startsWith('fullpage-footer')) {
             await expect(this.page.getByTestId('newsletter-email')).toBeVisible()
+        }
+
+        if (type == 'fullpage-footer-images') {
+            await this.waitForImages()
         }
 
         await expect(this.page).toHaveScreenshot(options)
@@ -29,12 +32,7 @@ export class BasePage {
     }
 
     async waitForImages() {
-        const images = await this.page.locator('img[loading="lazy"]:visible').evaluateAll((imgs) =>
-            // naturalWidth doesn't work with Firefox on svgs
-            imgs.filter(img => !img.src.endsWith('.svg'))
-        )
-
-        for (const img of images) {
+        for (const img of await this.page.locator('img[loading="lazy"]:visible').all()) {
             await img.scrollIntoViewIfNeeded()
             await expect(img).toHaveJSProperty('complete', true)
             await expect(img).not.toHaveJSProperty('naturalWidth', 0)
