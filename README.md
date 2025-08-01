@@ -12,7 +12,7 @@ Just run `./vendor/bin/phpunit`
 
 - Make sure Rapidez is working in your browser
 - Run the tests with `yarn playwright test`
-- Run the tests from a UI `yarn playwright test --ui`
+- Alternatively, run the tests from a UI with `yarn playwright test --ui`
 - Update the screenshots with `yarn playwright test --update-snapshots`
 
 ## License
