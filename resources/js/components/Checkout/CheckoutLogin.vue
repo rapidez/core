@@ -13,6 +13,10 @@ export default {
             type: Boolean,
             default: true,
         },
+        allowPasswordless: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data: () => ({
@@ -36,7 +40,8 @@ export default {
             }
 
             let isAvailable = await this.checkEmailAvailability()
-            if (!isAvailable && !this.password) {
+
+            if (!this.allowPasswordless && !isAvailable && !this.password) {
                 return false
             }
 
