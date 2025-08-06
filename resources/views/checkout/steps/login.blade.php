@@ -16,7 +16,7 @@
                 <x-rapidez::input.password
                     name="password"
                     v-model="checkoutLogin.password"
-                    required
+                    v-bind:required="checkoutLogin.createAccount || !checkoutLogin.allowPasswordless ? 'required' : null"
                 />
             </label>
         </template>
