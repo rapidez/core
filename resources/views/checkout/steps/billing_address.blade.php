@@ -8,6 +8,7 @@
         country_code: cart.billing_address?.country.code || window.address_defaults.country_code,
         region_id: cart.billing_address?.region.region_id || window.address_defaults.region_id,
     }))"
+    :watch-ignore="['same_as_shipping']"
     :before-request="(query, variables, options) => [variables.customer_address_id ? config.queries.setExistingBillingAddressOnCart : query, variables, options]"
     :callback="updateCart"
     :error-callback="checkResponseForExpiredCart"

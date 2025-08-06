@@ -21,6 +21,10 @@ export default {
             type: Boolean,
             default: true,
         },
+        watchIgnore: {
+            type: Array,
+            default: () => []
+        },
         redirect: {
             type: String,
             default: '',
@@ -102,7 +106,10 @@ export default {
     watch: {
         variables: function (variables, old) {
             if (this.watch) {
-                const diff = objectDiff(old, variables)
+                let diff = objectDiff(old, variables)
+
+                // Remove ignored variables
+                diff = Object.fromEntries(Object.entries(diff).filter(([key, _]) => !this.watchIgnore.includes(key)))
                 if (Object.keys(diff).length === 0) {
                     return
                 }
@@ -145,10 +152,9 @@ export default {
                     ;[query, variables, options] = await this.beforeRequest(query, variables, options)
                 }
 
-                const graphqlPromise = this.group
-                    ? combiningGraphQL(query, variables, options, this.group)
-                    : magentoGraphQL(query, variables, options)
-                let response = await graphqlPromise.catch(async (error) => {
+                let response = await (
+                    this.group ? combiningGraphQL(query, variables, options, this.group) : magentoGraphQL(query, variables, options)
+                ).catch(async (error) => {
                     if (!GraphQLError.prototype.isPrototypeOf(error)) {
                         throw error
                     }
