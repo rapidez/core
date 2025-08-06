@@ -10,11 +10,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Rapidez\Core\Models\Scopes\Product\ForCurrentWebsiteScope;
+use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
 use Rapidez\Core\Models\Traits\HasCustomAttributes;
 
 class Product extends Model
 {
     use HasCustomAttributes;
+    use HasAlternatesThroughRewrites;
 
     public const VISIBILITY_NOT_VISIBLE = 1;
     public const VISIBILITY_IN_CATALOG = 2;
@@ -41,6 +43,11 @@ class Product extends Model
         static::addGlobalScope(ForCurrentWebsiteScope::class);
         static::addGlobalScope('customAttributes', fn (Builder $builder) => $builder->withCustomAttributes());
         static::addGlobalScope('onlyEnabled', fn (Builder $builder) => $builder->whereAttribute('status', static::STATUS_ENABLED));
+    }
+
+    protected static function getEntityType(): string
+    {
+        return 'product';
     }
 
     public function gallery(): BelongsToMany
@@ -80,6 +87,23 @@ class Product extends Model
             'entity_id',
             'product_id',
         );
+    }
+
+    public function options(): HasMany
+    {
+        return $this->hasMany(
+            config('rapidez.models.product_option'),
+            'product_id',
+        );
+    }
+
+    public function categoryProducts(): HasMany
+    {
+        return $this
+            ->hasMany(
+                config('rapidez.models.category_product'),
+                'product_id',
+            );
     }
 
     public function superAttributes(): HasMany
