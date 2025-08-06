@@ -15,8 +15,8 @@ use Rapidez\Core\Models\Traits\HasCustomAttributes;
 
 class Product extends Model
 {
-    use HasCustomAttributes;
     use HasAlternatesThroughRewrites;
+    use HasCustomAttributes;
 
     public const VISIBILITY_NOT_VISIBLE = 1;
     public const VISIBILITY_IN_CATALOG = 2;
