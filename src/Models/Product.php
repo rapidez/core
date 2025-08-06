@@ -146,7 +146,7 @@ class Product extends Model
 
     protected function prices(): Attribute
     {
-         return Attribute::get(function (): ?Collection {
+        return Attribute::get(function (): ?Collection {
             if (! in_array($this->type_id, ['configurable', 'grouped'])) {
                 return null;
             }
@@ -159,7 +159,7 @@ class Product extends Model
     {
         return Attribute::get(function (?float $specialPrice): ?float {
             if (! in_array($this->type_id, ['configurable', 'grouped'])) {
-                if (!now()->isBetween(
+                if (! now()->isBetween(
                     $this->special_from_date ?? now()->subHour(),
                     $this->special_to_date ?? now()->addHour(),
                 )) {
