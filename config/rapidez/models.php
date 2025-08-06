@@ -24,6 +24,7 @@ return [
     'product_option_type_price' => Rapidez\Core\Models\ProductOptionTypePrice::class,
     'product_option_type_value' => Rapidez\Core\Models\ProductOptionTypeValue::class,
     'product_review_summary'    => Rapidez\Core\Models\ProductReviewSummary::class,
+    'product_stock'             => Rapidez\Core\Models\ProductStock::class,
     'quote'                     => Rapidez\Core\Models\Quote::class,
     'quote_id_mask'             => Rapidez\Core\Models\QuoteIdMask::class,
     'quote_item'                => Rapidez\Core\Models\QuoteItem::class,
@@ -39,4 +40,5 @@ return [
     'sales_order_payment'       => Rapidez\Core\Models\SalesOrderPayment::class,
     'search_query'              => Rapidez\Core\Models\SearchQuery::class,
     'search_synonym'            => Rapidez\Core\Models\SearchSynonym::class,
+    'super_attribute'           => Rapidez\Core\Models\SuperAttribute::class,
 ];

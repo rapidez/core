@@ -135,4 +135,18 @@ trait HasCustomAttributes
     {
         return $this->customAttributes[$key] ?? null;
     }
+
+    public function getAttribute($key)
+    {
+        if (! $key) {
+            return;
+        }
+
+        $value = parent::getAttribute($key);
+        if ($value !== null) {
+            return $value;
+        }
+
+        return $this->getCustomAttribute($key)?->value;
+    }
 }

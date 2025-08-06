@@ -9,14 +9,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Scopes\Product\ForCurrentWebsiteScope;
 use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
 use Rapidez\Core\Models\Traits\HasCustomAttributes;
+use Rapidez\Core\Models\Traits\Product\HasSuperAttributes;
 
 class Product extends Model
 {
     use HasAlternatesThroughRewrites;
     use HasCustomAttributes;
+    use HasSuperAttributes;
 
     public const VISIBILITY_NOT_VISIBLE = 1;
     public const VISIBILITY_IN_CATALOG = 2;
@@ -55,6 +60,13 @@ class Product extends Model
         );
     }
 
+    protected function images(): Attribute
+    {
+        return Attribute::get(
+            fn (): array => $this->gallery->sortBy('productImageValue.position')->pluck('value')->toArray()
+        )->shouldCache();
+    }
+
     public function parent(): HasOneThrough
     {
         return $this->hasOneThrough(
@@ -78,7 +90,7 @@ class Product extends Model
     public function stock(): BelongsTo
     {
         return $this->belongsTo(
-            ProductStock::class,
+            config('rapidez.models.product_stock'),
             'entity_id',
             'product_id',
         );
@@ -101,42 +113,60 @@ class Product extends Model
             );
     }
 
-    public function superAttributes(): HasMany
+    private function getImageFrom(?string $image): ?string
     {
-        return $this->hasMany(
-            SuperAttribute::class,
-            'product_id',
-        )->orderBy('position');
+        return $image !== 'no_selection' ? $image : null;
     }
 
-    public function superAttributeValues(): Attribute
+    protected function image(): Attribute
     {
-        return Attribute::get(function () {
-            return $this->superAttributes
-                ->sortBy('position')
-                ->mapWithKeys(fn ($attribute) => [
-                    $attribute->attribute_code => $this->children->mapWithKeys(function ($child) use ($attribute) {
-                        return [$child->entity_id => [
-                            'label'      => $child->{$attribute->attribute_code},
-                            'value'      => $child->customAttributes[$attribute->attribute_code]->value_id,
-                            'sort_order' => $child->customAttributes[$attribute->attribute_code]->sort_order,
-                        ]];
-                    }),
-                ]);
-        });
+        return Attribute::get($this->getImageFrom(...));
     }
 
-    public function getAttribute($key)
+    protected function smallImage(): Attribute
     {
-        if (! $key) {
-            return;
-        }
+        return Attribute::get($this->getImageFrom(...));
+    }
 
-        $value = parent::getAttribute($key);
-        if ($value !== null) {
-            return $value;
-        }
+    protected function thumbnail(): Attribute
+    {
+        return Attribute::get($this->getImageFrom(...));
+    }
 
-        return $this->getCustomAttribute($key)?->value;
+    protected function url(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): string => '/' . ($this->url_key ? $this->url_key . Rapidez::config('catalog/seo/product_url_suffix') : 'catalog/product/view/id/' . $this->entity_id)
+        );
+    }
+
+    protected function price(): Attribute
+    {
+        return Attribute::get(function (?float $price): ?float {
+            if ($this->type_id == 'configurable') {
+                return collect($this->children)->min->price;
+            }
+
+            if ($this->type_id == 'grouped') {
+                return collect($this->grouped)->min->price;
+            }
+
+            return $price;
+        })->shouldCache();
+    }
+
+    protected function prices(): Attribute
+    {
+         return Attribute::get(function (): ?Collection {
+            if ($this->type_id == 'configurable') {
+                return collect($this->children)->pluck('price');
+            }
+
+            if ($this->type_id == 'grouped') {
+                return collect($this->grouped)->pluck('price');
+            }
+
+            return null;
+        })->shouldCache();
     }
 }
