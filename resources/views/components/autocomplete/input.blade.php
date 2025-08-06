@@ -1,3 +1,5 @@
+@props(['id' => 'autocomplete-input'])
+
 <form
     id="autocomplete-form"
     method="get"
@@ -8,7 +10,7 @@
 >
     <x-rapidez::input
         {{ $attributes->merge([
-            'id' => 'autocomplete-input',
+            'id' => $id,
             'type' => 'search',
             'name' => 'q',
             'autocomplete' => 'off',
