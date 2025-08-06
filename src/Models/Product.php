@@ -29,11 +29,6 @@ class Product extends Model
     protected $table = 'catalog_product_entity';
     protected $primaryKey = 'entity_id';
 
-    protected $casts = [
-        self::UPDATED_AT => 'datetime',
-        self::CREATED_AT => 'datetime',
-    ];
-
     protected $with = ['stock', 'superAttributes'];
 
     protected static function boot(): void
