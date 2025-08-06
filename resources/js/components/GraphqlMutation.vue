@@ -23,7 +23,7 @@ export default {
         },
         watchIgnore: {
             type: Array,
-            default: () => []
+            default: () => [],
         },
         redirect: {
             type: String,
