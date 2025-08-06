@@ -1,7 +1,7 @@
 <div v-bind:key="item.entity_id" class="px-5 py-10" data-testid="listing-item">
     <add-to-cart v-bind:product="item" v-slot="addToCart" v-cloak>
         <div class="group relative flex flex-1 flex-col rounded bg-white h-full">
-            <a :href="addToCart.productUrl | url" v-on:click="listingSlotProps.sendEvent('click', item, 'Hit Clicked')" class="block mb-auto">
+            <a :href="addToCart.productUrl | url" v-on:click="sendEvent('click', item, 'Hit Clicked')" class="block mb-auto">
                 <img
                     v-if="addToCart.currentThumbnail"
                     :src="'/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + addToCart.currentThumbnail + '.webp'"
