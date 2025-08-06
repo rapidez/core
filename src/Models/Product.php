@@ -2,46 +2,29 @@
 
 namespace Rapidez\Core\Models;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
-use Rapidez\Core\Casts\Children;
-use Rapidez\Core\Casts\CommaSeparatedToArray;
-use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
-use Rapidez\Core\Casts\DecodeHtmlEntities;
-use Rapidez\Core\Facades\Rapidez;
-use Rapidez\Core\Models\Scopes\Product\WithProductAttributesScope;
-use Rapidez\Core\Models\Scopes\Product\WithProductCategoryInfoScope;
-use Rapidez\Core\Models\Scopes\Product\WithProductChildrenScope;
-use Rapidez\Core\Models\Scopes\Product\WithProductGroupedScope;
-use Rapidez\Core\Models\Scopes\Product\WithProductRelationIdsScope;
-use Rapidez\Core\Models\Scopes\Product\WithProductStockScope;
-use Rapidez\Core\Models\Scopes\Product\WithProductSuperAttributesScope;
-use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
-use Rapidez\Core\Models\Traits\Product\CastMultiselectAttributes;
-use Rapidez\Core\Models\Traits\Product\CastSuperAttributes;
-use Rapidez\Core\Models\Traits\Product\Searchable;
-use Rapidez\Core\Models\Traits\Product\SelectAttributeScopes;
-use TorMorten\Eventy\Facades\Eventy;
+use Rapidez\Core\Models\Scopes\Product\ForCurrentWebsiteScope;
+use Rapidez\Core\Models\Traits\HasCustomAttributes;
 
 class Product extends Model
 {
-    use CastMultiselectAttributes;
-    use CastSuperAttributes;
-    use HasAlternatesThroughRewrites;
-    use Searchable;
-    use SelectAttributeScopes;
+    use HasCustomAttributes;
 
     public const VISIBILITY_NOT_VISIBLE = 1;
     public const VISIBILITY_IN_CATALOG = 2;
     public const VISIBILITY_IN_SEARCH = 3;
     public const VISIBILITY_BOTH = 4;
 
-    public array $attributesToSelect = [];
+    public const STATUS_ENABLED = 1;
+    public const STATUS_DISABLED = 2;
 
+    protected $table = 'catalog_product_entity';
     protected $primaryKey = 'entity_id';
 
     protected $casts = [
@@ -49,53 +32,15 @@ class Product extends Model
         self::CREATED_AT => 'datetime',
     ];
 
-    protected $appends = ['url'];
+    protected $with = ['stock', 'superAttributes'];
 
-    protected static function booting(): void
+    protected static function boot(): void
     {
-        static::addGlobalScope(new WithProductAttributesScope);
-        static::addGlobalScope(new WithProductSuperAttributesScope);
-        static::addGlobalScope(new WithProductStockScope);
-        static::addGlobalScope(new WithProductCategoryInfoScope);
-        static::addGlobalScope(new WithProductRelationIdsScope);
-        static::addGlobalScope(new WithProductChildrenScope);
-        static::addGlobalScope(new WithProductGroupedScope);
-        static::addGlobalScope('defaults', function (Builder $builder) {
-            $builder
-                ->whereNotIn($builder->getQuery()->from . '.type_id', ['bundle'])
-                ->groupBy($builder->getQuery()->from . '.entity_id');
-        });
-    }
+        parent::boot();
 
-    public function getTable(): string
-    {
-        return 'catalog_product_flat_' . config('rapidez.store');
-    }
-
-    public function getCasts(): array
-    {
-        if (! isset($this->casts['name'])) {
-            $this->casts = array_merge(
-                parent::getCasts(),
-                [
-                    'name'           => DecodeHtmlEntities::class,
-                    'category_ids'   => CommaSeparatedToIntegerArray::class,
-                    'category_paths' => CommaSeparatedToArray::class,
-                    'relation_ids'   => CommaSeparatedToIntegerArray::class,
-                    'upsell_ids'     => CommaSeparatedToIntegerArray::class,
-                    'children'       => Children::class,
-                    'grouped'        => Children::class,
-                    'qty_increments' => 'int',
-                    'min_sale_qty'   => 'int',
-                    'max_sale_qty'   => 'int',
-                ],
-                $this->getSuperAttributeCasts(),
-                $this->getMultiselectAttributeCasts(),
-                Eventy::filter(static::getModelName() . '.casts', []),
-            );
-        }
-
-        return $this->casts;
+        static::addGlobalScope(ForCurrentWebsiteScope::class);
+        static::addGlobalScope('customAttributes', fn (Builder $builder) => $builder->withCustomAttributes());
+        static::addGlobalScope('onlyEnabled', fn (Builder $builder) => $builder->whereAttribute('status', static::STATUS_ENABLED));
     }
 
     public function gallery(): BelongsToMany
@@ -108,47 +53,6 @@ class Product extends Model
         );
     }
 
-    public function views(): HasMany
-    {
-        return $this->hasMany(
-            config('rapidez.models.product_view'),
-            'product_id',
-        );
-    }
-
-    public function options(): HasMany
-    {
-        return $this->hasMany(
-            config('rapidez.models.product_option'),
-            'product_id',
-        );
-    }
-
-    public function categoryProducts(): HasMany
-    {
-        return $this
-            ->hasMany(
-                config('rapidez.models.category_product'),
-                'product_id',
-            );
-    }
-
-    public function reviewSummary(): HasOne
-    {
-        return $this->hasOne(
-            config('rapidez.models.product_review_summary', \Rapidez\Core\Models\ProductReviewSummary::class),
-            'entity_pk_value'
-        );
-    }
-
-    public function rewrites(): HasMany
-    {
-        return $this
-            ->hasMany(config('rapidez.models.rewrite'), 'entity_id')
-            ->withoutGlobalScope('store')
-            ->where('entity_type', 'product');
-    }
-
     public function parent(): HasOneThrough
     {
         return $this->hasOneThrough(
@@ -156,150 +60,63 @@ class Product extends Model
             config('rapidez.models.product_link'),
             'product_id', 'entity_id',
             'entity_id', 'parent_id'
-        )->withoutGlobalScopes();
-    }
-
-    public function scopeByIds(Builder $query, array $productIds): Builder
-    {
-        return $query->whereIn($this->getQualifiedKeyName(), $productIds);
-    }
-
-    protected function price(): Attribute
-    {
-        return Attribute::make(
-            get: function (?float $price): ?float {
-                if ($this->type_id == 'configurable') {
-                    return collect($this->children)->min->price;
-                }
-
-                if ($this->type_id == 'grouped') {
-                    return collect($this->grouped)->min->price;
-                }
-
-                return $price;
-            }
         );
     }
 
-    protected function specialPrice(): Attribute
+    public function children(): HasManyThrough
     {
-        return Attribute::make(
-            get: function (?float $specialPrice): ?float {
-                if (! in_array($this->type_id, ['configurable', 'grouped'])) {
-                    if ($this->special_from_date && $this->special_from_date > now()->toDateTimeString()) {
-                        return null;
-                    }
-
-                    if ($this->special_to_date && $this->special_to_date < now()->toDateTimeString()) {
-                        return null;
-                    }
-
-                    return $specialPrice < $this->price ? $specialPrice : null;
-                }
-
-                return collect($this->type_id == 'configurable' ? $this->children : $this->grouped)->filter(function ($child) {
-                    if (! $child->special_price) {
-                        return false;
-                    }
-
-                    if (isset($child->special_from_date) && $child->special_from_date > now()->toDateTimeString()) {
-                        return false;
-                    }
-
-                    if (isset($child->special_to_date) && $child->special_to_date < now()->toDateTimeString()) {
-                        return false;
-                    }
-
-                    return true;
-                })->min->special_price;
-            }
+        return $this->hasManyThrough(
+            config('rapidez.models.product'),
+            config('rapidez.models.product_link'),
+            'parent_id', 'entity_id',
+            'entity_id', 'product_id'
         );
     }
 
-    protected function minSaleQty(): Attribute
+    public function stock(): BelongsTo
     {
-        return Attribute::make(
-            get: function (?int $minSaleQty): ?int {
-                if (! $this->qty_increments) {
-                    return $minSaleQty;
-                }
-                $remainder = $minSaleQty % $this->qty_increments;
-                if ($remainder === 0) {
-                    return $minSaleQty;
-                }
-
-                return $minSaleQty - $remainder + $this->qty_increments;
-            }
+        return $this->belongsTo(
+            ProductStock::class,
+            'entity_id',
+            'product_id',
         );
     }
 
-    protected function url(): Attribute
+    public function superAttributes(): HasMany
     {
-        return Attribute::make(
-            get: fn (): string => '/' . ($this->url_key ? $this->url_key . Rapidez::config('catalog/seo/product_url_suffix') : 'catalog/product/view/id/' . $this->entity_id)
-        );
+        return $this->hasMany(
+            SuperAttribute::class,
+            'product_id',
+        )->orderBy('position');
     }
 
-    protected function images(): Attribute
+    public function superAttributeValues(): Attribute
     {
-        return Attribute::make(
-            get: fn (): array => $this->gallery->sortBy('productImageValue.position')->pluck('value')->toArray()
-        )->shouldCache();
+        return Attribute::get(function () {
+            return $this->superAttributes
+                ->sortBy('position')
+                ->mapWithKeys(fn ($attribute) => [
+                    $attribute->attribute_code => $this->children->mapWithKeys(function ($child) use ($attribute) {
+                        return [$child->entity_id => [
+                            'label'      => $child->{$attribute->attribute_code},
+                            'value'      => $child->customAttributes[$attribute->attribute_code]->value_id,
+                            'sort_order' => $child->customAttributes[$attribute->attribute_code]->sort_order,
+                        ]];
+                    }),
+                ]);
+        });
     }
 
-    private function getImageFrom(?string $image): ?string
+    public function getAttribute($key)
     {
-        return $image !== 'no_selection' ? $image : null;
-    }
+        if (! $key) {
+            return;
+        }
 
-    protected function image(): Attribute
-    {
-        return Attribute::make(
-            get: $this->getImageFrom(...)
-        );
-    }
+        if ($value = parent::getAttribute($key)) {
+            return $value;
+        }
 
-    protected function smallImage(): Attribute
-    {
-        return Attribute::make(
-            get: $this->getImageFrom(...)
-        );
-    }
-
-    protected function thumbnail(): Attribute
-    {
-        return Attribute::make(
-            get: $this->getImageFrom(...)
-        );
-    }
-
-    protected function breadcrumbCategories(): Attribute
-    {
-        return Attribute::make(
-            get: function (): iterable {
-                if (! $path = session('latest_category_path')) {
-                    return [];
-                }
-
-                $categoryIds = explode('/', $path);
-                $categoryIds = array_slice($categoryIds, array_search(config('rapidez.root_category_id'), $categoryIds) + 1);
-
-                if (! in_array(end($categoryIds), $this->category_ids)) {
-                    return [];
-                }
-
-                $categoryModel = config('rapidez.models.category');
-                $categoryTable = (new $categoryModel)->getTable();
-
-                return Category::whereIn($categoryTable . '.entity_id', $categoryIds)
-                    ->orderByRaw('FIELD(' . $categoryTable . '.entity_id,' . implode(',', $categoryIds) . ')')
-                    ->get();
-            },
-        )->shouldCache();
-    }
-
-    public static function exist($productId): bool
-    {
-        return self::withoutGlobalScopes()->where('entity_id', $productId)->exists();
+        return $this->getCustomAttribute($key)?->value;
     }
 }

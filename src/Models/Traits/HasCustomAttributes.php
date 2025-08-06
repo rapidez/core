@@ -3,9 +3,9 @@
 namespace Rapidez\Core\Models\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Casts\Attribute as AttributeCast;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Rapidez\Core\Models\Attribute as AttributeModel;
+use Rapidez\Core\Models\Attribute;
 use Rapidez\Core\Models\AttributeDatetime;
 use Rapidez\Core\Models\AttributeDecimal;
 use Rapidez\Core\Models\AttributeInt;
@@ -14,24 +14,42 @@ use Rapidez\Core\Models\AttributeVarchar;
 
 trait HasCustomAttributes
 {
-    public function scopeWithCustomAttributes(Builder $builder)
+    public function scopeWithCustomAttributes(Builder $builder, ?callable $callback = null)
     {
-        $builder->with([
-            'attributeDatetime',
-            'attributeDecimal',
-            'attributeInt',
-            'attributeText',
-            'attributeVarchar',
-        ]);
+        if ($callback) {
+            $builder->with([
+                'attributeDatetime' => $callback,
+                'attributeDecimal'  => $callback,
+                'attributeInt'      => $callback,
+                'attributeText'     => $callback,
+                'attributeVarchar'  => $callback,
+            ]);
+        } else {
+            $builder->with([
+                'attributeDatetime',
+                'attributeDecimal',
+                'attributeInt',
+                'attributeText',
+                'attributeVarchar',
+            ]);
+        }
+    }
+
+    public function scopeAttributeHas(Builder $builder, string $attributeCode, callable $callback)
+    {
+        $type = Attribute::getCached()[$attributeCode]->backend_type ?? 'varchar';
+
+        return $builder->whereHas(
+            'attribute' . ucfirst($type),
+            $callback,
+        );
     }
 
     public function scopeWhereAttribute(Builder $builder, string $attributeCode, $operator = null, $value = null)
     {
-        $type = AttributeModel::getCached()[$attributeCode]->backend_type ?? 'varchar';
-
-        return $builder->whereHas(
-            'attribute' . ucfirst($type),
-            fn ($query) => $query->where('value', $operator, $value)->where('attribute_code', $attributeCode),
+        return $builder->attributeHas(
+            $attributeCode,
+            fn ($query) => $query->where('value', $operator, $value)->where('attribute_code', $attributeCode)
         );
     }
 
@@ -96,9 +114,9 @@ trait HasCustomAttributes
         return $relation;
     }
 
-    public function customAttributes(): Attribute
+    public function customAttributes(): AttributeCast
     {
-        return Attribute::get(function () {
+        return AttributeCast::get(function () {
             if (! $this->relationLoaded('attributeDatetime')) {
                 return collect();
             }
