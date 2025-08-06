@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Scopes\Product\ForCurrentWebsiteScope;
@@ -142,31 +141,37 @@ class Product extends Model
 
     protected function price(): Attribute
     {
-        return Attribute::get(function (?float $price): ?float {
-            if ($this->type_id == 'configurable') {
-                return collect($this->children)->min->price;
-            }
-
-            if ($this->type_id == 'grouped') {
-                return collect($this->grouped)->min->price;
-            }
-
-            return $price;
-        })->shouldCache();
+        return Attribute::get(fn (?float $price): ?float => $this->prices?->min() ?? $price)->shouldCache();
     }
 
     protected function prices(): Attribute
     {
          return Attribute::get(function (): ?Collection {
-            if ($this->type_id == 'configurable') {
-                return collect($this->children)->pluck('price');
+            if (! in_array($this->type_id, ['configurable', 'grouped'])) {
+                return null;
             }
 
-            if ($this->type_id == 'grouped') {
-                return collect($this->grouped)->pluck('price');
-            }
-
-            return null;
+            return collect($this->type_id == 'configurable' ? $this->children : $this->grouped)->pluck('price');
         })->shouldCache();
+    }
+
+    protected function specialPrice(): Attribute
+    {
+        return Attribute::get(function (?float $specialPrice): ?float {
+            if (! in_array($this->type_id, ['configurable', 'grouped'])) {
+                if (!now()->isBetween(
+                    $this->special_from_date ?? now()->subHour(),
+                    $this->special_to_date ?? now()->addHour(),
+                )) {
+                    return null;
+                }
+
+                return $specialPrice < $this->price ? $specialPrice : null;
+            }
+
+            return collect($this->type_id == 'configurable' ? $this->children : $this->grouped)
+                ->filter(fn ($child) => $child->specialPrice !== null)
+                ->min->special_price;
+        });
     }
 }
