@@ -16,7 +16,7 @@
                 <x-rapidez::input.password
                     name="password"
                     v-model="checkoutLogin.password"
-                    v-bind:required="checkoutLogin.createAccount || {{ (int)(!config('rapidez.frontend.allow_guest_on_existing_account')) }} ? 'required' : null"
+                    v-bind:required="checkoutLogin.createAccount || !checkoutLogin.allowPasswordless ? 'required' : null"
                 />
             </label>
         </template>
