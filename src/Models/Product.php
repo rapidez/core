@@ -113,7 +113,8 @@ class Product extends Model
             return;
         }
 
-        if ($value = parent::getAttribute($key)) {
+        $value = parent::getAttribute($key);
+        if ($value !== null) {
             return $value;
         }
 
