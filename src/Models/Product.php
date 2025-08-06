@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Scopes\Product\ForCurrentWebsiteScope;
@@ -157,7 +156,7 @@ class Product extends Model
 
     protected function prices(): Attribute
     {
-         return Attribute::get(function (): ?Collection {
+        return Attribute::get(function (): ?Collection {
             if ($this->type_id == 'configurable') {
                 return collect($this->children)->pluck('price');
             }
