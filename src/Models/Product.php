@@ -208,4 +208,15 @@ class Product extends Model
                 ->min->special_price;
         });
     }
+
+    protected function minSaleQty(): Attribute
+    {
+        return Attribute::get(function (?int $minSaleQty): ?int {
+            if (! $this->qty_increments) {
+                return $minSaleQty;
+            }
+
+            return ceil($minSaleQty / $this->qty_increments) * $this->qty_increments;
+        });
+    }
 }
