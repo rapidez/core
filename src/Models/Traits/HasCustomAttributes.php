@@ -32,9 +32,9 @@ trait HasCustomAttributes
 
     public function scopeWithCustomAttributes(Builder $builder, ?callable $callback = null)
     {
-        $relations = Arr::map($this->getCustomAttributeTypes(), fn($type) => 'attribute' . ucfirst($type));
+        $relations = Arr::map($this->getCustomAttributeTypes(), fn ($type) => 'attribute' . ucfirst($type));
         if ($callback) {
-            $relations = Arr::mapWithKeys($relations, fn($relation) => [$relation => $callback]);
+            $relations = Arr::mapWithKeys($relations, fn ($relation) => [$relation => $callback]);
         }
 
         $builder->with($relations);

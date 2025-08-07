@@ -29,7 +29,7 @@ class ProductLink extends Model
         parent::boot();
 
         static::withCustomAttributes();
-        static::addGlobalScope('withLinkType', fn(Builder $builder) => $builder->join('catalog_product_link_type', 'catalog_product_link_type.link_type_id', '=', 'catalog_product_link.link_type_id'));
+        static::addGlobalScope('withLinkType', fn (Builder $builder) => $builder->join('catalog_product_link_type', 'catalog_product_link_type.link_type_id', '=', 'catalog_product_link.link_type_id'));
     }
 
     protected function modifyRelation(HasMany $relation): HasMany
