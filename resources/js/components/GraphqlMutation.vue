@@ -106,7 +106,7 @@ export default {
     watch: {
         variables: function (variables, old) {
             if (this.watch) {
-                let diff = objectDiff(old, variables)
+                let diff = objectDiff(old ?? {}, variables)
 
                 // Remove ignored variables
                 diff = Object.fromEntries(Object.entries(diff).filter(([key, _]) => !this.watchIgnore.includes(key)))
