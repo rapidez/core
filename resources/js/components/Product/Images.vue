@@ -73,7 +73,9 @@ export default {
             const touchEndX = event.changedTouches[0].clientX
             const distance = touchEndX - this.touchStartX
 
-            if (Math.abs(distance) < 20) return
+            if (Math.abs(distance) < 20) {
+                return
+            }
 
             if (distance < 0 && this.active < this.images.length - 1) {
                 this.change(this.active + 1)
