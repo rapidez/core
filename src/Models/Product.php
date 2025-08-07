@@ -33,7 +33,7 @@ class Product extends Model
     protected $table = 'catalog_product_entity';
     protected $primaryKey = 'entity_id';
 
-    protected $with = ['stock', 'superAttributes'];
+    protected $with = ['stock', 'superAttributes', 'categoryProducts.category'];
 
     protected static function boot(): void
     {
@@ -120,6 +120,15 @@ class Product extends Model
             ->pluck('linkedParent');
     }
 
+    public function categoryProducts(): HasMany
+    {
+        return $this
+            ->hasMany(
+                config('rapidez.models.category_product'),
+                'product_id',
+            );
+    }
+
     public function stock(): BelongsTo
     {
         return $this->belongsTo(
@@ -135,15 +144,6 @@ class Product extends Model
             config('rapidez.models.product_option'),
             'product_id',
         );
-    }
-
-    public function categoryProducts(): HasMany
-    {
-        return $this
-            ->hasMany(
-                config('rapidez.models.category_product'),
-                'product_id',
-            );
     }
 
     private function getImageFrom(?string $image): ?string

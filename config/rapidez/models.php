@@ -3,6 +3,7 @@
 // The fully qualified class names of the models.
 return [
     'attribute'                 => Rapidez\Core\Models\Attribute::class,
+    'attribute_option'          => Rapidez\Core\Models\AttributeOption::class,
     'block'                     => Rapidez\Core\Models\Block::class,
     'category'                  => Rapidez\Core\Models\Category::class,
     'category_product'          => Rapidez\Core\Models\CategoryProduct::class,

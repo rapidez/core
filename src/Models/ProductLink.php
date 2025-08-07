@@ -44,11 +44,11 @@ class ProductLink extends Model
 
     public function linkedProduct(): HasOne
     {
-        return $this->hasOne(Product::class, 'entity_id', 'linked_product_id');
+        return $this->hasOne(config('rapidez.models.product'), 'entity_id', 'linked_product_id');
     }
 
     public function linkedParent(): HasOne
     {
-        return $this->hasOne(Product::class, 'entity_id', 'product_id');
+        return $this->hasOne(config('rapidez.models.product'), 'entity_id', 'product_id');
     }
 }

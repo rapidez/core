@@ -4,7 +4,6 @@ namespace Rapidez\Core\Models\Traits;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Rapidez\Core\Models\AttributeOption;
 
 trait HasAttributeOptions
 {
@@ -21,6 +20,6 @@ trait HasAttributeOptions
 
     public function attributeOptions(): HasMany
     {
-        return $this->hasMany(AttributeOption::class, 'attribute_id', 'attribute_id');
+        return $this->hasMany(config('rapidez.models.attribute_option'), 'attribute_id', 'attribute_id');
     }
 }
