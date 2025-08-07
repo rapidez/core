@@ -219,4 +219,9 @@ class Product extends Model
             return ceil($minSaleQty / $this->qty_increments) * $this->qty_increments;
         });
     }
+
+    protected function breadcrumbCategories(): Attribute
+    {
+        return Attribute::get(fn (): Collection => $this->categoryProducts->where('category_id', '!=', config('rapidez.root_category_id'))->pluck('category'));
+    }
 }
