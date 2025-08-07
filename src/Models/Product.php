@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Support\Collection;
 use Rapidez\Core\Facades\Rapidez;
@@ -143,6 +144,14 @@ class Product extends Model
         return $this->hasMany(
             config('rapidez.models.product_option'),
             'product_id',
+        );
+    }
+
+    public function reviewSummary(): HasOne
+    {
+        return $this->hasOne(
+            config('rapidez.models.product_review_summary'),
+            'entity_pk_value'
         );
     }
 
