@@ -8,18 +8,13 @@ export default {
         zoomed: false,
         touchStartX: 0,
         stopKeyUpListener: () => {},
-        stopTouchStartListener: null,
-        stopTouchEndListener: null,
     }),
 
     mounted() {
-        if (!this.isTouchDevice()) return;
-        this.setupTouchListeners();
-    },
-    beforeDestroy() {
-        if (!this.isTouchDevice()) return;
-        if (this.stopTouchStartListener) this.stopTouchStartListener();
-        if (this.stopTouchEndListener) this.stopTouchEndListener();
+        if (this.isTouchDevice()) {
+            useEventListener(this.$el, 'touchstart', this.touchStart);
+            useEventListener(this.$el, 'touchend', this.touchEnd);
+        }
     },
 
     render() {
@@ -70,13 +65,10 @@ export default {
             return 'ontouchstart' in window;
         },
 
-        setupTouchListeners() {
-            this.stopTouchStartListener = useEventListener(this.$el, 'touchstart', this.touchStart);
-            this.stopTouchEndListener = useEventListener(this.$el, 'touchend', this.touchEnd);
-        },
         touchStart(event) {
             this.touchStartX = event.touches[0].clientX;
         },
+
         touchEnd(event) {
             const touchEndX = event.changedTouches[0].clientX;
             const distance = touchEndX - this.touchStartX;
