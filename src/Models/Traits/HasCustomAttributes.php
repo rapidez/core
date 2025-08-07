@@ -15,6 +15,21 @@ use Rapidez\Core\Models\AttributeVarchar;
 
 trait HasCustomAttributes
 {
+    protected $exceptAttributes = null;
+    protected $onlyAttributes = null;
+
+    public function exceptAttributes($attributes): static
+    {
+        $this->exceptAttributes = $attributes;
+        return $this;
+    }
+
+    public function onlyAttributes($attributes): static
+    {
+        $this->onlyAttributes = $attributes;
+        return $this;
+    }
+
     protected function getCustomAttributeTypes(): array
     {
         return $this->attributeTypes ?? ['datetime', 'decimal', 'int', 'text', 'varchar'];
@@ -159,5 +174,20 @@ trait HasCustomAttributes
         }
 
         return $this->getCustomAttribute($key)?->value;
+    }
+
+    public function toCollection()
+    {
+        return collect(parent::toArray())
+            ->except(Arr::map($this->getCustomAttributeTypes(), fn($type) => 'attribute_' . $type))
+            ->except(['category_products', 'stock'])
+            ->merge($this->customAttributes->pluck('value', $this->getCustomAttributeCode()))
+            ->only($this->onlyAttributes)
+            ->except($this->exceptAttributes);
+    }
+
+    public function toArray()
+    {
+        return $this->toCollection()->toArray();
     }
 }

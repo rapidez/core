@@ -6,8 +6,10 @@ class ArrayBackend implements AttributeModel
 {
     public static function value($value, $attribute)
     {
-        $values = explode(',', $value);
+        if (!$value) {
+            return collect();
+        }
 
-        return collect($values)->map(fn ($value) => $attribute->options[$value]?->value ?? $value);
+        return collect(explode(',', $value))->map(fn ($value) => $attribute->options[$value]?->value ?? $value);
     }
 }
