@@ -40,7 +40,7 @@ class Product extends Model
         parent::boot();
 
         static::addGlobalScope(ForCurrentWebsiteScope::class);
-        static::addGlobalScope('customAttributes', fn (Builder $builder) => $builder->withCustomAttributes());
+        static::withCustomAttributes();
         static::addGlobalScope('onlyEnabled', fn (Builder $builder) => $builder->whereAttribute('status', static::STATUS_ENABLED));
     }
 
@@ -70,7 +70,7 @@ class Product extends Model
     {
         return $this->hasOneThrough(
             config('rapidez.models.product'),
-            config('rapidez.models.product_link'),
+            config('rapidez.models.product_super_link'),
             'product_id', 'entity_id',
             'entity_id', 'parent_id'
         );
@@ -80,10 +80,27 @@ class Product extends Model
     {
         return $this->hasManyThrough(
             config('rapidez.models.product'),
-            config('rapidez.models.product_link'),
+            config('rapidez.models.product_super_link'),
             'parent_id', 'entity_id',
             'entity_id', 'product_id'
         );
+    }
+
+    public function links(): HasMany
+    {
+        return $this->hasMany(
+            ProductLink::class,
+            'product_id', 'entity_id',
+        );
+    }
+
+    public function getLinkedProducts(string $type): Collection
+    {
+        return $this->links()
+            ->with('linkedProduct')
+            ->where('code', $type)
+            ->get()
+            ->pluck('linkedProduct');
     }
 
     public function stock(): BelongsTo

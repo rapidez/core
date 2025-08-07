@@ -5,6 +5,7 @@ namespace Rapidez\Core\Models\Traits;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute as AttributeCast;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Arr;
 use Rapidez\Core\Models\Attribute;
 use Rapidez\Core\Models\AttributeDatetime;
 use Rapidez\Core\Models\AttributeDecimal;
@@ -14,25 +15,29 @@ use Rapidez\Core\Models\AttributeVarchar;
 
 trait HasCustomAttributes
 {
+    protected function getCustomAttributeTypes(): array
+    {
+        return $this->attributeTypes ?? ['datetime', 'decimal', 'int', 'text', 'varchar'];
+    }
+
+    protected function getCustomAttributeCode(): string
+    {
+        return $this->attributeCode ?? 'attribute_code';
+    }
+
+    protected static function withCustomAttributes()
+    {
+        static::addGlobalScope('customAttributes', fn (Builder $builder) => $builder->withCustomAttributes());
+    }
+
     public function scopeWithCustomAttributes(Builder $builder, ?callable $callback = null)
     {
+        $relations = Arr::map($this->getCustomAttributeTypes(), fn($type) => 'attribute' . ucfirst($type));
         if ($callback) {
-            $builder->with([
-                'attributeDatetime' => $callback,
-                'attributeDecimal'  => $callback,
-                'attributeInt'      => $callback,
-                'attributeText'     => $callback,
-                'attributeVarchar'  => $callback,
-            ]);
-        } else {
-            $builder->with([
-                'attributeDatetime',
-                'attributeDecimal',
-                'attributeInt',
-                'attributeText',
-                'attributeVarchar',
-            ]);
+            $relations = Arr::mapWithKeys($relations, fn($relation) => [$relation => $callback]);
         }
+
+        $builder->with($relations);
     }
 
     public function scopeAttributeHas(Builder $builder, string $attributeCode, callable $callback)
@@ -49,7 +54,7 @@ trait HasCustomAttributes
     {
         return $builder->attributeHas(
             $attributeCode,
-            fn ($query) => $query->where('value', $operator, $value)->where('attribute_code', $attributeCode)
+            fn ($query) => $query->where('value', $operator, $value)->where($this->getCustomAttributeCode(), $attributeCode)
         );
     }
 
@@ -58,8 +63,8 @@ trait HasCustomAttributes
         return $this->hasManyWithAttributeTypeTable(
             AttributeDatetime::class,
             'datetime',
-            'entity_id',
-            'entity_id',
+            $this->primaryKey,
+            $this->primaryKey,
         );
     }
 
@@ -68,8 +73,8 @@ trait HasCustomAttributes
         return $this->hasManyWithAttributeTypeTable(
             AttributeDecimal::class,
             'decimal',
-            'entity_id',
-            'entity_id',
+            $this->primaryKey,
+            $this->primaryKey,
         );
     }
 
@@ -78,8 +83,8 @@ trait HasCustomAttributes
         return $this->hasManyWithAttributeTypeTable(
             AttributeInt::class,
             'int',
-            'entity_id',
-            'entity_id',
+            $this->primaryKey,
+            $this->primaryKey,
         );
     }
 
@@ -88,8 +93,8 @@ trait HasCustomAttributes
         return $this->hasManyWithAttributeTypeTable(
             AttributeText::class,
             'text',
-            'entity_id',
-            'entity_id',
+            $this->primaryKey,
+            $this->primaryKey,
         );
     }
 
@@ -98,36 +103,42 @@ trait HasCustomAttributes
         return $this->hasManyWithAttributeTypeTable(
             AttributeVarchar::class,
             'varchar',
-            'entity_id',
-            'entity_id',
+            $this->primaryKey,
+            $this->primaryKey,
         );
     }
 
-    public function hasManyWithAttributeTypeTable($class, $type, $foreignKey = null, $localKey = null)
+    public function hasManyWithAttributeTypeTable($class, $type, $foreignKey = null, $localKey = null): HasMany
     {
-        $table = ($this->attributesTablePrefix ?? $this->table) . '_' . $type;
+        $table = ($this->attributeTablePrefix ?? $this->table) . '_' . $type;
 
+        // Set the relation with the custom table
         $relation = $this->hasMany($class, $foreignKey, $localKey);
         $relation->getModel()->setTable($table);
         $relation->getQuery()->from($table);
 
+        return $this->modifyRelation($relation);
+    }
+
+    protected function modifyRelation(HasMany $relation): HasMany
+    {
         return $relation;
     }
 
     public function customAttributes(): AttributeCast
     {
         return AttributeCast::get(function () {
-            if (! $this->relationLoaded('attributeDatetime')) {
-                return collect();
+            $data = collect();
+
+            foreach ($this->getCustomAttributeTypes() as $type) {
+                $values = $this->{'attribute' . ucfirst($type)} ?? null;
+
+                if ($values) {
+                    $data->push(...$values);
+                }
             }
 
-            return collect()
-                ->concat($this->attributeDatetime)
-                ->concat($this->attributeDecimal)
-                ->concat($this->attributeInt)
-                ->concat($this->attributeText)
-                ->concat($this->attributeVarchar)
-                ->keyBy('attribute_code');
+            return $data->keyBy($this->getCustomAttributeCode());
         });
     }
 

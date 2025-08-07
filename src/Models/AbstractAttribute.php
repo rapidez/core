@@ -12,7 +12,7 @@ class AbstractAttribute extends Model
     {
         parent::boot();
 
-        static::addGlobalScope(new ForCurrentStoreWithoutLimitScope(['attribute_id', 'entity_id']));
+        static::addGlobalScope('store', new ForCurrentStoreWithoutLimitScope(['attribute_id', 'entity_id']));
 
         static::addGlobalScope('attribute', function (Builder $builder) {
             $builder->leftJoin('eav_attribute', $builder->qualifyColumn('attribute_id'), '=', 'eav_attribute.attribute_id');
