@@ -12,8 +12,8 @@ export default {
 
     mounted() {
         if (this.isTouchDevice()) {
-            useEventListener(this.$el, 'touchstart', this.touchStart);
-            useEventListener(this.$el, 'touchend', this.touchEnd);
+            useEventListener(this.$el, 'touchstart', this.touchStart)
+            useEventListener(this.$el, 'touchend', this.touchEnd)
         }
     },
 
