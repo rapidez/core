@@ -46,4 +46,9 @@ class ProductLink extends Model
     {
         return $this->hasOne(Product::class, 'entity_id', 'linked_product_id');
     }
+
+    public function linkedParent(): HasOne
+    {
+        return $this->hasOne(Product::class, 'entity_id', 'product_id');
+    }
 }

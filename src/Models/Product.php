@@ -86,7 +86,7 @@ class Product extends Model
         );
     }
 
-    public function links(): HasMany
+    public function productLinks(): HasMany
     {
         return $this->hasMany(
             ProductLink::class,
@@ -94,13 +94,30 @@ class Product extends Model
         );
     }
 
+    public function productLinkParents(): HasMany
+    {
+        return $this->hasMany(
+            ProductLink::class,
+            'linked_product_id', 'entity_id',
+        );
+    }
+
     public function getLinkedProducts(string $type): Collection
     {
-        return $this->links()
+        return $this->productLinks()
             ->with('linkedProduct')
             ->where('code', $type)
             ->get()
             ->pluck('linkedProduct');
+    }
+
+    public function getLinkedParents(string $type): Collection
+    {
+        return $this->productLinkParents()
+            ->with('linkedParent')
+            ->where('code', $type)
+            ->get()
+            ->pluck('linkedParent');
     }
 
     public function stock(): BelongsTo
