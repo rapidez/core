@@ -41,7 +41,7 @@
                         </div>
                         @include('rapidez::cart.item.remove')
                     </div>
-                    
+
                     <div v-if="item.qty_backordered" class="flex gap-2">
                         <x-heroicon-o-exclamation-circle class="mt-px w-5" />
                         <span>
