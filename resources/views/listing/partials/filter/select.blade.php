@@ -19,7 +19,9 @@
                                 :class="item.isRefined ? 'text' : 'text-muted hover:text'"
                             >
                                 @{{ item.label }}
-                                <span class="block ml-0.5 text-xs">(@{{ item.count }})</span>
+                                <span class="block ml-0.5 text-xs" data-testid="listing-filter-count">
+                                    (@{{ item.count }})
+                                </span>
                             </span>
                         </x-rapidez::input.checkbox>
                     </template>

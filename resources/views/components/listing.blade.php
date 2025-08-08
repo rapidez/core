@@ -24,10 +24,10 @@
 
                 @slotdefault('slot')
                     <div class="flex gap-x-20 gap-y-5 max-lg:flex-col">
-                        <div class="lg:w-80 shrink-0">
+                        <div class="lg:w-80 shrink-0" data-testid="listing-filters">
                             @include('rapidez::listing.filters')
                         </div>
-                        <div class="flex-1">
+                        <div class="flex-1" data-testid="listing-products">
                             {{ $title ?? '' }}
 
                             @include('rapidez::listing.products')

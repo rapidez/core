@@ -6,7 +6,13 @@
     :error-callback="checkResponseForExpiredCart"
     v-slot="{ mutate }"
 >
-    <button :disabled="$root.loading" v-on:click="mutate" title="@lang('Remove')" :dusk="'item-delete-'+index" class="hover:underline text-red-700">
+    <button
+        v-on:click="mutate"
+        title="@lang('Remove')"
+        class="hover:underline text-red-700"
+        :disabled="$root.loading"
+        data-testid="cart-item-remove"
+    >
         @lang('Remove')
     </button>
 </graphql-mutation>
