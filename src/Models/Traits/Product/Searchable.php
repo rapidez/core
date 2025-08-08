@@ -53,8 +53,7 @@ trait Searchable
      */
     public function toSearchableArray(): array
     {
-        $indexable = Cache::driver('array')->rememberForever('indexable_attribute_codes', fn () => EavAttribute::getCachedIndexable()->pluck($this->getCustomAttributeCode())
-        );
+        $indexable = Cache::driver('array')->rememberForever('indexable_attribute_codes', fn () => EavAttribute::getCachedIndexable()->pluck($this->getCustomAttributeCode()));
         $keys = $this->customAttributes->keys()->intersect($indexable)->toArray();
 
         $data = [
