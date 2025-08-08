@@ -6,14 +6,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute as AttributeCast;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Models\Attribute;
 use Rapidez\Core\Models\AttributeDatetime;
 use Rapidez\Core\Models\AttributeDecimal;
 use Rapidez\Core\Models\AttributeInt;
 use Rapidez\Core\Models\AttributeText;
 use Rapidez\Core\Models\AttributeVarchar;
-use Rapidez\Core\Models\EavAttribute;
 
 trait HasCustomAttributes
 {
@@ -29,8 +27,7 @@ trait HasCustomAttributes
 
     protected static function withCustomAttributes()
     {
-        static::addGlobalScope('customAttributes', fn (Builder $builder) =>
-            $builder->withCustomAttributes()
+        static::addGlobalScope('customAttributes', fn (Builder $builder) => $builder->withCustomAttributes()
         );
     }
 

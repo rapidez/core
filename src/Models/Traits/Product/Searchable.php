@@ -53,18 +53,17 @@ trait Searchable
      */
     public function toSearchableArray(): array
     {
-        $indexable = Cache::driver('array')->rememberForever('indexable_attribute_codes', fn() =>
-            EavAttribute::getCachedIndexable()->pluck($this->getCustomAttributeCode())
+        $indexable = Cache::driver('array')->rememberForever('indexable_attribute_codes', fn () => EavAttribute::getCachedIndexable()->pluck($this->getCustomAttributeCode())
         );
         $keys = $this->customAttributes->keys()->intersect($indexable)->toArray();
 
         $data = [
             'entity_id' => $this->entity_id,
-            'sku' => $this->sku,
-            ...Arr::mapWithKeys($keys, fn($attribute) => [$attribute => $this->getCustomAttribute($attribute)?->value]),
+            'sku'       => $this->sku,
+            ...Arr::mapWithKeys($keys, fn ($attribute) => [$attribute => $this->getCustomAttribute($attribute)?->value]),
         ];
 
-        $data['url']  = $this->url;
+        $data['url'] = $this->url;
         $data['store'] = config('rapidez.store');
         $data['super_attributes'] = $this->superAttributes->keyBy('attribute_id');
 
@@ -91,12 +90,12 @@ trait Searchable
      */
     public function withCategories(array $data): array
     {
-        $categories = Cache::driver('array')->rememberForever('categories', function() {
+        $categories = Cache::driver('array')->rememberForever('categories', function () {
             return Category::all()->keyBy('entity_id');
         });
 
         foreach ($this->breadcrumbCategories as $category) {
-            if (!$category) {
+            if (! $category) {
                 continue;
             }
 
@@ -108,7 +107,7 @@ trait Searchable
             }
 
             $categories = collect($path)
-                ->map(fn($id) => $categories[$id]->name ?? null)
+                ->map(fn ($id) => $categories[$id]->name ?? null)
                 ->whereNotNull()
                 ->join(' > ');
 

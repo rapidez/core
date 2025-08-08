@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Scopes\Product\ForCurrentWebsiteScope;
 use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
@@ -239,8 +238,7 @@ class Product extends Model
 
     protected function breadcrumbCategories(): Attribute
     {
-        return Attribute::get(fn (): Collection =>
-            $this->categoryProducts->where('category_id', '!=', config('rapidez.root_category_id'))->pluck('category')
+        return Attribute::get(fn (): Collection => $this->categoryProducts->where('category_id', '!=', config('rapidez.root_category_id'))->pluck('category')
         )->shouldCache();
     }
 }

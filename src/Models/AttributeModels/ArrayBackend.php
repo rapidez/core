@@ -6,7 +6,7 @@ class ArrayBackend implements AttributeModel
 {
     public static function value($value, $attribute)
     {
-        if (!$value) {
+        if (! $value) {
             return collect();
         }
 

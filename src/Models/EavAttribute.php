@@ -30,8 +30,7 @@ class EavAttribute extends Model
 
     public static function getCachedIndexable()
     {
-        return static::getCachedCatalog()->where(fn ($attribute) =>
-            $attribute->backend_type === 'static'
+        return static::getCachedCatalog()->where(fn ($attribute) => $attribute->backend_type === 'static'
             || $attribute->is_used_for_promo_rules
             || $attribute->used_in_product_listing
             || $attribute->used_for_sort_by
