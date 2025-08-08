@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Category;
 use Rapidez\Core\Models\CategoryProduct;
+use Rapidez\Core\Models\EavAttribute;
 use Rapidez\Core\Models\Product;
 use Rapidez\Core\Models\Traits\Searchable as ParentSearchable;
 use TorMorten\Eventy\Facades\Eventy;
@@ -21,8 +22,8 @@ trait Searchable
      */
     protected function makeAllSearchableUsing(Builder $query)
     {
-        return $query->selectOnlyIndexable()
-            ->with(['categoryProducts', 'reviewSummary'])
+        return $query
+            ->with(['reviewSummary'])
             ->withEventyGlobalScopes('index.' . static::getModelName() . '.scopes');
     }
 
@@ -52,9 +53,20 @@ trait Searchable
      */
     public function toSearchableArray(): array
     {
-        $data = $this->toArray();
+        $indexable = Cache::driver('array')->rememberForever('indexable_attribute_codes', fn() =>
+            EavAttribute::getCachedIndexable()->pluck($this->getCustomAttributeCode())
+        );
+        $keys = $this->customAttributes->keys()->intersect($indexable)->toArray();
 
+        $data = [
+            'entity_id' => $this->entity_id,
+            'sku' => $this->sku,
+            ...Arr::mapWithKeys($keys, fn($attribute) => [$attribute => $this->getCustomAttribute($attribute)?->value]),
+        ];
+
+        $data['url']  = $this->url;
         $data['store'] = config('rapidez.store');
+        $data['super_attributes'] = $this->superAttributes->keyBy('attribute_id');
 
         $maxPositions = Cache::driver('array')->rememberForever('max-positions-' . config('rapidez.store'), function () {
             return CategoryProduct::query()
@@ -63,12 +75,6 @@ trait Searchable
                 ->groupBy('category_id')
                 ->pluck('position', 'category_id');
         });
-
-        foreach ($this->super_attributes ?: [] as $superAttribute) {
-            $data['super_' . $superAttribute->code] = $superAttribute->text_swatch || $superAttribute->visual_swatch
-                ? array_keys((array) $this->{'super_' . $superAttribute->code})
-                : Arr::pluck($this->{'super_' . $superAttribute->code} ?: [], 'label');
-        }
 
         $data = $this->withCategories($data);
 
@@ -85,29 +91,28 @@ trait Searchable
      */
     public function withCategories(array $data): array
     {
-        $categories = Cache::driver('array')->rememberForever('categories-' . config('rapidez.store'), function () {
-            return Category::withEventyGlobalScopes('index.' . config('rapidez.models.category')::getModelName() . '.scopes')
-                ->where('catalog_category_flat_store_' . config('rapidez.store') . '.entity_id', '<>', config('rapidez.root_category_id'))
-                ->pluck('name', 'entity_id');
+        $categories = Cache::driver('array')->rememberForever('categories', function() {
+            return Category::all()->keyBy('entity_id');
         });
 
-        foreach ($data['category_paths'] as $categoryPath) {
-            $paths = explode('/', $categoryPath);
-            $paths = array_slice($paths, array_search(config('rapidez.root_category_id'), $paths) + 1);
-
-            $categoryHierarchy = [];
-            $currentPath = '';
-
-            foreach ($paths as $categoryId) {
-                if (isset($categories[$categoryId])) {
-                    $currentPath .= ($currentPath ? ' > ' : '') . $categories[$categoryId];
-                    $categoryHierarchy[] = $currentPath;
-                }
+        foreach ($this->breadcrumbCategories as $category) {
+            if (!$category) {
+                continue;
             }
 
-            foreach ($categoryHierarchy as $level => $category) {
-                $data['category_lvl' . ($level + 1)][] = $category;
+            $path = array_slice(explode('/', $category->path), 2);
+            $level = count($path);
+
+            if ($level < 1) {
+                continue;
             }
+
+            $categories = collect($path)
+                ->map(fn($id) => $categories[$id]->name ?? null)
+                ->whereNotNull()
+                ->join(' > ');
+
+            $data['category_lvl' . $level][] = $categories;
         }
 
         foreach ($data as $key => &$value) {

@@ -6,30 +6,17 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute as AttributeCast;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Models\Attribute;
 use Rapidez\Core\Models\AttributeDatetime;
 use Rapidez\Core\Models\AttributeDecimal;
 use Rapidez\Core\Models\AttributeInt;
 use Rapidez\Core\Models\AttributeText;
 use Rapidez\Core\Models\AttributeVarchar;
+use Rapidez\Core\Models\EavAttribute;
 
 trait HasCustomAttributes
 {
-    protected $exceptAttributes = null;
-    protected $onlyAttributes = null;
-
-    public function exceptAttributes($attributes): static
-    {
-        $this->exceptAttributes = $attributes;
-        return $this;
-    }
-
-    public function onlyAttributes($attributes): static
-    {
-        $this->onlyAttributes = $attributes;
-        return $this;
-    }
-
     protected function getCustomAttributeTypes(): array
     {
         return $this->attributeTypes ?? ['datetime', 'decimal', 'int', 'text', 'varchar'];
@@ -42,7 +29,9 @@ trait HasCustomAttributes
 
     protected static function withCustomAttributes()
     {
-        static::addGlobalScope('customAttributes', fn (Builder $builder) => $builder->withCustomAttributes());
+        static::addGlobalScope('customAttributes', fn (Builder $builder) =>
+            $builder->withCustomAttributes()
+        );
     }
 
     public function scopeWithCustomAttributes(Builder $builder, ?callable $callback = null)
@@ -154,7 +143,7 @@ trait HasCustomAttributes
             }
 
             return $data->keyBy($this->getCustomAttributeCode());
-        });
+        })->shouldCache();
     }
 
     public function getCustomAttribute($key)
@@ -174,20 +163,5 @@ trait HasCustomAttributes
         }
 
         return $this->getCustomAttribute($key)?->value;
-    }
-
-    public function toCollection()
-    {
-        return collect(parent::toArray())
-            ->except(Arr::map($this->getCustomAttributeTypes(), fn($type) => 'attribute_' . $type))
-            ->except(['category_products', 'stock'])
-            ->merge($this->customAttributes->pluck('value', $this->getCustomAttributeCode()))
-            ->only($this->onlyAttributes)
-            ->except($this->exceptAttributes);
-    }
-
-    public function toArray()
-    {
-        return $this->toCollection()->toArray();
     }
 }

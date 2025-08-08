@@ -11,17 +11,20 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Scopes\Product\ForCurrentWebsiteScope;
 use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
 use Rapidez\Core\Models\Traits\HasCustomAttributes;
 use Rapidez\Core\Models\Traits\Product\HasSuperAttributes;
+use Rapidez\Core\Models\Traits\Product\Searchable;
 
 class Product extends Model
 {
     use HasAlternatesThroughRewrites;
     use HasCustomAttributes;
     use HasSuperAttributes;
+    use Searchable;
 
     public const VISIBILITY_NOT_VISIBLE = 1;
     public const VISIBILITY_IN_CATALOG = 2;
@@ -43,6 +46,11 @@ class Product extends Model
         static::addGlobalScope(ForCurrentWebsiteScope::class);
         static::withCustomAttributes();
         static::addGlobalScope('onlyEnabled', fn (Builder $builder) => $builder->whereAttribute('status', static::STATUS_ENABLED));
+    }
+
+    protected function modifyRelation(HasMany $relation): HasMany
+    {
+        return $relation->leftJoin('catalog_eav_attribute', 'catalog_eav_attribute.attribute_id', '=', $relation->qualifyColumn('attribute_id'));
     }
 
     protected static function getEntityType(): string
@@ -231,6 +239,8 @@ class Product extends Model
 
     protected function breadcrumbCategories(): Attribute
     {
-        return Attribute::get(fn (): Collection => $this->categoryProducts->where('category_id', '!=', config('rapidez.root_category_id'))->pluck('category'));
+        return Attribute::get(fn (): Collection =>
+            $this->categoryProducts->where('category_id', '!=', config('rapidez.root_category_id'))->pluck('category')
+        )->shouldCache();
     }
 }
