@@ -110,6 +110,13 @@ export default {
                 deepMerge(this.data, diff)
             }
         },
+
+        data: {
+            handler() {
+                this.changeFn(this)
+            },
+            deep: true
+        },
     },
 
     mounted() {
@@ -123,6 +130,10 @@ export default {
     },
 
     methods: {
+        changeFn: useDebounceFn((self) => {
+            self.$emit('change', { target: self.$el, mutate: self.mutate })
+        }, 500),
+
         async mutateFn() {
             if (this.running) {
                 return
