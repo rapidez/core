@@ -21,16 +21,14 @@
     }"
     v-slot="{ mutate, variables }"
 >
-    <div partial-submit="mutate">
-        <fieldset>
-            <template v-if="!cart.is_virtual">
-                <x-rapidez::input.checkbox v-model="variables.same_as_shipping">
-                    @lang('My billing and shipping address are the same')
-                </x-rapidez::input.checkbox>
-            </template>
-            <template v-if="!variables.same_as_shipping">
-                @include('rapidez::checkout.partials.address', ['type' => 'billing'])
-            </template>
-        </fieldset>
-    </div>
+    <fieldset partial-submit="mutate">
+        <template v-if="!cart.is_virtual">
+            <x-rapidez::input.checkbox v-model="variables.same_as_shipping">
+                @lang('My billing and shipping address are the same')
+            </x-rapidez::input.checkbox>
+        </template>
+        <template v-if="!variables.same_as_shipping">
+            @include('rapidez::checkout.partials.address', ['type' => 'billing'])
+        </template>
+    </fieldset>
 </graphql-mutation>
