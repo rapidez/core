@@ -17,7 +17,7 @@
         e.target.closest('fieldset').querySelector(':invalid') === null
         && (!variables.same_as_shipping || !!cart?.shipping_addresses?.[0]?.postcode)
         && window.app.$emit('setBillingAddressOnCart')
-    }" 
+    }"
     v-slot="{ mutate, variables }"
 >
     <div partial-submit="mutate">
