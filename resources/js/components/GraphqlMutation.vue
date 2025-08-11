@@ -115,7 +115,7 @@ export default {
             handler() {
                 this.changeFn(this)
             },
-            deep: true
+            deep: true,
         },
     },
 
