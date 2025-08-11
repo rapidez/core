@@ -11,6 +11,7 @@
     :before-request="(query, variables, options) => [variables.customer_address_id ? config.queries.setExistingBillingAddressOnCart : query, variables, options]"
     :callback="updateCart"
     :error-callback="checkResponseForExpiredCart"
+    :watch-ignore="['uid']"
     group="billing"
     mutate-event="setBillingAddressOnCart"
     v-on:change="function (e) {

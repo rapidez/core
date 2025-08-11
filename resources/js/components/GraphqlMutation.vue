@@ -113,7 +113,17 @@ export default {
 
         data: {
             handler() {
-                this.changeFn(this)
+                let diff = objectDiff(this.prevData, this.data)
+
+                // Remove ignored variables
+                diff = Object.fromEntries(Object.entries(diff).filter(([key, _]) => !this.watchIgnore.includes(key)))
+
+                // Only send event when changes are detected
+                if (Object.keys(diff).length > 0) {
+                    this.changeFn(this)
+                }
+
+                deepMerge(this.prevData, JSON.parse(JSON.stringify(diff)))
             },
             deep: true,
         },
