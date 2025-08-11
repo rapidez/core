@@ -142,7 +142,7 @@ export default {
 
     methods: {
         changeFn: useDebounceFn((self) => {
-            self.$emit('change', { target: self.$el, mutate: self.mutate })
+            self.$emit('change', { target: self.$el, mutate: self.mutate, variables: self.variables })
         }, 500),
 
         async mutateFn() {

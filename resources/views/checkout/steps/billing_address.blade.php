@@ -16,7 +16,7 @@
     mutate-event="setBillingAddressOnCart"
     v-on:change="function (e) {
         e.target.closest('fieldset').querySelector(':invalid') === null
-        && (!variables.same_as_shipping || !!cart?.shipping_addresses?.[0]?.postcode)
+        && (!e.variables.same_as_shipping || !!cart?.shipping_addresses?.[0]?.postcode)
         && window.app.$emit('setBillingAddressOnCart')
     }"
     v-slot="{ mutate, variables }"
