@@ -117,7 +117,7 @@ export default {
                 let diff = objectDiff(this.prevData, this.data)
 
                 // Remove ignored variables
-                diff = Object.fromEntries(Object.entries(diff).filter(([key, _]) => !this.watchIgnore.includes(key)))
+                diff = Object.fromEntries(Object.entries(diff).filter(([key, _]) => !['uid'].includes(key)))
 
                 // Only send event when changes are detected
                 if (Object.keys(diff).length > 0) {
