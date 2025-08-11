@@ -73,6 +73,7 @@ export default {
         running: false,
         initialVariables: {},
         data: {},
+        prevData: {},
         mutate: () => null,
     }),
 
