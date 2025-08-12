@@ -3,10 +3,6 @@
 @php
     $tag = $attributes->hasAny('href', ':href', 'v-bind:href') ? 'a' : $tag;
     $tag = $attributes->has('for') ? 'label' : $tag;
-
-    if ($loader) {
-        $attributes['v-bind:disabled'] = 'loading';
-    }
 @endphp
 
 <x-rapidez::tag
