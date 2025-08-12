@@ -12,7 +12,7 @@ test('search page', async ({ page }) => {
 test('autocomplete', async ({ page }) => {
     const product = await new ProductPage(page).goto(process.env.PRODUCT_URL_SIMPLE)
     await page.goto('/')
-    await page.getByTestId('autocomplete-input').fill(product.name)
+    await page.getByTestId('autocomplete-facade-input').fill(product.name)
     await page.waitForLoadState('networkidle')
     await expect(page.getByTestId('autocomplete-item').first()).toContainText(product.name)
     await expect(page).toHaveScreenshot()
