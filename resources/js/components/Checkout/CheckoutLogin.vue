@@ -5,6 +5,7 @@ import { useDebounceFn } from '@vueuse/core'
 
 const debouncePromise = useDebounceFn(async function (self) {
     self.isEmailAvailable = await isEmailAvailable(self.email || '')
+    await self.handleGuest()
 }, 300)
 
 export default {
