@@ -37,7 +37,7 @@ export default {
                 },
 
                 conversion: {
-                    DEFAULT: color('--conversion', colors.green[500]),
+                    DEFAULT: color('--conversion', colors.green[700]),
                     text: color('--conversion-text', colors.white),
                 },
 

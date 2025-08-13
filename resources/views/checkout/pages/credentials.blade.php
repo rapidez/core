@@ -33,7 +33,7 @@
                             @include('rapidez::checkout.steps.shipping_method')
                         </template>
 
-                        <x-rapidez::button.conversion type="submit" dusk="continue" class="self-start">
+                        <x-rapidez::button.conversion type="submit" data-testid="continue" class="self-start">
                             @lang('Next')
                         </x-rapidez::button.conversion>
                     </form>

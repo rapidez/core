@@ -36,9 +36,7 @@
     },
     "require-dev": {
         "larastan/larastan": "^3.1",
-        "laravel/dusk": "^8.3",
         "orchestra/testbench": "^9.4|^10.0",
-        "orchestra/testbench-dusk": "^9.7|^10.0",
         "phpunit/phpunit": "^11.3.5"
     },
     "autoload": {
@@ -75,18 +73,6 @@
         "rapidez/reviews": "<3.0"
     },
     "scripts": {
-        "analyse": "phpstan --memory-limit=256M",
-        "dusk:prepare": [
-            "./vendor/bin/dusk-updater detect --auto-update",
-            "@php -r \"file_exists('phpunit.dusk.xml') || copy('phpunit.dusk.xml.dist', 'phpunit.dusk.xml'); \""
-        ],
-        "dusk:assets": [
-            "yarn install --frozen-lockfile",
-            "yarn run prod",
-            "cp -r public/. vendor/orchestra/testbench-dusk/laravel/public/"
-        ],
-        "dusk:test": [
-            "./vendor/bin/phpunit -c phpunit.dusk.xml --colors=always"
-        ]
+        "analyse": "phpstan --memory-limit=256M"
     }
 }

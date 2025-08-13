@@ -4,8 +4,12 @@
             <x-rapidez::autocomplete.title>
                 @lang('Products')
             </x-rapidez::autocomplete.title>
-            <ul v-for="(item, count) in items" class="gap-2 flex flex-col">
-                <li class="hover:bg-muted">
+            <ul class="gap-2 flex flex-col">
+                <li
+                    v-for="(item, count) in items"
+                    class="hover:bg-muted"
+                    data-testid="autocomplete-item"
+                >
                     <a :href="item.url | url" v-on:click="sendEvent('click', item, 'Hit Clicked')" class="group relative flex flex-wrap p-2">
                         <img
                             v-if="item.thumbnail"

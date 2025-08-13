@@ -17,7 +17,7 @@
                         <x-rapidez::input.checkbox
                             name="agreement_ids[]"
                             v-bind:value="agreement.agreement_id"
-                            dusk="agreements"
+                            data-testid="agreements"
                             required
                         >
                             <label class="text-gray-700 cursor-pointer underline hover:no-underline" v-on:click="slideover.open">

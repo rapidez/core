@@ -139,6 +139,11 @@ trait Searchable
                     return false;
                 }
 
+                if ($attribute['input'] === 'select') {
+                    // Select means that while the type may be an int, the data won't be an int.
+                    return false;
+                }
+
                 if ($attribute['listing'] || $attribute['filter'] || $attribute['search'] || $attribute['sorting']) {
                     return true;
                 }
