@@ -21,6 +21,10 @@ export default {
             type: Boolean,
             default: true,
         },
+        watchIgnore: {
+            type: Array,
+            default: () => [],
+        },
         redirect: {
             type: String,
             default: '',
@@ -102,7 +106,10 @@ export default {
     watch: {
         variables: function (variables, old) {
             if (this.watch) {
-                const diff = objectDiff(old, variables)
+                let diff = objectDiff(old ?? {}, variables)
+
+                // Remove ignored variables
+                diff = Object.fromEntries(Object.entries(diff).filter(([key, _]) => !this.watchIgnore.includes(key)))
                 if (Object.keys(diff).length === 0) {
                     return
                 }
