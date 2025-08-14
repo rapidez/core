@@ -74,11 +74,11 @@ export default {
             },
             zIndex: {
                 'header': '100',
-                'header-autocomplete-overlay': '10',
                 'header-autocomplete': '20',
                 'header-dropdown': '30',
                 'header-minicart': '30',
                 'header-autocomplete-button': '30',
+                'header-autocomplete-popup': '40',
 
                 'notifications': '110',
 

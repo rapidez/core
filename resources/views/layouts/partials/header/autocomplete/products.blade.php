@@ -4,20 +4,20 @@
             <x-rapidez::autocomplete.title>
                 @lang('Products')
             </x-rapidez::autocomplete.title>
-            <ul class="gap-2 flex flex-col">
+            <ul class="grid grid-cols-5 gap-x-5 gap-y-8">
                 <li
                     v-for="(item, count) in items"
                     class="hover:bg-muted"
                     data-testid="autocomplete-item"
                 >
-                    <a :href="item.url | url" v-on:click="sendEvent('click', item, 'Hit Clicked')" class="group relative flex flex-wrap p-2">
+                    <a :href="item.url | url" v-on:click="sendEvent('click', item, 'Hit Clicked')" class="group relative flex flex-col flex-wrap p-2 bg-white border border-muted rounded-xl shadow-xl">
                         <img
                             v-if="item.thumbnail"
-                            :src="'/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + item.thumbnail + '.webp'"
-                            class="shrink-0 self-center object-contain size-16 mix-blend-multiply"
+                            :src="'/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product' + item.thumbnail + '.webp'"
+                            class="shrink-0 self-center object-contain mix-blend-multipl h-64 w-auto"
                             :alt="item.name"
-                            width="200"
-                            height="200"
+                            width="400"
+                            height="400"
                         />
                         <x-rapidez::no-image v-else class="mb-3 h-48 rounded-t" />
                         <div class="flex flex-1 justify-center flex-col px-2">
