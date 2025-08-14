@@ -8,7 +8,6 @@
 >
     <x-rapidez::input
         {{ $attributes->merge([
-            'id' => 'autocomplete-input',
             'type' => 'search',
             'name' => 'q',
             'autocomplete' => 'off',

@@ -33,7 +33,6 @@
         </ais-instant-search>
         <div v-else class="relative w-full">
             <x-rapidez::autocomplete.input
-                id="autocomplete-facade-input"
                 v-model="$root.autocompleteFacadeQuery"
                 v-on:focus="window.document.dispatchEvent(new window.Event('loadAutoComplete'))"
                 v-on:mouseover="window.document.dispatchEvent(new window.Event('loadAutoComplete'))"
