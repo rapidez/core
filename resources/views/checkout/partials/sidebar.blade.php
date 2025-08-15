@@ -38,7 +38,7 @@
                                 </div>
                                 <div v-for="option in config.cart_attributes">
                                     <template v-if="item.product.attribute_values?.[option] && typeof item.product.attribute_values[option] === 'object'">
-                                        @{{ window.attributeLabel(option) }}: <span v-html="item.product.attribute_values[option]?.join(', ')"></span>
+                                        @{{ option }}: <span v-html="item.product.attribute_values[option]?.join(', ')"></span>
                                     </template>
                                 </div>
                             </div>
