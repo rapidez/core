@@ -21,7 +21,7 @@
         </div>
     </template>
 
-    <template v-if="cart.fixedProductTaxes?.value">
+    <template v-if="cart.fixedProductTaxes">
         <div v-for="value, label in cart.fixed_product_taxes">
             <dt>@{{ label }}</dt>
             <dd>@{{ value | price }}</dd>
@@ -38,7 +38,7 @@
     <div>
         <dt>@lang('Total')</dt>
         <dd v-if="showTax">@{{ cart.prices.grand_total.value | price }}</dd>
-        <dd v-else>@{{ cart.prices.grand_total.value - cart.taxTotal.value | price }}</dd>
+        <dd v-else>@{{ cart.prices.grand_total.value - cart.taxTotal | price }}</dd>
     </div>
 </dl>
 

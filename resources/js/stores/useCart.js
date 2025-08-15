@@ -184,8 +184,8 @@ export const cart = computed({
             refresh()
         }
 
-        cartStorage.value.fixedProductTaxes = fixedProductTaxes
-        cartStorage.value.taxTotal = taxTotal
+        cartStorage.value.fixedProductTaxes = fixedProductTaxes(cartStorage.value)
+        cartStorage.value.taxTotal = taxTotal(cartStorage.value)
 
         return cartStorage.value
     },
@@ -254,22 +254,22 @@ export const cart = computed({
     },
 })
 
-export const fixedProductTaxes = computed(() => {
+export const fixedProductTaxes = (cart) => {
     let taxes = {}
     // Note: Magento does internal rounding before multiplying by the quantity, so we actually don't lose any precision here by using the rounded tax amount.
-    cart.value?.items?.forEach((item) =>
+    cart?.items?.forEach((item) =>
         item.prices?.fixed_product_taxes?.forEach((tax) => (taxes[tax.label] = (taxes[tax.label] ?? 0) + tax.amount.value * item.quantity)),
     )
     return taxes
-})
+}
 
-export const taxTotal = computed(() => {
-    if (!cart?.value?.prices?.applied_taxes?.length) {
+export const taxTotal = (cart) => {
+    if (!cart?.prices?.applied_taxes?.length) {
         return 0
     }
 
-    return cart.value.prices.applied_taxes.reduce((sum, tax) => sum + tax.amount.value, 0)
-})
+    return cart.prices.applied_taxes.reduce((sum, tax) => sum + tax.amount.value, 0)
+}
 
 watch(mask, refresh)
 if (cartStorage.value?.id && !mask.value) {
