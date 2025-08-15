@@ -1,6 +1,34 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.3.0...4.3.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.4.0...4.4.0)
+## [4.4.0](https://github.com/rapidez/core/releases/tag/4.4.0) - 2025-08-15
+
+### Added
+
+- Playwright tests replacing Dusk tests (#945)
+- Playwright WCAG tests (#958)
+- Vue-turbo-frame component (#968)
+- Product image swipe/touch support (#967)
+- Swatches on the product page and listings (#898)
+
+### Changed
+
+- Order summary improvements in cart and checkout (#953)
+
+### Fixed
+
+- Fix closing tag (#957)
+- Optional checkout login option fix (#959)
+- Send hit event slot prop fix (#963)
+- Checkout shipping address reactivity fix (#966)
+- Select input type mapping fix (#970)
+- Set guest email on change (#971)
+- Same as shipping toggle watch fix (#965)
+- Unique autocomplete ids (#973)
+- Cookie expiration & login failed notification fix (#974)
+- Do not show the Magento error on an invalid login (#975)
+- Cart total/tax fixes (#961)
+
 ## [4.3.0](https://github.com/rapidez/core/releases/tag/4.3.0) - 2025-07-29
 
 ### Added
