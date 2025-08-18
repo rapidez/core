@@ -53,7 +53,7 @@ export default {
                     emphasis: color('--border-emphasis', colors.slate[400]),
                     DEFAULT: color('--border', colors.slate[300]),
                     muted: color('--border-muted', colors.slate[100]),
-                    disabled: color('--background-disabled', colors.neutral[200]),
+                    disabled: color('--border-disabled', colors.neutral[200]),
                 },
 
                 background: {
