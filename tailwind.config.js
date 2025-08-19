@@ -45,7 +45,7 @@ export default {
                     emphasis: color('--foreground-emphasis', colors.slate[900]),
                     DEFAULT: color('--foreground', colors.slate[800]),
                     muted: color('--foreground-muted', colors.slate[600]),
-                    disabled: color('--foreground-disabled', colors.neutral[600]),
+                    disabled: color('--foreground-disabled', colors.slate[600]),
                 },
 
                 border: {
