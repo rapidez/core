@@ -20,7 +20,7 @@ class OptionValue extends Model
                 ->whereIn('store_id', [config('rapidez.store'), 0])
                 ->join('eav_attribute_option', 'eav_attribute_option.option_id', '=', 'eav_attribute_option_value.option_id')
                 ->orderByDesc('store_id')
-                ->when($attributeId, fn($query) => $query->where('attribute_id', $attributeId))
+                ->when($attributeId, fn ($query) => $query->where('attribute_id', $attributeId))
                 ->first('value')
                 ->value ?? $default);
             Cache::store('rapidez:multi')->forever($cacheKey, $cache);
