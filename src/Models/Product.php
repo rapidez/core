@@ -292,7 +292,7 @@ class Product extends Model
     protected function breadcrumbCategories(): Attribute
     {
         return Attribute::make(
-            get: function (): iterable {
+            get: function () {
                 if (! $path = session('latest_category_path')) {
                     return [];
                 }
