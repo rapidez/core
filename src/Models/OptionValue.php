@@ -10,17 +10,19 @@ class OptionValue extends Model
 
     protected $primaryKey = 'value_id';
 
-    public static function getCachedByOptionId(int $optionId): string
+    public static function getCachedByOptionId(int $optionId, ?int $attributeId = null, mixed $default = false): string
     {
         $cacheKey = 'optionvalues.' . config('rapidez.store');
         $cache = Cache::store('rapidez:multi')->get($cacheKey, []);
 
         if (! isset($cache[$optionId])) {
-            $cache[$optionId] = html_entity_decode(self::where('option_id', $optionId)
+            $cache[$optionId] = html_entity_decode(self::where('eav_attribute_option_value.option_id', $optionId)
                 ->whereIn('store_id', [config('rapidez.store'), 0])
+                ->join('eav_attribute_option', 'eav_attribute_option.option_id', '=', 'eav_attribute_option_value.option_id')
                 ->orderByDesc('store_id')
+                ->when($attributeId, fn($query) => $query->where('attribute_id', $attributeId))
                 ->first('value')
-                ->value ?? false);
+                ->value ?? $default);
             Cache::store('rapidez:multi')->forever($cacheKey, $cache);
         }
 

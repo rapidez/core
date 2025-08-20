@@ -269,7 +269,7 @@ class Product extends Model
 
         if ($attribute['input'] == 'multiselect') {
             foreach (explode(',', $value) as $optionValueId) {
-                $values[] = OptionValue::getCachedByOptionId($optionValueId);
+                $values[] = OptionValue::getCachedByOptionId($optionValueId, $attribute['id'], $optionValueId);
             }
             $this->setAttribute($key, $values);
 
@@ -277,7 +277,7 @@ class Product extends Model
         }
 
         if ($attribute['input'] == 'select' && $attribute['type'] == 'int' && ! ($attribute['system'] ?? false)) {
-            $value = OptionValue::getCachedByOptionId($value);
+            $value = OptionValue::getCachedByOptionId($value, $attribute['id'], $value);
         }
 
         if ($key == 'url_key') {
@@ -292,7 +292,7 @@ class Product extends Model
     protected function breadcrumbCategories(): Attribute
     {
         return Attribute::make(
-            get: function () {
+            get: function (): iterable {
                 if (! $path = session('latest_category_path')) {
                     return [];
                 }
