@@ -2,7 +2,7 @@
 
 <label class="group/swatch cursor-pointer flex items-center justify-center p-1 rounded-full ring-inset relative ring-default ring-1 hover:ring-emphasis has-[:checked]:ring-active has-[:checked]:ring-2 has-[:checked]:hover:ring-active group">
     <span class="size-5 block border border-black/15 rounded-full m-px"
-        @if($staticColor)
+        @if ($staticColor)
             style="background:{{ $color }}"
         @else
             v-bind:style="{ background: {{ $color }} }"
