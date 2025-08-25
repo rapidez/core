@@ -58,4 +58,9 @@ class OptionSwatch extends Model
                 ->toArray();
         });
     }
+
+    public static function getCachedSwatchValue($code, $option)
+    {
+        return static::getCachedSwatchValues()[$code]['options'][$option] ?? null;
+    }
 }
