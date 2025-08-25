@@ -1,4 +1,4 @@
-<checkout-login v-slot="checkoutLogin">
+<checkout-login v-slot="checkoutLogin" v-bind:allow-passwordless="Boolean({{ (int)(config('rapidez.frontend.allow_guest_on_existing_account')) }})">
     <fieldset partial-submit="go" class="flex flex-col gap-3" v-cloak>
         <label>
             <x-rapidez::label>@lang('Email')</x-rapidez::label>
@@ -16,7 +16,7 @@
                 <x-rapidez::input.password
                     name="password"
                     v-model="checkoutLogin.password"
-                    v-bind:required="checkoutLogin.createAccount || {{ (int)(!config('rapidez.frontend.allow_guest_on_existing_account')) }} ? 'required' : null"
+                    v-bind:required="checkoutLogin.createAccount || !checkoutLogin.allowPasswordless ? 'required' : null"
                 />
             </label>
         </template>
@@ -54,7 +54,7 @@
             </label>
         </template>
         <template v-if="!loggedIn && checkoutLogin.isEmailAvailable">
-            <x-rapidez::input.checkbox v-model="checkoutLogin.createAccount" dusk="create_account">
+            <x-rapidez::input.checkbox v-model="checkoutLogin.createAccount" data-testid="create-account">
                 @lang('Create an account')
             </x-rapidez::input.checkbox>
         </template>

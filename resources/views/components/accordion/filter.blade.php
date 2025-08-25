@@ -15,7 +15,7 @@
             <button
                 v-if="canToggleShowMore"
                 v-on:click="toggleShowMore"
-                class="text-sm text-primary font-medium mt-3 hover:underline"
+                class="text-sm text-conversion font-medium mt-3 hover:underline"
             >
                 <template v-if="isShowingMore">
                     @lang('Less options')

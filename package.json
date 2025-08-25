@@ -7,6 +7,7 @@
         "prod": "vite build"
     },
     "devDependencies": {
+        "@axe-core/playwright": "^4.10.2",
         "@babel/core": "^7.23.9",
         "@hotwired/turbo": "^8.0.2",
         "@playwright/test": "^1.53.0",
@@ -19,6 +20,7 @@
         "@vueuse/integrations": "^10.11.0",
         "autoprefixer": "^10.4.15",
         "cross-env": "^7.0.3",
+        "dotenv": "^17.2.0",
         "graphql": "^16.8.1",
         "graphql-combine-query": "indykoning/graphql-combine-query#feature/add-allowed-duplicates",
         "graphql-tag": "^2.12.6",

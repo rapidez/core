@@ -8,7 +8,6 @@
 >
     <x-rapidez::input
         {{ $attributes->merge([
-            'id' => 'autocomplete-input',
             'type' => 'search',
             'name' => 'q',
             'autocomplete' => 'off',
@@ -17,6 +16,7 @@
             'spellcheck' => 'false',
             'placeholder' => __('What are you looking for?'),
             'class' => 'text-base h-12 peer',
+            'data-testid' => 'autocomplete-input',
         ]) }}
     />
     <button

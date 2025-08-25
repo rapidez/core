@@ -31,6 +31,9 @@ Vue.component('global-slideover', globalSlideover)
 import globalSlideoverInstance from './components/GlobalSlideoverInstance.vue'
 Vue.component('global-slideover-instance', globalSlideoverInstance)
 
+import VueTurboFrame from './components/VueTurboFrame.vue'
+Vue.component('vue-turbo-frame', VueTurboFrame)
+
 import images from './components/Product/Images.vue'
 Vue.component('images', images)
 
