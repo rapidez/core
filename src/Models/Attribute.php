@@ -5,6 +5,7 @@ namespace Rapidez\Core\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute as CastsAttribute;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Rapidez\Core\Models\Scopes\Attribute\OnlyProductAttributesScope;
 
 class Attribute extends Model
@@ -42,6 +43,13 @@ class Attribute extends Model
                 return '';
             }
         )->shouldCache();
+    }
+
+    public static function getCached()
+    {
+        return Cache::rememberForever('eav_attributes', function () {
+            return DB::table('eav_attribute')->get()->keyBy('attribute_code');
+        });
     }
 
     public static function getCachedWhere(callable $callback): array

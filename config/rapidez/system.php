@@ -25,6 +25,23 @@ return [
     // Should the stock qty be exposed and indexed within Elasticsearch?
     'expose_stock' => false,
 
+    // Which columns in the `cataloginventory_stock_item` table should be exposed?
+    // Add `qty` to this to expose the current stock to the frontend
+    'exposed_stock_columns' => [
+        'min_sale_qty',
+        'max_sale_qty',
+        'qty_increments',
+        'backorders',
+
+        // These are necessary to make sure we use the config value when available
+        'use_config_min_sale_qty',
+        'use_config_max_sale_qty',
+        'use_config_qty_increments',
+        'use_config_backorders',
+
+        'is_in_stock',
+    ],
+
     'standalone_checkout' => [
         // What cache store should be used to store temporary standalone checkout credentials
         'cache_store' => env('STANDALONE_CHECKOUT_CACHE_STORE', config('cache.default')),

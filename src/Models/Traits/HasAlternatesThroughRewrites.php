@@ -3,10 +3,21 @@
 namespace Rapidez\Core\Models\Traits;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Rapidez\Core\Facades\Rapidez;
 
 trait HasAlternatesThroughRewrites
 {
+    abstract protected static function getEntityType(): string;
+
+    public function rewrites(): HasMany
+    {
+        return $this
+            ->hasMany(config('rapidez.models.rewrite'), 'entity_id')
+            ->withoutGlobalScope('store')
+            ->where('entity_type', static::getEntityType());
+    }
+
     protected function alternates(): Attribute
     {
         return Attribute::make(
