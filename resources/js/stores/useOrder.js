@@ -59,6 +59,10 @@ export async function loadGuestByToken(token) {
             {
                 token: token,
             },
+            {
+                notifyOnError: false,
+                redirectOnExpiration: false,
+            },
         )
         .then(async (response) => await fillFromGraphqlResponse([], response))
 
