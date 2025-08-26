@@ -15,7 +15,6 @@
                     :aria-label="$option->label"
                     :id="$option->label"
                     :color="config('rapidez.models.option_swatch')::getCachedSwatchValue($superAttribute->code, $option->value)['swatch'] ?? 'none'"
-                    static-color
                     required
                 >
                     {{ $option->label }}
