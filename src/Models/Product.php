@@ -174,7 +174,7 @@ class Product extends Model
     public function getUnitPrice(int $quantity = 1, int $customerGroup = 0)
     {
         $tierPrice = $this->tierPrices()
-            ->where(function($query) use ($customerGroup) {
+            ->where(function ($query) use ($customerGroup) {
                 $query->where('customer_group_id', $customerGroup)
                     ->orWhere('all_groups', '1');
             })
