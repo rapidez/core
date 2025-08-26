@@ -12,7 +12,7 @@
             @include('rapidez::product.partials.microdata')
             @include('rapidez::product.partials.opengraph')
             @if (App::providerIsLoaded('Rapidez\Reviews\ReviewsServiceProvider'))
-                @include('rapidez-reviews::components.metadata')
+                @include('rapidez-reviews::components.microdata')
             @endif
             <div class="relative flex max-lg:flex-col gap-10">
                 <div class="flex-1 flex flex-col shrink-0">
