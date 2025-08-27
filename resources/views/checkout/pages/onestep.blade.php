@@ -21,23 +21,23 @@
                     </div>
                     <div v-if="!cart.is_virtual">
                         <h2 class="text-xl font-bold mb-3 lg:mb-9">@lang('Shipping address')</h2>
-                        @include('rapidez::checkout.steps.shipping_address')
+                        @include('rapidez::checkout.steps.shipping-address')
                     </div>
                     <div>
                         <h2 class="text-xl font-bold mb-3">@lang('Billing address')</h2>
-                        @include('rapidez::checkout.steps.billing_address')
+                        @include('rapidez::checkout.steps.billing-address')
                     </div>
                     <div v-if="!cart.is_virtual">
                         <h2 class="text-xl font-bold mb-3">@lang('Shipping method')</h2>
-                        @include('rapidez::checkout.steps.shipping_method')
+                        @include('rapidez::checkout.steps.shipping-method')
                     </div>
                     <div>
                         <h2 class="text-xl font-bold mb-3">@lang('Payment method')</h2>
-                        @include('rapidez::checkout.steps.payment_method')
+                        @include('rapidez::checkout.steps.payment-method')
                     </div>
                     <div>
                         @include('rapidez::checkout.steps.agreements')
-                        @include('rapidez::checkout.steps.place_order')
+                        @include('rapidez::checkout.steps.place-order')
                     </div>
                 </form>
             </div>
