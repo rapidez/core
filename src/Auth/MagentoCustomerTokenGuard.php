@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core\Auth;
 
+use BadMethodCallException;
 use Illuminate\Auth\TokenGuard;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\StatefulGuard;
@@ -87,36 +88,36 @@ class MagentoCustomerTokenGuard extends TokenGuard implements StatefulGuard
 
     public function attempt(array $credentials = [], $remember = false)
     {
-        throw new \BadMethodCallException('Method not implemented.');
+        throw new BadMethodCallException('Method not implemented.');
     }
 
     public function once(array $credentials = [])
     {
-        throw new \BadMethodCallException('Method not implemented.');
+        throw new BadMethodCallException('Method not implemented.');
     }
 
     public function login(Authenticatable $user, $remember = false)
     {
-        throw new \BadMethodCallException('Method not implemented.');
+        throw new BadMethodCallException('Method not implemented.');
     }
 
     public function loginUsingId($id, $remember = false)
     {
-        throw new \BadMethodCallException('Method not implemented.');
+        throw new BadMethodCallException('Method not implemented.');
     }
 
     public function onceUsingId($id)
     {
-        throw new \BadMethodCallException('Method not implemented.');
+        throw new BadMethodCallException('Method not implemented.');
     }
 
     public function viaRemember()
     {
-        throw new \BadMethodCallException('Method not implemented.');
+        throw new BadMethodCallException('Method not implemented.');
     }
 
     public function logout()
     {
-        throw new \BadMethodCallException('Method not implemented.');
+        throw new BadMethodCallException('Method not implemented.');
     }
 }
