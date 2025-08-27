@@ -140,7 +140,7 @@ jobs:
       # Screenshots
       - name: Update screenshots
         if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
-        run: yarn playwright test --update-snapshots --reporter=list
+        run: yarn playwright test --update-snapshots --last-failed --reporter=list
 
       - name: Move the screenshots
         if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
