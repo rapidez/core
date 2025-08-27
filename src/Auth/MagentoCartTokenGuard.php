@@ -3,11 +3,11 @@
 namespace Rapidez\Core\Auth;
 
 use Illuminate\Auth\Middleware\Authenticate;
-use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 
-class MagentoCartTokenGuard extends MagentoCustomerTokenGuard implements Guard
+class MagentoCartTokenGuard extends MagentoCustomerTokenGuard implements StatefulGuard
 {
     public static function register()
     {

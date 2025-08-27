@@ -3,12 +3,12 @@
 namespace Rapidez\Core\Auth;
 
 use Illuminate\Auth\TokenGuard;
-use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Cookie\Middleware\EncryptCookies;
-use Illuminate\Http\Request;
 
-class MagentoCustomerTokenGuard extends TokenGuard implements Guard
+class MagentoCustomerTokenGuard extends TokenGuard implements StatefulGuard
 {
     public static function register()
     {
@@ -80,5 +80,43 @@ class MagentoCustomerTokenGuard extends TokenGuard implements Guard
     protected function retrieveByToken($token)
     {
         return config('rapidez.models.customer')::whereToken($token)->first();
+    }
+
+    // The following methods are not implemented for token-based authentication.
+    // @see: https://github.com/laravel/framework/pull/56785
+
+    public function attempt(array $credentials = [], $remember = false)
+    {
+        throw new \BadMethodCallException('Method not implemented.');
+    }
+
+    public function once(array $credentials = [])
+    {
+        throw new \BadMethodCallException('Method not implemented.');
+    }
+
+    public function login(Authenticatable $user, $remember = false)
+    {
+        throw new \BadMethodCallException('Method not implemented.');
+    }
+
+    public function loginUsingId($id, $remember = false)
+    {
+        throw new \BadMethodCallException('Method not implemented.');
+    }
+
+    public function onceUsingId($id)
+    {
+        throw new \BadMethodCallException('Method not implemented.');
+    }
+
+    public function viaRemember()
+    {
+        throw new \BadMethodCallException('Method not implemented.');
+    }
+
+    public function logout()
+    {
+        throw new \BadMethodCallException('Method not implemented.');
     }
 }
