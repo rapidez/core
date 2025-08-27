@@ -162,6 +162,36 @@ class Product extends Model
         );
     }
 
+    public function tierPrices(): HasMany
+    {
+        return $this->hasMany(
+            ProductTierPrice::class,
+            'entity_id',
+            'entity_id'
+        )->whereIn('website_id', [0, config('rapidez.website')]);
+    }
+
+    public function getUnitPrice(int $quantity = 1, int $customerGroup = 0)
+    {
+        $tierPrice = $this->tierPrices()
+            ->where(function ($query) use ($customerGroup) {
+                $query->where('customer_group_id', $customerGroup)
+                    ->orWhere('all_groups', '1');
+            })
+            ->where('qty', '<=', $quantity)
+            ->orderBy('value')
+            ->first()?->value ?? null;
+        // NOTE: We always need the option with the lowest matching value, *not* the one with the highest matching qty!
+        // It wouldn't make sense to select a tier with a higher qty if the price is higher.
+
+        return $tierPrice ?? $this->price;
+    }
+
+    public function getPrice(int $quantity = 1, int $customerGroup = 0)
+    {
+        return $this->getUnitPrice($quantity, $customerGroup) * $quantity;
+    }
+
     private function getImageFrom(?string $image): ?string
     {
         return $image !== 'no_selection' ? $image : null;
