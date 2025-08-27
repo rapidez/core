@@ -32,16 +32,16 @@ fragment cart on Cart {
             }
         }
         ... on SimpleCartItem {
-            @include('rapidez::cart.queries.partials.customizable_options')
+            @include('rapidez::cart.queries.partials.customizable-options')
         }
         ... on VirtualCartItem {
-            @include('rapidez::cart.queries.partials.customizable_options')
+            @include('rapidez::cart.queries.partials.customizable-options')
         }
         ... on DownloadableCartItem {
-            @include('rapidez::cart.queries.partials.customizable_options')
+            @include('rapidez::cart.queries.partials.customizable-options')
         }
         ... on ConfigurableCartItem {
-            @include('rapidez::cart.queries.partials.customizable_options')
+            @include('rapidez::cart.queries.partials.customizable-options')
             configurable_options {
                 id
                 option_label
@@ -52,7 +52,7 @@ fragment cart on Cart {
             }
         }
         ... on BundleCartItem {
-            @include('rapidez::cart.queries.partials.customizable_options')
+            @include('rapidez::cart.queries.partials.customizable-options')
         }
     }
     applied_coupons {

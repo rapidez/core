@@ -23,22 +23,14 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - magento-version: 2.4.7-p6
-            magento-php-version: php82-fpm
-            rapidez-php-version: 8.2
-            shard: 1/4
-          - magento-version: 2.4.7-p6
+          - magento-version: 2.4.7-p7
             magento-php-version: php83-fpm
             rapidez-php-version: 8.3
-            shard: 2/4
-          - magento-version: 2.4.7-p6
-            magento-php-version: php83-fpm
-            rapidez-php-version: 8.4
-            shard: 3/4
-          - magento-version: 2.4.8-p1
+            shard: 1/2
+          - magento-version: 2.4.8-p2
             magento-php-version: php84-fpm
             rapidez-php-version: 8.4
-            shard: 4/4
+            shard: 2/2
             screenshots: true
 
     services:
@@ -140,7 +132,7 @@ jobs:
       # Screenshots
       - name: Update screenshots
         if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
-        run: yarn playwright test --update-snapshots --reporter=list
+        run: yarn playwright test --update-snapshots --last-failed --reporter=list
 
       - name: Move the screenshots
         if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))

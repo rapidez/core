@@ -23,15 +23,15 @@
         "illuminate/database": "^11.0|^12.0",
         "illuminate/events": "^11.0|^12.0",
         "illuminate/queue": "^11.0|^12.0",
-        "illuminate/support": "^11.0|^12.0",
+        "illuminate/support": "^11.0|^12.0, <12.26.0 || >=12.27.0",
         "justbetter/laravel-http3earlyhints": "^1.4",
         "laravel/scout": "^10.14",
         "lcobucci/clock": "^2.0|^3.2",
         "lcobucci/jwt": "^4.0|^5.3",
-        "rapidez/laravel-scout-elasticsearch": "^1.0",
         "rapidez/blade-components": "^1.10",
         "rapidez/blade-directives": "^1.1",
         "rapidez/laravel-multi-cache": "^2.0",
+        "rapidez/laravel-scout-elasticsearch": "^1.0",
         "tormjens/eventy": "^0.8"
     },
     "require-dev": {
