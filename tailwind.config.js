@@ -61,7 +61,6 @@ export default {
                     muted: color('--background-muted', colors.slate[50]),
                 },
                 backdrop: color('--backdrop', 'rgba(0, 0, 0, 0.4)'),
-                success: color('--success', colors.emerald[600]),
             },
             keyframes: {
                 loading: {
