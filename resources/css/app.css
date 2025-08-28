@@ -73,11 +73,3 @@ input[type='search']::-webkit-search-results-decoration {
 .button-loading:before {
     @apply animate-loading;
 }
-
-.no-disabled-state {
-    input[disabled],
-    select[disabled],
-    textarea[disabled] {
-        @apply disabled:bg-white disabled:border-default disabled:text;
-    }
-}

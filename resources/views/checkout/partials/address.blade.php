@@ -16,7 +16,7 @@
         </graphql>
     </div>
 
-    <div class="contents no-disabled-state" v-if="!$root.loggedIn || !variables.customer_address_id">
+    <div class="contents" v-if="!$root.loggedIn || !variables.customer_address_id">
         @if ((Rapidez::config('customer/address/company_show')) || (Rapidez::config('customer/address/taxvat_show')))
             <div class="col-span-full">
                 <div class="font-bold mb-2">@lang('Order type')</div>
