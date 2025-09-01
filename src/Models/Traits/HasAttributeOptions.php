@@ -12,9 +12,9 @@ trait HasAttributeOptions
 
     protected function options(): Attribute
     {
-        return Attribute::get(function() {
+        return Attribute::get(function () {
             $store = config('rapidez.store');
-            $key = "store_$store.$this->attribute_code";
+            $key = "store_{$store}.{$this->attribute_code}";
 
             $value = data_get(static::$attributeCache, $key);
             if ($value) {
@@ -23,7 +23,7 @@ trait HasAttributeOptions
 
             $value = $this->attributeOptions->keyBy('option_id');
             data_set(static::$attributeCache, $key, $value);
-            
+
             return $value;
         });
     }
