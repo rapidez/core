@@ -70,7 +70,7 @@
         }
     },
     "conflict": {
-        "rapidez/reviews": "<3.0"
+        "rapidez/reviews": "<4.1"
     },
     "scripts": {
         "analyse": "phpstan --memory-limit=256M"
