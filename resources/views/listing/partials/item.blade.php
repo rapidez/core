@@ -4,7 +4,7 @@
             <a :href="addToCart.productUrl | url" v-on:click="sendEvent('click', item, 'Hit Clicked')" class="block mb-auto">
                 <img
                     v-if="addToCart.currentThumbnail"
-                    :src="'/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + addToCart.currentThumbnail + '.webp'"
+                    :src="'/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + addToCart.currentThumbnail + '.webp' | url"
                     class="mb-3 h-48 w-full rounded-t object-contain"
                     :alt="item.name"
                     :loading="config.category && count <= 4 ? 'eager' : 'lazy'"
