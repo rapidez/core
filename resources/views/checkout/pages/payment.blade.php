@@ -16,9 +16,9 @@
                                 && window.app.$emit('placeOrder')
                             ).catch();
                     }">
-                    @include('rapidez::checkout.steps.payment_method')
+                    @include('rapidez::checkout.steps.payment-method')
                     <div class="mt-3">@include('rapidez::checkout.steps.agreements')</div>
-                    @include('rapidez::checkout.steps.place_order')
+                    @include('rapidez::checkout.steps.place-order')
                 </form>
                 <div class="w-full xl:w-1/4">
                     @include('rapidez::checkout.partials.sidebar')

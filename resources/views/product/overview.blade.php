@@ -11,6 +11,9 @@
         <div itemtype="https://schema.org/Product" itemscope>
             @include('rapidez::product.partials.microdata')
             @include('rapidez::product.partials.opengraph')
+            @if (App::providerIsLoaded('Rapidez\Reviews\ReviewsServiceProvider'))
+                @include('rapidez-reviews::components.microdata')
+            @endif
             <div class="relative flex max-lg:flex-col gap-10">
                 <div class="flex-1 flex flex-col shrink-0">
                     @include('rapidez::product.partials.images')
@@ -53,30 +56,23 @@
     </div>
 
     @if (App::providerIsLoaded('Rapidez\Reviews\ReviewsServiceProvider'))
-        <div class="my-5 py-8 bg min-h-[515px]">
-            <div class="container grid w-full grid-cols-1 gap-5 p-5 md:grid-cols-3">
-                @include('rapidez-reviews::form', ['sku' => $product->sku])
-                <div class="md:col-span-2">
-                    @include('rapidez-reviews::reviews', [
-                        'sku' => $product->sku,
-                        'reviews_count' => $product->reviews_count,
-                        'reviews_score' => $product->reviews_score,
-                    ])
-                </div>
-            </div>
+        <div class="container my-5">
+            @include('rapidez-reviews::reviews')
         </div>
     @endif
 
-    <div class="container flex flex-col gap-5 mt-14">
-        <x-rapidez::productlist
-            title="Related products"
-            field="entity_id"
-            :value="$product->relation_ids"
-        />
-        <x-rapidez::productlist
-            title="We found other products you might like!"
-            field="entity_id"
-            :value="$product->upsell_ids"
-        />
-    </div>
+    @if (($product->relation_ids ?? false) || ($product->upsell_ids ?? false))
+        <div class="container flex flex-col gap-5 mt-14">
+            <x-rapidez::productlist
+                title="Related products"
+                field="entity_id"
+                :value="$product->relation_ids"
+            />
+            <x-rapidez::productlist
+                title="We found other products you might like!"
+                field="entity_id"
+                :value="$product->upsell_ids"
+            />
+        </div>
+    @endif
 @endsection

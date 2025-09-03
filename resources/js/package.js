@@ -127,7 +127,7 @@ function init() {
                     let url = new URL(imagePath)
                     url = url.pathname.replace('/media', '')
 
-                    return `/storage/${store}/resizes/${size}/magento${url}`
+                    return window.url(`/storage/${store}/resizes/${size}/magento${url}`)
                 },
 
                 categoryPositions(categoryId) {
@@ -135,7 +135,7 @@ function init() {
                         function_score: {
                             script_score: {
                                 script: {
-                                    source: `Integer.parseInt(doc['positions.${categoryId}'].empty ? '0' : doc['positions.${categoryId}'].value)`,
+                                    source: `doc.containsKey('positions.${categoryId}') ? (Integer.parseInt(doc['positions.${categoryId}'].empty ? '0' : doc['positions.${categoryId}'].value)) : 0`,
                                 },
                             },
                         },

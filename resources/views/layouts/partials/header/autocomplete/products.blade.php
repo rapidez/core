@@ -13,7 +13,7 @@
                     <a :href="item.url | url" v-on:click="sendEvent('click', item, 'Hit Clicked')" class="group relative flex flex-wrap p-2">
                         <img
                             v-if="item.thumbnail"
-                            :src="'/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + item.thumbnail + '.webp'"
+                            :src="'/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + item.thumbnail + '.webp' | url"
                             class="shrink-0 self-center object-contain size-16 mix-blend-multiply"
                             :alt="item.name"
                             width="200"

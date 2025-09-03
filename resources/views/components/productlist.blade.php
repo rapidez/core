@@ -1,4 +1,5 @@
 @props(['value', 'title' => false, 'field' => 'sku'])
+@slots(['items'])
 
 @if ($value)
     <lazy v-slot="{ intersected }">
@@ -27,7 +28,9 @@
                                     @lang($title)
                                 </strong>
                             @endif
-                            <x-rapidez::slider />
+                            @slotdefault('items')
+                                <x-rapidez::slider />
+                            @endslotdefault
                         </div>
                     </ais-hits>
                 </ais-instant-search>
