@@ -25,7 +25,7 @@ Examples:
                     :middlewares="listingSlotProps.middlewares"
                 >
                     @slotdefault('before')
-                        @if($value && $value !== [])
+                        @if ($value && $value !== [])
                             <ais-configure :filters="'{{ $field }}:({{ is_array($value)
                                 ? implode(' OR ', $value)
                                 : "'+".$value.".join(' OR ')+'"
