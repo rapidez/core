@@ -61,7 +61,7 @@
         </div>
     @endif
 
-    @if (($product->relation_ids ?? false) || ($product->upsell_ids ?? false))
+    @if ($product->relation_ids || $product->upsell_ids)
         <div class="container flex flex-col gap-5 mt-14">
             <x-rapidez::productlist
                 title="Related products"
