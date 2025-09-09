@@ -1,7 +1,15 @@
 @props(['value', 'title' => false, 'field' => 'sku'])
 @slots(['items'])
 
-@if ($value)
+{{--
+Examples:
+<x-rapidez::productlist :value="['MS04', 'MS05', 'MS09']"/>
+<x-rapidez::productlist value="productIds" field="entity_id"/>
+<x-rapidez::productlist :value="false" filter-query-string="sku:MS04,MS05,MS09"/>
+<x-rapidez::productlist :value="false" v-bind:base-filters="() => [{dslQuery}}]"/>
+--}}
+
+@if ($value !== [])
     <lazy v-slot="{ intersected }">
         <listing
             {{ $attributes }}
@@ -16,10 +24,14 @@
                     :index-name="listingSlotProps.index"
                     :middlewares="listingSlotProps.middlewares"
                 >
-                    <ais-configure :filters="'{{ $field }}:({{ is_array($value)
-                        ? implode(' OR ', $value)
-                        : "'+".$value.".join(' OR ')+'"
-                    }})'"/>
+                    @slotdefault('before')
+                        @if ($value && $value !== [])
+                            <ais-configure :filters="'{{ $field }}:({{ is_array($value)
+                                ? implode(' OR ', $value)
+                                : "'+".$value.".join(' OR ')+'"
+                            }})'"/>
+                        @endif
+                    @endslotdefault
 
                     <ais-hits v-slot="{ items, sendEvent }">
                         <div v-if="items.length" class="flex flex-col gap-5">
@@ -33,6 +45,8 @@
                             @endslotdefault
                         </div>
                     </ais-hits>
+
+                    {{ $after ?? '' }}
                 </ais-instant-search>
             </div>
         </listing>
