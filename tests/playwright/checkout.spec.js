@@ -6,7 +6,7 @@ import { AccountPage } from './pages/AccountPage'
 const checkoutTypes = ['default', 'onestep']
 
 checkoutTypes.forEach((type) => {
-    test(type + '- as guest', async ({ page }) => {
+    test(type + ' - as guest', async ({ page }) => {
         const productPage = new ProductPage(page)
         const checkoutPage = new CheckoutPage(page, type)
 
