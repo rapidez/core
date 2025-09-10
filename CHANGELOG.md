@@ -1,6 +1,33 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.4.0...4.4.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.5.0...4.5.0)
+## [4.5.0](https://github.com/rapidez/core/releases/tag/4.5.0) - 2025-09-10
+
+### Added
+
+- Productlist items slot (#978)
+- Minicart row total including tax price (#981)
+- Playwright update all screenshots option (#997)
+
+### Changed
+
+- Uniform Blade file naming with dashes (#955, #990)
+- Playwright only update screenshots on the last failed (#991)
+- Drop PHP 8.2 Playwright tests (#987)
+- Playwright tests with the latest Magento patches (#992)
+- New frontend of rapidez/reviews (#983)
+- More flexible productlist component (#996)
+- Initial product swatches rendering from Blade (#982)
+
+### Fixed
+
+- Skip bugged Laravel version (#989)
+- Category positions script fix + fallback fix (#984)
+- Subfolder store image location fix (#993)
+- Success page login required to view order fallback (#980)
+- Prevent split on category_lvl1 reference (#998)
+- Playwright failed test screenshots in all browsers (#999)
+
 ## [4.4.0](https://github.com/rapidez/core/releases/tag/4.4.0) - 2025-08-15
 
 ### Added
