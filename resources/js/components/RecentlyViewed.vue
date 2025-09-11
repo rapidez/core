@@ -29,7 +29,7 @@ export default {
 
     methods: {
         add(id) {
-            if (! this.products.includes(id)) {
+            if (!this.products.includes(id)) {
                 this.products.push(id)
             }
 
