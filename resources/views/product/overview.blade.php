@@ -75,4 +75,6 @@
             />
         </div>
     @endif
+
+    @include('rapidez::product.partials.widget')
 @endsection

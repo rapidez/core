@@ -57,6 +57,7 @@ return [
         'Magento\Catalog\Block\Category\Widget\Link'       => Rapidez\Core\Widgets\ProductAndCategoryLink::class,
         'Magento\Catalog\Block\Product\Widget\Link'        => Rapidez\Core\Widgets\ProductAndCategoryLink::class,
         'Magento\Cms\Block\Widget\Page\Link'               => Rapidez\Core\Widgets\PageLink::class,
+        'Magento\Catalog\Block\Widget\RecentlyViewed'      => 'rapidez::widget.recently-viewed'
     ],
 
     'view_only_widget' => \Rapidez\Core\Widgets\ViewOnly::class,
