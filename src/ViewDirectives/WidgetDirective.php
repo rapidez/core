@@ -14,8 +14,8 @@ class WidgetDirective
             function () use ($location, $type, $handle, $entities, $replace) {
                 $html = '';
                 $widgetModel = config('rapidez.models.widget');
-                $widgets = $widgetModel::whereIn('layout_handle', (array)$handle)
-                    ->whereIn('page_group', (array)$type)
+                $widgets = $widgetModel::whereIn('layout_handle', (array) $handle)
+                    ->whereIn('page_group', (array) $type)
                     ->where('block_reference', $location)
                     ->where(function (Builder $query) use ($entities) {
                         $query->where('page_for', 'all')
