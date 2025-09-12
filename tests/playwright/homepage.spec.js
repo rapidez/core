@@ -10,3 +10,7 @@ test('wcag', async ({ page }, testInfo) => {
     await page.goto('/')
     await new BasePage(page).wcag(testInfo, 'page-has-heading-one')
 })
+
+test('lighthouse', async ({ page }) => {
+    await new BasePage(page).lighthouse('/')
+})

@@ -26,6 +26,8 @@
         "graphql-tag": "^2.12.6",
         "instantsearch.js": "^4.75.7",
         "laravel-vite-plugin": "^1.0.5",
+        "lighthouse": "^12.8.2",
+        "playwright-lighthouse": "^4.0.0",
         "postcss": "^8.4.29",
         "postcss-import": "^16.1.0",
         "postcss-nested": "^6.0.0",

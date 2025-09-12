@@ -20,3 +20,7 @@ test('wcag', async ({ page }, testInfo) => {
     await page.goto(process.env.PRODUCT_URL_SIMPLE)
     await new BasePage(page).wcag(testInfo)
 })
+
+test('lighthouse', async ({ page }) => {
+    await new BasePage(page).lighthouse(process.env.PRODUCT_URL_SIMPLE)
+})
