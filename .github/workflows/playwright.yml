@@ -134,7 +134,7 @@ jobs:
       # Screenshots
       - name: Collect failed tests
         if: (failure() || inputs.update_all_screenshots)
-        run: yarn playwright test --last-failed --list --pass-with-no-tests > failed-tests.txt
+        run: yarn playwright test --last-failed --list --reporter=dot --pass-with-no-tests > failed-tests.txt
 
       - name: Update screenshots
         if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
