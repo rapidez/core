@@ -1,6 +1,19 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.5.0...4.5.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.6.0...4.6.0)
+## [4.6.0](https://github.com/rapidez/core/releases/tag/4.6.0) - 2025-09-12
+
+### Added
+
+- Playwright Lighthouse score tests (#1003)
+- Recently viewed widget + widget fixes (#1002)
+
+### Fixed
+
+- Listing min height preventing layout shifts (#1000)
+- Use option instead of argument for index call (#1001)
+- Fix null check for auth (#1004)
+
 ## [4.5.0](https://github.com/rapidez/core/releases/tag/4.5.0) - 2025-09-10
 
 ### Added
