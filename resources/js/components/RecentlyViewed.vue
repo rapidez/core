@@ -29,12 +29,12 @@ export default {
 
     methods: {
         add(id) {
-            if (!this.products.includes(id)) {
-                this.products.push(id)
+            if (!this.storage.products.includes(id)) {
+                this.storage.products.push(id)
             }
 
-            if (this.products.length > this.max) {
-                this.storage.products = this.products.slice(-this.max)
+            if (this.storage.products.length > this.max) {
+                this.storage.products = this.storage.products.slice(-this.max)
             }
         },
     },
