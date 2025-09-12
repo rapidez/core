@@ -1,4 +1,4 @@
-import { expect } from '@playwright/test'
+import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import { playAudit } from 'playwright-lighthouse'
 import playwright from 'playwright'
@@ -58,6 +58,8 @@ export class BasePage {
     }
 
     async lighthouse(url) {
+        test.skip(test.info().project.name !== 'chromium', 'Chromium only');
+
         const browser = await playwright['chromium'].launch({
             args: ['--remote-debugging-port=9222'],
         })
