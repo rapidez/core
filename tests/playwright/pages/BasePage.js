@@ -73,7 +73,7 @@ export class BasePage {
             thresholds: {
                 performance: 90,
                 accessibility: 100,
-                'best-practices': 96, // TODO: Check why this one isn't 100 in CI
+                'best-practices': 100,
                 seo: 100,
             },
             reports: {
