@@ -11,6 +11,7 @@
             alt="{{ $product->name }}"
             class="max-h-full object-contain"
             style="view-transition-name: image-{{ $product->sku }}"
+            fetchpriority="high"
             width="400"
             height="400"
         />
