@@ -84,7 +84,7 @@ export default {
             this.container = this.containerReference ? this.$scopedSlots.default()[0].context.$refs[this.containerReference] : this.slider
         },
         initLoop() {
-            if (!this.loop) {
+            if (!this.loop || !this.container) {
                 return
             }
 
@@ -125,7 +125,7 @@ export default {
         scroll(event) {
             this.position = this.vertical ? event.target.scrollTop : event.target.scrollLeft
             this.showLeft = this.loop || this.position
-            this.showRight = this.loop || this.container.offsetWidth + this.position < this.container.scrollWidth - 1
+            this.showRight = this.loop || (this.container && this.container.offsetWidth + this.position < this.container.scrollWidth - 1)
         },
         scrollend(event) {
             let scrollPosition = this.vertical ? event.target.scrollTop : event.target.scrollLeft
@@ -151,6 +151,10 @@ export default {
             this.navigate(next)
         },
         navigate(index, behavior = 'smooth') {
+            if (!this.container) {
+                return
+            }
+
             index = this.loop ? index + this.slides.length : index
 
             this.vertical
@@ -173,6 +177,10 @@ export default {
         },
         updateSpan() {
             setTimeout(() => {
+                if (!this.container) {
+                    return
+                }
+
                 let slide = this.childSpan == 0 ? 0 : this.currentSlide
 
                 this.childSpan = this.vertical
@@ -219,7 +227,7 @@ export default {
             return (this.slides?.length ?? 1) - (this.loop ? 0 : this.slidesVisible - 1)
         },
         slides() {
-            return this.container.querySelectorAll(':scope > :not([data-clone=true])')
+            return this.container?.querySelectorAll(':scope > :not([data-clone=true])') || []
         },
         sliderStart() {
             return this.vertical ? this.slides[0].offsetTop : this.slides[0].offsetLeft
