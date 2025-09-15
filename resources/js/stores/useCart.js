@@ -121,6 +121,7 @@ export const fetchAttributeValues = async function (attributes = []) {
                 customAttributeMetadataV2(attributes: $attributes) {
                     items {
                         code
+                        label
                         options {
                             label
                             value
@@ -217,7 +218,10 @@ export const cart = computed({
                 const mapping = Object.fromEntries(
                     response.data.customAttributeMetadataV2.items.map((attribute) => [
                         attribute.code,
-                        Object.fromEntries(attribute.options.map((value) => [value.value, value.label])),
+                        {
+                            label: attribute.label,
+                            options: Object.fromEntries(attribute.options.map((value) => [value.value, value.label])),
+                        }
                     ]),
                 )
 
@@ -226,21 +230,25 @@ export const cart = computed({
                     cartItem.product.attribute_values = {}
 
                     for (const key in mapping) {
-                        cartItem.product.attribute_values[key] = cartItem.product[key]
-                        if (cartItem.product.attribute_values[key] === null) {
+                        cartItem.product.attribute_values[key] = {
+                            label: mapping[key].label,
+                            value: cartItem.product[key]
+                        }
+
+                        if (cartItem.product.attribute_values[key].value === null) {
                             continue
                         }
 
-                        if (typeof cartItem.product.attribute_values[key] === 'string') {
-                            cartItem.product.attribute_values[key] = cartItem.product.attribute_values[key].split(',')
+                        if (typeof cartItem.product.attribute_values[key].value === 'string') {
+                            cartItem.product.attribute_values[key].value = cartItem.product.attribute_values[key].value.split(',')
                         }
 
-                        if (typeof cartItem.product.attribute_values[key] !== 'object') {
-                            cartItem.product.attribute_values[key] = [cartItem.product.attribute_values[key]]
+                        if (typeof cartItem.product.attribute_values[key].value !== 'object') {
+                            cartItem.product.attribute_values[key].value = [cartItem.product.attribute_values[key].value]
                         }
 
-                        cartItem.product.attribute_values[key] = cartItem.product.attribute_values[key].map(
-                            (value) => mapping[key][value] || value,
+                        cartItem.product.attribute_values[key].value = cartItem.product.attribute_values[key].value.map(
+                            (value) => mapping[key].options[value] || value,
                         )
                     }
 
