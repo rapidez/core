@@ -271,9 +271,11 @@ export const taxTotal = (cart) => {
     return cart.prices.applied_taxes.reduce((sum, tax) => sum + tax.amount.value, 0)
 }
 
-watch(mask, refresh)
-if (cartStorage.value?.id && !mask.value) {
-    clear()
-}
+window.setTimeout(() => {
+    watch(mask, refresh)
+    if (cartStorage.value?.id && !mask.value) {
+        clear()
+    }
+})
 
 export default () => cart
