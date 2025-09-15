@@ -13,12 +13,12 @@ export default {
         return this.$scopedSlots.default(this)
     },
     created() {
-        this.message = this.notification.message.includes('%')
+        this.message = this.notification?.message?.includes('%')
             ? this.format(this.notification.message, this.notification.params)
-            : this.notification.message
-        this.show = this.notification.show
-        this.type = this.notification.type
-        this.link = this.notification.link
+            : this.notification?.message || ''
+        this.show = this.notification?.show || false
+        this.type = this.notification?.type || 'info'
+        this.link = this.notification?.link || null
     },
     mounted() {
         setTimeout(() => {
