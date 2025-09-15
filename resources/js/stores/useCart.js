@@ -221,7 +221,7 @@ export const cart = computed({
                         {
                             label: attribute.label,
                             options: Object.fromEntries(attribute.options.map((value) => [value.value, value.label])),
-                        }
+                        },
                     ]),
                 )
 
@@ -232,7 +232,7 @@ export const cart = computed({
                     for (const key in mapping) {
                         cartItem.product.attribute_values[key] = {
                             label: mapping[key].label,
-                            value: cartItem.product[key]
+                            value: cartItem.product[key],
                         }
 
                         if (cartItem.product.attribute_values[key].value === null) {
