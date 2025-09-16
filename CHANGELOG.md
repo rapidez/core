@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.6.2...4.6.2)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.6.3...4.6.3)
+## [4.6.3](https://github.com/rapidez/core/releases/tag/4.6.3) - 2025-09-16
+
+### Fixed
+
+- Playwright unique blob report names (#1012)
+
 ## [4.6.2](https://github.com/rapidez/core/releases/tag/4.6.2) - 2025-09-16
 
 ### Fixed
