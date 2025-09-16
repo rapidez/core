@@ -8,14 +8,14 @@
         v-model="addToCart.customSelectedOptions[{{ $option->option_id }}]"
     >
         <option
-            @if($option->is_require)
+            @if ($option->is_require)
                 disabled
                 hidden
             @endif
             selected
             :value="undefined"
         >
-            @if($option->is_require)
+            @if ($option->is_require)
                 @lang('Select')
             @else
                 @lang('No selection')
