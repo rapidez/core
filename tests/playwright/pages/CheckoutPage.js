@@ -99,15 +99,17 @@ export class CheckoutPage {
         await this[method](email, password, register, screenshots)
     }
 
-    async checkoutDefault(email, password = false, register = false, screenshots = []) {
+    async checkoutDefault(email = false, password = false, register = false, screenshots = []) {
         await this.gotoCheckout()
 
         if (screenshots.includes('login')) {
             await expect(this.page).toHaveScreenshot({ fullPage: true })
         }
 
-        await this.login(email, password, register)
-        await this.continue('credentials')
+        if (email) {
+            await this.login(email, password, register)
+            await this.continue('credentials')
+        }
 
         if (screenshots.includes('credentials')) {
             await expect(this.page).toHaveScreenshot({ fullPage: true })
@@ -133,14 +135,17 @@ export class CheckoutPage {
         }
     }
 
-    async checkoutOnestep(email, password = false, register = false, screenshots = []) {
+    async checkoutOnestep(email = false, password = false, register = false, screenshots = []) {
         await this.gotoCheckout()
 
         if (screenshots.includes('login')) {
             await expect(this.page).toHaveScreenshot({ fullPage: true })
         }
 
-        await this.login(email, password, register)
+        if (email) {
+            await this.login(email, password, register)
+        }
+
         await this.shippingAddress()
         await this.shippingMethod()
         await this.paymentMethod()
