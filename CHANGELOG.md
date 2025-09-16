@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.6.0...4.6.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.6.1...4.6.1)
+## [4.6.1](https://github.com/rapidez/core/releases/tag/4.6.1) - 2025-09-16
+
+### Fixed
+
+- Set gallery fetchpriority high (c5d82df)
+- Test with a clean Magento config (#1007)
+- Playwright extendable screenshot options (#1010)
+
 ## [4.6.0](https://github.com/rapidez/core/releases/tag/4.6.0) - 2025-09-12
 
 ### Added
