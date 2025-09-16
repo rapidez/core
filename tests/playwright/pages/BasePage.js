@@ -9,12 +9,10 @@ export class BasePage {
         this.page = page
     }
 
-    async screenshot(type) {
-        let options = {}
-
+    async screenshot(type, options = {}) {
         if (type.startsWith('fullpage')) {
             await this.scrolldown()
-            options = { fullPage: true }
+            options['fullPage'] = true
         }
 
         if (type.startsWith('fullpage-footer')) {
