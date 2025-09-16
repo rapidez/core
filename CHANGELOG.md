@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.6.1...4.6.1)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.6.2...4.6.2)
+## [4.6.2](https://github.com/rapidez/core/releases/tag/4.6.2) - 2025-09-16
+
+### Fixed
+
+- Playwright checkout page optional login possibility (#1011)
+
 ## [4.6.1](https://github.com/rapidez/core/releases/tag/4.6.1) - 2025-09-16
 
 ### Fixed
