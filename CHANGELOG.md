@@ -1,6 +1,18 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.6.3...4.6.3)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.7.0...4.7.0)
+## [4.7.0](https://github.com/rapidez/core/releases/tag/4.7.0) - 2025-09-17
+
+### Added
+
+- Checkbox and radio product option inputs (#1013)
+
+### Fixed
+
+- Ignore .env for local Playwright runs (ed935d9)
+- Custom cart attributes label fix (#1009)
+- Recently viewed widget sorting (#1014)
+
 ## [4.6.3](https://github.com/rapidez/core/releases/tag/4.6.3) - 2025-09-16
 
 ### Fixed
