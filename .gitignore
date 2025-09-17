@@ -9,6 +9,7 @@ phpunit.xml
 stats.html
 
 # Playwright
+.env
 node_modules/
 /test-results/
 /playwright-report/
