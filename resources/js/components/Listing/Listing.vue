@@ -33,6 +33,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        transformItems: {
+            type: Function,
+            default: (items) => items,
+        },
     },
 
     data: () => ({

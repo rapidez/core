@@ -37,6 +37,10 @@ export default {
                 this.storage.products = this.storage.products.slice(-this.max)
             }
         },
+
+        sort(items) {
+            return items.sort((a, b) => this.products.indexOf(b.entity_id) - this.products.indexOf(a.entity_id))
+        },
     },
 
     computed: {
