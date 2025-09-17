@@ -87,6 +87,7 @@ export class CheckoutPage {
         if (expectedStep != 'success') {
             await this.continueButtonVisible()
         }
+        await this.page.waitForTimeout(200)
     }
 
     async continueButtonVisible() {
