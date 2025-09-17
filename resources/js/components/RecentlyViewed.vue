@@ -39,10 +39,8 @@ export default {
         },
 
         sort(items) {
-            return items.sort(
-                (a, b) => this.products.indexOf(b.entity_id) - this.products.indexOf(a.entity_id)
-            )
-        }
+            return items.sort((a, b) => this.products.indexOf(b.entity_id) - this.products.indexOf(a.entity_id))
+        },
     },
 
     computed: {
