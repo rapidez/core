@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.7.0...4.7.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.7.1...4.7.1)
+## [4.7.1](https://github.com/rapidez/core/releases/tag/4.7.1) - 2025-09-18
+
+### Fixed
+
+- Playwright checkout step wait fix (#1015)
+
 ## [4.7.0](https://github.com/rapidez/core/releases/tag/4.7.0) - 2025-09-17
 
 ### Added
