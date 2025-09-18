@@ -46,6 +46,8 @@ export class CheckoutPage {
 
             if (addressCount > 1) {
                 await addressSelect.selectOption({ index: 0 })
+                await addressSelect.dispatchEvent('change')
+                await this.page.waitForTimeout(200)
                 await this.page.waitForLoadState('networkidle')
                 return
             }
@@ -81,12 +83,13 @@ export class CheckoutPage {
 
     async continue(expectedStep) {
         await this.page.getByTestId('continue').click()
-        await this.page.waitForTimeout(200)
+        await this.page.waitForTimeout(500)
         await this.page.waitForLoadState('networkidle')
         await this.page.waitForURL('**/' + expectedStep)
         if (expectedStep != 'success') {
             await this.continueButtonVisible()
         }
+        await this.page.waitForTimeout(500)
     }
 
     async continueButtonVisible() {
