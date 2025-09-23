@@ -9,6 +9,10 @@ on:
   schedule:
     - cron: '0 0 * * *'
   workflow_dispatch:
+    inputs:
+      update_all_screenshots:
+        description: 'Update all screenshots?'
+        type: boolean
 
 jobs:
   test:
@@ -23,22 +27,14 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - magento-version: 2.4.7-p6
-            magento-php-version: php82-fpm
-            rapidez-php-version: 8.2
-            shard: 1/4
-          - magento-version: 2.4.7-p6
+          - magento-version: 2.4.7-p7
             magento-php-version: php83-fpm
             rapidez-php-version: 8.3
-            shard: 2/4
-          - magento-version: 2.4.7-p6
-            magento-php-version: php83-fpm
-            rapidez-php-version: 8.4
-            shard: 3/4
-          - magento-version: 2.4.8-p1
+            shard: 1/2
+          - magento-version: 2.4.8-p2
             magento-php-version: php84-fpm
             rapidez-php-version: 8.4
-            shard: 4/4
+            shard: 2/2
             screenshots: true
 
     services:
@@ -138,16 +134,27 @@ jobs:
         run: yarn playwright test --shard ${{ matrix.shard }}
 
       # Screenshots
+      - name: Collect failed tests
+        if: (failure() || inputs.update_all_screenshots)
+        run: yarn playwright test --last-failed --list --pass-with-no-tests > failed-tests.txt
+
       - name: Update screenshots
         if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
+        run: |
+          while read -r test_name; do
+            yarn playwright test "$test_name" --update-snapshots --reporter=list
+          done < <(awk -F ' › ' 'NF>1{print $2}' failed-tests.txt | sort -u)
+
+      - name: Update all screenshots
+        if: ${{ inputs.update_all_screenshots && matrix.screenshots == true }}
         run: yarn playwright test --update-snapshots --reporter=list
 
       - name: Move the screenshots
-        if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
+        if: (failure() || inputs.update_all_screenshots) && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
         run: cp -r tests/playwright/. ../core/tests/playwright/
 
       - name: Commit the screenshots
-        if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
+        if: (failure() || inputs.update_all_screenshots) && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "[CI] Update Snapshots"

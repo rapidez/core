@@ -5,6 +5,7 @@ import { useDebounceFn } from '@vueuse/core'
 
 const debouncePromise = useDebounceFn(async function (self) {
     self.isEmailAvailable = await isEmailAvailable(self.email || '')
+    await self.handleGuest()
 }, 300)
 
 export default {
@@ -12,6 +13,10 @@ export default {
         checkWhileTyping: {
             type: Boolean,
             default: true,
+        },
+        allowPasswordless: {
+            type: Boolean,
+            default: false,
         },
     },
 
@@ -36,7 +41,8 @@ export default {
             }
 
             let isAvailable = await this.checkEmailAvailability()
-            if (!isAvailable && !this.password) {
+
+            if (!this.allowPasswordless && !isAvailable && !this.password) {
                 return false
             }
 

@@ -1,6 +1,61 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.3.0...4.3.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.5.0...4.5.0)
+## [4.5.0](https://github.com/rapidez/core/releases/tag/4.5.0) - 2025-09-10
+
+### Added
+
+- Productlist items slot (#978)
+- Minicart row total including tax price (#981)
+- Playwright update all screenshots option (#997)
+
+### Changed
+
+- Uniform Blade file naming with dashes (#955, #990)
+- Playwright only update screenshots on the last failed (#991)
+- Drop PHP 8.2 Playwright tests (#987)
+- Playwright tests with the latest Magento patches (#992)
+- New frontend of rapidez/reviews (#983)
+- More flexible productlist component (#996)
+- Initial product swatches rendering from Blade (#982)
+
+### Fixed
+
+- Skip bugged Laravel version (#989)
+- Category positions script fix + fallback fix (#984)
+- Subfolder store image location fix (#993)
+- Success page login required to view order fallback (#980)
+- Prevent split on category_lvl1 reference (#998)
+- Playwright failed test screenshots in all browsers (#999)
+
+## [4.4.0](https://github.com/rapidez/core/releases/tag/4.4.0) - 2025-08-15
+
+### Added
+
+- Playwright tests replacing Dusk tests (#945)
+- Playwright WCAG tests (#958)
+- Vue-turbo-frame component (#968)
+- Product image swipe/touch support (#967)
+- Swatches on the product page and listings (#898)
+
+### Changed
+
+- Order summary improvements in cart and checkout (#953)
+
+### Fixed
+
+- Fix closing tag (#957)
+- Optional checkout login option fix (#959)
+- Send hit event slot prop fix (#963)
+- Checkout shipping address reactivity fix (#966)
+- Select input type mapping fix (#970)
+- Set guest email on change (#971)
+- Same as shipping toggle watch fix (#965)
+- Unique autocomplete ids (#973)
+- Cookie expiration & login failed notification fix (#974)
+- Do not show the Magento error on an invalid login (#975)
+- Cart total/tax fixes (#961)
+
 ## [4.3.0](https://github.com/rapidez/core/releases/tag/4.3.0) - 2025-07-29
 
 ### Added

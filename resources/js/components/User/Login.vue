@@ -32,12 +32,15 @@ export default {
                 return false
             }
 
-            if (await login(this.email, this.password)) {
-                this.successfulLogin()
-                return true
+            try {
+                if (await login(this.email, this.password)) {
+                    this.successfulLogin()
+                    return true
+                }
+            } catch (e) {
+                Notify(window.config.translations.account.login_failed, 'error')
             }
 
-            Notify(window.config.translations.account.login_failed, 'error')
             return false
         },
 

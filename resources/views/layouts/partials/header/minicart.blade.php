@@ -16,7 +16,8 @@
                         </div>
                     </td>
                     <td class="text-right px-4">@{{ item.quantity }}</td>
-                    <td class="text-right">@{{ item.prices.row_total.value | price }}</td>
+                    <td class="text-right" v-if="showTax">@{{ item.prices.row_total_including_tax.value | price }}</td>
+                    <td class="text-right" v-else>@{{ item.prices.row_total.value | price }}</td>
                 </tr>
                 <template v-if="cart.shipping_addresses?.length">
                     <tr v-for="address in cart.shipping_addresses" v-if="address.selected_shipping_method">

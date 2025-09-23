@@ -1,4 +1,4 @@
-<dl class="mb-5 flex w-full flex-col rounded-lg border *:flex *:flex-wrap *:justify-between *:p-3 *:border-b last:*:border-none">
+<x-rapidez::summary>
     <div>
         <dt>@lang('Subtotal')</dt>
         <dd v-if="showTax">@{{ cart.prices.subtotal_including_tax.value | price }}</dd>
@@ -7,10 +7,12 @@
 
     <template v-if="cart.shipping_addresses?.length">
         <div v-for="address in cart.shipping_addresses" v-if="address.selected_shipping_method">
-            <dt>@lang('Shipping')</dt>
+            <dt>
+                @lang('Shipping')
+                <small class="text-muted">@{{ address.selected_shipping_method.carrier_title }} - @{{ address.selected_shipping_method.method_title }}</small>
+            </dt>
             <dd v-if="showTax">@{{ address.selected_shipping_method.price_incl_tax.value | price }}</dd>
             <dd v-else>@{{ address.selected_shipping_method.price_excl_tax.value | price }}</dd>
-            <small>@{{ address.selected_shipping_method.carrier_title }} - @{{ address.selected_shipping_method.method_title }}</small>
         </div>
     </template>
 
@@ -21,7 +23,7 @@
         </div>
     </template>
 
-    <template v-if="cart.fixedProductTaxes?.value">
+    <template v-if="cart.fixedProductTaxes">
         <div v-for="value, label in cart.fixed_product_taxes">
             <dt>@{{ label }}</dt>
             <dd>@{{ value | price }}</dd>
@@ -35,14 +37,14 @@
         </div>
     </template>
 
-    <div>
+    <div class="border-t pt-3 mt-3 font-bold">
         <dt>@lang('Total')</dt>
         <dd v-if="showTax">@{{ cart.prices.grand_total.value | price }}</dd>
-        <dd v-else>@{{ cart.prices.grand_total.value - cart.taxTotal.value | price }}</dd>
+        <dd v-else>@{{ cart.prices.grand_total.value - cart.taxTotal | price }}</dd>
     </div>
-</dl>
+</x-rapidez::summary>
 
-<div class="w-full" :class="{ 'cursor-not-allowed': !canOrder }">
+<div class="mt-5 w-full" :class="{ 'cursor-not-allowed': !canOrder }">
     <x-rapidez::button.conversion
         href="{{ route('checkout') }}"
         class="w-full text-center"

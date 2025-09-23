@@ -1,6 +1,6 @@
 <table class="w-full border-b">
     <tbody class="divide-y">
-        <tr v-for="(item, index) in cart.items" class="flex-wrap max-md:flex *:p-2 md:*:p-4" data-testid="cart-item">
+        <tr v-for="(item, index) in cart.items" class="flex-wrap max-md:flex *:first:pt-0 *:p-2 md:*:p-4"  data-testid="cart-item">
             <td class="w-24">
                 <a :href="item.product.url_key + item.product.url_suffix | url">
                     <img
@@ -19,26 +19,29 @@
                     />
                 </a>
             </td>
-            <td class="items-center max-md:flex flex-1">
+            <td class="max-md:flex flex-1">
                 <div class="flex flex-col items-start">
-                    <a :href="item.product.url_key + item.product.url_suffix | url" class="font-bold">
+                    <a :href="item.product.url_key + item.product.url_suffix | url" class="font-medium">
                         @{{ item.product.name }}
                         <div class="text-red-600" v-if="!item.is_available">
                             @lang('This product is out of stock, remove it to continue your order.')
                         </div>
                     </a>
-                    <div v-for="option in item.configurable_options">
-                        @{{ option.option_label }}: @{{ option.value_label }}
+                    <div class="*:border-r last:*:border-r-0 *:px-2 *:mb-1.5 *:leading-3 -mx-2 flex flex-wrap text-sm mb-1.5 text-muted mt-1.5">
+                        <div v-for="option in item.configurable_options">
+                            @{{ option.option_label }}: @{{ option.value_label }}
+                        </div>
+                        <div v-for="option in item.customizable_options">
+                            @{{ option.label }}: @{{ option.values[0].label || option.values[0].value }}
+                        </div>
+                        <div v-for="option in config.cart_attributes">
+                            <template v-if="item.product.attribute_values?.[option] && typeof item.product.attribute_values[option] === 'object'">
+                                @{{ $root.attributeLabel(option) }}: <span v-html="item.product.attribute_values[option]?.join(', ')"></span>
+                            </template>
+                        </div>
+                        @include('rapidez::cart.item.remove')
                     </div>
-                    <div v-for="option in item.customizable_options">
-                        @{{ option.label }}: @{{ option.values[0].label || option.values[0].value }}
-                    </div>
-                    <div v-for="option in config.cart_attributes">
-                        <template v-if="item.product.attribute_values?.[option] && typeof item.product.attribute_values[option] === 'object'">
-                            @{{ $root.attributeLabel(option) }}: <span v-html="item.product.attribute_values[option]?.join(', ')"></span>
-                        </template>
-                    </div>
-                    @include('rapidez::cart.item.remove')
+
                     <div v-if="item.qty_backordered" class="flex gap-2">
                         <x-heroicon-o-exclamation-circle class="mt-px w-5" />
                         <span>
