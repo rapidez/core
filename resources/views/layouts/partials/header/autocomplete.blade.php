@@ -1,53 +1,77 @@
-<autocomplete v-slot="autocompleteSlotProps" :hits-per-page="{{ config('rapidez.frontend.autocomplete.size', 3) }}">
+<autocomplete v-slot="autocompleteSlotProps" :hits-per-page="{{ config('rapidez.frontend.autocomplete.additionals.products.size', config('rapidez.frontend.autocomplete.size', 3)) }}">
     <toggler>
-        <div class="relative w-full" slot-scope="{ isOpen, toggle }">
-            <ais-instant-search
-                v-if="autocompleteSlotProps.searchClient && isOpen"
-                :search-client="autocompleteSlotProps.searchClient"
-                :middlewares="autocompleteSlotProps.middlewares"
-                :index-name="config.index.product"
-                class="contents"
-                v-cloak
-            >
-                <div class="fixed inset-0 h-full bg-white/90 backdrop-blur-sm searchbox group/autocomplete z-header-autocomplete-popup flex flex-col pt-14 px-10 overflow-y-auto">
-                    <div class="relative">
-                        <div class="flex items-start relative">
-                            <x-rapidez::button.outline v-on:click="toggle(); refine('')" class="absolute left-0 top-0">
-                                <x-heroicon-o-chevron-left class="size-5" />
-                            </x-rapidez::button.outline>
-                            <img src="https://raw.githubusercontent.com/rapidez/art/master/r.svg" alt="Rapidez logo" height="50" width="50" class="mx-auto mb-11">
-                        </div>
-                        <div class="flex-1 overflow-hidden">
-                            <div class="max-w-xl bg-white rounded-3xl shadow-xl mx-auto border border-muted w-full px-9 py-8 mb-10">
-                                <ais-autocomplete v-slot="{ currentRefinement, refine }">
-                                    <x-rapidez::autocomplete.input
-                                        class="rounded-full focus:ring-primary focus:border-primary transition h-14 focus:ring-2"
-                                        v-bind:value="currentRefinement"
-                                        v-on:focus="() => {
-                                            refine($root.autocompleteFacadeQuery || currentRefinement);
-                                            $root.autocompleteFacadeQuery = null;
-                                        }"
-                                        v-on:input="refine($event.currentTarget.value)"
-                                        list="search-history"
-                                    />
-                                    <div v-bind:class="{hidden: !currentRefinement}" class="group-has-[:focus]/autocomplete:block">
-                                        @include('rapidez::layouts.partials.header.autocomplete.results')
+        <div class="w-full" slot-scope="{ isOpen, toggle }">
+            <template v-if="autocompleteSlotProps.searchClient">
+                <ais-instant-search
+                    :search-client="autocompleteSlotProps.searchClient"
+                    :middlewares="autocompleteSlotProps.middlewares"
+                    :index-name="config.index.product"
+                    class="contents"
+                    v-cloak
+                >
+                    <div>
+                        <ais-autocomplete v-slot="{ currentRefinement, refine }">
+                            <div>
+                                <x-rapidez::autocomplete.input
+                                    v-bind:value="currentRefinement"
+                                    v-on:focus="() => {
+                                        refine($root.autocompleteFacadeQuery || currentRefinement);
+                                        $root.autocomeleteFacadeQuery = null;
+                                        toggle();
+                                    }"
+                                    v-on:input="refine($event.currentTarget.value)"
+                                    list="search-history"
+                                    id="autocomplete-input"
+                                />
+
+                                <div class="fixed inset-0 searchbox group z-header-autocomplete-popup flex flex-col h-full" v-if="isOpen">
+                                    <div class="py-3 bg"> 
+                                        <div class="container">
+                                            <div class="flex gap-x-3 justify-between">
+                                                <img src="https://raw.githubusercontent.com/rapidez/art/master/r.svg" alt="Rapidez logo" height="50" width="50" class="w-14 h-12 object-contain">
+
+                                                <div class="max-w-2xl w-full">
+                                                    <x-rapidez::autocomplete.input
+                                                        v-bind:value="currentRefinement"
+                                                        v-on:focus="() => {
+                                                            refine($root.autocompleteFacadeQuery || currentRefinement);
+                                                            $root.autocomeleteFacadeQuery = null;
+                                                        }"
+                                                        v-on:input="refine($event.currentTarget.value)"
+                                                        list="search-history"
+                                                    />
+                                                </div>
+
+                                                <x-rapidez::button.outline v-on:click="toggle(); refine('')" class="bg-white h-12 w-14 px-0 shrink-0">
+                                                    <x-heroicon-o-x-mark class="size-5" />
+                                                </x-rapidez::button.outline>
+                                            </div>
+                                        </div>
                                     </div>
-                                    {{-- <div v-bind:class="{hidden: !currentRefinement}" v-on:click="refine('')" class="fixed inset-0 bg-backdrop z-header-autocomplete-overlay group-has-[:focus]/autocomplete:block"></div> --}}
-                                </ais-autocomplete>
+
+                                    <div class="max-h-full bg-white overflow-hidden relative z-10">
+                                        <div class="size-full overflow-y-auto">
+                                            <div class="container pt-4 pb-8 overflow-y-auto">
+                                                @include('rapidez::layouts.partials.header.autocomplete.results')
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex flex-1 bg-backdrop cursor-pointer" v-on:click="toggle(); refine('')"></div>
+                                </div>
                             </div>
-                        </div>
-                        @includeWhen(config('rapidez.frontend.autocomplete.additionals.products') === null,'rapidez::layouts.partials.header.autocomplete.products')
+                        </ais-autocomplete>
+
                         <ais-stats-analytics></ais-stats-analytics>
                     </div>
-                </div>
-            </ais-instant-search>
+                </ais-instant-search>
+            </template>
 
-            <div class="relative w-full">
+            <div class="relative w-full" v-else>
                 <x-rapidez::autocomplete.input
                     v-model="$root.autocompleteFacadeQuery"
-                    v-on:focus="window.document.dispatchEvent(new window.Event('loadAutoComplete')), toggle()"
-                    v-on:mouseover="window.document.dispatchEvent(new window.Event('loadAutoComplete'))"
+                    v-on:focus="toggle(), window.document.dispatchEvent(new window.Event('loadAutoComplete'))"
+                    id="autocomplete-input"
                 />
             </div>
         </div>

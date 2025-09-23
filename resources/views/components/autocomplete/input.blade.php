@@ -16,7 +16,7 @@
             'spellcheck' => 'false',
             'placeholder' => __('What are you looking for?'),
             'class' => 'text-base h-12 peer',
-            'data-testid' => 'autocomplete-input',
+            'data-testid' => 'autocomplete-input'
         ]) }}
     />
     <button
