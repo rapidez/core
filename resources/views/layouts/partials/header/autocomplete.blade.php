@@ -25,7 +25,7 @@
                                 />
 
                                 <div class="fixed inset-0 searchbox group z-header-autocomplete-popup flex flex-col h-full" v-if="isOpen">
-                                    <div class="py-3 bg"> 
+                                    <div class="py-3 bg">
                                         <div class="container">
                                             <div class="flex gap-x-3 justify-between">
                                                 <img src="https://raw.githubusercontent.com/rapidez/art/master/r.svg" alt="Rapidez logo" height="50" width="50" class="w-14 h-12 object-contain">
