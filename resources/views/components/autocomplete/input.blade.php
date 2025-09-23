@@ -29,7 +29,7 @@
         <x-heroicon-s-x-mark class="size-7" />
     </button>
     <x-rapidez::button
-        class="absolute right-0 top-0 bg-opacity-0 hover:bg-opacity-0 border-none *:peer-placeholder-shown:bg-muted *:peer-placeholder-shown:text"
+        class="!absolute right-0 top-0 bg-opacity-0 hover:bg-opacity-0 border-none *:peer-placeholder-shown:bg-muted *:peer-placeholder-shown:text"
         type="submit"
         :title="__('Search')"
     >
