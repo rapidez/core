@@ -17,6 +17,7 @@
             'placeholder' => __('What are you looking for?'),
             'class' => 'text-base h-12 peer',
             'data-testid' => 'autocomplete-input',
+            'id' => 'autocomplete-input',
         ]) }}
     />
     <button
