@@ -1,5 +1,5 @@
 import { StorageSerializers, asyncComputed, useLocalStorage, useMemoize } from '@vueuse/core'
-import { computed, ref, watch } from 'vue'
+import { computed, watch } from 'vue'
 import { GraphQLError } from '../fetch'
 import { mask, clearMask } from './useMask'
 import { user } from './useUser'
@@ -283,5 +283,15 @@ watch(mask, refresh)
 if (cartStorage.value?.id && !mask.value) {
     clear()
 }
+
+document.addEventListener('vue:loaded', function (event) {
+    event.detail.vue.$on('logged-in', async () => {
+        if (mask.value) {
+            linkUserToCart()
+        } else {
+            fetchCustomerCart()
+        }
+    })
+})
 
 export default () => cart

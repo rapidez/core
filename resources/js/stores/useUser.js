@@ -1,6 +1,6 @@
 import { useLocalStorage, useSessionStorage, StorageSerializers } from '@vueuse/core'
 import { useCookies } from '@vueuse/integrations/useCookies'
-import { clear as clearCart, fetchCustomerCart, linkUserToCart, cart } from './useCart'
+import { clear as clearCart, cart } from './useCart'
 import { clear as clearOrder } from './useOrder'
 import { computed, watch } from 'vue'
 import Jwt from '../jwt'
@@ -61,7 +61,11 @@ export const refresh = async function () {
 
     return (currentRefresh = (async function () {
         try {
+            const isNewLogin = !userStorage.value?.email;
             userStorage.value = (await magentoGraphQL(`{ customer { ${config.queries.customer} } }`))?.data?.customer
+            if (isNewLogin) {
+                window.app.$emit('logged-in')
+            }
         } catch (error) {
             if (error instanceof SessionExpired) {
                 await clear()
@@ -141,14 +145,7 @@ export const login = async function (email, password) {
 
 export const loginByToken = async function (customerToken) {
     token.value = customerToken
-
-    if (mask.value) {
-        await linkUserToCart()
-    } else {
-        await fetchCustomerCart()
-    }
-
-    window.app.$emit('logged-in')
+    await refresh()
 }
 
 export const logout = async function () {
