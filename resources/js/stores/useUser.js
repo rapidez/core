@@ -1,6 +1,6 @@
 import { useLocalStorage, useSessionStorage, StorageSerializers } from '@vueuse/core'
 import { useCookies } from '@vueuse/integrations/useCookies'
-import { clear as clearCart, cart } from './useCart'
+import { clear as clearCart, loggedIn as cartLoginHandler, cart } from './useCart'
 import { clear as clearOrder } from './useOrder'
 import { computed, watch } from 'vue'
 import Jwt from '../jwt'
@@ -61,10 +61,10 @@ export const refresh = async function () {
 
     return (currentRefresh = (async function () {
         try {
-            const isNewLogin = !userStorage.value?.email;
+            const oldEmail = userStorage.value?.email;
             userStorage.value = (await magentoGraphQL(`{ customer { ${config.queries.customer} } }`))?.data?.customer
-            if (isNewLogin) {
-                window.app.$emit('logged-in')
+            if (oldEmail !== userStorage.value?.email) {
+                await loggedIn()
             }
         } catch (error) {
             if (error instanceof SessionExpired) {
@@ -146,6 +146,11 @@ export const login = async function (email, password) {
 export const loginByToken = async function (customerToken) {
     token.value = customerToken
     await refresh()
+}
+
+export const loggedIn = async function () {
+    window.app.$emit('logged-in')
+    await cartLoginHandler()
 }
 
 export const logout = async function () {

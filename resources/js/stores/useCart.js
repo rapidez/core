@@ -110,6 +110,14 @@ export const fetchCart = async function () {
     await fetchGuestCart()
 }
 
+export const loggedIn = async function () {
+    if (mask.value) {
+        await linkUserToCart()
+    } else {
+        await fetchCustomerCart()
+    }
+}
+
 export const fetchAttributeValues = async function (attributes = []) {
     if (!attributes.length) {
         return { data: { customAttributeMetadataV2: { items: null } } }
@@ -283,15 +291,5 @@ watch(mask, refresh)
 if (cartStorage.value?.id && !mask.value) {
     clear()
 }
-
-document.addEventListener('vue:loaded', function (event) {
-    event.detail.vue.$on('logged-in', async () => {
-        if (mask.value) {
-            linkUserToCart()
-        } else {
-            fetchCustomerCart()
-        }
-    })
-})
 
 export default () => cart
