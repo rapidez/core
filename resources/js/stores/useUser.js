@@ -61,7 +61,7 @@ export const refresh = async function () {
 
     return (currentRefresh = (async function () {
         try {
-            const oldEmail = userStorage.value?.email;
+            const oldEmail = userStorage.value?.email
             userStorage.value = (await magentoGraphQL(`{ customer { ${config.queries.customer} } }`))?.data?.customer
             if (oldEmail !== userStorage.value?.email) {
                 await loggedIn()
