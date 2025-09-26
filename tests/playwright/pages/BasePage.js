@@ -11,11 +11,17 @@ export class BasePage {
 
     async screenshot(type = '', options = {}) {
         const masks = [this.page.getByTestId('masked')]
-        const emailField = this.page.locator('[name=email]')
+        const emailFields = this.page.locator('[name=email]')
 
         // Only mask filled email fields
-        if ((await emailField.count()) && (await emailField.inputValue())) {
-            masks.push(emailField)
+        const emailFieldsCount = await emailFields.count()
+        if (emailFieldsCount) {
+            for (let i = 0; i < emailFieldsCount; i++) {
+                let emailField = emailFields.nth(i)
+                if (await emailField.inputValue()) {
+                    masks.push(emailField)
+                }
+            }
         }
 
         options['mask'] = masks
