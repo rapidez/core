@@ -1,6 +1,17 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.7.1...4.7.1)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.7.2...4.7.2)
+## [4.7.2](https://github.com/rapidez/core/releases/tag/4.7.2) - 2025-09-26
+
+### Fixed
+
+- Slider arrows color fix (#1017)
+- Visual swatch filters not showing fix (#1016)
+- Autocomplete focus on mobile fix (#1018)
+- Playwright use screenshot method everywhere (#1022)
+- GraphQL mutation notification event fix (#1021)
+- Fire login event when logged in customer changes (#1019)
+
 ## [4.7.1](https://github.com/rapidez/core/releases/tag/4.7.1) - 2025-09-18
 
 ### Fixed
