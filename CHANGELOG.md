@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.7.4...4.7.4)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.7.5...4.7.5)
+## [4.7.5](https://github.com/rapidez/core/releases/tag/4.7.5) - 2025-09-26
+
+### Fixed
+
+- Use npm workspaces for Rapidez dependencies (#1026)
+
 ## [4.7.4](https://github.com/rapidez/core/releases/tag/4.7.4) - 2025-09-26
 
 ### Fixed
