@@ -118,7 +118,7 @@ export class CheckoutPage {
         await this.continue('payment')
 
         if (screenshots.includes('payment')) {
-            await new BasePage(page).screenshot('fullpage')
+            await new BasePage(this.page).screenshot('fullpage')
         }
 
         await this.paymentMethod()
