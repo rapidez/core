@@ -14,7 +14,7 @@ export class BasePage {
         const emailField = this.page.locator('[name=email]')
 
         // Only mask filled email fields
-        if (await emailField.count() && await emailField.inputValue()) {
+        if ((await emailField.count()) && (await emailField.inputValue())) {
             masks.push(emailField)
         }
 
