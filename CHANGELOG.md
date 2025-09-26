@@ -1,6 +1,13 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.7.3...4.7.3)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.7.4...4.7.4)
+## [4.7.4](https://github.com/rapidez/core/releases/tag/4.7.4) - 2025-09-26
+
+### Fixed
+
+- Playwright wait for footer on success page (#1024)
+- Package.json name and version (#1025)
+
 ## [4.7.3](https://github.com/rapidez/core/releases/tag/4.7.3) - 2025-09-26
 
 ### Fixed
