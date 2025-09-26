@@ -1,4 +1,5 @@
 import { expect } from '@playwright/test'
+import { BasePage } from './BasePage'
 
 export class CheckoutPage {
     constructor(page, type = 'default') {
@@ -17,19 +18,13 @@ export class CheckoutPage {
         await this.page.waitForLoadState('networkidle')
 
         if (password && !register) {
-            await expect(this.page).toHaveScreenshot({
-                fullPage: true,
-                mask: [await this.page.locator('[name=email]')],
-            })
+            await new BasePage(this.page).screenshot('fullpage')
             await this.page.fill('[name=password]', password)
         }
 
         if (password && register) {
             await this.page.getByTestId('create-account').click()
-            await expect(this.page).toHaveScreenshot({
-                fullPage: true,
-                mask: [await this.page.locator('[name=email]')],
-            })
+            await new BasePage(this.page).screenshot('fullpage')
             await this.page.fill('[name=password]', password)
             await this.page.fill('[name=password_repeat]', password)
             await this.page.fill('[name=firstname]', 'Bruce')
@@ -103,7 +98,7 @@ export class CheckoutPage {
         await this.gotoCheckout()
 
         if (screenshots.includes('login')) {
-            await expect(this.page).toHaveScreenshot({ fullPage: true })
+            await new BasePage(this.page).screenshot('fullpage')
         }
 
         if (email) {
@@ -112,7 +107,7 @@ export class CheckoutPage {
         }
 
         if (screenshots.includes('credentials')) {
-            await expect(this.page).toHaveScreenshot({ fullPage: true })
+            await new BasePage(this.page).screenshot('fullpage')
         }
 
         await this.shippingAddress()
@@ -120,7 +115,7 @@ export class CheckoutPage {
         await this.continue('payment')
 
         if (screenshots.includes('payment')) {
-            await expect(this.page).toHaveScreenshot({ fullPage: true })
+            await new BasePage(page).screenshot('fullpage')
         }
 
         await this.paymentMethod()
@@ -128,10 +123,7 @@ export class CheckoutPage {
         await this.success()
 
         if (screenshots.includes('success')) {
-            await expect(this.page).toHaveScreenshot({
-                fullPage: true,
-                mask: [await this.page.getByTestId('masked')],
-            })
+            await new BasePage(this.page).screenshot('fullpage')
         }
     }
 
@@ -139,7 +131,7 @@ export class CheckoutPage {
         await this.gotoCheckout()
 
         if (screenshots.includes('login')) {
-            await expect(this.page).toHaveScreenshot({ fullPage: true })
+            await new BasePage(this.page).screenshot('fullpage')
         }
 
         if (email) {
@@ -151,20 +143,14 @@ export class CheckoutPage {
         await this.paymentMethod()
 
         if (screenshots.includes('payment')) {
-            await expect(this.page).toHaveScreenshot({
-                fullPage: true,
-                mask: [await this.page.locator('[name=email]')],
-            })
+            await new BasePage(this.page).screenshot('fullpage')
         }
 
         await this.continue('success')
         await this.success()
 
         if (screenshots.includes('success')) {
-            await expect(this.page).toHaveScreenshot({
-                fullPage: true,
-                mask: [await this.page.getByTestId('masked')],
-            })
+            await new BasePage(this.page).screenshot('fullpage')
         }
     }
 }

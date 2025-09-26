@@ -9,7 +9,12 @@ export class BasePage {
         this.page = page
     }
 
-    async screenshot(type, options = {}) {
+    async screenshot(type = '', options = {}) {
+        options['mask'] = [
+            this.page.locator('[name=email]'),
+            this.page.getByTestId('masked'),
+        ]
+
         if (type.startsWith('fullpage')) {
             await this.scrolldown()
             options['fullPage'] = true
