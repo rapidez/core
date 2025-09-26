@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.7.2...4.7.2)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.7.3...4.7.3)
+## [4.7.3](https://github.com/rapidez/core/releases/tag/4.7.3) - 2025-09-26
+
+### Fixed
+
+- Playwright test fix (#1023)
+
 ## [4.7.2](https://github.com/rapidez/core/releases/tag/4.7.2) - 2025-09-26
 
 ### Fixed
