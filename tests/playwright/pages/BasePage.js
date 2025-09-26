@@ -9,7 +9,17 @@ export class BasePage {
         this.page = page
     }
 
-    async screenshot(type, options = {}) {
+    async screenshot(type = '', options = {}) {
+        const masks = [this.page.getByTestId('masked')]
+        const emailField = this.page.locator('[name=email]')
+
+        // Only mask filled email fields
+        if ((await emailField.count()) && (await emailField.inputValue())) {
+            masks.push(emailField)
+        }
+
+        options['mask'] = masks
+
         if (type.startsWith('fullpage')) {
             await this.scrolldown()
             options['fullPage'] = true
