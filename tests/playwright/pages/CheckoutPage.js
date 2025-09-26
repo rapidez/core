@@ -126,7 +126,7 @@ export class CheckoutPage {
         await this.success()
 
         if (screenshots.includes('success')) {
-            await new BasePage(this.page).screenshot('fullpage')
+            await new BasePage(this.page).screenshot('fullpage-footer')
         }
     }
 
@@ -153,7 +153,7 @@ export class CheckoutPage {
         await this.success()
 
         if (screenshots.includes('success')) {
-            await new BasePage(this.page).screenshot('fullpage')
+            await new BasePage(this.page).screenshot('fullpage-footer')
         }
     }
 }
