@@ -14,7 +14,9 @@
                 />
                 <x-rapidez::no-image v-else class="mb-3 h-48 rounded-t" />
                 <div>
-                    <x-rapidez::highlight attribute="name" class="text-base font-medium hover:underline decoration-2 "/>
+                    <div class="h-5 mb-2">
+                        <x-rapidez::highlight attribute="name" class="text-base font-medium line-clamp-1 hover:underline decoration-2"/>
+                    </div>
                     @if (App::providerIsLoaded('Rapidez\Reviews\ReviewsServiceProvider'))
                         <x-dynamic-component component="rapidez-reviews::stars" v-if="item.reviews_count" count="item.reviews_count" score="item.reviews_score" />
                     @endif
