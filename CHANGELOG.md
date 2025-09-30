@@ -1,6 +1,36 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.7.1...4.7.1)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.7.5...4.7.5)
+## [4.7.5](https://github.com/rapidez/core/releases/tag/4.7.5) - 2025-09-26
+
+### Fixed
+
+- Use npm workspaces for Rapidez dependencies (#1026)
+
+## [4.7.4](https://github.com/rapidez/core/releases/tag/4.7.4) - 2025-09-26
+
+### Fixed
+
+- Playwright wait for footer on success page (#1024)
+- Package.json name and version (#1025)
+
+## [4.7.3](https://github.com/rapidez/core/releases/tag/4.7.3) - 2025-09-26
+
+### Fixed
+
+- Playwright test fix (#1023)
+
+## [4.7.2](https://github.com/rapidez/core/releases/tag/4.7.2) - 2025-09-26
+
+### Fixed
+
+- Slider arrows color fix (#1017)
+- Visual swatch filters not showing fix (#1016)
+- Autocomplete focus on mobile fix (#1018)
+- Playwright use screenshot method everywhere (#1022)
+- GraphQL mutation notification event fix (#1021)
+- Fire login event when logged in customer changes (#1019)
+
 ## [4.7.1](https://github.com/rapidez/core/releases/tag/4.7.1) - 2025-09-18
 
 ### Fixed

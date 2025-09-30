@@ -1,5 +1,5 @@
 import { StorageSerializers, asyncComputed, useLocalStorage, useMemoize } from '@vueuse/core'
-import { computed, ref, watch } from 'vue'
+import { computed, watch } from 'vue'
 import { GraphQLError } from '../fetch'
 import { mask, clearMask } from './useMask'
 import { user } from './useUser'
@@ -108,6 +108,14 @@ export const fetchCart = async function () {
     }
 
     await fetchGuestCart()
+}
+
+export const loggedIn = async function () {
+    if (mask.value) {
+        await linkUserToCart()
+    } else {
+        await fetchCustomerCart()
+    }
 }
 
 export const fetchAttributeValues = async function (attributes = []) {
