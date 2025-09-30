@@ -21,10 +21,4 @@ export default defineConfig({
             vue: path.resolve(__dirname, './node_modules/vue/dist/vue.esm.js'),
         },
     },
-    build: {
-        commonjsOptions: {
-            // Since vue-slider-component is not esm and receives vue esm this is required.
-            requireReturnsDefault: 'preferred',
-        },
-    },
 })
