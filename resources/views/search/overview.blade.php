@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="container">
-        <h1 class="font-bold text-3xl">@lang('Search for'): @{{ $root.queryParams.get('q') }}</h1>
+        <h1 class="font-bold text-3xl">@lang('Search for'): <span v-text="$root.queryParams.get('q')">{{ request()->get('q') }}</span></h1>
         <x-rapidez::listing query="{
             bool: {
                 must: [
