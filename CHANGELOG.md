@@ -1,6 +1,15 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.7.5...4.7.5)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.7.6...4.7.6)
+## [4.7.6](https://github.com/rapidez/core/releases/tag/4.7.6) - 2025-10-02
+
+### Fixed
+
+- Remove legacy Vite config (#1020)
+- Defer cart watcher to next tick to avoid race condition (#1006)
+- Blade components update removing the disabled state (#1028)
+- Playwright Magento version tag (#1035)
+
 ## [4.7.5](https://github.com/rapidez/core/releases/tag/4.7.5) - 2025-09-26
 
 ### Fixed
