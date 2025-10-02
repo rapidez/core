@@ -1,5 +1,5 @@
 <checkout-login v-slot="checkoutLogin" v-bind:allow-passwordless="Boolean({{ (int)(config('rapidez.frontend.allow_guest_on_existing_account')) }})">
-    <fieldset partial-submit="go" class="flex flex-col gap-3" v-cloak>
+    <fieldset partial-submit="checkoutLogin.go" class="flex flex-col gap-3" v-cloak>
         <label>
             <x-rapidez::label>@lang('Email')</x-rapidez::label>
             <x-rapidez::input
