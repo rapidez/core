@@ -5,6 +5,8 @@ import playwright from 'playwright'
 import lighthouseMobileConfig from 'lighthouse/core/config/lr-mobile-config.js'
 
 export class BasePage {
+    static tags = { tag: process.env.MAGENTO_VERSION ? '@'+process.env.MAGENTO_VERSION : null }
+
     constructor(page) {
         this.page = page
     }

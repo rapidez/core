@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 import { ProductPage } from './pages/ProductPage'
 import { BasePage } from './pages/BasePage'
 
-test('search page', async ({ page }) => {
+test('search page', BasePage.tags, async ({ page }) => {
     const product = await new ProductPage(page).goto(process.env.PRODUCT_URL_SIMPLE)
     await page.goto('/search?q=' + product.name)
     await page.waitForLoadState('networkidle')
@@ -10,7 +10,7 @@ test('search page', async ({ page }) => {
     await new BasePage(page).screenshot()
 })
 
-test('autocomplete', async ({ page }) => {
+test('autocomplete', BasePage.tags, async ({ page }) => {
     const product = await new ProductPage(page).goto(process.env.PRODUCT_URL_SIMPLE)
     await page.goto('/')
     await page.getByTestId('autocomplete-input').click()
