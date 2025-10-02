@@ -34,6 +34,12 @@ export default {
         return this.$scopedSlots.default(this)
     },
 
+    mounted() {
+        if (!user.value.is_logged_in && this.email) {
+            this.checkEmailAvailability()
+        }
+    },
+
     methods: {
         async go() {
             if (user.value.is_logged_in) {
