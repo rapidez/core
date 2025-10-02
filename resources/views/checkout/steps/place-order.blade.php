@@ -8,7 +8,7 @@
     v-slot="{ mutate, variables }"
 >
     <fieldset>
-        <x-rapidez::button.conversion type="submit" data-testid="continue" class="mt-3">
+        <x-rapidez::button.conversion type="submit" data-testid="continue" class="mt-3" loader>
             @lang('Place order')
         </x-rapidez::button.conversion>
     </fieldset>
