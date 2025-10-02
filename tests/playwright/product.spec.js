@@ -1,26 +1,26 @@
 import { test, expect } from '@playwright/test'
 import { BasePage } from './pages/BasePage'
 
-test('product simple', async ({ page }) => {
+test('product simple', BasePage.tags, async ({ page }) => {
     await page.goto(process.env.PRODUCT_URL_SIMPLE)
     await new BasePage(page).screenshot('fullpage-footer')
 })
 
-test('product configurable', async ({ page }) => {
+test('product configurable', BasePage.tags, async ({ page }) => {
     await page.goto(process.env.PRODUCT_URL_CONFIGURABLE)
     await new BasePage(page).screenshot('fullpage-footer')
 })
 
-test('product grouped', async ({ page }) => {
+test('product grouped', BasePage.tags, async ({ page }) => {
     await page.goto(process.env.PRODUCT_URL_GROUPED)
     await new BasePage(page).screenshot('fullpage-footer')
 })
 
-test('wcag', async ({ page }, testInfo) => {
+test('wcag', BasePage.tags, async ({ page }, testInfo) => {
     await page.goto(process.env.PRODUCT_URL_SIMPLE)
     await new BasePage(page).wcag(testInfo)
 })
 
-test('lighthouse', async ({ page }) => {
+test('lighthouse', BasePage.tags, async ({ page }) => {
     await new BasePage(page).lighthouse(process.env.PRODUCT_URL_SIMPLE)
 })

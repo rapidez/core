@@ -95,6 +95,9 @@ jobs:
       - name: Use rapidez/core from source
         run: composer config repositories.core path ../core
 
+      - name: Make the Magento version available as env variable
+        run: echo "MAGENTO_VERSION=${{ matrix.magento-version }}" >> $GITHUB_ENV
+
       - name: Get commit hash and tag of the core
         working-directory: ./rapidez/core
         run: |

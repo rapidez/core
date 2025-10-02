@@ -3,18 +3,18 @@ import { ProductPage } from './pages/ProductPage'
 import { CartPage } from './pages/CartPage'
 import { BasePage } from './pages/BasePage'
 
-test('add product simple', async ({ page }) => {
+test('add product simple', BasePage.tags, async ({ page }) => {
     const product = await new ProductPage(page).addToCart(process.env.PRODUCT_URL_SIMPLE)
     await new CartPage(page).firstItemIs(product)
     await new BasePage(page).screenshot('fullpage-footer')
 })
 
-test('add product simple twice', async ({ page }) => {
+test('add product simple twice', BasePage.tags, async ({ page }) => {
     await new ProductPage(page).addToCart(process.env.PRODUCT_URL_SIMPLE, 2)
     await new CartPage(page).firstItemQtyIs(2)
 })
 
-test('change quantity', async ({ page }) => {
+test('change quantity', BasePage.tags, async ({ page }) => {
     const product = await new ProductPage(page).addToCart(process.env.PRODUCT_URL_SIMPLE)
     // TODO: Extract to CartPage?
     await page.goto('/cart')
@@ -23,7 +23,7 @@ test('change quantity', async ({ page }) => {
     await expect(page.getByTestId('cart-item')).toContainText((product.price * 5).toString())
 })
 
-test('remove product', async ({ page }) => {
+test('remove product', BasePage.tags, async ({ page }) => {
     const product = await new ProductPage(page).addToCart(process.env.PRODUCT_URL_SIMPLE)
     // TODO: Extract to CartPage?
     await page.goto('/cart')
@@ -32,7 +32,7 @@ test('remove product', async ({ page }) => {
     await expect(page.getByTestId('cart-item')).toHaveCount(0)
 })
 
-test('wcag', async ({ page }, testInfo) => {
+test('wcag', BasePage.tags, async ({ page }, testInfo) => {
     const product = await new ProductPage(page).addToCart(process.env.PRODUCT_URL_SIMPLE)
     await new CartPage(page).gotoCart()
     await new BasePage(page).wcag(testInfo)
