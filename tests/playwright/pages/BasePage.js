@@ -80,42 +80,53 @@ export class BasePage {
             args: ['--remote-debugging-port=9222'],
         })
         const page = await browser.newPage()
+        const reportName = `lighthouse-${new Date().getTime()}`
 
         await page.goto(url)
 
-        await playAudit({
-            page: page,
-            port: 9222,
-            thresholds: {
-                performance: 90,
-                accessibility: 100,
-                'best-practices': 100,
-                seo: 100,
-            },
-            reports: {
-                formats: {
-                    html: true,
+        try {
+            await playAudit({
+                page: page,
+                port: 9222,
+                thresholds: {
+                    performance: 100,
+                    accessibility: 100,
+                    'best-practices': 100,
+                    seo: 100,
                 },
-            },
-            config: {
-                ...lighthouseMobileConfig,
-                settings: {
-                    ...lighthouseMobileConfig.settings,
-                    skipAudits: [
-                        ...lighthouseMobileConfig.settings.skipAudits,
-                        // Skip everything that's not fixed within CI tests.
-                        'meta-description',
-                        'is-on-https',
-                        'redirects-http',
-                        'uses-long-cache-ttl',
-                        'uses-optimized-images',
-                        'cache-insight',
-                        'image-delivery-insight',
-                    ],
+                reports: {
+                    formats: {
+                        html: true,
+                    },
+                    name: reportName,
                 },
-            },
-        })
+                config: {
+                    ...lighthouseMobileConfig,
+                    settings: {
+                        ...lighthouseMobileConfig.settings,
+                        skipAudits: [
+                            ...lighthouseMobileConfig.settings.skipAudits,
+                            // Skip everything that's not fixed within CI tests.
+                            'meta-description',
+                            'is-on-https',
+                            'redirects-http',
+                            'uses-long-cache-ttl',
+                            'uses-optimized-images',
+                            'cache-insight',
+                            'image-delivery-insight',
+                        ],
+                    },
+                },
+            })
+        } catch (error) {
+            await test.info().attach(reportName, {
+                path: 'lighthouse/' + reportName + '.html',
+                contentType: 'text/html',
+            })
 
-        await browser.close()
+            throw error
+        } finally {
+            await browser.close()
+        }
     }
 }
