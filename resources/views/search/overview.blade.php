@@ -13,7 +13,7 @@
                 <ais-state-results>
                     <template v-slot="{ state: { query } }">
                         <h1 class="font-medium text-2xl mb-5">
-                            <template v-if="query">
+                            <template v-if="query && query !== '__NO_QUERY__'">
                                 @lang('Search for'): @{{ query }}
                             </template>
                             <template v-else>
