@@ -170,7 +170,7 @@ export default {
                 ),
             )
             Object.entries(this.checkout.shipping_address).forEach(([key, val]) => {
-                if (!val && !['region_id', 'customer_address_id', 'same_as_billing'].concat(optionalFields).includes(key)) {
+                if (!val && !['region_id', 'region_code', 'customer_address_id', 'same_as_billing'].concat(optionalFields).includes(key)) {
                     Notify(key + ' cannot be empty', 'warning')
                     validated = false
                 }
