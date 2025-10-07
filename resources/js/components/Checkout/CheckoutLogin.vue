@@ -98,7 +98,7 @@ export default {
             if (!this.allowGuest) {
                 return false
             }
-            
+
             await setGuestEmailOnCart(this.email)
 
             return true
