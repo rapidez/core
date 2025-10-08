@@ -1,4 +1,4 @@
-@props(['value', 'title' => false, 'field' => 'sku'])
+@props(['value', 'title' => false, 'field' => 'sku', 'sorting' => false])
 @slots(['items'])
 
 {{--
@@ -7,6 +7,7 @@ Examples:
 <x-rapidez::productlist value="productIds" field="entity_id"/>
 <x-rapidez::productlist :value="false" filter-query-string="sku:MS04,MS05,MS09"/>
 <x-rapidez::productlist :value="false" v-bind:base-filters="() => [{dslQuery}}]"/>
+<x-rapidez::productlist :value="false" v-bind:base-filters="() => [{dslQuery}}]" sorting="price_asc"/>
 --}}
 
 @if ($value !== [])
@@ -23,7 +24,20 @@ Examples:
                     :search-client="listingSlotProps.searchClient"
                     :index-name="listingSlotProps.index"
                     :middlewares="listingSlotProps.middlewares"
+                    @if($sorting)
+                    :initial-ui-state="{
+                        [listingSlotProps.index]: {
+                            sortBy: listingSlotProps.index + '_{{ $sorting }}',
+                        },
+                    }"
+                    @endif
                 >
+                    @if($sorting)
+                        {{-- When sorting by default, instantsearch needs this component even though there are no options --}}
+                        <ais-sort-by
+                            :items="[]"
+                        />
+                    @endif
                     @slotdefault('before')
                         @if ($value && $value !== [])
                             <ais-configure :filters="'{{ $field }}:({{ is_array($value)
