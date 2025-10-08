@@ -24,7 +24,7 @@ Examples:
                     :search-client="listingSlotProps.searchClient"
                     :index-name="listingSlotProps.index"
                     :middlewares="listingSlotProps.middlewares"
-                    @if($sorting)
+                    @if ($sorting)
                     :initial-ui-state="{
                         [listingSlotProps.index]: {
                             sortBy: listingSlotProps.index + '_{{ $sorting }}',
@@ -32,7 +32,7 @@ Examples:
                     }"
                     @endif
                 >
-                    @if($sorting)
+                    @if ($sorting)
                         {{-- When sorting by default, instantsearch needs this component even though there are no options --}}
                         <ais-sort-by
                             :items="[]"
