@@ -22,22 +22,9 @@ Examples:
                 <ais-instant-search
                     v-if="listingSlotProps.searchClient"
                     :search-client="listingSlotProps.searchClient"
-                    :index-name="listingSlotProps.index"
+                    :index-name="listingSlotProps.index + '{{ $sorting ? '_' . $sorting : '' }}'"
                     :middlewares="listingSlotProps.middlewares"
-                    @if($sorting)
-                    :initial-ui-state="{
-                        [listingSlotProps.index]: {
-                            sortBy: listingSlotProps.index + '_{{ $sorting }}',
-                        },
-                    }"
-                    @endif
                 >
-                    @if($sorting)
-                        {{-- When sorting by default, instantsearch needs this component even though there are no options --}}
-                        <ais-sort-by
-                            :items="[]"
-                        />
-                    @endif
                     @slotdefault('before')
                         @if ($value && $value !== [])
                             <ais-configure :filters="'{{ $field }}:({{ is_array($value)
