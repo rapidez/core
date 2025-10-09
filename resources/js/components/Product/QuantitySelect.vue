@@ -25,7 +25,7 @@ export default {
         offset: {
             type: Number,
             default: 0,
-        }
+        },
     },
 
     render() {
@@ -49,7 +49,7 @@ export default {
 
         clampValue(value) {
             // Make sure value always fits within the step
-            value -= ((value - this.offset) % this.step)
+            value -= (value - this.offset) % this.step
 
             // Clamp value to within min and max, but keep it within the step
             if (value < this.min) {
@@ -60,7 +60,7 @@ export default {
             }
 
             return value
-        }
+        },
     },
 
     computed: {
