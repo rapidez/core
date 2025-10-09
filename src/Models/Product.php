@@ -221,6 +221,7 @@ class Product extends Model
         return Attribute::make(
             get: function (?float $minSaleQty): ?float {
                 $increments = $this->qty_increments ?: 1;
+
                 return ($minSaleQty - fmod($minSaleQty, $increments)) ?: $increments;
             }
         );
