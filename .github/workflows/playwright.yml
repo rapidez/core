@@ -110,6 +110,9 @@ jobs:
       - name: Install Rapidez command
         run: php artisan rapidez:install --frontendonly
 
+      - name: Publish payment icons
+        run: php artisan vendor:publish --tag=payment-icons
+
       - name: Install Yarn dependencies
         run: npm install -g yarn && yarn
 
