@@ -61,6 +61,8 @@ Vue.prototype.checkResponseForExpiredCart = async function (variables, response)
         return true
     }
 
+    await updateCart(variables, response)
+
     return false
 }
 
