@@ -61,7 +61,7 @@ Vue.prototype.checkResponseForExpiredCart = async function (variables, response)
         return true
     }
 
-    await updateCart(variables, response)
+    await Vue.prototype.updateCart(variables, response);
 
     return false
 }
@@ -71,8 +71,8 @@ Vue.prototype.updateCart = async function (data, response) {
         return response?.data
     }
     cart.value = Object.values(response.data)
-        .map((queryResponse) => ('cart' in queryResponse ? queryResponse.cart : queryResponse))
-        .findLast((queryResponse) => queryResponse?.is_virtual !== undefined)
+        .map((queryResponse) => (queryResponse && 'cart' in queryResponse ? queryResponse.cart : queryResponse))
+        .findLast((queryResponse) => queryResponse?.is_virtual !== undefined) ?? cart.value
 
     document.dispatchEvent(
         new CustomEvent('cart-updated', {
