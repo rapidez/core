@@ -35,7 +35,7 @@ export default {
     methods: {
         increase() {
             if (this.increasable) {
-                this.$emit('input', this.value + this.step)
+                this.$emit('input', this.clampValue(this.value + this.step))
                 this.$emit('change')
             }
         },
@@ -55,7 +55,7 @@ export default {
             if (value < this.min) {
                 value += Math.ceil((this.min - value) / this.step) * this.step
             }
-            if (value > this.max) {
+            if (this.max && value > this.max) {
                 value -= Math.ceil((value - this.max) / this.step) * this.step
             }
 
