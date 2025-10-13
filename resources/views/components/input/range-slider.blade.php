@@ -1,4 +1,4 @@
-@props(['inputs' => true, 'labels' => true])
+@props(['inputs' => true, 'labels' => false])
 @slots(['value'])
 
 <range-slider v-slot="{ _renderProxy: rangeInputScope, value, prefix, suffix }" {{ $attributes }}>
