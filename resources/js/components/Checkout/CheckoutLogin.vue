@@ -18,6 +18,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        allowGuest: {
+            type: Boolean,
+            default: true,
+        },
     },
 
     data: () => ({
@@ -91,6 +95,10 @@ export default {
         },
 
         async handleGuest() {
+            if (!this.allowGuest) {
+                return false
+            }
+
             await setGuestEmailOnCart(this.email)
 
             return true
