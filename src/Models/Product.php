@@ -281,7 +281,7 @@ class Product extends Model
         }
 
         if ($key == 'url_key') {
-            return '/' . ($value ? $value . Rapidez::config('catalog/seo/product_url_suffix') : 'catalog/product/view/id/' . $this->entity_id)
+            return '/' . ($value ? $value . Rapidez::config('catalog/seo/product_url_suffix') : 'catalog/product/view/id/' . $this->entity_id);
         }
 
         $this->setAttribute($key, $value);
