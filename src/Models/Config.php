@@ -81,7 +81,7 @@ class Config extends Model
             default                     => 0
         };
 
-        if ($options['default'] === false) {
+        if (($options['default'] ?? false) === false) {
             $options['default'] = config('rapidez.magento-defaults.' . $path, null);
         }
 
@@ -106,7 +106,7 @@ class Config extends Model
                     $result = $options['default'] ?? null;
                 }
 
-                return (bool) $options['decrypt'] && is_string($result) ? static::decrypt($result) : $result;
+                return (bool) ($options['decrypt'] ?? false) && is_string($result) ? static::decrypt($result) : $result;
             }
         }
 
