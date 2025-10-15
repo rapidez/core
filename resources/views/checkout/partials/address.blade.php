@@ -168,7 +168,6 @@
                     <x-rapidez::input
                         name="{{ $type }}_telephone"
                         v-model="variables.telephone"
-
                         :required="Rapidez::config('customer/address/telephone_show') == 'req'"
                     />
                 </label>
