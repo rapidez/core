@@ -56,7 +56,7 @@ export default {
                         })
                     },
                 },
-                getQuery: this.getQuery
+                getQuery: this.getQuery,
             }
         },
 
@@ -69,8 +69,8 @@ export default {
         },
 
         getQuery(query, search_attributes, config) {
-            const esQuery = this.query(...arguments);
-            let queries = Array.isArray(esQuery) ? esQuery : [esQuery];
+            const esQuery = this.query(...arguments)
+            let queries = Array.isArray(esQuery) ? esQuery : [esQuery]
 
             return queries.filter((q) => q)
         },
