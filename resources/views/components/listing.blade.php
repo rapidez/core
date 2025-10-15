@@ -8,26 +8,26 @@
 <div class="min-h-screen">
     <listing
         {{ $attributes }}
-        v-slot="{ loaded, index, searchClient, rangeAttributes, categoryAttributes, hitsPerPage, filters, sortOptions, withFilters, withSwatches, routing, middlewares }"
+        v-slot="listingSlotProps"
         v-cloak
         v-bind:root-path='@json($rootPath)'
     >
         <div>
             <ais-instant-search
-                v-if="searchClient"
-                :search-client="searchClient"
-                :middlewares="middlewares"
-                :index-name="index"
-                :routing="routing"
+                v-if="listingSlotProps.searchClient"
+                :search-client="listingSlotProps.searchClient"
+                :middlewares="listingSlotProps.middlewares"
+                :index-name="listingSlotProps.index"
+                :routing="listingSlotProps.routing"
             >
                 {{ $before ?? '' }}
 
                 @slotdefault('slot')
-                    <div class="flex gap-x-20 gap-y-5 max-lg:flex-col">
-                        <div class="lg:w-80 shrink-0">
+                    <div class="flex gap-x-20 gap-y-5 max-lg:flex-col min-h-screen">
+                        <div class="lg:w-80 shrink-0" data-testid="listing-filters">
                             @include('rapidez::listing.filters')
                         </div>
-                        <div class="flex-1">
+                        <div class="flex-1" data-testid="listing-products">
                             {{ $title ?? '' }}
 
                             @include('rapidez::listing.products')

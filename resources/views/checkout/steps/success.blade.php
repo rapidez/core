@@ -1,11 +1,17 @@
 <checkout-success>
-    <template slot-scope="{ order, refreshOrder, hideBilling, shipping, billing, items }">
-        <div v-if="order" dusk="checkout-success" class="container" v-cloak>
+    <template slot-scope="{ order, refreshOrder, hideBilling, shipping, billing, items, needsLogin }">
+        <div v-if="order" data-testid="checkout-success" class="container" v-cloak>
             <h1 class="font-bold text-4xl mb-5">@lang('Order placed succesfully')</h1>
-            <div class="bg rounded p-8">
+            <div class="bg rounded p-8" data-testid="masked">
                 <p>@lang('We will get to work for you right away')</p>
                 <p>@lang('We will send a confirmation of your order to') <span class="font-bold">@{{ order.email }}</span></p>
-                <p>@lang('Your order is currently:') <span class="font-bold">@{{ order.status }}</span> <a class="inline-block" href="#" v-on:click.prevent="(e) => {e.target.classList.add('animate-spin'); refreshOrder().finally(() => e.target.classList.remove('animate-spin'))}">&#8635;</a></p>
+
+                <template v-if="needsLogin">
+                    <p>@lang('Please log in to view the status of your order')</p>
+                </template>
+                <template v-else>
+                    <p>@lang('Your order is currently:') <span class="font-bold">@{{ order.status }}</span> <a class="inline-block" href="#" v-on:click.prevent="(e) => {e.target.classList.add('animate-spin'); refreshOrder().finally(() => e.target.classList.remove('animate-spin'))}">&#8635;</a></p>
+                </template>
             </div>
 
             <div class="mt-4">
@@ -17,14 +23,14 @@
                         <a :href="'/' + item.product.url_key + item.product.url_suffix | url" target="blank" class="block">
                             <img
                                 :alt="item.product_name"
-                                :src="'/storage/{{ config('rapidez.store') }}/resizes/200/sku/' + item.product_sku + '.webp'"
+                                :src="'/storage/{{ config('rapidez.store') }}/resizes/200/sku/' + item.product_sku + '.webp' | url"
                                 height="100"
                                 class="mx-auto"
                             />
                         </a>
                     </div>
                     <div class="w-5/6 sm:w-5/12">
-                        <a :href="'/' + item.product.url_key + item.product.url_suffix | url" target="blank" dusk="cart-item-name" class="font-bold">@{{ item.product_name }}</a>
+                        <a :href="'/' + item.product.url_key + item.product.url_suffix | url" target="blank" class="font-bold">@{{ item.product_name }}</a>
                         <div v-for="option in item.selected_options">
                             @{{ option.label }}: @{{ option.value }}
                         </div>

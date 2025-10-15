@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core\ViewDirectives;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Cache;
 
 class WidgetDirective
@@ -12,19 +13,19 @@ class WidgetDirective
             'widget.' . md5(serialize(func_get_args())) . '_' . config('rapidez.store'),
             function () use ($location, $type, $handle, $entities, $replace) {
                 $html = '';
-
-                if ($type == 'pages') {
-                    $type = ['pages', 'all_pages'];
-                }
-
                 $widgetModel = config('rapidez.models.widget');
-                $widgets = $widgetModel::where('layout_handle', $handle)
-                    ->{is_array($type) ? 'whereIn' : 'where'}('page_group', $type)
-                    ->where('block_reference', $location);
-
-                if ($entities) {
-                    $widgets->where('entities', $entities);
-                }
+                $widgets = $widgetModel::whereIn('layout_handle', (array) $handle)
+                    ->whereIn('page_group', (array) $type)
+                    ->where('block_reference', $location)
+                    ->where(function (Builder $query) use ($entities) {
+                        $query->where('page_for', 'all')
+                            ->when($entities, function (Builder $query, $entities) {
+                                $query->orWhere(function (Builder $query) use ($entities) {
+                                    $query->where('page_for', 'specific')
+                                        ->whereRaw('FIND_IN_SET(?, entities)', $entities);
+                                });
+                            });
+                    });
 
                 foreach ($widgets->get() as $widget) {
                     $widgetClass = config('rapidez.frontend.widgets.' . $widget->instance_type);

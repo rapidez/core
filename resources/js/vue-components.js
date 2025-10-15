@@ -31,6 +31,9 @@ Vue.component('global-slideover', globalSlideover)
 import globalSlideoverInstance from './components/GlobalSlideoverInstance.vue'
 Vue.component('global-slideover-instance', globalSlideoverInstance)
 
+import VueTurboFrame from './components/VueTurboFrame.vue'
+Vue.component('vue-turbo-frame', VueTurboFrame)
+
 import images from './components/Product/Images.vue'
 Vue.component('images', images)
 
@@ -63,3 +66,4 @@ Vue.component('search-suggestions', () => import('./components/Listing/SearchSug
 Vue.component('checkout-success', () => import('./components/Checkout/CheckoutSuccess.vue'))
 Vue.component('popup', () => import('./components/Popup.vue'))
 Vue.component('range-slider', () => import('./components/Elements/RangeSlider.vue'))
+Vue.component('recently-viewed', () => import('./components/RecentlyViewed.vue'))

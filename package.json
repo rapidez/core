@@ -1,4 +1,6 @@
 {
+    "name": "@rapidez/core",
+    "version": "1.0.0",
     "private": true,
     "type": "module",
     "scripts": {
@@ -7,6 +9,7 @@
         "prod": "vite build"
     },
     "devDependencies": {
+        "@axe-core/playwright": "^4.10.2",
         "@babel/core": "^7.23.9",
         "@hotwired/turbo": "^8.0.2",
         "@playwright/test": "^1.53.0",
@@ -19,11 +22,14 @@
         "@vueuse/integrations": "^10.11.0",
         "autoprefixer": "^10.4.15",
         "cross-env": "^7.0.3",
+        "dotenv": "^17.2.0",
         "graphql": "^16.8.1",
         "graphql-combine-query": "indykoning/graphql-combine-query#feature/add-allowed-duplicates",
         "graphql-tag": "^2.12.6",
         "instantsearch.js": "^4.75.7",
         "laravel-vite-plugin": "^1.0.5",
+        "lighthouse": "^12.8.2",
+        "playwright-lighthouse": "^4.0.0",
         "postcss": "^8.4.29",
         "postcss-import": "^16.1.0",
         "postcss-nested": "^6.0.0",
@@ -41,5 +47,8 @@
         "vue-turbolinks": "^2.2.2",
         "vue2-teleport": "^1.1.4"
     },
-    "dependencies": {}
+    "dependencies": {},
+    "workspaces": [
+        "vendor/rapidez/*"
+    ]
 }

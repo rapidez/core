@@ -16,7 +16,7 @@
     <div class="pb-4 border-b">
         @include('rapidez::listing.partials.toolbar')
     </div>
-    <ais-hits>
+    <ais-hits :transform-items="listingSlotProps.transformItems">
         <template v-slot="{ items, sendEvent }">
             <div v-if="items && items.length" class="overflow-hidden">
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 -mx-5 -mb-px *:border-b">

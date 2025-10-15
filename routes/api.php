@@ -27,7 +27,7 @@ Route::middleware('api')->prefix('api')->group(function () {
         Route::match(['get', 'post'], 'index/products', function (Request $request) {
             fastcgi_finish_request();
             Artisan::call('rapidez:index', [
-                'store' => $request->store ?: false,
+                '--store' => $request->store ?: false,
             ]);
         });
 
