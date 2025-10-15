@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/3.10.1...3.10.1)
+[Unreleased changes](https://github.com/rapidez/core/compare/...3.10.2)
+## [3.10.2](https://github.com/rapidez/core/releases/tag/3.10.2) - 2025-09-02
+
+### Fixed
+
+- GraphQL mutation await fix (#956)
+- Cart total/tax fixes (#962)
+- Subfolder store image location fix (#994)
+
 ## [3.10.1](https://github.com/rapidez/core/releases/tag/3.10.1) - 2025-07-22
 
 ### Fixed
