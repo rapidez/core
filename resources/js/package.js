@@ -135,7 +135,7 @@ function init() {
                         function_score: {
                             script_score: {
                                 script: {
-                                    source: `doc.containsKey('positions.${categoryId}') ? (Integer.parseInt(doc['positions.${categoryId}'].empty ? '0' : doc['positions.${categoryId}'].value)) : 0`,
+                                    source: `doc.containsKey('positions.${categoryId}') ? ((doc['positions.${categoryId}'].empty || !/^\d+$/.matcher(doc['positions.${categoryId}'].value).matches()) ? 0 : Integer.parseInt(doc['positions.${categoryId}'].value)) : 0`,
                                 },
                             },
                         },

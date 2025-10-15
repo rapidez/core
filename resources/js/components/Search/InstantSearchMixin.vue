@@ -5,6 +5,17 @@ import { instantsearchMiddlewares } from '../../stores/useInstantsearchMiddlewar
 import { createInsightsMiddleware } from 'instantsearch.js/es/middlewares/createInsightsMiddleware'
 
 export default {
+    props: {
+        query: {
+            type: Function,
+            default: function (query, searchAttributes, config) {
+                // __NO_QUERY__ is a temporary band-aid for https://github.com/searchkit/searchkit/pull/1407
+                if (query && query !== '__NO_QUERY__') {
+                    return this.relevanceQueryMatch(query, searchAttributes, config?.fuzziness)
+                }
+            },
+        },
+    },
     data: () => ({
         searchkit: null,
         searchClient: null,
@@ -45,6 +56,7 @@ export default {
                         })
                     },
                 },
+                getQuery: this.getQuery
             }
         },
 
@@ -54,6 +66,13 @@ export default {
 
         getMiddlewares() {
             return instantsearchMiddlewares
+        },
+
+        getQuery(query, search_attributes, config) {
+            const esQuery = this.query(...arguments);
+            let queries = Array.isArray(esQuery) ? esQuery : [esQuery];
+
+            return queries.filter((q) => q)
         },
 
         relevanceQueryMatch(query, search_attributes, fuzziness = 'AUTO:4,8') {
