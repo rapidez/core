@@ -36,10 +36,11 @@ class ProductController
         $queryOptions = request()->query;
         $selectedOptions = [];
 
-        foreach ($product->super_attributes ?: [] as $superAttributeId => $superAttribute) {
+        foreach ($product->superAttributes ?: [] as $superAttributeId => $superAttribute) {
+
             // Make sure we only check for query options that exist
-            if ($queryOptions->has($superAttribute->code)) {
-                $selectedOptions[$superAttribute->code] = $queryOptions->get($superAttribute->code);
+            if ($queryOptions->has($superAttribute->attribute_code)) {
+                $selectedOptions[$superAttribute->attribute_code] = $queryOptions->get($superAttribute->attribute_code);
             }
         }
 
