@@ -27,8 +27,7 @@ trait HasCustomAttributes
 
     protected static function withCustomAttributes()
     {
-        static::addGlobalScope('customAttributes', fn (Builder $builder) => $builder->withCustomAttributes()
-        );
+        static::addGlobalScope('customAttributes', fn (Builder $builder) => $builder->withCustomAttributes());
     }
 
     public function scopeWithCustomAttributes(Builder $builder, ?callable $callback = null)

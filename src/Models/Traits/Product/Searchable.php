@@ -3,7 +3,6 @@
 namespace Rapidez\Core\Models\Traits\Product;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Category;
@@ -23,7 +22,7 @@ trait Searchable
     protected function makeAllSearchableUsing(Builder $query)
     {
         return $query
-            ->with(['reviewSummary'])
+            ->with(['reviewSummary', 'children'])
             ->withEventyGlobalScopes('index.' . static::getModelName() . '.scopes');
     }
 
@@ -41,7 +40,7 @@ trait Searchable
         }
 
         $showOutOfStock = (bool) Rapidez::config('cataloginventory/options/show_out_of_stock', 0);
-        if (! $showOutOfStock && ! $this->in_stock) {
+        if (! $showOutOfStock && ! $this->stock->is_in_stock) {
             return false;
         }
 
@@ -56,13 +55,18 @@ trait Searchable
         $indexable = Cache::driver('array')->rememberForever('indexable_attribute_codes', fn () => EavAttribute::getCachedIndexable()->pluck($this->getCustomAttributeCode()));
         $keys = $this->customAttributes->keys()->intersect($indexable)->toArray();
 
-        $data = [
-            'entity_id' => $this->entity_id,
-            'sku'       => $this->sku,
-            ...Arr::mapWithKeys($keys, fn ($attribute) => [$attribute => $this->getCustomAttribute($attribute)?->value]),
-        ];
+        $data = $this->only([
+            'entity_id',
+            'sku',
+            'children',
+            'url',
+            'in_stock',
+            'min_sale_qty',
+            'qty_increments',
+            ...$keys,
+            ...$this->superAttributes->pluck('attribute_code'),
+        ]);
 
-        $data['url'] = $this->url;
         $data['store'] = config('rapidez.store');
         $data['super_attributes'] = $this->superAttributes->keyBy('attribute_id');
 
@@ -73,6 +77,10 @@ trait Searchable
                 ->groupBy('category_id')
                 ->pluck('position', 'category_id');
         });
+
+        foreach($this->superAttributeValues as $attribute => $values) {
+            $data['super_' . $attribute] = $values->pluck('value')->unique()->values();
+        }
 
         $data = $this->withCategories($data);
 

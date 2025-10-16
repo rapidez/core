@@ -2,7 +2,9 @@
 
 namespace Rapidez\Core\Models;
 
-class ProductSuperLink extends Model
+use Illuminate\Database\Eloquent\Relations\Pivot;
+
+class ProductSuperLink extends Pivot
 {
     const CREATED_AT = null;
     const UPDATED_AT = null;
@@ -10,6 +12,4 @@ class ProductSuperLink extends Model
     protected $table = 'catalog_product_super_link';
 
     protected $primaryKey = 'link_id';
-
-    protected $guarded = [];
 }

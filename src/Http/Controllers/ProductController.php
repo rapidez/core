@@ -10,10 +10,9 @@ class ProductController
     public function show(int $productId)
     {
         $productModel = config('rapidez.models.product');
-        $product = $productModel::selectForProductPage()
-            ->withEventyGlobalScopes('productpage.scopes')
-            ->with('options')
-            ->findOrFail($productId);
+
+        /** @var \Rapidez\Core\Models\Product $product */
+        $product = $productModel::findOrFail($productId);
 
         $attributes = [
             'entity_id',
@@ -31,15 +30,13 @@ class ProductController
             'max_sale_qty',
             'qty_increments',
         ];
+        
+        $attributes = Eventy::filter('productpage.frontend.attributes', $attributes);
 
         $queryOptions = request()->query;
         $selectedOptions = [];
 
-        $attributes = Eventy::filter('productpage.frontend.attributes', $attributes);
-
         foreach ($product->super_attributes ?: [] as $superAttributeId => $superAttribute) {
-            $attributes[] = 'super_' . $superAttribute->code;
-
             // Make sure we only check for query options that exist
             if ($queryOptions->has($superAttribute->code)) {
                 $selectedOptions[$superAttribute->code] = $queryOptions->get($superAttribute->code);
@@ -47,7 +44,7 @@ class ProductController
         }
 
         // Find the first child that matches the given product options
-        $selectedChild = collect($product->children)->firstWhere(function ($child) use ($selectedOptions) {
+        $selectedChild = $product->children->firstWhere(function ($child) use ($selectedOptions) {
             return count($selectedOptions) && collect($selectedOptions)->every(fn ($value, $code) => $child->{$code} == $value);
         }) ?? $product;
 
