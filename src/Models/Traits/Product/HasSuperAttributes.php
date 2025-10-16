@@ -12,7 +12,7 @@ trait HasSuperAttributes
         return $this->hasMany(
             config('rapidez.models.super_attribute'),
             'product_id',
-        )->orderBy('position');
+        )->orderBy('catalog_product_super_attribute.position');
     }
 
     public function superAttributeValues(): Attribute
