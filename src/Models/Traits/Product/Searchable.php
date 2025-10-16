@@ -113,7 +113,7 @@ trait Searchable
                 continue;
             }
 
-            for($i = 1; $i <= $level; $i++) {
+            for ($i = 1; $i <= $level; $i++) {
                 $pathCategories = collect($path)
                     ->take($i)
                     ->map(fn ($id) => $categories[$id]->name ?? null)
