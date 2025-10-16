@@ -7,9 +7,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Support\Collection;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Scopes\Product\ForCurrentWebsiteScope;
@@ -57,6 +55,17 @@ class Product extends Model
         return 'product';
     }
 
+    public function only($attributes)
+    {
+        $data = parent::only($attributes);
+
+        if (array_key_exists('children', $data)) {
+            $data['children'] = $data['children']->map(fn ($child) => $child->only($attributes));
+        }
+
+        return $data;
+    }
+
     public function gallery(): BelongsToMany
     {
         return $this->belongsToMany(
@@ -74,24 +83,23 @@ class Product extends Model
         )->shouldCache();
     }
 
-    public function parent(): HasOneThrough
+    public function parents(): BelongsToMany
     {
-        return $this->hasOneThrough(
-            config('rapidez.models.product'),
-            config('rapidez.models.product_super_link'),
-            'product_id', 'entity_id',
-            'entity_id', 'parent_id'
-        );
+        return $this
+            ->belongsToMany(config('rapidez.models.product'), 'catalog_product_super_link', 'product_id', 'parent_id')
+            ->using(config('rapidez.models.product_super_link'));
     }
 
-    public function children(): HasManyThrough
+    public function children(): BelongsToMany
     {
-        return $this->hasManyThrough(
-            config('rapidez.models.product'),
-            config('rapidez.models.product_super_link'),
-            'parent_id', 'entity_id',
-            'entity_id', 'product_id'
-        );
+        return $this
+            ->belongsToMany(config('rapidez.models.product'), 'catalog_product_super_link', 'parent_id', 'product_id')
+            ->using(config('rapidez.models.product_super_link'));
+    }
+
+    public function getChildrenAttribute(): Collection
+    {
+        return $this->getRelationValue('children')->keyBy('entity_id');
     }
 
     public function productLinks(): HasMany
@@ -159,6 +167,14 @@ class Product extends Model
         return $this->hasOne(
             config('rapidez.models.product_review_summary'),
             'entity_pk_value'
+        );
+    }
+
+    public function views(): HasMany
+    {
+        return $this->hasMany(
+            config('rapidez.models.product_view'),
+            'product_id',
         );
     }
 
@@ -257,18 +273,35 @@ class Product extends Model
 
     protected function minSaleQty(): Attribute
     {
-        return Attribute::get(function (?int $minSaleQty): ?int {
-            if (! $this->qty_increments) {
-                return $minSaleQty;
-            }
+        return Attribute::get(function (): ?float {
+            $increments = $this->stock->qty_increments ?: 1;
+            $minSaleQty = $this->stock->min_sale_qty ?: 1;
 
-            return ceil($minSaleQty / $this->qty_increments) * $this->qty_increments;
+            return ($minSaleQty - fmod($minSaleQty, $increments)) ?: $increments;
         });
+    }
+
+    protected function maxSaleQty(): Attribute
+    {
+        return Attribute::get(fn () => $this->stock->max_sale_qty);
+    }
+
+    protected function qtyIncrements(): Attribute
+    {
+        return Attribute::get(fn () => $this->stock->qty_increments);
     }
 
     protected function breadcrumbCategories(): Attribute
     {
-        return Attribute::get(fn (): Collection => $this->categoryProducts->where('category_id', '!=', config('rapidez.root_category_id'))->pluck('category')
-        )->shouldCache();
+        return Attribute::get(function (): Collection {
+            return $this->categoryProducts
+                ->where('category_id', '!=', config('rapidez.root_category_id'))
+                ->pluck('category');
+        })->shouldCache();
+    }
+
+    protected function inStock(): Attribute
+    {
+        return Attribute::get(fn () => $this->stock->is_in_stock);
     }
 }

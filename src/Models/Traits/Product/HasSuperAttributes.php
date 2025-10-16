@@ -12,7 +12,7 @@ trait HasSuperAttributes
         return $this->hasMany(
             config('rapidez.models.super_attribute'),
             'product_id',
-        )->orderBy('position');
+        )->orderBy('catalog_product_super_attribute.position');
     }
 
     public function superAttributeValues(): Attribute
@@ -24,7 +24,7 @@ trait HasSuperAttributes
                     $attribute->attribute_code => $this->children->mapWithKeys(function ($child) use ($attribute) {
                         return [$child->entity_id => [
                             'label'      => $child->{$attribute->attribute_code},
-                            'value'      => $child->customAttributes[$attribute->attribute_code]->value_id,
+                            'value'      => $child->customAttributes[$attribute->attribute_code]->getAttributeFromArray('value'),
                             'sort_order' => $child->customAttributes[$attribute->attribute_code]->sort_order,
                         ]];
                     }),
