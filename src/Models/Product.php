@@ -60,9 +60,9 @@ class Product extends Model
         $data = parent::only($attributes);
 
         if (array_key_exists('children', $data)) {
-            $data['children'] = $data['children']->map(fn($child) => $child->only($attributes));
+            $data['children'] = $data['children']->map(fn ($child) => $child->only($attributes));
         }
-        
+
         return $data;
     }
 
@@ -283,12 +283,12 @@ class Product extends Model
 
     protected function maxSaleQty(): Attribute
     {
-        return Attribute::get(fn() => $this->stock->max_sale_qty);
+        return Attribute::get(fn () => $this->stock->max_sale_qty);
     }
 
     protected function qtyIncrements(): Attribute
     {
-        return Attribute::get(fn() => $this->stock->qty_increments);
+        return Attribute::get(fn () => $this->stock->qty_increments);
     }
 
     protected function breadcrumbCategories(): Attribute
@@ -302,7 +302,6 @@ class Product extends Model
 
     protected function inStock(): Attribute
     {
-        return Attribute::get(fn() => $this->stock->is_in_stock);
+        return Attribute::get(fn () => $this->stock->is_in_stock);
     }
 }
-

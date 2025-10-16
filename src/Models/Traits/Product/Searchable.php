@@ -78,7 +78,7 @@ trait Searchable
                 ->pluck('position', 'category_id');
         });
 
-        foreach($this->superAttributeValues as $attribute => $values) {
+        foreach ($this->superAttributeValues as $attribute => $values) {
             $data['super_' . $attribute] = $values->pluck('value')->unique()->values();
         }
 

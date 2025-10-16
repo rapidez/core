@@ -30,7 +30,7 @@ class ProductController
             'max_sale_qty',
             'qty_increments',
         ];
-        
+
         $attributes = Eventy::filter('productpage.frontend.attributes', $attributes);
 
         $queryOptions = request()->query;
