@@ -13,11 +13,13 @@ use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Scopes\Product\ForCurrentWebsiteScope;
 use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
 use Rapidez\Core\Models\Traits\HasCustomAttributes;
+use Rapidez\Core\Models\Traits\Product\BackwardsCompatibleAccessors;
 use Rapidez\Core\Models\Traits\Product\HasSuperAttributes;
 use Rapidez\Core\Models\Traits\Product\Searchable;
 
 class Product extends Model
 {
+    use BackwardsCompatibleAccessors;
     use HasAlternatesThroughRewrites;
     use HasCustomAttributes;
     use HasSuperAttributes;
@@ -296,26 +298,6 @@ class Product extends Model
         });
     }
 
-    protected function minSaleQty(): Attribute
-    {
-        return Attribute::get(function (): ?float {
-            $increments = $this->stock->qty_increments ?: 1;
-            $minSaleQty = $this->stock->min_sale_qty ?: 1;
-
-            return ($minSaleQty - fmod($minSaleQty, $increments)) ?: $increments;
-        });
-    }
-
-    protected function maxSaleQty(): Attribute
-    {
-        return Attribute::get(fn () => $this->stock->max_sale_qty);
-    }
-
-    protected function qtyIncrements(): Attribute
-    {
-        return Attribute::get(fn () => $this->stock->qty_increments);
-    }
-
     protected function breadcrumbCategories(): Attribute
     {
         return Attribute::get(function (): Collection {
@@ -323,10 +305,5 @@ class Product extends Model
                 ->where('category_id', '!=', config('rapidez.root_category_id'))
                 ->pluck('category');
         })->shouldCache();
-    }
-
-    protected function inStock(): Attribute
-    {
-        return Attribute::get(fn () => $this->stock->is_in_stock);
     }
 }
