@@ -10,11 +10,15 @@ class ProductStock extends Model
 {
     protected $table = 'cataloginventory_stock_item';
 
-    public static function boot()
+    public function getHidden()
     {
-        parent::boot();
+        $hidden = parent::getHidden();
 
-        static::addGlobalScope('onlyExposedColumns', fn (Builder $builder) => $builder->select(['product_id', ...config('rapidez.exposed_stock_columns')]));
+        if (!config('rapidez.system.expose_stock')) {
+            $hidden[] = 'qty';
+        }
+
+        return $hidden;
     }
 
     public function __get($key)
