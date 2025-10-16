@@ -8,7 +8,6 @@
 >
     <x-rapidez::input
         {{ $attributes->merge([
-            'id' => 'autocomplete-input',
             'type' => 'search',
             'name' => 'q',
             'autocomplete' => 'off',
@@ -17,6 +16,8 @@
             'spellcheck' => 'false',
             'placeholder' => __('What are you looking for?'),
             'class' => 'text-base h-12 peer',
+            'data-testid' => 'autocomplete-input',
+            'id' => 'autocomplete-input',
         ]) }}
     />
     <button
@@ -31,6 +32,7 @@
     <x-rapidez::button
         class="absolute right-0 top-0 bg-opacity-0 hover:bg-opacity-0 border-none *:peer-placeholder-shown:bg-muted *:peer-placeholder-shown:text"
         type="submit"
+        title="@lang('Search')"
     >
         <x-rapidez::autocomplete.magnifying-glass />
     </x-rapidez::button>

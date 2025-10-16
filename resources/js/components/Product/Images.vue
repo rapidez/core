@@ -6,8 +6,16 @@ export default {
         images: config.product.images,
         active: 0,
         zoomed: false,
+        touchStartX: 0,
         stopKeyUpListener: () => {},
     }),
+
+    mounted() {
+        if (this.isTouchDevice()) {
+            useEventListener(this.$el, 'touchstart', this.touchStart)
+            useEventListener(this.$el, 'touchend', this.touchEnd)
+        }
+    },
 
     render() {
         return this.$scopedSlots.default(this)
@@ -50,6 +58,29 @@ export default {
             } else if (e.key == 'Escape') {
                 // esc
                 this.toggleZoom()
+            }
+        },
+
+        isTouchDevice() {
+            return 'ontouchstart' in window
+        },
+
+        touchStart(event) {
+            this.touchStartX = event.touches[0].clientX
+        },
+
+        touchEnd(event) {
+            const touchEndX = event.changedTouches[0].clientX
+            const distance = touchEndX - this.touchStartX
+
+            if (Math.abs(distance) < 20) {
+                return
+            }
+
+            if (distance < 0 && this.active < this.images.length - 1) {
+                this.change(this.active + 1)
+            } else if (distance > 0 && this.active > 0) {
+                this.change(this.active - 1)
             }
         },
 

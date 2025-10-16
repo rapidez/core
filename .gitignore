@@ -5,13 +5,15 @@
 .phpunit.result.cache
 composer.lock
 yarn.lock
-phpunit.dusk.xml
 phpunit.xml
 stats.html
 
 # Playwright
+.env
 node_modules/
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+/tests/playwright/**/*-darwin.png
+/lighthouse

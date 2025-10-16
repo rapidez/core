@@ -9,6 +9,10 @@ on:
   schedule:
     - cron: '0 0 * * *'
   workflow_dispatch:
+    inputs:
+      update_all_screenshots:
+        description: 'Update all screenshots?'
+        type: boolean
 
 jobs:
   test:
@@ -23,16 +27,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - magento-version: 2.4.7-p6
-            magento-php-version: php82-fpm
-            rapidez-php-version: 8.2
-          - magento-version: 2.4.7-p6
+          - magento-version: 2.4.7-p7
             magento-php-version: php83-fpm
             rapidez-php-version: 8.3
-          - magento-version: 2.4.7-p6
-            magento-php-version: php83-fpm
-            rapidez-php-version: 8.4
-          - magento-version: 2.4.8-p1
+          - magento-version: 2.4.8-p2
             magento-php-version: php84-fpm
             rapidez-php-version: 8.4
             screenshots: true
@@ -43,7 +41,7 @@ jobs:
         env:
           URL: http://localhost:1234/
           FLAT_TABLES: true
-          CUSTOM_ENTRYPOINT_COMMAND: "php bin/magento encryption:key:change -k 5AM3SD5SkwT8iwIxL6L1q8XQhzK3wk51; magerun2 config:store:set system/smtp/disable 1; magerun2 config:store:set checkout/options/enable_guest_checkout_login 1"
+          CUSTOM_ENTRYPOINT_COMMAND: "php bin/magento encryption:key:change -k 5AM3SD5SkwT8iwIxL6L1q8XQhzK3wk51; magerun2 config:store:set system/smtp/disable 1; magerun2 config:store:set checkout/options/enable_guest_checkout_login 1; magerun2 config:store:delete design/head/includes"
         ports:
           - 3307:3306
           - 1234:80
@@ -73,6 +71,7 @@ jobs:
         with:
           path: rapidez/core
           fetch-depth: 0
+          lfs: true
 
       - uses: actions/checkout@v4
         with:
@@ -96,10 +95,13 @@ jobs:
       - name: Use rapidez/core from source
         run: composer config repositories.core path ../core
 
+      - name: Make the Magento version available as env variable
+        run: echo "MAGENTO_VERSION=${{ matrix.magento-version }}" >> $GITHUB_ENV
+
       - name: Get commit hash and tag of the core
         working-directory: ./rapidez/core
         run: |
-          echo "CORE_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
+          echo "CORE_HASH=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse HEAD | sed 's|/|_|g')" >> $GITHUB_ENV
           echo "LATEST_TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
       - name: Composer require the local rapidez/core
@@ -133,16 +135,27 @@ jobs:
         run: yarn playwright test
 
       # Screenshots
+      - name: Collect failed tests
+        if: (failure() || inputs.update_all_screenshots)
+        run: yarn playwright test --last-failed --list --reporter=dot --pass-with-no-tests > failed-tests.txt
+
       - name: Update screenshots
         if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
+        run: |
+          while read -r test_name; do
+            yarn playwright test "$test_name" --update-snapshots --reporter=list
+          done < <(awk -F ' › ' 'NF>1{print $2}' failed-tests.txt | sort -u)
+
+      - name: Update all screenshots
+        if: ${{ inputs.update_all_screenshots && matrix.screenshots == true }}
         run: yarn playwright test --update-snapshots --reporter=list
 
       - name: Move the screenshots
-        if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
+        if: (failure() || inputs.update_all_screenshots) && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
         run: cp -r tests/playwright/. ../core/tests/playwright/
 
       - name: Commit the screenshots
-        if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
+        if: (failure() || inputs.update_all_screenshots) && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "[CI] Update Snapshots"
@@ -168,7 +181,52 @@ jobs:
         with:
           name: artifact-P${{ matrix.rapidez-php-version }}-M${{matrix.magento-version}}-on-${{matrix.magento-php-version}}
           path: |
-            rapidez/rapidez/playwright-report
+            rapidez/rapidez/blob-report
             rapidez/rapidez/storage/logs/laravel.log
             docker-logs
             magento/var/log
+
+  report:
+    if: failure()
+    needs: [test]
+    runs-on: ubuntu-latest
+    env:
+      HTML_REPORT_PATH: ${{ github.repository }}/${{ github.ref_name }}/${{ github.run_id }}/${{ github.run_attempt }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: rapidez/playwright-reports
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./reports
+          merge-multiple: true
+
+      - name: Generate HTML report
+        run: npx playwright merge-reports --reporter html ./reports/rapidez/rapidez/blob-report
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+
+      - name: Push the new files to github pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.RAPIDEZ_ACTIONS_ACCOUNT_PAT }}
+          external_repository: rapidez/playwright-reports
+          publish_dir: ./playwright-report
+          destination_dir: ${{ env.HTML_REPORT_PATH }}
+
+      - name: URL in summary
+        run: echo "### Test results - https://${{ github.repository_owner }}.github.io/playwright-reports/${{ env.HTML_REPORT_PATH }}/" >> $GITHUB_STEP_SUMMARY

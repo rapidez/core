@@ -1,5 +1,5 @@
 window.debug = import.meta.env.VITE_DEBUG == 'true'
-window.Notify = (message, type, params = [], link = null) => window.app.$emit('notification-message', message, type, params, link)
+window.Notify = (message, type = 'info', params = [], link = null) => window.app.$emit('notification-message', message, type, params, link)
 if (!window.process) {
     // Workaround for process missing, if data is actually needed from here you should apply the following polyfill.
     // https://stackoverflow.com/questions/72221740/how-do-i-polyfill-the-process-node-module-in-the-vite-dev-server
@@ -127,7 +127,7 @@ function init() {
                     let url = new URL(imagePath)
                     url = url.pathname.replace('/media', '')
 
-                    return `/storage/${store}/resizes/${size}/magento${url}`
+                    return window.url(`/storage/${store}/resizes/${size}/magento${url}`)
                 },
 
                 categoryPositions(categoryId) {
@@ -135,7 +135,7 @@ function init() {
                         function_score: {
                             script_score: {
                                 script: {
-                                    source: `Integer.parseInt(doc['positions.${categoryId}'].empty ? '0' : doc['positions.${categoryId}'].value)`,
+                                    source: `doc.containsKey('positions.${categoryId}') ? (Integer.parseInt(doc['positions.${categoryId}'].empty ? '0' : doc['positions.${categoryId}'].value)) : 0`,
                                 },
                             },
                         },

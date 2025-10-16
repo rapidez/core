@@ -16,7 +16,10 @@ class AuthenticateHealthCheck
      */
     public function handle($request, $next)
     {
-        $auth = config('rapidez.healthcheck.auth', [static::class, 'auth']);
+        $auth = config('rapidez.healthcheck.auth');
+        if ($auth === null) {
+            $auth = [self::class, 'auth'];
+        }
         abort_unless($auth($request), 403);
 
         return $next($request);

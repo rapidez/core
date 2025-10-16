@@ -1,6 +1,172 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.2.0...4.2.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.7.6...4.7.6)
+## [4.7.6](https://github.com/rapidez/core/releases/tag/4.7.6) - 2025-10-02
+
+### Fixed
+
+- Remove legacy Vite config (#1020)
+- Defer cart watcher to next tick to avoid race condition (#1006)
+- Blade components update removing the disabled state (#1028)
+- Playwright Magento version tag (#1035)
+
+## [4.7.5](https://github.com/rapidez/core/releases/tag/4.7.5) - 2025-09-26
+
+### Fixed
+
+- Use npm workspaces for Rapidez dependencies (#1026)
+
+## [4.7.4](https://github.com/rapidez/core/releases/tag/4.7.4) - 2025-09-26
+
+### Fixed
+
+- Playwright wait for footer on success page (#1024)
+- Package.json name and version (#1025)
+
+## [4.7.3](https://github.com/rapidez/core/releases/tag/4.7.3) - 2025-09-26
+
+### Fixed
+
+- Playwright test fix (#1023)
+
+## [4.7.2](https://github.com/rapidez/core/releases/tag/4.7.2) - 2025-09-26
+
+### Fixed
+
+- Slider arrows color fix (#1017)
+- Visual swatch filters not showing fix (#1016)
+- Autocomplete focus on mobile fix (#1018)
+- Playwright use screenshot method everywhere (#1022)
+- GraphQL mutation notification event fix (#1021)
+- Fire login event when logged in customer changes (#1019)
+
+## [4.7.1](https://github.com/rapidez/core/releases/tag/4.7.1) - 2025-09-18
+
+### Fixed
+
+- Playwright checkout step wait fix (#1015)
+
+## [4.7.0](https://github.com/rapidez/core/releases/tag/4.7.0) - 2025-09-17
+
+### Added
+
+- Checkbox and radio product option inputs (#1013)
+
+### Fixed
+
+- Ignore .env for local Playwright runs (ed935d9)
+- Custom cart attributes label fix (#1009)
+- Recently viewed widget sorting (#1014)
+
+## [4.6.3](https://github.com/rapidez/core/releases/tag/4.6.3) - 2025-09-16
+
+### Fixed
+
+- Playwright unique blob report names (#1012)
+
+## [4.6.2](https://github.com/rapidez/core/releases/tag/4.6.2) - 2025-09-16
+
+### Fixed
+
+- Playwright checkout page optional login possibility (#1011)
+
+## [4.6.1](https://github.com/rapidez/core/releases/tag/4.6.1) - 2025-09-16
+
+### Fixed
+
+- Set gallery fetchpriority high (c5d82df)
+- Test with a clean Magento config (#1007)
+- Playwright extendable screenshot options (#1010)
+
+## [4.6.0](https://github.com/rapidez/core/releases/tag/4.6.0) - 2025-09-12
+
+### Added
+
+- Playwright Lighthouse score tests (#1003)
+- Recently viewed widget + widget fixes (#1002)
+
+### Fixed
+
+- Listing min height preventing layout shifts (#1000)
+- Use option instead of argument for index call (#1001)
+- Fix null check for auth (#1004)
+
+## [4.5.0](https://github.com/rapidez/core/releases/tag/4.5.0) - 2025-09-10
+
+### Added
+
+- Productlist items slot (#978)
+- Minicart row total including tax price (#981)
+- Playwright update all screenshots option (#997)
+
+### Changed
+
+- Uniform Blade file naming with dashes (#955, #990)
+- Playwright only update screenshots on the last failed (#991)
+- Drop PHP 8.2 Playwright tests (#987)
+- Playwright tests with the latest Magento patches (#992)
+- New frontend of rapidez/reviews (#983)
+- More flexible productlist component (#996)
+- Initial product swatches rendering from Blade (#982)
+
+### Fixed
+
+- Skip bugged Laravel version (#989)
+- Category positions script fix + fallback fix (#984)
+- Subfolder store image location fix (#993)
+- Success page login required to view order fallback (#980)
+- Prevent split on category_lvl1 reference (#998)
+- Playwright failed test screenshots in all browsers (#999)
+
+## [4.4.0](https://github.com/rapidez/core/releases/tag/4.4.0) - 2025-08-15
+
+### Added
+
+- Playwright tests replacing Dusk tests (#945)
+- Playwright WCAG tests (#958)
+- Vue-turbo-frame component (#968)
+- Product image swipe/touch support (#967)
+- Swatches on the product page and listings (#898)
+
+### Changed
+
+- Order summary improvements in cart and checkout (#953)
+
+### Fixed
+
+- Fix closing tag (#957)
+- Optional checkout login option fix (#959)
+- Send hit event slot prop fix (#963)
+- Checkout shipping address reactivity fix (#966)
+- Select input type mapping fix (#970)
+- Set guest email on change (#971)
+- Same as shipping toggle watch fix (#965)
+- Unique autocomplete ids (#973)
+- Cookie expiration & login failed notification fix (#974)
+- Do not show the Magento error on an invalid login (#975)
+- Cart total/tax fixes (#961)
+
+## [4.3.0](https://github.com/rapidez/core/releases/tag/4.3.0) - 2025-07-29
+
+### Added
+
+- Popular products on no search results page + category position fix (#926)
+- Optional checkout login option (#950)
+- Automatically determine field mappings (#902)
+
+### Changed
+
+- Playwright reports on Github pages + screenshots in LFS (#940)
+- Use non destructuring slot props on InstantSearch components (#946)
+
+### Fixed
+
+- Playwright run on branch fix (#941)
+- Slider index fix (#947)
+- Default notification types (#948)
+- Newsletter input translation (#949)
+- Field date mapping format (#952)
+
 ## [4.2.0](https://github.com/rapidez/core/releases/tag/4.2.0) - 2025-07-22
 
 ### Added

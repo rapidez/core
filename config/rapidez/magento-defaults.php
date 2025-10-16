@@ -6,6 +6,7 @@ return [
     'catalog/frontend/flat_catalog_product'               => '0',
     'catalog/frontend/grid_per_page'                      => '12',
     'catalog/frontend/show_swatches_in_product_list'      => '1',
+    'catalog/recently_products/viewed_count'              => '5',
     'catalog/seo/category_url_suffix'                     => '.html',
     'catalog/seo/product_url_suffix'                      => '.html',
     'cataloginventory/item_options/backorders'            => '0',

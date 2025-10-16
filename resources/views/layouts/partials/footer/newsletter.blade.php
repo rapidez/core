@@ -1,11 +1,11 @@
 <div class="mt-4 lg:mt-0 text-muted lg:w-1/3">
-    <h3 class="text-base font-bold">@lang('Want product news and updates?')</h3>
+    <strong class="text-base font-bold">@lang('Want product news and updates?')</strong>
     <p class="mt-4 text-base">@lang('Sign up for our newsletter to stay up to date.')</p>
-    <div class="sm:w-full sm:max-w-md xl:mt-0" dusk="newsletter">
+    <div class="sm:w-full sm:max-w-md xl:mt-0" data-testid="newsletter">
         <lazy>
             <graphql-mutation query="mutation visitor ($email: String!) { subscribeEmailToNewsletter(email: $email) { status } }" :alert="false" :clear="true">
                 <div slot-scope="{ mutate, variables, mutated, error }">
-                    <p v-if="mutated" class="text text-xl font-bold" v-cloak>
+                    <p v-if="mutated" class="text text-xl font-bold" data-testid="newsletter-success" v-cloak>
                         @lang('Thank you for subscribing!')
                     </p>
                     <div v-else>
@@ -14,22 +14,22 @@
                                 name="email"
                                 type="email"
                                 v-model="variables.email"
-                                dusk="newsletter-email"
+                                data-testid="newsletter-email"
                                 autocomplete="email"
-                                placeholder="Enter your email"
+                                :placeholder="__('Enter your email')"
                                 required
                             />
                             <div class="mt-3 rounded-md sm:mt-0 sm:ml-3 sm:flex-shrink-0">
                                 <x-rapidez::button.secondary
                                     type="submit"
-                                    dusk="newsletter-submit"
+                                    data-testid="newsletter-submit"
                                     class="w-full"
                                 >
                                     @lang('Subscribe')
                                 </x-rapidez::button.secondary>
                             </div>
                         </form>
-                        <p v-if="error" class="mt-3 text-sm text-red-700" v-cloak>
+                        <p v-if="error" class="mt-3 text-sm text-red-700" data-testid="newsletter-error" v-cloak>
                             @{{ error }}
                         </p>
                         <p class="mt-3 text-sm">
