@@ -2,7 +2,6 @@
 
 namespace Rapidez\Core\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Rapidez\Core\Facades\Rapidez;
 
@@ -14,7 +13,7 @@ class ProductStock extends Model
     {
         $hidden = parent::getHidden();
 
-        if (!config('rapidez.system.expose_stock')) {
+        if (! config('rapidez.system.expose_stock')) {
             $hidden[] = 'qty';
         }
 
