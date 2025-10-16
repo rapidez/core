@@ -101,7 +101,6 @@ trait Searchable
             return Category::all()->keyBy('entity_id');
         });
 
-        //TODO: This doesn't entirely appear to work, as `category_lvl1` isn't getting set everywhere.
         foreach ($this->breadcrumbCategories as $category) {
             if (! $category) {
                 continue;
@@ -114,12 +113,15 @@ trait Searchable
                 continue;
             }
 
-            $categories = collect($path)
-                ->map(fn ($id) => $categories[$id]->name ?? null)
-                ->whereNotNull()
-                ->join(' > ');
+            for($i = 1; $i <= $level; $i++) {
+                $pathCategories = collect($path)
+                    ->take($i)
+                    ->map(fn ($id) => $categories[$id]->name ?? null)
+                    ->whereNotNull()
+                    ->join(' > ');
 
-            $data['category_lvl' . $level][] = $categories;
+                $data['category_lvl' . $i][] = $pathCategories;
+            }
         }
 
         foreach ($data as $key => &$value) {
