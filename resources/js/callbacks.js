@@ -64,6 +64,8 @@ document.addEventListener('vue:loaded', function (event) {
             return true
         }
 
+        await vue.config.globalProperties.updateCart(variables, response)
+
         return false
     }
 
@@ -72,8 +74,8 @@ document.addEventListener('vue:loaded', function (event) {
             return response?.data
         }
         cart.value = Object.values(response.data)
-            .map((queryResponse) => ('cart' in queryResponse ? queryResponse.cart : queryResponse))
-            .findLast((queryResponse) => queryResponse?.is_virtual !== undefined)
+            .map((queryResponse) => (queryResponse && 'cart' in queryResponse ? queryResponse.cart : queryResponse))
+            .findLast((queryResponse) => queryResponse?.is_virtual !== undefined) ?? cart.value
 
         window.$emit(
             'rapidez:cart-updated',

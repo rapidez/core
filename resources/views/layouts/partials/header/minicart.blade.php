@@ -2,7 +2,7 @@
     <div class="relative" v-if="hasCart" v-on-click-away="close">
         <button class="flex my-1 focus:outline-none" v-on:click="toggle">
             <x-heroicon-o-shopping-cart class="size-6"/>
-            <span class="bg-secondary text-secondary-text text-sm font-bold flex items-center justify-center rounded-full size-6 text-center" dusk="minicart-count" v-cloak>
+            <span class="bg-secondary text-secondary-text text-sm font-bold flex items-center justify-center rounded-full size-6 text-center" data-testid="minicart-count" v-cloak>
                 <span>@{{ Math.round(cart.value.total_quantity) }}</span>
             </span>
         </button>
@@ -16,7 +16,8 @@
                         </div>
                     </td>
                     <td class="text-right px-4">@{{ item.quantity }}</td>
-                    <td class="text-right">@{{ window.price(item.prices.row_total.value) }}</td>
+                    <td class="text-right" v-if="showTax">@{{ window.price(item.prices.row_total_including_tax.value) }}</td>
+                    <td class="text-right" v-else>@{{ window.price(item.prices.row_total.value) }}</td>
                 </tr>
                 <template v-if="cart.value.shipping_addresses?.length" v-for="address in cart.value.shipping_addresses" >
                     <tr v-if="address.selected_shipping_method">

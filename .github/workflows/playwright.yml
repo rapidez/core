@@ -9,6 +9,10 @@ on:
   schedule:
     - cron: '0 0 * * *'
   workflow_dispatch:
+    inputs:
+      update_all_screenshots:
+        description: 'Update all screenshots?'
+        type: boolean
 
 jobs:
   test:
@@ -23,22 +27,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - magento-version: 2.4.7-p6
-            magento-php-version: php82-fpm
-            rapidez-php-version: 8.2
-            shard: 1/4
-          - magento-version: 2.4.7-p6
+          - magento-version: 2.4.7-p8
             magento-php-version: php83-fpm
             rapidez-php-version: 8.3
-            shard: 2/4
-          - magento-version: 2.4.7-p6
-            magento-php-version: php83-fpm
-            rapidez-php-version: 8.4
-            shard: 3/4
-          - magento-version: 2.4.8-p1
+          - magento-version: 2.4.8-p3
             magento-php-version: php84-fpm
             rapidez-php-version: 8.4
-            shard: 4/4
             screenshots: true
 
     services:
@@ -47,7 +41,7 @@ jobs:
         env:
           URL: http://localhost:1234/
           FLAT_TABLES: true
-          CUSTOM_ENTRYPOINT_COMMAND: "php bin/magento encryption:key:change -k 5AM3SD5SkwT8iwIxL6L1q8XQhzK3wk51; magerun2 config:store:set system/smtp/disable 1; magerun2 config:store:set checkout/options/enable_guest_checkout_login 1"
+          CUSTOM_ENTRYPOINT_COMMAND: "php bin/magento encryption:key:change -k 5AM3SD5SkwT8iwIxL6L1q8XQhzK3wk51; magerun2 config:store:set system/smtp/disable 1; magerun2 config:store:set checkout/options/enable_guest_checkout_login 1; magerun2 config:store:delete design/head/includes"
         ports:
           - 3307:3306
           - 1234:80
@@ -101,6 +95,9 @@ jobs:
       - name: Use rapidez/core from source
         run: composer config repositories.core path ../core
 
+      - name: Make the Magento version available as env variable
+        run: echo "MAGENTO_VERSION=${{ matrix.magento-version }}" >> $GITHUB_ENV
+
       - name: Get commit hash and tag of the core
         working-directory: ./rapidez/core
         run: |
@@ -112,6 +109,9 @@ jobs:
 
       - name: Install Rapidez command
         run: php artisan rapidez:install --frontendonly
+
+      - name: Publish payment icons
+        run: php artisan vendor:publish --tag=payment-icons
 
       - name: Install Yarn dependencies
         run: npm install -g yarn && yarn
@@ -135,19 +135,30 @@ jobs:
         run: php artisan serve &
 
       - name: Run Playwright tests
-        run: yarn playwright test --shard ${{ matrix.shard }}
+        run: yarn playwright test
 
       # Screenshots
+      - name: Collect failed tests
+        if: (failure() || inputs.update_all_screenshots)
+        run: yarn playwright test --last-failed --list --reporter=dot --pass-with-no-tests > failed-tests.txt
+
       - name: Update screenshots
         if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
+        run: |
+          while read -r test_name; do
+            yarn playwright test "$test_name" --update-snapshots --reporter=list
+          done < <(awk -F ' › ' 'NF>1{print $2}' failed-tests.txt | sort -u)
+
+      - name: Update all screenshots
+        if: ${{ inputs.update_all_screenshots && matrix.screenshots == true }}
         run: yarn playwright test --update-snapshots --reporter=list
 
       - name: Move the screenshots
-        if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
+        if: (failure() || inputs.update_all_screenshots) && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
         run: cp -r tests/playwright/. ../core/tests/playwright/
 
       - name: Commit the screenshots
-        if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
+        if: (failure() || inputs.update_all_screenshots) && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "[CI] Update Snapshots"

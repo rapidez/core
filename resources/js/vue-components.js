@@ -10,6 +10,7 @@ import recursion from './components/Recursion.vue'
 import notifications from './components/Notifications/Notifications.vue'
 import globalSlideover from './components/GlobalSlideover.vue'
 import globalSlideoverInstance from './components/GlobalSlideoverInstance.vue'
+import VueTurboFrame from './components/VueTurboFrame.vue'
 import images from './components/Product/Images.vue'
 import quantitySelect from './components/Product/QuantitySelect.vue'
 import { defineAsyncComponent, defineComponent } from 'vue'
@@ -34,6 +35,7 @@ document.addEventListener('vue:loaded', function (event) {
     vue.component('global-slideover', globalSlideover)
     vue.component('global-slideover-instance', globalSlideoverInstance)
 
+    vue.component('vue-turbo-frame', VueTurboFrame)
     vue.component('images', images)
 
     vue.component('quantity-select', quantitySelect)
@@ -65,4 +67,5 @@ document.addEventListener('vue:loaded', function (event) {
     vue.component('checkout-success', defineAsyncComponent(() => import('./components/Checkout/CheckoutSuccess.vue')))
     vue.component('popup', defineAsyncComponent(() => import('./components/Popup.vue')))
     vue.component('range-slider', defineAsyncComponent(() => import('./components/Elements/RangeSlider.vue')))
+    vue.component('recently-viewed', defineAsyncComponent(() => import('./components/RecentlyViewed.vue')))
 })

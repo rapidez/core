@@ -2,7 +2,7 @@
     <div class="col-span-12" v-if="window.app.config.globalProperties.loggedIn.value">
         <graphql query="{ customer { addresses { id firstname lastname street city postcode country_code } } }" v-slot="{ data }">
             <div v-if="data">
-                <x-rapidez::input.select v-model="variables.customer_address_id" dusk="{{ $type }}_address_select">
+                <x-rapidez::input.select v-model="variables.customer_address_id" data-testid="{{ $type }}-address-select">
                     <option v-for="address in data.customer.addresses" :value="address.id">
                         @{{ address.firstname }} @{{ address.lastname }}
                         - @{{ address.street[0] }} @{{ address.street[1] }} @{{ address.street[2] }}
@@ -141,7 +141,6 @@
                 <x-rapidez::label>@lang('Country')</x-rapidez::label>
                 <x-rapidez::input.select.country
                     name="{{ $type }}_country"
-                    dusk="{{ $type }}_country"
                     v-model="variables.country_code"
                     v-on:change="$root.$nextTick(() => {
                         window.$emit('postcode-change', variables);
@@ -157,7 +156,6 @@
                 <x-rapidez::input.select.region
                     class="region exists"
                     name="{{ $type }}_region"
-                    dusk="{{ $type }}_region"
                     country="variables.country_code"
                     v-model="variables.region_id"
                 />

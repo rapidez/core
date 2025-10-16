@@ -17,7 +17,8 @@ is present on the input and the quantity select component.
         <input
             name="qty"
             type="number"
-            dusk="qty"
+            data-testid="qty"
+            value="1"
             class="outline-0 ring-0 border-none w-12 bg-transparent font-medium text-center px-0 sm:text-base focus:ring-transparent arrows-hidden"
             aria-label="@lang('Quantity')"
             ref="input"

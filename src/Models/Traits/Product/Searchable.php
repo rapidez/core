@@ -121,14 +121,61 @@ trait Searchable
 
     protected static function indexMapping(): array
     {
+        $attributeModel = config('rapidez.models.attribute');
+
+        $attributeTypeMapping = collect(
+            $attributeModel::getCachedWhere(function ($attribute) {
+                if (in_array($attribute['code'], ['msrp_display_actual_price_type', 'price_view', 'shipment_type', 'status'])) {
+                    return false;
+                }
+
+                if (in_array($attribute['type'], ['varchar', 'text', 'gallery', 'static'])) {
+                    // Types best left up to ES to interpret the type.
+                    return false;
+                }
+
+                if (! empty($attribute['source_model'])) {
+                    // Due to the source model value can be mapped to any type, best to let ES interpret them.
+                    return false;
+                }
+
+                if ($attribute['input'] === 'select') {
+                    // Select means that while the type may be an int, the data won't be an int.
+                    return false;
+                }
+
+                if ($attribute['listing'] || $attribute['filter'] || $attribute['search'] || $attribute['sorting']) {
+                    return true;
+                }
+
+                $alwaysInFlat = array_merge(['sku'], Eventy::filter('index.' . static::getModelName() . '.attributes', []));
+                if (in_array($attribute['code'], $alwaysInFlat)) {
+                    return true;
+                }
+
+                return false;
+            })
+        )
+            ->pluck('type', 'code')
+            ->map(function ($type) {
+                return array_filter([
+                    'type' => match ($type) {
+                        'int'      => 'integer',
+                        'decimal'  => 'double',
+                        'datetime' => 'date',
+                        default    => null
+                    },
+                    'format' => match ($type) {
+                        'datetime' => 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||strict_date_optional_time||epoch_millis',
+                        default    => null
+                    },
+                ]);
+            })
+            ->whereNotNull('type');
+
         return [
             'properties' => [
-                'price' => [
-                    'type' => 'double',
-                ],
-                'special_price' => [
-                    'type' => 'double',
-                ],
+                ...$attributeTypeMapping,
                 'children' => [
                     'type' => 'flattened',
                 ],

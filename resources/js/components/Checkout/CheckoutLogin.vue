@@ -5,11 +5,20 @@ import { useDebounceFn } from '@vueuse/core'
 
 const debouncePromise = useDebounceFn(async function (self) {
     self.isEmailAvailable = await isEmailAvailable(self.email || '')
+    await self.handleGuest()
 }, 300)
 
 export default {
     props: {
         checkWhileTyping: {
+            type: Boolean,
+            default: true,
+        },
+        allowPasswordless: {
+            type: Boolean,
+            default: false,
+        },
+        allowGuest: {
             type: Boolean,
             default: true,
         },
@@ -29,6 +38,12 @@ export default {
         return this.$slots.default(this)
     },
 
+    mounted() {
+        if (!user.value.is_logged_in && this.email) {
+            this.checkEmailAvailability()
+        }
+    },
+
     methods: {
         async go() {
             if (user.value.is_logged_in) {
@@ -36,7 +51,8 @@ export default {
             }
 
             let isAvailable = await this.checkEmailAvailability()
-            if (!isAvailable && !this.password) {
+
+            if (!this.allowPasswordless && !isAvailable && !this.password) {
                 return false
             }
 
@@ -79,6 +95,10 @@ export default {
         },
 
         async handleGuest() {
+            if (!this.allowGuest) {
+                return false
+            }
+
             await setGuestEmailOnCart(this.email)
 
             return true

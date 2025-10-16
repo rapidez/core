@@ -7,6 +7,7 @@ export default {
     data() {
         return {
             order: order,
+            needsLogin: false,
         }
     },
 
@@ -19,7 +20,13 @@ export default {
             window.location = url('/cart')
             return
         }
-        refreshOrder()
+
+        refreshOrder().then((success) => {
+            if (!success) {
+                this.needsLogin = true
+            }
+        })
+
         window.$emit('rapidez:checkout-success', this.order);
 
         useEventListener(window, 'beforeunload', this.beforeUnloadCallback, { once: true })

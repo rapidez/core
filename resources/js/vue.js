@@ -5,6 +5,7 @@ document.addEventListener('vue:loaded', function (event) {
     event.detail.vue.directive('blur', (el) => {
         el.removeAttribute('v-blur')
     })
+    event.detail.vue.config.compilerOptions.isCustomElement = tag => /^turbo-.+/.test(tag)
 })
 
 /**

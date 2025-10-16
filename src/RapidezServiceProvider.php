@@ -31,6 +31,7 @@ use Rapidez\Core\Http\Controllers\Fallback\CmsPageController;
 use Rapidez\Core\Http\Controllers\Fallback\LegacyFallbackController;
 use Rapidez\Core\Http\Controllers\Fallback\UrlRewriteController;
 use Rapidez\Core\Http\Middleware\CheckStoreCode;
+use Rapidez\Core\Http\Middleware\ConfigForTesting;
 use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
 use Rapidez\Core\Listeners\Healthcheck\ElasticsearchHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\MagentoSettingsHealthcheck;
@@ -222,6 +223,10 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function bootMiddleware(): self
     {
+        if ($this->app->runningUnitTests()) {
+            $this->app->make(Kernel::class)->appendMiddlewareToGroup('web', ConfigForTesting::class);
+        }
+
         $this->app->make(Kernel::class)->pushMiddleware(DetermineAndSetShop::class);
 
         $this->app['router']->aliasMiddleware('store_code', CheckStoreCode::class);

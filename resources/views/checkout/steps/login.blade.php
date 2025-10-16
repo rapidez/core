@@ -1,5 +1,9 @@
-<checkout-login v-slot="checkoutLogin">
-    <fieldset partial-submit v-on:partial-submit="async () => await go()" class="flex flex-col gap-3" v-cloak>
+<checkout-login 
+    v-slot="checkoutLogin"
+    v-bind:allow-passwordless="Boolean({{ (int)(config('rapidez.frontend.allow_guest_on_existing_account')) }})"
+    v-bind:allow-guest="Boolean({{ (int)(Rapidez::config('checkout/options/guest_checkout')) }})"
+>
+    <fieldset partial-submit v-on:partial-submit="async () => await checkoutLogin.go()" class="flex flex-col gap-3" v-cloak>
         <label>
             <x-rapidez::label>@lang('Email')</x-rapidez::label>
             <x-rapidez::input
@@ -16,7 +20,7 @@
                 <x-rapidez::input.password
                     name="password"
                     v-model="checkoutLogin.password"
-                    required
+                    v-bind:required="checkoutLogin.createAccount || !checkoutLogin.allowPasswordless ? 'required' : null"
                 />
             </label>
         </template>
@@ -54,7 +58,7 @@
             </label>
         </template>
         <template v-if="!window.app.config.globalProperties.loggedIn.value && checkoutLogin.isEmailAvailable">
-            <x-rapidez::input.checkbox v-model="checkoutLogin.createAccount" dusk="create_account">
+            <x-rapidez::input.checkbox v-model="checkoutLogin.createAccount" data-testid="create-account">
                 @lang('Create an account')
             </x-rapidez::input.checkbox>
         </template>

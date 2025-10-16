@@ -1,5 +1,6 @@
 import { defineAsyncComponent } from 'vue'
 import { addQuery } from './stores/useSearchHistory'
+import highlight from 'vue-instantsearch/vue3/es/src/components/Highlight.vue.js'
 
 document.addEventListener('vue:loaded', function (event) {
     const vue = event.detail.vue
@@ -7,7 +8,7 @@ document.addEventListener('vue:loaded', function (event) {
     vue.component('ais-instant-search', defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/InstantSearch')))
     vue.component('ais-hits', defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/Hits.js')))
     vue.component('ais-configure', defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/Configure.js')))
-    vue.component('ais-highlight', defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/Highlight.vue.js')))
+    vue.component('ais-highlight', highlight)
     vue.component('ais-autocomplete', defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/Autocomplete.vue.js')))
     vue.component('ais-search-box', defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/SearchBox.vue.js')))
     vue.component('ais-state-results', defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/StateResults.vue.js')))

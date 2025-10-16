@@ -28,16 +28,19 @@ export default {
     methods: {
         async go() {
             if (!this.email || !this.password) {
-                Notify(window.config.translations.account.email_password)
+                Notify(window.config.translations.account.email_password, 'error')
                 return false
             }
 
-            if (await login(this.email, this.password)) {
-                this.successfulLogin()
-                return true
+            try {
+                if (await login(this.email, this.password)) {
+                    this.successfulLogin()
+                    return true
+                }
+            } catch (e) {
+                Notify(window.config.translations.account.login_failed, 'error')
             }
 
-            Notify(window.config.translations.account.login_failed)
             return false
         },
 

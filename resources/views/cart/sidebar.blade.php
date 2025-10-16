@@ -1,16 +1,18 @@
-<dl class="mb-5 flex w-full flex-col rounded-lg border *:flex *:flex-wrap *:justify-between *:p-3 *:border-b last:*:border-none">
+<x-rapidez::summary>
     <div>
         <dt>@lang('Subtotal')</dt>
         <dd v-if="showTax">@{{ window.price(cart.value.prices.subtotal_including_tax.value) }}</dd>
         <dd v-else>@{{ window.price(cart.value.prices.subtotal_excluding_tax.value) }}</dd>
     </div>
 
-    <template v-if="cart.value.shipping_addresses?.length" v-for="address in cart.value.shipping_addresses">
-        <div v-if="address.selected_shipping_method">
-            <dt>@lang('Shipping')</dt>
+    <template v-if="cart.value.shipping_addresses?.length">
+        <div v-for="address in cart.value.shipping_addresses" v-if="address.selected_shipping_method">
+            <dt>
+                @lang('Shipping')
+                <small class="text-muted">@{{ address.selected_shipping_method.carrier_title }} - @{{ address.selected_shipping_method.method_title }}</small>
+            </dt>
             <dd v-if="showTax">@{{ window.price(address.selected_shipping_method.price_incl_tax.value) }}</dd>
             <dd v-else>@{{ window.price(address.selected_shipping_method.price_excl_tax.value) }}</dd>
-            <small>@{{ address.selected_shipping_method.carrier_title }} - @{{ address.selected_shipping_method.method_title }}</small>
         </div>
     </template>
 
@@ -35,19 +37,19 @@
         </div>
     </template>
 
-    <div>
+    <div class="border-t pt-3 mt-3 font-bold">
         <dt>@lang('Total')</dt>
         <dd v-if="showTax">@{{ window.price(cart.value.prices.grand_total.value) }}</dd>
         <dd v-else>@{{ window.price(cart.value.prices.grand_total.value - cart.value.taxTotal.value) }}</dd>
     </div>
-</dl>
+</x-rapidez::summary>
 
-<div class="w-full" :class="{ 'cursor-not-allowed': !canOrder }">
+<div class="mt-5 w-full" :class="{ 'cursor-not-allowed': !canOrder }">
     <x-rapidez::button.conversion
         href="{{ route('checkout') }}"
         class="w-full text-center"
         v-bind:class="{ 'pointer-events-none': !canOrder }"
-        dusk="checkout"
+        loader
     >
         @lang('Checkout')
     </x-rapidez::button.conversion>

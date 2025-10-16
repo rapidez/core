@@ -172,7 +172,7 @@ class ConfigController
         // Get the filterable attributes and category levels
         $filterableAttributes = collect($this->getFilterableAttributes())
             ->map(function ($attribute) {
-                $isNumeric = $attribute['super'] || in_array($attribute['input'], ['boolean', 'price']);
+                $isNumeric = $attribute['super'] || $attribute['visual_swatch'] || in_array($attribute['input'], ['boolean', 'price']);
 
                 return [
                     'attribute' => $attribute['code'],

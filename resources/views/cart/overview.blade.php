@@ -17,7 +17,7 @@
         </graphql>
         <div v-if="hasCart.value" v-cloak>
             <div class="flex gap-x-10 mb-8 max-lg:flex-col">
-                <div class="flex w-full flex-col" dusk="cart-content">
+                <div class="flex w-full flex-col">
                     @include('rapidez::cart.item')
 
                     <div class="mt-5 lg:self-start">

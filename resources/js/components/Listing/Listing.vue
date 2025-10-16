@@ -43,6 +43,7 @@ export default {
         },
         query: {
             type: Function,
+            default: () => [],
         },
         categoryId: {
             type: Number,
@@ -63,6 +64,10 @@ export default {
         useSearchTitle: {
             type: Boolean,
             default: false,
+        },
+        transformItems: {
+            type: Function,
+            default: (items) => items,
         },
     },
 
@@ -128,7 +133,7 @@ export default {
             const config = await InstantSearchMixin.methods.getInstantSearchClientConfig.bind(this).call()
 
             config.getBaseFilters = this.getBaseFilters
-            config.getQuery = this.query
+            config.getQuery = this.getQuery
 
             return config
         },
@@ -150,7 +155,6 @@ export default {
                                 ' OR (NOT _exists_:category_ids))',
                         },
                     },
-                    this.$root.categoryPositions(this.categoryId),
                 ])
             }
 
@@ -164,6 +168,21 @@ export default {
             }
 
             return this.baseFilters().concat(extraFilters)
+        },
+
+        getQuery(query, search_attributes) {
+            let extraQueries = []
+
+            if (this.categoryId) {
+                extraQueries.push(this.$root.categoryPositions(this.categoryId))
+            }
+
+            // __NO_QUERY__ is a temporary band-aid for https://github.com/searchkit/searchkit/pull/1407
+            if (query && query !== '__NO_QUERY__') {
+                extraQueries.push(this.relevanceQueryMatch(query, search_attributes, config?.fuzziness))
+            }
+
+            return this.query().concat(extraQueries)
         },
 
         windowTitle(routeState) {
@@ -182,7 +201,7 @@ export default {
             let data = uiState[this.index]
 
             // Remove the root path from the category if it's in there
-            let category = data.hierarchicalMenu?.category_lvl1
+            let category = [...(data.hierarchicalMenu?.category_lvl1 ?? [])]
             for (let i = 0; i < this.rootPath?.length && category?.length && category[0] == this.rootPath[i]; i++) {
                 category.splice(0, 1)
             }
@@ -191,7 +210,7 @@ export default {
                 ...(data.range || {}),
                 ...(data.refinementList || {}),
                 category: category?.length ? category.join('--') : undefined,
-                q: data.query,
+                q: data.query !== '__NO_QUERY__' ? data.query : undefined,
                 page: data.page > 0 ? String(data.page) : undefined,
                 sort: data.sortBy,
                 hits: data.hitsPerPage != config.grid_per_page ? data.hitsPerPage : undefined,
@@ -214,7 +233,7 @@ export default {
                     range: ranges,
                     refinementList: refinementList,
                     hierarchicalMenu: { category_lvl1: categories.length ? categories : null },
-                    query: routeState.q,
+                    query: routeState.q || '__NO_QUERY__',
                     page: Number(routeState.page),
                     sortBy: routeState.sort,
                     hitsPerPage: Number(routeState.hits),

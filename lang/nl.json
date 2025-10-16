@@ -26,6 +26,7 @@
     "Decrease": "Verlagen",
     "Description": "Beschrijving",
     "Email": "Email",
+    "Enter your email": "Vul je e-mailadres in",
     "Fax": "Fax",
     "Filters": "Filters",
     "First": "Eerste",
@@ -63,6 +64,8 @@
     "Place order": "Bestelling plaatsen",
     "Please enter a shipping address first": "Voer eerst een verzendadres in",
     "Please log in": "Log hier in",
+    "Please log in to view the status of your order": "Log in om de orderstatus te bekijken",
+    "Popular products": "Populaire producten",
     "Postcode": "Postcode",
     "Prefix": "Aanhef",
     "Prev": "Vorige",
@@ -78,6 +81,7 @@
     "Reset filters": "Filters resetten",
     "Search": "Zoeken",
     "Search for": "Zoeken naar",
+    "No selection": "Geen selectie",
     "Select": "Selecteer",
     "Shipping": "Verzending",
     "Shipping & billing address": "Verzend- en factuuradres",
@@ -133,5 +137,8 @@
     "Searching...": "Zoeken...",
     "Order type": "Type bestelling",
     "Private": "Particulier",
-    "Business": "Zakelijk"
+    "Business": "Zakelijk",
+    "Main menu": "Hoofdmenu",
+    "Price from": "Prijs vanaf",
+    "Price to": "Prijs tot"
 }
