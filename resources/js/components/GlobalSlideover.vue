@@ -19,7 +19,7 @@ export default {
     },
     methods: {
         open() {
-            window.$emit('rapidez:global-slideover-open', { title: this.title, position: this.position, initiator: this });
+            window.$emit('rapidez:global-slideover-open', { title: this.title, position: this.position, initiator: this })
         },
     },
 }

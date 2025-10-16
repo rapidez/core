@@ -38,7 +38,8 @@ export const refresh = async function (force = false) {
             window.app.config.globalProperties.updateCart([], response)
         } catch (error) {
             console.error(error)
-            GraphQLError.prototype.isPrototypeOf(error) && window.app.config.globalProperties.checkResponseForExpiredCart({}, await error?.response?.json())
+            GraphQLError.prototype.isPrototypeOf(error) &&
+                window.app.config.globalProperties.checkResponseForExpiredCart({}, await error?.response?.json())
 
             return false
         }

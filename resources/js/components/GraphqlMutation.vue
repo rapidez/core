@@ -122,9 +122,13 @@ export default {
     mounted() {
         if (this.mutateEvent) {
             this.$nextTick(() =>
-                window.$on(this.mutateEvent, () => {
-                    this.mutate()
-                }, {defer: false}),
+                window.$on(
+                    this.mutateEvent,
+                    () => {
+                        this.mutate()
+                    },
+                    { defer: false },
+                ),
             )
         }
     },

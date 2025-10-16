@@ -16,7 +16,7 @@ import quantitySelect from './components/Product/QuantitySelect.vue'
 import { defineAsyncComponent, defineComponent } from 'vue'
 
 document.addEventListener('vue:loaded', function (event) {
-    const vue = event.detail.vue;
+    const vue = event.detail.vue
     vue.use(TurbolinksAdapter)
 
     vue.component('toggler', toggler)
@@ -40,32 +40,60 @@ document.addEventListener('vue:loaded', function (event) {
 
     vue.component('quantity-select', quantitySelect)
 
-    vue.component('autocomplete', defineAsyncComponent({
-        // https://v2.vuejs.org/v2/guide/components-dynamic-async.html#Async-Components
-        loader: () => new Promise(function (resolve, reject) {
-            document.addEventListener('loadAutoComplete', () => import('./components/Search/Autocomplete.vue').then(resolve))
-        }),
-        // https://v2.vuejs.org/v2/guide/components-dynamic-async.html#Handling-Loading-State
-        loadingComponent: {
-            data: () => ({
-                loaded: false,
-                searchClient: null,
-                searchHistory: {},
-            }),
+    vue.component(
+        'autocomplete',
+        defineAsyncComponent({
+            // https://v2.vuejs.org/v2/guide/components-dynamic-async.html#Async-Components
+            loader: () =>
+                new Promise(function (resolve, reject) {
+                    document.addEventListener('loadAutoComplete', () => import('./components/Search/Autocomplete.vue').then(resolve))
+                }),
+            // https://v2.vuejs.org/v2/guide/components-dynamic-async.html#Handling-Loading-State
+            loadingComponent: {
+                data: () => ({
+                    loaded: false,
+                    searchClient: null,
+                    searchHistory: {},
+                }),
 
-            render() {
-                // TODO: seems broken, replaced by <Suspense>
-                return this.$slots.default(this)
+                render() {
+                    // TODO: seems broken, replaced by <Suspense>
+                    return this.$slots.default(this)
+                },
             },
-        },
-        delay: 0,
-    }))
-    vue.component('checkout-login', defineAsyncComponent(() => import('./components/Checkout/CheckoutLogin.vue')))
-    vue.component('login', defineAsyncComponent(() => import('./components/User/Login.vue')))
-    vue.component('listing', defineAsyncComponent(() => import('./components/Listing/Listing.vue')))
-    vue.component('search-suggestions', defineAsyncComponent(() => import('./components/Listing/SearchSuggestions.vue')))
-    vue.component('checkout-success', defineAsyncComponent(() => import('./components/Checkout/CheckoutSuccess.vue')))
-    vue.component('popup', defineAsyncComponent(() => import('./components/Popup.vue')))
-    vue.component('range-slider', defineAsyncComponent(() => import('./components/Elements/RangeSlider.vue')))
-    vue.component('recently-viewed', defineAsyncComponent(() => import('./components/RecentlyViewed.vue')))
+            delay: 0,
+        }),
+    )
+    vue.component(
+        'checkout-login',
+        defineAsyncComponent(() => import('./components/Checkout/CheckoutLogin.vue')),
+    )
+    vue.component(
+        'login',
+        defineAsyncComponent(() => import('./components/User/Login.vue')),
+    )
+    vue.component(
+        'listing',
+        defineAsyncComponent(() => import('./components/Listing/Listing.vue')),
+    )
+    vue.component(
+        'search-suggestions',
+        defineAsyncComponent(() => import('./components/Listing/SearchSuggestions.vue')),
+    )
+    vue.component(
+        'checkout-success',
+        defineAsyncComponent(() => import('./components/Checkout/CheckoutSuccess.vue')),
+    )
+    vue.component(
+        'popup',
+        defineAsyncComponent(() => import('./components/Popup.vue')),
+    )
+    vue.component(
+        'range-slider',
+        defineAsyncComponent(() => import('./components/Elements/RangeSlider.vue')),
+    )
+    vue.component(
+        'recently-viewed',
+        defineAsyncComponent(() => import('./components/RecentlyViewed.vue')),
+    )
 })
