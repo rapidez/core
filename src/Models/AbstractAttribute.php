@@ -47,10 +47,15 @@ class AbstractAttribute extends Model
         });
     }
 
+    protected function rawValue(): Attribute
+    {
+        return Attribute::get(fn() => $this->getAttributeFromArray('value'));
+    }
+
     protected function sortOrder(): Attribute
     {
         return Attribute::get(function () {
-            $value = $this->getAttributeFromArray('value');
+            $value = $this->rawValue;
 
             return $this->options[$value]->sort_order ?? null;
         });

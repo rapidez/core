@@ -296,7 +296,8 @@ class Product extends Model
         return Attribute::get(function (): Collection {
             return $this->categoryProducts
                 ->where('category_id', '!=', config('rapidez.root_category_id'))
-                ->pluck('category');
+                ->pluck('category')
+                ->whereNotNull();
         })->shouldCache();
     }
 

@@ -79,7 +79,7 @@ trait Searchable
         });
 
         foreach ($this->superAttributeValues as $attribute => $values) {
-            $data['super_' . $attribute] = $values->pluck('value')->unique()->values();
+            $data['super_' . $attribute] = $values->pluck('value')->values();
         }
 
         $data = $this->withCategories($data);

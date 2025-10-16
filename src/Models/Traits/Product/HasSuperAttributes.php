@@ -15,6 +15,11 @@ trait HasSuperAttributes
         )->orderBy('catalog_product_super_attribute.position');
     }
 
+    public function getSuperAttributesAttribute()
+    {
+        return $this->getRelationValue('superAttributes')->keyBy('attribute_id');
+    }
+
     public function superAttributeValues(): Attribute
     {
         return Attribute::get(function () {
@@ -24,10 +29,12 @@ trait HasSuperAttributes
                     $attribute->attribute_code => $this->children->mapWithKeys(function ($child) use ($attribute) {
                         return [$child->entity_id => [
                             'label'      => $child->{$attribute->attribute_code},
-                            'value'      => $child->customAttributes[$attribute->attribute_code]->getAttributeFromArray('value'),
+                            'value'      => $child->customAttributes[$attribute->attribute_code]->rawValue,
                             'sort_order' => $child->customAttributes[$attribute->attribute_code]->sort_order,
                         ]];
-                    }),
+                    })
+                    ->unique('value')
+                    ->sortBy('sort_order'),
                 ]);
         });
     }
