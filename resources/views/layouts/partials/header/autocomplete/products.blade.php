@@ -5,7 +5,7 @@
                 @lang('Products')
             </x-rapidez::autocomplete.title>
             <ul class="gap-2 flex flex-col">
-                <li 
+                <li
                     v-for="(item, count) in items"
                     class="hover:bg-muted"
                     data-testid="autocomplete-item"

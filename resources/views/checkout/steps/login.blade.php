@@ -1,4 +1,4 @@
-<checkout-login 
+<checkout-login
     v-slot="checkoutLogin"
     v-bind:allow-passwordless="Boolean({{ (int)(config('rapidez.frontend.allow_guest_on_existing_account')) }})"
     v-bind:allow-guest="Boolean({{ (int)(Rapidez::config('checkout/options/guest_checkout')) }})"
