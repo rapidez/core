@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 trait HasSuperAttributes
 {
     /**
-    * @deprecated please use superAttributes
-    */
+     * @deprecated please use superAttributes
+     */
     public function super_attributes(): HasMany
     {
         return $this->superAttributes();

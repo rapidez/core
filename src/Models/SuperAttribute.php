@@ -26,8 +26,8 @@ class SuperAttribute extends Model
     }
 
     /**
-    * @deprecated please use attribute_code
-    */
+     * @deprecated please use attribute_code
+     */
     protected function code(): Attribute
     {
         return Attribute::get(
