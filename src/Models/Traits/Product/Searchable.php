@@ -101,6 +101,7 @@ trait Searchable
             return Category::all()->keyBy('entity_id');
         });
 
+        //TODO: This doesn't entirely appear to work, as `category_lvl1` isn't getting set everywhere.
         foreach ($this->breadcrumbCategories as $category) {
             if (! $category) {
                 continue;
