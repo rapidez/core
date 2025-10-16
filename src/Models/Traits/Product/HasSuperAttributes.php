@@ -28,7 +28,7 @@ trait HasSuperAttributes
                 ->mapWithKeys(fn ($attribute) => [
                     $attribute->attribute_code => $this->children->mapWithKeys(function ($child) use ($attribute) {
                         return [$child->entity_id => [
-                            'label'      => $child->{$attribute->attribute_code},
+                            'label'      => $child->customAttributes[$attribute->attribute_code]->value,
                             'value'      => $child->customAttributes[$attribute->attribute_code]->rawValue,
                             'sort_order' => $child->customAttributes[$attribute->attribute_code]->sort_order,
                         ]];

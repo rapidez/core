@@ -30,6 +30,7 @@ class ProductController
             'min_sale_qty',
             'max_sale_qty',
             'qty_increments',
+            ...$product->superAttributes->pluck('attribute_code')
         ];
 
         $attributes = Eventy::filter('productpage.frontend.attributes', $attributes);
@@ -38,17 +39,7 @@ class ProductController
         // Alternatively we can refactor the frontend to not need so much customized data
         $data = $product->only($attributes);
         foreach ($product->superAttributeValues as $attribute => $values) {
-            $data['super_' . $attribute] = $values->keyBy('value');
-        }
-        if ($product->children) {
-            foreach ($product->superAttributes ?: [] as $superAttribute) {
-                foreach($product->children as $child) {
-                    $rawValue = $child->customAttributes[$superAttribute->attribute_code]->rawValue;
-                    $subChild = $data['children'][$child->entity_id];
-                    $subChild[$superAttribute->attribute_code] = $rawValue;
-                    $data['children'][$child->entity_id] = $subChild;
-                };
-            }
+            $data['super_' . $attribute] = $values->pluck('value');
         }
 
         $queryOptions = request()->query;
