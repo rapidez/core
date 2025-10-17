@@ -27,7 +27,9 @@ export default {
             Object.values(window.config.product.children).forEach((child) => {
                 if (
                     child === simpleProduct &&
-                    Object.values(window.config.product.super_attributes).filter((attribute) => attribute.additional_data.update_product_preview_image).length
+                    Object.values(window.config.product.super_attributes).filter(
+                        (attribute) => attribute.additional_data.update_product_preview_image,
+                    ).length
                 ) {
                     self.images = simpleProduct.images
                     self.active = Math.min(self.active, self.images.length - 1)
