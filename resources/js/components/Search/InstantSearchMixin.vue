@@ -105,7 +105,7 @@ export default {
                 createInsightsMiddleware({
                     insightsClient: null,
                     onEvent: (event) => {
-                        this.$el.dispatchEvent(
+                        this.$el.nextSibling.dispatchEvent(
                             new CustomEvent('insights-event:' + event.insightsMethod, {
                                 bubbles: true,
                                 detail: { insightsEvent: event },

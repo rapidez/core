@@ -12,7 +12,7 @@
     v-slot="{ mutate, variables }"
 >
     <div class="flex flex-col gap-3" partial-submit v-on:partial-submit="async () => await mutate()">
-        <label class="flex items-center p-5 border rounded relative bg-white" v-if="!cart.value.is_virtual && !cart.value.shipping_addresses[0]?.uid">
+        <label class="flex items-center p-5 border rounded relative bg-white" v-if="!cart.value.is_virtual && !cart.value.shipping_addresses?.[0]?.uid">
             <span>@lang('Please enter a shipping address first')</span>
         </label>
         <label class="flex items-center p-5 border rounded relative bg-white cursor-pointer" v-else v-for="(method, index) in cart.value.available_payment_methods">

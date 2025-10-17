@@ -9,7 +9,7 @@
         v-cloak
         v-slot="{ close }"
     >
-        <dialog class="container rounded bg-white p-6 border shadow-lg fixed inset-x-0 bottom-4 z-cookie">
+        <dialog ref="root" class="container rounded bg-white p-6 border shadow-lg fixed inset-x-0 bottom-4 z-cookie">
             <div class="flex flex-wrap items-center justify-between">
                 <div class="flex-1 items-center">
                     <div class="text-sm text-black">

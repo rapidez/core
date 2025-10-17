@@ -5,7 +5,7 @@
                 @lang('Products')
             </x-rapidez::autocomplete.title>
             <ul class="gap-2 flex flex-col">
-                <li 
+                <li
                     v-for="(item, count) in items"
                     class="hover:bg-muted"
                     data-testid="autocomplete-item"
@@ -13,7 +13,7 @@
                     <a :href="window.url(item.url)" v-on:click="sendEvent('click', item, 'Hit Clicked')" class="group relative flex flex-wrap p-2">
                         <img
                             v-if="item.thumbnail"
-                            :src="'/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + item.thumbnail + '.webp' | url"
+                            :src="window.url('/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + item.thumbnail + '.webp')"
                             class="shrink-0 self-center object-contain size-16 mix-blend-multiply"
                             :alt="item.name"
                             width="200"

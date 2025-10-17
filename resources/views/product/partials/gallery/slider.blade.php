@@ -7,7 +7,7 @@
         <img
             {{-- src should always be above v-bind:src --}}
             src="{{ url('/storage/'.config('rapidez.store').'/resizes/400/magento/catalog/product'.Arr::first($selectedChild->images).'.webp') }}"
-            v-bind:src="'/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product' + images[active] + '.webp' | url"
+            v-bind:src="window.url('/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product' + images[active] + '.webp')"
             alt="{{ $product->name }}"
             class="max-h-full object-contain"
             style="view-transition-name: image-{{ $product->sku }}"
@@ -27,4 +27,4 @@
     @endif
 </div>
 
-<x-rapidez::no-image v-else class="h-96 rounded" v-cloak />
+<x-rapidez::no-image v-else="" class="h-96 rounded" v-cloak />

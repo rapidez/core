@@ -50,7 +50,13 @@ export default {
             return null
         }
 
-        return this.$slots.default({ ...this, variables: this.dataVariables })
+        return this.$slots.default({
+            props: this.$props,
+            variables: this.dataVariables,
+            data: this.data,
+            running: this.running,
+            runQuery: this.runQuery,
+        })
     },
 
     created() {

@@ -41,11 +41,11 @@ document.addEventListener('vue:loaded', function (event) {
     vue.component('quantity-select', quantitySelect)
 
     vue.component('autocomplete', defineAsyncComponent({
-        // https://v2.vuejs.org/v2/guide/components-dynamic-async.html#Async-Components
+        // https://vuejs.org/guide/components/async#async-components
         loader: () => new Promise(function (resolve, reject) {
             document.addEventListener('loadAutoComplete', () => import('./components/Search/Autocomplete.vue').then(resolve))
         }),
-        // https://v2.vuejs.org/v2/guide/components-dynamic-async.html#Handling-Loading-State
+        // https://vuejs.org/guide/components/async#loading-and-error-states
         loadingComponent: {
             data: () => ({
                 loaded: false,
@@ -54,7 +54,7 @@ document.addEventListener('vue:loaded', function (event) {
             }),
 
             render() {
-                // TODO: seems broken, replaced by <Suspense>
+                // TODO: seems broken, replaced by <Suspense> (https://github.com/vuejs/core/pull/13997)
                 return this.$slots.default(this)
             },
         },

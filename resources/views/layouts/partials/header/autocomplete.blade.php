@@ -1,11 +1,12 @@
 <Suspense>
     <template #default>
-        <autocomplete v-slot="{ searchClient, middlewares, searchHistory }" :hits-per-page="{{ config('rapidez.frontend.autocomplete.size', 3) }}">
-            <div class="relative w-full">
+        <autocomplete v-slot="autocompleteSlotProps" :hits-per-page="{{ config('rapidez.frontend.autocomplete.size', 3) }}">
+            <div class="relative w-full" ref="root">
                 <ais-instant-search
-                    v-if="searchClient"
-                    :search-client="searchClient"
-                    :middlewares="middlewares"
+                    v-if="autocompleteSlotProps.searchClient"
+                    :future="{ preserveSharedStateOnUnmount: true }"
+                    :search-client="autocompleteSlotProps.searchClient"
+                    :middlewares="autocompleteSlotProps.middlewares"
                     :index-name="config.index.product"
                     class="contents"
                     v-cloak

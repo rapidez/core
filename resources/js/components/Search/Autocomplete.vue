@@ -55,7 +55,7 @@ export default {
             setTimeout(() => {
                 requestAnimationFrame(() => {
                     let element = null
-                    if (this.focusId && (element = this.$el.querySelector('#' + this.focusId))) {
+                    if (this.focusId && (element = this.$el.nextSibling.querySelector('#' + this.focusId))) {
                         element?.focus()
                     }
                 })
@@ -75,7 +75,7 @@ export default {
             })
         }, 3000)
 
-        useEventListener(this.$el, 'insights-event:viewedObjectIDs', (event) => {
+        useEventListener(this.$el.nextSibling, 'insights-event:viewedObjectIDs', (event) => {
             const insightsEvent = event.detail.insightsEvent
             if (insightsEvent?.eventType !== 'search') {
                 return

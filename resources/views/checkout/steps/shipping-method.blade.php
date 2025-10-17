@@ -2,7 +2,7 @@
     :query="config.queries.setShippingMethodsOnCart"
     :variables="{
         cart_id: mask.value,
-        method: cart.value.shipping_addresses[0]?.selected_shipping_method?.carrier_code + '/' + cart.value.shipping_addresses[0]?.selected_shipping_method?.method_code,
+        method: cart.value.shipping_addresses?.[0]?.selected_shipping_method?.carrier_code + '/' + cart.value.shipping_addresses?.[0]?.selected_shipping_method?.method_code,
     }"
     group="shipping"
     :callback="updateCart"
@@ -17,7 +17,7 @@
     v-if="!cart.value.is_virtual"
 >
     <fieldset class="flex flex-col gap-3" partial-submit v-on:partial-submit="async () => await mutate()" v-on:change="window.$emit('setShippingAddressesOnCart')">
-        <label class="flex items-center p-5 border rounded relative bg-white" v-if="!cart.value.shipping_addresses[0]?.uid">
+        <label class="flex items-center p-5 border rounded relative bg-white" v-if="!cart.value.shipping_addresses?.[0]?.uid">
             <span>@lang('Please enter a shipping address first')</span>
         </label>
         <label class="flex items-center gap-x-1.5 p-5 border rounded bg-white cursor-pointer text-sm text" v-for="(method, index) in cart.value.shipping_addresses?.[0]?.available_shipping_methods">

@@ -2,7 +2,7 @@
 @slots(['items', 'indicator'])
 
 <slider reference="{{ $reference }}" v-slot="{ navigate, showLeft, showRight, currentSlide, slidesTotal }">
-    <div>
+    <div ref="root">
         <div {{ $attributes->twMerge('relative') }}>
             <div ref="{{ $reference }}" {{ $items->attributes->twMerge('*:w-full *:sm:w-1/2 *:md:w-1/3 *:xl:w-1/4 *:px-5 *:shrink-0 *:snap-start -mx-5 flex snap-x snap-mandatory overflow-x-auto scrollbar-hide') }}>
                 @slotdefault('items')

@@ -60,7 +60,7 @@
             <dt>@lang('Tax')</dt>
             <dd>@{{ window.price(cart.value.prices.applied_taxes[0].amount.value) }}</dd>
         </div>
-        <div v-if="cart.value.shipping_addresses.length &&cart.value.shipping_addresses[0]?.selected_shipping_method">
+        <div v-if="cart.value.shipping_addresses.length && cart.value.shipping_addresses[0]?.selected_shipping_method">
             <dt>
                 @lang('Shipping')<br>
                 <small class="text-muted">@{{ cart.value.shipping_addresses[0]?.selected_shipping_method.carrier_title }} - @{{ cart.value.shipping_addresses[0]?.selected_shipping_method.method_title }}</small>

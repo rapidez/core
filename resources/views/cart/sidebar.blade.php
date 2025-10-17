@@ -6,13 +6,15 @@
     </div>
 
     <template v-if="cart.value.shipping_addresses?.length">
-        <div v-for="address in cart.value.shipping_addresses" v-if="address.selected_shipping_method">
-            <dt>
-                @lang('Shipping')
-                <small class="text-muted">@{{ address.selected_shipping_method.carrier_title }} - @{{ address.selected_shipping_method.method_title }}</small>
-            </dt>
-            <dd v-if="showTax">@{{ window.price(address.selected_shipping_method.price_incl_tax.value) }}</dd>
-            <dd v-else>@{{ window.price(address.selected_shipping_method.price_excl_tax.value) }}</dd>
+        <div v-for="address in cart.value.shipping_addresses">
+            <template v-if="address?.selected_shipping_method">
+                <dt>
+                    @lang('Shipping')
+                    <small class="text-muted">@{{ address.selected_shipping_method.carrier_title }} - @{{ address.selected_shipping_method.method_title }}</small>
+                </dt>
+                <dd v-if="showTax">@{{ window.price(address.selected_shipping_method.price_incl_tax.value) }}</dd>
+                <dd v-else>@{{ window.price(address.selected_shipping_method.price_excl_tax.value) }}</dd>
+            </template>
         </div>
     </template>
 

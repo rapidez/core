@@ -120,7 +120,7 @@ export default {
             if (!this.stopOnHover) {
                 return
             }
-            this.hover = useElementHover(this.$el)
+            this.hover = useElementHover(this.$el.nextSibling)
         },
         scroll(event) {
             this.position = this.vertical ? event.target.scrollTop : event.target.scrollLeft

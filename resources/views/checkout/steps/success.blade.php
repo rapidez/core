@@ -23,7 +23,7 @@
                         <a :href="window.url('/' + item.product.url_key + item.product.url_suffix)" target="blank" class="block">
                             <img
                                 :alt="item.product_name"
-                                :src="'/storage/{{ config('rapidez.store') }}/resizes/200/sku/' + item.product_sku + '.webp' | url"
+                                :src="window.url('/storage/{{ config('rapidez.store') }}/resizes/200/sku/' + item.product_sku + '.webp')"
                                 height="100"
                                 class="mx-auto"
                             />

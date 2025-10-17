@@ -13,7 +13,7 @@ export default {
         window.$on('rapidez:global-slideover-open', (data) => {
             this.title = data.title || ''
             this.position = data.position || 'left'
-            this.$el.querySelector('#slideover-global').checked = true
+            this.$el.nextSibling.querySelector('#slideover-global').checked = true
         })
     },
 }

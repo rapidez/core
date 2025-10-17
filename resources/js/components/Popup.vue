@@ -33,13 +33,13 @@ export default {
     },
     methods: {
         open() {
-            this.$el.show()
+            this.$el.nextSibling.show()
             if (this.overlay) {
                 this.$root.custom.overlay = true
             }
         },
         close() {
-            this.$el.close()
+            this.$el.nextSibling.close()
 
             if (this.overlay) {
                 this.$root.custom.overlay = false

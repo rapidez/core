@@ -201,7 +201,7 @@ export default {
                 let [type, data] = reader.result.split(';', 4)
 
                 if (!data) {
-                    Vue.set(this.customOptions, optionId, undefined)
+                    this.customOptions[optionId] = undefined
                     return
                 }
 
@@ -210,7 +210,7 @@ export default {
                     type: type.replace('data:', ''),
                     name: file.name,
                 }
-                Vue.set(this.customOptions, optionId, JSON.stringify(value))
+                this.customOptions[optionId] = JSON.stringify(value)
             }
             reader.readAsDataURL(file)
         },
@@ -254,7 +254,7 @@ export default {
             // We do not loop and use the values of enabledOptions directly.
             // This is on purpose in order to force recalculations of enabledOptions to be considered.
             Object.keys(this.enabledOptions).map((attributeKey) => {
-                Vue.set(this.options, attributeKey, this.enabledOptions[attributeKey].find(Boolean))
+                this.options[attributeKey] = this.enabledOptions[attributeKey].find(Boolean)
             })
         },
         async setDefaultCustomSelectedOptions() {
@@ -273,7 +273,7 @@ export default {
                     return
                 }
 
-                Vue.set(this.customSelectedOptions, option.option_id, value)
+                this.customSelectedOptions[option.option_id] = value
             })
         },
         async setOptionsFromValues(options) {
@@ -282,7 +282,7 @@ export default {
                     return
                 }
 
-                Vue.set(this.options, key, values[0])
+                this.options[key] = values[0]
             })
         },
         async setOptionsFromRefinements() {
