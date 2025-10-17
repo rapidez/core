@@ -40,26 +40,30 @@ document.addEventListener('vue:loaded', function (event) {
 
     vue.component('quantity-select', quantitySelect)
 
-    vue.component('autocomplete', defineAsyncComponent({
-        // https://vuejs.org/guide/components/async#async-components
-        loader: () => new Promise(function (resolve, reject) {
-            document.addEventListener('loadAutoComplete', () => import('./components/Search/Autocomplete.vue').then(resolve))
-        }),
-        // https://vuejs.org/guide/components/async#loading-and-error-states
-        loadingComponent: defineComponent({
-            data: () => ({
-                loaded: false,
-                searchClient: null,
-                searchHistory: {},
-            }),
+    vue.component(
+        'autocomplete',
+        defineAsyncComponent({
+            // https://vuejs.org/guide/components/async#async-components
+            loader: () =>
+                new Promise(function (resolve, reject) {
+                    document.addEventListener('loadAutoComplete', () => import('./components/Search/Autocomplete.vue').then(resolve))
+                }),
+            // https://vuejs.org/guide/components/async#loading-and-error-states
+            loadingComponent: defineComponent({
+                data: () => ({
+                    loaded: false,
+                    searchClient: null,
+                    searchHistory: {},
+                }),
 
-            render() {
-                // TODO: seems broken, replaced by <Suspense> (https://github.com/vuejs/core/pull/13997)
-                return this.$slots.default(this)
-            },
-            delay: 0,
+                render() {
+                    // TODO: seems broken, replaced by <Suspense> (https://github.com/vuejs/core/pull/13997)
+                    return this.$slots.default(this)
+                },
+                delay: 0,
+            }),
         }),
-    }))
+    )
     vue.component(
         'checkout-login',
         defineAsyncComponent(() => import('./components/Checkout/CheckoutLogin.vue')),
