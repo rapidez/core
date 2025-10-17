@@ -45,7 +45,7 @@ document.addEventListener('vue:loaded', function (event) {
             document.addEventListener('loadAutoComplete', () => import('./components/Search/Autocomplete.vue').then(resolve))
         }),
         // https://vuejs.org/guide/components/async#loading-and-error-states
-        loadingComponent: {
+        loadingComponent: defineComponent({
             data: () => ({
                 loaded: false,
                 searchClient: null,
@@ -58,7 +58,7 @@ document.addEventListener('vue:loaded', function (event) {
             },
             delay: 0,
         }),
-    )
+    }))
     vue.component(
         'checkout-login',
         defineAsyncComponent(() => import('./components/Checkout/CheckoutLogin.vue')),
