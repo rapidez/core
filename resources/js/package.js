@@ -1,5 +1,6 @@
 window.debug = import.meta.env.VITE_DEBUG == 'true'
-window.Notify = (message, type = 'info', params = [], link = null) => setTimeout(() => window.$emit('rapidez:notification-message', message, type, params, link))
+window.Notify = (message, type = 'info', params = [], link = null) =>
+    setTimeout(() => window.$emit('rapidez:notification-message', message, type, params, link))
 
 if (!window.process) {
     // Workaround for process missing, if data is actually needed from here you should apply the following polyfill.
@@ -22,34 +23,38 @@ import './callbacks'
 import './vue-components'
 import './instantsearch'
 import { fetchCount } from './stores/useFetches.js'
-;import { computed, createApp } from 'vue'
-(() => import('./turbolinks'))()
+import { computed, createApp } from 'vue'
+;(() => import('./turbolinks'))()
 
 if (import.meta.env.VITE_DEBUG === 'true') {
-    window.$on('rapidez:notification-message', function (message, type, params, link) {
-        switch (type) {
-            case 'error':
-                console.error(message, type, params, link)
-                break
-            case 'warning':
-                console.warn(message, type, params, link)
-                break
-            case 'success':
-            case 'info':
-            default:
-                console.log(message, type, params, link)
-        }
-    }, {autoRemove: false})
+    window.$on(
+        'rapidez:notification-message',
+        function (message, type, params, link) {
+            switch (type) {
+                case 'error':
+                    console.error(message, type, params, link)
+                    break
+                case 'warning':
+                    console.warn(message, type, params, link)
+                    break
+                case 'success':
+                case 'info':
+                default:
+                    console.log(message, type, params, link)
+            }
+        },
+        { autoRemove: false },
+    )
 }
 
 let booting = false
-let rootEl = null;
+let rootEl = null
 function init() {
     if (booting || (rootEl && document.body.contains(rootEl))) {
         return
     }
     booting = true
-    rootEl = document.querySelector('#app');
+    rootEl = document.querySelector('#app')
 
     // Check if the localstorage needs a flush.
     let cachekey = useLocalStorage('cachekey')
@@ -167,10 +172,10 @@ function init() {
                 return cart.value?.id && cart.value.items.length
             }),
 
-            canOrder: computed(function() {
+            canOrder: computed(function () {
                 return cart.value.items.every((item) => item.is_available)
             }),
-        };
+        }
         window.app.config.globalProperties.window = window
         window.app.config.globalProperties.config = window.config
 

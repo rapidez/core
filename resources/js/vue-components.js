@@ -16,7 +16,6 @@ import quantitySelect from './components/Product/QuantitySelect.vue'
 import { defineAsyncComponent, defineComponent } from 'vue'
 
 document.addEventListener('vue:loaded', function (event) {
-    const vue = event.detail.vue;
     vue.use(TurbolinksAdapter)
 
     vue.component('toggler', toggler)
@@ -57,15 +56,39 @@ document.addEventListener('vue:loaded', function (event) {
                 // TODO: seems broken, replaced by <Suspense> (https://github.com/vuejs/core/pull/13997)
                 return this.$slots.default(this)
             },
-        },
-        delay: 0,
-    }))
-    vue.component('checkout-login', defineAsyncComponent(() => import('./components/Checkout/CheckoutLogin.vue')))
-    vue.component('login', defineAsyncComponent(() => import('./components/User/Login.vue')))
-    vue.component('listing', defineAsyncComponent(() => import('./components/Listing/Listing.vue')))
-    vue.component('search-suggestions', defineAsyncComponent(() => import('./components/Listing/SearchSuggestions.vue')))
-    vue.component('checkout-success', defineAsyncComponent(() => import('./components/Checkout/CheckoutSuccess.vue')))
-    vue.component('popup', defineAsyncComponent(() => import('./components/Popup.vue')))
-    vue.component('range-slider', defineAsyncComponent(() => import('./components/Elements/RangeSlider.vue')))
-    vue.component('recently-viewed', defineAsyncComponent(() => import('./components/RecentlyViewed.vue')))
+            delay: 0,
+        }),
+    )
+    vue.component(
+        'checkout-login',
+        defineAsyncComponent(() => import('./components/Checkout/CheckoutLogin.vue')),
+    )
+    vue.component(
+        'login',
+        defineAsyncComponent(() => import('./components/User/Login.vue')),
+    )
+    vue.component(
+        'listing',
+        defineAsyncComponent(() => import('./components/Listing/Listing.vue')),
+    )
+    vue.component(
+        'search-suggestions',
+        defineAsyncComponent(() => import('./components/Listing/SearchSuggestions.vue')),
+    )
+    vue.component(
+        'checkout-success',
+        defineAsyncComponent(() => import('./components/Checkout/CheckoutSuccess.vue')),
+    )
+    vue.component(
+        'popup',
+        defineAsyncComponent(() => import('./components/Popup.vue')),
+    )
+    vue.component(
+        'range-slider',
+        defineAsyncComponent(() => import('./components/Elements/RangeSlider.vue')),
+    )
+    vue.component(
+        'recently-viewed',
+        defineAsyncComponent(() => import('./components/RecentlyViewed.vue')),
+    )
 })

@@ -9,14 +9,13 @@ import RefinementList from 'vue-instantsearch/vue3/es/src/components/RefinementL
 import SortBy from 'vue-instantsearch/vue3/es/src/components/SortBy.vue.js'
 // import hitsPerPage from 'vue-instantsearch/vue3/es/src/components/hitsPerPage.vue.js'
 
-
-        // 'ClearRefinements.vue',
-        // 'CurrentRefinements.vue',
-        // 'SearchBox.vue',
-        // 'RangeInput.vue',
-        // 'RangeInput.vue',
-        // 'RefinementList.vue',
-        // 'HierarchicalMenu.vue',
+// 'ClearRefinements.vue',
+// 'CurrentRefinements.vue',
+// 'SearchBox.vue',
+// 'RangeInput.vue',
+// 'RangeInput.vue',
+// 'RefinementList.vue',
+// 'HierarchicalMenu.vue',
 
 // - `refinementList` needs one of these widgets: "refinementList"
 // - `hierarchicalMenu` needs one of these widgets: "hierarchicalMenu"

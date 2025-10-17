@@ -202,33 +202,41 @@ if (userStorage.value?.email && !token.value) {
     userStorage.value = {}
 }
 
-on('rapidez:logout', async function (data) {
-    await logout()
-    useLocalStorage('email', '').value = ''
-    Turbo.cache.clear()
+on(
+    'rapidez:logout',
+    async function (data) {
+        await logout()
+        useLocalStorage('email', '').value = ''
+        Turbo.cache.clear()
 
-    if (data?.redirect) {
-        setTimeout(() => (window.location.href = window.url(data?.redirect)))
-    }
-}, {autoRemove: false, defer: false})
-
-on('rapidez:cart-updated', () => {
-    // Can be removed once https://github.com/magento/magento2/issues/39828 is fixed
-    setTimeout(() => {
-        if (cart?.value?.shipping_addresses?.length > 0 || userStorage.value?.addresses?.length < 1) {
-            return
+        if (data?.redirect) {
+            setTimeout(() => (window.location.href = window.url(data?.redirect)))
         }
+    },
+    { autoRemove: false, defer: false },
+)
 
-        const defaultShipping = userStorage.value?.addresses?.find((address) => address.default_shipping)
-        if (!defaultShipping) {
-            return
-        }
+on(
+    'rapidez:cart-updated',
+    () => {
+        // Can be removed once https://github.com/magento/magento2/issues/39828 is fixed
+        setTimeout(() => {
+            if (cart?.value?.shipping_addresses?.length > 0 || userStorage.value?.addresses?.length < 1) {
+                return
+            }
 
-        magentoGraphQL(config.queries.setExistingShippingAddressesOnCart, {
-            cart_id: mask.value,
-            customer_address_id: defaultShipping.id,
-        }).then((response) => window.app.config.globalProperties.updateCart([], response))
-    })
-}, {autoRemove: false})
+            const defaultShipping = userStorage.value?.addresses?.find((address) => address.default_shipping)
+            if (!defaultShipping) {
+                return
+            }
+
+            magentoGraphQL(config.queries.setExistingShippingAddressesOnCart, {
+                cart_id: mask.value,
+                customer_address_id: defaultShipping.id,
+            }).then((response) => window.app.config.globalProperties.updateCart([], response))
+        })
+    },
+    { autoRemove: false },
+)
 
 export default () => user

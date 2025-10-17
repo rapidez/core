@@ -5,7 +5,7 @@ document.addEventListener('vue:loaded', function (event) {
 })
 export default {
     components: {
-        'notification': notification
+        notification: notification,
     },
     data: () => ({
         notifications: [],
