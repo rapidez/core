@@ -16,7 +16,7 @@ import quantitySelect from './components/Product/QuantitySelect.vue'
 import { defineAsyncComponent, defineComponent } from 'vue'
 
 document.addEventListener('vue:loaded', function (event) {
-    const vue = event.detail.vue;
+    const vue = event.detail.vue
     vue.use(TurbolinksAdapter)
 
     vue.component('toggler', toggler)
