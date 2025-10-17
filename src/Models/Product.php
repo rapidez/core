@@ -13,11 +13,13 @@ use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Scopes\Product\ForCurrentWebsiteScope;
 use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
 use Rapidez\Core\Models\Traits\HasCustomAttributes;
+use Rapidez\Core\Models\Traits\Product\BackwardsCompatibleAccessors;
 use Rapidez\Core\Models\Traits\Product\HasSuperAttributes;
 use Rapidez\Core\Models\Traits\Product\Searchable;
 
 class Product extends Model
 {
+    use BackwardsCompatibleAccessors;
     use HasAlternatesThroughRewrites;
     use HasCustomAttributes;
     use HasSuperAttributes;
@@ -92,9 +94,27 @@ class Product extends Model
 
     public function children(): BelongsToMany
     {
+        return $this->relations();
+
+        // TODO: Double check? Do we need this one?
+        // catalog_product_relation is smaller
+        // and only contains configurable
+        // and grouped product relations
         return $this
             ->belongsToMany(config('rapidez.models.product'), 'catalog_product_super_link', 'parent_id', 'product_id')
             ->using(config('rapidez.models.product_super_link'));
+    }
+
+    public function grouped(): BelongsToMany
+    {
+        return $this->relations();
+    }
+
+    public function relations(): BelongsToMany
+    {
+        // To query grouped en configurable product
+        // parent/child relations fast.
+        return $this->belongsToMany(config('rapidez.models.product'), 'catalog_product_relation', 'parent_id', 'child_id');
     }
 
     public function getChildrenAttribute(): Collection
@@ -142,7 +162,8 @@ class Product extends Model
             ->hasMany(
                 config('rapidez.models.category_product'),
                 'product_id',
-            );
+            )
+            ->whereHas('category');
     }
 
     public function stock(): BelongsTo
@@ -237,7 +258,13 @@ class Product extends Model
 
     protected function price(): Attribute
     {
-        return Attribute::get(fn (?float $price): ?float => $this->prices?->min() ?? $price)->shouldCache();
+        return Attribute::get(function () {
+            if (in_array($this->type_id, ['configurable', 'grouped'])) {
+                return $this->prices->min();
+            }
+
+            return $this->getCustomAttributeValue('price');
+        });
     }
 
     protected function prices(): Attribute
@@ -271,26 +298,6 @@ class Product extends Model
         });
     }
 
-    protected function minSaleQty(): Attribute
-    {
-        return Attribute::get(function (): ?float {
-            $increments = $this->stock->qty_increments ?: 1;
-            $minSaleQty = $this->stock->min_sale_qty ?: 1;
-
-            return ($minSaleQty - fmod($minSaleQty, $increments)) ?: $increments;
-        });
-    }
-
-    protected function maxSaleQty(): Attribute
-    {
-        return Attribute::get(fn () => $this->stock->max_sale_qty);
-    }
-
-    protected function qtyIncrements(): Attribute
-    {
-        return Attribute::get(fn () => $this->stock->qty_increments);
-    }
-
     protected function breadcrumbCategories(): Attribute
     {
         return Attribute::get(function (): Collection {
@@ -299,10 +306,5 @@ class Product extends Model
                 ->pluck('category')
                 ->whereNotNull();
         })->shouldCache();
-    }
-
-    protected function inStock(): Attribute
-    {
-        return Attribute::get(fn () => $this->stock->is_in_stock);
     }
 }
