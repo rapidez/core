@@ -263,7 +263,7 @@ class Product extends Model
                 return $this->prices->min();
             }
 
-            return $this->getCustomAttributeValue('price');
+            return $this->getCustomAttribute('price')->value;
         });
     }
 
@@ -303,7 +303,8 @@ class Product extends Model
         return Attribute::get(function (): Collection {
             return $this->categoryProducts
                 ->where('category_id', '!=', config('rapidez.root_category_id'))
-                ->pluck('category');
+                ->pluck('category')
+                ->whereNotNull();
         })->shouldCache();
     }
 }

@@ -147,13 +147,8 @@ trait HasCustomAttributes
         return $this->customAttributes[$key] ?? null;
     }
 
-    public function getCustomAttributeValue($key)
-    {
-        return $this->getCustomAttribute($key)?->value;
-    }
-
     protected function throwMissingAttributeExceptionIfApplicable($key)
     {
-        return $this->getCustomAttributeValue($key);
+        return $this->getCustomAttribute($key);
     }
 }
