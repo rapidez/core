@@ -37,8 +37,8 @@ trait HasSuperAttributes
                     $attribute->attribute_code => $this->children->mapWithKeys(function ($child) use ($attribute) {
                         return [$child->entity_id => $child->{$attribute->attribute_code}];
                     })
-                    ->unique('value')
-                    ->sortBy('sort_order'),
+                        ->unique('value')
+                        ->sortBy('sort_order'),
                 ]);
         });
     }

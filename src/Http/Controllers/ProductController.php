@@ -30,7 +30,7 @@ class ProductController
             'min_sale_qty',
             'max_sale_qty',
             'qty_increments',
-            ...$product->superAttributes->pluck('attribute_code')
+            ...$product->superAttributes->pluck('attribute_code'),
         ];
 
         $attributes = Eventy::filter('productpage.frontend.attributes', $attributes);
