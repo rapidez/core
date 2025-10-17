@@ -31,33 +31,38 @@ class AbstractAttribute extends Model
         return $this->table;
     }
 
-    protected function value(): Attribute
+    protected function transformedValue(): Attribute
     {
-        return Attribute::get(function ($value) {
+        return Attribute::get(function () {
             if ($this->frontend_input === 'select') {
-                return $this->options[$value]?->value ?? $value;
+                return $this->options[$this->value]?->value ?? $this->value;
             }
 
             $class = config('rapidez.attribute-models')[$this->backend_model] ?? null;
             if ($class) {
-                return $class::value($value, $this);
+                return $class::value($this->value, $this);
             }
 
-            return array_key_exists('value', $this->getCasts()) ? $this->castAttribute('value', $value) : $value;
+            return array_key_exists('value', $this->getCasts()) ? $this->castAttribute('value', $this->value) : $this->value;
         });
     }
 
-    protected function rawValue(): Attribute
+    protected function label(): Attribute
     {
-        return Attribute::get(fn() => $this->getAttributeFromArray('value'));
+        return Attribute::get(function () {
+            return is_iterable($this->transformedValue)
+                ? implode(', ', iterator_to_array($this->transformedValue))
+                : $this->transformedValue;
+        });
     }
 
     protected function sortOrder(): Attribute
     {
-        return Attribute::get(function () {
-            $value = $this->rawValue;
+        return Attribute::get(fn () => $this->options[$this->value]->sort_order ?? null);
+    }
 
-            return $this->options[$value]->sort_order ?? null;
-        });
+    public function __toString(): string
+    {
+        return $this->label;
     }
 }

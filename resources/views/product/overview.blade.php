@@ -42,10 +42,11 @@
                             @foreach (\Rapidez\Core\Models\EavAttribute::getCachedCatalog()->where(fn ($attribute) => $attribute->is_visible_on_front) as $attribute)
                                 @if (($value = $product->{$attribute['attribute_code']}))
                                     <dt>{{ $attribute['frontend_label'] }}</dt>
-                                    <dd>
-                                        @php $output = is_iterable($value) ? implode(', ', iterator_to_array($value)) : $value @endphp
-                                        {!! $attribute['is_html_allowed_on_front'] ? $output : e($output) !!}
-                                    </dd>
+                                    @if ($attribute['is_html_allowed_on_front'])
+                                        <dd>{!! $value !!}</dd>
+                                    @else
+                                        <dd>{{ $value }}</dd>
+                                    @endif
                                 @endif
                             @endforeach
                         </dl>

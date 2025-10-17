@@ -263,7 +263,7 @@ class Product extends Model
                 return $this->prices->min();
             }
 
-            return $this->getCustomAttributeValue('price');
+            return $this->getCustomAttribute('price')->value;
         });
     }
 
