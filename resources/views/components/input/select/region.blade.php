@@ -5,8 +5,9 @@
     v-bind:variables="{ id: {{ $country }} }"
     v-bind:cache="'regions_' + {{ $country }}"
     v-bind:key="{{ $country }}"
+    v-slot="{ data }"
 >
-    <div class="contents" slot-scope="{ data }">
+    <div class="contents">
         <template v-if="data && data.country.available_regions">
             <x-rapidez::input.select
                 {{ $attributes }}

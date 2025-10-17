@@ -16,9 +16,10 @@ export default {
             default: () => ({ min: undefined, max: undefined }),
         },
     },
+    emits: ['change'],
 
     render() {
-        return this.$scopedSlots.default(this)
+        return this.$slots.default(this)
     },
 
     data() {

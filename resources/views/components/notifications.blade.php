@@ -1,6 +1,11 @@
-<notifications v-cloak>
-    <div class="fixed sm:max-w-sm sm:w-full top-6 right-6 left-6 sm:left-auto flex flex-col z-notifications" slot-scope="{ notifications }">
-        <notification v-if="notifications.length" v-for="(notification, index) in notifications" :notification="notification" :key="index +1">
+<notifications v-cloak v-slot="{ notifications }">
+    <div class="fixed sm:max-w-sm sm:w-full top-6 right-6 left-6 sm:left-auto flex flex-col z-notifications">
+        <notification
+            v-if="notifications.length"
+            v-for="(notification, index) in notifications"
+            :notification="notification" :key="index +1"
+            v-slot="{ message, type, show, close, classes, link }"
+        >
             <transition
                 enter-active-class="ease-in-out duration-500"
                 enter-class="opacity-0"
@@ -8,7 +13,6 @@
                 leave-active-class="ease-in-out duration-500"
                 leave-class="opacity-100"
                 leave-to-class="opacity-0"
-                slot-scope="{ message, type, show, close, classes, link }"
             >
                 <component :is="link ? 'a' : 'div'" v-if="show" class="relative flex items-end justify-center pointer-events-none mb-3 sm:items-start sm:justify-end" :class="{ 'pointer-events-none': !link }">
 

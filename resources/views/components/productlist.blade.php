@@ -17,9 +17,10 @@ Examples:
             v-slot="listingSlotProps"
             v-cloak
         >
-            <div>
+            <div ref="root">
                 <ais-instant-search
                     v-if="listingSlotProps.searchClient"
+                    :future="{ preserveSharedStateOnUnmount: true }"
                     :search-client="listingSlotProps.searchClient"
                     :index-name="listingSlotProps.index"
                     :middlewares="listingSlotProps.middlewares"

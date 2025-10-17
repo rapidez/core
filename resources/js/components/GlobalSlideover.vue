@@ -10,16 +10,16 @@ export default {
         }
     },
     render() {
-        return this.$scopedSlots.default(this)
+        return this.$slots.default(this)
     },
     mounted() {
-        this.$root.$on('global-slideover-open', (data) => {
+        window.$on('rapidez:global-slideover-open', (data) => {
             this.isCurrentSlideover = data.initiator === this
         })
     },
     methods: {
         open() {
-            this.$root.$emit('global-slideover-open', { title: this.title, position: this.position, initiator: this })
+            window.$emit('rapidez:global-slideover-open', { title: this.title, position: this.position, initiator: this })
         },
     },
 }

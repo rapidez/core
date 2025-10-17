@@ -1,7 +1,7 @@
 <script>
 import { connectStats } from 'instantsearch.js/es/connectors'
-import { createSuitMixin } from 'vue-instantsearch/vue2/es/src/mixins/suit'
-import { createWidgetMixin } from 'vue-instantsearch/vue2/es/src/mixins/widget'
+import { createSuitMixin } from 'vue-instantsearch/vue3/es/src/mixins/suit'
+import { createWidgetMixin } from 'vue-instantsearch/vue3/es/src/mixins/widget'
 
 export default {
     name: 'AisStatsAnalytics',
