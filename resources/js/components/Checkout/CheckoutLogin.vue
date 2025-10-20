@@ -71,7 +71,7 @@ export default {
         async handleLogin() {
             return await login(this.email, this.password)
                 .then(() => true)
-                .catch((error) => {
+                .catch(async (error) => {
                     if (error instanceof SessionExpired) {
                         let data = await error.response.json()
                         if (data?.errors?.[0]?.message) {
