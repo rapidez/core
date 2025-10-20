@@ -75,7 +75,7 @@ export default {
                     if (error instanceof SessionExpired) {
                         let data = await error.response.json()
                         if (data?.errors?.[0]?.message) {
-                            Notify(response.data.errors[0].message, 'error')
+                            Notify(data.errors[0].message, 'error')
                             return false
                         }
                     }
