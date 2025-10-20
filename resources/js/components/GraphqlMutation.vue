@@ -97,7 +97,7 @@ export default {
         this.data = this.variables
 
         if (this.debounce) {
-            this.mutate = useDebounceFn(async () => await this.mutateFn, this.debounce)
+            this.mutate = useDebounceFn(async () => await this.mutateFn(), this.debounce)
         } else {
             this.mutate = this.mutateFn
         }
@@ -201,7 +201,7 @@ export default {
                 if (this.redirect) {
                     if (this.notify.message) {
                         document.addEventListener(
-                            'turbo:load',
+                            'vue:loaded',
                             () => {
                                 Notify(this.notify.message, this.notify.type ?? 'success')
                             },

@@ -12,13 +12,13 @@
                         <li v-for="item in listingSlotProps.withSwatches(items, filter)">
                             <template v-if="filter.visual_swatch">
                                 <x-rapidez::input.swatch.visual
-                                    color="item.swatch?.swatch ?? 'none'"
                                     type="checkbox"
                                     v-on:change="refine(item.value)"
                                     v-bind:checked="item.isRefined"
                                     v-bind:name="filter.code"
                                     v-bind:aria-label="item.swatch?.label ?? item.value"
                                     v-bind:id="item.swatch?.label ?? item.value"
+                                    v-bind:color="item.swatch?.swatch ?? 'none'"
                                 >
                                     @{{ item.swatch?.label ?? item.value }}
                                 </x-rapidez::input.swatch.visual>

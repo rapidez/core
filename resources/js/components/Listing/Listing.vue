@@ -33,6 +33,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        transformItems: {
+            type: Function,
+            default: (items) => items,
+        },
     },
 
     data: () => ({
@@ -165,7 +169,7 @@ export default {
             let data = uiState[this.index]
 
             // Remove the root path from the category if it's in there
-            let category = data.hierarchicalMenu?.category_lvl1
+            let category = [...(data.hierarchicalMenu?.category_lvl1 ?? [])]
             for (let i = 0; i < this.rootPath?.length && category?.length && category[0] == this.rootPath[i]; i++) {
                 category.splice(0, 1)
             }
@@ -174,7 +178,7 @@ export default {
                 ...(data.range || {}),
                 ...(data.refinementList || {}),
                 category: category?.length ? category.join('--') : undefined,
-                q: data.query,
+                q: data.query !== '__NO_QUERY__' ? data.query : undefined,
                 page: data.page > 0 ? String(data.page) : undefined,
                 sort: data.sortBy,
                 hits: data.hitsPerPage != config.grid_per_page ? data.hitsPerPage : undefined,
@@ -197,7 +201,7 @@ export default {
                     range: ranges,
                     refinementList: refinementList,
                     hierarchicalMenu: { category_lvl1: categories.length ? categories : null },
-                    query: routeState.q,
+                    query: routeState.q || '__NO_QUERY__',
                     page: Number(routeState.page),
                     sortBy: routeState.sort,
                     hitsPerPage: Number(routeState.hits),

@@ -13,7 +13,7 @@
                 v-bind:disabled="addToCart.disabledOptions['super_' + superAttribute.code].includes(option.value)"
                 v-bind:aria-label="option.label"
                 v-bind:id="option.label"
-                color="window.config.swatches[superAttribute.code]?.options?.[option.value]?.swatch ?? 'none'"
+                v-bind:color="window.config.swatches[superAttribute.code]?.options?.[option.value]?.swatch ?? 'none'"
                 required
             >
                 @{{ option.label }}

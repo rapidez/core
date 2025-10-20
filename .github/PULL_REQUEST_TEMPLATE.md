@@ -4,6 +4,7 @@
 - Branch: Target the right branch and create another pull request if it's needed in multiple branches.
 - Docs: Should it be documented? Create a pull requests to rapidez/docs. Breaking? Write some upgrade info.
 - Tests: Don't forget the tests; they should pass and adding more is always a good idea.
+- Reference: Is there any reference? Maybe an internal Jira story number?
 
 Thanks! 🚀
 -->

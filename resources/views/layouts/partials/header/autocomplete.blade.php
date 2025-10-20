@@ -49,18 +49,18 @@
                                         </div>
                                     </div>
 
-                                    <div class="max-h-full bg-white overflow-hidden relative z-10">
-                                        <div class="size-full overflow-y-auto">
-                                            <div class="container pt-4 pb-8 overflow-y-auto">
-                                                @include('rapidez::layouts.partials.header.autocomplete.results')
-                                            </div>
-                                        </div>
-                                    </div>
-
                                     <div class="flex flex-1 bg-backdrop cursor-pointer" v-on:click="toggle(); refine('')"></div>
                                 </div>
                             </div>
                         </ais-autocomplete>
+
+                        <div class="max-h-full bg-white overflow-hidden relative z-10">
+                            <div class="size-full overflow-y-auto">
+                                <div class="container pt-4 pb-8 overflow-y-auto">
+                                    @include('rapidez::layouts.partials.header.autocomplete.results')
+                                </div>
+                            </div>
+                        </div>
 
                         <ais-stats-analytics></ais-stats-analytics>
                     </div>

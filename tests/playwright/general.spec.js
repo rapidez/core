@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test'
 import { BasePage } from './pages/BasePage'
 
-test('cookie', async ({ page }) => {
+test('cookie', BasePage.tags, async ({ page }) => {
     const acceptCookiesButton = page.getByTestId('accept-cookies')
 
     await page.goto('/?show-cookie-notice')
-    await expect(page).toHaveScreenshot()
+    await new BasePage(page).screenshot()
     await acceptCookiesButton.click()
     await expect(acceptCookiesButton).not.toBeVisible()
 
@@ -16,7 +16,7 @@ test('cookie', async ({ page }) => {
     await expect(cookieNotice).not.toBeNull()
 })
 
-test('newsletter', async ({ page }) => {
+test('newsletter', BasePage.tags, async ({ page }) => {
     const email = `wayne+${Date.now()}@enterprises.com`
 
     await page.goto('/')

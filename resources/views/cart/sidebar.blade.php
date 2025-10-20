@@ -23,7 +23,7 @@
         </div>
     </template>
 
-    <template v-if="cart.fixedProductTaxes?.value">
+    <template v-if="cart.fixedProductTaxes">
         <div v-for="value, label in cart.fixed_product_taxes">
             <dt>@{{ label }}</dt>
             <dd>@{{ value | price }}</dd>
@@ -40,7 +40,7 @@
     <div class="border-t pt-3 mt-3 font-bold">
         <dt>@lang('Total')</dt>
         <dd v-if="showTax">@{{ cart.prices.grand_total.value | price }}</dd>
-        <dd v-else>@{{ cart.prices.grand_total.value - cart.taxTotal.value | price }}</dd>
+        <dd v-else>@{{ cart.prices.grand_total.value - cart.taxTotal | price }}</dd>
     </div>
 </x-rapidez::summary>
 
@@ -49,6 +49,7 @@
         href="{{ route('checkout') }}"
         class="w-full text-center"
         v-bind:class="{ 'pointer-events-none': !canOrder }"
+        loader
     >
         @lang('Checkout')
     </x-rapidez::button.conversion>
