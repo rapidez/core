@@ -81,6 +81,10 @@ export default {
     }),
 
     render() {
+        if (!('default' in this.$slots)) {
+            return null
+        }
+
         return this.$slots.default({
             mutate: this.mutate,
             mutated: this.mutated,
