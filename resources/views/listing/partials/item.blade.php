@@ -28,7 +28,7 @@
                     </div>
                 </div>
             </a>
-            
+
             @include('rapidez::listing.partials.item.addtocart')
         </div>
     </add-to-cart>

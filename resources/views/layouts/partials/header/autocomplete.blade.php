@@ -26,7 +26,7 @@
                             </div>
                         </ais-autocomplete>
                         <div class="fixed inset-0 searchbox bg-white group z-header-autocomplete-popup flex flex-col h-full" v-if="autoCompleteToggler.isOpen">
-                            <div class="py-3 bg"> 
+                            <div class="py-3 bg">
                                 <div class="container">
                                     <input checked type="checkbox" class="prevent-scroll hidden">
                                     <ais-autocomplete v-slot="{ currentRefinement, refine }">
