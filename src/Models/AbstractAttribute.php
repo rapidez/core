@@ -4,6 +4,7 @@ namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Arr;
 use Rapidez\Core\Models\Scopes\ForCurrentStoreWithoutLimitScope;
 
 class AbstractAttribute extends Model
@@ -31,19 +32,36 @@ class AbstractAttribute extends Model
         return $this->table;
     }
 
+    protected function value(): Attribute
+    {
+        return Attribute::get(function ($value) {
+            $class = config('rapidez.attribute-models')[$this->backend_model] ?? null;
+
+            if ($class) {
+                return $class::value($value, $this);
+            }
+            
+            return array_key_exists('value', $this->getCasts())
+                ? $this->castAttribute('value', $value)
+                : $value;
+        });
+    }
+
     protected function transformedValue(): Attribute
     {
         return Attribute::get(function () {
-            if ($this->frontend_input === 'select') {
+            if ($this->frontend_input === 'select' || $this->frontend_input === 'multiselect') {
+                if (is_iterable($this->value)) {
+                    return Arr::map(
+                        iterator_to_array($this->value),
+                        fn($value) => $this->options[$value]?->value ?? $value,
+                    );
+                }
+
                 return $this->options[$this->value]?->value ?? $this->value;
             }
 
-            $class = config('rapidez.attribute-models')[$this->backend_model] ?? null;
-            if ($class) {
-                return $class::value($this->value, $this);
-            }
-
-            return array_key_exists('value', $this->getCasts()) ? $this->castAttribute('value', $this->value) : $this->value;
+            return $this->value;
         });
     }
 

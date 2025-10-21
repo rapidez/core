@@ -9,6 +9,10 @@ class ProductStock extends Model
 {
     protected $table = 'cataloginventory_stock_item';
 
+    protected $casts = [
+        'is_in_stock' => 'boolean',
+    ];
+
     public function getHidden()
     {
         $hidden = parent::getHidden();

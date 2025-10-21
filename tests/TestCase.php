@@ -16,6 +16,8 @@ class TestCase extends BaseTestCase
         parent::setUp();
 
         $this->setUpDatabase($this->app);
+
+        Rapidez::setStore(1);
     }
 
     protected function getPackageProviders($app)

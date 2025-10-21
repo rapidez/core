@@ -10,6 +10,6 @@ class ArrayBackend implements AttributeModel
             return collect();
         }
 
-        return collect(explode(',', $value))->map(fn ($value) => $attribute->options[$value]?->value ?? $value);
+        return collect(explode(',', $value));
     }
 }

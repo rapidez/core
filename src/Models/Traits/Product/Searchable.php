@@ -3,8 +3,10 @@
 namespace Rapidez\Core\Models\Traits\Product;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Facades\Rapidez;
+use Rapidez\Core\Models\AbstractAttribute;
 use Rapidez\Core\Models\Category;
 use Rapidez\Core\Models\CategoryProduct;
 use Rapidez\Core\Models\EavAttribute;
@@ -31,7 +33,7 @@ trait Searchable
      */
     public function shouldBeSearchable(): bool
     {
-        if (! in_array($this->visibility, [
+        if (! in_array($this->visibility->value, [
             Product::VISIBILITY_IN_CATALOG,
             Product::VISIBILITY_IN_SEARCH,
             Product::VISIBILITY_BOTH,
@@ -89,7 +91,31 @@ trait Searchable
             // Turn all positions positive
             ->mapWithKeys(fn ($position, $category_id) => [$category_id => $maxPositions[$category_id] - $position]);
 
+        $data = $this->transformAttributes($data);
+
         return Eventy::filter('index.' . static::getModelName() . '.data', $data, $this);
+    }
+
+    public function transformAttributes(array $data): array
+    {
+        // TODO: Can this be done directly from AbstractAttribute instead?
+        // Would be a lot cleaner if we don't have to manually loop through this.
+        return Arr::map($data, function ($value, $key) {
+            if ($value instanceof AbstractAttribute) {
+                if ($value->value == $value->label) {
+                    return $value->value;
+                } else {
+                    return [
+                        'value' => $value->value,
+                        'label' => $value->label,
+                    ];
+                }
+            } else if ($key === 'children') {
+                return $value->map(fn ($child) => $this->transformAttributes($child));
+            } else {
+                return $value;
+            }
+        });
     }
 
     /**
