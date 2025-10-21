@@ -278,7 +278,7 @@ class Product extends Model
     protected function specialPrice(): Attribute
     {
         return Attribute::get(function (): ?float {
-            $specialPrice = $this->getCustomAttribute('special_price')->value;
+            $specialPrice = $this->getCustomAttribute('special_price')?->value ?? null;
 
             if (! in_array($this->type_id, ['configurable', 'grouped'])) {
                 if (! now()->isBetween(
