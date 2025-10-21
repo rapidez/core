@@ -110,7 +110,7 @@ trait Searchable
                         'label' => $value->label,
                     ];
                 }
-            } else if ($key === 'children') {
+            } elseif ($key === 'children') {
                 return $value->map(fn ($child) => $this->transformAttributes($child));
             } else {
                 return $value;

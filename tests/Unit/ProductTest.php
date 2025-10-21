@@ -92,7 +92,7 @@ class ProductTest extends TestCase
     public function product_can_have_review_data()
     {
         $product = Product::find(37);
-        
+
         $this->assertNotNull($product->reviewSummary, 'Product 37 does not have review data.');
         $this->assertEquals(3, $product->reviewSummary->reviews_count, 'Product 37 does not have 3 reviews in the summary.');
         $this->assertEquals(87, $product->reviewSummary->rating_summary, 'Product 37 does not have an average review score of 87 in the summary.');

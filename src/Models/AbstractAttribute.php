@@ -40,7 +40,7 @@ class AbstractAttribute extends Model
             if ($class) {
                 return $class::value($value, $this);
             }
-            
+
             return array_key_exists('value', $this->getCasts())
                 ? $this->castAttribute('value', $value)
                 : $value;
@@ -54,7 +54,7 @@ class AbstractAttribute extends Model
                 if (is_iterable($this->value)) {
                     return Arr::map(
                         iterator_to_array($this->value),
-                        fn($value) => $this->options[$value]?->value ?? $value,
+                        fn ($value) => $this->options[$value]?->value ?? $value,
                     );
                 }
 
