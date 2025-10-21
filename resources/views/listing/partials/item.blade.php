@@ -1,6 +1,6 @@
-<div v-bind:key="item.entity_id" class="px-5 py-10" data-testid="listing-item">
+<div v-bind:key="item.entity_id" class="px-5 py-14" data-testid="listing-item">
     <add-to-cart v-bind:product="item" v-slot="addToCart" v-cloak>
-        <div class="group flex flex-1 flex-col rounded bg-white h-full">
+        <div class="group flex flex-1 rounded bg-white h-full flex-col">
             <a :href="addToCart.productUrl | url" v-on:click="sendEvent('click', item, 'Hit Clicked')" class="block mb-auto">
                 <img
                     v-if="addToCart.currentThumbnail"
@@ -28,6 +28,7 @@
                     </div>
                 </div>
             </a>
+            
             @include('rapidez::listing.partials.item.addtocart')
         </div>
     </add-to-cart>

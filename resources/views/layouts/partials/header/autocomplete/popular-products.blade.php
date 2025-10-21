@@ -13,6 +13,7 @@
         v-if="!items.length"
         v-slot="popularProducts"
         v-cloak
+        :key="'autocomplete-popular-products'"
     >
         <div>
             <ais-instant-search

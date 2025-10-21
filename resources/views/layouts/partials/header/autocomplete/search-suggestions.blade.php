@@ -19,10 +19,11 @@
                         <li v-for="(item, count) in items" class="flex flex-1 items-center w-full rounded hover:bg">
                             <a
                                 v-bind:href="window.url(item.redirect || '{{ route('search', ['q' => 'searchPlaceholder']) }}'.replace('searchPlaceholder', encodeURIComponent(item.query_text)))"
-                                class="relative flex items-center group w-full px-5 py-2 text-sm gap-x-4"
+                                class="relative flex items-center group w-full px-5 py-2 text-sm gap-x-2.5"
                                 data-turbo="false"
                             >
-                                <x-rapidez::highlight attribute="query_text" class="line-clamp-2"/>
+                                <x-heroicon-o-arrow-trending-up class="size-5 text-muted" />
+                                <x-rapidez::highlight attribute="query_text" class="line-clamp-2 first-letter:uppercase"/>
                             </a>
                         </li>
                     </ul>

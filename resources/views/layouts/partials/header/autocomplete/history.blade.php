@@ -13,9 +13,10 @@
                 >
                     <a
                         v-bind:href="'{{ route('search', ['q' => 'searchPlaceholder']) }}'.replace('searchPlaceholder', encodeURIComponent(query))"
-                        class="relative flex items-center group w-full px-5 py-2 text-sm gap-x-4"
+                        class="relative flex items-center group w-full px-5 py-2 text-sm gap-x-2.5"
                         data-turbo="false"
                     >
+                        <x-heroicon-o-clock class="size-5 text-muted shrink-0" />
                         @{{ query }}
                     </a>
                 </li>
