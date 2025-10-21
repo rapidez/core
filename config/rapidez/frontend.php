@@ -37,14 +37,14 @@ return [
             'history'            => [],
             'search-suggestions' => [],
             'categories'         => [],
-            'popular-products'  => ['size' => 4],
+            'popular-products'   => ['size' => 4],
 
             'products' => [
                 'size' => 4,                             // Optional; Overrides the default `size` as defined below
             ],
         ],
 
-        'size'     => 4,
+        'size' => 4,
     ],
 
     // The structure is `'store_code' => 'folder_path'`
