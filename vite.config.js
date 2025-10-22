@@ -1,7 +1,7 @@
 import path from 'path'
 import { defineConfig } from 'vite'
 import laravel from 'laravel-vite-plugin'
-import vue from '@vitejs/plugin-vue2'
+import vue from '@vitejs/plugin-vue'
 import { visualizer } from 'rollup-plugin-visualizer'
 
 export default defineConfig({
@@ -18,7 +18,7 @@ export default defineConfig({
         alias: {
             '@': path.resolve(__dirname, './resources/js'),
             Vendor: path.resolve(__dirname, './vendor'),
-            vue: path.resolve(__dirname, './node_modules/vue/dist/vue.esm.js'),
+            vue: 'vue/dist/vue.esm-bundler.js',
         },
     },
 })

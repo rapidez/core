@@ -3,8 +3,8 @@
     <p class="mt-4 text-base">@lang('Sign up for our newsletter to stay up to date.')</p>
     <div class="sm:w-full sm:max-w-md xl:mt-0" data-testid="newsletter">
         <lazy>
-            <graphql-mutation query="mutation visitor ($email: String!) { subscribeEmailToNewsletter(email: $email) { status } }" :alert="false" :clear="true">
-                <div slot-scope="{ mutate, variables, mutated, error }">
+            <graphql-mutation query="mutation visitor ($email: String!) { subscribeEmailToNewsletter(email: $email) { status } }" :alert="false" :clear="true" v-slot="{ mutate, variables, mutated, error }">
+                <div>
                     <p v-if="mutated" class="text text-xl font-bold" data-testid="newsletter-success" v-cloak>
                         @lang('Thank you for subscribing!')
                     </p>

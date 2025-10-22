@@ -12,9 +12,10 @@
         v-cloak
         v-bind:root-path='@json($rootPath)'
     >
-        <div>
+        <div ref="root">
             <ais-instant-search
                 v-if="listingSlotProps.searchClient"
+                :future="{ preserveSharedStateOnUnmount: true }"
                 :search-client="listingSlotProps.searchClient"
                 :middlewares="listingSlotProps.middlewares"
                 :index-name="listingSlotProps.index"
@@ -23,7 +24,7 @@
                 {{ $before ?? '' }}
 
                 @slotdefault('slot')
-                    <div class="flex gap-x-20 gap-y-5 max-lg:flex-col min-h-screen">
+                    <div class="flex gap-x-20 gap-y-5 max-lg:flex-col min-h-screen" ref="root">
                         <div class="lg:w-80 shrink-0" data-testid="listing-filters">
                             @include('rapidez::listing.filters')
                         </div>

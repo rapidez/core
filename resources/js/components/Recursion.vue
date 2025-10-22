@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import { h } from 'vue'
+
 export default {
     props: {
         data: {
@@ -18,7 +20,7 @@ export default {
 
             return this.data.map((item) => {
                 return {
-                    render: (h) => {
+                    render: () => {
                         if (!item.data?.length) {
                             return h('span')
                         }
@@ -27,7 +29,7 @@ export default {
                             props: {
                                 data: item.data,
                             },
-                            scopedSlots: self.$scopedSlots,
+                            slots: self.$slots,
                         })
                     },
                 }
