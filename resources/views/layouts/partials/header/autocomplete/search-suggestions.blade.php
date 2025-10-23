@@ -10,19 +10,20 @@
                 :hits-per-page.camel="{{ Arr::get($fields, 'size', config('rapidez.frontend.autocomplete.size', 3)) }}"
                 filters="display_in_terms:1"
             />
-            <ais-hits v-slot="{ items }">
-                <div v-if="items && items.length" v-bind:class="{ 'border-b': query }" class="py-2.5">
+            <ais-hits v-slot="{ items }" class="max-w-2xl w-full mx-auto">
+                <div v-if="items && items.length" class="py-2.5">
                     <x-rapidez::autocomplete.title>
                         @lang('Suggestions')
                     </x-rapidez::autocomplete.title>
                     <ul class="flex flex-col font-sans">
-                        <li v-for="(item, count) in items" class="flex flex-1 items-center w-full">
+                        <li v-for="(item, count) in items" class="flex flex-1 items-center w-full rounded hover:bg">
                             <a
                                 v-bind:href="window.url(item.redirect || '{{ route('search', ['q' => 'searchPlaceholder']) }}'.replace('searchPlaceholder', encodeURIComponent(item.query_text)))"
-                                class="relative flex items-center group w-full px-5 py-2 text-sm gap-x-4"
+                                class="relative flex items-center group w-full px-5 py-2 text-sm gap-x-2.5"
                                 data-turbo="false"
                             >
-                                <x-rapidez::highlight attribute="query_text" class="line-clamp-2"/>
+                                <x-heroicon-o-arrow-trending-up class="size-5 text-muted" />
+                                <x-rapidez::highlight attribute="query_text" class="line-clamp-2 first-letter:uppercase"/>
                             </a>
                         </li>
                     </ul>
