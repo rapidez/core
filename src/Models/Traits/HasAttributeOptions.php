@@ -28,6 +28,8 @@ trait HasAttributeOptions
         });
     }
 
+    // TODO: Double check as it seem to query all values
+    // for each attribute and each product!
     public function attributeOptions(): HasMany
     {
         // Sort by store_id first to always get the higher store id if there are two.
