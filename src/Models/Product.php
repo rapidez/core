@@ -38,10 +38,8 @@ class Product extends Model
 
     protected $with = ['stock', 'superAttributes', 'categoryProducts.category'];
 
-    protected static function boot(): void
+    protected static function booted(): void
     {
-        parent::boot();
-
         static::addGlobalScope(ForCurrentWebsiteScope::class);
         static::withCustomAttributes();
         static::addGlobalScope('onlyEnabled', fn (Builder $builder) => $builder->whereAttribute('status', static::STATUS_ENABLED));

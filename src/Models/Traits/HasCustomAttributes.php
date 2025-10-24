@@ -15,9 +15,32 @@ use Rapidez\Core\Models\AttributeVarchar;
 
 trait HasCustomAttributes
 {
+    // Hide the EAV relations for serialization.
+    public function getHidden()
+    {
+        return array_merge(
+            parent::getHidden(),
+            $this->getCustomAttributeRelations()
+        );
+    }
+
+    // Add the EAV attributes for serialization.
+    public function toArray()
+    {
+        return array_merge(
+            parent::toArray(),
+            $this->customAttributes->toArray()
+        );
+    }
+
     protected function getCustomAttributeTypes(): array
     {
         return $this->attributeTypes ?? ['datetime', 'decimal', 'int', 'text', 'varchar'];
+    }
+
+    protected function getCustomAttributeRelations(): array
+    {
+        return Arr::map($this->getCustomAttributeTypes(), fn ($type) => 'attribute' . ucfirst($type));
     }
 
     protected function getCustomAttributeCode(): string
@@ -32,7 +55,7 @@ trait HasCustomAttributes
 
     public function scopeWithCustomAttributes(Builder $builder, ?callable $callback = null)
     {
-        $relations = Arr::map($this->getCustomAttributeTypes(), fn ($type) => 'attribute' . ucfirst($type));
+        $relations = $this->getCustomAttributeRelations();
         if ($callback) {
             $relations = Arr::mapWithKeys($relations, fn ($relation) => [$relation => $callback]);
         }
@@ -130,12 +153,14 @@ trait HasCustomAttributes
         return AttributeCast::get(function () {
             $data = collect();
 
-            foreach ($this->getCustomAttributeTypes() as $type) {
-                $values = $this->{'attribute' . ucfirst($type)} ?? null;
-
-                if ($values) {
+            foreach ($this->getCustomAttributeRelations() as $relation) {
+                if ($values = $this->$relation) {
                     $data->push(...$values);
                 }
+
+                // TODO: Double check if this is actually useful
+                // it could improve performance / reduce memory
+                $this->unsetRelation($relation);
             }
 
             return $data->keyBy($this->getCustomAttributeCode());

@@ -8,6 +8,18 @@ use Rapidez\Core\Models\Scopes\ForCurrentStoreWithoutLimitScope;
 
 class AbstractAttribute extends Model
 {
+    protected $appends = ['transformed_value'];
+
+    protected $visible = [
+        'attribute_id',
+        'attribute_code',
+        'frontend_label',
+        'value',
+        'label',
+        'transformed_value',
+        'position',
+    ];
+
     protected static function boot(): void
     {
         parent::boot();
@@ -31,6 +43,8 @@ class AbstractAttribute extends Model
         return $this->table;
     }
 
+    // TODO: Maybe rename this? As this value is mostly used.
+    // And maybe add the option value keys in the array?
     protected function transformedValue(): Attribute
     {
         return Attribute::get(function () {
