@@ -37,6 +37,10 @@ class Product extends Model
     protected $primaryKey = 'entity_id';
 
     protected $with = ['stock', 'superAttributes', 'categoryProducts.category'];
+    // TODO: Double check; do we really want all accessors
+    // defined here so they will show up in the indexer?
+    // See the BackwardsCompatibleAccessors
+    protected $appends = ['url', 'in_stock'];
 
     protected static function booted(): void
     {

@@ -9,18 +9,6 @@ use Rapidez\Core\Models\Scopes\ForCurrentStoreWithoutLimitScope;
 
 class AbstractAttribute extends Model
 {
-    protected $appends = ['transformed_value'];
-
-    protected $visible = [
-        'attribute_id',
-        'attribute_code',
-        'frontend_label',
-        'value',
-        'label',
-        'transformed_value',
-        'position',
-    ];
-
     protected static function boot(): void
     {
         parent::boot();
@@ -96,5 +84,10 @@ class AbstractAttribute extends Model
     public function __toString(): string
     {
         return $this->label;
+    }
+
+    public function toArray()
+    {
+        return $this->transformed_value;
     }
 }

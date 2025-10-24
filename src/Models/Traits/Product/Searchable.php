@@ -54,10 +54,11 @@ trait Searchable
      */
     public function toSearchableArray(): array
     {
-        $indexable = Cache::driver('array')->rememberForever('indexable_attribute_codes', fn () => EavAttribute::getCachedIndexable()->pluck($this->getCustomAttributeCode()));
-        $keys = $this->customAttributes->keys()->intersect($indexable)->toArray();
+        $indexableAttributeCodes = EavAttribute::getCachedIndexable()
+            ->pluck($this->getCustomAttributeCode())
+            ->toArray();
 
-        $data = $this->only([
+        $data = Arr::only($this->toArray(), [
             'entity_id',
             'sku',
             'children',
@@ -65,7 +66,7 @@ trait Searchable
             'in_stock',
             'min_sale_qty',
             'qty_increments',
-            ...$keys,
+            ...$indexableAttributeCodes,
             ...$this->superAttributes->pluck('attribute_code'),
         ]);
 
@@ -91,11 +92,11 @@ trait Searchable
             // Turn all positions positive
             ->mapWithKeys(fn ($position, $category_id) => [$category_id => $maxPositions[$category_id] - $position]);
 
-        $data = $this->transformAttributes($data);
-
         return Eventy::filter('index.' . static::getModelName() . '.data', $data, $this);
     }
 
+    // TODO: This isn't used anymore, can we work with the
+    // current data? Do we really need this value/label?
     public function transformAttributes(array $data): array
     {
         // TODO: Can this be done directly from AbstractAttribute instead?
