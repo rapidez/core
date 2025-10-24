@@ -85,39 +85,27 @@ class Product extends Model
 
     public function parents(): BelongsToMany
     {
-        return $this
-            ->belongsToMany(config('rapidez.models.product'), 'catalog_product_super_link', 'product_id', 'parent_id')
-            ->using(config('rapidez.models.product_super_link'));
+        return $this->belongsToMany(config('rapidez.models.product'), 'catalog_product_relation', 'child_id', 'parent_id');
+    }
+
+    public function getParentsAttribute(): Collection
+    {
+        return $this->getRelationValue('parents')->keyBy('entity_id');
     }
 
     public function children(): BelongsToMany
     {
-        return $this->relations();
-
-        // TODO: Double check? Do we need this one?
-        // catalog_product_relation is smaller
-        // and only contains configurable
-        // and grouped product relations
-        return $this
-            ->belongsToMany(config('rapidez.models.product'), 'catalog_product_super_link', 'parent_id', 'product_id')
-            ->using(config('rapidez.models.product_super_link'));
-    }
-
-    public function grouped(): BelongsToMany
-    {
-        return $this->relations();
-    }
-
-    public function relations(): BelongsToMany
-    {
-        // To query grouped en configurable product
-        // parent/child relations fast.
         return $this->belongsToMany(config('rapidez.models.product'), 'catalog_product_relation', 'parent_id', 'child_id');
     }
 
     public function getChildrenAttribute(): Collection
     {
         return $this->getRelationValue('children')->keyBy('entity_id');
+    }
+
+    public function grouped(): BelongsToMany
+    {
+        return $this->children();
     }
 
     public function productLinks(): HasMany
@@ -187,6 +175,15 @@ class Product extends Model
             config('rapidez.models.product_review_summary'),
             'entity_pk_value'
         );
+    }
+
+    public function reviews(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Review::class, 'review',
+            'entity_pk_value', 'review_id',
+            'entity_id', 'review_id',
+        )->where('review.entity_id', Review::REVIEW_ENTITY_PRODUCT);
     }
 
     public function views(): HasMany
@@ -278,11 +275,13 @@ class Product extends Model
 
     protected function specialPrice(): Attribute
     {
-        return Attribute::get(function (?float $specialPrice): ?float {
+        return Attribute::get(function (): ?float {
+            $specialPrice = $this->getCustomAttribute('special_price')?->value ?? null;
+
             if (! in_array($this->type_id, ['configurable', 'grouped'])) {
                 if (! now()->isBetween(
-                    $this->special_from_date ?? now()->subHour(),
-                    $this->special_to_date ?? now()->addHour(),
+                    $this->special_from_date?->value ?? now()->subHour(),
+                    $this->special_to_date?->value ?? now()->addHour(),
                 )) {
                     return null;
                 }
@@ -291,7 +290,7 @@ class Product extends Model
             }
 
             return collect($this->type_id == 'configurable' ? $this->children : $this->grouped)
-                ->filter(fn ($child) => $child->specialPrice !== null)
+                ->filter(fn ($child) => $child->special_price !== null)
                 ->min->special_price;
         });
     }

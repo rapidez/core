@@ -37,4 +37,20 @@ trait BackwardsCompatibleAccessors
     {
         return Attribute::get(fn () => $this->stock->is_in_stock);
     }
+
+    /**
+     * @deprecated please use $product->reviewSummary->reviews_count
+     */
+    protected function reviewsCount(): Attribute
+    {
+        return Attribute::get(fn () => $this->reviewSummary->reviews_count);
+    }
+
+    /**
+     * @deprecated please use $product->reviewSummary->rating_summary
+     */
+    protected function reviewsScore(): Attribute
+    {
+        return Attribute::get(fn () => $this->reviewSummary->rating_summary);
+    }
 }
