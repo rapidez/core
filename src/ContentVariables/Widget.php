@@ -22,14 +22,14 @@ class Widget
 
             $widgetClass = config('rapidez.frontend.widgets.' . $type);
 
-            if (class_exists($widgetClass)) {
-                return (new $widgetClass((object) $options))->render();
-            }
-
-            if (is_null($widgetClass)) {
+            if ($widgetClass === null) {
                 return ! app()->environment('production')
                     ? '<hr>' . __('Widget not implemented (:type).', compact('type')) . '<hr>'
                     : '';
+            }
+            
+            if (class_exists($widgetClass)) {
+                return (new $widgetClass((object) $options))->render();
             }
 
             // When the widgetClass is not a class instance we handle it as a view name
