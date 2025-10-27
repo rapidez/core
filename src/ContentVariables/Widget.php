@@ -27,7 +27,7 @@ class Widget
                     ? '<hr>' . __('Widget not implemented (:type).', compact('type')) . '<hr>'
                     : '';
             }
-            
+
             if (class_exists($widgetClass)) {
                 return (new $widgetClass((object) $options))->render();
             }
