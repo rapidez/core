@@ -28,7 +28,7 @@ export function objectDiff(target, source) {
                 }
 
                 if (val instanceof Object) {
-                    const diff = objectDiff(target[key], val)
+                    const diff = objectDiff(target[key] ?? {}, val)
                     if (Object.keys(diff).length === 0) {
                         return null
                     }
@@ -36,7 +36,7 @@ export function objectDiff(target, source) {
                 }
 
                 if (Array.isArray(val)) {
-                    const diff = val.filter((x) => target[key].includes(x))
+                    const diff = val.filter((x) => (target[key] ?? []).includes(x))
                     if (diff.length === 0) {
                         return null
                     }
