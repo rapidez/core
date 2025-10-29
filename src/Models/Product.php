@@ -36,7 +36,14 @@ class Product extends Model
     protected $table = 'catalog_product_entity';
     protected $primaryKey = 'entity_id';
 
-    protected $with = ['stock', 'superAttributes', 'categoryProducts.category'];
+    protected $with = [
+        'stock',
+        'superAttributes',
+        'categoryProducts.category',
+        'children',
+        'options',
+        'gallery',
+    ];
     // TODO: Double check; do we really want all accessors
     // defined here so they will show up in the indexer?
     // See the BackwardsCompatibleAccessors
@@ -107,9 +114,9 @@ class Product extends Model
         return $this->getRelationValue('children')->keyBy('entity_id');
     }
 
-    public function grouped(): BelongsToMany
+    protected function grouped(): Attribute
     {
-        return $this->children();
+        return Attribute::get(fn () => $this->children);
     }
 
     public function productLinks(): HasMany

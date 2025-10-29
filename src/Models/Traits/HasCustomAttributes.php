@@ -35,7 +35,9 @@ trait HasCustomAttributes
 
     protected function getCustomAttributeTypes(): array
     {
-        return $this->attributeTypes ?? ['datetime', 'decimal', 'int', 'text', 'varchar'];
+        return property_exists(self::class, 'attributeTypes')
+            ? $this->attributeTypes
+            : ['datetime', 'decimal', 'int', 'text', 'varchar'];
     }
 
     protected function getCustomAttributeRelations(): array
@@ -45,7 +47,9 @@ trait HasCustomAttributes
 
     protected function getCustomAttributeCode(): string
     {
-        return $this->attributeCode ?? 'attribute_code';
+        return property_exists(self::class, 'attributeCode')
+            ? $this->attributeCode
+            : 'attribute_code';
     }
 
     protected static function withCustomAttributes()
@@ -133,7 +137,11 @@ trait HasCustomAttributes
 
     public function hasManyWithAttributeTypeTable($class, $type, $foreignKey = null, $localKey = null): HasMany
     {
-        $table = ($this->attributeTablePrefix ?? $this->table) . '_' . $type;
+        $table = property_exists(self::class, 'attributeTablePrefix')
+            ? $this->attributeTablePrefix
+            : $this->table;
+
+        $table .= '_' . $type;
 
         // Set the relation with the custom table
         $relation = $this->hasMany($class, $foreignKey, $localKey);
@@ -160,7 +168,7 @@ trait HasCustomAttributes
 
                 // TODO: Double check if this is actually useful
                 // it could improve performance / reduce memory
-                $this->unsetRelation($relation);
+                // $this->unsetRelation($relation);
             }
 
             return $data->keyBy($this->getCustomAttributeCode());
