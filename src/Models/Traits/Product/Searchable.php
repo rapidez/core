@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Facades\Rapidez;
-use Rapidez\Core\Models\AbstractAttribute;
 use Rapidez\Core\Models\Category;
 use Rapidez\Core\Models\CategoryProduct;
 use Rapidez\Core\Models\EavAttribute;
@@ -74,17 +73,16 @@ trait Searchable
         $data['store'] = config('rapidez.store');
         $data['super_attributes'] = $this->superAttributes->keyBy('attribute_id');
 
-        $maxPositions = Cache::driver('array')->rememberForever('max-positions-' . config('rapidez.store'), fn () =>
-            CategoryProduct::query()
-                ->selectRaw('GREATEST(MAX(position), 0) as position')
-                ->addSelect('category_id')
-                ->groupBy('category_id')
-                ->pluck('position', 'category_id')
+        $maxPositions = Cache::driver('array')->rememberForever('max-positions-' . config('rapidez.store'), fn () => CategoryProduct::query()
+            ->selectRaw('GREATEST(MAX(position), 0) as position')
+            ->addSelect('category_id')
+            ->groupBy('category_id')
+            ->pluck('position', 'category_id')
         );
 
         foreach ($this->superAttributeValues as $attribute => $values) {
-            $data["super_$attribute"] = $values->map(fn($option) => $option['value'])->values();
-            $data["super_{$attribute}_values"] = $values->map(fn($option) => [
+            $data["super_{$attribute}"] = $values->map(fn ($option) => $option['value'])->values();
+            $data["super_{$attribute}_values"] = $values->map(fn ($option) => [
                 ...$option,
                 'children' => $option['children']->pluck('entity_id'),
             ]);
@@ -196,10 +194,10 @@ trait Searchable
             ->whereNotNull('type');
 
         $superAttributeTypeMapping = static::allSuperAttributes()
-            ->mapWithKeys(fn($attribute) => [
+            ->mapWithKeys(fn ($attribute) => [
                 "super_{$attribute}_values" => [
-                    'type' => 'flattened'
-                ]
+                    'type' => 'flattened',
+                ],
             ]);
 
         return [

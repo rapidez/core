@@ -45,8 +45,8 @@ class ProductController
         // Alternatively we can refactor the frontend to not need so much customized data
         $data = $product->only($attributes);
         foreach ($product->superAttributeValues as $attribute => $values) {
-            $data["super_$attribute"] = $values->map(fn($option) => $option['value'])->values();
-            $data["super_{$attribute}_values"] = $values->map(fn($option) => [
+            $data["super_{$attribute}"] = $values->map(fn ($option) => $option['value'])->values();
+            $data["super_{$attribute}_values"] = $values->map(fn ($option) => [
                 ...$option,
                 'children' => $option['children']->pluck('entity_id'),
             ]);
@@ -63,8 +63,7 @@ class ProductController
         }
 
         // Find the first child that matches the given product options
-        $selectedChild = $product->children->firstWhere(fn ($child) =>
-            count($selectedOptions) && collect($selectedOptions)->every(fn ($value, $code) => $child->getCustomAttribute($code)->value == $value)
+        $selectedChild = $product->children->firstWhere(fn ($child) => count($selectedOptions) && collect($selectedOptions)->every(fn ($value, $code) => $child->getCustomAttribute($code)->value == $value)
         ) ?? $product;
 
         ProductViewEvent::dispatch($product);
