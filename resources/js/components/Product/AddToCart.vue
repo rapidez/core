@@ -303,7 +303,7 @@ export default {
                     }
 
                     // Filter out disabled options
-                    return [index, attributeValues.filter((val) => this.enabledOptions[index].includes(val * 1))]
+                    return [index, attributeValues.filter((val) => this.enabledOptions[`super_${attribute.attribute_code}`].includes(val * 1))]
                 }),
             )
         },
@@ -355,11 +355,7 @@ export default {
             }
 
             if (this.matchingChildren.length) {
-                if (Array.isArray(this.product.children)) {
-                    product = this.product.children.find(child => child.entity_id == this.matchingChildren[0])
-                } else {
-                    product = this.product.children[this.matchingChildren[0]]
-                }
+                product = Object.values(this.product.children).find(child => child.entity_id == this.matchingChildren[0])
             }
 
             return product
@@ -444,18 +440,14 @@ export default {
         },
 
         enabledOptions: function () {
-            let valuesPerAttribute = {}
-            Object.entries(this.product.super_attributes).forEach(([attributeId, attribute]) => {
-                valuesPerAttribute[attributeId] = []
-                // Fill list with products per attribute value
-                Object.entries(this.product.children).forEach(([productId, product]) => {
-                    if (!product.in_stock || this.disabledOptions['super_' + attribute.attribute_code].includes(product.value)) {
-                        return
-                    }
-                    valuesPerAttribute[attributeId].push(product[attribute.attribute_code])
+            return Object.fromEntries(
+                Object.values(this.product.super_attributes).map(attribute => {
+                    let options = this.product[`super_${attribute.attribute_code}`]
+                    let disabledOptions = this.disabledOptions[`super_${attribute.attribute_code}`]
+
+                    return [`super_${attribute.attribute_code}`, options.filter(option => !disabledOptions.some(disabledOption => disabledOption == option))]
                 })
-            })
-            return valuesPerAttribute
+            )
         },
 
         superRefinements() {
