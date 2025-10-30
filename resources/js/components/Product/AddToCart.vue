@@ -224,26 +224,26 @@ export default {
             let optionEntries = Object.entries(this.customOptions)
             let selectedOptionEntries = Object.entries(this.customSelectedOptions)
 
-                ;[...optionEntries, ...selectedOptionEntries].forEach(([key, vals]) => {
-                    ;[vals].flat().forEach((val) => {
-                        if (!val) {
-                            return
-                        }
+            ;[...optionEntries, ...selectedOptionEntries].forEach(([key, vals]) => {
+                ;[vals].flat().forEach((val) => {
+                    if (!val) {
+                        return
+                    }
 
-                        try {
-                            let option = this.product.options.find((option) => option.option_id == key)
-                            let optionPrice = option.price || option.values?.find((value) => value.option_type_id == val)?.price
+                    try {
+                        let option = this.product.options.find((option) => option.option_id == key)
+                        let optionPrice = option.price || option.values?.find((value) => value.option_type_id == val)?.price
 
-                            if (optionPrice.price_type == 'fixed') {
-                                addition += parseFloat(optionPrice.price)
-                            } else {
-                                addition += (parseFloat(basePrice) * parseFloat(optionPrice.price)) / 100
-                            }
-                        } catch (e) {
-                            console.error('Price addition calcuation failed, prices may display incorrect!', this, e)
+                        if (optionPrice.price_type == 'fixed') {
+                            addition += parseFloat(optionPrice.price)
+                        } else {
+                            addition += (parseFloat(basePrice) * parseFloat(optionPrice.price)) / 100
                         }
-                    })
+                    } catch (e) {
+                        console.error('Price addition calcuation failed, prices may display incorrect!', this, e)
+                    }
                 })
+            })
 
             return addition
         },
@@ -303,7 +303,10 @@ export default {
                     }
 
                     // Filter out disabled options
-                    return [index, attributeValues.filter((val) => this.enabledOptions[`super_${attribute.attribute_code}`].includes(val * 1))]
+                    return [
+                        index,
+                        attributeValues.filter((val) => this.enabledOptions[`super_${attribute.attribute_code}`].includes(val * 1)),
+                    ]
                 }),
             )
         },
@@ -315,15 +318,13 @@ export default {
         },
 
         matchingChildren: function () {
-            let children = Object.values(this.product.children).map(child => child.entity_id)
+            let children = Object.values(this.product.children).map((child) => child.entity_id)
             Object.entries(this.options).forEach(([attributeId, optionId]) => {
                 let code = this.product.super_attributes[attributeId].attribute_code
                 let option = this.product[`super_${code}_values`][optionId]
 
                 // Subtract all children that don't fit this option
-                children = children.filter(child =>
-                    option.children.some(optionChild => optionChild == child)
-                )
+                children = children.filter((child) => option.children.some((optionChild) => optionChild == child))
             })
             return children
         },
@@ -355,7 +356,7 @@ export default {
             }
 
             if (this.matchingChildren.length) {
-                product = Object.values(this.product.children).find(child => child.entity_id == this.matchingChildren[0])
+                product = Object.values(this.product.children).find((child) => child.entity_id == this.matchingChildren[0])
             }
 
             return product
@@ -405,7 +406,7 @@ export default {
 
         disabledOptions: function () {
             let disabledOptions = {}
-            let matchingChildren = Object.values(this.product.children).map(child => child.entity_id)
+            let matchingChildren = Object.values(this.product.children).map((child) => child.entity_id)
 
             // Run through each super attribute in order so we don't affect previous options
             Object.entries(this.product.super_attributes)
@@ -417,9 +418,7 @@ export default {
                     // Add all options that don't have any remaining matching children
                     disabledOptions[superCode] = Object.entries(this.product[superCode + '_values'])
                         .filter(([optionId, option]) => {
-                            return !option.children.some(optionChild =>
-                                matchingChildren.some(child => optionChild == child)
-                            )
+                            return !option.children.some((optionChild) => matchingChildren.some((child) => optionChild == child))
                         })
                         .map(([optionId]) => optionId)
 
@@ -431,9 +430,7 @@ export default {
                     let option = this.product[superCode + '_values'][optionId]
 
                     // Subtract all children that don't fit this option
-                    matchingChildren = matchingChildren.filter(child =>
-                        option.children.some(optionChild => optionChild == child)
-                    )
+                    matchingChildren = matchingChildren.filter((child) => option.children.some((optionChild) => optionChild == child))
                 })
 
             return disabledOptions
@@ -441,12 +438,15 @@ export default {
 
         enabledOptions: function () {
             return Object.fromEntries(
-                Object.values(this.product.super_attributes).map(attribute => {
+                Object.values(this.product.super_attributes).map((attribute) => {
                     let options = this.product[`super_${attribute.attribute_code}`]
                     let disabledOptions = this.disabledOptions[`super_${attribute.attribute_code}`]
 
-                    return [`super_${attribute.attribute_code}`, options.filter(option => !disabledOptions.some(disabledOption => disabledOption == option))]
-                })
+                    return [
+                        `super_${attribute.attribute_code}`,
+                        options.filter((option) => !disabledOptions.some((disabledOption) => disabledOption == option)),
+                    ]
+                }),
             )
         },
 
