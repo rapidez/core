@@ -73,16 +73,20 @@ trait Searchable
         $data['store'] = config('rapidez.store');
         $data['super_attributes'] = $this->superAttributes->keyBy('attribute_id');
 
-        $maxPositions = Cache::driver('array')->rememberForever('max-positions-' . config('rapidez.store'), function () {
-            return CategoryProduct::query()
+        $maxPositions = Cache::driver('array')->rememberForever('max-positions-' . config('rapidez.store'), fn () =>
+            CategoryProduct::query()
                 ->selectRaw('GREATEST(MAX(position), 0) as position')
                 ->addSelect('category_id')
                 ->groupBy('category_id')
-                ->pluck('position', 'category_id');
-        });
+                ->pluck('position', 'category_id')
+        );
 
         foreach ($this->superAttributeValues as $attribute => $values) {
-            $data['super_' . $attribute] = $values->pluck('value');
+            $data["super_$attribute"] = $values->map(fn($option) => $option['value'])->values();
+            $data["super_{$attribute}_values"] = $values->map(fn($option) => [
+                ...$option,
+                'children' => $option['children']->pluck('entity_id'),
+            ]);
         }
 
         $data = $this->withCategories($data);
@@ -93,30 +97,6 @@ trait Searchable
             ->mapWithKeys(fn ($position, $category_id) => [$category_id => $maxPositions[$category_id] - $position]);
 
         return Eventy::filter('index.' . static::getModelName() . '.data', $data, $this);
-    }
-
-    // TODO: This isn't used anymore, can we work with the
-    // current data? Do we really need this value/label?
-    public function transformAttributes(array $data): array
-    {
-        // TODO: Can this be done directly from AbstractAttribute instead?
-        // Would be a lot cleaner if we don't have to manually loop through this.
-        return Arr::map($data, function ($value, $key) {
-            if ($value instanceof AbstractAttribute) {
-                if ($value->value == $value->label) {
-                    return $value->value;
-                } else {
-                    return [
-                        'value' => $value->value,
-                        'label' => $value->label,
-                    ];
-                }
-            } elseif ($key === 'children') {
-                return $value->map(fn ($child) => $this->transformAttributes($child));
-            } else {
-                return $value;
-            }
-        });
     }
 
     /**
@@ -214,9 +194,20 @@ trait Searchable
             })
             ->whereNotNull('type');
 
+        $superAttributeTypeMapping = static::allSuperAttributes()
+            ->mapWithKeys(fn($attribute) => [
+                "super_{$attribute}_values" => [
+                    'type' => 'flattened'
+                ]
+            ]);
+
         return [
             'properties' => [
                 ...$attributeTypeMapping,
+                ...$superAttributeTypeMapping,
+                'super_attributes' => [
+                    'type' => 'flattened',
+                ],
                 'children' => [
                     'type' => 'flattened',
                 ],
