@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Collection;
 use Rapidez\Core\Facades\Rapidez;
+use Rapidez\Core\Models\ProductLink;
+use Rapidez\Core\Models\ProductPrice;
+use Rapidez\Core\Models\ProductTierPrice;
+use Rapidez\Core\Models\Review;
 use Rapidez\Core\Models\Scopes\Product\ForCurrentWebsiteScope;
 use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
 use Rapidez\Core\Models\Traits\HasCustomAttributes;
@@ -43,6 +47,7 @@ class Product extends Model
         'children',
         'options',
         'gallery',
+        'prices',
     ];
     // TODO: Double check; do we really want all accessors
     // defined here so they will show up in the indexer?
@@ -122,7 +127,7 @@ class Product extends Model
     public function productLinks(): HasMany
     {
         return $this->hasMany(
-            ProductLink::class,
+            config('rapidez.models.product_link', ProductLink::class),
             'product_id', 'entity_id',
         );
     }
@@ -130,7 +135,7 @@ class Product extends Model
     public function productLinkParents(): HasMany
     {
         return $this->hasMany(
-            ProductLink::class,
+            config('rapidez.models.product_link', ProductLink::class),
             'linked_product_id', 'entity_id',
         );
     }
@@ -191,7 +196,7 @@ class Product extends Model
     public function reviews(): BelongsToMany
     {
         return $this->belongsToMany(
-            Review::class, 'review',
+            config('rapidez.models.product_review', Review::class), 'review',
             'entity_pk_value', 'review_id',
             'entity_id', 'review_id',
         )->where('review.entity_id', Review::REVIEW_ENTITY_PRODUCT);
@@ -208,7 +213,7 @@ class Product extends Model
     public function tierPrices(): HasMany
     {
         return $this->hasMany(
-            ProductTierPrice::class,
+            config('rapidez.models.product_tier_price', ProductTierPrice::class),
             'entity_id',
             'entity_id'
         )->whereIn('website_id', [0, config('rapidez.website')]);
@@ -262,37 +267,52 @@ class Product extends Model
         );
     }
 
+    // Keep in mind this is the base price and
+    // the price could be something else
+    // based on the customer group
+    // or by any tier pricing.
     protected function price(): Attribute
     {
         return Attribute::get(function () {
-            if (in_array($this->type_id, ['configurable', 'grouped'])) {
-                return $this->prices->min();
-            }
+            $customerGroupId = auth('magento-customer')
+                ->user()
+                ?->group_id ?: 0;
 
-            return $this->getCustomAttribute('price')->value;
+            return $this
+                ->prices
+                ->firstWhere('customer_group_id', $customerGroupId)
+                ->min_price;
         });
     }
 
-    protected function prices(): Attribute
+    // We're not applying the customer group here so
+    // all the prices for customer groups are
+    // returned for the indexer.
+    public function prices(): hasMany
     {
-        return Attribute::get(function (): ?Collection {
-            if (! in_array($this->type_id, ['configurable', 'grouped'])) {
-                return null;
-            }
-
-            return collect($this->type_id == 'configurable' ? $this->children : $this->grouped)->pluck('price');
-        })->shouldCache();
+        // TODO: Double check the prices with the indexer.
+        // We should index all customer group prices
+        // as we can only verify that on the
+        // frontend. But currenlty this
+        // is also loading all prices
+        // for just a product page.
+        return $this
+            ->hasMany(
+                config('rapidez.models.product_price', ProductPrice::class),
+                'entity_id',
+                'entity_id'
+            );
     }
 
     protected function specialPrice(): Attribute
     {
         return Attribute::get(function (): ?float {
-            $specialPrice = $this->getCustomAttribute('special_price')?->value ?? null;
+            $specialPrice = $this->getCustomAttribute('special_price')?->value ?: null;
 
             if (! in_array($this->type_id, ['configurable', 'grouped'])) {
                 if (! now()->isBetween(
-                    $this->special_from_date?->value ?? now()->subHour(),
-                    $this->special_to_date?->value ?? now()->addHour(),
+                    $this->special_from_date?->value ?: now()->subHour(),
+                    $this->special_to_date?->value ?: now()->addHour(),
                 )) {
                     return null;
                 }
@@ -300,7 +320,7 @@ class Product extends Model
                 return $specialPrice < $this->price ? $specialPrice : null;
             }
 
-            return collect($this->type_id == 'configurable' ? $this->children : $this->grouped)
+            return collect($this->children)
                 ->filter(fn ($child) => $child->special_price !== null)
                 ->min->special_price;
         });
