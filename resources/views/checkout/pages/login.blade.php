@@ -20,7 +20,7 @@
         >
             @include('rapidez::checkout.steps.login')
 
-            <x-rapidez::button.conversion type="submit" data-testid="continue" class="mt-3">
+            <x-rapidez::button.conversion type="submit" data-testid="continue" class="mt-3" loader>
                 @lang('Next')
             </x-rapidez::button.conversion>
         </form>

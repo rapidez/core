@@ -7,6 +7,8 @@ Vue.directive('blur', (el) => {
     el.removeAttribute('v-blur')
 })
 
+Vue.config.ignoredElements = [/^turbo-.+/]
+
 /**
  * add getter/setter for ref with value.
  * For use in computed.

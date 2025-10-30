@@ -3,6 +3,7 @@
     :variables="{ cart_id: mask, cart_item_id: item.id, quantity: item.quantity }"
     :callback="(variables, response) => updateCart(variables, response) && variables.quantity <= 0 ? window.app.$emit('cart-remove', item) : ''"
     :error-callback="checkResponseForExpiredCart"
+    :debounce="500"
     v-slot="{ mutate, variables }"
 >
     <div class="flex items-center gap-1">
