@@ -1,4 +1,4 @@
-@props(['value', 'title' => false, 'field' => 'sku', 'sorting' => false])
+@props(['value', 'title' => false, 'field' => 'sku'])
 @slots(['items'])
 
 {{--
@@ -7,7 +7,6 @@ Examples:
 <x-rapidez::productlist value="productIds" field="entity_id"/>
 <x-rapidez::productlist :value="false" filter-query-string="sku:MS04,MS05,MS09"/>
 <x-rapidez::productlist :value="false" v-bind:base-filters="() => [{dslQuery}}]"/>
-<x-rapidez::productlist :value="false" v-bind:base-filters="() => [{dslQuery}}]" sorting="price_asc"/>
 --}}
 
 @if ($value !== [])
@@ -22,7 +21,7 @@ Examples:
                 <ais-instant-search
                     v-if="listingSlotProps.searchClient"
                     :search-client="listingSlotProps.searchClient"
-                    :index-name="listingSlotProps.index + '{{ $sorting ? '_' . $sorting : '' }}'"
+                    :index-name="listingSlotProps.index"
                     :middlewares="listingSlotProps.middlewares"
                 >
                     @slotdefault('before')
