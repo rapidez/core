@@ -15,6 +15,9 @@ class ProductTierPrice extends Model
 
     public function product(): BelongsTo
     {
-        return $this->belongsTo(Product::class, 'entity_id');
+        return $this->belongsTo(
+            config('rapidez.models.product'),
+            'entity_id'
+        );
     }
 }

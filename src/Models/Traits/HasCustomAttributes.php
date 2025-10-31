@@ -88,7 +88,7 @@ trait HasCustomAttributes
     public function attributeDatetime(): HasMany
     {
         return $this->hasManyWithAttributeTypeTable(
-            AttributeDatetime::class,
+            config('rapidez.models.attribute_datetime', AttributeDatetime::class),
             'datetime',
             $this->primaryKey,
             $this->primaryKey,
@@ -98,7 +98,7 @@ trait HasCustomAttributes
     public function attributeDecimal(): HasMany
     {
         return $this->hasManyWithAttributeTypeTable(
-            AttributeDecimal::class,
+            config('rapidez.models.attribute_decimal', AttributeDecimal::class),
             'decimal',
             $this->primaryKey,
             $this->primaryKey,
@@ -108,7 +108,7 @@ trait HasCustomAttributes
     public function attributeInt(): HasMany
     {
         return $this->hasManyWithAttributeTypeTable(
-            AttributeInt::class,
+            config('rapidez.models.attribute_int', AttributeInt::class),
             'int',
             $this->primaryKey,
             $this->primaryKey,
@@ -118,7 +118,7 @@ trait HasCustomAttributes
     public function attributeText(): HasMany
     {
         return $this->hasManyWithAttributeTypeTable(
-            AttributeText::class,
+            config('rapidez.models.attribute_text', AttributeText::class),
             'text',
             $this->primaryKey,
             $this->primaryKey,
@@ -128,7 +128,7 @@ trait HasCustomAttributes
     public function attributeVarchar(): HasMany
     {
         return $this->hasManyWithAttributeTypeTable(
-            AttributeVarchar::class,
+            config('rapidez.models.attribute_varchar', AttributeVarchar::class),
             'varchar',
             $this->primaryKey,
             $this->primaryKey,
