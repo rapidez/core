@@ -23,7 +23,7 @@ trait UsesCallbackRelations
 
         $localKey = $localKey ?: $this->getKeyName();
 
-        return new HasManyCallbackRelation($callback, $instance->newQuery(), $this, $instance->getTable().'.'.$foreignKey, $localKey);
+        return new HasManyCallbackRelation($callback, $instance->newQuery(), $this, $instance->getTable() . '.' . $foreignKey, $localKey);
     }
 
     protected function belongsToManyCallback(

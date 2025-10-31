@@ -70,8 +70,8 @@ trait Searchable
             'qty_increments',
             ...$indexableAttributeCodes,
             ...$this->superAttributes->pluck('attribute_code'),
-            ...$this->superAttributes->pluck('attribute_code')->map(fn($attribute) => "super_$attribute"),
-            ...$this->superAttributes->pluck('attribute_code')->map(fn($attribute) => "super_{$attribute}_values"),
+            ...$this->superAttributes->pluck('attribute_code')->map(fn ($attribute) => "super_{$attribute}"),
+            ...$this->superAttributes->pluck('attribute_code')->map(fn ($attribute) => "super_{$attribute}_values"),
         ]);
 
         $data['store'] = config('rapidez.store');
@@ -85,12 +85,11 @@ trait Searchable
 
     public function getPositions(): Collection
     {
-        $maxPositions = Cache::driver('array')->rememberForever('max-positions-' . config('rapidez.store'), fn () =>
-            CategoryProduct::query()
-                ->selectRaw('GREATEST(MAX(position), 0) as position')
-                ->addSelect('category_id')
-                ->groupBy('category_id')
-                ->pluck('position', 'category_id')
+        $maxPositions = Cache::driver('array')->rememberForever('max-positions-' . config('rapidez.store'), fn () => CategoryProduct::query()
+            ->selectRaw('GREATEST(MAX(position), 0) as position')
+            ->addSelect('category_id')
+            ->groupBy('category_id')
+            ->pluck('position', 'category_id')
         );
 
         return $this->categoryProducts
@@ -197,7 +196,7 @@ trait Searchable
         $superAttributeTypeMapping = SuperAttribute::all()
             ->pluck('attribute_code')
             ->unique()
-            ->mapWithKeys(fn($attribute) => [
+            ->mapWithKeys(fn ($attribute) => [
                 "super_{$attribute}_values" => [
                     'type' => 'flattened',
                 ],
