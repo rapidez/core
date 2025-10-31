@@ -12,6 +12,7 @@ use Rapidez\Core\Models\AttributeDecimal;
 use Rapidez\Core\Models\AttributeInt;
 use Rapidez\Core\Models\AttributeText;
 use Rapidez\Core\Models\AttributeVarchar;
+use Rapidez\Core\Models\EavAttribute;
 
 trait HasCustomAttributes
 {
@@ -79,9 +80,13 @@ trait HasCustomAttributes
 
     public function scopeWhereAttribute(Builder $builder, string $attributeCode, $operator = null, $value = null)
     {
+        $attributeId = EavAttribute::getAttributeId($attributeCode);
+
         return $builder->attributeHas(
             $attributeCode,
-            fn ($query) => $query->where('value', $operator, $value)->where($this->getCustomAttributeCode(), $attributeCode)
+            fn ($query) => $query
+                ->where('value', $operator, $value)
+                ->where('attribute_id', $attributeId)
         );
     }
 
