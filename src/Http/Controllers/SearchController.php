@@ -17,7 +17,7 @@ class SearchController
 
         $searchQuery = $this->track($request);
 
-        if ($searchQuery->is_active === 1 && $searchQuery->redirect) {
+        if ($searchQuery !== null && $searchQuery->is_active === 1 && $searchQuery->redirect) {
             return redirect($searchQuery->redirect, 301);
         }
 
@@ -35,7 +35,7 @@ class SearchController
         return response()->json(['success' => true]);
     }
 
-    public function track(Request $request): SearchQuery
+    public function track(Request $request): ?SearchQuery
     {
         // Prevent automatic indexing each time it is updated.
         config('rapidez.models.search_query')::disableSearchSyncing();
@@ -54,6 +54,11 @@ class SearchController
         if (! $searchQuery->exists) {
             $searchQuery->save();
 
+            return $searchQuery;
+        }
+
+        // Prevent prefetch requests from raising popularity on a search term. 
+        if ($request->header('x-sec-purpose') === 'prefetch') {
             return $searchQuery;
         }
 
