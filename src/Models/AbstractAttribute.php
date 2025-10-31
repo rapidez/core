@@ -5,19 +5,18 @@ namespace Rapidez\Core\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Arr;
+use Rapidez\Core\Models\EavAttribute;
 use Rapidez\Core\Models\Scopes\ForCurrentStoreWithoutLimitScope;
 
 class AbstractAttribute extends Model
 {
+    protected $appends = ['attribute_code'];
+
     protected static function boot(): void
     {
         parent::boot();
 
         static::addGlobalScope('store', new ForCurrentStoreWithoutLimitScope(['attribute_id', 'entity_id']));
-
-        static::addGlobalScope('attribute', function (Builder $builder) {
-            $builder->leftJoin('eav_attribute', $builder->qualifyColumn('attribute_id'), '=', 'eav_attribute.attribute_id');
-        });
 
         if (isset(static::$hasAttributeOptions)) { // @phpstan-ignore-line
             static::addGlobalScope('attributeOptions', function (Builder $builder) {
@@ -35,7 +34,9 @@ class AbstractAttribute extends Model
     protected function value(): Attribute
     {
         return Attribute::get(function ($value) {
-            $class = config('rapidez.attribute-models')[$this->backend_model] ?? null;
+            $eavAttribute = EavAttribute::getCachedCatalog()[$this->attribute_id];
+
+            $class = config('rapidez.attribute-models')[$eavAttribute->backend_model] ?? null;
 
             if ($class) {
                 return $class::value($value, $this);
@@ -67,6 +68,13 @@ class AbstractAttribute extends Model
         });
     }
 
+    protected function attribute(): Attribute
+    {
+        return Attribute::get(function () {
+            return EavAttribute::getCachedCatalog()[$this->attribute_id];
+        });
+    }
+
     protected function label(): Attribute
     {
         return Attribute::get(function () {
@@ -89,5 +97,10 @@ class AbstractAttribute extends Model
     public function toArray()
     {
         return $this->transformed_value;
+    }
+
+    protected function throwMissingAttributeExceptionIfApplicable($key)
+    {
+        return $this->attribute->$key;
     }
 }

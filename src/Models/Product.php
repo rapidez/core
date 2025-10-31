@@ -61,11 +61,6 @@ class Product extends Model
         static::addGlobalScope('onlyEnabled', fn (Builder $builder) => $builder->whereAttribute('status', static::STATUS_ENABLED));
     }
 
-    protected function modifyRelation(HasMany $relation): HasMany
-    {
-        return $relation->leftJoin('catalog_eav_attribute', 'catalog_eav_attribute.attribute_id', '=', $relation->qualifyColumn('attribute_id'));
-    }
-
     protected static function getEntityType(): string
     {
         return 'product';
