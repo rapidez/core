@@ -3,7 +3,6 @@
 namespace Rapidez\Core\Models\Traits\Product;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Rapidez\Core\Models\Relations\HasManyCallback;
 use Rapidez\Core\Models\Traits\UsesCallbackRelations;
 

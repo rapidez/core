@@ -29,8 +29,7 @@ class BelongsToManyCallback extends BelongsToMany
         $parentKey,
         $relatedKey,
         $relationName = null,
-    )
-    {
+    ) {
         $this->callback = $callback;
         parent::__construct($query, $parent, $table, $foreignPivotKey, $relatedPivotKey, $parentKey, $relatedKey, $relationName);
     }
