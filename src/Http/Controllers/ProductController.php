@@ -51,8 +51,7 @@ class ProductController
         }
 
         // Find the first child that matches the given product options
-        $selectedChild = $product->children->firstWhere(fn ($child) =>
-            count($selectedOptions) && collect($selectedOptions)->every(fn ($value, $code) => $child->getCustomAttribute($code)->value == $value)
+        $selectedChild = $product->children->firstWhere(fn ($child) => count($selectedOptions) && collect($selectedOptions)->every(fn ($value, $code) => $child->getCustomAttribute($code)->value == $value)
         ) ?? $product;
 
         ProductViewEvent::dispatch($product);

@@ -32,22 +32,21 @@ trait HasSuperAttributes
 
     public function superAttributeValues(): Attribute
     {
-        return Attribute::get(fn () =>
-            $this->superAttributes
-                ->sortBy('position')
-                ->mapWithKeys(fn ($attribute) => [
-                    $attribute->attribute_code => $this->children
-                        ->mapWithKeys(fn ($child) => [
-                            $child->entity_id => $child->{$attribute->attribute_code}
-                        ])
-                        ->sortBy('sort_order')
-                        ->groupBy('value')
-                        ->map(fn($children, $value) => [
-                            'children' => $children,
-                            'value' => $value,
-                            'label' => $children->first()->label,
-                        ]),
-                ])
+        return Attribute::get(fn () => $this->superAttributes
+            ->sortBy('position')
+            ->mapWithKeys(fn ($attribute) => [
+                $attribute->attribute_code => $this->children
+                    ->mapWithKeys(fn ($child) => [
+                        $child->entity_id => $child->{$attribute->attribute_code},
+                    ])
+                    ->sortBy('sort_order')
+                    ->groupBy('value')
+                    ->map(fn ($children, $value) => [
+                        'children' => $children,
+                        'value'    => $value,
+                        'label'    => $children->first()->label,
+                    ]),
+            ])
         );
     }
 }
