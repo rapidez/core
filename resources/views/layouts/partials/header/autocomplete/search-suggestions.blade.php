@@ -2,6 +2,7 @@
     <ais-state-results v-slot="{ query }">
         <ais-instant-search
             v-if="searchSuggestions.searchClient"
+            :future="{ preserveSharedStateOnUnmount: true }"
             :index-name="config.index.search_query"
             :search-client="searchSuggestions.searchClient"
         >
