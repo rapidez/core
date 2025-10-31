@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core\Http\Controllers;
 
+use Illuminate\Support\Arr;
 use Rapidez\Core\Events\ProductViewEvent;
 use Rapidez\Core\Models\Product;
 use TorMorten\Eventy\Facades\Eventy;
@@ -37,20 +38,13 @@ class ProductController
             'max_sale_qty',
             'qty_increments',
             ...$product->superAttributes->pluck('attribute_code'),
+            ...$product->superAttributes->pluck('attribute_code')->map(fn($attribute) => "super_$attribute"),
+            ...$product->superAttributes->pluck('attribute_code')->map(fn($attribute) => "super_{$attribute}_values"),
         ];
 
         $attributes = Eventy::filter('productpage.frontend.attributes', $attributes);
 
-        // TODO: Make this neater so that we can maybe get this data from the product directly?
-        // Alternatively we can refactor the frontend to not need so much customized data
-        $data = $product->only($attributes);
-        foreach ($product->superAttributeValues as $attribute => $values) {
-            $data["super_{$attribute}"] = $values->map(fn ($option) => $option['value'])->values();
-            $data["super_{$attribute}_values"] = $values->map(fn ($option) => [
-                ...$option,
-                'children' => $option['children']->pluck('entity_id'),
-            ]);
-        }
+        $data = Arr::only($product->toArray(), $attributes);
 
         $queryOptions = request()->query;
         $selectedOptions = [];

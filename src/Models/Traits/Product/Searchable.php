@@ -4,12 +4,14 @@ namespace Rapidez\Core\Models\Traits\Product;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Category;
 use Rapidez\Core\Models\CategoryProduct;
 use Rapidez\Core\Models\EavAttribute;
 use Rapidez\Core\Models\Product;
+use Rapidez\Core\Models\SuperAttribute;
 use Rapidez\Core\Models\Traits\Searchable as ParentSearchable;
 use TorMorten\Eventy\Facades\Eventy;
 
@@ -63,16 +65,27 @@ trait Searchable
             'sku',
             'children',
             'url',
+            'images',
             'in_stock',
             'min_sale_qty',
             'qty_increments',
             ...$indexableAttributeCodes,
             ...$this->superAttributes->pluck('attribute_code'),
+            ...$this->superAttributes->pluck('attribute_code')->map(fn($attribute) => "super_$attribute"),
+            ...$this->superAttributes->pluck('attribute_code')->map(fn($attribute) => "super_{$attribute}_values"),
         ]);
 
         $data['store'] = config('rapidez.store');
         $data['super_attributes'] = $this->superAttributes->keyBy('attribute_id');
 
+        $data = $this->withCategories($data);
+        $data['positions'] = $this->getPositions();
+
+        return Eventy::filter('index.' . static::getModelName() . '.data', $data, $this);
+    }
+
+    public function getPositions(): Collection
+    {
         $maxPositions = Cache::driver('array')->rememberForever('max-positions-' . config('rapidez.store'), fn () => CategoryProduct::query()
             ->selectRaw('GREATEST(MAX(position), 0) as position')
             ->addSelect('category_id')
@@ -80,22 +93,10 @@ trait Searchable
             ->pluck('position', 'category_id')
         );
 
-        foreach ($this->superAttributeValues as $attribute => $values) {
-            $data["super_{$attribute}"] = $values->map(fn ($option) => $option['value'])->values();
-            $data["super_{$attribute}_values"] = $values->map(fn ($option) => [
-                ...$option,
-                'children' => $option['children']->pluck('entity_id'),
-            ]);
-        }
-
-        $data = $this->withCategories($data);
-
-        $data['positions'] = $this->categoryProducts
+        return $this->categoryProducts
             ->pluck('position', 'category_id')
             // Turn all positions positive
             ->mapWithKeys(fn ($position, $category_id) => [$category_id => $maxPositions[$category_id] - $position]);
-
-        return Eventy::filter('index.' . static::getModelName() . '.data', $data, $this);
     }
 
     /**
