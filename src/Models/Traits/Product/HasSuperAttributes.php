@@ -4,39 +4,30 @@ namespace Rapidez\Core\Models\Traits\Product;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Collection;
-use Rapidez\Core\Models\SuperAttribute;
+use Rapidez\Core\Models\Relations\HasManyCallback;
+use Rapidez\Core\Models\Traits\UsesCallbackRelations;
 
 trait HasSuperAttributes
 {
+    use UsesCallbackRelations;
+
     /**
      * @deprecated please use superAttributes
      */
-    public function super_attributes(): HasMany
+    public function super_attributes(): HasManyCallback
     {
         return $this->superAttributes();
     }
 
-    public static function allSuperAttributes(): Collection
+    public function superAttributes(): HasManyCallback
     {
-        return SuperAttribute::all()->pluck('attribute_code')->unique();
-    }
-
-    public function superAttributes(): HasMany
-    {
-        return $this->hasMany(
+        return $this->hasManyCallback(
+            fn ($result) => $result->keyBy('attribute_id'),
             config('rapidez.models.super_attribute'),
             'product_id',
-        )->orderBy('catalog_product_super_attribute.position');
-    }
-
-    public function getSuperAttributesAttribute()
-    {
-        return $this
-            ->getRelationValue('superAttributes')
-            ->sortBy('attribute_code')
-            ->sortBy('position')
-            ->keyBy('attribute_id');
+        )
+            ->orderBy('eav_attribute.attribute_code')
+            ->orderBy('catalog_product_super_attribute.position');
     }
 
     public function superAttributeValues(): Attribute

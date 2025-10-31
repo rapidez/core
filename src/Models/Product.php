@@ -10,12 +10,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Collection;
 use Rapidez\Core\Facades\Rapidez;
+use Rapidez\Core\Models\Relations\BelongsToManyCallback;
 use Rapidez\Core\Models\Scopes\Product\ForCurrentWebsiteScope;
 use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
 use Rapidez\Core\Models\Traits\HasCustomAttributes;
 use Rapidez\Core\Models\Traits\Product\BackwardsCompatibleAccessors;
 use Rapidez\Core\Models\Traits\Product\HasSuperAttributes;
 use Rapidez\Core\Models\Traits\Product\Searchable;
+use Rapidez\Core\Models\Traits\UsesCallbackRelations;
 
 class Product extends Model
 {
@@ -24,6 +26,7 @@ class Product extends Model
     use HasCustomAttributes;
     use HasSuperAttributes;
     use Searchable;
+    use UsesCallbackRelations;
 
     public const VISIBILITY_NOT_VISIBLE = 1;
     public const VISIBILITY_IN_CATALOG = 2;
@@ -44,10 +47,18 @@ class Product extends Model
         'options',
         'gallery',
     ];
+
     // TODO: Double check; do we really want all accessors
     // defined here so they will show up in the indexer?
     // See the BackwardsCompatibleAccessors
-    protected $appends = ['url', 'in_stock'];
+    protected $appends = [
+        'grouped',
+        'images',
+        'in_stock',
+        'price',
+        'special_price',
+        'url',
+    ];
 
     protected static function booted(): void
     {
@@ -94,24 +105,24 @@ class Product extends Model
         )->shouldCache();
     }
 
-    public function parents(): BelongsToMany
+    public function parents(): BelongsToManyCallback
     {
-        return $this->belongsToMany(config('rapidez.models.product'), 'catalog_product_relation', 'child_id', 'parent_id');
+        return $this->belongsToManyCallback(
+            fn($results) => $results->keyBy('entity_id'),
+            config('rapidez.models.product'),
+            'catalog_product_relation',
+            'child_id', 'parent_id',
+        );
     }
 
-    public function getParentsAttribute(): Collection
+    public function children(): BelongsToManyCallback
     {
-        return $this->getRelationValue('parents')->keyBy('entity_id');
-    }
-
-    public function children(): BelongsToMany
-    {
-        return $this->belongsToMany(config('rapidez.models.product'), 'catalog_product_relation', 'parent_id', 'child_id');
-    }
-
-    public function getChildrenAttribute(): Collection
-    {
-        return $this->getRelationValue('children')->keyBy('entity_id');
+        return $this->belongsToManyCallback(
+            fn($results) => $results->keyBy('entity_id'),
+            config('rapidez.models.product'),
+            'catalog_product_relation',
+            'parent_id', 'child_id'
+        );
     }
 
     protected function grouped(): Attribute
@@ -269,7 +280,7 @@ class Product extends Model
                 return $this->prices->min();
             }
 
-            return $this->getCustomAttribute('price')->value;
+            return $this->getCustomAttribute('price')?->value ?? null;
         });
     }
 
@@ -314,5 +325,22 @@ class Product extends Model
                 ->pluck('category')
                 ->whereNotNull();
         })->shouldCache();
+    }
+
+    public function toArray(): array
+    {
+        $superAttributeData = [];
+        foreach ($this->superAttributeValues as $attribute => $values) {
+            $superAttributeData["super_$attribute"] = $values->map(fn($option) => $option['value'])->values();
+            $superAttributeData["super_{$attribute}_values"] = $values->map(fn($option) => [
+                ...$option,
+                'children' => $option['children']->pluck('entity_id'),
+            ]);
+        }
+
+        return array_merge(
+            parent::toArray(),
+            $superAttributeData,
+        );
     }
 }
