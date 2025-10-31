@@ -2,7 +2,9 @@ import Vue from 'vue'
 window.Vue = Vue
 
 import { directive as onClickaway } from 'vue-clickaway'
+import { vIntersectionObserver } from '@vueuse/components'
 Vue.directive('on-click-away', onClickaway)
+Vue.directive('intersection-observer', vIntersectionObserver)
 Vue.directive('blur', (el) => {
     el.removeAttribute('v-blur')
 })

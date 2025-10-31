@@ -36,7 +36,11 @@ return [
         'additionals' => [
             'history'            => [],
             'search-suggestions' => [],
-            'categories'         => [],
+            'categories' => [
+                'defaultValues' => fn() => config('rapidez.models.category')::where('parent_id', config('rapidez.root_category_id'))
+                    ->limit(config('rapidez.frontend.autocomplete.additionals.categories.size', config('rapidez.frontend.autocomplete.size', 4)))
+                    ->get(),
+            ],
             'popular-products'   => ['size' => 4],
 
             'products' => [

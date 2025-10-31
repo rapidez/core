@@ -18,6 +18,7 @@
                                         refine($root.autocompleteFacadeQuery || currentRefinement);
                                         $root.autocomeleteFacadeQuery = null;
                                         autoCompleteToggler.toggle(true);
+                                        window.setTimeout(() => window.requestAnimationFrame(() => window.document.getElementById('autocomplete-input-fullscreen').focus()));
                                     }"
                                     v-on:input="refine($event.currentTarget.value)"
                                     list="search-history"
@@ -41,6 +42,7 @@
                                                         $root.autocomeleteFacadeQuery = null;
                                                     }"
                                                     v-on:input="refine($event.currentTarget.value)"
+                                                    id="autocomplete-input-fullscreen"
                                                     list="search-history"
                                                 />
                                             </div>
