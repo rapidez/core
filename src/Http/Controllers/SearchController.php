@@ -57,7 +57,7 @@ class SearchController
             return $searchQuery;
         }
 
-        // Prevent prefetch requests from raising popularity on a search term. 
+        // Prevent prefetch requests from raising popularity on a search term.
         if ($request->header('x-sec-purpose') === 'prefetch') {
             return $searchQuery;
         }
