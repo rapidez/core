@@ -71,8 +71,8 @@ trait Searchable
             'qty_increments',
             ...$indexableAttributeCodes,
             ...$this->superAttributes->pluck('attribute_code'),
-            ...$this->superAttributes->pluck('attribute_code')->map(fn($attribute) => "super_$attribute"),
-            ...$this->superAttributes->pluck('attribute_code')->map(fn($attribute) => "super_{$attribute}_values"),
+            ...$this->superAttributes->pluck('attribute_code')->map(fn ($attribute) => "super_{$attribute}"),
+            ...$this->superAttributes->pluck('attribute_code')->map(fn ($attribute) => "super_{$attribute}_values"),
         ]);
 
         $data['store'] = config('rapidez.store');

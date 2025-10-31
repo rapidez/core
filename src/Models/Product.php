@@ -111,7 +111,7 @@ class Product extends Model
     public function parents(): BelongsToManyCallback
     {
         return $this->belongsToManyCallback(
-            fn($results) => $results->keyBy('entity_id'),
+            fn ($results) => $results->keyBy('entity_id'),
             config('rapidez.models.product'),
             'catalog_product_relation',
             'child_id', 'parent_id',
@@ -121,7 +121,7 @@ class Product extends Model
     public function children(): BelongsToManyCallback
     {
         return $this->belongsToManyCallback(
-            fn($results) => $results->keyBy('entity_id'),
+            fn ($results) => $results->keyBy('entity_id'),
             config('rapidez.models.product'),
             'catalog_product_relation',
             'parent_id', 'child_id'
@@ -346,8 +346,8 @@ class Product extends Model
     {
         $superAttributeData = [];
         foreach ($this->superAttributeValues as $attribute => $values) {
-            $superAttributeData["super_$attribute"] = $values->map(fn($option) => $option['value'])->values();
-            $superAttributeData["super_{$attribute}_values"] = $values->map(fn($option) => [
+            $superAttributeData["super_{$attribute}"] = $values->map(fn ($option) => $option['value'])->values();
+            $superAttributeData["super_{$attribute}_values"] = $values->map(fn ($option) => [
                 ...$option,
                 'children' => $option['children']->pluck('entity_id'),
             ]);
