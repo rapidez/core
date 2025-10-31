@@ -28,7 +28,7 @@
                         </li>
                     </ul>
                 </div>
-                @if($defaultValues = Arr::get($fields, 'defaultValues'))
+                @if ($defaultValues = Arr::get($fields, 'defaultValues'))
                     <div v-else>
                         <x-rapidez::autocomplete.title>
                             @lang('Categories')
