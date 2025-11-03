@@ -1,10 +1,11 @@
 <ais-range-input
     v-if="listingSlotProps.rangeAttributes.includes(filter.code)"
     :attribute="filter.code"
+    class="relative -mx-1 -mt-1"
 >
     <template v-slot="{ currentRefinement, range, canRefine, refine, sendEvent }">
-        <div v-show="range.max">
-            <x-rapidez::accordion.filter>
+        <div class="overflow-clip" v-show="range.max">
+            <x-rapidez::accordion.filter class="details-content:overflow-visible px-1 py-1">
                 <x-slot:content>
                     <div class="flex flex-col">
                         <div class="flex flex-1">

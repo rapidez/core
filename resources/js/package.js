@@ -119,9 +119,13 @@ function init() {
                     }
                 },
 
-                resizedPath(imagePath, size, store = null) {
+                resizedPath(imagePath, size, store = null, sku = false) {
                     if (!store) {
                         store = window.config.store
+                    }
+
+                    if (sku) {
+                        return window.url(`/storage/${store}/resizes/${size}/sku/${imagePath}.webp`)
                     }
 
                     let url = new URL(imagePath)
