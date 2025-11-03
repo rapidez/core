@@ -1,7 +1,7 @@
 <ais-infinite-hits v-bind:index-name="config.index.product" v-bind:index-id="'autocomplete_' + config.index.product" v-slot="{ items, sendEvent, isLastPage, refineNext }">
     <div>
         <div v-if="items && items.length">
-            <div class="mb-5 flex items-center justify-between">
+            <div class="mb-5 flex max-md:flex-col-reverse gap-y-3 md:items-center justify-between">
                 <p class="font-medium text-2xl inline-block">
                     <ais-state-results v-slot="{ query }">
                         <template v-if="query && query !== '__NO_QUERY__'">

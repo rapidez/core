@@ -1,4 +1,4 @@
-<ais-state-results v-slot="{ status, query }" class="max-w-2xl w-full mx-auto">
+<ais-state-results v-slot="{ status, query }" class="max-w-2xl w-full mx-auto has-[>.ais-Hits:empty]:hidden">
     <div v-if="status === 'stalled'" class="flex items-center mx-auto px-5 py-2.5">
         <x-rapidez-loading class="size-5 text-gray-200 animate-spin fill-primary" />
         <span class="ml-2">@lang('Searching...')</span>

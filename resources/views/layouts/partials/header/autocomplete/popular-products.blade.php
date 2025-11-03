@@ -1,5 +1,5 @@
 
-<ais-hits v-slot="{ items }">
+<ais-hits v-slot="{ items }" class="empty:hidden">
     <listing
         v-bind:query="() => [{
             function_score: {
@@ -34,7 +34,7 @@
 
                 <ais-hits v-slot="{ items, sendEvent }">
                     <div v-if="items && items.length" class="overflow-hidden">
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 -mx-5 -mb-px *:border-b">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 -mx-5 -mb-px *:border-b">
                             <template v-for="(item, count) in items">
                                 @include('rapidez::listing.partials.item')
                             </template>

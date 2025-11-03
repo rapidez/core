@@ -11,7 +11,7 @@
                     </x-rapidez::autocomplete.title>
                     <ul class="flex flex-col font-sans">
                         <li v-for="(item, count) in items" class="flex flex-1 items-center w-full hover:bg rounded">
-                            <a v-bind:href="item.url" class="relative flex items-center group w-full px-5 py-2 gap-x-2.5 text-sm">
+                            <a v-bind:href="item.url" class="relative flex items-center group w-full sm:px-5 py-1.5 gap-x-2.5 text-sm">
                                 <x-heroicon-o-magnifying-glass class="size-5 text-muted" />
 
                                 <span>
@@ -36,7 +36,7 @@
                         <ul class="flex flex-col font-sans">
                             @foreach (collect(value($defaultValues))->take(Arr::get($fields, 'size', config('rapidez.frontend.autocomplete.size', 3))) as $category)
                                 <li class="flex flex-1 items-center w-full hover:bg rounded">
-                                    <a href="{{ $category['url'] }}" class="relative flex items-center group w-full px-5 py-2 gap-x-2.5 text-sm">
+                                    <a href="{{ $category['url'] }}" class="relative flex items-center group w-full sm:px-5 py-1.5 gap-x-2.5 text-sm">
                                         <x-heroicon-o-magnifying-glass class="size-5 text-muted" />
 
                                         {{ $category['name'] }}

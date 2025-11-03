@@ -16,7 +16,7 @@
                                     v-bind:value="currentRefinement"
                                     v-on:focus="() => {
                                         refine($root.autocompleteFacadeQuery || currentRefinement);
-                                        $root.autocomeleteFacadeQuery = null;
+                                        $root.autocompleteFacadeQuery = null;
                                         autoCompleteToggler.toggle(true);
                                         window.setTimeout(() => window.requestAnimationFrame(() => window.document.getElementById('autocomplete-input-fullscreen').focus()));
                                     }"
@@ -31,25 +31,30 @@
                                 <div class="container">
                                     <input checked type="checkbox" class="prevent-scroll hidden">
                                     <ais-autocomplete v-slot="{ currentRefinement, refine }">
-                                        <div class="flex gap-x-3 justify-between">
-                                            <img src="https://raw.githubusercontent.com/rapidez/art/master/r.svg" alt="Rapidez logo" height="50" width="50" class="w-14 h-12 object-contain">
+                                        <div class="flex gap-x-3">
+                                            <div class="h-12 shrink-0 xl:flex-1 max-sm:hidden">
+                                                <img v-on:click="autoCompleteToggler.close(); refine('')" src="https://raw.githubusercontent.com/rapidez/art/master/r.svg" alt="Rapidez logo" height="50" width="50" class="h-full w-auto cursor-pointer block">
+                                            </div>
 
-                                            <div class="max-w-2xl w-full">
+                                            <div class="max-w-2xl w-full mx-auto">
                                                 <x-rapidez::autocomplete.input
                                                     v-bind:value="currentRefinement"
                                                     v-on:focus="() => {
                                                         refine($root.autocompleteFacadeQuery || currentRefinement);
-                                                        $root.autocomeleteFacadeQuery = null;
+                                                        $root.autocompleteFacadeQuery = null;
                                                     }"
+                                                    @keydown.escape="autoCompleteToggler.close()"
                                                     v-on:input="refine($event.currentTarget.value)"
                                                     id="autocomplete-input-fullscreen"
                                                     list="search-history"
                                                 />
                                             </div>
 
-                                            <x-rapidez::button.outline v-on:click="autoCompleteToggler.close(); refine('')" class="bg-white h-12 w-14 px-0 shrink-0">
-                                                <x-heroicon-o-x-mark class="size-5" />
-                                            </x-rapidez::button.outline>
+                                            <div class="flex xl:flex-1 justify-end">
+                                                <button v-on:click="autoCompleteToggler.close(); refine('')" class="flex items-center justify-center shrink-0 text-muted hover:text">
+                                                    <x-heroicon-o-x-mark class="size-8" />
+                                                </button>
+                                            </div>
                                         </div>
                                     </ais-autocomplete>
                                 </div>
@@ -57,7 +62,7 @@
 
                             <div class="h-full bg-white overflow-hidden relative z-10">
                                 <div class="size-full overflow-y-auto">
-                                    <div class="container pt-5 pb-8 overflow-y-auto">
+                                    <div class="container pt-5 pb-8 overflow-y-auto gap-y-3 flex flex-col">
                                         @include('rapidez::layouts.partials.header.autocomplete.results')
                                     </div>
                                 </div>

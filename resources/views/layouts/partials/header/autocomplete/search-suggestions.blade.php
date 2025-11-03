@@ -11,7 +11,7 @@
                 filters="display_in_terms:1"
             />
             <ais-hits v-slot="{ items }" class="max-w-2xl w-full mx-auto">
-                <div v-if="items && items.length" class="py-2.5">
+                <div v-if="items && items.length">
                     <x-rapidez::autocomplete.title>
                         @lang('Suggestions')
                     </x-rapidez::autocomplete.title>
@@ -19,7 +19,7 @@
                         <li v-for="(item, count) in items" class="flex flex-1 items-center w-full rounded hover:bg">
                             <a
                                 v-bind:href="window.url(item.redirect || '{{ route('search', ['q' => 'searchPlaceholder']) }}'.replace('searchPlaceholder', encodeURIComponent(item.query_text)))"
-                                class="relative flex items-center group w-full px-5 py-2 text-sm gap-x-2.5"
+                                class="relative flex items-center group w-full sm:px-5 py-1.5 text-sm gap-x-2.5"
                                 data-turbo="false"
                             >
                                 <x-heroicon-o-arrow-trending-up class="size-5 text-muted" />
