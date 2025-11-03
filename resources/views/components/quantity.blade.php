@@ -21,7 +21,7 @@ is present on the input and the quantity select component.
             aria-label="@lang('Quantity')"
             ref="input"
             :min="qtySelect.min"
-            :max="qtySelect.max"
+            :max="qtySelect.max > 0 ? qtySelect.max : null"
             :step="qtySelect.step"
             v-model="qtySelect.value"
             {{ $attributes }}
