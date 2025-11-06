@@ -26,6 +26,7 @@ class ProductController
             'price',
             'special_price',
             'images',
+            'product_gallery',
             'url',
             'min_sale_qty',
             'qty_increments',

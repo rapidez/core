@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Support\Str;
 use Rapidez\Core\Casts\Children;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
@@ -208,6 +209,17 @@ class Product extends Model
     public function getImagesAttribute(): array
     {
         return $this->gallery->sortBy('productImageValue.position')->pluck('value')->toArray();
+    }
+
+    public function getProductGalleryAttribute(): array
+    {
+        return $this->gallery->sortBy('productImageValue.position')->map(function (ProductImage $value) {
+            return [
+                'media_type' => $value->media_type,
+                'image'      => $value->value,
+                'video_url'  => isset($value->video) ? Str::embedUrl($value->video->url) : null
+            ];
+        })->values()->toArray();
     }
 
     public function getImageAttribute($image): ?string
