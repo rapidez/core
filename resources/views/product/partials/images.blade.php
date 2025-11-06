@@ -95,7 +95,7 @@
                             width="80"
                             height="80"
                         />
-                        <x-heroicon-s-play class="absolute inset-4 opacity-75"/>
+                        <x-heroicon-s-play class="absolute inset-5 text-white opacity-75"/>
                     </template>
                 </button>
             </div>
