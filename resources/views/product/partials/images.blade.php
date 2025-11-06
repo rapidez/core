@@ -4,11 +4,15 @@
             @include('rapidez::wishlist.button')
         </div>
     @endif
-    @if (count($product->images))
+    @if (count($product->product_gallery))
         <div class="absolute inset-0 flex h-[440px] items-center justify-center rounded border p-5">
             <img
                 class="m-auto max-h-[400px] w-full object-contain"
-                src="/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product{{ $product->images[0] }}.webp"
+                @if ($product->product_gallery[0]['media_type'] === 'external-video')
+                    src="{{ config('rapidez.media_url').'/catalog/product'.$product->product_gallery[0]['image'] }}"
+                @else
+                    src="/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product{{ $product->product_gallery[0]['image'] }}.webp"
+                @endif
                 alt="{{ $product->name }}"
                 width="400"
                 height="400"
@@ -17,7 +21,7 @@
     @endif
 
     <images v-cloak>
-        <div slot-scope="{ media, images, active, zoomed, toggleZoom, change }">
+        <div slot-scope="{ media, active, zoomed, toggleZoom, change }">
             <div class="relative" v-if="media.length">
                 <a
                     :href="config.media_url + '/catalog/product' + media[active].image"
@@ -44,7 +48,6 @@
                     </template>
                     <iframe
                         v-else-if="media[active].media_type === 'external-video'"
-                        class="bg-black"
                         :class="{
                             'h-[calc(100%-200px)] w-[calc(100%-200px)]': zoomed,
                             'h-full w-full': !zoomed
@@ -61,7 +64,7 @@
                 <button class="{{ config('rapidez.frontend.z-indexes.lightbox') }} top-1/2 left-3 -translate-y-1/2" :class="zoomed ? 'fixed' : 'absolute'" v-if="active" v-on:click="change(active-1)" aria-label="@lang('Prev')">
                     <x-heroicon-o-chevron-left class="h-8 w-8 text-gray-900" />
                 </button>
-                <button class="{{ config('rapidez.frontend.z-indexes.lightbox') }} top-1/2 right-3 -translate-y-1/2" :class="zoomed ? 'fixed' : 'absolute'" v-if="active != images.length-1" v-on:click="change(active+1)" aria-label="@lang('Next')">
+                <button class="{{ config('rapidez.frontend.z-indexes.lightbox') }} top-1/2 right-3 -translate-y-1/2" :class="zoomed ? 'fixed' : 'absolute'" v-if="active != media.length-1" v-on:click="change(active+1)" aria-label="@lang('Next')">
                     <x-heroicon-o-chevron-right class="h-8 w-8 text-gray-900" />
                 </button>
             </div>
