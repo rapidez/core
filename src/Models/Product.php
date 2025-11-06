@@ -217,7 +217,7 @@ class Product extends Model
             return [
                 'media_type' => $value->media_type,
                 'image'      => $value->value,
-                'video_url'  => isset($value->video) ? Str::embedUrl($value->video->url) : null
+                'video_url'  => isset($value->video) ? Str::embedUrl($value->video->url) : null,
             ];
         })->values()->toArray();
     }
