@@ -273,7 +273,7 @@ class RapidezServiceProvider extends ServiceProvider
 
         Str::macro(
             'embedUrl',
-            function($url) {
+            function ($url) {
                 if (Str::contains($url, 'vimeo')) {
                     $url = str_replace('/vimeo.com', '/player.vimeo.com/video', $url);
 
@@ -284,18 +284,18 @@ class RapidezServiceProvider extends ServiceProvider
                         $url = Str::beforeLast($url, '/');
 
                         if (Str::contains($hash, '?')) {
-                            $url .= '?'.Str::after($hash, '?');
+                            $url .= '?' . Str::after($hash, '?');
                             $hash = Str::before($hash, '?');
                         }
                     }
 
                     $paramsToAdd = '?dnt=1&watch_full_video=false&vimeo_logo=false&speed=false&chromecast=false&byline=false&badge=false&ask_ai=false&airplay=false';
                     if ($hash) {
-                        $paramsToAdd .= '&h='.$hash;
+                        $paramsToAdd .= '&h=' . $hash;
                     }
 
                     if (Str::contains($url, '?')) {
-                        $url = str_replace('?', $paramsToAdd.'&', $url);
+                        $url = str_replace('?', $paramsToAdd . '&', $url);
                     } else {
                         $url .= $paramsToAdd;
                     }
