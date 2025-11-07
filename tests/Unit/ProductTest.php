@@ -2,7 +2,11 @@
 
 namespace Rapidez\Core\Tests\Feature;
 
+use Illuminate\Support\Facades\Artisan;
 use PHPUnit\Framework\Attributes\Test;
+use Rapidez\Core\Events\ProductViewEvent;
+use Rapidez\Core\Facades\Rapidez;
+use Rapidez\Core\Models\Config;
 use Rapidez\Core\Models\Product;
 use Rapidez\Core\Tests\TestCase;
 
@@ -77,8 +81,51 @@ class ProductTest extends TestCase
     #[Test]
     public function product_can_have_options()
     {
-        $this->assertTrue(true);
-        // TODO: Base DB doesn't have product options. Test this some other way.
+        // TODO: We should also visually test this!
+        // We could create feature tests for that
+        // but Playwright is better: RAP-1541
+        $product = Product::find(3);
+
+        $name = $product->options()->create(['type' => 'field']);
+        $name->titles()->create(['title' => 'Name', 'store_id' => 0]);
+        $name->titles()->create(['title' => 'Naam', 'store_id' => 1]);
+        $name->prices()->create(['price' => 5, 'store_id' => 0]);
+        $name->prices()->create(['price' => 10, 'store_id' => 1]);
+
+        $description = $product->options()->create(['type' => 'area']);
+        $description->titles()->create(['title' => 'Description']);
+        $description->prices()->create(['price' => 20, 'price_type' => 'percent']);
+
+        $color = $product->options()->create(['type' => 'drop_down']);
+        $color->titles()->create(['title' => 'Color']);
+
+        $red = $color->values()->create();
+        $red->titles()->create(['title' => 'Red', 'store_id' => 0]);
+        $red->titles()->create(['title' => 'Rood', 'store_id' => 1]);
+        $red->prices()->create(['price' => 1]);
+
+        $blue = $color->values()->create();
+        $blue->titles()->create(['title' => 'Blue']);
+        $blue->prices()->create(['price' => 5, 'store_id' => 0]);
+        $blue->prices()->create(['price' => 2.5, 'store_id' => 1]);
+
+        $options = $product->options()->get();
+
+        $this->assertEquals(3, $options->count());
+
+        $this->assertEquals('Naam', $options->get(0)->title);
+        $this->assertEquals('+ €10.00', $options->get(0)->price_label);
+
+        $this->assertEquals('Description', $options->get(1)->title);
+        $this->assertEquals('+ 20%', $options->get(1)->price_label);
+
+        $dropdown = $options->get(2)->values;
+
+        $this->assertEquals('Rood', $dropdown->get(0)->title);
+        $this->assertEquals('+ €1.00', $dropdown->get(0)->price_label);
+
+        $this->assertEquals('Blue', $dropdown->get(1)->title);
+        $this->assertEquals('+ €2.50', $dropdown->get(1)->price_label);
     }
 
     #[Test]
@@ -101,8 +148,18 @@ class ProductTest extends TestCase
     #[Test]
     public function product_can_have_views()
     {
-        $this->assertTrue(true);
-        // TODO: Base DB doesn't have product views. Test this some other way.
+        // Enable the reports
+        Config::create(['path' => 'reports/options/enabled', 'value' => 1]);
+        Config::create(['path' => 'reports/options/product_view_enabled', 'value' => 1]);
+
+        $product = Product::find(1);
+
+        $this->assertEquals(0, $product->views()->count());
+
+        ProductViewEvent::dispatch($product);
+        ProductViewEvent::dispatch($product);
+
+        $this->assertEquals(2, $product->views()->count());
     }
 
     #[Test]
