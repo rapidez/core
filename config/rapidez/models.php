@@ -30,7 +30,8 @@ return [
     'product_option_type_title' => Rapidez\Core\Models\ProductOptionTypeTitle::class,
     'product_option_type_value' => Rapidez\Core\Models\ProductOptionTypeValue::class,
     'product_price'             => Rapidez\Core\Models\ProductPrice::class,
-    'product_review'            => Rapidez\Core\Models\ProductReview::class,
+    // TODO: the naming is mixed..
+    'product_review'            => Rapidez\Core\Models\Review::class,
     'product_review_summary'    => Rapidez\Core\Models\ProductReviewSummary::class,
     'product_stock'             => Rapidez\Core\Models\ProductStock::class,
     'product_super_link'        => Rapidez\Core\Models\ProductSuperLink::class,
