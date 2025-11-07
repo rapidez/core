@@ -2,7 +2,6 @@
 
 namespace Rapidez\Core\Models;
 
-use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
