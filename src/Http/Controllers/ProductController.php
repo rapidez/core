@@ -4,7 +4,6 @@ namespace Rapidez\Core\Http\Controllers;
 
 use Rapidez\Core\Events\ProductViewEvent;
 use Rapidez\Core\Models\Product;
-use Rapidez\Core\Models\Scopes\Product\VisibilityInCatalogScope;
 use TorMorten\Eventy\Facades\Eventy;
 
 class ProductController
