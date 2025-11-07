@@ -3,6 +3,8 @@
 namespace Rapidez\Core\Http\Controllers;
 
 use Rapidez\Core\Events\ProductViewEvent;
+use Rapidez\Core\Models\Product;
+use Rapidez\Core\Models\Scopes\Product\VisibilityInCatalogScope;
 use TorMorten\Eventy\Facades\Eventy;
 
 class ProductController
@@ -12,7 +14,12 @@ class ProductController
         $productModel = config('rapidez.models.product');
 
         /** @var \Rapidez\Core\Models\Product $product */
-        $product = $productModel::findOrFail($productId);
+        $product = $productModel::query()
+            ->whereInAttribute('visibility', [
+                Product::VISIBILITY_IN_CATALOG,
+                Product::VISIBILITY_BOTH,
+            ])
+            ->findOrFail($productId);
 
         $attributes = [
             'entity_id',

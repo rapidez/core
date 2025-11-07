@@ -56,7 +56,6 @@ class Product extends Model
     {
         static::addGlobalScope(EnabledScope::class);
         static::addGlobalScope(ForCurrentWebsiteScope::class);
-        static::addGlobalScope(VisibilityInCatalogScope::class);
         static::withCustomAttributes();
     }
 

@@ -27,8 +27,14 @@ trait Searchable
     {
         return $query
             ->with(['reviewSummary', 'children'])
-            ->withoutGlobalScope(VisibilityInCatalogScope::class)
-            ->withGlobalScope(VisibilityInSearchScope::class, new VisibilityInSearchScope)
+            ->whereInAttribute('visibility', [
+                // TODO: Are we filtering this on the frontend?
+                // As "searchable" will be used for the
+                // listing and the search...
+                Product::VISIBILITY_IN_CATALOG,
+                Product::VISIBILITY_IN_SEARCH,
+                Product::VISIBILITY_BOTH,
+            ])
             ->withEventyGlobalScopes('index.' . static::getModelName() . '.scopes');
     }
 

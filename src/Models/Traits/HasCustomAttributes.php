@@ -87,10 +87,9 @@ trait HasCustomAttributes
         );
     }
 
-    // TODO: This one is a bit a duplicate of the one above
-    // can we re-use some code? The current usage is
-    // is really clean; mostly used in the scopes,
-    // but what if we need whereBetween etc?
+    // TODO: This one is a bit a duplicate of the one above,
+    // can we re-use some code? What if another method
+    // is needed like whereBetween, whereNull, etc
     public function scopeWhereInAttribute(Builder $builder, string $attributeCode, $values = null, $boolean = 'and', $not = false)
     {
         return $builder->attributeHas(
