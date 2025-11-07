@@ -81,7 +81,23 @@ trait HasCustomAttributes
     {
         return $builder->attributeHas(
             $attributeCode,
-            fn ($query) => $query->where('value', $operator, $value)->where($this->getCustomAttributeCode(), $attributeCode)
+            fn ($query) => $query
+                ->where('value', $operator, $value)
+                ->where($this->getCustomAttributeCode(), $attributeCode)
+        );
+    }
+
+    // TODO: This one is a bit a duplicate of the one above
+    // can we re-use some code? The current usage is
+    // is really clean; mostly used in the scopes,
+    // but what if we need whereBetween etc?
+    public function scopeWhereInAttribute(Builder $builder, string $attributeCode, $values = null, $boolean = 'and', $not = false)
+    {
+        return $builder->attributeHas(
+            $attributeCode,
+            fn ($query) => $query
+                ->whereIn('value', $values, $boolean, $not)
+                ->where($this->getCustomAttributeCode(), $attributeCode)
         );
     }
 

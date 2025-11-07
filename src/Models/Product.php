@@ -10,7 +10,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Collection;
 use Rapidez\Core\Facades\Rapidez;
+use Rapidez\Core\Models\Scopes\Product\EnabledScope;
 use Rapidez\Core\Models\Scopes\Product\ForCurrentWebsiteScope;
+use Rapidez\Core\Models\Scopes\Product\VisibilityInCatalogScope;
 use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
 use Rapidez\Core\Models\Traits\HasCustomAttributes;
 use Rapidez\Core\Models\Traits\Product\BackwardsCompatibleAccessors;
@@ -52,9 +54,10 @@ class Product extends Model
 
     protected static function booted(): void
     {
+        static::addGlobalScope(EnabledScope::class);
         static::addGlobalScope(ForCurrentWebsiteScope::class);
+        static::addGlobalScope(VisibilityInCatalogScope::class);
         static::withCustomAttributes();
-        static::addGlobalScope('onlyEnabled', fn (Builder $builder) => $builder->whereAttribute('status', static::STATUS_ENABLED));
     }
 
     protected function modifyRelation(HasMany $relation): HasMany

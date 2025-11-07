@@ -11,6 +11,8 @@ use Rapidez\Core\Models\Category;
 use Rapidez\Core\Models\CategoryProduct;
 use Rapidez\Core\Models\EavAttribute;
 use Rapidez\Core\Models\Product;
+use Rapidez\Core\Models\Scopes\Product\VisibilityInCatalogScope;
+use Rapidez\Core\Models\Scopes\Product\VisibilityInSearchScope;
 use Rapidez\Core\Models\Traits\Searchable as ParentSearchable;
 use TorMorten\Eventy\Facades\Eventy;
 
@@ -25,6 +27,8 @@ trait Searchable
     {
         return $query
             ->with(['reviewSummary', 'children'])
+            ->withoutGlobalScope(VisibilityInCatalogScope::class)
+            ->withGlobalScope(VisibilityInSearchScope::class, new VisibilityInSearchScope)
             ->withEventyGlobalScopes('index.' . static::getModelName() . '.scopes');
     }
 
@@ -33,14 +37,7 @@ trait Searchable
      */
     public function shouldBeSearchable(): bool
     {
-        if (! in_array($this->visibility->value, [
-            Product::VISIBILITY_IN_CATALOG,
-            Product::VISIBILITY_IN_SEARCH,
-            Product::VISIBILITY_BOTH,
-        ])) {
-            return false;
-        }
-
+        // TODO: Maybe also move this one to the query?
         $showOutOfStock = (bool) Rapidez::config('cataloginventory/options/show_out_of_stock', 0);
         if (! $showOutOfStock && ! $this->stock->is_in_stock) {
             return false;
