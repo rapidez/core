@@ -7,6 +7,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
@@ -43,6 +44,7 @@ use Rapidez\Core\Listeners\UpdateLatestIndexDate;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use TorMorten\Eventy\Facades\Eventy;
 
 class RapidezServiceProvider extends ServiceProvider
 {
@@ -70,7 +72,8 @@ class RapidezServiceProvider extends ServiceProvider
             ->bootScout()
             ->bootTranslations()
             ->bootListeners()
-            ->bootMacros();
+            ->bootMacros()
+            ->bootUncacheable();
     }
 
     public function register()
@@ -296,6 +299,16 @@ class RapidezServiceProvider extends ServiceProvider
                     $filenames
                 )
             );
+        });
+
+        return $this;
+    }
+
+    protected function bootUncacheable(): static
+    {
+        Eventy::addFilter('uncacheable.response', function (Response $response) {
+            $response->setPrivate();
+            return $response;
         });
 
         return $this;
