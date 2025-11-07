@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core\Tests;
 
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Rapidez\Core\Facades\Rapidez;
@@ -11,6 +12,8 @@ use TorMorten\Eventy\EventServiceProvider;
 
 class TestCase extends BaseTestCase
 {
+    use DatabaseTransactions;
+
     public function setUp(): void
     {
         parent::setUp();
