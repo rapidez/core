@@ -175,9 +175,9 @@ class ProductTest extends TestCase
         // There is a rule: "20% off all Women’s and Men’s Pants"
         $product = Product::find(737);
 
-        $this->assertEquals(35.0, (float)$product->customAttributes['price']->value, 'Product original price did not return the correct value.');
-        $this->assertEquals(28.0, (float)$product->price, 'Product discounted price did not return the correct value.');
-        $this->assertEquals(28.0, (float)$product->toArray()['price'], 'Product discounted price did not return the correct value.');
+        $this->assertEquals(35.0, (float) $product->customAttributes['price']->value, 'Product original price did not return the correct value.');
+        $this->assertEquals(28.0, (float) $product->price, 'Product discounted price did not return the correct value.');
+        $this->assertEquals(28.0, (float) $product->toArray()['price'], 'Product discounted price did not return the correct value.');
     }
 
     #[Test]
