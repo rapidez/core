@@ -22,8 +22,6 @@ class ProductLink extends Model
 
     protected $primaryKey = 'link_id';
 
-    protected $guarded = [];
-
     protected static function boot()
     {
         parent::boot();
