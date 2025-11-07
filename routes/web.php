@@ -19,7 +19,7 @@ Route::middleware('web')->group(function () {
     Route::middleware('uncacheable')->group(function () {
         Route::get('checkout/{step?}', config('rapidez.routing.controllers.checkout'))->middleware('auth:magento-cart')->name('checkout');
         Route::get('checkout/success', config('rapidez.routing.controllers.checkout-success'))->name('checkout.success');
-        Route::get('checkout/onepage/success', fn() => redirect(route('checkout.success', request()->query()), 308));
+        Route::get('checkout/onepage/success', fn () => redirect(route('checkout.success', request()->query()), 308));
         Route::get('checkout/signed', SignedCheckoutController::class)->name('signed-checkout');
     });
 
