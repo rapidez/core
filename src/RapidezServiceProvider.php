@@ -33,6 +33,7 @@ use Rapidez\Core\Http\Controllers\Fallback\UrlRewriteController;
 use Rapidez\Core\Http\Middleware\CheckStoreCode;
 use Rapidez\Core\Http\Middleware\ConfigForTesting;
 use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
+use Rapidez\Core\Http\Middleware\Uncacheable;
 use Rapidez\Core\Listeners\Healthcheck\ElasticsearchHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\MagentoSettingsHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\ModelsHealthcheck;
@@ -230,6 +231,7 @@ class RapidezServiceProvider extends ServiceProvider
         $this->app->make(Kernel::class)->pushMiddleware(DetermineAndSetShop::class);
 
         $this->app['router']->aliasMiddleware('store_code', CheckStoreCode::class);
+        $this->app['router']->aliasMiddleware('uncacheable', Uncacheable::class);
 
         return $this;
     }
