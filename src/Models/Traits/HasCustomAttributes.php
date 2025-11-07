@@ -28,8 +28,8 @@ trait HasCustomAttributes
     public function toArray()
     {
         return array_merge(
+            $this->customAttributes->toArray(),
             parent::toArray(),
-            $this->customAttributes->toArray()
         );
     }
 
