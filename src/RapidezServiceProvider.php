@@ -308,6 +308,7 @@ class RapidezServiceProvider extends ServiceProvider
     {
         Eventy::addFilter('uncacheable.response', function (Response $response) {
             $response->setPrivate();
+
             return $response;
         });
 
