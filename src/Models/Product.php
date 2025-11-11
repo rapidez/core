@@ -324,7 +324,7 @@ class Product extends Model
                 ->firstWhere('customer_group_id', $customerGroupId)
                 ->min_price;
 
-            return $specialPrice < $this->price? $specialPrice : null;
+            return $specialPrice < $this->price ? $specialPrice : null;
         });
     }
 

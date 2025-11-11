@@ -3,8 +3,6 @@
 namespace Rapidez\Core\Tests\Feature;
 
 use PHPUnit\Framework\Attributes\Test;
-use Rapidez\Core\Events\ProductViewEvent;
-use Rapidez\Core\Models\Config;
 use Rapidez\Core\Models\Product;
 use Rapidez\Core\Tests\TestCase;
 
