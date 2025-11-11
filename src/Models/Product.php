@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Scopes\Product\EnabledScope;
 use Rapidez\Core\Models\Scopes\Product\ForCurrentWebsiteScope;
+use Rapidez\Core\Models\Scopes\Product\SupportedScope;
 use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
 use Rapidez\Core\Models\Traits\HasCustomAttributes;
 use Rapidez\Core\Models\Traits\Product\BackwardsCompatibleAccessors;
@@ -45,14 +46,22 @@ class Product extends Model
         'gallery',
         'prices',
     ];
-    // TODO: Double check; do we really want all accessors
-    // defined here so they will show up in the indexer?
-    // See the BackwardsCompatibleAccessors
-    protected $appends = ['price', 'url', 'in_stock'];
+
+    protected $appends = [
+        'price',
+        'special_price',
+        'url',
+
+        // TODO: Double check; do we really want all accessors
+        // defined here so they will show up in the indexer?
+        // See the BackwardsCompatibleAccessors
+        'in_stock',
+    ];
 
     protected static function booted(): void
     {
         static::addGlobalScope(EnabledScope::class);
+        static::addGlobalScope(SupportedScope::class);
         static::addGlobalScope(ForCurrentWebsiteScope::class);
         static::withCustomAttributes();
     }
@@ -274,10 +283,11 @@ class Product extends Model
                 ->user()
                 ?->group_id ?: 0;
 
-            return $this
+            $price = $this
                 ->prices
-                ->firstWhere('customer_group_id', $customerGroupId)
-                ->min_price;
+                ->firstWhere('customer_group_id', $customerGroupId);
+
+            return $price->price ?: $price->min_price;
         });
     }
 
@@ -303,22 +313,18 @@ class Product extends Model
     protected function specialPrice(): Attribute
     {
         return Attribute::get(function (): ?float {
-            $specialPrice = $this->getCustomAttribute('special_price')?->value ?: null;
+            $customerGroupId = auth('magento-customer')
+                ->user()
+                ?->group_id ?: 0;
 
-            if (! in_array($this->type_id, ['configurable', 'grouped'])) {
-                if (! now()->isBetween(
-                    $this->special_from_date?->value ?: now()->subHour(),
-                    $this->special_to_date?->value ?: now()->addHour(),
-                )) {
-                    return null;
-                }
+            // We're using the price index table that
+            // handles the special from/to dates.
+            $specialPrice = $this
+                ->prices
+                ->firstWhere('customer_group_id', $customerGroupId)
+                ->min_price;
 
-                return $specialPrice < $this->price ? $specialPrice : null;
-            }
-
-            return collect($this->children)
-                ->filter(fn ($child) => $child->special_price !== null)
-                ->min->special_price;
+            return $specialPrice < $this->price? $specialPrice : null;
         });
     }
 

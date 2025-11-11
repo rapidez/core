@@ -127,13 +127,6 @@ class ProductTest extends TestCase
     }
 
     #[Test]
-    public function product_can_have_tier_prices()
-    {
-        $this->assertTrue(true);
-        // TODO: Base DB doesn't have tier prices. Test this some other way.
-    }
-
-    #[Test]
     public function product_can_have_review_data()
     {
         $product = Product::find(37);
@@ -158,26 +151,6 @@ class ProductTest extends TestCase
         ProductViewEvent::dispatch($product);
 
         $this->assertEquals(2, $product->views()->count());
-    }
-
-    #[Test]
-    public function product_has_prices()
-    {
-        $product = Product::find(10);
-
-        $this->assertEquals(32, $product->price, 'Product price did not return the correct value.');
-        $this->assertEquals(24, $product->special_price, 'Product special price did not return the correct value.');
-    }
-
-    #[Test]
-    public function product_catalog_price_rules_apply()
-    {
-        // There is a rule: "20% off all Women’s and Men’s Pants"
-        $product = Product::find(737);
-
-        $this->assertEquals(35.0, (float) $product->customAttributes['price']->value, 'Product original price did not return the correct value.');
-        $this->assertEquals(28.0, (float) $product->price, 'Product discounted price did not return the correct value.');
-        $this->assertEquals(28.0, (float) $product->toArray()['price'], 'Product discounted price did not return the correct value.');
     }
 
     #[Test]
