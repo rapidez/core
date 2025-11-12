@@ -59,12 +59,14 @@ export default {
         },
 
         hitsPerPage() {
+            let hasDefault = this.$root.config.grid_per_page_values.includes(this.$root.config.grid_per_page)
+
             return this.$root.config.grid_per_page_values
                 .map(function (pages, index) {
                     return {
                         label: pages,
                         value: pages,
-                        default: pages == config.grid_per_page,
+                        default: hasDefault ? pages == this.$root.config.grid_per_page : index == 0,
                     }
                 })
                 .concat({ label: this.$root.config.translations.all, value: 10000 })
