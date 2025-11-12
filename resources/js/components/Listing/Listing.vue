@@ -66,7 +66,7 @@ export default {
                     return {
                         label: pages,
                         value: pages,
-                        default: hasDefault ? pages == this.$root.config.grid_per_page : index == 0,
+                        default: hasDefault ? pages == config.grid_per_page : index == 0,
                     }
                 })
                 .concat({ label: this.$root.config.translations.all, value: 10000 })
