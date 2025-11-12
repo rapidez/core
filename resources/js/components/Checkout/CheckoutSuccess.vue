@@ -27,7 +27,7 @@ export default {
             }
         })
 
-        window.$emit('rapidez:checkout-success', this.order)
+        window.$emit('checkout-success', this.order)
 
         useEventListener(window, 'beforeunload', this.beforeUnloadCallback, { once: true })
     },

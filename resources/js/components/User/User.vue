@@ -14,7 +14,7 @@ export default {
 
     methods: {
         logout(redirect = false) {
-            window.$emit('rapidez:logout', { redirect: redirect })
+            window.$emit('logout', { redirect: redirect })
         },
     },
 }

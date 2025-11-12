@@ -77,7 +77,7 @@ document.addEventListener('vue:loaded', function (event) {
                 .map((queryResponse) => (queryResponse && 'cart' in queryResponse ? queryResponse.cart : queryResponse))
                 .findLast((queryResponse) => queryResponse?.is_virtual !== undefined) ?? cart.value
 
-        window.$emit('rapidez:cart-updated', {
+        window.$emit('cart-updated', {
             cart: cart,
         })
 

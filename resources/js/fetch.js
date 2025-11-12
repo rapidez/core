@@ -160,7 +160,7 @@ export const magentoGraphQL = (window.magentoGraphQL = async (
             }
 
             if (options?.redirectOnExpiration ?? true) {
-                window.$emit('rapidez:logout', { redirect: '/login' })
+                window.$emit('logout', { redirect: '/login' })
             } else {
                 throw new SessionExpired(window.config.translations.errors.session_expired, responseClone)
             }
@@ -203,7 +203,7 @@ export const magentoAPI = (window.magentoAPI = async (
             }
 
             if (options?.redirectOnExpiration ?? true) {
-                window.$emit('rapidez:logout', { redirect: '/login' })
+                window.$emit('logout', { redirect: '/login' })
             } else {
                 throw new SessionExpired(window.config.translations.errors.session_expired, response)
             }

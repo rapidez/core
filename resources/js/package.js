@@ -1,6 +1,6 @@
 window.debug = import.meta.env.VITE_DEBUG == 'true'
 window.Notify = (message, type = 'info', params = [], link = null) =>
-    setTimeout(() => window.$emit('rapidez:notification-message', message, type, params, link))
+    setTimeout(() => window.$emit('notification-message', message, type, params, link))
 
 if (!window.process) {
     // Workaround for process missing, if data is actually needed from here you should apply the following polyfill.

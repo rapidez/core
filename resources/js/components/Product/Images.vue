@@ -23,7 +23,7 @@ export default {
 
     created() {
         let self = this
-        window.$on('rapidez:product-super-attribute-change', function (simpleProduct) {
+        window.$on('product-super-attribute-change', function (simpleProduct) {
             Object.values(window.config.product.children).forEach((child) => {
                 if (
                     child === simpleProduct &&

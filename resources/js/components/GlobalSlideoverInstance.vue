@@ -10,7 +10,7 @@ export default {
         }
     },
     mounted() {
-        window.$on('rapidez:global-slideover-open', (data) => {
+        window.$on('global-slideover-open', (data) => {
             this.title = data.title || ''
             this.position = data.position || 'left'
             this.$el.nextSibling.querySelector('#slideover-global').checked = true
