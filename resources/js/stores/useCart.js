@@ -167,7 +167,7 @@ function addCustomerAddressId(address) {
         return address
     }
     const customerAddress = user.value?.addresses?.find((customerAddress) => areAddressesSame(customerAddress, address))
-    address.customer_address_id = address.customer_address_id || customerAddress?.id
+    address.customer_address_id = (address.customer_address_id || customerAddress?.id) ?? null
 
     return address
 }
