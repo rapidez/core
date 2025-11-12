@@ -3,7 +3,7 @@
 
     <ais-index v-bind:index-name="config.index.category" v-bind:index-id="'listing_' + config.index.category">
         <ais-hits v-slot="{ items }">
-            <div class="border-b py-2.5" v-if="items && items.length">
+            <div v-if="items && items.length">
                 <strong>@lang('Categories'):</strong>
                 <ul class="flex flex-col font-sans">
                     <li v-for="(item, count) in items" class="flex flex-1 items-center w-full">
