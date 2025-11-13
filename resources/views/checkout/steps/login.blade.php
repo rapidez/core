@@ -11,6 +11,7 @@
                 type="email"
                 v-model="checkoutLogin.email"
                 v-bind:disabled="loggedIn"
+                v-on:change="() => checkoutLogin.go()"
                 required
             />
         </label>
