@@ -69,7 +69,7 @@ export const refresh = async function () {
                 // Plus, maybe we could remove the GraphQL call?
                 // We're doing this for the customer group id
                 // GraphQL isn't explosing that value.
-                ...await rapidezAPI('get', 'customer')
+                ...(await rapidezAPI('get', 'customer')),
             }
             if (oldEmail !== userStorage.value?.email) {
                 await loggedIn()
