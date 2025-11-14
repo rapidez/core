@@ -194,7 +194,9 @@ trait Searchable
             })
             ->whereNotNull('type');
 
-        $superAttributeTypeMapping = static::allSuperAttributes()
+        $superAttributeTypeMapping = SuperAttribute::all()
+            ->pluck('attribute_code')
+            ->unique()
             ->mapWithKeys(fn ($attribute) => [
                 "super_{$attribute}_values" => [
                     'type' => 'flattened',
