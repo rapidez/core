@@ -3,7 +3,7 @@
         <div v-on-click-away="close">
             <button data-testid="account-menu" class="flex my-1" v-on:click="toggle">
                 <x-heroicon-o-user class="size-6"/>
-                @{{ $root.user.firstname }}
+                @{{ user.value?.firstname }}
             </button>
             <div v-if="isOpen" class="absolute bg-white border shadow rounded mr-1 z-header-dropdown">
                 @if (App::providerIsLoaded('Rapidez\Account\AccountServiceProvider'))
