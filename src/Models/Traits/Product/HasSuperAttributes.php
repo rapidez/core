@@ -3,43 +3,49 @@
 namespace Rapidez\Core\Models\Traits\Product;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Rapidez\Core\Models\Relations\HasManyCallback;
+use Rapidez\Core\Models\Traits\UsesCallbackRelations;
 
 trait HasSuperAttributes
 {
+    use UsesCallbackRelations;
+
     /**
      * @deprecated please use superAttributes
      */
-    public function super_attributes(): HasMany
+    public function super_attributes(): HasManyCallback
     {
         return $this->superAttributes();
     }
 
-    public function superAttributes(): HasMany
+    public function superAttributes(): HasManyCallback
     {
-        return $this->hasMany(
+        return $this->hasManyCallback(
+            fn ($result) => $result->keyBy('attribute_id'),
             config('rapidez.models.super_attribute'),
             'product_id',
-        )->orderBy('catalog_product_super_attribute.position');
-    }
-
-    public function getSuperAttributesAttribute()
-    {
-        return $this->getRelationValue('superAttributes')->keyBy('attribute_id');
+        )
+            ->orderBy('eav_attribute.attribute_code')
+            ->orderBy('catalog_product_super_attribute.position');
     }
 
     public function superAttributeValues(): Attribute
     {
-        return Attribute::get(function () {
-            return $this->superAttributes
-                ->sortBy('position')
-                ->mapWithKeys(fn ($attribute) => [
-                    $attribute->attribute_code => $this->children->mapWithKeys(function ($child) use ($attribute) {
-                        return [$child->entity_id => $child->{$attribute->attribute_code}];
-                    })
-                        ->unique('value')
-                        ->sortBy('sort_order'),
-                ]);
-        });
+        return Attribute::get(fn () => $this->superAttributes
+            ->sortBy('position')
+            ->mapWithKeys(fn ($attribute) => [
+                $attribute->attribute_code => $this->children
+                    ->mapWithKeys(fn ($child) => [
+                        $child->entity_id => $child->{$attribute->attribute_code},
+                    ])
+                    ->sortBy('sort_order')
+                    ->groupBy('value')
+                    ->map(fn ($children, $value) => [
+                        'children' => $children,
+                        'value'    => $value,
+                        'label'    => $children->first()->label,
+                    ]),
+            ])
+        );
     }
 }
