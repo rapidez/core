@@ -1,13 +1,34 @@
-import Vue from 'vue'
-window.Vue = Vue
+import { directive as onClickaway } from 'vue3-click-away'
 
-import { directive as onClickaway } from 'vue-clickaway'
-Vue.directive('on-click-away', onClickaway)
-Vue.directive('blur', (el) => {
-    el.removeAttribute('v-blur')
+document.addEventListener('vue:loaded', function (event) {
+    event.detail.vue.directive('on-click-away', onClickaway)
+    event.detail.vue.directive('blur', (el) => {
+        el.removeAttribute('v-blur')
+    })
+    event.detail.vue.directive('txt', {
+        mounted(el, binding) {
+            el.textContent = binding.value == null ? '' : String(binding.value)
+        },
+        updated(el, binding) {
+            if (binding.value !== binding.oldValue) {
+                el.textContent = binding.value == null ? '' : String(binding.value)
+            }
+        },
+    })
+
+    event.detail.vue.directive('htm', {
+        mounted(el, binding) {
+            el.innerHTML = binding.value == null ? '' : String(binding.value)
+        },
+        updated(el, binding) {
+            if (binding.value !== binding.oldValue) {
+                el.innerHTML = binding.value == null ? '' : String(binding.value)
+            }
+        },
+    })
+
+    event.detail.vue.config.compilerOptions.isCustomElement = (tag) => /^turbo-.+/.test(tag)
 })
-
-Vue.config.ignoredElements = [/^turbo-.+/]
 
 /**
  * add getter/setter for ref with value.

@@ -9,7 +9,7 @@
                 :required="$option->is_require"
                 name="option_{{ $option->option_id }}[]"
                 v-model="addToCart.customSelectedOptions[{{ $option->option_id }}]"
-                v-on:input="(event) => addToCart.customSelectedOptions[{{ $option->option_id }}] === undefined ? window.app.$set(addToCart.customSelectedOptions, {{ $option->option_id }}, event.target.checked ? [event.target.value] : []) : ''"
+                v-on:input="(event) => addToCart.customSelectedOptions[{{ $option->option_id }}] === undefined ? (addToCart.customSelectedOptions[{{ $option->option_id }}] = event.target.checked ? [event.target.value] : []) : ''"
             >
                 {{ $value->title }} {{ $value->price_label }}
             </x-rapidez::input.checkbox>

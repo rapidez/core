@@ -13,9 +13,10 @@
         v-slot="popularProducts"
         v-cloak
     >
-        <div>
+        <div ref="root">
             <ais-instant-search
                 v-if="popularProducts.searchClient"
+                :future="{ preserveSharedStateOnUnmount: true }"
                 :search-client="popularProducts.searchClient"
                 :index-name="popularProducts.index"
                 :middlewares="popularProducts.middlewares"

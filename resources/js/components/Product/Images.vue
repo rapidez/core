@@ -12,18 +12,18 @@ export default {
 
     mounted() {
         if (this.isTouchDevice()) {
-            useEventListener(this.$el, 'touchstart', this.touchStart)
-            useEventListener(this.$el, 'touchend', this.touchEnd)
+            useEventListener(this.$el.nextSibling, 'touchstart', this.touchStart)
+            useEventListener(this.$el.nextSibling, 'touchend', this.touchEnd)
         }
     },
 
     render() {
-        return this.$scopedSlots.default(this)
+        return this.$slots.default(this)
     },
 
     created() {
         let self = this
-        this.$root.$on('product-super-attribute-change', function (simpleProduct) {
+        window.$on('product-super-attribute-change', function (simpleProduct) {
             Object.values(window.config.product.children).forEach((child) => {
                 if (
                     child === simpleProduct &&

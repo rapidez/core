@@ -1,7 +1,7 @@
 <script>
 export default {
     render() {
-        return this.$scopedSlots.default(this)
+        return this.$slots.default(this)
     },
     data() {
         return {
@@ -10,10 +10,10 @@ export default {
         }
     },
     mounted() {
-        this.$root.$on('global-slideover-open', (data) => {
+        window.$on('global-slideover-open', (data) => {
             this.title = data.title || ''
             this.position = data.position || 'left'
-            this.$el.querySelector('#slideover-global').checked = true
+            this.$el.nextSibling.querySelector('#slideover-global').checked = true
         })
     },
 }
