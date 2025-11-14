@@ -15,6 +15,8 @@ class Model extends BaseModel
         Macroable::__callStatic as macroCallStatic;
     }
 
+    protected $guarded = [];
+
     public static ?string $modelName;
 
     public function __call($method, $parameters)
