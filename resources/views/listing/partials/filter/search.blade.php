@@ -2,8 +2,8 @@
     <template v-slot="{ currentRefinement, isSearchStalled, refine }">
         <x-rapidez::input
             type="search"
-            v-bind:value="currentRefinement"
-            v-on:input="refine($event.currentTarget.value)"
+            v-bind:value="currentRefinement !== '__NO_QUERY__' ? currentRefinement : undefined"
+            v-on:input="refine($event.currentTarget.value || '__NO_QUERY__')"
             class="peer"
             :placeholder="__('Search within the results')"
         />

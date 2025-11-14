@@ -18,6 +18,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        allowGuest: {
+            type: Boolean,
+            default: true,
+        },
     },
 
     data: () => ({
@@ -31,7 +35,13 @@ export default {
     }),
 
     render() {
-        return this.$scopedSlots.default(this)
+        return this.$slots.default(this)
+    },
+
+    mounted() {
+        if (!user.value.is_logged_in && this.email) {
+            this.checkEmailAvailability()
+        }
     },
 
     methods: {
@@ -85,6 +95,10 @@ export default {
         },
 
         async handleGuest() {
+            if (!this.allowGuest) {
+                return false
+            }
+
             await setGuestEmailOnCart(this.email)
 
             return true

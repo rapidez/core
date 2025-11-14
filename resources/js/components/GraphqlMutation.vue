@@ -81,7 +81,11 @@ export default {
     }),
 
     render() {
-        return this.$scopedSlots.default({
+        if (!('default' in this.$slots)) {
+            return null
+        }
+
+        return this.$slots.default({
             mutate: this.mutate,
             mutated: this.mutated,
             running: this.running,
@@ -97,7 +101,7 @@ export default {
         this.data = this.variables
 
         if (this.debounce) {
-            this.mutate = useDebounceFn(async () => await this.mutateFn, this.debounce)
+            this.mutate = useDebounceFn(async () => await this.mutateFn(), this.debounce)
         } else {
             this.mutate = this.mutateFn
         }
@@ -122,9 +126,13 @@ export default {
     mounted() {
         if (this.mutateEvent) {
             this.$nextTick(() =>
-                window.app.$on(this.mutateEvent, () => {
-                    this.mutate()
-                }),
+                window.$on(
+                    this.mutateEvent,
+                    () => {
+                        this.mutate()
+                    },
+                    { defer: false },
+                ),
             )
         }
     },

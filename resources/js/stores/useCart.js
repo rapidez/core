@@ -35,10 +35,11 @@ export const refresh = async function (force = false) {
                 { cart_id: mask.value },
             )
 
-            Vue.prototype.updateCart([], response)
+            window.app.config.globalProperties.updateCart([], response)
         } catch (error) {
             console.error(error)
-            GraphQLError.prototype.isPrototypeOf(error) && Vue.prototype.checkResponseForExpiredCart({}, await error?.response?.json())
+            GraphQLError.prototype.isPrototypeOf(error) &&
+                window.app.config.globalProperties.checkResponseForExpiredCart({}, await error?.response?.json())
 
             return false
         }
@@ -64,7 +65,7 @@ export const setGuestEmailOnCart = async function (email) {
             cart_id: mask.value,
             email: email,
         })
-        .then((response) => Vue.prototype.updateCart([], response))
+        .then((response) => window.app.config.globalProperties.updateCart([], response))
 }
 
 export const linkUserToCart = async function () {
@@ -77,7 +78,7 @@ export const linkUserToCart = async function () {
                 cart_id: mask.value,
             },
         )
-        .then((response) => Vue.prototype.updateCart([], response))
+        .then((response) => window.app.config.globalProperties.updateCart([], response))
 }
 
 export const fetchCustomerCart = async function () {
@@ -87,7 +88,7 @@ export const fetchCustomerCart = async function () {
 
             ` + config.fragments.cart,
         )
-        .then((response) => Vue.prototype.updateCart([], response))
+        .then((response) => window.app.config.globalProperties.updateCart([], response))
 }
 
 export const fetchGuestCart = async function () {
@@ -97,7 +98,7 @@ export const fetchGuestCart = async function () {
 
             ` + config.fragments.cart,
         )
-        .then((response) => Vue.prototype.updateCart([], response))
+        .then((response) => window.app.config.globalProperties.updateCart([], response))
 }
 
 export const fetchCart = async function () {
@@ -156,8 +157,8 @@ function areAddressesSame(address1, address2) {
     const fieldsToCompare = ['city', 'postcode', 'company', 'firstname', 'lastname', 'telephone']
 
     return (
-        fieldsToCompare.every((field) => address1?.[field] === address2?.[field]) &&
-        [0, 1, 2].every((key) => address1?.street?.[key] === address2?.street?.[key])
+        fieldsToCompare.every((field) => (address1?.[field] ?? '') === (address2?.[field] ?? '')) &&
+        [0, 1, 2].every((key) => (address1?.street?.[key] ?? '') === (address2?.street?.[key] ?? ''))
     )
 }
 

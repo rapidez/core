@@ -1,28 +1,84 @@
+import { defineAsyncComponent } from 'vue'
 import { addQuery } from './stores/useSearchHistory'
+import highlight from 'vue-instantsearch/vue3/es/src/components/Highlight.vue.js'
 
-// Shared between Autocomplete and Listing
-Vue.component('ais-instant-search', () => import('vue-instantsearch/vue2/es/src/components/InstantSearch'))
-Vue.component('ais-hits', () => import('vue-instantsearch/vue2/es/src/components/Hits.js'))
-Vue.component('ais-configure', () => import('vue-instantsearch/vue2/es/src/components/Configure.js'))
-Vue.component('ais-highlight', () => import('vue-instantsearch/vue2/es/src/components/Highlight.vue.js'))
-Vue.component('ais-autocomplete', () => import('vue-instantsearch/vue2/es/src/components/Autocomplete.vue.js'))
-Vue.component('ais-search-box', () => import('vue-instantsearch/vue2/es/src/components/SearchBox.vue.js'))
-Vue.component('ais-state-results', () => import('vue-instantsearch/vue2/es/src/components/StateResults.vue.js'))
+document.addEventListener('vue:loaded', function (event) {
+    const vue = event.detail.vue
+    // Shared between Autocomplete and Listing
+    vue.component(
+        'ais-instant-search',
+        defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/InstantSearch')),
+    )
+    vue.component(
+        'ais-hits',
+        defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/Hits.js')),
+    )
+    vue.component(
+        'ais-configure',
+        defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/Configure.js')),
+    )
+    vue.component('ais-highlight', highlight)
+    vue.component(
+        'ais-autocomplete',
+        defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/Autocomplete.vue.js')),
+    )
+    vue.component(
+        'ais-search-box',
+        defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/SearchBox.vue.js')),
+    )
+    vue.component(
+        'ais-state-results',
+        defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/StateResults.vue.js')),
+    )
 
-// Used by Autocomplete
-Vue.component('ais-index', () => import('vue-instantsearch/vue2/es/src/components/Index.js'))
+    // Used by Autocomplete
+    vue.component(
+        'ais-index',
+        defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/Index.js')),
+    )
 
-// Used by Listing
-Vue.component('ais-refinement-list', () => import('vue-instantsearch/vue2/es/src/components/RefinementList.vue.js'))
-Vue.component('ais-hierarchical-menu', () => import('vue-instantsearch/vue2/es/src/components/HierarchicalMenu.vue.js'))
-Vue.component('ais-range-input', () => import('vue-instantsearch/vue2/es/src/components/RangeInput.vue.js'))
-Vue.component('ais-current-refinements', () => import('vue-instantsearch/vue2/es/src/components/CurrentRefinements.vue.js'))
-Vue.component('ais-clear-refinements', () => import('vue-instantsearch/vue2/es/src/components/ClearRefinements.vue.js'))
-Vue.component('ais-hits-per-page', () => import('vue-instantsearch/vue2/es/src/components/HitsPerPage.vue.js'))
-Vue.component('ais-sort-by', () => import('vue-instantsearch/vue2/es/src/components/SortBy.vue.js'))
-Vue.component('ais-pagination', () => import('vue-instantsearch/vue2/es/src/components/Pagination.vue.js'))
-Vue.component('ais-stats', () => import('vue-instantsearch/vue2/es/src/components/Stats.vue.js'))
-Vue.component('ais-stats-analytics', () => import('./components/Search/AisStatsAnalytics.vue'))
+    // Used by Listing
+    vue.component(
+        'ais-refinement-list',
+        defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/RefinementList.vue.js')),
+    )
+    vue.component(
+        'ais-hierarchical-menu',
+        defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/HierarchicalMenu.vue.js')),
+    )
+    vue.component(
+        'ais-range-input',
+        defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/RangeInput.vue.js')),
+    )
+    vue.component(
+        'ais-current-refinements',
+        defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/CurrentRefinements.vue.js')),
+    )
+    vue.component(
+        'ais-clear-refinements',
+        defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/ClearRefinements.vue.js')),
+    )
+    vue.component(
+        'ais-hits-per-page',
+        defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/HitsPerPage.vue.js')),
+    )
+    vue.component(
+        'ais-sort-by',
+        defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/SortBy.vue.js')),
+    )
+    vue.component(
+        'ais-pagination',
+        defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/Pagination.vue.js')),
+    )
+    vue.component(
+        'ais-stats',
+        defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/Stats.vue.js')),
+    )
+    vue.component(
+        'ais-stats-analytics',
+        defineAsyncComponent(() => import('./components/Search/AisStatsAnalytics.vue')),
+    )
+})
 
 document.addEventListener('insights-event:viewedObjectIDs', (event) => {
     setTimeout(() => {

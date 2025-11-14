@@ -1,16 +1,20 @@
 <script>
 import notification from './Notification.vue'
-Vue.component('notification', notification)
-
+document.addEventListener('vue:loaded', function (event) {
+    event.detail.vue.component('notification', notification)
+})
 export default {
+    components: {
+        notification: notification,
+    },
     data: () => ({
         notifications: [],
     }),
     render() {
-        return this.$scopedSlots.default(this)
+        return this.$slots.default(this)
     },
     mounted() {
-        this.$root.$on('notification-message', (message, type, params, link) => {
+        window.$on('notification-message', (message, type, params, link) => {
             this.notifications.push({
                 message: message,
                 type: type,

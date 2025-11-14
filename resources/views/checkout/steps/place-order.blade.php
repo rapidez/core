@@ -1,6 +1,6 @@
 <graphql-mutation
     :query="config.queries.placeOrder"
-    :variables="{ cart_id: mask }"
+    :variables="{ cart_id: mask.value }"
     :before-request="handleBeforePlaceOrderHandlers"
     :callback="handlePlaceOrder"
     mutate-event="placeOrder"
@@ -8,7 +8,7 @@
     v-slot="{ mutate, variables }"
 >
     <fieldset>
-        <x-rapidez::button.conversion type="submit" data-testid="continue" class="mt-3">
+        <x-rapidez::button.conversion type="submit" data-testid="continue" class="mt-3" loader>
             @lang('Place order')
         </x-rapidez::button.conversion>
     </fieldset>
