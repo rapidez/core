@@ -1,11 +1,11 @@
-# Changelog
+# Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0-alpha.1...5.0.0-alpha.1)
-## [5.0.0-alpha.1](https://github.com/rapidez/core/releases/tag/5.0.0-alpha.1) - 2025-11-11
+[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0-alpha.2...5.0.0-alpha.2)
+## [5.0.0-alpha.2](https://github.com/rapidez/core/releases/tag/5.0.0-alpha.2) - 2025-11-14
 
 ### Changed
 
-- Use EAV structure instead of flat tables (#943)
+- Vue 3 upgrade (#951)
 
 ## [4.8.0](https://github.com/rapidez/core/releases/tag/4.8.0) - 2025-10-14
 
