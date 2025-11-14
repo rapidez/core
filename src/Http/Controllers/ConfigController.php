@@ -183,11 +183,11 @@ class ConfigController
             });
 
         foreach (CustomerGroup::all() as $customerGroup) {
-            $field = 'prices.'.$customerGroup->customer_group_id.'.min_price';
+            $field = 'prices.' . $customerGroup->customer_group_id . '.min_price';
             $filterableAttributes->push([
                 'attribute' => $field,
-                'field' => $field,
-                'type' => 'numeric',
+                'field'     => $field,
+                'type'      => 'numeric',
             ]);
         }
 

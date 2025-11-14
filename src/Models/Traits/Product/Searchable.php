@@ -9,7 +9,6 @@ use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\AbstractAttribute;
 use Rapidez\Core\Models\Category;
 use Rapidez\Core\Models\CategoryProduct;
-use Rapidez\Core\Models\CustomerGroup;
 use Rapidez\Core\Models\EavAttribute;
 use Rapidez\Core\Models\Product;
 use Rapidez\Core\Models\Traits\Searchable as ParentSearchable;
@@ -76,7 +75,7 @@ trait Searchable
         // TODO: Maybe we can handle this keying directly
         // on the relationship as also proposed here:
         // https://github.com/rapidez/core/pull/1062
-        $data['prices'] = (object)Arr::keyBy($data['prices'], 'customer_group_id');
+        $data['prices'] = (object) Arr::keyBy($data['prices'], 'customer_group_id');
 
         $data['store'] = config('rapidez.store');
         $data['super_attributes'] = $this->superAttributes->keyBy('attribute_id');
