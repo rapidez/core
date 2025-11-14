@@ -59,12 +59,14 @@ export default {
         },
 
         hitsPerPage() {
+            let hasDefault = this.$root.config.grid_per_page_values.includes(this.$root.config.grid_per_page)
+
             return this.$root.config.grid_per_page_values
                 .map(function (pages, index) {
                     return {
                         label: pages,
                         value: pages,
-                        default: pages == config.grid_per_page,
+                        default: hasDefault ? pages == config.grid_per_page : index == 0,
                     }
                 })
                 .concat({ label: this.$root.config.translations.all, value: 10000 })
@@ -178,7 +180,7 @@ export default {
                 ...(data.range || {}),
                 ...(data.refinementList || {}),
                 category: category?.length ? category.join('--') : undefined,
-                q: data.query,
+                q: data.query !== '__NO_QUERY__' ? data.query : undefined,
                 page: data.page > 0 ? String(data.page) : undefined,
                 sort: data.sortBy,
                 hits: data.hitsPerPage != config.grid_per_page ? data.hitsPerPage : undefined,
@@ -201,7 +203,7 @@ export default {
                     range: ranges,
                     refinementList: refinementList,
                     hierarchicalMenu: { category_lvl1: categories.length ? categories : null },
-                    query: routeState.q,
+                    query: routeState.q || '__NO_QUERY__',
                     page: Number(routeState.page),
                     sortBy: routeState.sort,
                     hitsPerPage: Number(routeState.hits),

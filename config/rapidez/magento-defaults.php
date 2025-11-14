@@ -15,6 +15,7 @@ return [
     'cataloginventory/item_options/qty_increments'        => '1',
     'cataloginventory/options/show_out_of_stock'          => '0',
     'checkout/cart/redirect_to_cart'                      => '0',
+    'checkout/options/guest_checkout'                     => '1',
     'currency/options/default'                            => 'USD',
     'customer/address/company_show'                       => 'opt',
     'customer/address/fax_show'                           => '',
@@ -27,6 +28,8 @@ return [
     'customer/address/taxvat_show'                        => '',
     'customer/address/telephone_show'                     => 'req',
     'customer/create_account/vat_frontend_visibility'     => '0',
+    'customer/password/minimum_password_length'           => '8',
+    'customer/password/required_character_classes_number' => '3',
     'design/search_engine_robots/default_robots'          => 'INDEX,FOLLOW',
     'general/country/default'                             => 'US',
     'general/locale/code'                                 => 'en_US',
@@ -41,6 +44,4 @@ return [
     'trans_email/ident_general/email'                     => 'owner@example.com',
     'web/secure/base_url'                                 => '{{unsecure_base_url}}',
     'web/url/catalog_media_url_format'                    => 'hash',
-    'customer/password/required_character_classes_number' => '3',
-    'customer/password/minimum_password_length'           => '8',
 ];

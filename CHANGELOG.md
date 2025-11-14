@@ -1,4 +1,4 @@
-# Changelog 
+# Changelog
 
 [Unreleased changes](https://github.com/rapidez/core/compare/5.0.0-alpha.1...5.0.0-alpha.1)
 ## [5.0.0-alpha.1](https://github.com/rapidez/core/releases/tag/5.0.0-alpha.1) - 2025-11-11
@@ -6,6 +6,31 @@
 ### Changed
 
 - Use EAV structure instead of flat tables (#943)
+
+## [4.8.0](https://github.com/rapidez/core/releases/tag/4.8.0) - 2025-10-14
+
+### Added
+
+- Playwright attach Lighthouse report (#1036)
+- Loader button option (#969)
+- Cart quantity debounce (#1046)
+- Range slider labels option and clip fix (#1037)
+
+### Changed
+
+- Only show 1 product in sliders on mobile (#1030)
+- Also update the cart on error (#1047)
+
+### Fixed
+
+- Category positions fix (#1029)
+- Check email availability if it's prefilled (#1033)
+- Prevent layout shift listing product names (#1031)
+- Crash when custom size has been passed fix (#1032)
+- Missing brackets fix (#1041)
+- Disable setting guest email when guest checkout is disabled (#1040)
+- Playwright publish payment icons (#1045)
+- Unknown turbo-frame error fix (#1048)
 
 ## [4.7.6](https://github.com/rapidez/core/releases/tag/4.7.6) - 2025-10-02
 
