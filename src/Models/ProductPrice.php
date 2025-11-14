@@ -14,6 +14,20 @@ class ProductPrice extends Model
 
     protected $primaryKey = null;
 
+    protected $hidden = [
+        'entity_id',
+        'website_id',
+        'tax_class_id',
+    ];
+
+    protected $casts = [
+        'price'       => 'float',
+        'final_price' => 'float',
+        'min_price'   => 'float',
+        'max_price'   => 'float',
+        'tier_price'  => 'float',
+    ];
+
     protected static function booting()
     {
         // This index table does always have

@@ -10,6 +10,8 @@ use Rapidez\Core\Http\Controllers\SearchController;
 use Rapidez\Core\Http\Middleware\VerifyAdminToken;
 
 Route::middleware('api')->prefix('api')->group(function () {
+    Route::get('customer', fn () => auth('magento-customer')->user());
+
     Route::post('search', [SearchController::class, 'store'])
         ->middleware([
             \Illuminate\Cookie\Middleware\EncryptCookies::class,
