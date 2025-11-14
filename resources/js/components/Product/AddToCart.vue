@@ -326,6 +326,10 @@ export default {
                 // Subtract all children that don't fit this option
                 children = children.filter((child) => option.children.some((optionChild) => optionChild == child))
             })
+
+            // Remove out-of-stock products
+            children = children.filter((child) => this.product.children[child].in_stock)
+
             return children
         },
 
@@ -422,6 +426,9 @@ export default {
                             option.children.some((optionChild) => optionChild == child),
                         )
                     })
+
+                    // Remove out-of-stock products
+                    matchingOrOwnChildren = matchingOrOwnChildren.filter((child) => this.product.children[child].in_stock)
 
                     // Then find all options that don't match any of these children
                     let disabled = Object.entries(this.product[superCode + '_values'])
