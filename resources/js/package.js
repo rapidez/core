@@ -107,9 +107,13 @@ function init() {
                     }
                 },
 
-                resizedPath(imagePath, size, store = null) {
+                resizedPath(imagePath, size, store = null, sku = false) {
                     if (!store) {
                         store = window.config.store
+                    }
+
+                    if (sku) {
+                        return window.url(`/storage/${store}/resizes/${size}/sku/${imagePath}.webp`)
                     }
 
                     let url = new URL(imagePath)
@@ -123,7 +127,7 @@ function init() {
                         function_score: {
                             script_score: {
                                 script: {
-                                    source: `doc.containsKey('positions.${categoryId}') ? (Integer.parseInt(doc['positions.${categoryId}'].empty ? '0' : doc['positions.${categoryId}'].value)) : 0`,
+                                    source: `doc.containsKey('positions.${categoryId}') && !doc['positions.${categoryId}'].empty && doc['positions.${categoryId}'].value =~ /^\\d+$/ ? Integer.parseInt(doc['positions.${categoryId}'].value) : 0`,
                                 },
                             },
                         },

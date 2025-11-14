@@ -1,7 +1,8 @@
-@foreach ($product->super_attributes ?: [] as $superAttributeId => $superAttribute)
-    @if ($superAttribute->visual_swatch)
+@foreach ($product->superAttributes ?: [] as $superAttributeId => $superAttribute)
+    @php($swatchType = $superAttribute->additional_data['swatch_input_type'] ?? null)
+    @if ($swatchType === 'visual')
         @include('rapidez::product.partials.super-attributes.visual-swatch')
-    @elseif ($superAttribute->text_swatch)
+    @elseif ($swatchType === 'text')
         @include('rapidez::product.partials.super-attributes.text-swatch')
     @else
         @include('rapidez::product.partials.super-attributes.drop-down')

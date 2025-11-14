@@ -1,0 +1,1 @@
+<x-rapidez::input v-bind:disabled="$root.loading" />
