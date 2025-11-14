@@ -23,7 +23,7 @@ import './callbacks'
 import './vue-components'
 import './instantsearch'
 import { fetchCount } from './stores/useFetches.js'
-import { computed, createApp } from 'vue'
+import { computed, createApp, watch } from 'vue'
 ;(() => import('./turbolinks'))()
 
 if (import.meta.env.VITE_DEBUG === 'true') {
@@ -134,11 +134,6 @@ function init() {
                     }
                 },
             },
-            watch: {
-                loadingCount: function (count) {
-                    app.config.globalProperties.loading = count > 0
-                },
-            },
             mounted() {
                 setTimeout(() => {
                     const event = new CustomEvent('vue:mounted', { detail: { vue: window.app } })
@@ -182,6 +177,10 @@ function init() {
         }
         window.app.config.globalProperties.window = window
         window.app.config.globalProperties.config = window.config
+
+        watch(fetchCount, function (count) {
+            app.config.globalProperties.loading = count > 0
+        });
 
         setTimeout(() => {
             booting = false

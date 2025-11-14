@@ -42,7 +42,7 @@
     <div class="border-t pt-3 mt-3 font-bold">
         <dt>@lang('Total')</dt>
         <dd v-if="showTax">@{{ window.price(cart.value.prices.grand_total.value) }}</dd>
-        <dd v-else>@{{ window.price(cart.value.prices.grand_total.value - cart.value.taxTotal.value) }}</dd>
+        <dd v-else>@{{ window.price(cart.value.prices.grand_total.value - cart.value.taxTotal) }}</dd>
     </div>
 </x-rapidez::summary>
 
