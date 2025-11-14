@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.7.6...4.7.6)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0-alpha.1...5.0.0-alpha.1)
+## [5.0.0-alpha.1](https://github.com/rapidez/core/releases/tag/5.0.0-alpha.1) - 2025-11-11
+
+### Changed
+
+- Use EAV structure instead of flat tables (#943)
+
 ## [4.7.6](https://github.com/rapidez/core/releases/tag/4.7.6) - 2025-10-02
 
 ### Fixed
