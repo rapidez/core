@@ -11,7 +11,6 @@ use Rapidez\Core\Models\Category;
 use Rapidez\Core\Models\CategoryProduct;
 use Rapidez\Core\Models\EavAttribute;
 use Rapidez\Core\Models\Product;
-use Rapidez\Core\Models\SuperAttribute;
 use Rapidez\Core\Models\Traits\Searchable as ParentSearchable;
 use TorMorten\Eventy\Facades\Eventy;
 
