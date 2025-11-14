@@ -405,30 +405,35 @@ export default {
         },
 
         disabledOptions: function () {
-            return Object.fromEntries(Object.entries(this.product.super_attributes).map(([currentAttributeId, attribute]) => {
-                let superCode = `super_${attribute.attribute_code}`
+            return Object.fromEntries(
+                Object.entries(this.product.super_attributes).map(([currentAttributeId, attribute]) => {
+                    let superCode = `super_${attribute.attribute_code}`
 
-                // Run the matchingChildren function above, but filter out the current attribute so that it doesn't end up filtering out itself
-                let matchingOrOwnChildren = Object.values(this.product.children).map((child) => child.entity_id)
-                Object.entries(this.options).forEach(([attributeId, optionId]) => {
-                    if (attributeId == currentAttributeId) {
-                        return
-                    }
-                    let code = this.product.super_attributes[attributeId].attribute_code
-                    let option = this.product[`super_${code}_values`][optionId]
+                    // Run the matchingChildren function above, but filter out the current attribute so that it doesn't end up filtering out itself
+                    let matchingOrOwnChildren = Object.values(this.product.children).map((child) => child.entity_id)
+                    Object.entries(this.options).forEach(([attributeId, optionId]) => {
+                        if (attributeId == currentAttributeId) {
+                            return
+                        }
+                        let code = this.product.super_attributes[attributeId].attribute_code
+                        let option = this.product[`super_${code}_values`][optionId]
 
-                    matchingOrOwnChildren = matchingOrOwnChildren.filter((child) => option.children.some((optionChild) => optionChild == child))
-                })
+                        matchingOrOwnChildren = matchingOrOwnChildren.filter((child) =>
+                            option.children.some((optionChild) => optionChild == child),
+                        )
+                    })
 
-                // Then find all options that don't match any of these children
-                let disabled = Object.entries(this.product[superCode + '_values'])
-                    .filter(([optionId, option]) =>
-                        !option.children.some((optionChild) => matchingOrOwnChildren.some((child) => optionChild == child))
-                    )
-                    .map(([optionId]) => optionId)
+                    // Then find all options that don't match any of these children
+                    let disabled = Object.entries(this.product[superCode + '_values'])
+                        .filter(
+                            ([optionId, option]) =>
+                                !option.children.some((optionChild) => matchingOrOwnChildren.some((child) => optionChild == child)),
+                        )
+                        .map(([optionId]) => optionId)
 
-                return [superCode, disabled]
-            }))
+                    return [superCode, disabled]
+                }),
+            )
         },
 
         enabledOptions: function () {
