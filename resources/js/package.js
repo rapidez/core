@@ -180,7 +180,7 @@ function init() {
 
         watch(fetchCount, function (count) {
             app.config.globalProperties.loading = count > 0
-        });
+        })
 
         setTimeout(() => {
             booting = false
