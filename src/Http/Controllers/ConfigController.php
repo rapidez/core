@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Category;
+use Rapidez\Core\Models\CustomerGroup;
 use Rapidez\Core\Models\Traits\Searchable;
 
 class ConfigController
@@ -180,6 +181,15 @@ class ConfigController
                     'type'      => $isNumeric ? 'numeric' : 'string',
                 ];
             });
+
+        foreach (CustomerGroup::all() as $customerGroup) {
+            $field = 'prices.'.$customerGroup->customer_group_id.'.min_price';
+            $filterableAttributes->push([
+                'attribute' => $field,
+                'field' => $field,
+                'type' => 'numeric',
+            ]);
+        }
 
         $maxLevel = $this->getMaxCategoryLevel();
         $categoryLevels = collect(array_fill(1, $maxLevel, 'category_lvl'))

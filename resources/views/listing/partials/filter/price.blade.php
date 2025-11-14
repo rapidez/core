@@ -1,6 +1,6 @@
 <ais-range-input
     v-if="listingSlotProps.rangeAttributes.includes(filter.code)"
-    :attribute="filter.code"
+    :attribute="filter.code == 'price' ? 'prices.'+($root?.user?.group_id || 0)+'.min_price' : filter.code"
 >
     <template v-slot="{ currentRefinement, range, canRefine, refine, sendEvent }">
         <div v-show="range.max">

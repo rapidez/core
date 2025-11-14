@@ -5,7 +5,7 @@ import { clear as clearOrder } from './useOrder'
 import { computed, watch } from 'vue'
 import Jwt from '../jwt'
 import { mask } from './useMask'
-import { magentoGraphQL } from '../fetch'
+import { magentoGraphQL, rapidezAPI } from '../fetch'
 
 /**
  * @deprecated using localstorage to retrieve the token is deprecated, use the useUser.token instead
@@ -62,7 +62,15 @@ export const refresh = async function () {
     return (currentRefresh = (async function () {
         try {
             const oldEmail = userStorage.value?.email
-            userStorage.value = (await magentoGraphQL(`{ customer { ${config.queries.customer} } }`))?.data?.customer
+
+            userStorage.value = {
+                ...(await magentoGraphQL(`{ customer { ${config.queries.customer} } }`))?.data?.customer,
+                // TODO: Is there anything unsafe to share in here?
+                // Plus, maybe we could remove the GraphQL call?
+                // We're doing this for the customer group id
+                // GraphQL isn't explosing that value.
+                ...await rapidezAPI('get', 'customer')
+            }
             if (oldEmail !== userStorage.value?.email) {
                 await loggedIn()
             }
