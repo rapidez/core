@@ -41,27 +41,29 @@ checkoutTypes.forEach((type) => {
 })
 
 test('incorrect password login', BasePage.tags, async ({ page }) => {
-        const productPage = new ProductPage(page)
-        const checkoutPage = new CheckoutPage(page, 'default')
-        const accountPage = new AccountPage(page)
+    const productPage = new ProductPage(page)
+    const checkoutPage = new CheckoutPage(page, 'default')
+    const accountPage = new AccountPage(page)
 
-        const email = `wayne+${crypto.randomUUID()}@enterprises.com`
-        const password = 'IronManSucks.91939'
+    const email = `wayne+${crypto.randomUUID()}@enterprises.com`
+    const password = 'IronManSucks.91939'
 
-        // Register
-        await productPage.addToCart(process.env.PRODUCT_URL_SIMPLE)
-        await checkoutPage.checkout(email, password, true, ['credentials'])
+    // Register
+    await productPage.addToCart(process.env.PRODUCT_URL_SIMPLE)
+    await checkoutPage.checkout(email, password, true, ['credentials'])
 
-        await accountPage.logout()
+    await accountPage.logout()
 
-        // Login
-        await productPage.addToCart(process.env.PRODUCT_URL_SIMPLE)
-        await checkoutPage.gotoCheckout()
-        await checkoutPage.login(email, password + '!')
-        await this.page.getByTestId('continue').click()
-        await this.page.waitForTimeout(500)
-        await this.page.waitForLoadState('networkidle')
-        await expect(page.getByTestId('notifications')).toHaveText('The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later.')
+    // Login
+    await productPage.addToCart(process.env.PRODUCT_URL_SIMPLE)
+    await checkoutPage.gotoCheckout()
+    await checkoutPage.login(email, password + '!')
+    await this.page.getByTestId('continue').click()
+    await this.page.waitForTimeout(500)
+    await this.page.waitForLoadState('networkidle')
+    await expect(page.getByTestId('notifications')).toHaveText(
+        'The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later.',
+    )
 
-        await checkoutPage.checkout(email, password)
-    })
+    await checkoutPage.checkout(email, password)
+})
