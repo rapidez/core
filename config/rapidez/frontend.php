@@ -36,19 +36,15 @@ return [
         'additionals' => [
             'history'            => [],
             'search-suggestions' => [],
-            'categories'         => [
-                'defaultValues' => fn () => config('rapidez.models.category')::where('parent_id', config('rapidez.root_category_id'))
-                    ->limit(config('rapidez.frontend.autocomplete.additionals.categories.size', config('rapidez.frontend.autocomplete.size', 4)))
-                    ->get(),
-            ],
-            'popular-products' => ['size' => 4],
+            'categories'         => [],
 
-            'products' => [
-                'size' => 4,                             // Optional; Overrides the default `size` as defined below
-            ],
+            // For example:
+            // 'blogs' => [
+            //     'size' => 3,                             // Optional; Overrides the default `size` as defined below
+            // ],
         ],
 
-        'size' => 4,
+        'size' => 3,
     ],
 
     // The structure is `'store_code' => 'folder_path'`
