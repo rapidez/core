@@ -140,8 +140,7 @@ export class CheckoutPage {
 
         if (email) {
             await this.login(email, password, register)
-            if(password)
-            await this.page.getByTestId('login').click()
+            if (password) await this.page.getByTestId('login').click()
             await this.page.waitForTimeout(500)
             await this.page.waitForLoadState('networkidle')
         }
