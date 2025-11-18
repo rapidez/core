@@ -139,6 +139,9 @@ export class CheckoutPage {
 
         if (email) {
             await this.login(email, password, register)
+            await this.page.getByTestId('login').click()
+            await this.page.waitForTimeout(500)
+            await this.page.waitForLoadState('networkidle')
         }
 
         await this.shippingAddress()
