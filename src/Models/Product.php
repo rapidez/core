@@ -85,9 +85,9 @@ class Product extends Model
                     'upsell_ids'     => CommaSeparatedToIntegerArray::class,
                     'children'       => Children::class,
                     'grouped'        => Children::class,
-                    'qty_increments' => 'int',
-                    'min_sale_qty'   => 'int',
-                    'max_sale_qty'   => 'int',
+                    'qty_increments' => 'float',
+                    'min_sale_qty'   => 'float',
+                    'max_sale_qty'   => 'float',
                 ],
                 $this->getSuperAttributeCasts(),
                 $this->getMultiselectAttributeCasts(),
@@ -219,16 +219,10 @@ class Product extends Model
     protected function minSaleQty(): Attribute
     {
         return Attribute::make(
-            get: function (?int $minSaleQty): ?int {
-                if (! $this->qty_increments) {
-                    return $minSaleQty;
-                }
-                $remainder = $minSaleQty % $this->qty_increments;
-                if ($remainder === 0) {
-                    return $minSaleQty;
-                }
+            get: function (?float $minSaleQty): ?float {
+                $increments = $this->qty_increments ?: 1;
 
-                return $minSaleQty - $remainder + $this->qty_increments;
+                return ($minSaleQty - fmod($minSaleQty, $increments)) ?: $increments;
             }
         );
     }
