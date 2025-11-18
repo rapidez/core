@@ -63,7 +63,7 @@
                 @lang('Create an account')
             </x-rapidez::input.checkbox>
         </template>
-        @if($onestep ?? false)
+        @if ($onestep ?? false)
             <template v-if="!loggedIn && (checkoutLogin.createAccount || !checkoutLogin.isEmailAvailable)">
                 <x-rapidez::button.conversion v-on:click="checkoutLogin.go" type="button" formnovalidate data-testid="login" class="mt-3" loader>
                     <template v-if="checkoutLogin.createAccount && checkoutLogin.isEmailAvailable">@lang('Register')</template>
