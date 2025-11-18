@@ -2,7 +2,7 @@
     <div class="relative w-full">
         <ais-instant-search
             v-if="autocompleteSlotProps.searchClient"
-            :future="{ preserveSharedStateOnUnmount: true }"
+            :future="autocompleteSlotProps.aisFuture"
             :search-client="autocompleteSlotProps.searchClient"
             :middlewares="autocompleteSlotProps.middlewares"
             :index-name="config.index.product"

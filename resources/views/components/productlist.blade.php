@@ -20,7 +20,7 @@ Examples:
             <div>
                 <ais-instant-search
                     v-if="listingSlotProps.searchClient"
-                    :future="{ preserveSharedStateOnUnmount: true }"
+                    :future="listingSlotProps.aisFuture"
                     :search-client="listingSlotProps.searchClient"
                     :index-name="listingSlotProps.index"
                     :middlewares="listingSlotProps.middlewares"

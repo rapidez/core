@@ -8,6 +8,7 @@ export default {
     data: () => ({
         searchkit: null,
         searchClient: null,
+        aisFuture: { preserveSharedStateOnUnmount: true },
     }),
     async mounted() {
         this.searchkit = await this.initSearchkit()

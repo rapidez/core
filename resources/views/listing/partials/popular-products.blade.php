@@ -16,7 +16,7 @@
         <div>
             <ais-instant-search
                 v-if="popularProducts.searchClient"
-                :future="{ preserveSharedStateOnUnmount: true }"
+                :future="popularProducts.aisFuture"
                 :search-client="popularProducts.searchClient"
                 :index-name="popularProducts.index"
                 :middlewares="popularProducts.middlewares"
