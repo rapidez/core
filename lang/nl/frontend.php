@@ -44,8 +44,4 @@ return [
             'desc' => 'Naam Z-A',
         ],
     ],
-
-    'search' => [
-        'title' => 'Zoeken naar',
-    ],
 ];
