@@ -141,7 +141,7 @@ export const login = async function (email, password) {
 
     await loginByToken(response.data.generateCustomerToken.token)
 
-    return response;
+    return response
 }
 
 export const loginByToken = async function (customerToken) {

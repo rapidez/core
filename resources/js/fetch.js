@@ -152,8 +152,8 @@ export const magentoGraphQL = (window.magentoGraphQL = async (
 
         data?.errors?.forEach((error) => {
             if (
-                !['graphql-authorization', 'graphql-authentication'].includes(error?.extensions?.category)
-                || error.path.includes('generateCustomerToken')
+                !['graphql-authorization', 'graphql-authentication'].includes(error?.extensions?.category) ||
+                error.path.includes('generateCustomerToken')
             ) {
                 return
             }
