@@ -15,6 +15,7 @@ export class CheckoutPage {
 
     async login(email, password = false, register = false) {
         await this.page.fill('[name=email]', email)
+        await this.page.locator('[name=email]').dispatchEvent(new Event('change'))
         await this.page.waitForLoadState('networkidle')
 
         if (password && !register) {
@@ -139,6 +140,7 @@ export class CheckoutPage {
 
         if (email) {
             await this.login(email, password, register)
+            if(password)
             await this.page.getByTestId('login').click()
             await this.page.waitForTimeout(500)
             await this.page.waitForLoadState('networkidle')
