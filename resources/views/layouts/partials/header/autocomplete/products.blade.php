@@ -1,39 +1,40 @@
-<ais-infinite-hits v-bind:index-name="config.index.product" v-bind:index-id="'autocomplete_' + config.index.product" v-slot="{ items, sendEvent, isLastPage, refineNext }">
-    <div>
-        <div v-if="items && items.length">
-            <div class="mb-5 flex max-md:flex-col-reverse gap-y-3 md:items-center justify-between">
-                <p class="font-medium text-2xl inline-block">
-                    <ais-state-results v-slot="{ query }">
-                        <template v-if="query && query !== '__NO_QUERY__'">
-                            @lang('Search for'): @{{ query }}
-                        </template>
-                        <template v-else>
-                            @lang('Search')
-                        </template>
-                    </ais-state-results>
-                </p>
+<ais-hits v-bind:index-name="config.index.product" v-bind:index-id="'autocomplete_' + config.index.product">
+    <template v-slot="{ items, sendEvent }">
+        <div v-if="items && items.length" class="py-2.5">
+            <x-rapidez::autocomplete.title>
+                @lang('Products')
+            </x-rapidez::autocomplete.title>
+            <ul class="gap-2 flex flex-col">
+                <li
+                    v-for="(item, count) in items"
+                    class="hover:bg-muted"
+                    data-testid="autocomplete-item"
+                >
+                    <a :href="item.url | url" v-on:click="sendEvent('click', item, 'Hit Clicked')" class="group relative flex flex-wrap p-2">
+                        <img
+                            v-if="item.thumbnail"
+                            :src="'/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + item.thumbnail + '.webp' | url"
+                            class="shrink-0 self-center object-contain size-16 mix-blend-multiply"
+                            :alt="item.name"
+                            width="200"
+                            height="200"
+                        />
+                        <x-rapidez::no-image v-else class="mb-3 h-48 rounded-t" />
+                        <div class="flex flex-1 justify-center flex-col px-2">
+                            <x-rapidez::highlight attribute="name"/>
 
-                @include('rapidez::layouts.partials.header.autocomplete.all-results')
-            </div>
-
-            <div class="overflow-hidden">
-                <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 -mx-5 -mb-px *:border-b">
-                    <template v-for="(item, count) in items">
-                        @include('rapidez::listing.partials.item')
-                    </template>
-                    <div v-if="!isLastPage" v-intersection-observer="([entry]) => entry?.isIntersecting ? refineNext() : ''"></div>
-                </div>
-                <ais-state-results v-slot="{ status }" v-if="!isLastPage">
-                    <div
-                        class="flex pt-4"
-                    >
-                        <x-rapidez::button class="mx-auto" v-bind:disabed="status !== 'idle'" v-on:click="() => status === 'idle' && refineNext()">
-                            <span v-if="status === 'idle'">@lang('Show more')</span>
-                            <span v-else>@lang('Loading')...</span>
-                        </x-rapidez::button>
-                    </div>
-                </ais-state-results>
-            </div>
+                            <div class="flex items-center gap-x-0.5 mt-0.5">
+                                <div v-if="item.special_price" class="text-muted font-sans line-through text-xs">
+                                    @{{ item.price | price }}
+                                </div>
+                                <div class="text-sm text font-sans font-bold">
+                                    @{{ (item.special_price || item.price) | price }}
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
         </div>
-    </div>
-</ais-infinite-hits>
+    </template>
+</ais-hits>

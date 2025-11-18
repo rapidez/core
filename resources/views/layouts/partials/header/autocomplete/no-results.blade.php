@@ -1,11 +1,11 @@
-<ais-state-results v-slot="{ status, query }" class="max-w-2xl w-full mx-auto has-[>.ais-Hits:empty]:hidden">
+<ais-state-results v-slot="{ status, query }">
     <div v-if="status === 'stalled'" class="flex items-center mx-auto px-5 py-2.5">
         <x-rapidez-loading class="size-5 text-gray-200 animate-spin fill-primary" />
         <span class="ml-2">@lang('Searching...')</span>
     </div>
     <ais-hits>
         <template v-slot="{ items }">
-            <div v-if="items.length === 0 && query !== '' && status === 'idle'"  class="p-5 rounded border border-muted">
+            <div v-if="items.length === 0 && query !== '' && status === 'idle'" class="p-5">
                 <div class="font-bold text text-lg break-all">
                     @lang('No results found for :searchterm', [
                         'searchterm' => '<span class="text-primary">"@{{ query }}"</span>'
