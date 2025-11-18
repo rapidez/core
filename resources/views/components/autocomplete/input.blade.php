@@ -2,7 +2,7 @@
     id="autocomplete-form"
     method="get"
     action="{{ route('search') }}"
-    class="flex relative w-full"
+    class="flex relative z-header-autocomplete"
     {{-- Turbo does not understand redirects to external URLs yet --}}
     data-turbo="false"
 >
