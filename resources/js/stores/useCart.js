@@ -156,8 +156,8 @@ function areAddressesSame(address1, address2) {
     const fieldsToCompare = ['city', 'postcode', 'company', 'firstname', 'lastname', 'telephone']
 
     return (
-        fieldsToCompare.every((field) => address1?.[field] === address2?.[field]) &&
-        [0, 1, 2].every((key) => address1?.street?.[key] === address2?.street?.[key])
+        fieldsToCompare.every((field) => (address1?.[field] ?? '') === (address2?.[field] ?? '')) &&
+        [0, 1, 2].every((key) => (address1?.street?.[key] ?? '') === (address2?.street?.[key] ?? ''))
     )
 }
 
