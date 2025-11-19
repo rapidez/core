@@ -81,7 +81,11 @@ export default {
     }),
 
     render() {
-        return this.$scopedSlots.default({
+        if (!('default' in this.$slots)) {
+            return null
+        }
+
+        return this.$slots.default({
             mutate: this.mutate,
             mutated: this.mutated,
             running: this.running,
@@ -122,9 +126,13 @@ export default {
     mounted() {
         if (this.mutateEvent) {
             this.$nextTick(() =>
-                window.app.$on(this.mutateEvent, () => {
-                    this.mutate()
-                }),
+                window.$on(
+                    this.mutateEvent,
+                    () => {
+                        this.mutate()
+                    },
+                    { defer: false },
+                ),
             )
         }
     },

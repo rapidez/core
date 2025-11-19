@@ -9,12 +9,12 @@ export default {
     },
 
     render() {
-        return this.$scopedSlots.default(this)
+        return this.$slots.default(this)
     },
 
     methods: {
         logout(redirect = false) {
-            this.$root.$emit('logout', { redirect: redirect })
+            window.$emit('logout', { redirect: redirect })
         },
     },
 }
