@@ -6,7 +6,7 @@ import { computed, watch } from 'vue'
 import Jwt from '../jwt'
 import { mask } from './useMask'
 import { magentoGraphQL } from '../fetch'
-
+import { on, emit } from '../polyfills/emit'
 /**
  * @deprecated using localstorage to retrieve the token is deprecated, use the useUser.token instead
  */
@@ -114,7 +114,7 @@ export const register = async function (email, firstname, lastname, password, in
         },
     }).then(async (response) => {
         if (response.data?.createCustomerV2?.customer?.email) {
-            window.app.$emit('registered', {
+            emit('registered', {
                 email: email,
                 firstname: firstname,
                 lastname: lastname,
@@ -149,7 +149,7 @@ export const loginByToken = async function (customerToken) {
 }
 
 export const loggedIn = async function () {
-    window.app.$emit('logged-in')
+    emit('logged-in')
     await cartLoginHandler()
 }
 
@@ -157,7 +157,7 @@ export const logout = async function () {
     await magentoGraphQL('mutation { revokeCustomerToken { result } }', {}, { notifyOnError: false, redirectOnExpiration: false }).finally(
         async () => {
             await clear()
-            window.app.$emit('logged-out')
+            emit('logged-out')
         },
     )
 }
@@ -202,35 +202,41 @@ if (userStorage.value?.email && !token.value) {
     userStorage.value = {}
 }
 
-document.addEventListener('vue:loaded', function (event) {
-    event.detail.vue.$on('logout', async function (data = {}) {
+on(
+    'rapidez:logout',
+    async function (data) {
         await logout()
         useLocalStorage('email', '').value = ''
         Turbo.cache.clear()
 
         if (data?.redirect) {
-            this.$nextTick(() => (window.location.href = window.url(data?.redirect)))
+            setTimeout(() => (window.location.href = window.url(data?.redirect)))
         }
-    })
-})
+    },
+    { autoRemove: false, defer: false },
+)
 
-document.addEventListener('cart-updated', (event) => {
-    // Can be removed once https://github.com/magento/magento2/issues/39828 is fixed
-    setTimeout(() => {
-        if (cart?.value?.shipping_addresses?.length > 0 || userStorage.value?.addresses?.length < 1) {
-            return
-        }
+on(
+    'rapidez:cart-updated',
+    () => {
+        // Can be removed once https://github.com/magento/magento2/issues/39828 is fixed
+        setTimeout(() => {
+            if (cart?.value?.shipping_addresses?.length > 0 || userStorage.value?.addresses?.length < 1) {
+                return
+            }
 
-        const defaultShipping = userStorage.value?.addresses?.find((address) => address.default_shipping)
-        if (!defaultShipping) {
-            return
-        }
+            const defaultShipping = userStorage.value?.addresses?.find((address) => address.default_shipping)
+            if (!defaultShipping) {
+                return
+            }
 
-        magentoGraphQL(config.queries.setExistingShippingAddressesOnCart, {
-            cart_id: mask.value,
-            customer_address_id: defaultShipping.id,
-        }).then((response) => Vue.prototype.updateCart([], response))
-    })
-})
+            magentoGraphQL(config.queries.setExistingShippingAddressesOnCart, {
+                cart_id: mask.value,
+                customer_address_id: defaultShipping.id,
+            }).then((response) => window.app.config.globalProperties.updateCart([], response))
+        })
+    },
+    { autoRemove: false },
+)
 
 export default () => user

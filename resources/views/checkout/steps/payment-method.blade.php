@@ -1,8 +1,8 @@
 <graphql-mutation
     :query="config.queries.setPaymentMethodOnCart"
     :variables="{
-        cart_id: mask,
-        code: cart.selected_payment_method?.code ?? null,
+        cart_id: mask.value,
+        code: cart.value.selected_payment_method?.code ?? null,
     }"
     group="payment"
     :before-request="handleBeforePaymentMethodHandlers"
@@ -11,11 +11,11 @@
     mutate-event="setPaymentMethodOnCart"
     v-slot="{ mutate, variables }"
 >
-    <div class="flex flex-col gap-3" partial-submit="mutate">
-        <label class="flex items-center p-5 border rounded relative bg-white" v-if="!cart.is_virtual && !cart.shipping_addresses[0]?.uid">
+    <div class="flex flex-col gap-3" partial-submit v-on:partial-submit="async () => await mutate()">
+        <label class="flex items-center p-5 border rounded relative bg-white" v-if="!cart.value.is_virtual && !cart.value.shipping_addresses?.[0]?.uid">
             <span>@lang('Please enter a shipping address first')</span>
         </label>
-        <label class="flex items-center p-5 border rounded relative bg-white cursor-pointer" v-else v-for="(method, index) in cart.available_payment_methods">
+        <label class="flex items-center p-5 border rounded relative bg-white cursor-pointer" v-else v-for="(method, index) in cart.value.available_payment_methods">
             <template v-if="false"></template>
             @stack('payment_methods')
             <template v-else>

@@ -16,8 +16,6 @@ class SearchQuery extends Model
 
     protected $primaryKey = 'query_id';
 
-    protected $guarded = [];
-
     protected static function booting()
     {
         static::addGlobalScope('ForCurrentStore', fn (Builder $query) => $query->where('store_id', config('rapidez.store')));
