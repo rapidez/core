@@ -1,6 +1,6 @@
 <div>
-    <toggler>
-        <div class="relative" slot-scope="{ isOpen, toggle }">
+    <toggler v-slot="{ isOpen, toggle }">
+        <div class="relative" >
             <x-rapidez::input
                 class="[&>input]:pr-12"
                 type="password"

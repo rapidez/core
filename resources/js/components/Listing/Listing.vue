@@ -1,9 +1,40 @@
 <script>
 import { history } from 'instantsearch.js/es/lib/routers'
 import InstantSearchMixin from '../Search/InstantSearchMixin.vue'
+import Pagination from 'vue-instantsearch/vue3/es/src/components/Pagination.vue.js'
+import SearchBox from 'vue-instantsearch/vue3/es/src/components/SearchBox.vue.js'
+import RangeInput from 'vue-instantsearch/vue3/es/src/components/RangeInput.vue.js'
+import HierarchicalMenu from 'vue-instantsearch/vue3/es/src/components/HierarchicalMenu.vue.js'
+import RefinementList from 'vue-instantsearch/vue3/es/src/components/RefinementList.vue.js'
+import SortBy from 'vue-instantsearch/vue3/es/src/components/SortBy.vue.js'
+// import hitsPerPage from 'vue-instantsearch/vue3/es/src/components/hitsPerPage.vue.js'
+
+// 'ClearRefinements.vue',
+// 'CurrentRefinements.vue',
+// 'SearchBox.vue',
+// 'RangeInput.vue',
+// 'RangeInput.vue',
+// 'RefinementList.vue',
+// 'HierarchicalMenu.vue',
+
+// - `refinementList` needs one of these widgets: "refinementList"
+// - `hierarchicalMenu` needs one of these widgets: "hierarchicalMenu"
+// - `query` needs one of these widgets: "searchBox", "autocomplete", "voiceSearch"
+// - `page` needs one of these widgets: "pagination", "infiniteHits"
+// - `sortBy` needs one of these widgets: "sortBy"
+// - `hitsPerPage` needs one of these widgets: "hitsPerPage"
 
 export default {
     mixins: [InstantSearchMixin],
+    components: {
+        Pagination,
+        SearchBox,
+        RangeInput,
+        HierarchicalMenu,
+        RefinementList,
+        SortBy,
+        // hitsPerPage
+    },
     props: {
         index: {
             type: String,
@@ -46,7 +77,7 @@ export default {
     }),
 
     render() {
-        return this.$scopedSlots.default(this)
+        return this.$slots.default(this)
     },
 
     destroyed() {
@@ -175,7 +206,7 @@ export default {
             for (let i = 0; i < this.rootPath?.length && category?.length && category[0] == this.rootPath[i]; i++) {
                 category.splice(0, 1)
             }
-
+            // console.trace(data.query);
             return {
                 ...(data.range || {}),
                 ...(data.refinementList || {}),

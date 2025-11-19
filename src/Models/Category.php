@@ -4,7 +4,6 @@ namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
 use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
@@ -58,6 +57,11 @@ class Category extends Model
         });
     }
 
+    protected static function getEntityType(): string
+    {
+        return 'category';
+    }
+
     public function getTable()
     {
         return 'catalog_category_flat_store_' . config('rapidez.store');
@@ -88,14 +92,6 @@ class Category extends Model
             )
             ->withoutGlobalScopes()
             ->whereIn((new (config('rapidez.models.category_product')))->qualifyColumn('visibility'), [2, 4]);
-    }
-
-    public function rewrites(): HasMany
-    {
-        return $this
-            ->hasMany(config('rapidez.models.rewrite'), 'entity_id', 'entity_id')
-            ->withoutGlobalScope('store')
-            ->where('entity_type', 'category');
     }
 
     protected function parentcategories(): Attribute

@@ -2,15 +2,14 @@
 
 namespace Rapidez\Core\Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Config;
 use Rapidez\Core\Tests\TestCase;
 
 class ConfigTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function config_can_be_intentionally_null()
     {
         $test = Config::create([

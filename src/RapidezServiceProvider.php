@@ -49,6 +49,7 @@ use TorMorten\Eventy\Facades\Eventy;
 class RapidezServiceProvider extends ServiceProvider
 {
     protected $configFiles = [
+        'attribute-models',
         'frontend',
         'healthcheck',
         'jwt',
