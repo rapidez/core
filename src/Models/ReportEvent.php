@@ -8,8 +8,6 @@ class ReportEvent extends Model
 
     protected $primaryKey = 'event_id';
 
-    protected $guarded = [];
-
     const CREATED_AT = 'logged_at';
 
     const UPDATED_AT = null;

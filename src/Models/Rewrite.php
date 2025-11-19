@@ -21,7 +21,7 @@ class Rewrite extends Model
     public function store(): HasOne
     {
         return $this->hasOne(
-            Store::class,
+            config('rapidez.models.store'),
             'store_id',
             'store_id',
         );

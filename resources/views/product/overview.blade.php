@@ -39,13 +39,14 @@
                             <dd>{{ $product->entity_id }}</dd>
                             <dt>SKU</dt>
                             <dd>{{ $product->sku }}</dd>
-                            @foreach (config('rapidez.models.attribute')::getCachedWhere(fn($a) => $a['productpage']) as $attribute)
-                                @if (($value = $product->{$attribute['code']}) && !is_object($value))
-                                    <dt>{{ $attribute['name'] }}</dt>
-                                    <dd>
-                                        @php $output = is_array($value) ? implode(', ', $value) : $value @endphp
-                                        {!! $attribute['html'] ? $output : e($output) !!}
-                                    </dd>
+                            @foreach (\Rapidez\Core\Models\EavAttribute::getCachedCatalog()->where(fn ($attribute) => $attribute->is_visible_on_front) as $attribute)
+                                @if (($value = $product->{$attribute['attribute_code']}))
+                                    <dt>{{ $attribute['frontend_label'] }}</dt>
+                                    @if ($attribute['is_html_allowed_on_front'])
+                                        <dd>{!! $value !!}</dd>
+                                    @else
+                                        <dd>{{ $value }}</dd>
+                                    @endif
                                 @endif
                             @endforeach
                         </dl>

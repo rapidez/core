@@ -11,8 +11,6 @@ class CheckoutAgreement extends Model
 
     protected $primaryKey = 'agreement_id';
 
-    protected $guarded = [];
-
     protected static function booting()
     {
         static::addGlobalScope(new IsActiveScope);

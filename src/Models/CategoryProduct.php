@@ -2,6 +2,8 @@
 
 namespace Rapidez\Core\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 class CategoryProduct extends Model
 {
     protected $primaryKey = 'entity_id';
@@ -9,5 +11,10 @@ class CategoryProduct extends Model
     public function getTable()
     {
         return 'catalog_category_product_index_store' . config('rapidez.store');
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(config('rapidez.models.category'), 'category_id', 'entity_id');
     }
 }
