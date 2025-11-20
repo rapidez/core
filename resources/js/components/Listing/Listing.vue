@@ -192,12 +192,8 @@ export default {
 
             let refinementList = Object.fromEntries(
                 Object.entries(routeState)
-                    .filter(
-                        ([key]) => !['q', 'hits', 'sort', 'page', 'category'].includes(key) && !this.rangeAttributes.includes(key),
-                    )
-                    .map(
-                        ([key, refinement]) => [key, typeof refinement === 'string' ? refinement.split(',') : refinement]
-                    ),
+                    .filter(([key]) => !['q', 'hits', 'sort', 'page', 'category'].includes(key) && !this.rangeAttributes.includes(key))
+                    .map(([key, refinement]) => [key, typeof refinement === 'string' ? refinement.split(',') : refinement]),
             )
 
             const categories = [...(this.rootPath || []), ...(routeState.category?.split('--') || [])]
