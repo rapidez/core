@@ -59,6 +59,17 @@ Vue.component('autocomplete', () => ({
     },
     delay: 0,
 }))
+if (import.meta.env.VITE_DISABLE_DOUBLE_CLICK_FIX !== 'true') {
+    document.addEventListener('vue:loaded', function () {
+        // Workaround double click bug on ipad & iphone: https://stackoverflow.com/questions/71535540/keyboard-doesnt-open-in-ios-on-focus
+        let userAgent = window.navigator.userAgent;
+        if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i)) {
+            // Simply load the autocomplete ~600ms after pageload so it won't impact pageload but will
+            // Be fast enough that most users won't notice
+            setTimeout(() => window.document.dispatchEvent(new window.Event('loadAutoComplete')), 600)
+        }
+    })
+}
 Vue.component('checkout-login', () => import('./components/Checkout/CheckoutLogin.vue'))
 Vue.component('login', () => import('./components/User/Login.vue'))
 Vue.component('listing', () => import('./components/Listing/Listing.vue'))
