@@ -6,7 +6,7 @@ document.addEventListener('vue:loaded', function (event) {
         for (let index = 0; index < array.length; index++) {
             await callback(array[index], index, array)
         }
-    };
+    }
 
     event.detail.vue.config.globalProperties.magentoCart = async (method, endpoint, data) => {
         if (window.app.config.globalProperties.loggedIn.value) {
@@ -14,7 +14,7 @@ document.addEventListener('vue:loaded', function (event) {
         } else {
             return await window.magentoAPI(method, 'guest-carts/' + mask.value + '/' + endpoint, data)
         }
-    };
+    }
 
     event.detail.vue.config.globalProperties.currencySymbolLocation = computed(() => {
         return new Intl.NumberFormat(config.locale.replace('_', '-'), {
@@ -34,5 +34,5 @@ document.addEventListener('vue:loaded', function (event) {
             .format(0)
             .replace(/\d/g, '')
             .trim()
-    });
+    })
 })
