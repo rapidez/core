@@ -16,6 +16,11 @@ test('product grouped', BasePage.tags, async ({ page }) => {
     await new BasePage(page).screenshot('fullpage-footer')
 })
 
+test('product special price', BasePage.tags, async ({ page }) => {
+    await page.goto(process.env.PRODUCT_URL_SPECIAL_PRICE)
+    await new BasePage(page).screenshot('fullpage-footer')
+})
+
 test('wcag', BasePage.tags, async ({ page }, testInfo) => {
     await page.goto(process.env.PRODUCT_URL_SIMPLE)
     await new BasePage(page).wcag(testInfo)
