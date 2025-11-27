@@ -80,7 +80,7 @@ trait HasCustomAttributes
 
     public function scopeWhereMethodAttribute(Builder $builder, string $method, string $attributeCode, ...$args)
     {
-        if (!method_exists(\Illuminate\Database\Query\Builder::class, $method)) {
+        if (! method_exists(\Illuminate\Database\Query\Builder::class, $method)) {
             throw new InvalidArgumentException('Method is not a valid method');
         }
         $isOrMethod = str_starts_with($method, 'or');
