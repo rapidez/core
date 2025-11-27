@@ -4,11 +4,13 @@ namespace Rapidez\Core\Models\Traits\Product;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Rapidez\Core\Models\Relations\HasManyCallback;
+use Rapidez\Core\Models\Traits\HasToArrayData;
 use Rapidez\Core\Models\Traits\UsesCallbackRelations;
 
 trait HasSuperAttributes
 {
     use UsesCallbackRelations;
+    use HasToArrayData;
 
     /**
      * @deprecated please use superAttributes
@@ -49,14 +51,14 @@ trait HasSuperAttributes
         )->shouldCache();
     }
 
-    public function superAttributeArrayData(): Attribute
+    public function superAttributesToArrayData(): array
     {
-        return Attribute::get(fn () => $this->superAttributeValues
+        return $this->superAttributeValues
             ->mapWithKeys(fn($values, $attribute) => [
                 "super_{$attribute}" => $values->pluck('value'),
                 "super_{$attribute}_values" => $values,
             ])
-        );
+            ->toArray();
     }
 
     public function superAttributeCodes(): Attribute

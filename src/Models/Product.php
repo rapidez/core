@@ -341,12 +341,4 @@ class Product extends Model
                 ->whereNotNull();
         })->shouldCache();
     }
-
-    public function toArray(): array
-    {
-        return array_merge(
-            parent::toArray(),
-            $this->superAttributeArrayData->toArray(),
-        );
-    }
 }
