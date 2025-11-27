@@ -64,7 +64,7 @@ trait HasSuperAttributes
     public function superAttributeCodes(): Attribute
     {
         return Attribute::get(fn () => $this->superAttributes
-            ->pluck('attribute_code')->map(fn($attribute) => [
+            ->pluck('attribute_code')->map(fn ($attribute) => [
                 $attribute,
                 "super_{$attribute}",
                 "super_{$attribute}_values",
