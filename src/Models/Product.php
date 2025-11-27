@@ -344,15 +344,9 @@ class Product extends Model
 
     public function toArray(): array
     {
-        $superAttributeData = [];
-        foreach ($this->superAttributeValues as $attribute => $values) {
-            $superAttributeData["super_{$attribute}"] = $values->pluck('value');
-            $superAttributeData["super_{$attribute}_values"] = $values;
-        }
-
         return array_merge(
             parent::toArray(),
-            $superAttributeData,
+            $this->superAttributeArrayData->toArray(),
         );
     }
 }

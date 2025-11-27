@@ -48,4 +48,26 @@ trait HasSuperAttributes
             ])
         )->shouldCache();
     }
+
+    public function superAttributeArrayData(): Attribute
+    {
+        return Attribute::get(fn () => $this->superAttributeValues
+            ->mapWithKeys(fn($values, $attribute) => [
+                "super_{$attribute}" => $values->pluck('value'),
+                "super_{$attribute}_values" => $values,
+            ])
+        );
+    }
+
+    public function superAttributeCodes(): Attribute
+    {
+        return Attribute::get(fn () => $this->superAttributes
+            ->pluck('attribute_code')->map(fn($attribute) => [
+                $attribute,
+                "super_{$attribute}",
+                "super_{$attribute}_values",
+            ])
+            ->flatten()
+        );
+    }
 }

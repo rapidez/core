@@ -70,11 +70,7 @@ trait Searchable
             'min_sale_qty',
             'qty_increments',
             ...$indexableAttributeCodes,
-            ...$this->superAttributes->pluck('attribute_code')->map(fn($attribute) => [
-                $attribute,
-                "super_{$attribute}",
-                "super_{$attribute}_values",
-            ])->flatten(),
+            ...$this->superAttributeCodes,
         ]);
 
         $data['store'] = config('rapidez.store');
