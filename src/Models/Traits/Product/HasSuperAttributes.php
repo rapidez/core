@@ -9,8 +9,8 @@ use Rapidez\Core\Models\Traits\UsesCallbackRelations;
 
 trait HasSuperAttributes
 {
-    use UsesCallbackRelations;
     use HasToArrayData;
+    use UsesCallbackRelations;
 
     /**
      * @deprecated please use superAttributes
@@ -54,8 +54,8 @@ trait HasSuperAttributes
     public function superAttributesToArrayData(): array
     {
         return $this->superAttributeValues
-            ->mapWithKeys(fn($values, $attribute) => [
-                "super_{$attribute}" => $values->pluck('value'),
+            ->mapWithKeys(fn ($values, $attribute) => [
+                "super_{$attribute}"        => $values->pluck('value'),
                 "super_{$attribute}_values" => $values,
             ])
             ->toArray();

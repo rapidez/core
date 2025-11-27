@@ -9,8 +9,8 @@ trait HasToArrayData
         return array_merge(
             parent::toArray(),
             ...collect(get_class_methods($this))
-                ->filter(fn($function) => str_ends_with($function, 'ToArrayData'))
-                ->map(fn($function) => $this->{$function}())
+                ->filter(fn ($function) => str_ends_with($function, 'ToArrayData'))
+                ->map(fn ($function) => $this->{$function}())
                 ->toArray(),
         );
     }
