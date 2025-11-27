@@ -7,6 +7,7 @@ use Rapidez\Core\Events\IndexAfterEvent;
 use Rapidez\Core\Events\IndexBeforeEvent;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Traits\Searchable;
+use Rapidez\ScoutElasticSearch\Console\Commands\ImportCommand;
 
 class IndexCommand extends Command
 {
@@ -49,7 +50,7 @@ class IndexCommand extends Command
                     config()->set('elasticsearch.indices.settings.' . $searchableAs, $indexSettings);
                 }
 
-                $this->call('scout:import', [
+                $this->call(ImportCommand::class, [
                     'searchable' => $model,
                 ]);
             }
