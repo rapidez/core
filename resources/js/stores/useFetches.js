@@ -1,4 +1,5 @@
 import { computed, ref } from 'vue'
+import { until } from '@vueuse/core'
 
 export let fetches = ref([])
 
@@ -22,4 +23,8 @@ export async function removeFetch(promise) {
     fetches.value = fetches.value.filter((fetch) => fetch !== promise)
 
     return fetches
+}
+
+export async function allSettled(options = null) {
+    await until(fetchCount).toBe(0, options)
 }
