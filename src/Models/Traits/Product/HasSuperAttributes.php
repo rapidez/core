@@ -40,12 +40,12 @@ trait HasSuperAttributes
                     ])
                     ->sortBy('sort_order')
                     ->groupBy('value')
-                    ->map(fn ($children, $value) => [
-                        'children' => $children,
+                    ->map(fn ($children, $value) => (object)[
+                        'children' => $children->pluck('entity_id'),
                         'value'    => $value,
                         'label'    => $children->first()->label,
                     ]),
             ])
-        );
+        )->shouldCache();
     }
 }

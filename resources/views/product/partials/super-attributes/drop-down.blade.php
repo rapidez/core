@@ -14,10 +14,10 @@
         </option>
         @foreach ($product->superAttributeValues[$superAttribute->attribute_code] as $option)
             <option
-                value="{{ $option['value'] }}"
-                :disabled="addToCart.disabledOptions.super_{{ $superAttribute->attribute_code }}.includes({{ $option['value'] }})"
+                value="{{ $option->value }}"
+                :disabled="addToCart.disabledOptions.super_{{ $superAttribute->attribute_code }}.includes({{ $option->value }})"
             >
-                {{ $option['label'] }}
+                {{ $option->label }}
             </option>
         @endforeach
     </x-rapidez::input.select>

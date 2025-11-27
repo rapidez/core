@@ -346,11 +346,8 @@ class Product extends Model
     {
         $superAttributeData = [];
         foreach ($this->superAttributeValues as $attribute => $values) {
-            $superAttributeData["super_{$attribute}"] = $values->map(fn ($option) => $option['value'])->values();
-            $superAttributeData["super_{$attribute}_values"] = $values->map(fn ($option) => [
-                ...$option,
-                'children' => $option['children']->pluck('entity_id'),
-            ]);
+            $superAttributeData["super_{$attribute}"] = $values->pluck('value');
+            $superAttributeData["super_{$attribute}_values"] = $values;
         }
 
         return array_merge(

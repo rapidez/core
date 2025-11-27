@@ -37,9 +37,12 @@ class ProductController
             'min_sale_qty',
             'max_sale_qty',
             'qty_increments',
-            ...$product->superAttributes->pluck('attribute_code'),
-            ...$product->superAttributes->pluck('attribute_code')->map(fn ($attribute) => "super_{$attribute}"),
-            ...$product->superAttributes->pluck('attribute_code')->map(fn ($attribute) => "super_{$attribute}_values"),
+
+            ...$product->superAttributes->pluck('attribute_code')->map(fn($attribute) => [
+                $attribute,
+                "super_{$attribute}",
+                "super_{$attribute}_values",
+            ])->flatten()
         ];
 
         $attributes = Eventy::filter('productpage.frontend.attributes', $attributes);
