@@ -193,6 +193,6 @@ class ProductTest extends TestCase
         $this->assertEquals(166, $data['super_size_values'][166]->value, 'super_size_values on product 68 did not get indexed with the right values.');
         $this->assertTrue($data['super_size_values'][166]->children->contains(53), 'super_size_values on product 68 did not get indexed with the right children data.');
 
-        $this->assertEquals([49,52,56], $data['super_color'], 'super_size on product 68 did not get indexed with the right data.');
+        $this->assertEquals([49, 52, 56], $data['super_color'], 'super_size on product 68 did not get indexed with the right data.');
     }
 }
