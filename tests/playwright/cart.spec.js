@@ -32,6 +32,11 @@ test('remove product', BasePage.tags, async ({ page }) => {
     await expect(page.getByTestId('cart-item')).toHaveCount(0)
 })
 
+test('empty cart', BasePage.tags, async ({ page }) => {
+    await page.goto('/cart')
+    await new BasePage(page).screenshot('fullpage-footer')
+})
+
 test('wcag', BasePage.tags, async ({ page }, testInfo) => {
     const product = await new ProductPage(page).addToCart(process.env.PRODUCT_URL_SIMPLE)
     await new CartPage(page).gotoCart()
