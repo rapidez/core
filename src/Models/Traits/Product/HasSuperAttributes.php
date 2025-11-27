@@ -40,7 +40,7 @@ trait HasSuperAttributes
                     ])
                     ->sortBy('sort_order')
                     ->groupBy('value')
-                    ->map(fn ($children, $value) => (object)[
+                    ->map(fn ($children, $value) => (object) [
                         'children' => $children->pluck('entity_id'),
                         'value'    => $value,
                         'label'    => $children->first()->label,
