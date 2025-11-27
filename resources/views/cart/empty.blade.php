@@ -4,7 +4,7 @@
 <div class="flex flex-col items-center justify-center text-center text-secondary mb-10 text-2xl">
     @lang('You don\'t have anything in your cart.')
     <div class="flex flex-wrap gap-3 mt-3">
-        <x-rapidez::button.secondary  v-if="!$root.loggedIn" href="{{ route('account.login') }}">
+        <x-rapidez::button.secondary v-if="!$root.loggedIn" href="{{ route('account.login') }}">
             @lang('Login to view your shopping cart')
         </x-rapidez::button.secondary>
         <x-rapidez::button.outline href="{{ url('/') }}">
