@@ -180,10 +180,6 @@ trait HasCustomAttributes
                 if ($values = $this->$relation) {
                     $data->push(...$values);
                 }
-
-                // TODO: Double check if this is actually useful
-                // it could improve performance / reduce memory
-                // $this->unsetRelation($relation);
             }
 
             return $data->keyBy($this->getCustomAttributeCode());
