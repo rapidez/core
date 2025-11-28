@@ -3,6 +3,7 @@
 namespace Rapidez\Core\Tests;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Rapidez\Core\Facades\Rapidez;
@@ -20,7 +21,7 @@ class TestCase extends BaseTestCase
 
         $this->setUpDatabase($this->app);
 
-        parent::setUp();
+        DB::reconnect();
 
         Rapidez::setStore(1);
     }
