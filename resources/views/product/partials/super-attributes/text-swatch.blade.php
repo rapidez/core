@@ -10,13 +10,13 @@
                     type="radio"
                     name="{{ $superAttribute->attribute_code }}"
                     v-model="addToCart.options[{{ $superAttributeId }}]"
-                    v-bind:disabled="addToCart.disabledOptions.super_{{ $superAttribute->attribute_code }}.includes({{ $option['value'] }})"
-                    :value="$option['value']"
-                    :aria-label="$option['label']"
-                    :id="$option['label']"
+                    v-bind:disabled="addToCart.disabledOptions.super_{{ $superAttribute->attribute_code }}.includes({{ $option->value }})"
+                    :value="$option->value"
+                    :aria-label="$option->label"
+                    :id="$option->label"
                     required
                 >
-                    {{ $option['label'] }}
+                    {{ $option->label }}
                 </x-rapidez::input.swatch.text>
             </li>
         @endforeach
