@@ -57,9 +57,6 @@ class TestCase extends BaseTestCase
         ]));
 
         fwrite(STDOUT, 'Done' . PHP_EOL);
-
-        // Do something to the database to avoid getting an error on the first query
-        Schema::getTables();
     }
 
     protected function getEnvironmentSetUp($app)
