@@ -3,6 +3,7 @@
 namespace Rapidez\Core\Tests;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Rapidez\Core\Facades\Rapidez;
@@ -57,6 +58,9 @@ class TestCase extends BaseTestCase
         ]));
 
         fwrite(STDOUT, 'Done' . PHP_EOL);
+
+        // Do something to the database to avoid getting an error on the first query
+        Schema::getTables();
     }
 
     protected function getEnvironmentSetUp($app)
