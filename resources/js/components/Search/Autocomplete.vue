@@ -35,6 +35,9 @@ export default {
             type: Number,
             default: 3,
         },
+        filterQueryString: {
+            type: String,
+        },
     },
 
     data() {
@@ -125,6 +128,33 @@ export default {
             }
 
             return client
+        },
+
+        async getInstantSearchClientConfig() {
+            const config = await InstantSearchMixin.methods.getInstantSearchClientConfig.bind(this).call()
+
+            config.getBaseFilters = this.getBaseFilters
+
+            return config
+        },
+
+        getBaseFilters() {
+            let extraFilters = []
+            extraFilters.push({
+                query_string: {
+                    query: 'visibility:(3 OR 4) OR (NOT _exists_:visibility)',
+                },
+            })
+
+            if (this.filterQueryString) {
+                extraFilters.push({
+                    query_string: {
+                        query: this.filterQueryString,
+                    },
+                })
+            }
+
+            return extraFilters
         },
 
         getMiddlewares() {

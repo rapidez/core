@@ -60,12 +60,12 @@
             <dt>@lang('Tax')</dt>
             <dd>@{{ window.price(cart.value.prices.applied_taxes[0].amount.value) }}</dd>
         </div>
-        <div v-if="cart.value.shipping_addresses.length && cart.value.shipping_addresses[0]?.selected_shipping_method">
+        <div v-if="cart.value.shipping_addresses.length && cart.value.shipping_addresses?.[0]?.selected_shipping_method">
             <dt>
                 @lang('Shipping')<br>
-                <small class="text-muted">@{{ cart.value.shipping_addresses[0]?.selected_shipping_method.carrier_title }} - @{{ cart.value.shipping_addresses[0]?.selected_shipping_method.method_title }}</small>
+                <small class="text-muted">@{{ cart.value.shipping_addresses[0].selected_shipping_method.carrier_title }} - @{{ cart.value.shipping_addresses[0].selected_shipping_method.method_title }}</small>
             </dt>
-            <dd>@{{ window.price(cart.value.shipping_addresses[0]?.selected_shipping_method.amount.value) }}</dd>
+            <dd>@{{ window.price(cart.value.shipping_addresses[0].selected_shipping_method.amount.value) }}</dd>
         </div>
         <div v-for="discount in cart.value.prices.discounts" class="border-t pt-3 mt-3">
             <dt>@{{ discount.label }}</dt>
@@ -77,17 +77,17 @@
         </div>
     </x-rapidez::summary>
 
-    <div v-if="cart.value.shipping_addresses[0]" class="flex w-full flex-col gap-x-1 bg px-5 py-4 rounded">
+    <div v-if="cart.value.shipping_addresses?.[0]" class="flex w-full flex-col gap-x-1 bg px-5 py-4 rounded">
         <p class="font-lg mb-2 font-bold">
             <template v-if="cart.value.billing_address?.same_as_shipping">@lang('Shipping & billing address')</template>
             <template v-else>@lang('Shipping address')</template>
         </p>
         <ul>
-            <li v-if="cart.value.shipping_addresses[0]?.company">@{{ cart.value.shipping_addresses[0]?.company }}</li>
-            <li>@{{ cart.value.shipping_addresses[0]?.prefix }} @{{ cart.value.shipping_addresses[0]?.firstname }} @{{ cart.value.shipping_addresses[0]?.middlename }} @{{ cart.value.shipping_addresses[0]?.lastname }} @{{ cart.value.shipping_addresses[0]?.suffix }}</li>
-            <li>@{{ cart.value.shipping_addresses[0]?.street[0] }} @{{ cart.value.shipping_addresses[0]?.street[1] }} @{{ cart.value.shipping_addresses[0]?.street[2] }}</li>
-            <li>@{{ cart.value.shipping_addresses[0]?.postcode }} - @{{ cart.value.shipping_addresses[0]?.city }} - @{{ cart.value.shipping_addresses[0]?.country.label }}</li>
-            <li v-if="cart.value.shipping_addresses[0]?.telephone">@{{ cart.value.shipping_addresses[0]?.telephone }}</li>
+            <li v-if="cart.value.shipping_addresses[0].company">@{{ cart.value.shipping_addresses[0].company }}</li>
+            <li>@{{ cart.value.shipping_addresses[0].prefix }} @{{ cart.value.shipping_addresses[0].firstname }} @{{ cart.value.shipping_addresses[0].middlename }} @{{ cart.value.shipping_addresses[0].lastname }} @{{ cart.value.shipping_addresses[0].suffix }}</li>
+            <li>@{{ cart.value.shipping_addresses[0].street[0] }} @{{ cart.value.shipping_addresses[0].street[1] }} @{{ cart.value.shipping_addresses[0].street[2] }}</li>
+            <li>@{{ cart.value.shipping_addresses[0].postcode }} - @{{ cart.value.shipping_addresses[0].city }} - @{{ cart.value.shipping_addresses[0].country.label }}</li>
+            <li v-if="cart.value.shipping_addresses[0].telephone">@{{ cart.value.shipping_addresses[0].telephone }}</li>
         </ul>
     </div>
     <div v-if="cart.value.billing_address && !cart.value.billing_address?.same_as_shipping" class="mt-4 flex w-full flex-col gap-x-1 border p-3">
