@@ -2,7 +2,6 @@
 
 namespace Rapidez\Core\Tests;
 
-use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as BaseTestCase;
@@ -17,17 +16,11 @@ class TestCase extends BaseTestCase
 
     public function setUp(): void
     {
-        parent::setUp();
-
         $this->setUpDatabase($this->app);
 
-        try {
-            Rapidez::setStore(1);
-        } catch (QueryException) {
-            // If at first you don't succeed, try, try again, after waiting.
-            sleep(3);
-            Rapidez::setStore(1);
-        }
+        parent::setUp();
+
+        Rapidez::setStore(1);
     }
 
     protected function getPackageProviders($app)
