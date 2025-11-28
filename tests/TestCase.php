@@ -24,7 +24,8 @@ class TestCase extends BaseTestCase
         try {
             Rapidez::setStore(1);
         } catch (QueryException) {
-            // If at first you don't succeed, try, try again.
+            // If at first you don't succeed, try, try again, after waiting.
+            sleep(3);
             Rapidez::setStore(1);
         }
     }
