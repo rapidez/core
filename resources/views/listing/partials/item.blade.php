@@ -20,10 +20,10 @@
                     @endif
                     <div class="flex items-center gap-x-2 mt-1">
                         <div class="font-semibold text-lg">
-                            @{{ window.price(addToCart.simpleProduct.special_price || addToCart.simpleProduct.price) }}
+                            @{{ window.price(addToCart.specialPrice || addToCart.price) }}
                         </div>
-                        <div class="line-through text-sm" v-if="addToCart.simpleProduct.special_price">
-                            @{{ window.price(addToCart.simpleProduct.price) }}
+                        <div class="line-through text-sm" v-if="addToCart.specialPrice">
+                            @{{ window.price(addToCart.price) }}
                         </div>
                     </div>
                 </div>
