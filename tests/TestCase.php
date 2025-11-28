@@ -3,6 +3,7 @@
 namespace Rapidez\Core\Tests;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Rapidez\Core\Facades\Rapidez;
@@ -57,6 +58,9 @@ class TestCase extends BaseTestCase
         ]));
 
         fwrite(STDOUT, 'Done' . PHP_EOL);
+
+        // Reconnect the DB because the dump causes the existing connection to be broken
+        DB::reconnect();
     }
 
     protected function getEnvironmentSetUp($app)
