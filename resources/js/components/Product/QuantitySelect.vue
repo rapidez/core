@@ -36,14 +36,16 @@ export default {
     methods: {
         increase() {
             if (this.increasable) {
-                this.$emit('input', this.clampValue(this.value + this.step))
+                this.value = this.clampValue(this.value + this.step)
+                this.$emit('input', this.value)
                 this.$emit('change')
             }
         },
 
         decrease() {
             if (this.decreasable) {
-                this.$emit('input', this.clampValue(this.value - this.step))
+                this.value = this.clampValue(this.value - this.step)
+                this.$emit('input', this.value)
                 this.$emit('change')
             }
         },

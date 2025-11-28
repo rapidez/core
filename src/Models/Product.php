@@ -291,6 +291,10 @@ class Product extends Model
                 ->prices
                 ->firstWhere('customer_group_id', $customerGroupId);
 
+            if ($price === null) {
+                return $this->getCustomAttribute('price')?->value;
+            }
+
             return $price->price ?: $price->min_price;
         });
     }
@@ -326,7 +330,11 @@ class Product extends Model
             $specialPrice = $this
                 ->prices
                 ->firstWhere('customer_group_id', $customerGroupId)
-                ->min_price;
+                ?->min_price;
+
+            if ($specialPrice === null) {
+                return null;
+            }
 
             return $specialPrice < $this->price ? $specialPrice : null;
         });

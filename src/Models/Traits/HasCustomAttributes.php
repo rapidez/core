@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute as AttributeCast;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Arr;
+use InvalidArgumentException;
 use Rapidez\Core\Models\Attribute;
 use Rapidez\Core\Models\AttributeDatetime;
 use Rapidez\Core\Models\AttributeDecimal;
@@ -76,27 +77,35 @@ trait HasCustomAttributes
         );
     }
 
-    public function scopeWhereAttribute(Builder $builder, string $attributeCode, $operator = null, $value = null)
+    public function scopeWhereMethodAttribute(Builder $builder, string $method, string $attributeCode, ...$args)
     {
-        return $builder->attributeHas(
+        if (! method_exists(\Illuminate\Database\Query\Builder::class, $method)) {
+            throw new InvalidArgumentException('Method is not a valid method');
+        }
+        $isOrMethod = str_starts_with($method, 'or');
+
+        if ($isOrMethod) {
+            $method = lcfirst(substr($method, 2));
+        }
+
+        $q = fn ($builder) => $builder->attributeHas(
             $attributeCode,
             fn ($query) => $query
-                ->where('value', $operator, $value)
+                ->$method('value', ...$args)
                 ->where($this->getCustomAttributeCode(), $attributeCode)
         );
+
+        return $isOrMethod ? $builder->orWhere($q) : $q($builder);
     }
 
-    // TODO: This one is a bit a duplicate of the one above,
-    // can we re-use some code? What if another method
-    // is needed like whereBetween, whereNull, etc
+    public function scopeWhereAttribute(Builder $builder, string $attributeCode, $operator = null, $value = null)
+    {
+        return $this->whereMethodAttribute('where', $attributeCode, $operator, $value);
+    }
+
     public function scopeWhereInAttribute(Builder $builder, string $attributeCode, $values = null, $boolean = 'and', $not = false)
     {
-        return $builder->attributeHas(
-            $attributeCode,
-            fn ($query) => $query
-                ->whereIn('value', $values, $boolean, $not)
-                ->where($this->getCustomAttributeCode(), $attributeCode)
-        );
+        return $this->whereMethodAttribute('whereIn', $attributeCode, $values, $boolean, $not);
     }
 
     public function attributeDatetime(): HasMany
@@ -179,10 +188,6 @@ trait HasCustomAttributes
                 if ($values = $this->$relation) {
                     $data->push(...$values);
                 }
-
-                // TODO: Double check if this is actually useful
-                // it could improve performance / reduce memory
-                // $this->unsetRelation($relation);
             }
 
             return $data->keyBy($this->getCustomAttributeCode());
