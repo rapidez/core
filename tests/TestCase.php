@@ -16,6 +16,8 @@ class TestCase extends BaseTestCase
 
     public function setUp(): void
     {
+        parent::setUp();
+
         $this->setUpDatabase($this->app);
 
         parent::setUp();
