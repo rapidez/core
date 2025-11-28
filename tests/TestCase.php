@@ -21,8 +21,6 @@ class TestCase extends BaseTestCase
 
         $this->setUpDatabase($this->app);
 
-        DB::reconnect();
-
         Rapidez::setStore(1);
     }
 
@@ -60,6 +58,9 @@ class TestCase extends BaseTestCase
         ]));
 
         fwrite(STDOUT, 'Done' . PHP_EOL);
+
+        // Reconnect the DB because the dump causes the existing connection to be broken
+        DB::reconnect();
     }
 
     protected function getEnvironmentSetUp($app)
