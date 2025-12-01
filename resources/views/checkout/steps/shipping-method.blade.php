@@ -16,7 +16,7 @@
     v-slot="{ mutate, variables }"
     v-if="!cart.value.is_virtual"
 >
-    <fieldset class="flex flex-col gap-3" partial-submit v-on:partial-submit="async () => await mutate()" v-on:change="window.$emit('setShippingAddressesOnCart')">
+    <fieldset class="flex flex-col gap-3" partial-submit v-on:partial-submit="(ev) => mutate().then(ev.detail.resolve).catch(ev.detail.reject)" v-on:change="window.$emit('setShippingAddressesOnCart')">
         <label class="flex items-center p-5 border rounded relative bg-white" v-if="!cart.value.shipping_addresses?.[0]?.uid">
             <span>@lang('Please enter a shipping address first')</span>
         </label>

@@ -13,7 +13,7 @@
                 window.app.config.globalProperties.submitPartials(e.target?.form ?? e.target)
                     .then((result) =>
                         window.Turbo.visit(window.url('{{ route('checkout', ['step' => 'credentials']) }}'))
-                    ).catch();
+                    ).catch(() => {});
             }"
             class="max-w-md mx-auto"
             v-cloak

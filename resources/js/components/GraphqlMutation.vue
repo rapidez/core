@@ -185,7 +185,7 @@ export default {
                 })
 
                 if (response.errors) {
-                    return
+                    return false
                 }
 
                 if (this.callback) {
@@ -218,6 +218,8 @@ export default {
                     }
                     Turbo.visit(window.url(this.redirect))
                 }
+
+                return response;
             } catch (error) {
                 console.error(error)
                 this.error = error.message

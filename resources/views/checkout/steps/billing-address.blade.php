@@ -16,7 +16,7 @@
     mutate-event="setBillingAddressOnCart"
     v-slot="{ mutate, variables }"
 >
-    <div partial-submit="mutate">
+    <div partial-submit v-on:partial-submit="(ev) => mutate().then(ev.detail.resolve).catch(ev.detail.reject)">
         <fieldset v-on:change="function (e) {
             e.target.closest('fieldset').querySelector(':invalid') === null
             && (!variables.same_as_shipping || !!cart?.shipping_addresses?.[0]?.postcode)
