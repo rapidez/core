@@ -33,9 +33,6 @@ document.addEventListener('vue:loaded', function (event) {
                         throw new Error('Result was false')
                     }
                 })
-                .catch((error) => {
-                    throw error
-                })
 
             const ev = new CustomEvent('partial-submit', {
                 detail: { resolve: resolveFn, reject: rejectFn },
