@@ -197,7 +197,7 @@ class Product extends Model
     public function reviewSummary(): HasOne
     {
         return $this->hasOne(
-            config('rapidez.models.product_review_summary'),
+            config('rapidez.models.review_summary', ReviewSummary::class),
             'entity_pk_value'
         );
     }
@@ -205,7 +205,7 @@ class Product extends Model
     public function reviews(): BelongsToMany
     {
         return $this->belongsToMany(
-            config('rapidez.models.product_review', Review::class), 'review',
+            config('rapidez.models.review', Review::class), 'review',
             'entity_pk_value', 'review_id',
             'entity_id', 'review_id',
         )->where('review.entity_id', Review::REVIEW_ENTITY_PRODUCT);

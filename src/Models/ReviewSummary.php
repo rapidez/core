@@ -5,7 +5,7 @@ namespace Rapidez\Core\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ProductReviewSummary extends Model
+class ReviewSummary extends Model
 {
     protected $table = 'review_entity_summary';
 
