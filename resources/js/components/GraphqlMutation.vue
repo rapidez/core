@@ -219,7 +219,7 @@ export default {
                     Turbo.visit(window.url(this.redirect))
                 }
 
-                return response;
+                return response
             } catch (error) {
                 console.error(error)
                 this.error = error.message

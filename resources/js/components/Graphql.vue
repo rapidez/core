@@ -104,7 +104,7 @@ export default {
                     useLocalStorage(this.cachePrefix + this.cache, null, { serializer: StorageSerializers.object }).value = this.data
                 }
 
-                return this.data;
+                return this.data
             } catch (error) {
                 console.error(error)
                 this.errorCallback(this.dataVariables, await error?.response?.json())

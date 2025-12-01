@@ -23,25 +23,29 @@ document.addEventListener('vue:loaded', function (event) {
     vue.config.globalProperties.submitPartials = async function (form, sequential = false) {
         let promises = []
         for (const element of form.querySelectorAll('[partial-submit]')) {
-            let resolveFn, rejectFn;
-            const createdPromise = new Promise((res, rej) => { resolveFn = res; rejectFn = rej; })
+            let resolveFn, rejectFn
+            const createdPromise = new Promise((res, rej) => {
+                resolveFn = res
+                rejectFn = rej
+            })
                 .then((result) => {
                     if (result === false) {
                         throw new Error('Result was false')
                     }
-                }).catch((error) => {
+                })
+                .catch((error) => {
                     throw error
-                });
+                })
 
             const ev = new CustomEvent('partial-submit', {
                 detail: { resolve: resolveFn, reject: rejectFn },
                 bubbles: false,
-                cancelable: true
-            });
+                cancelable: true,
+            })
 
-            const dispatched = element.dispatchEvent(ev);
+            const dispatched = element.dispatchEvent(ev)
             if (!dispatched) {
-                resolveFn();
+                resolveFn()
             }
 
             if (sequential) {
