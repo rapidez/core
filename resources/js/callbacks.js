@@ -27,12 +27,11 @@ document.addEventListener('vue:loaded', function (event) {
             const createdPromise = new Promise((res, rej) => {
                 resolveFn = res
                 rejectFn = rej
+            }).then((result) => {
+                if (result === false) {
+                    throw new Error('Result was false')
+                }
             })
-                .then((result) => {
-                    if (result === false) {
-                        throw new Error('Result was false')
-                    }
-                })
 
             const ev = new CustomEvent('partial-submit', {
                 detail: { resolve: resolveFn, reject: rejectFn },
