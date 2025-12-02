@@ -1,9 +1,9 @@
 <div class="mr-3">
-    <toggler v-if="$root.loggedIn" v-cloak>
-        <div slot-scope="{ toggle, close, isOpen }" v-on-click-away="close">
+    <toggler v-if="window.app.config.globalProperties.loggedIn.value" v-cloak v-slot="{ toggle, close, isOpen }">
+        <div v-on-click-away="close">
             <button data-testid="account-menu" class="flex my-1" v-on:click="toggle">
                 <x-heroicon-o-user class="size-6"/>
-                @{{ $root.user.firstname }}
+                @{{ user.value?.firstname }}
             </button>
             <div v-if="isOpen" class="absolute bg-white border shadow rounded mr-1 z-header-dropdown">
                 @if (App::providerIsLoaded('Rapidez\Account\AccountServiceProvider'))
@@ -13,11 +13,10 @@
                         <a class="block hover:bg px-3 py-2" href="{{ route('account.wishlist') }}">@lang('Wishlist')</a>
                     @endif
                 @endif
-                <user>
+                <user v-slot="{ logout }">
                     <button
                         class="block hover:bg px-3 py-2 cursor-pointer w-full text-left"
                         data-testid="logout"
-                        slot-scope="{ logout }"
                         @click="logout('/')"
                     >
                         @lang('Logout')

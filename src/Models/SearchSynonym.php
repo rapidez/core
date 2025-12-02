@@ -10,6 +10,4 @@ class SearchSynonym extends Model
     protected $table = 'search_synonyms';
 
     protected $primaryKey = 'group_id';
-
-    protected $guarded = [];
 }

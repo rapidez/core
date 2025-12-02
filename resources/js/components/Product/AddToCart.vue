@@ -1,6 +1,7 @@
 <script>
 import { GraphQLError } from '../../fetch'
 import { mask, refreshMask } from '../../stores/useMask'
+import { user } from '../../stores/useUser'
 
 export default {
     inject: {
@@ -79,7 +80,7 @@ export default {
     },
 
     render() {
-        return this.$scopedSlots.default(this)
+        return this.$slots.default(this)
     },
 
     methods: {
@@ -138,7 +139,7 @@ export default {
                     await this.callback(this.product, this.qty)
                 }
 
-                this.$root.$emit('cart-add', { product: this.product, qty: this.qty })
+                window.$emit('cart-add', { product: this.product, qty: this.qty })
 
                 if (this.notifySuccess) {
                     Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success', [], window.url('/cart'))
@@ -168,10 +169,13 @@ export default {
         },
 
         calculatePrices: function () {
+            let groupId = user?.value?.group_id
+            let specialPrice = groupId ? this.simpleProduct.prices[groupId].min_price : this.simpleProduct.special_price
+
+            specialPrice = Math.round((parseFloat(specialPrice) + this.priceAddition(specialPrice)) * 100) / 100
+
             this.price = Math.round((parseFloat(this.simpleProduct.price) + this.priceAddition(this.simpleProduct.price)) * 100) / 100
-            this.specialPrice =
-                Math.round((parseFloat(this.simpleProduct.special_price) + this.priceAddition(this.simpleProduct.special_price)) * 100) /
-                100
+            this.specialPrice = this.price > specialPrice ? specialPrice : null
         },
 
         getOptions: function (superAttributeCode) {
@@ -201,7 +205,7 @@ export default {
                 let [type, data] = reader.result.split(';', 4)
 
                 if (!data) {
-                    Vue.set(this.customOptions, optionId, undefined)
+                    this.customOptions[optionId] = undefined
                     return
                 }
 
@@ -210,7 +214,7 @@ export default {
                     type: type.replace('data:', ''),
                     name: file.name,
                 }
-                Vue.set(this.customOptions, optionId, JSON.stringify(value))
+                this.customOptions[optionId] = JSON.stringify(value)
             }
             reader.readAsDataURL(file)
         },
@@ -254,7 +258,7 @@ export default {
             // We do not loop and use the values of enabledOptions directly.
             // This is on purpose in order to force recalculations of enabledOptions to be considered.
             Object.keys(this.enabledOptions).map((attributeKey) => {
-                Vue.set(this.options, attributeKey, this.enabledOptions[attributeKey].find(Boolean))
+                this.options[attributeKey] = this.enabledOptions[attributeKey].find(Boolean)
             })
         },
         async setDefaultCustomSelectedOptions() {
@@ -273,7 +277,7 @@ export default {
                     return
                 }
 
-                Vue.set(this.customSelectedOptions, option.option_id, value)
+                this.customSelectedOptions[option.option_id] = value
             })
         },
         async setOptionsFromValues(options) {
@@ -282,7 +286,7 @@ export default {
                     return
                 }
 
-                Vue.set(this.options, key, values[0])
+                this.options[key] = values[0]
             })
         },
         async setOptionsFromRefinements() {
@@ -297,7 +301,7 @@ export default {
             // Options per super attribute that match the given named refinements
             return Object.fromEntries(
                 Object.entries(this.product?.super_attributes || {}).map(([index, attribute]) => {
-                    let attributeValues = values.find(([key, value]) => key === attribute.code)?.[1] || []
+                    let attributeValues = values.find(([key, value]) => key === attribute.attribute_code)?.[1] || []
                     if (!Array.isArray(attributeValues)) {
                         attributeValues = [attributeValues]
                     }
@@ -339,7 +343,7 @@ export default {
             var simpleProducts = Object.values(product.children).filter((childProduct) => {
                 let isMatching = true
                 Object.entries(this.options).forEach(([attributeId, valueId]) => {
-                    var attributeCode = product.super_attributes[attributeId].code
+                    var attributeCode = product.super_attributes[attributeId].attribute_code
 
                     if (Number(childProduct[attributeCode]) !== Number(valueId)) {
                         isMatching = false
@@ -377,7 +381,7 @@ export default {
 
         productUrl: function () {
             let namedOptions = Object.fromEntries(
-                Object.entries(this.options).map(([key, value]) => [this.product.super_attributes[key]?.code, value]),
+                Object.entries(this.options).map(([key, value]) => [this.product.super_attributes[key]?.attribute_code, value]),
             )
 
             let params = new URLSearchParams(namedOptions)
@@ -410,23 +414,23 @@ export default {
             }
 
             Object.entries(this.product.super_attributes).forEach(([attributeId, attribute]) => {
-                disabledOptions['super_' + attribute.code] = []
+                disabledOptions['super_' + attribute.attribute_code] = []
                 valuesPerAttribute[attributeId] = {}
                 // Fill list with products per attribute value
                 Object.entries(this.product.children).forEach(([productId, option]) => {
-                    if (!valuesPerAttribute[attributeId][option[attribute.code]]) {
-                        valuesPerAttribute[attributeId][option[attribute.code]] = []
+                    if (!valuesPerAttribute[attributeId][option[attribute.attribute_code]]) {
+                        valuesPerAttribute[attributeId][option[attribute.attribute_code]] = []
                     }
 
                     if (!option.in_stock) {
                         if (Object.keys(this.product.super_attributes).length === 1) {
-                            disabledOptions['super_' + attribute.code].push(option[attribute.code])
+                            disabledOptions['super_' + attribute.attribute_code].push(option[attribute.attribute_code])
                         }
 
                         return
                     }
 
-                    valuesPerAttribute[attributeId][option[attribute.code]].push(productId)
+                    valuesPerAttribute[attributeId][option[attribute.attribute_code]].push(productId)
                 })
             })
 
@@ -437,7 +441,7 @@ export default {
                 Object.entries(valuesPerAttribute).forEach(([attributeId2, productsPerValue2]) => {
                     if (attributeId === attributeId2) return
                     var selectedValueId = this.options[attributeId]
-                    var attributeCode = this.product.super_attributes[attributeId2].code
+                    var attributeCode = this.product.super_attributes[attributeId2].attribute_code
 
                     Object.entries(productsPerValue2).forEach(([valueId, products]) => {
                         // If there is no product that intersects for this attribute value
@@ -465,10 +469,10 @@ export default {
                 valuesPerAttribute[attributeId] = []
                 // Fill list with products per attribute value
                 Object.entries(this.product.children).forEach(([productId, product]) => {
-                    if (!product.in_stock || this.disabledOptions['super_' + attribute.code].includes(product.value)) {
+                    if (!product.in_stock || this.disabledOptions['super_' + attribute.attribute_code].includes(product.value)) {
                         return
                     }
-                    valuesPerAttribute[attributeId].push(product[attribute.code])
+                    valuesPerAttribute[attributeId].push(product[attribute.attribute_code])
                 })
             })
             return valuesPerAttribute
@@ -494,7 +498,7 @@ export default {
         simpleProduct: {
             handler(newProduct, oldProduct) {
                 if (newProduct.sku !== oldProduct.sku) {
-                    this.$root.$emit('product-super-attribute-change', newProduct)
+                    window.$emit('product-super-attribute-change', newProduct)
                 }
             },
         },

@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Facades\Rapidez;
+use Rapidez\Core\Models\AbstractAttribute;
 use Rapidez\Core\Models\Category;
 use Rapidez\Core\Models\CategoryProduct;
+use Rapidez\Core\Models\EavAttribute;
 use Rapidez\Core\Models\Product;
 use Rapidez\Core\Models\Traits\Searchable as ParentSearchable;
 use TorMorten\Eventy\Facades\Eventy;
@@ -21,8 +23,16 @@ trait Searchable
      */
     protected function makeAllSearchableUsing(Builder $query)
     {
-        return $query->selectOnlyIndexable()
-            ->with(['categoryProducts', 'reviewSummary'])
+        return $query
+            ->with(['reviewSummary', 'children'])
+            ->whereInAttribute('visibility', [
+                // TODO: Are we filtering this on the frontend?
+                // As "searchable" will be used for the
+                // listing and the search...
+                Product::VISIBILITY_IN_CATALOG,
+                Product::VISIBILITY_IN_SEARCH,
+                Product::VISIBILITY_BOTH,
+            ])
             ->withEventyGlobalScopes('index.' . static::getModelName() . '.scopes');
     }
 
@@ -31,16 +41,9 @@ trait Searchable
      */
     public function shouldBeSearchable(): bool
     {
-        if (! in_array($this->visibility, [
-            Product::VISIBILITY_IN_CATALOG,
-            Product::VISIBILITY_IN_SEARCH,
-            Product::VISIBILITY_BOTH,
-        ])) {
-            return false;
-        }
-
+        // TODO: Maybe also move this one to the query?
         $showOutOfStock = (bool) Rapidez::config('cataloginventory/options/show_out_of_stock', 0);
-        if (! $showOutOfStock && ! $this->in_stock) {
+        if (! $showOutOfStock && ! $this->stock->is_in_stock) {
             return false;
         }
 
@@ -52,9 +55,30 @@ trait Searchable
      */
     public function toSearchableArray(): array
     {
-        $data = $this->toArray();
+        $indexableAttributeCodes = EavAttribute::getCachedIndexable()
+            ->pluck($this->getCustomAttributeCode())
+            ->toArray();
+
+        $data = Arr::only($this->toArray(), [
+            'entity_id',
+            'sku',
+            'children',
+            'prices',
+            'url',
+            'in_stock',
+            'min_sale_qty',
+            'qty_increments',
+            ...$indexableAttributeCodes,
+            ...$this->superAttributes->pluck('attribute_code'),
+        ]);
+
+        // TODO: Maybe we can handle this keying directly
+        // on the relationship as also proposed here:
+        // https://github.com/rapidez/core/pull/1062
+        $data['prices'] = (object) Arr::keyBy($data['prices'], 'customer_group_id');
 
         $data['store'] = config('rapidez.store');
+        $data['super_attributes'] = $this->superAttributes->keyBy('attribute_id');
 
         $maxPositions = Cache::driver('array')->rememberForever('max-positions-' . config('rapidez.store'), function () {
             return CategoryProduct::query()
@@ -64,10 +88,8 @@ trait Searchable
                 ->pluck('position', 'category_id');
         });
 
-        foreach ($this->super_attributes ?: [] as $superAttribute) {
-            $data['super_' . $superAttribute->code] = $superAttribute->text_swatch || $superAttribute->visual_swatch
-                ? array_keys((array) $this->{'super_' . $superAttribute->code})
-                : Arr::pluck($this->{'super_' . $superAttribute->code} ?: [], 'label');
+        foreach ($this->superAttributeValues as $attribute => $values) {
+            $data['super_' . $attribute] = $values->pluck('value');
         }
 
         $data = $this->withCategories($data);
@@ -80,33 +102,59 @@ trait Searchable
         return Eventy::filter('index.' . static::getModelName() . '.data', $data, $this);
     }
 
+    // TODO: This isn't used anymore, can we work with the
+    // current data? Do we really need this value/label?
+    public function transformAttributes(array $data): array
+    {
+        // TODO: Can this be done directly from AbstractAttribute instead?
+        // Would be a lot cleaner if we don't have to manually loop through this.
+        return Arr::map($data, function ($value, $key) {
+            if ($value instanceof AbstractAttribute) {
+                if ($value->value == $value->label) {
+                    return $value->value;
+                } else {
+                    return [
+                        'value' => $value->value,
+                        'label' => $value->label,
+                    ];
+                }
+            } elseif ($key === 'children') {
+                return $value->map(fn ($child) => $this->transformAttributes($child));
+            } else {
+                return $value;
+            }
+        });
+    }
+
     /**
      * Add the category paths
      */
     public function withCategories(array $data): array
     {
-        $categories = Cache::driver('array')->rememberForever('categories-' . config('rapidez.store'), function () {
-            return Category::withEventyGlobalScopes('index.' . config('rapidez.models.category')::getModelName() . '.scopes')
-                ->where('catalog_category_flat_store_' . config('rapidez.store') . '.entity_id', '<>', config('rapidez.root_category_id'))
-                ->pluck('name', 'entity_id');
+        $categories = Cache::driver('array')->rememberForever('categories', function () {
+            return Category::all()->keyBy('entity_id');
         });
 
-        foreach ($data['category_paths'] as $categoryPath) {
-            $paths = explode('/', $categoryPath);
-            $paths = array_slice($paths, array_search(config('rapidez.root_category_id'), $paths) + 1);
-
-            $categoryHierarchy = [];
-            $currentPath = '';
-
-            foreach ($paths as $categoryId) {
-                if (isset($categories[$categoryId])) {
-                    $currentPath .= ($currentPath ? ' > ' : '') . $categories[$categoryId];
-                    $categoryHierarchy[] = $currentPath;
-                }
+        foreach ($this->breadcrumbCategories as $category) {
+            if (! $category) {
+                continue;
             }
 
-            foreach ($categoryHierarchy as $level => $category) {
-                $data['category_lvl' . ($level + 1)][] = $category;
+            $path = array_slice(explode('/', $category->path), 2);
+            $level = count($path);
+
+            if ($level < 1) {
+                continue;
+            }
+
+            for ($i = 1; $i <= $level; $i++) {
+                $pathCategories = collect($path)
+                    ->take($i)
+                    ->map(fn ($id) => $categories[$id]->name ?? null)
+                    ->whereNotNull()
+                    ->join(' > ');
+
+                $data['category_lvl' . $i][] = $pathCategories;
             }
         }
 
@@ -176,6 +224,9 @@ trait Searchable
         return [
             'properties' => [
                 ...$attributeTypeMapping,
+                'prices.*.min_price' => [
+                    'type' => 'double',
+                ],
                 'children' => [
                     'type' => 'flattened',
                 ],

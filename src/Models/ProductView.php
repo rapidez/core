@@ -39,11 +39,17 @@ class ProductView extends Model
 
     public function product()
     {
-        return $this->belongsTo(Product::class, 'product_id');
+        return $this->belongsTo(
+            config('rapidez.models.product'),
+            'product_id'
+        );
     }
 
     public function store()
     {
-        return $this->belongsTo(Store::class, 'store_id');
+        return $this->belongsTo(
+            config('rapidez.models.store'),
+            'store_id'
+        );
     }
 }

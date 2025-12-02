@@ -13,8 +13,6 @@ class Quote extends Model
 
     protected $primaryKey = 'entity_id';
 
-    protected $guarded = [];
-
     protected $casts = [
         'cross_sells' => CommaSeparatedToIntegerArray::class,
     ];

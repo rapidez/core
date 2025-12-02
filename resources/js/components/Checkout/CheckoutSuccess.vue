@@ -12,7 +12,7 @@ export default {
     },
 
     render() {
-        return this.$scopedSlots.default(this)
+        return this.$slots.default(this)
     },
 
     created() {
@@ -27,7 +27,7 @@ export default {
             }
         })
 
-        this.$root.$emit('checkout-success', this.order)
+        window.$emit('checkout-success', this.order)
 
         useEventListener(window, 'beforeunload', this.beforeUnloadCallback, { once: true })
     },

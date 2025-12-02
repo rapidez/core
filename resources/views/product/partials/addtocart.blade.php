@@ -20,10 +20,10 @@
 
             <div class="flex flex-wrap items-center gap-3">
                 <div>
-                    <div class="text-2xl font-bold" v-text="$options.filters.price(addToCart.specialPrice || addToCart.price)">
+                    <div class="text-2xl font-bold" v-txt="window.price(addToCart.specialPrice || addToCart.price)">
                         {{ price($product->special_price ?: $product->price) }}
                     </div>
-                    <div class="text-lg text-muted line-through" v-if="addToCart.specialPrice" v-text="$options.filters.price(addToCart.price)">
+                    <div class="text-lg text-muted line-through" v-if="addToCart.specialPrice" v-txt="window.price(addToCart.price)">
                         {{ $product->special_price ? price($product->price) : '' }}
                     </div>
                 </div>

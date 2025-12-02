@@ -1,6 +1,7 @@
 <!-- Copied from https://github.com/RadKod/v-lazy-component and modified it -->
 <template>
     <component
+        ref="root"
         :is="state.wrapperTag"
         :class="[
             'v-lazy-component',
@@ -75,7 +76,7 @@ export default {
         },
         'state.isIntersected'(value) {
             if (value) {
-                this.$emit('intersected', this.$el)
+                this.$emit('intersected', this.$refs.root)
             }
         },
     },
@@ -91,7 +92,7 @@ export default {
         })
 
         if (this.state.isIntersected) {
-            this.$emit('intersected', this.$el)
+            this.$emit('intersected', this.$refs.root)
         }
     },
     beforeDestroy() {
@@ -109,7 +110,7 @@ export default {
             const { rootMargin, threshold } = this.state
             const config = { root: undefined, rootMargin, threshold }
             this.state.observer = new IntersectionObserver(this.onIntersection, config)
-            this.state.observer.observe(this.$el)
+            this.state.observer.observe(this.$refs.root)
         },
         onIntersection(entries) {
             this.state.isIntersected = entries.some((entry) => entry.intersectionRatio > 0)
@@ -119,7 +120,7 @@ export default {
         },
         unobserve() {
             if ('IntersectionObserver' in window) {
-                this.state.observer.unobserve(this.$el)
+                this.state.observer.unobserve(this.$refs.root)
             }
         },
     },

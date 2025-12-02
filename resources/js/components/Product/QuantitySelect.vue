@@ -4,7 +4,7 @@
 // able to use v-model, min, step and max
 export default {
     props: {
-        value: {
+        modelValue: {
             // We're not enforcing a type here as
             // the input could be set to empty.
             default: 1,
@@ -27,22 +27,25 @@ export default {
             default: 0,
         },
     },
+    emits: ['update:modelValue', 'input', 'change'],
 
     render() {
-        return this.$scopedSlots.default(this)
+        return this.$slots.default(this)
     },
 
     methods: {
         increase() {
             if (this.increasable) {
-                this.$emit('input', this.clampValue(this.value + this.step))
+                this.value = this.clampValue(this.value + this.step)
+                this.$emit('input', this.value)
                 this.$emit('change')
             }
         },
 
         decrease() {
             if (this.decreasable) {
-                this.$emit('input', this.clampValue(this.value - this.step))
+                this.value = this.clampValue(this.value - this.step)
+                this.$emit('input', this.value)
                 this.$emit('change')
             }
         },
@@ -74,6 +77,14 @@ export default {
 
         decreasable() {
             return this.value - this.step >= this.min
+        },
+        value: {
+            get() {
+                return this.modelValue
+            },
+            set(value) {
+                this.$emit('update:modelValue', value)
+            },
         },
     },
 }

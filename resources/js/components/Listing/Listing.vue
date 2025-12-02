@@ -1,9 +1,23 @@
 <script>
 import { history } from 'instantsearch.js/es/lib/routers'
 import InstantSearchMixin from '../Search/InstantSearchMixin.vue'
+import Pagination from 'vue-instantsearch/vue3/es/src/components/Pagination.vue.js'
+import SearchBox from 'vue-instantsearch/vue3/es/src/components/SearchBox.vue.js'
+import RangeInput from 'vue-instantsearch/vue3/es/src/components/RangeInput.vue.js'
+import HierarchicalMenu from 'vue-instantsearch/vue3/es/src/components/HierarchicalMenu.vue.js'
+import RefinementList from 'vue-instantsearch/vue3/es/src/components/RefinementList.vue.js'
+import SortBy from 'vue-instantsearch/vue3/es/src/components/SortBy.vue.js'
 
 export default {
     mixins: [InstantSearchMixin],
+    components: {
+        Pagination,
+        SearchBox,
+        RangeInput,
+        HierarchicalMenu,
+        RefinementList,
+        SortBy,
+    },
     props: {
         index: {
             type: String,
@@ -46,7 +60,7 @@ export default {
     }),
 
     render() {
-        return this.$scopedSlots.default(this)
+        return this.$slots.default(this)
     },
 
     destroyed() {
@@ -191,9 +205,9 @@ export default {
             let ranges = Object.fromEntries(Object.entries(routeState).filter(([key]) => this.rangeAttributes.includes(key)))
 
             let refinementList = Object.fromEntries(
-                Object.entries(routeState).filter(
-                    ([key]) => !['q', 'hits', 'sort', 'page', 'category'].includes(key) && !this.rangeAttributes.includes(key),
-                ),
+                Object.entries(routeState)
+                    .filter(([key]) => !['q', 'hits', 'sort', 'page', 'category'].includes(key) && !this.rangeAttributes.includes(key))
+                    .map(([key, refinement]) => [key, typeof refinement === 'string' ? refinement.split(',') : refinement]),
             )
 
             const categories = [...(this.rootPath || []), ...(routeState.category?.split('--') || [])]
