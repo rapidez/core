@@ -16,7 +16,7 @@ export default {
         RangeInput,
         HierarchicalMenu,
         RefinementList,
-        SortBy
+        SortBy,
     },
     props: {
         index: {
