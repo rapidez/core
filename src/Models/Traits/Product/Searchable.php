@@ -64,6 +64,7 @@ trait Searchable
             'entity_id',
             'sku',
             'children',
+            'prices',
             'url',
             'images',
             'in_stock',
@@ -72,6 +73,11 @@ trait Searchable
             ...$indexableAttributeCodes,
             ...$this->superAttributeCodes,
         ]);
+
+        // TODO: Maybe we can handle this keying directly
+        // on the relationship as also proposed here:
+        // https://github.com/rapidez/core/pull/1062
+        $data['prices'] = (object) Arr::keyBy($data['prices'], 'customer_group_id');
 
         $data['store'] = config('rapidez.store');
         $data['super_attributes'] = $this->superAttributes->keyBy('attribute_id');
@@ -207,6 +213,9 @@ trait Searchable
                 ...$superAttributeTypeMapping,
                 'super_attributes' => [
                     'type' => 'flattened',
+                ],
+                'prices.*.min_price' => [
+                    'type' => 'double',
                 ],
                 'children' => [
                     'type' => 'flattened',

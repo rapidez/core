@@ -31,6 +31,7 @@ class ProductController
             'options',
             'price',
             'special_price',
+            'prices',
             'images',
             'url',
             'in_stock',
