@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core\Http\Controllers;
 
+use Illuminate\Support\Arr;
 use Rapidez\Core\Events\ProductViewEvent;
 use Rapidez\Core\Models\Product;
 use TorMorten\Eventy\Facades\Eventy;
@@ -37,17 +38,13 @@ class ProductController
             'min_sale_qty',
             'max_sale_qty',
             'qty_increments',
-            ...$product->superAttributes->pluck('attribute_code'),
+
+            ...$product->superAttributeCodes,
         ];
 
         $attributes = Eventy::filter('productpage.frontend.attributes', $attributes);
 
-        // TODO: Make this neater so that we can maybe get this data from the product directly?
-        // Alternatively we can refactor the frontend to not need so much customized data
-        $data = $product->only($attributes);
-        foreach ($product->superAttributeValues as $attribute => $values) {
-            $data['super_' . $attribute] = $values->pluck('value');
-        }
+        $data = Arr::only($product->toArray(), $attributes);
 
         $queryOptions = request()->query;
         $selectedOptions = [];
@@ -60,9 +57,8 @@ class ProductController
         }
 
         // Find the first child that matches the given product options
-        $selectedChild = $product->children->firstWhere(function ($child) use ($selectedOptions) {
-            return count($selectedOptions) && collect($selectedOptions)->every(fn ($value, $code) => $child->{$code} == $value);
-        }) ?? $product;
+        $selectedChild = $product->children->firstWhere(fn ($child) => count($selectedOptions) && collect($selectedOptions)->every(fn ($value, $code) => $child->getCustomAttribute($code)->value == $value)
+        ) ?? $product;
 
         ProductViewEvent::dispatch($product);
 
