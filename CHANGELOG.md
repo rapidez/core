@@ -1,6 +1,36 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.8.0...4.8.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/...4.9.0)
+## [4.9.0](https://github.com/rapidez/core/releases/tag/4.9.0) - 2025-12-02
+
+### Added
+
+- Resized path helper SKU support (#1057)
+- Fractional product quantities support (#1044)
+- allSettled helper (#1078)
+
+### Changed
+
+- Playwright test with the latest Magento versions (#1051)
+- Disable inputs on $root.loading (#1039)
+
+### Fixed
+
+- Dutch translation fix (#1055)
+- Deprecated warning on null widget class fix (#1058)
+- Filter focus state style fixes (#1060)
+- Address comparison fix (#1065)
+- Remove duplicate search translation (#1067)
+- Always give hitsPerPage a default (#1070)
+- Improve product in category positions handling (#1071)
+- Url filter error fallback (#1081)
+- Shipping address fallbacks (#1084)
+- Call index import command directly (#1090)
+- Special price alignment fix (#1088)
+- ObjectDiff fallback (#1077)
+- selected_payment_method fallback (#1080)
+- iOS autocomplete double click fix (#1083)
+
 ## [4.8.0](https://github.com/rapidez/core/releases/tag/4.8.0) - 2025-10-14
 
 ### Added
