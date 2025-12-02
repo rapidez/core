@@ -1,6 +1,28 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0-alpha.2...5.0.0-alpha.2)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0-alpha.3...5.0.0-alpha.3)
+## [5.0.0-alpha.3](https://github.com/rapidez/core/releases/tag/5.0.0-alpha.3) - 2025-12-02
+
+### Added
+
+- Customer group pricing (#1074)
+
+### Changed
+
+- Drop support for Laravel 11 (#1096)
+- Refactored and fixed the super attributes (#1076)
+- Uniform review model naming (#1098)
+- Centralize whereAttribute logic (#1093)
+
+### Fixed
+
+- Vue 3 upgrade fixes (#1075)
+- Moved mixins to global properties (#1086)
+- Filter by visibility in the autocomplete (#1087)
+- Price index fallback (#1092)
+- Explicitly set value after clamping (#1094)
+- Tests fix (#1097)
+
 ## [5.0.0-alpha.2](https://github.com/rapidez/core/releases/tag/5.0.0-alpha.2) - 2025-11-14
 
 ### Changed
