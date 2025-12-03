@@ -16,6 +16,8 @@ use Rapidez\Core\Models\AttributeVarchar;
 
 trait HasCustomAttributes
 {
+    use HasToArrayData;
+
     // Hide the EAV relations for serialization.
     public function getHidden()
     {
@@ -26,12 +28,9 @@ trait HasCustomAttributes
     }
 
     // Add the EAV attributes for serialization.
-    public function toArray()
+    public function customAttributesToArrayData(): array
     {
-        return array_merge(
-            $this->customAttributes->toArray(),
-            parent::toArray(),
-        );
+        return $this->customAttributes->toArray();
     }
 
     protected function getCustomAttributeTypes(): array

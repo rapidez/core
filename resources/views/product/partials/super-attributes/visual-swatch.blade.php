@@ -10,14 +10,14 @@
                     type="radio"
                     name="{{ $superAttribute->attribute_code }}"
                     v-model="addToCart.options[{{ $superAttributeId }}]"
-                    v-bind:disabled="addToCart.disabledOptions.super_{{ $superAttribute->attribute_code }}.includes({{ $option['value'] }})"
-                    :value="$option['value']"
-                    :aria-label="$option['label']"
-                    :id="$option['label']"
-                    :color="config('rapidez.models.option_swatch')::getCachedSwatchValue($superAttribute->attribute_code, $option['value'])['swatch'] ?? 'none'"
+                    v-bind:disabled="addToCart.disabledOptions.super_{{ $superAttribute->attribute_code }}.includes({{ $option->value }})"
+                    :value="$option->value"
+                    :aria-label="$option->label"
+                    :id="$option->label"
+                    :color="config('rapidez.models.option_swatch')::getCachedSwatchValue($superAttribute->attribute_code, $option->value)['swatch'] ?? 'none'"
                     required
                 >
-                    {{ $option['label'] }}
+                    {{ $option->label }}
                 </x-rapidez::input.swatch.visual>
             </li>
         @endforeach

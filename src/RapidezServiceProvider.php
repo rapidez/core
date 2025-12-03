@@ -7,6 +7,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
@@ -33,6 +34,7 @@ use Rapidez\Core\Http\Controllers\Fallback\UrlRewriteController;
 use Rapidez\Core\Http\Middleware\CheckStoreCode;
 use Rapidez\Core\Http\Middleware\ConfigForTesting;
 use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
+use Rapidez\Core\Http\Middleware\Uncacheable;
 use Rapidez\Core\Listeners\Healthcheck\ElasticsearchHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\MagentoSettingsHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\ModelsHealthcheck;
@@ -42,6 +44,7 @@ use Rapidez\Core\Listeners\UpdateLatestIndexDate;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use TorMorten\Eventy\Facades\Eventy;
 
 class RapidezServiceProvider extends ServiceProvider
 {
@@ -70,7 +73,8 @@ class RapidezServiceProvider extends ServiceProvider
             ->bootScout()
             ->bootTranslations()
             ->bootListeners()
-            ->bootMacros();
+            ->bootMacros()
+            ->bootUncacheable();
     }
 
     public function register()
@@ -231,6 +235,7 @@ class RapidezServiceProvider extends ServiceProvider
         $this->app->make(Kernel::class)->pushMiddleware(DetermineAndSetShop::class);
 
         $this->app['router']->aliasMiddleware('store_code', CheckStoreCode::class);
+        $this->app['router']->aliasMiddleware('uncacheable', Uncacheable::class);
 
         return $this;
     }
@@ -295,6 +300,17 @@ class RapidezServiceProvider extends ServiceProvider
                     $filenames
                 )
             );
+        });
+
+        return $this;
+    }
+
+    protected function bootUncacheable(): static
+    {
+        Eventy::addFilter('uncacheable.response', function (Response $response) {
+            $response->setPrivate();
+
+            return $response;
         });
 
         return $this;
