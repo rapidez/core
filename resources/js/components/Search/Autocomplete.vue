@@ -16,6 +16,7 @@ import { useDebounceFn } from '@vueuse/core'
 import { rapidezAPI } from '../../fetch'
 import { searchHistory } from '../../stores/useSearchHistory'
 
+let focusId = document.activeElement.id
 export default {
     mixins: [InstantSearchMixin],
     components: {
@@ -40,25 +41,27 @@ export default {
         },
     },
 
-    data() {
-        return {
-            focusId: null,
-        }
-    },
-
     render() {
         return this.$slots.default(this)
     },
     created() {
-        this.focusId = document.activeElement.id
+        focusId ??= document.activeElement.id
     },
     mounted() {
+        let element = null
+        if (focusId && (element = this.$el.nextSibling.querySelector('#' + focusId))) {
+            setTimeout(() => {
+                requestAnimationFrame(() => {
+                    element?.focus()
+                })
+            })
+        }
         this.$nextTick(() => {
             this.$emit('mounted')
             setTimeout(() => {
                 requestAnimationFrame(() => {
                     let element = null
-                    if (this.focusId && (element = this.$el.nextSibling.querySelector('#' + this.focusId))) {
+                    if (focusId && (element = this.$el.nextSibling.querySelector('#' + focusId))) {
                         element?.focus()
                     }
                 })

@@ -57,7 +57,6 @@ document.addEventListener('vue:loaded', function (event) {
                 }),
 
                 render() {
-                    // TODO: seems broken, replaced by <Suspense> (https://github.com/vuejs/core/pull/13997)
                     return this.$slots.default(this)
                 },
                 delay: 0,
