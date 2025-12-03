@@ -24,6 +24,7 @@ return [
         'sku',
         'price',
         'special_price',
+        'prices',
         'image',
         'images',
         'url',

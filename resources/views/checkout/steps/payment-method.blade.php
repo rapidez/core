@@ -2,7 +2,7 @@
     :query="config.queries.setPaymentMethodOnCart"
     :variables="{
         cart_id: mask.value,
-        code: cart.value.selected_payment_method.code,
+        code: cart.value.selected_payment_method?.code ?? null,
     }"
     group="payment"
     :before-request="handleBeforePaymentMethodHandlers"

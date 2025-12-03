@@ -4,13 +4,14 @@ namespace Rapidez\Core\Models\Traits\Product;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Facades\Rapidez;
-use Rapidez\Core\Models\AbstractAttribute;
 use Rapidez\Core\Models\Category;
 use Rapidez\Core\Models\CategoryProduct;
 use Rapidez\Core\Models\EavAttribute;
 use Rapidez\Core\Models\Product;
+use Rapidez\Core\Models\SuperAttribute;
 use Rapidez\Core\Models\Traits\Searchable as ParentSearchable;
 use TorMorten\Eventy\Facades\Eventy;
 
@@ -63,61 +64,43 @@ trait Searchable
             'entity_id',
             'sku',
             'children',
+            'prices',
             'url',
+            'images',
             'in_stock',
             'min_sale_qty',
             'qty_increments',
             ...$indexableAttributeCodes,
-            ...$this->superAttributes->pluck('attribute_code'),
+            ...$this->superAttributeCodes,
         ]);
+
+        // TODO: Maybe we can handle this keying directly
+        // on the relationship as also proposed here:
+        // https://github.com/rapidez/core/pull/1062
+        $data['prices'] = (object) Arr::keyBy($data['prices'], 'customer_group_id');
 
         $data['store'] = config('rapidez.store');
         $data['super_attributes'] = $this->superAttributes->keyBy('attribute_id');
 
-        $maxPositions = Cache::driver('array')->rememberForever('max-positions-' . config('rapidez.store'), function () {
-            return CategoryProduct::query()
-                ->selectRaw('GREATEST(MAX(position), 0) as position')
-                ->addSelect('category_id')
-                ->groupBy('category_id')
-                ->pluck('position', 'category_id');
-        });
-
-        foreach ($this->superAttributeValues as $attribute => $values) {
-            $data['super_' . $attribute] = $values->pluck('value');
-        }
-
         $data = $this->withCategories($data);
-
-        $data['positions'] = $this->categoryProducts
-            ->pluck('position', 'category_id')
-            // Turn all positions positive
-            ->mapWithKeys(fn ($position, $category_id) => [$category_id => $maxPositions[$category_id] - $position]);
+        $data['positions'] = $this->getPositions();
 
         return Eventy::filter('index.' . static::getModelName() . '.data', $data, $this);
     }
 
-    // TODO: This isn't used anymore, can we work with the
-    // current data? Do we really need this value/label?
-    public function transformAttributes(array $data): array
+    public function getPositions(): Collection
     {
-        // TODO: Can this be done directly from AbstractAttribute instead?
-        // Would be a lot cleaner if we don't have to manually loop through this.
-        return Arr::map($data, function ($value, $key) {
-            if ($value instanceof AbstractAttribute) {
-                if ($value->value == $value->label) {
-                    return $value->value;
-                } else {
-                    return [
-                        'value' => $value->value,
-                        'label' => $value->label,
-                    ];
-                }
-            } elseif ($key === 'children') {
-                return $value->map(fn ($child) => $this->transformAttributes($child));
-            } else {
-                return $value;
-            }
-        });
+        $maxPositions = Cache::driver('array')->rememberForever('max-positions-' . config('rapidez.store'), fn () => CategoryProduct::query()
+            ->selectRaw('GREATEST(MAX(position), 0) as position')
+            ->addSelect('category_id')
+            ->groupBy('category_id')
+            ->pluck('position', 'category_id')
+        );
+
+        return $this->categoryProducts
+            ->pluck('position', 'category_id')
+            // Turn all positions positive
+            ->mapWithKeys(fn ($position, $category_id) => [$category_id => $maxPositions[$category_id] - $position]);
     }
 
     /**
@@ -215,9 +198,25 @@ trait Searchable
             })
             ->whereNotNull('type');
 
+        $superAttributeTypeMapping = SuperAttribute::all()
+            ->pluck('attribute_code')
+            ->unique()
+            ->mapWithKeys(fn ($attribute) => [
+                "super_{$attribute}_values" => [
+                    'type' => 'flattened',
+                ],
+            ]);
+
         return [
             'properties' => [
                 ...$attributeTypeMapping,
+                ...$superAttributeTypeMapping,
+                'super_attributes' => [
+                    'type' => 'flattened',
+                ],
+                'prices.*.min_price' => [
+                    'type' => 'double',
+                ],
                 'children' => [
                     'type' => 'flattened',
                 ],
