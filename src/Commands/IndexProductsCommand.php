@@ -5,6 +5,7 @@ namespace Rapidez\Core\Commands;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Events\IndexAfterEvent;
 use Rapidez\Core\Events\IndexBeforeEvent;
 use Rapidez\Core\Facades\Rapidez;
@@ -22,7 +23,7 @@ class IndexProductsCommand extends ElasticsearchIndexCommand
 
     public function handle()
     {
-        $this->call('cache:clear');
+        Cache::driver('rapidez:multi')->tags(['attributes', 'swatches'])->flush();
 
         IndexBeforeEvent::dispatch($this);
 
