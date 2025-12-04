@@ -30,7 +30,7 @@
         "lcobucci/jwt": "^4.0|^5.3",
         "rapidez/blade-components": "^1.11",
         "rapidez/blade-directives": "^1.1",
-        "rapidez/laravel-multi-cache": "^2.0",
+        "rapidez/laravel-multi-cache": "^2.1",
         "rapidez/laravel-scout-elasticsearch": "^1.0",
         "tormjens/eventy": "^0.8"
     },
