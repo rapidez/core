@@ -33,13 +33,13 @@ document.addEventListener('vue:loaded', function (event) {
                 }
             })
 
-            const ev = new CustomEvent('partial-submit', {
+            const e = new CustomEvent('partial-submit', {
                 detail: { resolve: resolveFn, reject: rejectFn },
                 bubbles: false,
                 cancelable: true,
             })
 
-            const dispatched = element.dispatchEvent(ev)
+            const dispatched = element.dispatchEvent(e)
             if (!dispatched) {
                 resolveFn()
             }

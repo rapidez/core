@@ -3,7 +3,7 @@
     v-bind:allow-passwordless="Boolean({{ (int)(config('rapidez.frontend.allow_guest_on_existing_account')) }})"
     v-bind:allow-guest="Boolean({{ (int)(Rapidez::config('checkout/options/guest_checkout')) }})"
 >
-    <fieldset partial-submit v-on:partial-submit="(ev) => checkoutLogin.go().then(ev.detail.resolve).catch(ev.detail.reject)" class="flex flex-col gap-3" v-cloak>
+    <fieldset partial-submit v-on:partial-submit="(e) => checkoutLogin.go().then(e.detail.resolve).catch(e.detail.reject)" class="flex flex-col gap-3" v-cloak>
         <label>
             <x-rapidez::label>@lang('Email')</x-rapidez::label>
             <x-rapidez::input
