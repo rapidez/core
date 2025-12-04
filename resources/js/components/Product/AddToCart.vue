@@ -176,9 +176,7 @@ export default {
             specialPrice = window.sumPrices(specialPrice, this.priceAddition(specialPrice))
 
             this.price = price
-            this.specialPrice = price > specialPrice
-                ? specialPrice
-                : null
+            this.specialPrice = price > specialPrice ? specialPrice : null
         },
 
         getOptions: function (superAttributeCode) {

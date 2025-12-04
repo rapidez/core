@@ -22,13 +22,9 @@ window.productPrice = function (product) {
 
 window.productSpecialPrice = function (product) {
     let groupId = user?.value?.group_id
-    let specialPrice = groupId
-        ? product.prices[groupId].min_price
-        : product.special_price
+    let specialPrice = groupId ? product.prices[groupId].min_price : product.special_price
 
-    return window.productPrice(product) > specialPrice
-        ? specialPrice
-        : null
+    return window.productPrice(product) > specialPrice ? specialPrice : null
 }
 
 window.sumPrices = function (price1, price2) {
