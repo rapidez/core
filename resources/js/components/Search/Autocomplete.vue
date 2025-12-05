@@ -124,33 +124,6 @@ export default {
 
             return client
         },
-
-        getMiddlewares() {
-            let middlewares = InstantSearchMixin.methods.getMiddlewares.bind(this).call()
-
-            const stateChanged = useDebounceFn((changes) => {
-                const query = Object.entries(changes.uiState).find(([id, state]) => {
-                    return state?.query
-                })?.[1]?.query
-
-                if (!query) {
-                    return
-                }
-
-                rapidezAPI('post', '/search', {
-                    q: query,
-                })
-            }, 3000)
-
-            return [
-                ...middlewares,
-                () => ({
-                    onStateChange(changes) {
-                        stateChanged(changes)
-                    },
-                }),
-            ]
-        },
     },
 }
 </script>
