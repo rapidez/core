@@ -1,7 +1,6 @@
 <script>
 import { GraphQLError } from '../../fetch'
 import { mask, refreshMask } from '../../stores/useMask'
-import { user } from '../../stores/useUser'
 
 export default {
     inject: {
@@ -169,13 +168,15 @@ export default {
         },
 
         calculatePrices: function () {
-            let groupId = user?.value?.group_id
-            let specialPrice = groupId ? this.simpleProduct.prices[groupId].min_price : this.simpleProduct.special_price
+            let price = window.productPrice(this.simpleProduct)
+            let specialPrice = window.productSpecialPrice(this.simpleProduct)
 
-            specialPrice = Math.round((parseFloat(specialPrice) + this.priceAddition(specialPrice)) * 100) / 100
+            // Price additions for optionally selected options.
+            price = window.sumPrices(price, this.priceAddition(price))
+            specialPrice = window.sumPrices(specialPrice, this.priceAddition(specialPrice))
 
-            this.price = Math.round((parseFloat(this.simpleProduct.price) + this.priceAddition(this.simpleProduct.price)) * 100) / 100
-            this.specialPrice = this.price > specialPrice ? specialPrice : null
+            this.price = price
+            this.specialPrice = price > specialPrice ? specialPrice : null
         },
 
         getOptions: function (superAttributeCode) {

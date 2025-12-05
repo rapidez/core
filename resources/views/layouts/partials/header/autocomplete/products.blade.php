@@ -24,11 +24,11 @@
                             <x-rapidez::highlight attribute="name"/>
 
                             <div class="flex items-center gap-x-0.5 mt-0.5">
-                                <div v-if="item.special_price" class="text-muted font-sans line-through text-xs">
-                                    @{{ window.price(item.price) }}
+                                <div v-if="window.productSpecialPrice(item)" class="text-muted font-sans line-through text-xs">
+                                    @{{ window.price(window.productPrice(item)) }}
                                 </div>
                                 <div class="text-sm text font-sans font-bold">
-                                    @{{ window.price(item.special_price || item.price) }}
+                                    @{{ window.price(window.productSpecialPrice(item) || window.productPrice(item)) }}
                                 </div>
                             </div>
                         </div>
