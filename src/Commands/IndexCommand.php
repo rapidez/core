@@ -3,6 +3,7 @@
 namespace Rapidez\Core\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Events\IndexAfterEvent;
 use Rapidez\Core\Events\IndexBeforeEvent;
 use Rapidez\Core\Facades\Rapidez;
@@ -27,7 +28,7 @@ class IndexCommand extends Command
             ? Rapidez::getStores(explode(',', $this->option('store')))
             : Rapidez::getStores();
 
-        $this->call('cache:clear');
+        Cache::driver('rapidez:multi')->tags(['attributes', 'swatches'])->flush();
 
         IndexBeforeEvent::dispatch($this);
 

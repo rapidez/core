@@ -31,7 +31,7 @@
         "matchish/laravel-scout-elasticsearch": "^7.11",
         "rapidez/blade-components": "^1.10",
         "rapidez/blade-directives": "^1.1",
-        "rapidez/laravel-multi-cache": "^2.0",
+        "rapidez/laravel-multi-cache": "^2.1",
         "tormjens/eventy": "^0.8"
     },
     "require-dev": {
