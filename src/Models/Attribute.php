@@ -47,14 +47,14 @@ class Attribute extends Model
 
     public static function getCached()
     {
-        return Cache::rememberForever('eav_attributes', function () {
+        return Cache::store('rapidez:multi')->tags('attributes')->rememberForever('eav_attributes', function () {
             return DB::table('eav_attribute')->get()->keyBy('attribute_code');
         });
     }
 
     public static function getCachedWhere(callable $callback): array
     {
-        $attributes = Cache::store('rapidez:multi')->rememberForever('attributes.' . config('rapidez.store'), function () {
+        $attributes = Cache::store('rapidez:multi')->tags('attributes')->rememberForever('attributes.' . config('rapidez.store'), function () {
             return self::all()->toArray();
         });
 
