@@ -40,22 +40,16 @@ class SearchController
         // Prevent automatic indexing each time it is updated.
         config('rapidez.models.search_query')::disableSearchSyncing();
         $searchQuery = config('rapidez.models.search_query')::withoutGlobalScope(IsActiveScope::class)
-            ->firstOrNew(
+            ->firstOrCreate(
                 [
                     'query_text' => Str::lower($request->q),
                     'store_id'   => config('rapidez.store'),
                 ],
                 [
                     'num_results' => $request->results ?? 0,
-                    'popularity'  => 1,
+                    'popularity'  => 0,
                 ]
             );
-
-        if (! $searchQuery->exists) {
-            $searchQuery->save();
-
-            return $searchQuery;
-        }
 
         $searchQuery->popularity++;
         if ($request->has('results')) {
