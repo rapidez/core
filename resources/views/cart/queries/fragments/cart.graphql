@@ -99,6 +99,7 @@ fragment cart on Cart {
             carrier_code
             method_code
             method_title
+            error_message
             amount {
                 value
             }
