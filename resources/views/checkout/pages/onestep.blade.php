@@ -14,7 +14,7 @@
                             window.$emit('checkout-credentials-saved')
                             && window.$emit('checkout-payment-saved')
                             && window.$emit('placeOrder')
-                        ).catch();
+                        ).catch(() => {});
                 }">
                     <div class="lg:w-1/2 lg:pr-2.5 lg:col-span-2">
                         @include('rapidez::checkout.steps.login')

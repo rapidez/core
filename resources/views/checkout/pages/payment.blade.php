@@ -14,7 +14,7 @@
                             .then((result) =>
                                 window.$emit('checkout-payment-saved')
                                 && window.$emit('placeOrder')
-                            ).catch();
+                            ).catch(() => {});
                     }">
                     @include('rapidez::checkout.steps.payment-method')
                     <div class="mt-3">@include('rapidez::checkout.steps.agreements')</div>
