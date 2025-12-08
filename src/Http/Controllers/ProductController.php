@@ -15,6 +15,7 @@ class ProductController
 
         /** @var \Rapidez\Core\Models\Product $product */
         $product = $productModel::query()
+            ->withEventyGlobalScopes('productpage.scopes')
             ->whereInAttribute('visibility', [
                 Product::VISIBILITY_IN_CATALOG,
                 Product::VISIBILITY_BOTH,
