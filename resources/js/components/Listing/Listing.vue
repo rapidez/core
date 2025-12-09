@@ -90,7 +90,7 @@ export default {
         sortOptions() {
             let groupId = user?.value?.group_id || 0
             let sorting = config.searchkit.sorting
-            let field = 'prices.'+groupId+'.min_price'
+            let field = 'prices.' + groupId + '.min_price'
 
             if ('_price_asc' in sorting) {
                 sorting['_price_asc']['field'] = field
