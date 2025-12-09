@@ -1,4 +1,5 @@
 <script>
+import { user } from '../../stores/useUser'
 import { history } from 'instantsearch.js/es/lib/routers'
 import InstantSearchMixin from '../Search/InstantSearchMixin.vue'
 import Pagination from 'vue-instantsearch/vue3/es/src/components/Pagination.vue.js'
@@ -84,6 +85,22 @@ export default {
                     }
                 })
                 .concat({ label: this.$root.config.translations.all, value: 10000 })
+        },
+
+        sortOptions() {
+            let groupId = user?.value?.group_id || 0
+            let sorting = config.searchkit.sorting
+            let field = 'prices.'+groupId+'.min_price'
+
+            if ('_price_asc' in sorting) {
+                sorting['_price_asc']['field'] = field
+            }
+
+            if ('_price_desc' in sorting) {
+                sorting['_price_desc']['field'] = field
+            }
+
+            return Object.values(sorting)
         },
 
         routing() {
