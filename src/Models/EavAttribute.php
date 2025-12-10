@@ -32,9 +32,7 @@ class EavAttribute extends Model
         return Cache::memo()->rememberForever('customer_eav_attributes', function () {
             return EavAttribute::query()
                 ->leftJoin('customer_eav_attribute', 'customer_eav_attribute.attribute_id', '=', 'eav_attribute.attribute_id')
-                // TODO: This also needs an entity type check or
-                // it should just join instead of left join
-                // but not sure if it's used currently?
+                ->where('entity_type_id', self::ENTITY_TYPE_CUSTOMER)
                 ->get();
         });
     }
