@@ -39,7 +39,7 @@
             />
             </label>
             <label>
-                <x-rapidez::label>@lang('Firstname')</x-rapidez::label>
+                <x-rapidez::label>@lang('First name')</x-rapidez::label>
                 <x-rapidez::input
                     name="firstname"
                     type="text"
@@ -48,7 +48,7 @@
                 />
             </label>
             <label>
-                <x-rapidez::label>@lang('Lastname')</x-rapidez::label>
+                <x-rapidez::label>@lang('Last name')</x-rapidez::label>
                 <x-rapidez::input
                     name="lastname"
                     type="text"

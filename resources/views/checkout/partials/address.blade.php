@@ -86,7 +86,7 @@
         @endif
         <div class="col-span-12 {{ Rapidez::config('customer/address/middlename_show') ? 'sm:col-span-4' : 'sm:col-span-6' }}">
             <label>
-                <x-rapidez::label>@lang('Firstname')</x-rapidez::label>
+                <x-rapidez::label>@lang('First name')</x-rapidez::label>
                 <x-rapidez::input
                     name="{{ $type }}_firstname"
                     v-model="variables.firstname"
@@ -97,7 +97,7 @@
         @if (Rapidez::config('customer/address/middlename_show'))
             <div class="col-span-12 sm:col-span-4">
                 <label>
-                    <x-rapidez::label>@lang('Middlename')</x-rapidez::label>
+                    <x-rapidez::label>@lang('Middle name')</x-rapidez::label>
                     <x-rapidez::input
                         name="{{ $type }}_middlename"
                         v-model="variables.middlename"
@@ -107,7 +107,7 @@
         @endif
         <div class="col-span-12 {{ Rapidez::config('customer/address/middlename_show') ? 'sm:col-span-4' : 'sm:col-span-6' }}">
             <label>
-                <x-rapidez::label>@lang('Lastname')</x-rapidez::label>
+                <x-rapidez::label>@lang('Last name')</x-rapidez::label>
                 <x-rapidez::input
                     name="{{ $type }}_lastname"
                     v-model="variables.lastname"
@@ -187,7 +187,7 @@
         @if (Rapidez::config('customer/address/street_lines') >= 2)
             <div class="{{ Rapidez::config('customer/address/street_lines') >= 3 ? 'col-span-6 sm:col-span-4' : 'col-span-12 sm:col-span-6' }}">
                 <label>
-                    <x-rapidez::label>@lang('Housenumber')</x-rapidez::label>
+                    <x-rapidez::label>@lang('House number')</x-rapidez::label>
                     <x-rapidez::input
                         name="{{ $type }}_housenumber"
                         v-model="variables.street[1]"
