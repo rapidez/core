@@ -24,10 +24,10 @@ window.url = function (path = '') {
 }
 
 window.stripHtmlTags = function (html, safeTags = ['mark']) {
-    safeTags = safeTags.map((tag) => tag.replace(/[^a-zA-Z0-9-]/g, '')).filter(Boolean);
+    safeTags = safeTags.map((tag) => tag.replace(/[^a-zA-Z0-9-]/g, '')).filter(Boolean)
     return html.replace(new RegExp('<(?!/?(?:' + safeTags.join('|') + ')>)(?:.|\n)*?>', 'gm'), '') // Safe tags are only allowed if they have NO attributes
 }
 
 window.htmlDecode = function (input) {
-  return new DOMParser().parseFromString(input, "text/html")?.documentElement?.textContent ?? input;
+    return new DOMParser().parseFromString(input, 'text/html')?.documentElement?.textContent ?? input
 }
