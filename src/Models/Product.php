@@ -241,7 +241,13 @@ class Product extends Model
         // NOTE: We always need the option with the lowest matching value, *not* the one with the highest matching qty!
         // It wouldn't make sense to select a tier with a higher qty if the price is higher.
 
-        return $tierPrice ?? $this->price;
+        $price = $tierPrice ?? $this->price;
+
+        if ($this->specialPrice && $this->specialPrice < $price) {
+            return $this->specialPrice;
+        }
+
+        return $price;
     }
 
     public function getPrice(int $quantity = 1, int $customerGroup = 0)
