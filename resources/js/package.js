@@ -1,6 +1,6 @@
 window.debug = import.meta.env.VITE_DEBUG == 'true'
 window.Notify = (message, type = 'info', params = [], link = null) =>
-    setTimeout(() => window.$emit('notification-message', message, type, params, link))
+    setTimeout(() => window.$emit('notification-message', message, type, params, link), window.app ? 0 : 500)
 
 if (!window.process) {
     // Workaround for process missing, if data is actually needed from here you should apply the following polyfill.
@@ -49,11 +49,18 @@ if (import.meta.env.VITE_DEBUG === 'true') {
 
 let booting = false
 let rootEl = null
-function init() {
+async function init() {
     if (booting || (rootEl && document.body.contains(rootEl))) {
         return
     }
     booting = true
+    for(let i = 0; i < 20; i++) {
+        // Wait until config is available, for a max of 1s
+        if (window.config.store) {
+            break;
+        }
+        await new Promise((resolve) => setTimeout(resolve, 50));
+    }
     rootEl = document.querySelector('#app')
 
     // Check if the localstorage needs a flush.
