@@ -1,6 +1,24 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0-alpha.3...5.0.0-alpha.3)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0-alpha.4...5.0.0-alpha.4)
+## [5.0.0-alpha.4](https://github.com/rapidez/core/releases/tag/5.0.0-alpha.4) - 2025-12-11
+
+### Added
+
+- Implemented cache tags to prevent clearing all caches every reindex (#1103)
+
+### Fixed
+
+- Removed suspense after new Vue release (#1100)
+- Utilize DOM events to fix broken partial-submit (#1099)
+- Added missing productpage scopes (#1109)
+- Form label spelling fixes (#1110)
+- Attribute label casting fix (#1113)
+- Fixed csrf token retrieval (fc9d493)
+- Fix future Playwright tests (#1115)
+- Block identifier support for block widgets (#1118)
+- GraphQL mutation writable redirect url (#1119)
+
 ## [5.0.0-alpha.3](https://github.com/rapidez/core/releases/tag/5.0.0-alpha.3) - 2025-12-02
 
 ### Added
