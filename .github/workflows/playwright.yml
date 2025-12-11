@@ -106,7 +106,7 @@ jobs:
           echo "LATEST_TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
       - name: Get correct version name for require
-        run: echo "REQUIRE_VERSION=$([[ '${{ env.CORE_HASH }}' =~ [0-9]+\.[xX] ]] && echo '${{ env.CORE_HASH }}-dev' || echo 'dev-${{ env.CORE_HASH }}')" >> $GITHUB_ENV
+        run: echo "REQUIRE_VERSION=$([[ '${{ env.CORE_HASH }}' =~ ^[0-9]+\.[xX]$ ]] && echo '${{ env.CORE_HASH }}-dev' || echo 'dev-${{ env.CORE_HASH }}')" >> $GITHUB_ENV
 
       - name: Composer require the local rapidez/core
         run: composer require rapidez/core:"${{ env.REQUIRE_VERSION }} as ${{ env.LATEST_TAG }}"
