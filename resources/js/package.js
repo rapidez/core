@@ -135,8 +135,9 @@ function init() {
                 },
             },
             mounted() {
+                window.app.config.globalProperties.refs = this.$refs
                 setTimeout(() => {
-                    const event = new CustomEvent('vue:mounted', { detail: { vue: window.app } })
+                    const event = new CustomEvent('vue:mounted', { detail: { vue: window.app, rootNode: this } })
                     document.dispatchEvent(event)
                 })
             },
@@ -148,6 +149,7 @@ function init() {
         window.app.config.globalProperties = {
             custom: {},
             config: window.config,
+            refs: {},
             loadingCount: fetchCount,
             loading: false,
             autocompleteFacadeQuery: '',
