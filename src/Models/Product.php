@@ -242,9 +242,8 @@ class Product extends Model
         // NOTE: We always need the option with the lowest matching value, *not* the one with the highest matching qty!
         // It wouldn't make sense to select a tier with a higher qty if the price is higher.
 
-        $prices = [$tierPrice, $this->price, $this->specialPrice];
-
-        return min(Arr::whereNotNull($prices));
+        $prices = Arr::whereNotNull([$tierPrice, $this->price, $this->specialPrice]);
+        return $prices ? min($prices) : null;
     }
 
     public function getPrice(int $quantity = 1, int $customerGroup = 0)
