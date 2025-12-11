@@ -78,7 +78,7 @@ export default {
         initialVariables: {},
         data: {},
         mutate: () => null,
-        redirectUrl: this.redirect,
+        redirectUrl: '',
     }),
 
     render() {
@@ -100,6 +100,7 @@ export default {
     created() {
         this.initialVariables = JSON.parse(JSON.stringify(this.variables))
         this.data = this.variables
+        this.redirectUrl = this.redirect
 
         if (this.debounce) {
             this.mutate = useDebounceFn(async () => await this.mutateFn(), this.debounce)
