@@ -106,7 +106,8 @@ jobs:
           echo "LATEST_TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
       - name: Composer require the local rapidez/core
-        run: composer require rapidez/core:"dev-${{ env.CORE_HASH }} || ${{ env.CORE_HASH }}-dev as ${{ env.LATEST_TAG }}"
+        run: |
+          [[ '${{ env.CORE_HASH }}' =~ [0-9]+\.[xX] ]] && composer require rapidez/core:"${{ env.CORE_HASH }}-dev as ${{ env.LATEST_TAG }}" || composer require rapidez/core:"dev-${{ env.CORE_HASH }} as ${{ env.LATEST_TAG }}"
 
       - name: Install Rapidez command
         run: php artisan rapidez:install --frontendonly
