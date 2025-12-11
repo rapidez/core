@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Relations\BelongsToManyCallback;
@@ -241,13 +242,9 @@ class Product extends Model
         // NOTE: We always need the option with the lowest matching value, *not* the one with the highest matching qty!
         // It wouldn't make sense to select a tier with a higher qty if the price is higher.
 
-        $price = $tierPrice ?? $this->price;
+        $prices = [$tierPrice, $this->price, $this->specialPrice];
 
-        if ($this->specialPrice && $this->specialPrice < $price) {
-            return $this->specialPrice;
-        }
-
-        return $price;
+        return min(Arr::whereNotNull($prices));
     }
 
     public function getPrice(int $quantity = 1, int $customerGroup = 0)

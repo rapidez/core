@@ -57,6 +57,7 @@ class ProductPriceTest extends TestCase
     {
         $product = Product::find(4);
 
+        $product->tierPrices()->create(['qty' => 2, 'value' => 50, 'website_id' => 1, 'all_groups' => 1, 'customer_group_id' => 0]);
         $product->tierPrices()->create(['qty' => 5, 'value' => 40, 'website_id' => 1, 'all_groups' => 1, 'customer_group_id' => 0]);
         $product->tierPrices()->create(['qty' => 10, 'value' => 35, 'website_id' => 1, 'all_groups' => 1, 'customer_group_id' => 0]);
         $product->tierPrices()->create(['qty' => 15, 'value' => 40, 'website_id' => 1, 'all_groups' => 1, 'customer_group_id' => 0]);
