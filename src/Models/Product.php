@@ -243,6 +243,7 @@ class Product extends Model
         // It wouldn't make sense to select a tier with a higher qty if the price is higher.
 
         $prices = Arr::whereNotNull([$tierPrice, $this->price, $this->specialPrice]);
+
         return $prices ? min($prices) : null;
     }
 
