@@ -54,12 +54,12 @@ async function init() {
         return
     }
     booting = true
-    for(let i = 0; i < 20; i++) {
+    for (let i = 0; i < 20; i++) {
         // Wait until config is available, for a max of 1s
         if (window.config.store) {
-            break;
+            break
         }
-        await new Promise((resolve) => setTimeout(resolve, 50));
+        await new Promise((resolve) => setTimeout(resolve, 50))
     }
     rootEl = document.querySelector('#app')
 
