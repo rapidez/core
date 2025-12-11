@@ -78,6 +78,7 @@ export default {
         initialVariables: {},
         data: {},
         mutate: () => null,
+        redirectUrl: '',
     }),
 
     render() {
@@ -99,6 +100,7 @@ export default {
     created() {
         this.initialVariables = JSON.parse(JSON.stringify(this.variables))
         this.data = this.variables
+        this.redirectUrl = this.redirect
 
         if (this.debounce) {
             this.mutate = useDebounceFn(async () => await this.mutateFn(), this.debounce)
@@ -202,11 +204,11 @@ export default {
                     self.mutated = false
                 }, 2500)
 
-                if (!this.redirect && this.notify.message) {
+                if (!this.redirectUrl && this.notify.message) {
                     Notify(this.notify.message, this.notify.type ?? 'success')
                 }
 
-                if (this.redirect) {
+                if (this.redirectUrl) {
                     if (this.notify.message) {
                         document.addEventListener(
                             'vue:loaded',
@@ -216,7 +218,7 @@ export default {
                             { once: true },
                         )
                     }
-                    Turbo.visit(window.url(this.redirect))
+                    Turbo.visit(window.url(this.redirectUrl))
                 }
 
                 return response
