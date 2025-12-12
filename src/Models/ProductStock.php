@@ -35,9 +35,9 @@ class ProductStock extends Model
 
     protected function minSaleQty(): Attribute
     {
-        return Attribute::get(function (): ?float {
-            $increments = $this->stock->qty_increments ?: 1;
-            $minSaleQty = $this->stock->min_sale_qty ?: 1;
+        return Attribute::get(function (?float $value): ?float {
+            $increments = $this->qty_increments ?: 1;
+            $minSaleQty = $value ?: 1;
 
             return ($minSaleQty - fmod($minSaleQty, $increments)) ?: $increments;
         });
