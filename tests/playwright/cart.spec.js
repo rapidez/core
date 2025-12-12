@@ -18,6 +18,7 @@ test('change quantity', BasePage.tags, async ({ page }) => {
     const product = await new ProductPage(page).addToCart(process.env.PRODUCT_URL_SIMPLE)
     // TODO: Extract to CartPage?
     await page.goto('/cart')
+    await page.waitForLoadState('networkidle')
     await page.getByTestId('qty').fill('5')
     await page.getByTestId('qty').press('Tab')
     await expect(page.getByTestId('cart-item')).toContainText((product.price * 5).toString())
