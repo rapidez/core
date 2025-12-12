@@ -5,7 +5,6 @@
             'SortBy.vue',
             'Stats.vue',
             'Hits.vue',
-            'Highlight.vue',
             'Pagination.vue',
             'Hits.js'
         ])
