@@ -35,7 +35,7 @@ class AbstractAttribute extends Model
     protected function rawValue(): Attribute
     {
         return Attribute::get(function ($value) {
-            $value ??= $this->getAttribute('value');
+            $value ??= $this->getAttributeFromArray('value');
             $class = config('rapidez.attribute-models')[$this->backend_model] ?? null;
 
             if ($class) {
