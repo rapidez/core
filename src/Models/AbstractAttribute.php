@@ -51,6 +51,7 @@ class AbstractAttribute extends Model
     protected function value(): Attribute
     {
         return Attribute::get(function ($value) {
+            $value = $this->rawValue ?? $value;
             if ($this->frontend_input === 'select' || $this->frontend_input === 'multiselect') {
                 if (is_iterable($value)) {
                     return Arr::map(
