@@ -20,7 +20,7 @@
                                     class="items-baseline flex text-base/5"
                                     :class="item.isRefined ? 'text' : 'text-muted hover:text'"
                                 >
-                                    @{{ item.label }}
+                                    <span v-html="window.stripHtmlTags(item.label)"></span>
                                     <span class="block ml-0.5 text-xs" data-testid="listing-filter-count">
                                         (@{{ item.count }})
                                     </span>

@@ -16,7 +16,7 @@
                                 .then((result) =>
                                     window.$emit('checkout-credentials-saved')
                                     && window.Turbo.visit(window.url('{{ route('checkout', ['step' => 'payment']) }}'))
-                                ).catch();
+                                ).catch(() => {});
                         }"
                         class="flex flex-col gap-5"
                     >

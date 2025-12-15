@@ -45,7 +45,10 @@ class ProductTest extends TestCase
 
         $this->assertNotNull($product->children, 'Product 45 does not have children.');
         $this->assertEquals(3, count($product->children), 'Product 45 does not have 3 children.');
-        $this->assertEquals(2, count($product->children->first()->parents), 'Product 45\'s first child does not have 2 parents.');
+
+        // Because we don't support bundles, this product only has 1 parent instead of 2.
+        // $this->assertEquals(2, count($product->children->first()->parents), 'Product 45\'s first child does not have 2 parents.');
+        $this->assertEquals(1, count($product->children->first()->parents), 'Product 45\'s first child does not have 1 parent.');
     }
 
     #[Test]
@@ -158,7 +161,8 @@ class ProductTest extends TestCase
     {
         $product = Product::find(10);
 
-        $this->assertEqualsCanonicalizing([8, 11], iterator_to_array($product->activity->value), 'Activity attribute on product 10 did not return the right values.');
+        $this->assertEqualsCanonicalizing([8, 11], iterator_to_array($product->activity->rawValue), 'Activity attribute on product 10 did not return the right values.');
+        $this->assertEqualsCanonicalizing(['Gym', 'Yoga'], iterator_to_array($product->activity->value), 'Activity attribute on product 10 did not return the right values.');
         $this->assertEquals('Gym, Yoga', $product->activity->label, 'Activity attribute on product 10 did not yield the right text output.');
 
         $this->assertEquals('Savvy Shoulder Tote', $product->name->label, 'Name attribute on product 10 did not return the right value.');
@@ -172,7 +176,7 @@ class ProductTest extends TestCase
 
         $data = $product->toSearchableArray();
 
-        $this->assertEquals('All-Weather, Cool, Indoor, Spring, Windy', $data['climate']['label'], 'Product 68 did not get indexed with the right climate label.');
+        $this->assertEquals('All-Weather, Cool, Indoor, Spring, Windy', implode(', ', $data['climate']), 'Product 68 did not get indexed with the right climate data.');
         $this->assertEquals('Chaz Kangeroo Hoodie', $data['name'], 'Product 68 did not get indexed with the right name.');
     }
 
@@ -184,7 +188,12 @@ class ProductTest extends TestCase
         $data = $product->toSearchableArray();
         $firstChild = $data['children'][53];
 
-        $this->assertEquals(['value' => 166, 'label' => 'XS'], $firstChild['size'], 'Child product under product 68 did not get indexed with the right size data.');
+        $this->assertEquals('XS', $firstChild['size'], 'Child product under product 68 did not get indexed with the right size.');
 
+        $this->assertEquals('XS', $data['super_size_values'][166]->label, 'super_size_values on product 68 did not get indexed with the right labels.');
+        $this->assertEquals(166, $data['super_size_values'][166]->value, 'super_size_values on product 68 did not get indexed with the right values.');
+        $this->assertTrue($data['super_size_values'][166]->children->contains(53), 'super_size_values on product 68 did not get indexed with the right children data.');
+
+        $this->assertEquals([49, 52, 56], $data['super_color'], 'super_size on product 68 did not get indexed with the right data.');
     }
 }

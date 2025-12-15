@@ -13,6 +13,8 @@ class ProductTierPrice extends Model
 
     protected $primaryKey = 'value_id';
 
+    protected $guarded = [];
+
     public function product(): BelongsTo
     {
         return $this->belongsTo(

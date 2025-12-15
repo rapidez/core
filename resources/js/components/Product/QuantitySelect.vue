@@ -78,6 +78,7 @@ export default {
         decreasable() {
             return this.value - this.step >= this.min
         },
+
         value: {
             get() {
                 return this.modelValue

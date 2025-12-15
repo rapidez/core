@@ -8,6 +8,7 @@ is present on the input and the quantity select component.
         <button
             v-on:click.prevent="qtySelect.decrease"
             v-bind:disabled="!qtySelect.decreasable"
+            disabled
             aria-label="@lang('Decrease')"
             class="shrink-0 pl-2.5 text disabled:cursor-not-allowed disabled:opacity-50"
         >
@@ -17,15 +18,10 @@ is present on the input and the quantity select component.
             name="qty"
             type="number"
             data-testid="qty"
+            value="1"
             class="outline-0 ring-0 border-none w-12 bg-transparent font-medium text-center px-0 sm:text-base focus:ring-transparent arrows-hidden"
             aria-label="@lang('Quantity')"
-            ref="input"
-            :min="qtySelect.min"
-            :max="qtySelect.max > 0 ? qtySelect.max : null"
-            :step="qtySelect.step"
-            v-model="qtySelect.value"
             {{ $attributes }}
-            v-bind="$attrs"
         />
         <button
             v-on:click.prevent="qtySelect.increase"

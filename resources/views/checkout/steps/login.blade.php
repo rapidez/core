@@ -3,7 +3,7 @@
     v-bind:allow-passwordless="Boolean({{ (int)(config('rapidez.frontend.allow_guest_on_existing_account')) }})"
     v-bind:allow-guest="Boolean({{ (int)(Rapidez::config('checkout/options/guest_checkout')) }})"
 >
-    <fieldset partial-submit v-on:partial-submit="async () => await checkoutLogin.go()" class="flex flex-col gap-3" v-cloak>
+    <fieldset partial-submit v-on:partial-submit="(e) => checkoutLogin.go().then(e.detail.resolve).catch(e.detail.reject)" class="flex flex-col gap-3" v-cloak>
         <label>
             <x-rapidez::label>@lang('Email')</x-rapidez::label>
             <x-rapidez::input
@@ -39,7 +39,7 @@
             />
             </label>
             <label>
-                <x-rapidez::label>@lang('Firstname')</x-rapidez::label>
+                <x-rapidez::label>@lang('First name')</x-rapidez::label>
                 <x-rapidez::input
                     name="firstname"
                     type="text"
@@ -48,7 +48,7 @@
                 />
             </label>
             <label>
-                <x-rapidez::label>@lang('Lastname')</x-rapidez::label>
+                <x-rapidez::label>@lang('Last name')</x-rapidez::label>
                 <x-rapidez::input
                     name="lastname"
                     type="text"

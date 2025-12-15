@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Rapidez\Core\Facades\Rapidez;
+use Rapidez\Core\Models\Relations\BelongsToManyCallback;
 use Rapidez\Core\Models\Scopes\Product\EnabledScope;
 use Rapidez\Core\Models\Scopes\Product\ForCurrentWebsiteScope;
 use Rapidez\Core\Models\Scopes\Product\SupportedScope;
@@ -17,6 +19,7 @@ use Rapidez\Core\Models\Traits\HasCustomAttributes;
 use Rapidez\Core\Models\Traits\Product\BackwardsCompatibleAccessors;
 use Rapidez\Core\Models\Traits\Product\HasSuperAttributes;
 use Rapidez\Core\Models\Traits\Product\Searchable;
+use Rapidez\Core\Models\Traits\UsesCallbackRelations;
 
 class Product extends Model
 {
@@ -25,6 +28,7 @@ class Product extends Model
     use HasCustomAttributes;
     use HasSuperAttributes;
     use Searchable;
+    use UsesCallbackRelations;
 
     public const VISIBILITY_NOT_VISIBLE = 1;
     public const VISIBILITY_IN_CATALOG = 2;
@@ -47,15 +51,16 @@ class Product extends Model
         'prices',
     ];
 
+    // TODO: Double check; do we really want all accessors
+    // defined here so they will show up in the indexer?
+    // See the BackwardsCompatibleAccessors
     protected $appends = [
+        'grouped',
+        'images',
+        'in_stock',
         'price',
         'special_price',
         'url',
-
-        // TODO: Double check; do we really want all accessors
-        // defined here so they will show up in the indexer?
-        // See the BackwardsCompatibleAccessors
-        'in_stock',
     ];
 
     protected static function booted(): void
@@ -104,24 +109,24 @@ class Product extends Model
         )->shouldCache();
     }
 
-    public function parents(): BelongsToMany
+    public function parents(): BelongsToManyCallback
     {
-        return $this->belongsToMany(config('rapidez.models.product'), 'catalog_product_relation', 'child_id', 'parent_id');
+        return $this->belongsToManyCallback(
+            fn ($results) => $results->keyBy('entity_id'),
+            config('rapidez.models.product'),
+            'catalog_product_relation',
+            'child_id', 'parent_id',
+        );
     }
 
-    public function getParentsAttribute(): Collection
+    public function children(): BelongsToManyCallback
     {
-        return $this->getRelationValue('parents')->keyBy('entity_id');
-    }
-
-    public function children(): BelongsToMany
-    {
-        return $this->belongsToMany(config('rapidez.models.product'), 'catalog_product_relation', 'parent_id', 'child_id');
-    }
-
-    public function getChildrenAttribute(): Collection
-    {
-        return $this->getRelationValue('children')->keyBy('entity_id');
+        return $this->belongsToManyCallback(
+            fn ($results) => $results->keyBy('entity_id'),
+            config('rapidez.models.product'),
+            'catalog_product_relation',
+            'parent_id', 'child_id'
+        );
     }
 
     protected function grouped(): Attribute
@@ -237,7 +242,9 @@ class Product extends Model
         // NOTE: We always need the option with the lowest matching value, *not* the one with the highest matching qty!
         // It wouldn't make sense to select a tier with a higher qty if the price is higher.
 
-        return $tierPrice ?? $this->price;
+        $prices = Arr::whereNotNull([$tierPrice, $this->price, $this->specialPrice]);
+
+        return $prices ? min($prices) : null;
     }
 
     public function getPrice(int $quantity = 1, int $customerGroup = 0)

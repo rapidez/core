@@ -1,6 +1,5 @@
 import { defineAsyncComponent } from 'vue'
 import { addQuery } from './stores/useSearchHistory'
-import highlight from 'vue-instantsearch/vue3/es/src/components/Highlight.vue.js'
 
 document.addEventListener('vue:loaded', function (event) {
     const vue = event.detail.vue
@@ -17,7 +16,6 @@ document.addEventListener('vue:loaded', function (event) {
         'ais-configure',
         defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/Configure.js')),
     )
-    vue.component('ais-highlight', highlight)
     vue.component(
         'ais-autocomplete',
         defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/Autocomplete.vue.js')),

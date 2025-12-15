@@ -5,7 +5,6 @@ import InstantSearchMixin from './InstantSearchMixin.vue'
 import InstantSearch from 'vue-instantsearch/vue3/es/src/components/InstantSearch'
 import Hits from 'vue-instantsearch/vue3/es/src/components/Hits.js'
 import Configure from 'vue-instantsearch/vue3/es/src/components/Configure.js'
-import highlight from 'vue-instantsearch/vue3/es/src/components/Highlight.vue.js'
 import Autocomplete from 'vue-instantsearch/vue3/es/src/components/Autocomplete.vue.js'
 import Index from 'vue-instantsearch/vue3/es/src/components/Index.js'
 import Stats from 'vue-instantsearch/vue3/es/src/components/Stats.vue.js'
@@ -16,6 +15,7 @@ import { useDebounceFn } from '@vueuse/core'
 import { rapidezAPI } from '../../fetch'
 import { searchHistory } from '../../stores/useSearchHistory'
 
+let focusId = document.activeElement.id
 export default {
     mixins: [InstantSearchMixin],
     components: {
@@ -40,25 +40,27 @@ export default {
         },
     },
 
-    data() {
-        return {
-            focusId: null,
-        }
-    },
-
     render() {
         return this.$slots.default(this)
     },
     created() {
-        this.focusId = document.activeElement.id
+        focusId ??= document.activeElement.id
     },
     mounted() {
+        let element = null
+        if (focusId && (element = this.$el.nextSibling.querySelector('#' + focusId))) {
+            setTimeout(() => {
+                requestAnimationFrame(() => {
+                    element?.focus()
+                })
+            })
+        }
         this.$nextTick(() => {
             this.$emit('mounted')
             setTimeout(() => {
                 requestAnimationFrame(() => {
                     let element = null
-                    if (this.focusId && (element = this.$el.nextSibling.querySelector('#' + this.focusId))) {
+                    if (focusId && (element = this.$el.nextSibling.querySelector('#' + focusId))) {
                         element?.focus()
                     }
                 })
@@ -155,33 +157,6 @@ export default {
             }
 
             return extraFilters
-        },
-
-        getMiddlewares() {
-            let middlewares = InstantSearchMixin.methods.getMiddlewares.bind(this).call()
-
-            const stateChanged = useDebounceFn((changes) => {
-                const query = Object.entries(changes.uiState).find(([id, state]) => {
-                    return state?.query
-                })?.[1]?.query
-
-                if (!query) {
-                    return
-                }
-
-                rapidezAPI('post', '/search', {
-                    q: query,
-                })
-            }, 3000)
-
-            return [
-                ...middlewares,
-                () => ({
-                    onStateChange(changes) {
-                        stateChanged(changes)
-                    },
-                }),
-            ]
         },
     },
 }
