@@ -20,7 +20,7 @@
         <label class="flex items-center p-5 border rounded relative bg-white" v-if="!cart.value.shipping_addresses?.[0]?.uid">
             <span>@lang('Please enter a shipping address first')</span>
         </label>
-        <label class="flex items-center gap-x-1.5 p-5 border rounded bg-white cursor-pointer text-sm text" v-for="(method, index) in cart.value.shipping_addresses?.[0]?.available_shipping_methods">
+        <label class="flex items-center flex-wrap gap-x-1.5 p-5 border rounded bg-white cursor-pointer text-sm text" v-for="(method, index) in cart.value.shipping_addresses?.[0]?.available_shipping_methods">
             <template v-if="false"></template>
                 @stack('shipping_methods')
             <template v-else>
@@ -35,6 +35,7 @@
                 />
                 <span class="ml-1">@{{ method.method_title }}</span>
                 <span v-if="method.amount.value">- @{{ window.price(method.amount.value) }}</span>
+                <span class="basis-full text-red-600" v-if="method.error_message" v-text="method.error_message"></span>
             </template>
         </label>
     </fieldset>
