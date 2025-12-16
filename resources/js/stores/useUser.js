@@ -199,7 +199,7 @@ export const user = computed({
 watch(token, refresh)
 // Update the user on page load so the user will get logged out immediately
 // if their session has expired.
-window.setTimeout(() => refresh(), 200);
+window.setTimeout(() => refresh(), 200)
 if (userStorage.value?.email && !token.value) {
     token.value = ''
     userStorage.value = {}
