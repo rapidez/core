@@ -10,11 +10,11 @@
         <div v-if="hasCart" v-cloak>
             <div class="flex gap-10 max-xl:flex-col">
                 <form class="w-full rounded bg h-fit p-4 xl:p-8 xl:w-3/4" v-on:submit.prevent="(e) => {
-                        submitPartials(e.target?.form ?? e.target)
+                        window.app.config.globalProperties.submitPartials(e.target?.form ?? e.target)
                             .then((result) =>
-                                window.app.$emit('checkout-payment-saved')
-                                && window.app.$emit('placeOrder')
-                            ).catch();
+                                window.$emit('checkout-payment-saved')
+                                && window.$emit('placeOrder')
+                            ).catch(() => {});
                     }">
                     @include('rapidez::checkout.steps.payment-method')
                     <div class="mt-3">@include('rapidez::checkout.steps.agreements')</div>

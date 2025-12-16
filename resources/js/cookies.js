@@ -1,2 +1,5 @@
 import VueCookies from 'vue-cookies'
-Vue.use(VueCookies)
+
+document.addEventListener('vue:loaded', function (event) {
+    event.detail.vue.use(VueCookies)
+})

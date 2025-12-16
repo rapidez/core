@@ -42,7 +42,7 @@ export const rapidezAPI = (window.rapidezAPI = async (method, endpoint, data = {
                 Store: window.config.store_code,
                 Authorization: token.value ? `Bearer ${token.value}` : null,
                 'Content-Type': 'application/json',
-                'X-CSRF-Token': window.app.csrfToken,
+                'X-CSRF-Token': window.app.config.globalProperties.csrfToken,
             },
             options?.headers || {},
         ),
@@ -160,7 +160,7 @@ export const magentoGraphQL = (window.magentoGraphQL = async (
             }
 
             if (options?.redirectOnExpiration ?? true) {
-                window.app.$emit('logout', { redirect: '/login' })
+                window.$emit('logout', { redirect: '/login' })
             } else {
                 throw new SessionExpired(window.config.translations.errors.session_expired, responseClone)
             }
@@ -203,7 +203,7 @@ export const magentoAPI = (window.magentoAPI = async (
             }
 
             if (options?.redirectOnExpiration ?? true) {
-                window.app.$emit('logout', { redirect: '/login' })
+                window.$emit('logout', { redirect: '/login' })
             } else {
                 throw new SessionExpired(window.config.translations.errors.session_expired, response)
             }

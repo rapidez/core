@@ -10,25 +10,25 @@
                     class="hover:bg-muted"
                     data-testid="autocomplete-item"
                 >
-                    <a :href="item.url | url" v-on:click="sendEvent('click', item, 'Hit Clicked')" class="group relative flex flex-wrap p-2">
+                    <a :href="window.url(item.url)" v-on:click="sendEvent('click', item, 'Hit Clicked')" class="group relative flex flex-wrap p-2">
                         <img
                             v-if="item.thumbnail"
-                            :src="'/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + item.thumbnail + '.webp' | url"
+                            :src="window.url('/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + item.thumbnail + '.webp')"
                             class="shrink-0 self-center object-contain size-16 mix-blend-multiply"
                             :alt="item.name"
                             width="200"
                             height="200"
                         />
-                        <x-rapidez::no-image v-else class="mb-3 h-48 rounded-t" />
+                        <x-rapidez::no-image v-else="" class="mb-3 h-48 rounded-t" />
                         <div class="flex flex-1 justify-center flex-col px-2">
                             <x-rapidez::highlight attribute="name"/>
 
                             <div class="flex items-center gap-x-0.5 mt-0.5">
-                                <div v-if="item.special_price" class="text-muted font-sans line-through text-xs">
-                                    @{{ item.price | price }}
+                                <div v-if="window.productSpecialPrice(item)" class="text-muted font-sans line-through text-xs">
+                                    @{{ window.price(window.productPrice(item)) }}
                                 </div>
                                 <div class="text-sm text font-sans font-bold">
-                                    @{{ (item.special_price || item.price) | price }}
+                                    @{{ window.price(window.productSpecialPrice(item) || window.productPrice(item)) }}
                                 </div>
                             </div>
                         </div>

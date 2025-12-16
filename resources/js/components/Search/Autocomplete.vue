@@ -1,20 +1,21 @@
 <script>
+import { useEventListener } from '@vueuse/core'
 import InstantSearchMixin from './InstantSearchMixin.vue'
 
-import InstantSearch from 'vue-instantsearch/vue2/es/src/components/InstantSearch'
-import Hits from 'vue-instantsearch/vue2/es/src/components/Hits.js'
-import Configure from 'vue-instantsearch/vue2/es/src/components/Configure.js'
-import highlight from 'vue-instantsearch/vue2/es/src/components/Highlight.vue.js'
-import Autocomplete from 'vue-instantsearch/vue2/es/src/components/Autocomplete.vue.js'
-import Index from 'vue-instantsearch/vue2/es/src/components/Index.js'
-import Stats from 'vue-instantsearch/vue2/es/src/components/Stats.vue.js'
-import StateResults from 'vue-instantsearch/vue2/es/src/components/StateResults.vue.js'
+import InstantSearch from 'vue-instantsearch/vue3/es/src/components/InstantSearch'
+import Hits from 'vue-instantsearch/vue3/es/src/components/Hits.js'
+import Configure from 'vue-instantsearch/vue3/es/src/components/Configure.js'
+import Autocomplete from 'vue-instantsearch/vue3/es/src/components/Autocomplete.vue.js'
+import Index from 'vue-instantsearch/vue3/es/src/components/Index.js'
+import Stats from 'vue-instantsearch/vue3/es/src/components/Stats.vue.js'
+import StateResults from 'vue-instantsearch/vue3/es/src/components/StateResults.vue.js'
 import StatsAnalytics from './AisStatsAnalytics.vue'
 
 import { useDebounceFn } from '@vueuse/core'
 import { rapidezAPI } from '../../fetch'
 import { searchHistory } from '../../stores/useSearchHistory'
 
+let focusId = document.activeElement.id
 export default {
     mixins: [InstantSearchMixin],
     components: {
@@ -34,27 +35,32 @@ export default {
             type: Number,
             default: 3,
         },
-    },
-
-    data() {
-        return {
-            focusId: null,
-        }
+        filterQueryString: {
+            type: String,
+        },
     },
 
     render() {
-        return this.$scopedSlots.default(this)
+        return this.$slots.default(this)
     },
     created() {
-        this.focusId = document.activeElement.id
+        focusId ??= document.activeElement.id
     },
     mounted() {
+        let element = null
+        if (focusId && (element = this.$el.nextSibling.querySelector('#' + focusId))) {
+            setTimeout(() => {
+                requestAnimationFrame(() => {
+                    element?.focus()
+                })
+            })
+        }
         this.$nextTick(() => {
             this.$emit('mounted')
             setTimeout(() => {
                 requestAnimationFrame(() => {
                     let element = null
-                    if (this.focusId && (element = this.$el.querySelector('#' + this.focusId))) {
+                    if (focusId && (element = this.$el.nextSibling.querySelector('#' + focusId))) {
                         element?.focus()
                     }
                 })
@@ -74,12 +80,13 @@ export default {
             })
         }, 3000)
 
-        this.$on('insights-event:viewedObjectIDs', (event) => {
-            if (event?.eventType !== 'search') {
+        useEventListener(this.$el.nextSibling, 'insights-event:viewedObjectIDs', (event) => {
+            const insightsEvent = event.detail.insightsEvent
+            if (insightsEvent?.eventType !== 'search') {
                 return
             }
 
-            stateChanged(event)
+            stateChanged(insightsEvent)
         })
     },
 
@@ -125,31 +132,31 @@ export default {
             return client
         },
 
-        getMiddlewares() {
-            let middlewares = InstantSearchMixin.methods.getMiddlewares.bind(this).call()
+        async getInstantSearchClientConfig() {
+            const config = await InstantSearchMixin.methods.getInstantSearchClientConfig.bind(this).call()
 
-            const stateChanged = useDebounceFn((changes) => {
-                const query = Object.entries(changes.uiState).find(([id, state]) => {
-                    return state?.query
-                })?.[1]?.query
+            config.getBaseFilters = this.getBaseFilters
 
-                if (!query) {
-                    return
-                }
+            return config
+        },
 
-                rapidezAPI('post', '/search', {
-                    q: query,
-                })
-            }, 3000)
+        getBaseFilters() {
+            let extraFilters = []
+            extraFilters.push({
+                query_string: {
+                    query: 'visibility:(3 OR 4) OR (NOT _exists_:visibility)',
+                },
+            })
 
-            return [
-                ...middlewares,
-                () => ({
-                    onStateChange(changes) {
-                        stateChanged(changes)
+            if (this.filterQueryString) {
+                extraFilters.push({
+                    query_string: {
+                        query: this.filterQueryString,
                     },
-                }),
-            ]
+                })
+            }
+
+            return extraFilters
         },
     },
 }

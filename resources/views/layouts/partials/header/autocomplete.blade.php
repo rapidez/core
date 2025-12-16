@@ -1,7 +1,8 @@
 <autocomplete v-slot="autocompleteSlotProps" :hits-per-page="{{ config('rapidez.frontend.autocomplete.size', 3) }}">
-    <div class="relative w-full">
+    <div class="relative w-full" ref="root">
         <ais-instant-search
             v-if="autocompleteSlotProps.searchClient"
+            :future="{ preserveSharedStateOnUnmount: true }"
             :search-client="autocompleteSlotProps.searchClient"
             :middlewares="autocompleteSlotProps.middlewares"
             :index-name="config.index.product"
@@ -15,8 +16,8 @@
                             <x-rapidez::autocomplete.input
                                 v-bind:value="currentRefinement"
                                 v-on:focus="() => {
-                                    refine($root.autocompleteFacadeQuery || currentRefinement);
-                                    $root.autocompleteFacadeQuery = null;
+                                    refine(autocompleteFacadeQuery || currentRefinement);
+                                    autocompleteFacadeQuery = null;
                                 }"
                                 v-on:input="refine($event.currentTarget.value)"
                                 list="search-history"
@@ -33,7 +34,7 @@
         </ais-instant-search>
         <div v-else class="relative w-full">
             <x-rapidez::autocomplete.input
-                v-model="$root.autocompleteFacadeQuery"
+                v-model="autocompleteFacadeQuery"
                 v-on:focus="window.document.dispatchEvent(new window.Event('loadAutoComplete'))"
                 v-on:mouseover="window.document.dispatchEvent(new window.Event('loadAutoComplete'))"
             />

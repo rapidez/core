@@ -1,16 +1,16 @@
 <div>
     <x-rapidez::label>
-        {{ $superAttribute->label }}
+        {{ $superAttribute->frontend_label }}
     </x-rapidez::label>
 
     <ul class="flex flex-wrap gap-x-1.5 gap-y-2 items-center pr-14">
-        @foreach ($product->{'super_' . $superAttribute->code} as $optionId => $option)
+        @foreach ($product->superAttributeValues[$superAttribute->attribute_code] as $option)
             <li>
                 <x-rapidez::input.swatch.text
                     type="radio"
-                    name="{{ $superAttribute->code }}"
+                    name="{{ $superAttribute->attribute_code }}"
                     v-model="addToCart.options[{{ $superAttributeId }}]"
-                    v-bind:disabled="addToCart.disabledOptions.super_{{ $superAttribute->code }}.includes({{ $option->value }})"
+                    v-bind:disabled="addToCart.disabledOptions.super_{{ $superAttribute->attribute_code }}.includes({{ $option->value }})"
                     :value="$option->value"
                     :aria-label="$option->label"
                     :id="$option->label"

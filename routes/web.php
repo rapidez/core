@@ -15,11 +15,15 @@ Route::middleware('cache.headers:public;max_age=3600;s_maxage=3600;stale_while_r
 
 Route::middleware('web')->group(function () {
     Route::view('cart', 'rapidez::cart.overview')->name('cart');
-    Route::get('checkout/success', config('rapidez.routing.controllers.checkout-success'))->name('checkout.success');
 
-    Route::get('checkout/onepage/success', fn () => redirect(route('checkout.success', request()->query()), 308));
-    Route::get('checkout/signed', SignedCheckoutController::class)->name('signed-checkout');
-    Route::get('checkout/{step?}', config('rapidez.routing.controllers.checkout'))->middleware('auth:magento-cart')->name('checkout');
+    Route::middleware('uncacheable')->group(function () {
+        Route::get('checkout/success', config('rapidez.routing.controllers.checkout-success'))->name('checkout.success');
+        Route::get('checkout/onepage/success', fn () => redirect(route('checkout.success', request()->query()), 308));
+        Route::get('checkout/signed', SignedCheckoutController::class)->name('signed-checkout');
+
+        Route::get('checkout/{step?}', config('rapidez.routing.controllers.checkout'))->middleware('auth:magento-cart')->name('checkout');
+    });
+
     Route::get('search', config('rapidez.routing.controllers.search'))->name('search');
     Route::fallback(config('rapidez.routing.controllers.fallback'));
 });

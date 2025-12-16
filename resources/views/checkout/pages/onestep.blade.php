@@ -9,17 +9,17 @@
         <div v-if="hasCart" class="flex gap-14 max-xl:flex-col" v-cloak>
             <div class="w-full bg rounded p-4 xl:p-8 xl:w-3/4">
                 <form class="grid gap-5 lg:grid-cols-2" v-on:submit.prevent="(e) => {
-                    submitPartials(e.target?.form ?? e.target)
+                    window.app.config.globalProperties.submitPartials(e.target?.form ?? e.target)
                         .then((result) =>
-                            window.app.$emit('checkout-credentials-saved')
-                            && window.app.$emit('checkout-payment-saved')
-                            && window.app.$emit('placeOrder')
-                        ).catch();
+                            window.$emit('checkout-credentials-saved')
+                            && window.$emit('checkout-payment-saved')
+                            && window.$emit('placeOrder')
+                        ).catch(() => {});
                 }">
                     <div class="lg:w-1/2 lg:pr-2.5 lg:col-span-2">
                         @include('rapidez::checkout.steps.login')
                     </div>
-                    <div v-if="!cart.is_virtual">
+                    <div v-if="!cart.value.is_virtual">
                         <h2 class="text-xl font-bold mb-3 lg:mb-9">@lang('Shipping address')</h2>
                         @include('rapidez::checkout.steps.shipping-address')
                     </div>
@@ -27,7 +27,7 @@
                         <h2 class="text-xl font-bold mb-3">@lang('Billing address')</h2>
                         @include('rapidez::checkout.steps.billing-address')
                     </div>
-                    <div v-if="!cart.is_virtual">
+                    <div v-if="!cart.value.is_virtual">
                         <h2 class="text-xl font-bold mb-3">@lang('Shipping method')</h2>
                         @include('rapidez::checkout.steps.shipping-method')
                     </div>

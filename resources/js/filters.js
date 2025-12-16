@@ -1,3 +1,5 @@
+import { user } from './stores/useUser'
+
 window.truncate = function (value, limit) {
     if (value.length > limit) {
         value = value.substring(0, limit - 3) + '...'
@@ -5,8 +7,6 @@ window.truncate = function (value, limit) {
 
     return value
 }
-
-Vue.filter('truncate', window.truncate)
 
 window.price = function (value, extra = {}) {
     return new Intl.NumberFormat(config.locale.replace('_', '-'), {
@@ -16,7 +16,20 @@ window.price = function (value, extra = {}) {
     }).format(value)
 }
 
-Vue.filter('price', window.price)
+window.productPrice = function (product) {
+    return product.price
+}
+
+window.productSpecialPrice = function (product) {
+    let groupId = user?.value?.group_id
+    let specialPrice = groupId ? product.prices[groupId].min_price : product.special_price
+
+    return window.productPrice(product) > specialPrice ? specialPrice : null
+}
+
+window.sumPrices = function (price1, price2) {
+    return Math.round((parseFloat(price1) + parseFloat(price2)) * 100) / 100
+}
 
 window.url = function (path = '') {
     // Transform urls starting with / into url with domain
@@ -27,4 +40,11 @@ window.url = function (path = '') {
     return (window.config.base_url || window.origin) + path
 }
 
-Vue.filter('url', window.url)
+window.stripHtmlTags = function (html, safeTags = ['mark']) {
+    safeTags = safeTags.map((tag) => tag.replace(/[^a-zA-Z0-9-]/g, '')).filter(Boolean)
+    return html.replace(new RegExp('<(?!/?(?:' + safeTags.join('|') + ')>)(?:.|\n)*?>', 'gm'), '') // Safe tags are only allowed if they have NO attributes
+}
+
+window.htmlDecode = function (input) {
+    return new DOMParser().parseFromString(input, 'text/html')?.documentElement?.textContent ?? input
+}

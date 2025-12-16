@@ -1,5 +1,7 @@
 window.debug = import.meta.env.VITE_DEBUG == 'true'
-window.Notify = (message, type = 'info', params = [], link = null) => window.app.$emit('notification-message', message, type, params, link)
+window.Notify = (message, type = 'info', params = [], link = null) =>
+    setTimeout(() => window.$emit('notification-message', message, type, params, link), window.app ? 0 : 500)
+
 if (!window.process) {
     // Workaround for process missing, if data is actually needed from here you should apply the following polyfill.
     // https://stackoverflow.com/questions/72221740/how-do-i-polyfill-the-process-node-module-in-the-vite-dev-server
@@ -9,8 +11,8 @@ if (!window.process) {
 import './polyfills'
 import { useLocalStorage, StorageSerializers, useScrollLock } from '@vueuse/core'
 import useOrder from './stores/useOrder.js'
-import useCart from './stores/useCart'
-import useUser from './stores/useUser'
+import { cart } from './stores/useCart'
+import { user } from './stores/useUser'
 import useMask from './stores/useMask'
 import './vue'
 import './fetch'
@@ -21,38 +23,45 @@ import './callbacks'
 import './vue-components'
 import './instantsearch'
 import { fetchCount } from './stores/useFetches.js'
+import { computed, createApp, watch } from 'vue'
 ;(() => import('./turbolinks'))()
 
 if (import.meta.env.VITE_DEBUG === 'true') {
-    document.addEventListener('vue:loaded', () => {
-        window.app.$on('notification-message', function (message, type, params, link) {
+    window.$on(
+        'rapidez:notification-message',
+        function (message, type, params, link) {
             switch (type) {
                 case 'error':
-                    console.error(...arguments)
+                    console.error(message, type, params, link)
                     break
                 case 'warning':
-                    console.warn(...arguments)
+                    console.warn(message, type, params, link)
                     break
                 case 'success':
                 case 'info':
                 default:
-                    console.log(...arguments)
+                    console.log(message, type, params, link)
             }
-        })
-    })
+        },
+        { autoRemove: false },
+    )
 }
 
 let booting = false
-function init() {
-    if (booting || document.body.contains(window.app.$el)) {
+let rootEl = null
+async function init() {
+    if (booting || (rootEl && document.body.contains(rootEl))) {
         return
     }
     booting = true
-
-    // https://vuejs.org/api/application.html#app-config-performance
-    Vue.config.performance = import.meta.env.VITE_PERFORMANCE == 'true'
-    Vue.prototype.window = window
-    Vue.prototype.config = window.config
+    for (let i = 0; i < 20; i++) {
+        // Wait until config is available, for a max of 1s
+        if (window.config.store) {
+            break
+        }
+        await new Promise((resolve) => setTimeout(resolve, 50))
+    }
+    rootEl = document.querySelector('#app')
 
     // Check if the localstorage needs a flush.
     let cachekey = useLocalStorage('cachekey')
@@ -84,22 +93,8 @@ function init() {
     }
 
     requestAnimationFrame(() => {
-        window.app = new Vue({
+        window.app = createApp({
             el: '#app',
-            data: {
-                custom: {},
-                config: window.config,
-                loadingCount: fetchCount,
-                loading: false,
-                autocompleteFacadeQuery: '',
-                csrfToken: document.querySelector('[name=csrf-token]')?.content,
-                cart: useCart(),
-                order: useOrder(),
-                user: useUser(),
-                mask: useMask(),
-                showTax: window.config.show_tax,
-                scrollLock: useScrollLock(document.body),
-            },
             methods: {
                 search(value) {
                     if (value.length) {
@@ -139,50 +134,69 @@ function init() {
                         function_score: {
                             script_score: {
                                 script: {
-                                    source: `doc.containsKey('positions.${categoryId}') ? (Integer.parseInt(doc['positions.${categoryId}'].empty ? '0' : doc['positions.${categoryId}'].value)) : 0`,
+                                    source: `doc.containsKey('positions.${categoryId}') && !doc['positions.${categoryId}'].empty && doc['positions.${categoryId}'].value =~ /^\\d+$/ ? Integer.parseInt(doc['positions.${categoryId}'].value) : 0`,
                                 },
                             },
                         },
                     }
                 },
             },
-            computed: {
-                // Wrap the local storage in getter and setter functions so you do not have to interact using .value
-                guestEmail: wrapValue(
-                    useLocalStorage('email', window.debug ? 'wayne@enterprises.com' : '', { serializer: StorageSerializers.string }),
-                ),
-
-                loggedIn() {
-                    return this.user?.is_logged_in
-                },
-
-                hasCart() {
-                    return this.cart?.id && this.cart.items.length
-                },
-
-                canOrder() {
-                    return this.cart.items.every((item) => item.is_available)
-                },
-            },
-            watch: {
-                loadingCount: function (count) {
-                    window.app.$data.loading = count > 0
-                },
-            },
             mounted() {
+                window.app.config.globalProperties.refs = this.$refs
                 setTimeout(() => {
-                    const event = new CustomEvent('vue:mounted', { detail: { vue: window.app } })
+                    const event = new CustomEvent('vue:mounted', { detail: { vue: window.app, rootNode: this } })
                     document.dispatchEvent(event)
                 })
             },
             // If we have view transitions, we need to make sure we destroy after render.
             destroyEvent: !!document.startViewTransition ? 'turbo:before-cache-timeout' : 'turbo:before-cache',
         })
+        // https://vuejs.org/api/application.html#app-config-performance
+        window.app.config.performance = import.meta.env.VITE_PERFORMANCE == 'true'
+        window.app.config.globalProperties = {
+            custom: {},
+            config: window.config,
+            refs: {},
+            loadingCount: fetchCount,
+            loading: false,
+            autocompleteFacadeQuery: '',
+            csrfToken: document.querySelector('[name=csrf-token]')?.content,
+            cart: cart,
+            order: useOrder(),
+            user: user,
+            mask: useMask(),
+            showTax: window.config.show_tax,
+            scrollLock: useScrollLock(document.body),
+            // Wrap the local storage in getter and setter functions so you do not have to interact using .value
+            guestEmail: wrapValue(
+                useLocalStorage('email', window.debug ? 'wayne@enterprises.com' : '', { serializer: StorageSerializers.string }),
+            ),
+
+            loggedIn: computed(function () {
+                return user.value?.is_logged_in
+            }),
+
+            hasCart: computed(function () {
+                return cart.value?.id && cart.value.items.length
+            }),
+
+            canOrder: computed(function () {
+                return cart.value.items.every((item) => item.is_available)
+            }),
+        }
+        window.app.config.globalProperties.window = window
+        window.app.config.globalProperties.config = window.config
+
+        watch(fetchCount, function (count) {
+            app.config.globalProperties.loading = count > 0
+        })
 
         setTimeout(() => {
             booting = false
             const event = new CustomEvent('vue:loaded', { detail: { vue: window.app } })
             document.dispatchEvent(event)
+
+            window.app.mount('#app')
         })
     })
 }

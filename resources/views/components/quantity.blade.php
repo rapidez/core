@@ -4,11 +4,11 @@ for styling! This makes sure any data like v-model, min, step, etc
 is present on the input and the quantity select component.
 --}}
 <quantity-select v-slot="qtySelect" {{ $attributes }}>
-    <div class="flex items-center justify-center border rounded bg-white h-12 self-start">
+    <div class="flex items-center justify-center border rounded bg-white h-12">
         <button
-            disabled
             v-on:click.prevent="qtySelect.decrease"
             v-bind:disabled="!qtySelect.decreasable"
+            disabled
             aria-label="@lang('Decrease')"
             class="shrink-0 pl-2.5 text disabled:cursor-not-allowed disabled:opacity-50"
         >

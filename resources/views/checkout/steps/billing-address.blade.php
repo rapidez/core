@@ -1,12 +1,12 @@
 <graphql-mutation
     :query="config.queries.setNewBillingAddressOnCart"
     :variables="JSON.parse(JSON.stringify({
-        cart_id: mask,
+        cart_id: mask.value,
         ...window.address_defaults,
-        ...cart.billing_address,
-        same_as_shipping: !cart.is_virtual && (cart?.billing_address?.same_as_shipping ?? true),
-        country_code: cart.billing_address?.country.code || window.address_defaults.country_code,
-        region_id: cart.billing_address?.region.region_id || window.address_defaults.region_id,
+        ...cart.value.billing_address,
+        same_as_shipping: !cart.value.is_virtual && (cart.value?.billing_address?.same_as_shipping ?? true),
+        country_code: cart.value.billing_address?.country.code || window.address_defaults.country_code,
+        region_id: cart.value.billing_address?.region.region_id || window.address_defaults.region_id,
     }))"
     :watch-ignore="['same_as_shipping']"
     :before-request="(query, variables, options) => [variables.customer_address_id ? config.queries.setExistingBillingAddressOnCart : query, variables, options]"
@@ -16,13 +16,13 @@
     mutate-event="setBillingAddressOnCart"
     v-slot="{ mutate, variables }"
 >
-    <div partial-submit="mutate">
+    <div partial-submit v-on:partial-submit="(e) => mutate().then(e.detail.resolve).catch(e.detail.reject)">
         <fieldset v-on:change="function (e) {
             e.target.closest('fieldset').querySelector(':invalid') === null
             && (!variables.same_as_shipping || !!cart?.shipping_addresses?.[0]?.postcode)
-            && window.app.$emit('setBillingAddressOnCart')
+            && window.$emit('setBillingAddressOnCart')
         }">
-            <template v-if="!cart.is_virtual">
+            <template v-if="!cart.value.is_virtual">
                 <x-rapidez::input.checkbox v-model="variables.same_as_shipping">
                     @lang('My billing and shipping address are the same')
                 </x-rapidez::input.checkbox>

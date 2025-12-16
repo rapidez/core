@@ -1,6 +1,6 @@
 <label>
     <x-rapidez::label>
-        {{ $superAttribute->label }}
+        {{ $superAttribute->frontend_label }}
     </x-rapidez::label>
     <x-rapidez::input.select
         id="super_attribute_{{ $superAttributeId }}"
@@ -10,12 +10,12 @@
         required
     >
         <option disabled selected hidden :value="undefined">
-            @lang('Select') {{ strtolower($superAttribute->label) }}
+            @lang('Select') {{ strtolower($superAttribute->frontend_label) }}
         </option>
-        @foreach ($product->{'super_' . $superAttribute->code} as $optionId => $option)
+        @foreach ($product->superAttributeValues[$superAttribute->attribute_code] as $option)
             <option
                 value="{{ $option->value }}"
-                :disabled="addToCart.disabledOptions.super_{{ $superAttribute->code }}.includes({{ $option->value }})"
+                :disabled="addToCart.disabledOptions.super_{{ $superAttribute->attribute_code }}.includes({{ $option->value }})"
             >
                 {{ $option->label }}
             </option>

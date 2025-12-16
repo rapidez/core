@@ -1,4 +1,4 @@
-<ais-sort-by :items="Object.values(config.searchkit.sorting)">
+<ais-sort-by :items="listingSlotProps.sortOptions">
     <template v-slot="{ items, currentRefinement, refine }">
         <select
             v-bind:value="items.find(item => item.value === currentRefinement)?.value"

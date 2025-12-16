@@ -46,11 +46,17 @@ export default {
     }),
 
     render() {
-        if (!('default' in this.$scopedSlots)) {
+        if (!('default' in this.$slots)) {
             return null
         }
 
-        return this.$scopedSlots.default({ ...this, variables: this.dataVariables })
+        return this.$slots.default({
+            props: this.$props,
+            variables: this.dataVariables,
+            data: this.data,
+            running: this.running,
+            runQuery: this.runQuery,
+        })
     },
 
     created() {
@@ -97,9 +103,12 @@ export default {
                 if (this.cache) {
                     useLocalStorage(this.cachePrefix + this.cache, null, { serializer: StorageSerializers.object }).value = this.data
                 }
+
+                return this.data
             } catch (error) {
                 console.error(error)
                 this.errorCallback(this.dataVariables, await error?.response?.json())
+                return false
             } finally {
                 this.running = false
             }

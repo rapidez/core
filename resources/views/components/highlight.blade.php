@@ -1,11 +1,6 @@
-@props(['attribute', 'item' => 'item', 'highlightTag' => 'mark'])
+@props(['attribute', 'item' => 'item'])
 
-@if (in_array($attribute, config('rapidez.searchkit.highlight_attributes')))
-    <ais-highlight {{ $attributes->merge([
-        'v-bind:hit' => $item,
-        'attribute' => $attribute,
-        'highlighted-tag-name' => $highlightTag,
-    ]) }}></ais-highlight>
-@else
-    <span {{ $attributes }} v-text="{{ $item }}.{{ $attribute }}"></span>
-@endif
+<span
+    {{ $attributes }}
+    v-html="window.stripHtmlTags(window.htmlDecode({{ $item }}?._highlightResult?.{{ $attribute }}?.value || {{ $item }}.{{ $attribute }}))"
+></span>

@@ -79,7 +79,7 @@ export default {
     },
 
     render() {
-        return this.$scopedSlots.default(this)
+        return this.$slots.default(this)
     },
 
     methods: {
@@ -138,7 +138,7 @@ export default {
                     await this.callback(this.product, this.qty)
                 }
 
-                this.$root.$emit('cart-add', { product: this.product, qty: this.qty })
+                window.$emit('cart-add', { product: this.product, qty: this.qty })
 
                 if (this.notifySuccess) {
                     Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success', [], window.url('/cart'))
@@ -168,18 +168,23 @@ export default {
         },
 
         calculatePrices: function () {
-            this.price = Math.round((parseFloat(this.simpleProduct.price) + this.priceAddition(this.simpleProduct.price)) * 100) / 100
-            this.specialPrice =
-                Math.round((parseFloat(this.simpleProduct.special_price) + this.priceAddition(this.simpleProduct.special_price)) * 100) /
-                100
+            let price = window.productPrice(this.simpleProduct)
+            let specialPrice = window.productSpecialPrice(this.simpleProduct)
+
+            // Price additions for optionally selected options.
+            price = window.sumPrices(price, this.priceAddition(price))
+            specialPrice = window.sumPrices(specialPrice, this.priceAddition(specialPrice))
+
+            this.price = price
+            this.specialPrice = price > specialPrice ? specialPrice : null
         },
 
         getOptions: function (superAttributeCode) {
             if (window.config.swatches.hasOwnProperty(superAttributeCode)) {
                 let swatchOptions = window.config.swatches[superAttributeCode].options
 
-                return Object.values(this.product['super_' + superAttributeCode])
-                    .map((value) => Object.values(swatchOptions).find((swatch) => swatch.value === value))
+                return Object.values(this.product[`super_${superAttributeCode}_values`])
+                    .map((value) => Object.values(swatchOptions).find((swatch) => swatch.value === value.value))
                     .filter(Boolean)
                     .sort((a, b) => a.label.localeCompare(b.label))
                     .sort((a, b) => a.sort_order - b.sort_order)
@@ -201,7 +206,7 @@ export default {
                 let [type, data] = reader.result.split(';', 4)
 
                 if (!data) {
-                    Vue.set(this.customOptions, optionId, undefined)
+                    this.customOptions[optionId] = undefined
                     return
                 }
 
@@ -210,7 +215,7 @@ export default {
                     type: type.replace('data:', ''),
                     name: file.name,
                 }
-                Vue.set(this.customOptions, optionId, JSON.stringify(value))
+                this.customOptions[optionId] = JSON.stringify(value)
             }
             reader.readAsDataURL(file)
         },
@@ -254,7 +259,7 @@ export default {
             // We do not loop and use the values of enabledOptions directly.
             // This is on purpose in order to force recalculations of enabledOptions to be considered.
             Object.keys(this.enabledOptions).map((attributeKey) => {
-                Vue.set(this.options, attributeKey, this.enabledOptions[attributeKey].find(Boolean))
+                this.options[attributeKey] = this.enabledOptions[attributeKey].find(Boolean)
             })
         },
         async setDefaultCustomSelectedOptions() {
@@ -273,7 +278,7 @@ export default {
                     return
                 }
 
-                Vue.set(this.customSelectedOptions, option.option_id, value)
+                this.customSelectedOptions[option.option_id] = value
             })
         },
         async setOptionsFromValues(options) {
@@ -282,7 +287,7 @@ export default {
                     return
                 }
 
-                Vue.set(this.options, key, values[0])
+                this.options[key] = values[0]
             })
         },
         async setOptionsFromRefinements() {
@@ -297,13 +302,16 @@ export default {
             // Options per super attribute that match the given named refinements
             return Object.fromEntries(
                 Object.entries(this.product?.super_attributes || {}).map(([index, attribute]) => {
-                    let attributeValues = values.find(([key, value]) => key === attribute.code)?.[1] || []
+                    let attributeValues = values.find(([key, value]) => key === attribute.attribute_code)?.[1] || []
                     if (!Array.isArray(attributeValues)) {
                         attributeValues = [attributeValues]
                     }
 
                     // Filter out disabled options
-                    return [index, attributeValues.filter((val) => this.enabledOptions[index].includes(val * 1))]
+                    return [
+                        index,
+                        attributeValues.filter((val) => this.enabledOptions[`super_${attribute.attribute_code}`].includes(val * 1)),
+                    ]
                 }),
             )
         },
@@ -312,6 +320,22 @@ export default {
     computed: {
         currentThumbnail: function () {
             return this.simpleProduct?.thumbnail || this.simpleProduct?.images?.[0] || this.product?.thumbnail
+        },
+
+        matchingChildren: function () {
+            let children = Object.values(this.product.children).map((child) => child.entity_id)
+            Object.entries(this.options).forEach(([attributeId, optionId]) => {
+                let code = this.product.super_attributes[attributeId].attribute_code
+                let option = this.product[`super_${code}_values`][optionId]
+
+                // Subtract all children that don't fit this option
+                children = children.filter((child) => option.children.some((optionChild) => optionChild == child))
+            })
+
+            // Remove out-of-stock products
+            children = children.filter((child) => this.product.children[child].in_stock)
+
+            return children
         },
 
         shouldRedirectToProduct: function () {
@@ -336,24 +360,12 @@ export default {
                 return product
             }
 
-            var simpleProducts = Object.values(product.children).filter((childProduct) => {
-                let isMatching = true
-                Object.entries(this.options).forEach(([attributeId, valueId]) => {
-                    var attributeCode = product.super_attributes[attributeId].code
-
-                    if (Number(childProduct[attributeCode]) !== Number(valueId)) {
-                        isMatching = false
-                    }
-                })
-                return isMatching
-            })
-
-            if (Object.keys(this.product.children).length == simpleProducts.length && simpleProducts.length > 1) {
+            if (Object.keys(this.product.children).length == this.matchingChildren.length && this.matchingChildren.length > 1) {
                 return product
             }
 
-            if (simpleProducts.length) {
-                product = simpleProducts[0]
+            if (this.matchingChildren.length) {
+                product = Object.values(this.product.children).find((child) => child.entity_id == this.matchingChildren[0])
             }
 
             return product
@@ -377,7 +389,7 @@ export default {
 
         productUrl: function () {
             let namedOptions = Object.fromEntries(
-                Object.entries(this.options).map(([key, value]) => [this.product.super_attributes[key]?.code, value]),
+                Object.entries(this.options).map(([key, value]) => [this.product.super_attributes[key]?.attribute_code, value]),
             )
 
             let params = new URLSearchParams(namedOptions)
@@ -402,76 +414,52 @@ export default {
         },
 
         disabledOptions: function () {
-            var disabledOptions = {}
-            var valuesPerAttribute = {}
+            return Object.fromEntries(
+                Object.entries(this.product.super_attributes).map(([currentAttributeId, attribute]) => {
+                    let superCode = `super_${attribute.attribute_code}`
 
-            if (!this.product.super_attributes) {
-                return disabledOptions
-            }
-
-            Object.entries(this.product.super_attributes).forEach(([attributeId, attribute]) => {
-                disabledOptions['super_' + attribute.code] = []
-                valuesPerAttribute[attributeId] = {}
-                // Fill list with products per attribute value
-                Object.entries(this.product.children).forEach(([productId, option]) => {
-                    if (!valuesPerAttribute[attributeId][option[attribute.code]]) {
-                        valuesPerAttribute[attributeId][option[attribute.code]] = []
-                    }
-
-                    if (!option.in_stock) {
-                        if (Object.keys(this.product.super_attributes).length === 1) {
-                            disabledOptions['super_' + attribute.code].push(option[attribute.code])
-                        }
-
-                        return
-                    }
-
-                    valuesPerAttribute[attributeId][option[attribute.code]].push(productId)
-                })
-            })
-
-            // Here we cross reference the attributes with each other
-            // keeping in mind the products we have with the current
-            // selected attribute values. (see: https://github.com/rapidez/core/pull/7#issue-796718297)
-            Object.entries(valuesPerAttribute).forEach(([attributeId, productsPerValue]) => {
-                Object.entries(valuesPerAttribute).forEach(([attributeId2, productsPerValue2]) => {
-                    if (attributeId === attributeId2) return
-                    var selectedValueId = this.options[attributeId]
-                    var attributeCode = this.product.super_attributes[attributeId2].code
-
-                    Object.entries(productsPerValue2).forEach(([valueId, products]) => {
-                        // If there is no product that intersects for this attribute value
-                        // there will be no product available for this attribute value
-
-                        if (
-                            products.length &&
-                            (!selectedValueId ||
-                                !productsPerValue[selectedValueId] ||
-                                productsPerValue[selectedValueId].some((val) => products.includes(val)))
-                        ) {
+                    // Run the matchingChildren function above, but filter out the current attribute so that it doesn't end up filtering out itself
+                    let matchingOrOwnChildren = Object.values(this.product.children).map((child) => child.entity_id)
+                    Object.entries(this.options).forEach(([attributeId, optionId]) => {
+                        if (attributeId == currentAttributeId) {
                             return
                         }
+                        let code = this.product.super_attributes[attributeId].attribute_code
+                        let option = this.product[`super_${code}_values`][optionId]
 
-                        disabledOptions['super_' + attributeCode].push(parseInt(valueId))
+                        matchingOrOwnChildren = matchingOrOwnChildren.filter((child) =>
+                            option.children.some((optionChild) => optionChild == child),
+                        )
                     })
-                })
-            })
 
-            return disabledOptions
+                    // Remove out-of-stock products
+                    matchingOrOwnChildren = matchingOrOwnChildren.filter((child) => this.product.children[child].in_stock)
+
+                    // Then find all options that don't match any of these children
+                    let disabled = Object.entries(this.product[superCode + '_values'])
+                        .filter(
+                            ([optionId, option]) =>
+                                !option.children.some((optionChild) => matchingOrOwnChildren.some((child) => optionChild == child)),
+                        )
+                        .map(([optionId]) => optionId)
+
+                    return [superCode, disabled]
+                }),
+            )
         },
+
         enabledOptions: function () {
-            let valuesPerAttribute = {}
-            Object.entries(this.product.super_attributes).forEach(([attributeId, attribute]) => {
-                valuesPerAttribute[attributeId] = []
-                // Fill list with products per attribute value
-                Object.entries(this.product.children).forEach(([productId, product]) => {
-                    if (!product.in_stock || this.disabledOptions['super_' + attribute.code].includes(product.value)) {
-                        return
-                    }
-                    valuesPerAttribute[attributeId].push(product[attribute.code])
-                })
-            })
-            return valuesPerAttribute
+            return Object.fromEntries(
+                Object.values(this.product.super_attributes).map((attribute) => {
+                    let options = this.product[`super_${attribute.attribute_code}`]
+                    let disabledOptions = this.disabledOptions[`super_${attribute.attribute_code}`]
+
+                    return [
+                        `super_${attribute.attribute_code}`,
+                        options.filter((option) => !disabledOptions.some((disabledOption) => disabledOption == option)),
+                    ]
+                }),
+            )
         },
 
         superRefinements() {
@@ -494,7 +482,7 @@ export default {
         simpleProduct: {
             handler(newProduct, oldProduct) {
                 if (newProduct.sku !== oldProduct.sku) {
-                    this.$root.$emit('product-super-attribute-change', newProduct)
+                    window.$emit('product-super-attribute-change', newProduct)
                 }
             },
         },

@@ -23,8 +23,6 @@ class Config extends Model
 
     const CREATED_AT = null;
 
-    protected $guarded = [];
-
     protected static function booting()
     {
         static::addGlobalScope('scope-fallback', function (Builder $builder) {
@@ -86,7 +84,7 @@ class Config extends Model
         }
 
         if ($options['cache'] ?? true) {
-            $configCache = Cache::driver('rapidez:multi')->get('magento.config', []);
+            $configCache = Cache::driver('rapidez:multi')->tags('config')->get('magento.config', []);
             $cacheKey = implode(
                 '.',
                 [
@@ -126,7 +124,7 @@ class Config extends Model
 
         if (($options['cache'] ?? true) && isset($cacheKey)) {
             Arr::set($configCache, $cacheKey, $resultObject ? $result : false);
-            Cache::driver('rapidez:multi')->set('magento.config', $configCache);
+            Cache::driver('rapidez:multi')->tags('config')->set('magento.config', $configCache);
         }
 
         return (bool) $options['decrypt'] && is_string($result) ? static::decrypt($result) : $result;
