@@ -31,8 +31,8 @@ With `$breakpoints` you can control the amount of images.
             <img
                 {{-- src should always be above v-bind:src --}}
                 @if ($imageId < count($selectedChild->product_gallery))
-                    @if($selectedChild->product_gallery[$imageId]['media_type'] === 'external-video')
-                        src="{{ config('rapidez.media_url')  }}/catalog/product{{ $selectedChild->product_gallery[$imageId]['image'] }}"
+                    @if ($selectedChild->product_gallery[$imageId]['media_type'] === 'external-video')
+                        src="{{ config('rapidez.media_url') }}/catalog/product{{ $selectedChild->product_gallery[$imageId]['image'] }}"
                     @else
                         src="{{ url('/storage/'.config('rapidez.store').'/resizes/80x80/magento/catalog/product'.$selectedChild->product_gallery[$imageId]['image'].'.webp') }}"
                     @endif
