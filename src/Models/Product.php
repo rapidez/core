@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Support\Str;
 use Rapidez\Core\Casts\Children;
 use Rapidez\Core\Casts\CommaSeparatedToArray;
 use Rapidez\Core\Casts\CommaSeparatedToIntegerArray;
@@ -49,7 +50,7 @@ class Product extends Model
         self::CREATED_AT => 'datetime',
     ];
 
-    protected $appends = ['url'];
+    protected $appends = ['url', 'product_gallery'];
 
     protected static function booting(): void
     {
@@ -231,6 +232,19 @@ class Product extends Model
     {
         return Attribute::make(
             get: fn (): string => '/' . ($this->url_key ? $this->url_key . Rapidez::config('catalog/seo/product_url_suffix') : 'catalog/product/view/id/' . $this->entity_id)
+        );
+    }
+
+    protected function productGallery(): Attribute
+    {
+        return Attribute::get(
+            fn (): array => $this->gallery->sortBy('productImageValue.position')->map(function (ProductImage $value) {
+                return [
+                    'media_type' => $value->media_type,
+                    'image'      => $value->value,
+                    'video_url'  => isset($value->video) ? Str::embedUrl($value->video->url) : null,
+                ];
+            })->values()->toArray()
         );
     }
 

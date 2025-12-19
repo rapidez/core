@@ -4,6 +4,7 @@ import { useEventListener } from '@vueuse/core'
 export default {
     data: () => ({
         images: config.product.images,
+        media: config.product.product_gallery,
         active: 0,
         zoomed: false,
         touchStartX: 0,
@@ -30,7 +31,8 @@ export default {
                     Object.values(window.config.product.super_attributes).filter((attribute) => attribute.update_image).length
                 ) {
                     self.images = simpleProduct.images
-                    self.active = Math.min(self.active, self.images.length - 1)
+                    self.media = simpleProduct.product_gallery
+                    self.active = Math.min(self.active, self.media.length - 1)
                 }
             })
         })
@@ -52,7 +54,7 @@ export default {
             if (e.key == 'ArrowLeft' && this.active > 0) {
                 // left
                 this.active--
-            } else if (e.key == 'ArrowRight' && this.active < this.images.length - 1) {
+            } else if (e.key == 'ArrowRight' && this.active < this.media.length - 1) {
                 // right
                 this.active++
             } else if (e.key == 'Escape') {
@@ -77,7 +79,7 @@ export default {
                 return
             }
 
-            if (distance < 0 && this.active < this.images.length - 1) {
+            if (distance < 0 && this.active < this.media.length - 1) {
                 this.change(this.active + 1)
             } else if (distance > 0 && this.active > 0) {
                 this.change(this.active - 1)
