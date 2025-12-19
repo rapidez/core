@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Relations\BelongsToManyCallback;
 use Rapidez\Core\Models\Scopes\Product\EnabledScope;
@@ -57,6 +58,7 @@ class Product extends Model
     protected $appends = [
         'grouped',
         'images',
+        'product_gallery',
         'in_stock',
         'price',
         'special_price',
@@ -99,6 +101,19 @@ class Product extends Model
             'catalog_product_entity_media_gallery_value_to_entity',
             'entity_id',
             'value_id',
+        );
+    }
+
+    protected function productGallery(): Attribute
+    {
+        return Attribute::get(
+            fn (): array => $this->gallery->sortBy('productImageValue.position')->map(function (ProductImage $value) {
+                return [
+                    'media_type' => $value->media_type,
+                    'image'      => $value->value,
+                    'video_url'  => isset($value->video) ? Str::embedUrl($value->video->url) : null,
+                ];
+            })->values()->toArray()
         );
     }
 
