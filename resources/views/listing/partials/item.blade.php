@@ -22,7 +22,7 @@
                         <div class="font-semibold text-lg">
                             @{{ window.price(addToCart.specialPrice || addToCart.price) }}
                         </div>
-                        <div class="line-through text-sm" v-if="addToCart.specialPrice">
+                        <div v-if="addToCart.specialPrice" class="line-through text-sm">
                             @{{ window.price(addToCart.price) }}
                         </div>
                     </div>
