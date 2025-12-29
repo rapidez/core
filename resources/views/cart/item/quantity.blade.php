@@ -11,8 +11,8 @@
             v-on:change="mutate"
             v-model="variables.quantity"
             {{-- No "min" here so you're able to remove by lowering to 0 --}}
-            ::step="(item.product?.stock_item?.qty_increments ?? 1)"
-            ::max="item.product?.stock_item?.max_sale_qty"
+            v-bind:step="(item.product?.stock_item?.qty_increments ?? 1)"
+            v-bind:max="item.product?.stock_item?.max_sale_qty"
         />
-    </form>
+    </div>
 </graphql-mutation>
