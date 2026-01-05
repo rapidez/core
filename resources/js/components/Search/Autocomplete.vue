@@ -22,7 +22,6 @@ export default {
         InstantSearch,
         Hits,
         Configure,
-        highlight,
         Autocomplete,
         Index,
         Stats,
@@ -48,7 +47,7 @@ export default {
     },
     mounted() {
         let element = null
-        if (focusId && (element = this.$el.nextSibling.querySelector('#' + focusId))) {
+        if (focusId && (element = this.$el?.parentNode?.querySelector?.('#' + focusId))) {
             setTimeout(() => {
                 requestAnimationFrame(() => {
                     element?.focus()
@@ -60,7 +59,7 @@ export default {
             setTimeout(() => {
                 requestAnimationFrame(() => {
                     let element = null
-                    if (focusId && (element = this.$el.nextSibling.querySelector('#' + focusId))) {
+                    if (focusId && (element = this.$el.parentNode.querySelector('#' + focusId))) {
                         element?.focus()
                     }
                 })
