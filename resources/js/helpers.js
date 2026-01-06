@@ -51,12 +51,12 @@ window.htmlDecode = function (input) {
 
 document.addEventListener('vue:loaded', function (event) {
     const vue = event.detail.vue
-    vue.config.globalProperties.truncate = window.truncate;
-    vue.config.globalProperties.price = window.price;
-    vue.config.globalProperties.productPrice = window.productPrice;
-    vue.config.globalProperties.productSpecialPrice = window.productSpecialPrice;
-    vue.config.globalProperties.sumPrices = window.sumPrices;
-    vue.config.globalProperties.url = window.url;
-    vue.config.globalProperties.stripHtmlTags = window.stripHtmlTags;
-    vue.config.globalProperties.htmlDecode = window.htmlDecode;
+    vue.config.globalProperties.truncate = window.truncate
+    vue.config.globalProperties.price = window.price
+    vue.config.globalProperties.productPrice = window.productPrice
+    vue.config.globalProperties.productSpecialPrice = window.productSpecialPrice
+    vue.config.globalProperties.sumPrices = window.sumPrices
+    vue.config.globalProperties.url = window.url
+    vue.config.globalProperties.stripHtmlTags = window.stripHtmlTags
+    vue.config.globalProperties.htmlDecode = window.htmlDecode
 })
