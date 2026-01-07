@@ -16,19 +16,19 @@
                         </div>
                     </td>
                     <td class="text-right px-4">@{{ item.quantity }}</td>
-                    <td class="text-right" v-if="showTax">@{{ window.price(item.prices.row_total_including_tax.value) }}</td>
-                    <td class="text-right" v-else>@{{ window.price(item.prices.row_total.value) }}</td>
+                    <td class="text-right" v-if="showTax">@{{ price(item.prices.row_total_including_tax.value) }}</td>
+                    <td class="text-right" v-else>@{{ price(item.prices.row_total.value) }}</td>
                 </tr>
                 <template v-if="cart.value.shipping_addresses?.length" v-for="address in cart.value.shipping_addresses" >
                     <tr v-if="address.selected_shipping_method">
                         <td colspan="2">@lang('Shipping')</td>
-                        <td class="text-right" v-if="showTax">@{{ window.price(address.selected_shipping_method.price_incl_tax.value) }}</td>
-                        <td class="text-right" v-else>@{{ window.price(address.selected_shipping_method.price_excl_tax.value) }}</td>
+                        <td class="text-right" v-if="showTax">@{{ price(address.selected_shipping_method.price_incl_tax.value) }}</td>
+                        <td class="text-right" v-else>@{{ price(address.selected_shipping_method.price_excl_tax.value) }}</td>
                     </tr>
                 </template>
                 <tr class="font-bold *:pt-3 border-t">
                     <td colspan="2">@lang('Total')</td>
-                    <td class="text-right">@{{ window.price(cart.value.prices.grand_total.value) }}</td>
+                    <td class="text-right">@{{ price(cart.value.prices.grand_total.value) }}</td>
                 </tr>
             </table>
             <div class="flex flex-col gap-y-2 items-center">

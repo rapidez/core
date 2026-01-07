@@ -17,7 +17,7 @@
                                 v-bind:suffix="filter.code === 'price' && $root.currencySymbolLocation !== 'left' ? $root.currencySymbol : ''"
                             >
                                 <x-slot:value>
-                                    @{{ window.price(value, { maximumFractionDigits: 0 }) }}
+                                    @{{ price(value, { maximumFractionDigits: 0 }) }}
                                 </x-slot:value>
                             </x-rapidez::input.range-slider>
                         </div>
