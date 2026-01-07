@@ -1,5 +1,5 @@
 import { StorageSerializers, asyncComputed, useLocalStorage, useMemoize } from '@vueuse/core'
-import { computed, ref, watch } from 'vue'
+import { computed, watch } from 'vue'
 import { GraphQLError } from '../fetch'
 import { mask, clearMask } from './useMask'
 import { user } from './useUser'
@@ -110,6 +110,14 @@ export const fetchCart = async function () {
     await fetchGuestCart()
 }
 
+export const loggedIn = async function () {
+    if (mask.value) {
+        await linkUserToCart()
+    } else {
+        await fetchCustomerCart()
+    }
+}
+
 export const fetchAttributeValues = async function (attributes = []) {
     if (!attributes.length) {
         return { data: { customAttributeMetadataV2: { items: null } } }
@@ -121,6 +129,7 @@ export const fetchAttributeValues = async function (attributes = []) {
                 customAttributeMetadataV2(attributes: $attributes) {
                     items {
                         code
+                        label
                         options {
                             label
                             value
@@ -147,8 +156,8 @@ function areAddressesSame(address1, address2) {
     const fieldsToCompare = ['city', 'postcode', 'company', 'firstname', 'lastname', 'telephone']
 
     return (
-        fieldsToCompare.every((field) => address1?.[field] === address2?.[field]) &&
-        [0, 1, 2].every((key) => address1?.street?.[key] === address2?.street?.[key])
+        fieldsToCompare.every((field) => (address1?.[field] ?? '') === (address2?.[field] ?? '')) &&
+        [0, 1, 2].every((key) => (address1?.street?.[key] ?? '') === (address2?.street?.[key] ?? ''))
     )
 }
 
@@ -184,8 +193,8 @@ export const cart = computed({
             refresh()
         }
 
-        cartStorage.value.fixedProductTaxes = fixedProductTaxes
-        cartStorage.value.taxTotal = taxTotal
+        cartStorage.value.fixedProductTaxes = fixedProductTaxes(cartStorage.value)
+        cartStorage.value.taxTotal = taxTotal(cartStorage.value)
 
         return cartStorage.value
     },
@@ -217,7 +226,10 @@ export const cart = computed({
                 const mapping = Object.fromEntries(
                     response.data.customAttributeMetadataV2.items.map((attribute) => [
                         attribute.code,
-                        Object.fromEntries(attribute.options.map((value) => [value.value, value.label])),
+                        {
+                            label: attribute.label,
+                            options: Object.fromEntries(attribute.options.map((value) => [value.value, value.label])),
+                        },
                     ]),
                 )
 
@@ -226,21 +238,25 @@ export const cart = computed({
                     cartItem.product.attribute_values = {}
 
                     for (const key in mapping) {
-                        cartItem.product.attribute_values[key] = cartItem.product[key]
-                        if (cartItem.product.attribute_values[key] === null) {
+                        cartItem.product.attribute_values[key] = {
+                            label: mapping[key].label,
+                            value: cartItem.product[key],
+                        }
+
+                        if (cartItem.product.attribute_values[key].value === null) {
                             continue
                         }
 
-                        if (typeof cartItem.product.attribute_values[key] === 'string') {
-                            cartItem.product.attribute_values[key] = cartItem.product.attribute_values[key].split(',')
+                        if (typeof cartItem.product.attribute_values[key].value === 'string') {
+                            cartItem.product.attribute_values[key].value = cartItem.product.attribute_values[key].value.split(',')
                         }
 
-                        if (typeof cartItem.product.attribute_values[key] !== 'object') {
-                            cartItem.product.attribute_values[key] = [cartItem.product.attribute_values[key]]
+                        if (typeof cartItem.product.attribute_values[key].value !== 'object') {
+                            cartItem.product.attribute_values[key].value = [cartItem.product.attribute_values[key].value]
                         }
 
-                        cartItem.product.attribute_values[key] = cartItem.product.attribute_values[key].map(
-                            (value) => mapping[key][value] || value,
+                        cartItem.product.attribute_values[key].value = cartItem.product.attribute_values[key].value.map(
+                            (value) => mapping[key].options[value] || value,
                         )
                     }
 
@@ -254,26 +270,28 @@ export const cart = computed({
     },
 })
 
-export const fixedProductTaxes = computed(() => {
+export const fixedProductTaxes = (cart) => {
     let taxes = {}
     // Note: Magento does internal rounding before multiplying by the quantity, so we actually don't lose any precision here by using the rounded tax amount.
-    cart.value?.items?.forEach((item) =>
+    cart?.items?.forEach((item) =>
         item.prices?.fixed_product_taxes?.forEach((tax) => (taxes[tax.label] = (taxes[tax.label] ?? 0) + tax.amount.value * item.quantity)),
     )
     return taxes
-})
+}
 
-export const taxTotal = computed(() => {
-    if (!cart?.value?.prices?.applied_taxes?.length) {
+export const taxTotal = (cart) => {
+    if (!cart?.prices?.applied_taxes?.length) {
         return 0
     }
 
-    return cart.value.prices.applied_taxes.reduce((sum, tax) => sum + tax.amount.value, 0)
-})
-
-watch(mask, refresh)
-if (cartStorage.value?.id && !mask.value) {
-    clear()
+    return cart.prices.applied_taxes.reduce((sum, tax) => sum + tax.amount.value, 0)
 }
+
+window.setTimeout(() => {
+    watch(mask, refresh)
+    if (cartStorage.value?.id && !mask.value) {
+        clear()
+    }
+})
 
 export default () => cart

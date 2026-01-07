@@ -22,7 +22,7 @@ class OptionSwatch extends Model
             return $attribute['text_swatch'] || $attribute['visual_swatch'];
         }), 'id', 'code');
 
-        return Cache::rememberForever('swatchvalues', function () use ($swatchAttributes) {
+        return Cache::store('rapidez:multi')->tags('swatches')->rememberForever('swatchvalues', function () use ($swatchAttributes) {
             return self::select('eav_attribute.attribute_code')
                 ->selectRaw('JSON_OBJECTAGG(`eav_attribute_option_value`.`option_id`, JSON_OBJECT(
                     "label", COALESCE(`eav_attribute_option_value_store`.`value`, `eav_attribute_option_value`.`value`),
@@ -57,5 +57,10 @@ class OptionSwatch extends Model
                 })
                 ->toArray();
         });
+    }
+
+    public static function getCachedSwatchValue($code, $option)
+    {
+        return static::getCachedSwatchValues()[$code]['options'][$option] ?? null;
     }
 }

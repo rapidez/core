@@ -8,7 +8,7 @@
     <div class="container">
         @include('rapidez::checkout.partials.progressbar')
         <div v-if="hasCart" v-cloak>
-            <div class="flex gap-5 max-xl:flex-col">
+            <div class="flex gap-14 max-xl:flex-col">
                 <div class="w-full rounded bg p-4 xl:p-8 xl:w-3/4">
                     <form
                         v-on:submit.prevent="(e) => {
@@ -22,18 +22,18 @@
                     >
                         <template v-if="!cart.is_virtual">
                             <h2 class="text-xl font-bold">@lang('Shipping address')</h2>
-                            @include('rapidez::checkout.steps.shipping_address')
+                            @include('rapidez::checkout.steps.shipping-address')
                         </template>
 
                         <h2 class="text-xl font-bold">@lang('Billing address')</h2>
-                        @include('rapidez::checkout.steps.billing_address')
+                        @include('rapidez::checkout.steps.billing-address')
 
                         <template v-if="!cart.is_virtual">
                             <h2 class="text-xl font-bold">@lang('Shipping method')</h2>
-                            @include('rapidez::checkout.steps.shipping_method')
+                            @include('rapidez::checkout.steps.shipping-method')
                         </template>
 
-                        <x-rapidez::button.conversion type="submit" data-testid="continue" class="self-start">
+                        <x-rapidez::button.conversion type="submit" data-testid="continue" class="self-start" loader>
                             @lang('Next')
                         </x-rapidez::button.conversion>
                     </form>

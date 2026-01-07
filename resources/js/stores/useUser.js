@@ -1,6 +1,6 @@
-import { useLocalStorage, useSessionStorage, StorageSerializers } from '@vueuse/core'
+import { useLocalStorage, StorageSerializers } from '@vueuse/core'
 import { useCookies } from '@vueuse/integrations/useCookies'
-import { clear as clearCart, fetchCustomerCart, linkUserToCart, cart } from './useCart'
+import { clear as clearCart, loggedIn as cartLoginHandler, cart } from './useCart'
 import { clear as clearOrder } from './useOrder'
 import { computed, watch } from 'vue'
 import Jwt from '../jwt'
@@ -38,7 +38,7 @@ export const token = computed({
     },
 })
 
-const userStorage = useSessionStorage('user', {}, { serializer: StorageSerializers.object })
+const userStorage = useLocalStorage('user', {}, { serializer: StorageSerializers.object })
 let currentRefresh = null
 
 export const refresh = async function () {
@@ -61,7 +61,11 @@ export const refresh = async function () {
 
     return (currentRefresh = (async function () {
         try {
+            const oldEmail = userStorage.value?.email
             userStorage.value = (await magentoGraphQL(`{ customer { ${config.queries.customer} } }`))?.data?.customer
+            if (oldEmail !== userStorage.value?.email) {
+                await loggedIn()
+            }
         } catch (error) {
             if (error instanceof SessionExpired) {
                 await clear()
@@ -130,6 +134,9 @@ export const login = async function (email, password) {
             email: email,
             password: password,
         },
+        {
+            notifyOnError: false,
+        },
     ).then(async (response) => {
         await loginByToken(response.data.generateCustomerToken.token)
         return response
@@ -138,14 +145,12 @@ export const login = async function (email, password) {
 
 export const loginByToken = async function (customerToken) {
     token.value = customerToken
+    await refresh()
+}
 
-    if (mask.value) {
-        await linkUserToCart()
-    } else {
-        await fetchCustomerCart()
-    }
-
+export const loggedIn = async function () {
     window.app.$emit('logged-in')
+    await cartLoginHandler()
 }
 
 export const logout = async function () {
@@ -192,6 +197,9 @@ export const user = computed({
 
 // If token gets changed or emptied we should update the user.
 watch(token, refresh)
+// Update the user on page load so the user will get logged out immediately
+// if their session has expired.
+window.setTimeout(() => refresh(), 200)
 if (userStorage.value?.email && !token.value) {
     token.value = ''
     userStorage.value = {}

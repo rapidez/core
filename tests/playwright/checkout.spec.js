@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { BasePage } from './pages/BasePage'
 import { ProductPage } from './pages/ProductPage'
 import { CheckoutPage } from './pages/CheckoutPage'
 import { AccountPage } from './pages/AccountPage'
@@ -6,7 +7,7 @@ import { AccountPage } from './pages/AccountPage'
 const checkoutTypes = ['default', 'onestep']
 
 checkoutTypes.forEach((type) => {
-    test(type + '- as guest', async ({ page }) => {
+    test(type + ' - as guest', BasePage.tags, async ({ page }) => {
         const productPage = new ProductPage(page)
         const checkoutPage = new CheckoutPage(page, type)
 
@@ -19,7 +20,7 @@ checkoutTypes.forEach((type) => {
         ])
     })
 
-    test(type + ' - as user', async ({ page }) => {
+    test(type + ' - as user', BasePage.tags, async ({ page }) => {
         const productPage = new ProductPage(page)
         const checkoutPage = new CheckoutPage(page, type)
         const accountPage = new AccountPage(page)

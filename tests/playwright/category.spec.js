@@ -1,17 +1,17 @@
 import { test, expect } from '@playwright/test'
 import { BasePage } from './pages/BasePage'
 
-test('category with simple products', async ({ page }) => {
+test('category with simple products', BasePage.tags, async ({ page }) => {
     await page.goto(process.env.CATEGORY_URL_SIMPLE)
     await new BasePage(page).screenshot('fullpage-footer-images')
 })
 
-test('category with configurable products', async ({ page }) => {
+test('category with configurable products', BasePage.tags, async ({ page }) => {
     await page.goto(process.env.CATEGORY_URL_CONFIGURABLE)
     await new BasePage(page).screenshot('fullpage-footer-images')
 })
 
-test('category pagination', async ({ page }) => {
+test('category pagination', BasePage.tags, async ({ page }) => {
     await page.goto(process.env.CATEGORY_URL_SIMPLE)
     await expect(page.getByTestId('listing-item')).toHaveCount(12)
     const firstProductPage1 = await page.getByTestId('listing-item').first().textContent()
@@ -22,7 +22,7 @@ test('category pagination', async ({ page }) => {
     await new BasePage(page).screenshot('fullpage-footer-images')
 })
 
-test('category filter', async ({ page }) => {
+test('category filter', BasePage.tags, async ({ page }) => {
     await page.goto(process.env.CATEGORY_URL_SIMPLE)
     await expect(page.getByTestId('listing-item')).toHaveCount(12)
 
@@ -41,7 +41,7 @@ test('category filter', async ({ page }) => {
     await new BasePage(page).screenshot('fullpage-footer-images')
 })
 
-test('wcag', async ({ page }, testInfo) => {
+test('wcag', BasePage.tags, async ({ page }, testInfo) => {
     await page.goto(process.env.CATEGORY_URL_SIMPLE)
     await new BasePage(page).wcag(testInfo)
 })

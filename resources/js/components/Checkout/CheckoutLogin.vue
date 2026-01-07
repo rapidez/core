@@ -5,6 +5,7 @@ import { useDebounceFn } from '@vueuse/core'
 
 const debouncePromise = useDebounceFn(async function (self) {
     self.isEmailAvailable = await isEmailAvailable(self.email || '')
+    await self.handleGuest()
 }, 300)
 
 export default {
@@ -16,6 +17,10 @@ export default {
         allowPasswordless: {
             type: Boolean,
             default: false,
+        },
+        allowGuest: {
+            type: Boolean,
+            default: true,
         },
     },
 
@@ -31,6 +36,12 @@ export default {
 
     render() {
         return this.$scopedSlots.default(this)
+    },
+
+    mounted() {
+        if (!user.value.is_logged_in && this.email) {
+            this.checkEmailAvailability()
+        }
     },
 
     methods: {
@@ -84,6 +95,10 @@ export default {
         },
 
         async handleGuest() {
+            if (!this.allowGuest) {
+                return false
+            }
+
             await setGuestEmailOnCart(this.email)
 
             return true

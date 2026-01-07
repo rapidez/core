@@ -21,6 +21,10 @@ export default {
             type: Boolean,
             default: true,
         },
+        watchIgnore: {
+            type: Array,
+            default: () => [],
+        },
         redirect: {
             type: String,
             default: '',
@@ -94,7 +98,7 @@ export default {
         this.data = this.variables
 
         if (this.debounce) {
-            this.mutate = useDebounceFn(async () => await this.mutateFn, this.debounce)
+            this.mutate = useDebounceFn(async () => await this.mutateFn(), this.debounce)
         } else {
             this.mutate = this.mutateFn
         }
@@ -103,7 +107,10 @@ export default {
     watch: {
         variables: function (variables, old) {
             if (this.watch) {
-                const diff = objectDiff(old, variables)
+                let diff = objectDiff(old ?? {}, variables)
+
+                // Remove ignored variables
+                diff = Object.fromEntries(Object.entries(diff).filter(([key, _]) => !this.watchIgnore.includes(key)))
                 if (Object.keys(diff).length === 0) {
                     return
                 }
@@ -216,7 +223,7 @@ export default {
                 if (this.redirect) {
                     if (this.notify.message) {
                         document.addEventListener(
-                            'turbo:load',
+                            'vue:loaded',
                             () => {
                                 Notify(this.notify.message, this.notify.type ?? 'success')
                             },
