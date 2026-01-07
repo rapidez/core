@@ -168,12 +168,22 @@ class ConfigController
 
     }
 
+    public function shouldBeNumeric($attribute): bool
+    {
+        if ($attribute['super']) {
+            // Super attributes are usually numeric, not if it's a select field.
+            return $attribute['input'] !== 'select';
+        }
+
+        return $attribute['visual_swatch'] || in_array($attribute['input'], ['boolean', 'price']);
+    }
+
     public function getSearchkitFacetAttributes(): array
     {
         // Get the filterable attributes and category levels
         $filterableAttributes = collect($this->getFilterableAttributes())
             ->map(function ($attribute) {
-                $isNumeric = $attribute['super'] || $attribute['visual_swatch'] || in_array($attribute['input'], ['boolean', 'price']);
+                $isNumeric = $this->shouldBeNumeric($attribute);
 
                 return [
                     'attribute' => $attribute['code'],
