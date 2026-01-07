@@ -41,7 +41,7 @@ trait HasSuperAttributes
                         $child->entity_id => $child->{$attribute->attribute_code},
                     ])
                     ->sortBy('sort_order')
-                    ->groupBy('value')
+                    ->groupBy('rawValue')
                     ->map(fn ($children, $value) => (object) [
                         'children' => $children->pluck('entity_id'),
                         'value'    => $value,

@@ -1,6 +1,6 @@
 <ais-range-input
     v-if="listingSlotProps.rangeAttributes.includes(filter.code)"
-    :attribute="filter.code == 'price' ? 'prices.'+($root?.user?.group_id || 0)+'.min_price' : filter.code"
+    :attribute="filter.code == 'price' ? 'prices.'+(user.value?.group_id || 0)+'.min_price' : filter.code"
     class="relative -mx-1 -mt-1"
 >
     <template v-slot="{ currentRefinement, range, canRefine, refine, sendEvent }">
@@ -17,7 +17,7 @@
                                 v-bind:suffix="filter.code === 'price' && $root.currencySymbolLocation !== 'left' ? $root.currencySymbol : ''"
                             >
                                 <x-slot:value>
-                                    @{{ window.price(value, { maximumFractionDigits: 0 }) }}
+                                    @{{ price(value, { maximumFractionDigits: 0 }) }}
                                 </x-slot:value>
                             </x-rapidez::input.range-slider>
                         </div>

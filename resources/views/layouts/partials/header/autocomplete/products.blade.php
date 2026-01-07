@@ -10,10 +10,10 @@
                     class="hover:bg-muted"
                     data-testid="autocomplete-item"
                 >
-                    <a :href="window.url(item.url)" v-on:click="sendEvent('click', item, 'Hit Clicked')" class="group relative flex flex-wrap p-2">
+                    <a :href="url(item.url)" v-on:click="sendEvent('click', item, 'Hit Clicked')" class="group relative flex flex-wrap p-2">
                         <img
                             v-if="item.thumbnail"
-                            :src="window.url('/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + item.thumbnail + '.webp')"
+                            :src="url('/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + item.thumbnail + '.webp')"
                             class="shrink-0 self-center object-contain size-16 mix-blend-multiply"
                             :alt="item.name"
                             width="200"
@@ -24,11 +24,11 @@
                             <x-rapidez::highlight attribute="name"/>
 
                             <div class="flex items-center gap-x-0.5 mt-0.5">
-                                <div v-if="item.special_price" class="text-muted font-sans line-through text-xs">
-                                    @{{ window.price(item.price) }}
+                                <div v-if="productSpecialPrice(item)" class="text-muted font-sans line-through text-xs">
+                                    @{{ price(productPrice(item)) }}
                                 </div>
                                 <div class="text-sm text font-sans font-bold">
-                                    @{{ window.price(item.special_price || item.price) }}
+                                    @{{ price(productSpecialPrice(item) || productPrice(item)) }}
                                 </div>
                             </div>
                         </div>

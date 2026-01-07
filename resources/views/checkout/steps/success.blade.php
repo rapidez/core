@@ -20,17 +20,17 @@
                     v-for="item in order.items"
                 >
                     <div class="w-1/6 sm:w-1/12 pr-3">
-                        <a :href="window.url('/' + item.product.url_key + item.product.url_suffix)" target="blank" class="block">
+                        <a :href="url('/' + item.product.url_key + item.product.url_suffix)" target="blank" class="block">
                             <img
                                 :alt="item.product_name"
-                                :src="window.url('/storage/{{ config('rapidez.store') }}/resizes/200/sku/' + item.product_sku + '.webp')"
+                                :src="url('/storage/{{ config('rapidez.store') }}/resizes/200/sku/' + item.product_sku + '.webp')"
                                 height="100"
                                 class="mx-auto"
                             />
                         </a>
                     </div>
                     <div class="w-5/6 sm:w-5/12">
-                        <a :href="window.url('/' + item.product.url_key + item.product.url_suffix)" target="blank" class="font-bold">@{{ item.product_name }}</a>
+                        <a :href="url('/' + item.product.url_key + item.product.url_suffix)" target="blank" class="font-bold">@{{ item.product_name }}</a>
                         <div v-for="option in item.selected_options">
                             @{{ option.label }}: @{{ option.value }}
                         </div>
@@ -42,10 +42,10 @@
                         @{{ Math.round(item.quantity_ordered) }}
                     </div>
                     <div class="w-2/6 sm:w-1/6 lg:w-2/12 text-right pr-5">
-                        @{{ window.price(item.product_sale_price.value) }}
+                        @{{ price(item.product_sale_price.value) }}
                     </div>
                     <div class="w-2/6 sm:w-1/6 lg:w-2/12 flex justify-end items-center text-right">
-                        @{{ window.price(item.product_sale_price.value * item.quantity_ordered) }}
+                        @{{ price(item.product_sale_price.value * item.quantity_ordered) }}
                     </div>
                 </div>
             </div>
