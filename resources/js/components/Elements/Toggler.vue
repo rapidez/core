@@ -19,8 +19,8 @@ export default {
         this.isOpen = this.open
     },
     methods: {
-        toggle() {
-            this.isOpen = !this.isOpen
+        toggle(shouldOpen) {
+            this.isOpen = shouldOpen ?? !this.isOpen
 
             if (this.callback) {
                 this.callback(this.isOpen)
