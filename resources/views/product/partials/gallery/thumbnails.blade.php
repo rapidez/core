@@ -33,7 +33,7 @@ With `$breakpoints` you can control the amount of images.
                 @if ($imageId < count($selectedChild->images))
                     src="{{ url('/storage/'.config('rapidez.store').'/resizes/80x80/magento/catalog/product'.$selectedChild->images[$imageId].'.webp') }}"
                 @endif
-                v-bind:src="window.url('/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product' + images[{{ $imageId }}] + '.webp')"
+                v-bind:src="url('/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product' + images[{{ $imageId }}] + '.webp')"
                 alt="{{ $product->name }}"
                 class="block max-h-full w-auto object-contain"
                 width="80"

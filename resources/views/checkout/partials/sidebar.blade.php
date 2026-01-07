@@ -47,33 +47,33 @@
                     </div>
                 </div>
             </dt>
-            <dd class="text-right">@{{ window.price(item.prices.row_total.value) }}</dd>
+            <dd class="text-right">@{{ price(item.prices.row_total.value) }}</dd>
         </div>
     </x-rapidez::summary>
 
     <x-rapidez::summary class="border-t pt-4 mt-5 mb-5">
         <div>
             <dt>@lang('Subtotal')</dt>
-            <dd>@{{ window.price(cart.value.prices.subtotal_including_tax.value) }}</dd>
+            <dd>@{{ price(cart.value.prices.subtotal_including_tax.value) }}</dd>
         </div>
         <div v-if="cart.value.prices.applied_taxes.length">
             <dt>@lang('Tax')</dt>
-            <dd>@{{ window.price(cart.value.prices.applied_taxes[0].amount.value) }}</dd>
+            <dd>@{{ price(cart.value.prices.applied_taxes[0].amount.value) }}</dd>
         </div>
         <div v-if="cart.value.shipping_addresses.length && cart.value.shipping_addresses?.[0]?.selected_shipping_method">
             <dt>
                 @lang('Shipping')<br>
                 <small class="text-muted">@{{ cart.value.shipping_addresses[0].selected_shipping_method.carrier_title }} - @{{ cart.value.shipping_addresses[0].selected_shipping_method.method_title }}</small>
             </dt>
-            <dd>@{{ window.price(cart.value.shipping_addresses[0].selected_shipping_method.amount.value) }}</dd>
+            <dd>@{{ price(cart.value.shipping_addresses[0].selected_shipping_method.amount.value) }}</dd>
         </div>
         <div v-for="discount in cart.value.prices.discounts" class="border-t pt-3 mt-3">
             <dt>@{{ discount.label }}</dt>
-            <dd class="text-green-700 font-medium">-@{{ window.price(discount.amount.value) }}</dd>
+            <dd class="text-green-700 font-medium">-@{{ price(discount.amount.value) }}</dd>
         </div>
         <div class="font-bold">
             <dt>@lang('Total')</dt>
-            <dd>@{{ window.price(cart.value.prices.grand_total.value) }}</dd>
+            <dd>@{{ price(cart.value.prices.grand_total.value) }}</dd>
         </div>
     </x-rapidez::summary>
 

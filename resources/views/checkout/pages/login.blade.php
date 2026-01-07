@@ -12,7 +12,7 @@
             v-on:submit.prevent="(e) => {
                 window.app.config.globalProperties.submitPartials(e.target?.form ?? e.target)
                     .then((result) =>
-                        window.Turbo.visit(window.url('{{ route('checkout', ['step' => 'credentials']) }}'))
+                        window.Turbo.visit(url('{{ route('checkout', ['step' => 'credentials']) }}'))
                     ).catch(() => {});
             }"
             class="max-w-md mx-auto"
