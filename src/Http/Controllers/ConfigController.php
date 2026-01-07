@@ -166,7 +166,7 @@ class ConfigController
         );
 
     }
-    
+
     public function shouldBeNumeric($attribute): bool
     {
         if ($attribute['super']) {
