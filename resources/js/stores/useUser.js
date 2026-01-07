@@ -1,6 +1,6 @@
 import { useLocalStorage, useSessionStorage, StorageSerializers } from '@vueuse/core'
 import { useCookies } from '@vueuse/integrations/useCookies'
-import { clear as clearCart, loggedIn as cartLoginHandler, cart } from './useCart'
+import { clear as clearCart, loggedIn as cartLoginHandler, fetchCustomerCart, cart } from './useCart'
 import { clear as clearOrder } from './useOrder'
 import { computed, watch } from 'vue'
 import Jwt from '../jwt'
@@ -41,7 +41,7 @@ export const token = computed({
 const userStorage = useSessionStorage('user', {}, { serializer: StorageSerializers.object })
 let currentRefresh = null
 
-export const refresh = async function () {
+export const refresh = async function (isLogin = false) {
     if (!token.value) {
         userStorage.value = {}
         return false
@@ -71,8 +71,14 @@ export const refresh = async function () {
                 // GraphQL isn't explosing that value.
                 ...(await rapidezAPI('get', 'customer')),
             }
-            if (oldEmail !== userStorage.value?.email) {
-                await loggedIn()
+            if (!oldEmail || oldEmail !== userStorage.value?.email) {
+                if (isLogin) {
+                    await loggedIn()
+                } else {
+                    // This happens when the user was already logged in, but the sessionStorage user data was lost.
+                    // We don't want to call `loggedIn` because that will try to link a guest cart to the customer.
+                    await fetchCustomerCart()
+                }
             }
         } catch (error) {
             if (error instanceof SessionExpired) {
@@ -153,7 +159,7 @@ export const login = async function (email, password) {
 
 export const loginByToken = async function (customerToken) {
     token.value = customerToken
-    await refresh()
+    await refresh(true)
 }
 
 export const loggedIn = async function () {
