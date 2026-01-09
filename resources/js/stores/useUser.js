@@ -63,14 +63,18 @@ export const refresh = async function () {
         try {
             const oldEmail = userStorage.value?.email
 
-            userStorage.value = {
-                ...(await magentoGraphQL(`{ customer { ${config.queries.customer} } }`))?.data?.customer,
-                // TODO: Is there anything unsafe to share in here?
-                // Plus, maybe we could remove the GraphQL call?
+            const [userGraphQL, userAPI] = await Promise.all([
+                magentoGraphQL(`{ customer { ${config.queries.customer} } }`),
                 // We're doing this for the customer group id
-                // GraphQL isn't explosing that value.
-                ...(await rapidezAPI('get', 'customer')),
+                // GraphQL isn't exposing that value.
+                rapidezAPI('get', 'customer')
+            ]);
+
+            userStorage.value = {
+                ...userGraphQL?.data?.customer,
+                ...userAPI
             }
+
             if (oldEmail !== userStorage.value?.email) {
                 await loggedIn()
             }
