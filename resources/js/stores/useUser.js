@@ -67,12 +67,12 @@ export const refresh = async function () {
                 magentoGraphQL(`{ customer { ${config.queries.customer} } }`),
                 // We're doing this for the customer group id
                 // GraphQL isn't exposing that value.
-                rapidezAPI('get', 'customer')
-            ]);
+                rapidezAPI('get', 'customer'),
+            ])
 
             userStorage.value = {
                 ...userGraphQL?.data?.customer,
-                ...userAPI
+                ...userAPI,
             }
 
             if (oldEmail !== userStorage.value?.email) {
