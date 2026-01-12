@@ -10,7 +10,7 @@ With `$breakpoints` you can control the amount of images.
     @for ($imageId = 0; $imageId < max($breakpoints); $imageId++)
         <button
             @attributes([
-                'v-cloak' => !($imageId < count($selectedChild->product_gallery) && count($selectedChild->product_gallery) > 1),
+                'v-cloak' => !($imageId < count($selectedChild->media) && count($selectedChild->media) > 1),
                 'v-if' => $imageId . ' < media.length && media.length > 1',
             ])
             @class([
@@ -30,11 +30,11 @@ With `$breakpoints` you can control the amount of images.
         >
             <img
                 {{-- src should always be above v-bind:src --}}
-                @if ($imageId < count($selectedChild->product_gallery))
-                    @if ($selectedChild->product_gallery[$imageId]['media_type'] === 'external-video')
-                        src="{{ config('rapidez.media_url') }}/catalog/product{{ $selectedChild->product_gallery[$imageId]['image'] }}"
+                @if ($imageId < count($selectedChild->media))
+                    @if ($selectedChild->media[$imageId]['media_type'] === 'external-video')
+                        src="{{ config('rapidez.media_url') }}/catalog/product{{ $selectedChild->media[$imageId]['image'] }}"
                     @else
-                        src="{{ url('/storage/'.config('rapidez.store').'/resizes/80x80/magento/catalog/product'.$selectedChild->product_gallery[$imageId]['image'].'.webp') }}"
+                        src="{{ url('/storage/'.config('rapidez.store').'/resizes/80x80/magento/catalog/product'.$selectedChild->media[$imageId]['image'].'.webp') }}"
                     @endif
                 @endif
                 v-bind:src="window.url(media[{{ $imageId }}].media_type === 'external-video' ? window.config.media_url + '/catalog/product' + media[{{ $imageId }}].image : '/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product' + media[{{ $imageId }}].image + '.webp')"                alt="{{ $product->name }}"

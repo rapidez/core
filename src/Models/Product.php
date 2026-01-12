@@ -50,7 +50,7 @@ class Product extends Model
         self::CREATED_AT => 'datetime',
     ];
 
-    protected $appends = ['url', 'product_gallery'];
+    protected $appends = ['url', 'media'];
 
     protected static function booting(): void
     {
@@ -235,7 +235,7 @@ class Product extends Model
         );
     }
 
-    protected function productGallery(): Attribute
+    protected function media(): Attribute
     {
         return Attribute::get(
             fn (): array => $this->gallery->sortBy('productImageValue.position')->map(function (ProductImage $value) {
