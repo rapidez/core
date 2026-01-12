@@ -2,8 +2,12 @@
 
 namespace Rapidez\Core\Http\Controllers;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\App;
 use Rapidez\Core\Events\ProductViewEvent;
+use Rapidez\Core\Models\EavAttribute;
 use Rapidez\Core\Models\Product;
 use TorMorten\Eventy\Facades\Eventy;
 
@@ -12,14 +16,25 @@ class ProductController
     public function show(int $productId)
     {
         $productModel = config('rapidez.models.product');
+        $productModel::shouldBeStrict(!App::isProduction()); // Throw errors if relations are used but not eager loaded if not in production.
 
+        $frontAttributes = EavAttribute::getCachedCatalog()->where('is_visible_on_front', 1)->pluck('attribute_id');
         /** @var \Rapidez\Core\Models\Product $product */
         $product = $productModel::query()
-            ->withEventyGlobalScopes('productpage.scopes')
             ->whereInAttribute('visibility', [
                 Product::VISIBILITY_IN_CATALOG,
                 Product::VISIBILITY_BOTH,
             ])
+            // It's important these are AFTER `whereInAttribute`
+            // as it seems to reset the global scopes
+            ->withoutGlobalscope('customAttributes')
+            ->withGlobalScope('customAttributes', fn (Builder $builder) =>
+                $builder->withCustomAttributes(
+                    fn (Relation $q) => $q
+                        ->whereIn($q->qualifyColumn('attribute_id'), $frontAttributes)
+                )
+            )
+            ->withEventyGlobalScopes('productpage.scopes')
             ->findOrFail($productId);
 
         $attributes = [
