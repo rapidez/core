@@ -34,7 +34,7 @@ class ProductController
             'special_price',
             'prices',
             'images',
-            'product_gallery',
+            'media',
             'url',
             'in_stock',
             'min_sale_qty',

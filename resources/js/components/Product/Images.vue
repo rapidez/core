@@ -4,7 +4,7 @@ import { useEventListener } from '@vueuse/core'
 export default {
     data: () => ({
         images: config.product.images,
-        media: config.product.product_gallery,
+        media: config.product.media,
         active: 0,
         zoomed: false,
         touchStartX: 0,
@@ -33,7 +33,7 @@ export default {
                     ).length
                 ) {
                     self.images = simpleProduct.images
-                    self.media = simpleProduct.product_gallery
+                    self.media = simpleProduct.media
                     self.active = Math.min(self.active, self.media.length - 1)
                 }
             })

@@ -8,7 +8,7 @@
             {{-- src should always be below v-bind:src --}}
             v-if="media[active].media_type === 'image'"
             v-bind:src="window.url('/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product' + media[active].image + '.webp')"
-            src="{{ url('/storage/'.config('rapidez.store').'/resizes/400/magento/catalog/product'.Arr::first($selectedChild->product_gallery)['image'].'.webp') }}"
+            src="{{ url('/storage/'.config('rapidez.store').'/resizes/400/magento/catalog/product'.Arr::first($selectedChild->media)['image'].'.webp') }}"
             alt="{{ $product->name }}"
             class="max-h-full object-contain"
             style="view-transition-name: image-{{ $product->sku }}"
@@ -30,7 +30,7 @@
         </iframe>
     </a>
 
-    @if (count($selectedChild->product_gallery ?? []) > 1)
+    @if (count($selectedChild->media ?? []) > 1)
         <button v-if="active" v-on:click="change(active-1)" class="z-10 top-1/2 left-3 -translate-y-1/2 absolute" aria-label="@lang('Prev')" v-cloak>
             <x-heroicon-o-chevron-left class="size-8 text" />
         </button>

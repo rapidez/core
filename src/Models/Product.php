@@ -58,7 +58,7 @@ class Product extends Model
     protected $appends = [
         'grouped',
         'images',
-        'product_gallery',
+        'media',
         'in_stock',
         'price',
         'special_price',
@@ -104,7 +104,7 @@ class Product extends Model
         );
     }
 
-    protected function productGallery(): Attribute
+    protected function media(): Attribute
     {
         return Attribute::get(
             fn (): array => $this->gallery->sortBy('productImageValue.position')->map(function (ProductImage $value) {
