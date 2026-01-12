@@ -4,14 +4,14 @@
             @include('rapidez::wishlist.button')
         </div>
     @endif
-    @if (count($product->product_gallery))
+    @if (count($product->media))
         <div class="absolute inset-0 flex h-[440px] items-center justify-center rounded border p-5">
             <img
                 class="m-auto max-h-[400px] w-full object-contain"
-                @if ($product->product_gallery[0]['media_type'] === 'external-video')
-                    src="{{ config('rapidez.media_url').'/catalog/product'.$product->product_gallery[0]['image'] }}"
+                @if ($product->media[0]['media_type'] === 'external-video')
+                    src="{{ config('rapidez.media_url').'/catalog/product'.$product->media[0]['image'] }}"
                 @else
-                    src="/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product{{ $product->product_gallery[0]['image'] }}.webp"
+                    src="/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product{{ $product->media[0]['image'] }}.webp"
                 @endif
                 alt="{{ $product->name }}"
                 width="400"

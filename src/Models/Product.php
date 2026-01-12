@@ -211,7 +211,7 @@ class Product extends Model
         return $this->gallery->sortBy('productImageValue.position')->pluck('value')->toArray();
     }
 
-    public function getProductGalleryAttribute(): array
+    public function getMediaAttribute(): array
     {
         return $this->gallery->sortBy('productImageValue.position')->map(function (ProductImage $value) {
             return [
