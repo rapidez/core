@@ -15,6 +15,13 @@ class Customer extends Model implements AuthenticatableContract
 
     protected $table = 'customer_entity';
 
+    // Additional values needed and
+    // not returned with GraphQL.
+    protected $visible = [
+        'group_id',
+    ];
+
+    // Just to be safe.
     protected $hidden = [
         'password_hash',
         'rp_token',

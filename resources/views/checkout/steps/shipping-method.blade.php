@@ -34,7 +34,7 @@
                     required
                 />
                 <span class="ml-1">@{{ method.method_title }}</span>
-                <span v-if="method.amount.value">- @{{ window.price(method.amount.value) }}</span>
+                <span v-if="method.amount.value">- @{{ price(method.amount.value) }}</span>
                 <span class="basis-full text-red-600" v-if="method.error_message" v-text="method.error_message"></span>
             </template>
         </label>
