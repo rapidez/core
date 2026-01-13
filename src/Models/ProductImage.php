@@ -11,7 +11,7 @@ class ProductImage extends Model
 
     protected $primaryKey = 'value_id';
 
-    protected $with = ['productImageValue'];
+    protected $with = ['productImageValue', 'video'];
 
     protected static function booted(): void
     {
@@ -30,5 +30,10 @@ class ProductImage extends Model
     public function productImageValue(): BelongsTo
     {
         return $this->belongsTo(config('rapidez.models.product_image_value'), 'value_id', 'value_id');
+    }
+
+    public function video(): BelongsTo
+    {
+        return $this->belongsTo(config('rapidez.models.product_video_value'), 'value_id', 'value_id');
     }
 }
