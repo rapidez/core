@@ -7,7 +7,7 @@
         <img
             {{-- src should always be below v-bind:src --}}
             v-if="media[active].media_type === 'image'"
-            v-bind:src="window.url('/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product' + media[active].image + '.webp')"
+            v-bind:src="url('/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product' + media[active].image + '.webp')"
             src="{{ url('/storage/'.config('rapidez.store').'/resizes/400/magento/catalog/product'.Arr::first($selectedChild->media)['image'].'.webp') }}"
             alt="{{ $product->name }}"
             class="max-h-full object-contain"
