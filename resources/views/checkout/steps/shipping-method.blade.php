@@ -42,7 +42,7 @@
                         <span v-else class="font-medium">
                             @{{ method.carrier_title }}
                         </span>
-                        <span v-if="method.amount.value"> - @{{ method.amount.value | price }}</span>
+                        <span v-if="method.amount.value">- @{{ method.amount.value | price }}</span>
                     </span>
                     <span class="basis-full text-muted" v-if="method.error_message" v-text="method.error_message"></span>
                 </span>
