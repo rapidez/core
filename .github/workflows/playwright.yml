@@ -233,4 +233,4 @@ jobs:
           destination-dir: ${{ env.HTML_REPORT_PATH }}
 
       - name: URL in summary
-        run: echo "### Test results - https://playwright.rapidez.io/${{ env.HTML_REPORT_PATH }}/" >> $GITHUB_STEP_SUMMARY
+        run: echo "### Test results - https://playwright.rapidez.io/${{ env.HTML_REPORT_PATH }}/index.html" >> $GITHUB_STEP_SUMMARY
