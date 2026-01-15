@@ -3,6 +3,7 @@ import { addQuery } from './stores/useSearchHistory'
 // Shared between Autocomplete and Listing
 Vue.component('ais-instant-search', () => import('vue-instantsearch/vue2/es/src/components/InstantSearch'))
 Vue.component('ais-hits', () => import('vue-instantsearch/vue2/es/src/components/Hits.js'))
+Vue.component('ais-infinite-hits', () => import('vue-instantsearch/vue2/es/src/components/InfiniteHits.vue.js'))
 Vue.component('ais-configure', () => import('vue-instantsearch/vue2/es/src/components/Configure.js'))
 Vue.component('ais-autocomplete', () => import('vue-instantsearch/vue2/es/src/components/Autocomplete.vue.js'))
 Vue.component('ais-search-box', () => import('vue-instantsearch/vue2/es/src/components/SearchBox.vue.js'))
