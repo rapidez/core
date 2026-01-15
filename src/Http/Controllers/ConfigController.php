@@ -170,6 +170,11 @@ class ConfigController
 
     public function isAttributeNumeric($attribute): bool
     {
+        // Manually-set range attributes should always be assumed numeric.
+        if (in_array($attribute['code'], config('rapidez.searchkit.range_attributes'))) {
+            return true;
+        }
+
         if ($attribute['super']) {
             // Super attributes are usually numeric, not if it's a select field.
             return $attribute['input'] !== 'select';
