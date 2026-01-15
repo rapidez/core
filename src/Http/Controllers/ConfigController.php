@@ -175,12 +175,16 @@ class ConfigController
             return true;
         }
 
-        if ($attribute['super']) {
-            // Super attributes are usually numeric, not if it's a select field.
-            return $attribute['input'] !== 'select';
+        if ($attribute['visual_swatch'] || $attribute['text_swatch'] || in_array($attribute['input'], ['boolean', 'price'])) {
+            return true;
         }
 
-        return $attribute['visual_swatch'] || in_array($attribute['input'], ['boolean', 'price']);
+        // Super attributes are usually numeric, not if it's a select field.
+        if ($attribute['super'] && $attribute['input'] !== 'select') {
+            return true;
+        }
+
+        return false;
     }
 
     public function getSearchkitFacetAttributes(): array
