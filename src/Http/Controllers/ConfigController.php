@@ -174,7 +174,7 @@ class ConfigController
             return true;
         }
 
-        if ($attribute['visual_swatch'] || in_array($attribute['input'], ['boolean', 'price'])) {
+        if ($attribute['visual_swatch'] || $attribute['text_swatch'] || in_array($attribute['input'], ['boolean', 'price'])) {
             return true;
         }
 
