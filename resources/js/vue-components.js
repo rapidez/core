@@ -1,6 +1,9 @@
 import TurbolinksAdapter from 'vue-turbolinks'
 Vue.use(TurbolinksAdapter)
 
+import { vIntersectionObserver } from '@vueuse/components'
+Vue.directive('intersection-observer', vIntersectionObserver)
+
 import Teleport from 'vue2-teleport'
 Vue.component('teleport', Teleport)
 
