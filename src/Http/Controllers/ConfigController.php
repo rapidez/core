@@ -168,7 +168,7 @@ class ConfigController
 
     }
 
-    public function shouldBeNumeric($attribute): bool
+    public function isAttributeNumeric($attribute): bool
     {
         if ($attribute['super']) {
             // Super attributes are usually numeric, not if it's a select field.
@@ -183,7 +183,7 @@ class ConfigController
         // Get the filterable attributes and category levels
         $filterableAttributes = collect($this->getFilterableAttributes())
             ->map(function ($attribute) {
-                $isNumeric = $this->shouldBeNumeric($attribute);
+                $isNumeric = $this->isAttributeNumeric($attribute);
 
                 return [
                     'attribute' => $attribute['code'],
