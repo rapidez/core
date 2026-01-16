@@ -155,7 +155,7 @@ jobs:
 
       - name: Update all screenshots
         if: ${{ inputs.update_all_screenshots && matrix.screenshots == true }}
-        run: yarn playwright test --update-snapshots --reporter=list
+        run: yarn playwright test --update-snapshots
 
       - name: Move the screenshots
         if: (failure() || inputs.update_all_screenshots) && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
