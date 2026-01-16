@@ -108,7 +108,7 @@ trait Searchable
      */
     public function withCategories(array $data): array
     {
-        $categories = Cache::driver('array')->rememberForever('categories', function () {
+        $categories = Cache::driver('array')->rememberForever('categories-' . config('rapidez.store'), function () {
             return Category::all()->keyBy('entity_id');
         });
 
