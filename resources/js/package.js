@@ -28,7 +28,7 @@ import { computed, createApp, watch } from 'vue'
 
 if (import.meta.env.VITE_DEBUG === 'true') {
     window.$on(
-        'rapidez:notification-message',
+        'notification-message',
         function (message, type, params, link) {
             switch (type) {
                 case 'error':
