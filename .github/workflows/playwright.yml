@@ -139,15 +139,16 @@ jobs:
         run: php artisan serve &
 
       - name: Run Playwright tests
+        if: ${{ !inputs.update_all_screenshots }}
         run: yarn playwright test
 
       # Screenshots
       - name: Collect failed tests
-        if: (failure() || inputs.update_all_screenshots)
+        if: ${{ failure() && !inputs.update_all_screenshots }}
         run: yarn playwright test --last-failed --list --reporter=dot --pass-with-no-tests > failed-tests.txt
 
       - name: Update screenshots
-        if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
+        if: ${{ failure() && !inputs.update_all_screenshots && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x'))) }}
         run: |
           while read -r test_name; do
             yarn playwright test "$test_name" --update-snapshots --reporter=list
@@ -155,7 +156,7 @@ jobs:
 
       - name: Update all screenshots
         if: ${{ inputs.update_all_screenshots && matrix.screenshots == true }}
-        run: yarn playwright test --update-snapshots --reporter=list
+        run: yarn playwright test --update-snapshots
 
       - name: Move the screenshots
         if: (failure() || inputs.update_all_screenshots) && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
