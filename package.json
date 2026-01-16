@@ -20,6 +20,7 @@
         "@vitejs/plugin-vue": "^6.0.1",
         "@vueuse/core": "^13.6.0",
         "@vueuse/integrations": "^13.6.0",
+        "@vueuse/components": "^13.6.0",
         "autoprefixer": "^10.4.15",
         "cross-env": "^10.0.0",
         "dotenv": "^17.2.0",

@@ -13,6 +13,10 @@ document.addEventListener('vue:loaded', function (event) {
         defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/Hits.js')),
     )
     vue.component(
+        'ais-infinite-hits',
+        defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/InfiniteHits.vue.js')),
+    )
+    vue.component(
         'ais-configure',
         defineAsyncComponent(() => import('vue-instantsearch/vue3/es/src/components/Configure.js')),
     )

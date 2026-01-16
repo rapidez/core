@@ -14,10 +14,12 @@ import VueTurboFrame from './components/VueTurboFrame.vue'
 import images from './components/Product/Images.vue'
 import quantitySelect from './components/Product/QuantitySelect.vue'
 import { defineAsyncComponent, defineComponent } from 'vue'
+import { vIntersectionObserver } from '@vueuse/components'
 
 document.addEventListener('vue:loaded', function (event) {
     const vue = event.detail.vue
     vue.use(TurbolinksAdapter)
+    vue.directive('intersection-observer', vIntersectionObserver)
 
     vue.component('toggler', toggler)
 
