@@ -51,7 +51,7 @@
         </div>
     </x-rapidez::summary>
 
-    <x-rapidez::summary class="border-t pt-4 mt-5 mb-5">
+    <x-rapidez::summary class="border-t pt-4 mt-5 mb-5" v-if="cart?.value?.prices">
         <div>
             <dt>@lang('Subtotal')</dt>
             <dd>@{{ price(cart.value.prices.subtotal_including_tax.value) }}</dd>
