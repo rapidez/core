@@ -1,6 +1,6 @@
 <div class="flex flex-col">
     <x-rapidez::summary class="gap-y-4">
-        <div v-for="item in cart.items">
+        <div v-for="item in cart.value.items">
             <dt>
                 <div class="flex">
                     <div class="flex shrink-0 size-10 mr-2">
