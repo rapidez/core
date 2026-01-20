@@ -13,8 +13,8 @@
                                 v-bind:range="range"
                                 v-bind:current="currentRefinement"
                                 v-on:change="refine"
-                                v-bind:prefix="filter.code === 'price' && $root.currencySymbolLocation === 'left' ? $root.currencySymbol : ''"
-                                v-bind:suffix="filter.code === 'price' && $root.currencySymbolLocation !== 'left' ? $root.currencySymbol : ''"
+                                v-bind:prefix="filter.code === 'price' && $root.currencySymbolLocation.value === 'left' ? $root.currencySymbol : ''"
+                                v-bind:suffix="filter.code === 'price' && $root.currencySymbolLocation.value === 'right' ? $root.currencySymbol : ''"
                             >
                                 <x-slot:value>
                                     @{{ price(value, { maximumFractionDigits: 0 }) }}
