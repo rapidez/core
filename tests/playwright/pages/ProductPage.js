@@ -21,6 +21,7 @@ export class ProductPage {
         await this.page.getByTestId('add-to-cart').click()
         await this.page.waitForTimeout(100)
         await this.page.waitForLoadState('networkidle')
+        await this.page.waitForTimeout(100)
 
         return product
     }
