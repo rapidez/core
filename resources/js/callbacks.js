@@ -80,7 +80,6 @@ document.addEventListener('vue:loaded', function (event) {
     }
 
     vue.config.globalProperties.updateCart = async function (data, response) {
-        console.log('updateCart')
         if (!response?.data) {
             return response?.data
         }

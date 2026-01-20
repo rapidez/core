@@ -92,7 +92,6 @@ export const fetchCustomerCart = async function () {
 }
 
 export const fetchGuestCart = async function () {
-    console.log('fetchGuestCart')
     await window
         .magentoGraphQL(
             `mutation { createGuestCart { cart { ...cart } } }
@@ -103,7 +102,6 @@ export const fetchGuestCart = async function () {
 }
 
 export const fetchCart = async function () {
-    console.log('fetchCart')
     if (user.value.is_logged_in) {
         await fetchCustomerCart()
 

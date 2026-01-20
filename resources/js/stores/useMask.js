@@ -30,7 +30,6 @@ export const mask = computed({
 })
 
 export const refreshMask = async function () {
-    console.log('refreshMask')
     try {
         await fetchCart()
         // FetchCart automatically fills the mask.

@@ -84,7 +84,6 @@ export default {
 
     methods: {
         async add() {
-            console.log('add')
             if (this.shouldRedirectToProduct) {
                 Turbo.visit(window.url(this.product.url))
                 return
@@ -94,13 +93,9 @@ export default {
             this.adding = true
             this.error = null
 
-            console.log('mask: ' + mask.value)
-
             if (!mask.value) {
                 await refreshMask()
             }
-
-            console.log('mask: ' + mask.value)
 
             try {
                 let response = await window.magentoGraphQL(
