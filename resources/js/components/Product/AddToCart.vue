@@ -94,13 +94,13 @@ export default {
             this.adding = true
             this.error = null
 
-            console.log('mask: '+mask.value)
+            console.log('mask: ' + mask.value)
 
             if (!mask.value) {
                 await refreshMask()
             }
 
-            console.log('mask: '+mask.value)
+            console.log('mask: ' + mask.value)
 
             try {
                 let response = await window.magentoGraphQL(
