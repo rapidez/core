@@ -27,8 +27,11 @@ export class SessionExpired extends FetchError {
 window.SessionExpired = SessionExpired
 
 export const rapidezFetch = (window.rapidezFetch = (...args) => {
+    console.log('rapidezFetch')
     const result = fetch.apply(this, args)
     addFetch(result)
+
+    console.log('rapidezFetch finshed')
 
     return result
 })
@@ -125,6 +128,7 @@ export const magentoGraphQL = (window.magentoGraphQL = async (
         notifyOnError: true,
     },
 ) => {
+    console.log('magentoGraphQL')
     let response = await rapidezFetch(config.magento_url + '/graphql', {
         method: 'POST',
         headers: {
@@ -138,16 +142,20 @@ export const magentoGraphQL = (window.magentoGraphQL = async (
             variables: variables,
         }),
     })
+    console.log('magentoGraphQL done')
     // You can't call response.json() twice, in case of errors we pass our clone instead which hasn't been read.
     let responseClone = response.clone()
 
     if (!response.ok && !response.headers?.get('content-type')?.includes('application/json')) {
+        console.log('magentoGraphQL error')
         throw new FetchError(window.config.translations.errors.wrong, responseClone)
     }
 
     let data = await response.json()
+    console.log('magentoGraphQL json')
 
     if (data?.errors) {
+        console.log('magentoGraphQL errors')
         console.error(data.errors)
 
         data?.errors?.forEach((error) => {
@@ -170,8 +178,11 @@ export const magentoGraphQL = (window.magentoGraphQL = async (
     }
 
     if (!response.ok) {
+        console.log('magentoGraphQL not ok')
         throw new FetchError(window.config.translations.errors.wrong, responseClone)
     }
+
+    console.log('magentoGraphQL finished')
 
     return data
 })
