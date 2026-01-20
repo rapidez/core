@@ -72,7 +72,7 @@ trait Searchable
             'qty_increments',
             ...$indexableAttributeCodes,
             ...$this->superAttributeCodes,
-            ...config('rapidez.searchkit.result_attributes')
+            ...config('rapidez.searchkit.result_attributes'),
         ];
 
         $wildcardAttributeCodes = collect($attributeCodes)
@@ -80,12 +80,12 @@ trait Searchable
             ->map(fn ($code) => '/' . str_replace('*', '.+?', $code) . '/')
             ->toArray();
 
-        $data = array_filter($this->toArray(), function(string $attributeName) use ($attributeCodes, $wildcardAttributeCodes) {
+        $data = array_filter($this->toArray(), function (string $attributeName) use ($attributeCodes, $wildcardAttributeCodes) {
             if (in_array($attributeName, $attributeCodes)) {
                 return true;
             }
 
-            return Arr::some($wildcardAttributeCodes, fn(string $regex) => preg_match($regex, $attributeName));
+            return Arr::some($wildcardAttributeCodes, fn (string $regex) => preg_match($regex, $attributeName));
         }, ARRAY_FILTER_USE_KEY);
 
         // TODO: Maybe we can handle this keying directly
