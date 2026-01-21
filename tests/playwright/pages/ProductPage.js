@@ -1,3 +1,5 @@
+import { expect } from '@playwright/test'
+
 export class ProductPage {
     constructor(page) {
         this.page = page
@@ -19,8 +21,7 @@ export class ProductPage {
         }
 
         await this.page.getByTestId('add-to-cart').click()
-        await this.page.waitForTimeout(100)
-        await this.page.waitForLoadState('networkidle')
+        await expect(this.page.getByTestId('minicart-count')).toContainText(qty.toString())
 
         return product
     }
