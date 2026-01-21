@@ -1,6 +1,6 @@
 <div class="flex flex-col">
     <x-rapidez::summary class="gap-y-4">
-        <div v-for="item in cart.items">
+        <div v-for="item in cart.value.items">
             <dt>
                 <div class="flex">
                     <div class="flex shrink-0 size-10 mr-2">
@@ -51,7 +51,7 @@
         </div>
     </x-rapidez::summary>
 
-    <x-rapidez::summary class="border-t pt-4 mt-5 mb-5">
+    <x-rapidez::summary class="border-t pt-4 mt-5 mb-5" v-if="cart?.value?.prices">
         <div>
             <dt>@lang('Subtotal')</dt>
             <dd>@{{ price(cart.value.prices.subtotal_including_tax.value) }}</dd>

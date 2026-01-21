@@ -218,7 +218,7 @@ if (userStorage.value?.email && !token.value) {
 }
 
 on(
-    'rapidez:logout',
+    'logout',
     async function (data) {
         await logout()
         useLocalStorage('email', '').value = ''
@@ -232,7 +232,7 @@ on(
 )
 
 on(
-    'rapidez:cart-updated',
+    'cart-updated',
     () => {
         // Can be removed once https://github.com/magento/magento2/issues/39828 is fixed
         setTimeout(() => {
