@@ -40,7 +40,7 @@ trait HasCustomAttributes
             : ['datetime', 'decimal', 'int', 'text', 'varchar'];
     }
 
-    protected function getEntityTypeId(): int
+    protected function getEntityTypeId(): ?int
     {
         return property_exists(self::class, 'entityTypeId')
             ? $this->entityTypeId
