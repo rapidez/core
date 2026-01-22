@@ -40,6 +40,7 @@ class Product extends Model
 
     protected $table = 'catalog_product_entity';
     protected $primaryKey = 'entity_id';
+    protected $entityTypeId = EavAttribute::ENTITY_TYPE_CATALOG_PRODUCT;
 
     protected $with = [
         'stock',

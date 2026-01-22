@@ -4,8 +4,8 @@ namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Rapidez\Core\Models\Scopes\Category\IsActiveScope;
 use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
 use Rapidez\Core\Models\Traits\HasCustomAttributes;
@@ -20,6 +20,7 @@ class Category extends Model
 
     protected $table = 'catalog_category_entity';
     protected $primaryKey = 'entity_id';
+    protected $entityTypeId = EavAttribute::ENTITY_TYPE_CATALOG_CATEGORY;
 
     protected $appends = ['url'];
 
@@ -51,19 +52,18 @@ class Category extends Model
         return Attribute::get(fn () => '/' . ($this->url_path ?: ('catalog/category/view/id/' . $this->entity_id)));
     }
 
-    public function products(): HasManyThrough
+    public function products(): BelongsToMany
     {
         return $this
-            ->hasManyThrough(
+            ->belongsToMany(
                 config('rapidez.models.product'),
-                config('rapidez.models.category_product'),
+                'catalog_category_product',
                 'category_id',
+                'product_id',
                 'entity_id',
                 'entity_id',
-                'product_id'
             )
-            ->withoutGlobalScopes()
-            ->whereIn((new (config('rapidez.models.category_product')))->qualifyColumn('visibility'), [2, 4]);
+            ->withoutGlobalScopes();
     }
 
     protected function parentcategories(): Attribute
@@ -83,10 +83,9 @@ class Category extends Model
      */
     protected function makeAllSearchableUsing(Builder $query)
     {
-        return $query->withEventyGlobalScopes('index.' . static::getModelName() . '.scopes')
-            ->select((new (config('rapidez.models.category')))->qualifyColumns(['entity_id', 'name']))
-            // ->whereNotNull('url_key')
-            // ->whereNot('url_key', 'default-category')
+        return $query
+            ->whereAttributeNotNull('url_key')
+            ->whereAttributeNot('url_key', 'default-category')
             ->has('products');
     }
 
