@@ -1,11 +1,11 @@
-import { useLocalStorage, useSessionStorage, StorageSerializers } from '@vueuse/core'
+import { useLocalStorage, StorageSerializers } from '@vueuse/core'
 import { clear as clearCart, fetchCustomerCart, linkUserToCart } from './useCart'
 import { computed, watch } from 'vue'
 import Jwt from '../jwt'
 import { mask } from './useMask'
 
 export const token = useLocalStorage('token', '')
-const userStorage = useSessionStorage('user', {}, { serializer: StorageSerializers.object })
+const userStorage = useLocalStorage('user', {}, { serializer: StorageSerializers.object })
 let isRefreshing = false
 
 export const refresh = async function () {
