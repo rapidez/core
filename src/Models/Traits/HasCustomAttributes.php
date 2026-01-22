@@ -100,12 +100,12 @@ trait HasCustomAttributes
 
     public function scopeWhereAttribute(Builder $builder, string $attributeCode, $operator = null, $value = null)
     {
-        return $this->whereMethodAttribute('where', $attributeCode, $operator, $value);
+        return $builder->whereMethodAttribute('where', $attributeCode, $operator, $value);
     }
 
     public function scopeWhereInAttribute(Builder $builder, string $attributeCode, $values = null, $boolean = 'and', $not = false)
     {
-        return $this->whereMethodAttribute('whereIn', $attributeCode, $values, $boolean, $not);
+        return $builder->whereMethodAttribute('whereIn', $attributeCode, $values, $boolean, $not);
     }
 
     public function attributeDatetime(): HasMany
