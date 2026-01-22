@@ -84,6 +84,7 @@ class Category extends Model
     protected function makeAllSearchableUsing(Builder $query)
     {
         return $query
+            ->withEventyGlobalScopes('index.' . static::getModelName() . '.scopes')
             ->whereAttributeNotNull('url_key')
             ->whereAttributeNot('url_key', 'default-category')
             ->has('products');
