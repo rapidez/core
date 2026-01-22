@@ -21,7 +21,7 @@ class AbstractAttribute extends Model
                 $join->on($builder->qualifyColumn('attribute_id'), '=', 'eav_attribute.attribute_id')
                     ->when(
                         $builder->getModel()->entity_type_id,
-                        fn($query) => $query->where('entity_type_id', $builder->getModel()->entity_type_id)
+                        fn ($query) => $query->where('entity_type_id', $builder->getModel()->entity_type_id)
                     );
             });
         });
