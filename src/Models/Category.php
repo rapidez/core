@@ -14,8 +14,8 @@ use TorMorten\Eventy\Facades\Eventy;
 
 class Category extends Model
 {
-    use HasCustomAttributes;
     use HasAlternatesThroughRewrites;
+    use HasCustomAttributes;
     use Searchable;
 
     protected $table = 'catalog_category_entity';
