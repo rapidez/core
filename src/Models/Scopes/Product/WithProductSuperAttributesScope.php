@@ -43,7 +43,8 @@ class WithProductSuperAttributesScope implements Scope
                 "label", COALESCE(NULLIF(`value`, ""), `frontend_label`),
                 "text_swatch", JSON_UNQUOTE(JSON_EXTRACT(IF(JSON_VALID(additional_data), additional_data, null), "$.swatch_input_type")) = "text",
                 "visual_swatch", JSON_UNQUOTE(JSON_EXTRACT(IF(JSON_VALID(additional_data), additional_data, null), "$.swatch_input_type")) = "visual",
-                "update_image", JSON_UNQUOTE(JSON_EXTRACT(IF(JSON_VALID(additional_data), additional_data, null), "$.update_product_preview_image")) = 1
+                "update_image", JSON_UNQUOTE(JSON_EXTRACT(IF(JSON_VALID(additional_data), additional_data, null), "$.update_product_preview_image")) = 1,
+                "position", catalog_product_super_attribute.position
             )) AS `super_attributes`')
             ->join('eav_attribute', 'eav_attribute.attribute_id', '=', 'catalog_product_super_attribute.attribute_id')
             ->join('catalog_eav_attribute', 'catalog_eav_attribute.attribute_id', '=', 'catalog_product_super_attribute.attribute_id')
