@@ -1,6 +1,24 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0-alpha.5...5.0.0-alpha.5)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0-alpha.6...5.0.0-alpha.6)
+## [5.0.0-alpha.6](https://github.com/rapidez/core/releases/tag/5.0.0-alpha.6) - 2026-01-23
+
+### Added
+
+- Product media video support (#1128)
+- Fullscreen search preparations (#976)
+- Shipping methods error messages (#1125)
+
+### Changed
+
+- Category model flat table migration (#1169, #1170)
+- Automatically make result_attributes indexable (#1163)
+
+### Fixed
+
+- Redirect with attributes on addtocart (#1162)
+- Prevent login trigger when a new tab is opened (#1066)
+
 ## [5.0.0-alpha.5](https://github.com/rapidez/core/releases/tag/5.0.0-alpha.5) - 2026-01-21
 
 ### Added
