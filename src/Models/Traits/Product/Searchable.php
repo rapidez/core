@@ -84,7 +84,7 @@ trait Searchable
 
     public function getPopularity(): int
     {
-        $popularityList = Cache::driver('array')->rememberForever('product-popularity-' . config('rapidez.store'), function() {
+        $popularityList = Cache::driver('array')->rememberForever('product-popularity-' . config('rapidez.store'), function () {
             $views = config('rapidez.models.product_view')::query()
                 ->groupBy('product_id')
                 ->selectRaw('COUNT(*) as views')
