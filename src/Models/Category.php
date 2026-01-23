@@ -5,6 +5,7 @@ namespace Rapidez\Core\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Scopes\Category\IsActiveScope;
@@ -55,18 +56,25 @@ class Category extends Model
             : ('catalog/category/view/id/' . $this->entity_id)));
     }
 
-    public function products(): BelongsToMany
+    public function products(): HasManyThrough
     {
-        return $this
-            ->belongsToMany(
-                config('rapidez.models.product'),
-                'catalog_category_product',
-                'category_id',
-                'product_id',
-                'entity_id',
-                'entity_id',
-            )
-            ->withoutGlobalScopes();
+        return $this->hasManyThrough(
+            config('rapidez.models.product'),
+            config('rapidez.models.category_product'),
+            'category_id',
+            'entity_id',
+            'entity_id',
+            'product_id',
+        );
+    }
+
+    public function categoryProducts(): HasMany
+    {
+        return $this->hasMany(
+            config('rapidez.models.category_product'),
+            'category_id',
+            'entity_id',
+        );
     }
 
     protected function parentcategories(): Attribute
@@ -90,7 +98,7 @@ class Category extends Model
             ->withEventyGlobalScopes('index.' . static::getModelName() . '.scopes')
             ->whereAttributeNotNull('url_key')
             ->whereAttributeNot('url_key', 'default-category')
-            ->has('products');
+            ->has('categoryProducts');
     }
 
     /**
