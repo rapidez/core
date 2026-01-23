@@ -11,6 +11,7 @@ use Rapidez\Core\Models\Category;
 use Rapidez\Core\Models\CategoryProduct;
 use Rapidez\Core\Models\EavAttribute;
 use Rapidez\Core\Models\Product;
+use Rapidez\Core\Models\ProductView;
 use Rapidez\Core\Models\SuperAttribute;
 use Rapidez\Core\Models\Traits\Searchable as ParentSearchable;
 use TorMorten\Eventy\Facades\Eventy;
@@ -98,8 +99,28 @@ trait Searchable
 
         $data = $this->withCategories($data);
         $data['positions'] = $this->getPositions();
+        $data['popularity'] = $this->getPopularity();
 
         return Eventy::filter('index.' . static::getModelName() . '.data', $data, $this);
+    }
+
+    public function getPopularity(): int
+    {
+        $popularityList = Cache::driver('array')->rememberForever('product-popularity-' . config('rapidez.store'), function() {
+            $views = config('rapidez.models.product_view')::query()
+                ->groupBy('product_id')
+                ->selectRaw('COUNT(*) as views')
+                ->addSelect('product_id')
+                ->pluck('views', 'product_id');
+
+            // Create sorted list of products ordered by popularity
+            $popularityOrder = $views->sort()->keys();
+
+            // Swap keys and values to get a list of popularity keyed by product
+            return $popularityOrder->flip();
+        });
+
+        return $popularityList[$this->entity_id] ?? 0;
     }
 
     public function getPositions(): Collection
