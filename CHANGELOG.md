@@ -1,6 +1,23 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.25.1...2.25.1)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.26.0...2.26.0)
+## [2.26.0](https://github.com/rapidez/core/releases/tag/2.26.0) - 2026-01-23
+
+### Added
+
+- Product media video support (#1068)
+
+### Changed
+
+- Drop Laravel 10 support + removed gitpkg dependency (#1135)
+- Implemented cache tags to prevent clearing all caches every reindex (#1105)
+
+### Fixed
+
+- Fix null check for auth (#1053)
+- Expose position column of super attributes (#1167)
+- Prevent login trigger when a new tab is opened (#1168)
+
 ## [2.25.1](https://github.com/rapidez/core/releases/tag/2.25.1) - 2025-10-07
 
 ### Fixed
