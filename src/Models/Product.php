@@ -51,6 +51,7 @@ class Product extends Model
         'options',
         'gallery',
         'prices',
+        'reviewSummary',
     ];
 
     // TODO: Double check; do we really want all accessors

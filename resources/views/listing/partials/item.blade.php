@@ -16,7 +16,12 @@
                 <div>
                     <x-rapidez::highlight attribute="name" class="text-base font-medium hover:underline decoration-2"/>
                     @if (App::providerIsLoaded('Rapidez\Reviews\ReviewsServiceProvider'))
-                        <x-dynamic-component component="rapidez-reviews::stars" v-if="item.reviews_count" count="item.reviews_count" score="item.reviews_score" />
+                        <x-dynamic-component
+                            component="rapidez-reviews::stars"
+                            v-if="item.review_summary?.reviews_count"
+                            count="item.review_summary.reviews_count"
+                            score="item.review_summary.rating_summary"
+                        />
                     @endif
                     <div class="flex items-center gap-x-2 mt-1">
                         <div class="font-semibold text-lg">
