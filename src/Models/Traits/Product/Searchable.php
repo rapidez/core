@@ -127,7 +127,7 @@ trait Searchable
             for ($i = 1; $i <= $level; $i++) {
                 $pathCategories = collect($path)
                     ->take($i)
-                    ->map(fn ($id) => $categories[$id]->name ?? null)
+                    ->map(fn ($id) => $categories[$id]->name->value ?? null)
                     ->whereNotNull()
                     ->join(' > ');
 
