@@ -22,6 +22,7 @@ return [
     'product'                   => Rapidez\Core\Models\Product::class,
     'product_image'             => Rapidez\Core\Models\ProductImage::class,
     'product_image_value'       => Rapidez\Core\Models\ProductImageValue::class,
+    'product_video_value'       => Rapidez\Core\Models\ProductVideoValue::class,
     'product_link'              => Rapidez\Core\Models\ProductLink::class,
     'product_option'            => Rapidez\Core\Models\ProductOption::class,
     'product_option_price'      => Rapidez\Core\Models\ProductOptionPrice::class,
