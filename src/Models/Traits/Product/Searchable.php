@@ -11,7 +11,6 @@ use Rapidez\Core\Models\Category;
 use Rapidez\Core\Models\CategoryProduct;
 use Rapidez\Core\Models\EavAttribute;
 use Rapidez\Core\Models\Product;
-use Rapidez\Core\Models\ProductView;
 use Rapidez\Core\Models\SuperAttribute;
 use Rapidez\Core\Models\Traits\Searchable as ParentSearchable;
 use TorMorten\Eventy\Facades\Eventy;
@@ -106,7 +105,7 @@ trait Searchable
 
     public function getPopularity(): int
     {
-        $popularityList = Cache::driver('array')->rememberForever('product-popularity-' . config('rapidez.store'), function() {
+        $popularityList = Cache::driver('array')->rememberForever('product-popularity-' . config('rapidez.store'), function () {
             $views = config('rapidez.models.product_view')::query()
                 ->groupBy('product_id')
                 ->selectRaw('COUNT(*) as views')
