@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/...3.10.2)
+[Unreleased changes](https://github.com/rapidez/core/compare/...3.11.0)
+## [3.11.0](https://github.com/rapidez/core/releases/tag/3.11.0) - 2026-01-06
+
+### Changed
+
+- Removed gitpkg dependency (#1134)
+
 ## [3.10.2](https://github.com/rapidez/core/releases/tag/3.10.2) - 2025-09-02
 
 ### Fixed
