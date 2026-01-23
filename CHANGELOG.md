@@ -1,6 +1,35 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/...4.9.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.10.0...4.10.0)
+## [4.10.0](https://github.com/rapidez/core/releases/tag/4.10.0) - 2026-01-21
+
+### Added
+
+- Uncacheable middleware (#1079)
+- Implemented cache tags to prevent clearing all caches every reindex (#1104)
+- Shipping methods error messages (#1107)
+- Fullscreen search preparations (#1139)
+- Product media video support (#1129)
+
+### Changed
+
+- Playwright reports in Cloudflare R2 (#1148)
+
+### Fixed
+
+- Use 4.x branch for Playwright tests (#1102)
+- Fix playwright tests (#1114)
+- Fixed duplicate entry for search queries (#1108)
+- Prevent login trigger when a new tab is opened (#1126)
+- Check for cart prices (#1131)
+- Screenshots update (#1140)
+- Disabled shipping method styling (#1145)
+- Mask the copyright year (#1150)
+- Screenshot update (#1151)
+- Playwright fixes from master (7437412)
+- Playwright run CI tests in parallel (#1160)
+- Playwright add to cart fix (#1165)
+
 ## [4.9.0](https://github.com/rapidez/core/releases/tag/4.9.0) - 2025-12-02
 
 ### Added
