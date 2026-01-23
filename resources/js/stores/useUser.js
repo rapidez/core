@@ -96,4 +96,8 @@ export const user = computed({
 // If token gets changed or emptied we should update the user.
 watch(token, refresh)
 
+// Update the user on page load so the user will get logged out immediately
+// if their session has expired.
+window.setTimeout(() => refresh(), 200)
+
 export default () => user
