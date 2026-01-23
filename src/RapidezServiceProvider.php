@@ -7,6 +7,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
@@ -33,6 +34,7 @@ use Rapidez\Core\Http\Controllers\Fallback\UrlRewriteController;
 use Rapidez\Core\Http\Middleware\CheckStoreCode;
 use Rapidez\Core\Http\Middleware\ConfigForTesting;
 use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
+use Rapidez\Core\Http\Middleware\Uncacheable;
 use Rapidez\Core\Listeners\Healthcheck\ElasticsearchHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\MagentoSettingsHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\ModelsHealthcheck;
@@ -42,6 +44,7 @@ use Rapidez\Core\Listeners\UpdateLatestIndexDate;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use TorMorten\Eventy\Facades\Eventy;
 
 class RapidezServiceProvider extends ServiceProvider
 {
@@ -69,7 +72,8 @@ class RapidezServiceProvider extends ServiceProvider
             ->bootScout()
             ->bootTranslations()
             ->bootListeners()
-            ->bootMacros();
+            ->bootMacros()
+            ->bootUncacheable();
     }
 
     public function register()
@@ -230,6 +234,7 @@ class RapidezServiceProvider extends ServiceProvider
         $this->app->make(Kernel::class)->pushMiddleware(DetermineAndSetShop::class);
 
         $this->app['router']->aliasMiddleware('store_code', CheckStoreCode::class);
+        $this->app['router']->aliasMiddleware('uncacheable', Uncacheable::class);
 
         return $this;
     }
@@ -294,6 +299,89 @@ class RapidezServiceProvider extends ServiceProvider
                     $filenames
                 )
             );
+        });
+
+        Str::macro(
+            'embedUrl',
+            function ($url) {
+                if (Str::contains($url, 'vimeo')) {
+                    $url = str_replace('/vimeo.com', '/player.vimeo.com/video', $url);
+
+                    // Handle private vimeo urls.
+                    $hash = null;
+                    if (! Str::contains($url, 'progressive_redirect') && Str::substrCount($url, '/') > 4) {
+                        $hash = Str::afterLast($url, '/');
+                        $url = Str::beforeLast($url, '/');
+
+                        if (Str::contains($hash, '?')) {
+                            $url .= '?' . Str::after($hash, '?');
+                            $hash = Str::before($hash, '?');
+                        }
+                    }
+
+                    $paramsToAdd = '?dnt=1&watch_full_video=false&vimeo_logo=false&speed=false&chromecast=false&byline=false&badge=false&ask_ai=false&airplay=false';
+                    if ($hash) {
+                        $paramsToAdd .= '&h=' . $hash;
+                    }
+
+                    if (Str::contains($url, '?')) {
+                        $url = str_replace('?', $paramsToAdd . '&', $url);
+                    } else {
+                        $url .= $paramsToAdd;
+                    }
+
+                    return $url;
+                }
+
+                if (Str::contains($url, 'youtu.be')) {
+                    $url = str_replace('youtu.be', 'www.youtube.com/embed', $url);
+
+                    // Check for start at point and replace it with correct parameter.
+                    if (Str::contains($url, '?t=')) {
+                        $url = str_replace('?t=', '?start=', $url);
+                    }
+                }
+
+                if (Str::contains($url, 'youtube.com/watch?v=')) {
+                    $url = str_replace('watch?v=', 'embed/', $url);
+
+                    if (Str::contains($url, '&t=')) {
+                        $url = str_replace('&t=', '?start=', $url);
+                    }
+                }
+
+                if (Str::contains($url, 'youtube.com/shorts/')) {
+                    $url = str_replace('shorts/', 'embed/', $url);
+                }
+
+                if (Str::contains($url, 'youtube.com')) {
+                    $url = str_replace('youtube.com', 'youtube-nocookie.com', $url);
+                }
+
+                // This avoids SSL issues when using the non-www version
+                if (Str::contains($url, '//youtube-nocookie.com')) {
+                    $url = str_replace('//youtube-nocookie.com', '//www.youtube-nocookie.com', $url);
+                }
+
+                $url .= '&fs=0';
+
+                if (Str::contains($url, '&') && ! Str::contains($url, '?')) {
+                    $url = Str::replaceFirst('&', '?', $url);
+                }
+
+                return $url;
+            }
+        );
+
+        return $this;
+    }
+
+    protected function bootUncacheable(): static
+    {
+        Eventy::addFilter('uncacheable.response', function (Response $response) {
+            $response->setPrivate();
+
+            return $response;
         });
 
         return $this;

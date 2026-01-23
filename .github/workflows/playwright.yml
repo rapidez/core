@@ -77,6 +77,7 @@ jobs:
         with:
           repository: rapidez/rapidez
           path: rapidez/rapidez
+          ref: 4.x
 
       - uses: actions/setup-node@v4
         with:
@@ -104,8 +105,11 @@ jobs:
           echo "CORE_HASH=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse HEAD | sed 's|/|_|g')" >> $GITHUB_ENV
           echo "LATEST_TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
+      - name: Get correct version name for require
+        run: echo "REQUIRE_VERSION=$([[ '${{ env.CORE_HASH }}' =~ ^[0-9]+\.[xX]$ ]] && echo '${{ env.CORE_HASH }}-dev' || echo 'dev-${{ env.CORE_HASH }}')" >> $GITHUB_ENV
+
       - name: Composer require the local rapidez/core
-        run: composer require rapidez/core:"dev-${{ env.CORE_HASH }} as ${{ env.LATEST_TAG }}"
+        run: composer require rapidez/core:"${{ env.REQUIRE_VERSION }} as ${{ env.LATEST_TAG }}"
 
       - name: Install Rapidez command
         run: php artisan rapidez:install --frontendonly
@@ -135,15 +139,16 @@ jobs:
         run: php artisan serve &
 
       - name: Run Playwright tests
+        if: ${{ !inputs.update_all_screenshots }}
         run: yarn playwright test
 
       # Screenshots
       - name: Collect failed tests
-        if: (failure() || inputs.update_all_screenshots)
+        if: ${{ failure() && !inputs.update_all_screenshots }}
         run: yarn playwright test --last-failed --list --reporter=dot --pass-with-no-tests > failed-tests.txt
 
       - name: Update screenshots
-        if: failure() && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
+        if: ${{ failure() && !inputs.update_all_screenshots && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x'))) }}
         run: |
           while read -r test_name; do
             yarn playwright test "$test_name" --update-snapshots --reporter=list
@@ -151,7 +156,7 @@ jobs:
 
       - name: Update all screenshots
         if: ${{ inputs.update_all_screenshots && matrix.screenshots == true }}
-        run: yarn playwright test --update-snapshots --reporter=list
+        run: yarn playwright test --update-snapshots
 
       - name: Move the screenshots
         if: (failure() || inputs.update_all_screenshots) && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))
@@ -197,16 +202,12 @@ jobs:
       HTML_REPORT_PATH: ${{ github.repository }}/${{ github.ref_name }}/${{ github.run_id }}/${{ github.run_attempt }}
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-          repository: rapidez/playwright-reports
-
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
 
       - name: Install dependencies
-        run: npm install
+        run: npm install @playwright/test
 
       - name: Download artifacts
         uses: actions/download-artifact@v4
@@ -223,13 +224,15 @@ jobs:
           name: playwright-report
           path: playwright-report
 
-      - name: Push the new files to github pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Push to Cloudflare R2
+        uses: ryand56/r2-upload-action@v1.4
         with:
-          personal_token: ${{ secrets.RAPIDEZ_ACTIONS_ACCOUNT_PAT }}
-          external_repository: rapidez/playwright-reports
-          publish_dir: ./playwright-report
-          destination_dir: ${{ env.HTML_REPORT_PATH }}
+          r2-account-id: ${{ secrets.R2_ACCOUNT_ID }}
+          r2-access-key-id: ${{ secrets.R2_ACCESS_KEY_ID }}
+          r2-secret-access-key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          r2-bucket: ${{ secrets.R2_BUCKET }}
+          source-dir: ./playwright-report
+          destination-dir: ${{ env.HTML_REPORT_PATH }}
 
       - name: URL in summary
-        run: echo "### Test results - https://${{ github.repository_owner }}.github.io/playwright-reports/${{ env.HTML_REPORT_PATH }}/" >> $GITHUB_STEP_SUMMARY
+        run: echo "### Test results - https://playwright.rapidez.io/${{ env.HTML_REPORT_PATH }}/index.html" >> $GITHUB_STEP_SUMMARY

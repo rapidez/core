@@ -2,7 +2,7 @@
     :query="config.queries.setPaymentMethodOnCart"
     :variables="{
         cart_id: mask,
-        code: cart.selected_payment_method.code,
+        code: cart.selected_payment_method?.code ?? null,
     }"
     group="payment"
     :before-request="handleBeforePaymentMethodHandlers"
@@ -12,7 +12,7 @@
     v-slot="{ mutate, variables }"
 >
     <div class="flex flex-col gap-3" partial-submit="mutate">
-        <label class="flex items-center p-5 border rounded relative bg-white" v-if="!cart.is_virtual && !cart.shipping_addresses[0]?.uid">
+        <label class="flex items-center p-5 border rounded relative bg-white" v-if="!cart.is_virtual && !cart.shipping_addresses?.[0]?.uid">
             <span>@lang('Please enter a shipping address first')</span>
         </label>
         <label class="flex items-center p-5 border rounded relative bg-white cursor-pointer" v-else v-for="(method, index) in cart.available_payment_methods">
@@ -39,4 +39,3 @@
         </label>
     </div>
 </graphql-mutation>
-

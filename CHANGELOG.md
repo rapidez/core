@@ -1,6 +1,65 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.8.0...4.8.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.10.0...4.10.0)
+## [4.10.0](https://github.com/rapidez/core/releases/tag/4.10.0) - 2026-01-21
+
+### Added
+
+- Uncacheable middleware (#1079)
+- Implemented cache tags to prevent clearing all caches every reindex (#1104)
+- Shipping methods error messages (#1107)
+- Fullscreen search preparations (#1139)
+- Product media video support (#1129)
+
+### Changed
+
+- Playwright reports in Cloudflare R2 (#1148)
+
+### Fixed
+
+- Use 4.x branch for Playwright tests (#1102)
+- Fix playwright tests (#1114)
+- Fixed duplicate entry for search queries (#1108)
+- Prevent login trigger when a new tab is opened (#1126)
+- Check for cart prices (#1131)
+- Screenshots update (#1140)
+- Disabled shipping method styling (#1145)
+- Mask the copyright year (#1150)
+- Screenshot update (#1151)
+- Playwright fixes from master (7437412)
+- Playwright run CI tests in parallel (#1160)
+- Playwright add to cart fix (#1165)
+
+## [4.9.0](https://github.com/rapidez/core/releases/tag/4.9.0) - 2025-12-02
+
+### Added
+
+- Resized path helper SKU support (#1057)
+- Fractional product quantities support (#1044)
+- allSettled helper (#1078)
+
+### Changed
+
+- Playwright test with the latest Magento versions (#1051)
+- Disable inputs on $root.loading (#1039)
+
+### Fixed
+
+- Dutch translation fix (#1055)
+- Deprecated warning on null widget class fix (#1058)
+- Filter focus state style fixes (#1060)
+- Address comparison fix (#1065)
+- Remove duplicate search translation (#1067)
+- Always give hitsPerPage a default (#1070)
+- Improve product in category positions handling (#1071)
+- Url filter error fallback (#1081)
+- Shipping address fallbacks (#1084)
+- Call index import command directly (#1090)
+- Special price alignment fix (#1088)
+- ObjectDiff fallback (#1077)
+- selected_payment_method fallback (#1080)
+- iOS autocomplete double click fix (#1083)
+
 ## [4.8.0](https://github.com/rapidez/core/releases/tag/4.8.0) - 2025-10-14
 
 ### Added

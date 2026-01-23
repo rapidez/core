@@ -59,12 +59,14 @@ export default {
         },
 
         hitsPerPage() {
+            let hasDefault = this.$root.config.grid_per_page_values.includes(this.$root.config.grid_per_page)
+
             return this.$root.config.grid_per_page_values
                 .map(function (pages, index) {
                     return {
                         label: pages,
                         value: pages,
-                        default: pages == config.grid_per_page,
+                        default: hasDefault ? pages == config.grid_per_page : index == 0,
                     }
                 })
                 .concat({ label: this.$root.config.translations.all, value: 10000 })
@@ -189,9 +191,9 @@ export default {
             let ranges = Object.fromEntries(Object.entries(routeState).filter(([key]) => this.rangeAttributes.includes(key)))
 
             let refinementList = Object.fromEntries(
-                Object.entries(routeState).filter(
-                    ([key]) => !['q', 'hits', 'sort', 'page', 'category'].includes(key) && !this.rangeAttributes.includes(key),
-                ),
+                Object.entries(routeState)
+                    .filter(([key]) => !['q', 'hits', 'sort', 'page', 'category'].includes(key) && !this.rangeAttributes.includes(key))
+                    .map(([key, refinement]) => [key, typeof refinement === 'string' ? refinement.split(',') : refinement]),
             )
 
             const categories = [...(this.rootPath || []), ...(routeState.category?.split('--') || [])]
