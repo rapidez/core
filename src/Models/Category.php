@@ -49,7 +49,9 @@ class Category extends Model
 
     protected function url(): Attribute
     {
-        return Attribute::get(fn () => '/' . ($this->url_path ?: ('catalog/category/view/id/' . $this->entity_id)));
+        return Attribute::get(fn () => '/' . ($this->url_path
+            ? $this->url_path . Rapidez::config('catalog/seo/category_url_suffix')
+            : ('catalog/category/view/id/' . $this->entity_id)));
     }
 
     public function products(): BelongsToMany
