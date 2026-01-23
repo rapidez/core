@@ -1,11 +1,11 @@
-import { useLocalStorage, useSessionStorage, StorageSerializers } from '@vueuse/core'
+import { useLocalStorage, StorageSerializers } from '@vueuse/core'
 import { clear as clearCart, fetchCustomerCart, linkUserToCart } from './useCart'
 import { computed, watch } from 'vue'
 import Jwt from '../jwt'
 import { mask } from './useMask'
 
 export const token = useLocalStorage('token', '')
-const userStorage = useSessionStorage('user', {}, { serializer: StorageSerializers.object })
+const userStorage = useLocalStorage('user', {}, { serializer: StorageSerializers.object })
 let isRefreshing = false
 
 export const refresh = async function () {
@@ -95,5 +95,9 @@ export const user = computed({
 
 // If token gets changed or emptied we should update the user.
 watch(token, refresh)
+
+// Update the user on page load so the user will get logged out immediately
+// if their session has expired.
+window.setTimeout(() => refresh(), 200)
 
 export default () => user
