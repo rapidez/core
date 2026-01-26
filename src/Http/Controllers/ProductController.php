@@ -16,27 +16,9 @@ class ProductController
     public function show(int $productId)
     {
         $productModel = config('rapidez.models.product');
-        $productModel::shouldBeStrict(! App::isProduction()); // Throw errors if relations are used but not eager loaded if not in production.
+        $productModel::preventLazyLoading(! App::isProduction()); // Throw errors if relations are used but not eager loaded if not in production.
 
-        $frontAttributes = EavAttribute::getCachedCatalog()->where('is_visible_on_front', 1)->pluck('attribute_id');
-        /** @var \Rapidez\Core\Models\Product $product */
-        $product = $productModel::query()
-            ->whereInAttribute('visibility', [
-                Product::VISIBILITY_IN_CATALOG,
-                Product::VISIBILITY_BOTH,
-            ])
-            // It's important these are AFTER `whereInAttribute`
-            // as it seems to reset the global scopes
-            ->withoutGlobalscope('customAttributes')
-            ->withGlobalScope('customAttributes', fn (Builder $builder) => $builder->withCustomAttributes(
-                fn (Relation $q) => $q
-                    ->whereIn($q->qualifyColumn('attribute_id'), $frontAttributes)
-            )
-            )
-            ->withEventyGlobalScopes('productpage.scopes')
-            ->findOrFail($productId);
-
-        $attributes = [
+        $frontAttributes = [
             'entity_id',
             'name',
             'sku',
@@ -50,11 +32,40 @@ class ProductController
             'images',
             'media',
             'url',
+            'url_key',
             'in_stock',
             'min_sale_qty',
             'max_sale_qty',
             'qty_increments',
 
+            'meta_title',
+            'meta_description',
+            'description',
+            'backorder_type',
+            ...config('rapidez.frontend.product_overview_attribute'),
+        ];
+
+        $frontAttributeIds = EavAttribute::getCachedCatalog()
+            ->where(fn($attribute) => $attribute->is_visible_on_front || in_array($attribute->attribute_code, $frontAttributes))
+            ->pluck('attribute_id');
+
+        /** @var \Rapidez\Core\Models\Product $product */
+        $product = $productModel::query()
+            ->whereInAttribute('visibility', [
+                Product::VISIBILITY_IN_CATALOG,
+                Product::VISIBILITY_BOTH,
+            ])
+            ->withoutGlobalscope('customAttributes')
+            ->withGlobalScope('customAttributes', fn (Builder $builder) => $builder->withCustomAttributes(
+                fn (Relation $q) => $q
+                    ->whereIn($q->qualifyColumn('attribute_id'), $frontAttributeIds)
+                )
+            )
+            ->withEventyGlobalScopes('productpage.scopes')
+            ->findOrFail($productId);
+
+        $attributes = [
+            ...$frontAttributes,
             ...$product->superAttributeCodes,
         ];
 
