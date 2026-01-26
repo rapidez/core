@@ -42,7 +42,7 @@ class ProductController
             'meta_description',
             'description',
             'backorder_type',
-            ...config('rapidez.frontend.product_overview_attribute'),
+            ...config('rapidez.frontend.product_overview_attribute', []),
         ];
 
         $frontAttributeIds = EavAttribute::getCachedCatalog()
