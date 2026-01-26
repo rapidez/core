@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core\Models;
 
+use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -26,7 +27,11 @@ class Product extends Model
 {
     use BackwardsCompatibleAccessors;
     use HasAlternatesThroughRewrites;
-    use HasCustomAttributes;
+    use HasCustomAttributes {
+        attributeInt as parentAttributeInt;
+        attributeText as parentAttributeText;
+        attributeVarchar as parentAttributeVarchar;
+    }
     use HasSuperAttributes;
     use Searchable;
     use UsesCallbackRelations;
@@ -357,6 +362,40 @@ class Product extends Model
 
             return $specialPrice < $this->price ? $specialPrice : null;
         });
+    }
+
+    public function attributeInt(): HasMany
+    {
+        static::retrieved(function (Product $product) {
+            $product->load([
+                'attributeInt.attributeOptions' => fn(Builder $q) => $q->whereIn('eav_attribute_option.option_id', $product->attributeInt->filter(fn($attr) => in_array($attr->frontend_input, ['multiselect', 'select']))->map->raw_value->flatten()->unique()),
+            ]);
+        });
+
+        return $this->parentAttributeInt()
+            ->withoutGlobalScope('attributeOptions');
+    }
+
+    public function attributeText(): HasMany
+    {
+        static::retrieved(function (Product $product) {
+            $product->loadMissing([
+                'attributeText.attributeOptions' => fn(Builder $q) => $q->whereIn('eav_attribute_option.option_id', $product->attributeText->filter(fn($attr) => in_array($attr->frontend_input, ['multiselect', 'select']))->map->raw_value->flatten()->unique()->filter(fn($val) => is_numeric($val))),
+            ]);
+        });
+        return $this->parentAttributeText()
+            ->withoutGlobalScope('attributeOptions');
+    }
+
+    public function attributeVarchar(): HasMany
+    {
+        static::retrieved(function (Product $product) {
+            $product->loadMissing([
+                'attributeVarchar.attributeOptions' => fn(Builder $q) => $q->whereIn('eav_attribute_option.option_id', $product->attributeVarchar->filter(fn($attr) => in_array($attr->frontend_input, ['multiselect', 'select']))->map->raw_value->flatten()->unique()->filter(fn($val) => is_numeric($val))),
+            ]);
+        });
+        return $this->parentAttributeVarchar()
+            ->withoutGlobalScope('attributeOptions');
     }
 
     protected function breadcrumbCategories(): Attribute
