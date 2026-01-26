@@ -368,7 +368,7 @@ class Product extends Model
     {
         static::retrieved(function (Product $product) {
             $product->load([
-                'attributeInt.attributeOptions' => fn(Builder $q) => $q->whereIn('eav_attribute_option.option_id', $product->attributeInt->filter(fn($attr) => in_array($attr->frontend_input, ['multiselect', 'select']))->map->raw_value->flatten()->unique()),
+                'attributeInt.attributeOptions' => fn (Builder $q) => $q->whereIn('eav_attribute_option.option_id', $product->attributeInt->filter(fn ($attr) => in_array($attr->frontend_input, ['multiselect', 'select']))->map->raw_value->flatten()->unique()),
             ]);
         });
 
@@ -380,9 +380,10 @@ class Product extends Model
     {
         static::retrieved(function (Product $product) {
             $product->loadMissing([
-                'attributeText.attributeOptions' => fn(Builder $q) => $q->whereIn('eav_attribute_option.option_id', $product->attributeText->filter(fn($attr) => in_array($attr->frontend_input, ['multiselect', 'select']))->map->raw_value->flatten()->unique()->filter(fn($val) => is_numeric($val))),
+                'attributeText.attributeOptions' => fn (Builder $q) => $q->whereIn('eav_attribute_option.option_id', $product->attributeText->filter(fn ($attr) => in_array($attr->frontend_input, ['multiselect', 'select']))->map->raw_value->flatten()->unique()->filter(fn ($val) => is_numeric($val))),
             ]);
         });
+
         return $this->parentAttributeText()
             ->withoutGlobalScope('attributeOptions');
     }
@@ -391,9 +392,10 @@ class Product extends Model
     {
         static::retrieved(function (Product $product) {
             $product->loadMissing([
-                'attributeVarchar.attributeOptions' => fn(Builder $q) => $q->whereIn('eav_attribute_option.option_id', $product->attributeVarchar->filter(fn($attr) => in_array($attr->frontend_input, ['multiselect', 'select']))->map->raw_value->flatten()->unique()->filter(fn($val) => is_numeric($val))),
+                'attributeVarchar.attributeOptions' => fn (Builder $q) => $q->whereIn('eav_attribute_option.option_id', $product->attributeVarchar->filter(fn ($attr) => in_array($attr->frontend_input, ['multiselect', 'select']))->map->raw_value->flatten()->unique()->filter(fn ($val) => is_numeric($val))),
             ]);
         });
+
         return $this->parentAttributeVarchar()
             ->withoutGlobalScope('attributeOptions');
     }
