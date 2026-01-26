@@ -46,7 +46,7 @@ class ProductController
         ];
 
         $frontAttributeIds = EavAttribute::getCachedCatalog()
-            ->where(fn($attribute) => $attribute->is_visible_on_front || in_array($attribute->attribute_code, $frontAttributes))
+            ->where(fn ($attribute) => $attribute->is_visible_on_front || in_array($attribute->attribute_code, $frontAttributes))
             ->pluck('attribute_id');
 
         /** @var \Rapidez\Core\Models\Product $product */
@@ -59,7 +59,7 @@ class ProductController
             ->withGlobalScope('customAttributes', fn (Builder $builder) => $builder->withCustomAttributes(
                 fn (Relation $q) => $q
                     ->whereIn($q->qualifyColumn('attribute_id'), $frontAttributeIds)
-                )
+            )
             )
             ->withEventyGlobalScopes('productpage.scopes')
             ->findOrFail($productId);
