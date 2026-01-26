@@ -16,7 +16,7 @@ class ProductController
     public function show(int $productId)
     {
         $productModel = config('rapidez.models.product');
-        $productModel::shouldBeStrict(!App::isProduction()); // Throw errors if relations are used but not eager loaded if not in production.
+        $productModel::shouldBeStrict(! App::isProduction()); // Throw errors if relations are used but not eager loaded if not in production.
 
         $frontAttributes = EavAttribute::getCachedCatalog()->where('is_visible_on_front', 1)->pluck('attribute_id');
         /** @var \Rapidez\Core\Models\Product $product */
@@ -28,11 +28,10 @@ class ProductController
             // It's important these are AFTER `whereInAttribute`
             // as it seems to reset the global scopes
             ->withoutGlobalscope('customAttributes')
-            ->withGlobalScope('customAttributes', fn (Builder $builder) =>
-                $builder->withCustomAttributes(
-                    fn (Relation $q) => $q
-                        ->whereIn($q->qualifyColumn('attribute_id'), $frontAttributes)
-                )
+            ->withGlobalScope('customAttributes', fn (Builder $builder) => $builder->withCustomAttributes(
+                fn (Relation $q) => $q
+                    ->whereIn($q->qualifyColumn('attribute_id'), $frontAttributes)
+            )
             )
             ->withEventyGlobalScopes('productpage.scopes')
             ->findOrFail($productId);
