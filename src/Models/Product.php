@@ -367,7 +367,7 @@ class Product extends Model
     public function attributeInt(): HasMany
     {
         static::retrieved(function (Product $product) {
-            $product->load([
+            $product->loadMissing([
                 'attributeInt.attributeOptions' => fn (Builder $q) => $q->whereIn('eav_attribute_option.option_id', $product->attributeInt->filter(fn ($attr) => in_array($attr->frontend_input, ['multiselect', 'select']))->map->raw_value->flatten()->unique()),
             ]);
         });
