@@ -302,6 +302,78 @@ class RapidezServiceProvider extends ServiceProvider
             );
         });
 
+        Str::macro(
+            'embedUrl',
+            function ($url) {
+                if (Str::contains($url, 'vimeo')) {
+                    $url = str_replace('/vimeo.com', '/player.vimeo.com/video', $url);
+
+                    // Handle private vimeo urls.
+                    $hash = null;
+                    if (! Str::contains($url, 'progressive_redirect') && Str::substrCount($url, '/') > 4) {
+                        $hash = Str::afterLast($url, '/');
+                        $url = Str::beforeLast($url, '/');
+
+                        if (Str::contains($hash, '?')) {
+                            $url .= '?' . Str::after($hash, '?');
+                            $hash = Str::before($hash, '?');
+                        }
+                    }
+
+                    $paramsToAdd = '?dnt=1&watch_full_video=false&vimeo_logo=false&speed=false&chromecast=false&byline=false&badge=false&ask_ai=false&airplay=false';
+                    if ($hash) {
+                        $paramsToAdd .= '&h=' . $hash;
+                    }
+
+                    if (Str::contains($url, '?')) {
+                        $url = str_replace('?', $paramsToAdd . '&', $url);
+                    } else {
+                        $url .= $paramsToAdd;
+                    }
+
+                    return $url;
+                }
+
+                if (Str::contains($url, 'youtu.be')) {
+                    $url = str_replace('youtu.be', 'www.youtube.com/embed', $url);
+
+                    // Check for start at point and replace it with correct parameter.
+                    if (Str::contains($url, '?t=')) {
+                        $url = str_replace('?t=', '?start=', $url);
+                    }
+                }
+
+                if (Str::contains($url, 'youtube.com/watch?v=')) {
+                    $url = str_replace('watch?v=', 'embed/', $url);
+
+                    if (Str::contains($url, '&t=')) {
+                        $url = str_replace('&t=', '?start=', $url);
+                    }
+                }
+
+                if (Str::contains($url, 'youtube.com/shorts/')) {
+                    $url = str_replace('shorts/', 'embed/', $url);
+                }
+
+                if (Str::contains($url, 'youtube.com')) {
+                    $url = str_replace('youtube.com', 'youtube-nocookie.com', $url);
+                }
+
+                // This avoids SSL issues when using the non-www version
+                if (Str::contains($url, '//youtube-nocookie.com')) {
+                    $url = str_replace('//youtube-nocookie.com', '//www.youtube-nocookie.com', $url);
+                }
+
+                $url .= '&fs=0';
+
+                if (Str::contains($url, '&') && ! Str::contains($url, '?')) {
+                    $url = Str::replaceFirst('&', '?', $url);
+                }
+
+                return $url;
+            }
+        );
+
         return $this;
     }
 

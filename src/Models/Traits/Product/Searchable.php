@@ -60,7 +60,7 @@ trait Searchable
             ->pluck($this->getCustomAttributeCode())
             ->toArray();
 
-        $data = Arr::only($this->toArray(), [
+        $attributeCodes = [
             'entity_id',
             'sku',
             'children',
@@ -72,7 +72,21 @@ trait Searchable
             'qty_increments',
             ...$indexableAttributeCodes,
             ...$this->superAttributeCodes,
-        ]);
+            ...config('rapidez.searchkit.result_attributes'),
+        ];
+
+        $wildcardAttributeCodes = collect($attributeCodes)
+            ->filter(fn (string $code) => str_contains($code, '*'))
+            ->map(fn ($code) => '/' . str_replace('*', '.+?', $code) . '/')
+            ->toArray();
+
+        $data = array_filter($this->toArray(), function (string $attributeName) use ($attributeCodes, $wildcardAttributeCodes) {
+            if (in_array($attributeName, $attributeCodes)) {
+                return true;
+            }
+
+            return Arr::some($wildcardAttributeCodes, fn (string $regex) => preg_match($regex, $attributeName));
+        }, ARRAY_FILTER_USE_KEY);
 
         // TODO: Maybe we can handle this keying directly
         // on the relationship as also proposed here:
@@ -108,7 +122,7 @@ trait Searchable
      */
     public function withCategories(array $data): array
     {
-        $categories = Cache::driver('array')->rememberForever('categories', function () {
+        $categories = Cache::driver('array')->rememberForever('categories-' . config('rapidez.store'), function () {
             return Category::all()->keyBy('entity_id');
         });
 
@@ -127,7 +141,7 @@ trait Searchable
             for ($i = 1; $i <= $level; $i++) {
                 $pathCategories = collect($path)
                     ->take($i)
-                    ->map(fn ($id) => $categories[$id]->name ?? null)
+                    ->map(fn ($id) => $categories[$id]->name->value ?? null)
                     ->whereNotNull()
                     ->join(' > ');
 

@@ -1,6 +1,6 @@
 @props(['url', 'position', 'active' => false])
 
-<li class="flex items-center" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+<li class="flex items-center shrink-0 whitespace-nowrap" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
     @if (!$active)
         <a {{ $attributes->merge(['class' => 'text-sm hover:underline', 'href' => url($url), 'itemprop' => 'item']) }}>
             <span itemprop="name">{{ $slot }}</span>

@@ -1,6 +1,61 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0-alpha.4...5.0.0-alpha.4)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0-alpha.6...5.0.0-alpha.6)
+## [5.0.0-alpha.6](https://github.com/rapidez/core/releases/tag/5.0.0-alpha.6) - 2026-01-23
+
+### Added
+
+- Product media video support (#1128)
+- Fullscreen search preparations (#976)
+- Shipping methods error messages (#1125)
+
+### Changed
+
+- Category model flat table migration (#1169, #1170)
+- Automatically make result_attributes indexable (#1163)
+
+### Fixed
+
+- Redirect with attributes on addtocart (#1162)
+- Prevent login trigger when a new tab is opened (#1066)
+
+## [5.0.0-alpha.5](https://github.com/rapidez/core/releases/tag/5.0.0-alpha.5) - 2026-01-21
+
+### Added
+
+- Customer group pricing in the autocomplete (#1106)
+- Customer group pricing in the sorting (#1111)
+
+### Changed
+
+- Use globalproperties for helpers (#1136)
+- Playwright reports in Cloudflare R2 (#1147)
+
+### Fixed
+
+- Quantity component + cart test fixes (#1122)
+- HTML entities fix + attribute value refactor (#1112)
+- Wait max for 1s for config to load before init (#1117)
+- Unit tests for product tier prices (#1120)
+- Fixed duplicate entry for search queries (#1121)
+- Make root refs available (#1116)
+- Fixed autocomplete focus (ec7f136)
+- Support text swatches on product listing tile (#1141)
+- Parallel customer requests and only expose customer group id (#1142)
+- Fix currency symbol location (#1144)
+- Screenshots update (#1123)
+- Mask the copyright year (#1149)
+- Playwright update all screenshots fix (#1152)
+- Screenshot update (#1153)
+- Playwright update all screenshots report fix (#1154)
+- Playwright report lines in CI (7378cc7)
+- Check for cart prices (#1130)
+- Categories cache per store (#1155)
+- Unprefix events (#1156)
+- Checkout items in sidebar fix (#1157)
+- Playwright run CI tests in parallel (#1158)
+- Playwright add to cart fix (#1164)
+
 ## [5.0.0-alpha.4](https://github.com/rapidez/core/releases/tag/5.0.0-alpha.4) - 2025-12-11
 
 ### Added
