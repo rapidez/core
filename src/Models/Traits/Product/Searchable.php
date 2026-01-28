@@ -200,7 +200,11 @@ trait Searchable
             })
         )
             ->pluck('type', 'code')
-            ->map(function ($type) {
+            ->map(function ($type, $code) {
+                if (in_array($code, ['created_at'])) {
+                    $type = 'datetime';
+                }
+
                 return array_filter([
                     'type' => match ($type) {
                         'int'      => 'integer',
