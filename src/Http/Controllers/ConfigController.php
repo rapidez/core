@@ -249,7 +249,7 @@ class ConfigController
                     "rapidez::frontend.sorting.{$attribute['code']}.{$direction}",
                     trans_fallback("rapidez::frontend.{$attribute['code']}", ucfirst($attribute['code'])) . ' ' . trans_fallback("rapidez::frontend.{$direction}", $direction),
                 ),
-                'field' => $attribute['code'] . ($attribute['input'] == 'text' ? '.keyword' : ''),
+                'field' => $attribute['code'] . ($attribute['code'] !== 'created_at' && $attribute['input'] == 'text' ? '.keyword' : ''),
                 'order' => $direction,
                 'value' => "{$index}_{$attribute['code']}_{$direction}",
                 'key'   => "_{$attribute['code']}_{$direction}",

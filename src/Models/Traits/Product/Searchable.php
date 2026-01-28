@@ -168,6 +168,10 @@ trait Searchable
                     return false;
                 }
 
+                if (in_array($attribute['code'], ['created_at'])) {
+                    return true;
+                }
+
                 if (in_array($attribute['type'], ['varchar', 'text', 'gallery', 'static'])) {
                     // Types best left up to ES to interpret the type.
                     return false;
