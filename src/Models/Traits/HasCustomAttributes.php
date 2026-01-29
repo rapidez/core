@@ -212,6 +212,11 @@ trait HasCustomAttributes
         })->shouldCache();
     }
 
+    public function hasCustomAttribute($key): bool
+    {
+        return isset($this->customAttributes[$key]);
+    }
+
     public function getCustomAttribute($key)
     {
         return $this->customAttributes[$key] ?? null;
@@ -219,6 +224,10 @@ trait HasCustomAttributes
 
     protected function throwMissingAttributeExceptionIfApplicable($key)
     {
-        return $this->getCustomAttribute($key);
+        if ($this->hasCustomAttribute($key)) {
+            return $this->getCustomAttribute($key);
+        }
+
+        return parent::throwMissingAttributeExceptionIfApplicable($key);
     }
 }

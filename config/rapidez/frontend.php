@@ -19,6 +19,13 @@ return [
         // 'material',
     ],
 
+    // The attribute codes of product attributes used in on the product overview page
+    // This is in addition to the products that already have "is_visible_on_front" enabled.
+    'product_overview_attribute' => [
+        // 'manufacturer',
+        // 'material',
+    ],
+
     // The checkout steps which are used to name the steps
     // in the url and in the progressbar on steps. Keep
     // them lowercase and do not include any spaces.
