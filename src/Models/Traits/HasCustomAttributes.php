@@ -40,6 +40,13 @@ trait HasCustomAttributes
             : ['datetime', 'decimal', 'int', 'text', 'varchar'];
     }
 
+    protected function getAttributeRelationKey(): string
+    {
+        return property_exists(self::class, 'attributeRelationKey')
+            ? $this->attributeRelationKey
+            : $this->primaryKey;
+    }
+
     protected function getEntityTypeId(): ?int
     {
         return property_exists(self::class, 'entityTypeId')
@@ -130,8 +137,8 @@ trait HasCustomAttributes
         return $this->hasManyWithAttributeTypeTable(
             config('rapidez.models.attribute_datetime', AttributeDatetime::class),
             'datetime',
-            $this->primaryKey,
-            $this->primaryKey,
+            $this->getAttributeRelationKey(),
+            $this->getAttributeRelationKey(),
         );
     }
 
@@ -140,8 +147,8 @@ trait HasCustomAttributes
         return $this->hasManyWithAttributeTypeTable(
             config('rapidez.models.attribute_decimal', AttributeDecimal::class),
             'decimal',
-            $this->primaryKey,
-            $this->primaryKey,
+            $this->getAttributeRelationKey(),
+            $this->getAttributeRelationKey(),
         );
     }
 
@@ -150,8 +157,8 @@ trait HasCustomAttributes
         return $this->hasManyWithAttributeTypeTable(
             config('rapidez.models.attribute_int', AttributeInt::class),
             'int',
-            $this->primaryKey,
-            $this->primaryKey,
+            $this->getAttributeRelationKey(),
+            $this->getAttributeRelationKey(),
         );
     }
 
@@ -160,8 +167,8 @@ trait HasCustomAttributes
         return $this->hasManyWithAttributeTypeTable(
             config('rapidez.models.attribute_text', AttributeText::class),
             'text',
-            $this->primaryKey,
-            $this->primaryKey,
+            $this->getAttributeRelationKey(),
+            $this->getAttributeRelationKey(),
         );
     }
 
@@ -170,8 +177,8 @@ trait HasCustomAttributes
         return $this->hasManyWithAttributeTypeTable(
             config('rapidez.models.attribute_varchar', AttributeVarchar::class),
             'varchar',
-            $this->primaryKey,
-            $this->primaryKey,
+            $this->getAttributeRelationKey(),
+            $this->getAttributeRelationKey(),
         );
     }
 
