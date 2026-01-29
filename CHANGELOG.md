@@ -1,6 +1,13 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0-alpha.7...5.0.0-alpha.7)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0-alpha.8...5.0.0-alpha.8)
+## [5.0.0-alpha.8](https://github.com/rapidez/core/releases/tag/5.0.0-alpha.8) - 2026-01-29
+
+### Fixed
+
+- Expose the review summary (#1179)
+- Remove .renditions from media url (#1177)
+
 ## [5.0.0-alpha.7](https://github.com/rapidez/core/releases/tag/5.0.0-alpha.7) - 2026-01-29
 
 ### Changed
