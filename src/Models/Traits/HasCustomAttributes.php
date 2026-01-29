@@ -221,4 +221,9 @@ trait HasCustomAttributes
     {
         return $this->getCustomAttribute($key);
     }
+
+    protected function getAttributeFromArray($key)
+    {
+        return parent::getAttributeFromArray($key) ?? $this->getCustomAttribute($key);
+    }
 }
