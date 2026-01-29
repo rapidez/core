@@ -22,8 +22,12 @@
                     @includeWhen($product->type_id == 'grouped', 'rapidez::product.partials.grouped')
                     @includeWhen($product->type_id !== 'grouped', 'rapidez::product.partials.addtocart')
                     @if (App::providerIsLoaded('Rapidez\Reviews\ReviewsServiceProvider'))
-                        @if ($product->reviews_score)
-                            <x-dynamic-component component="rapidez-reviews::stars" :score="$product->reviews_score" :count="$product->reviews_count" />
+                        @if ($product->reviewSummary?->rating_summary)
+                            <x-dynamic-component
+                                component="rapidez-reviews::stars"
+                                :score="$product->reviewSummary->rating_summary"
+                                :count="$product->reviewSummary->reviews_count"
+                            />
                         @endif
                     @endif
                     <div>
