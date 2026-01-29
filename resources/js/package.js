@@ -129,8 +129,7 @@ function init() {
                     }
 
                     let url = new URL(imagePath)
-                    url = url.pathname.replace('/media', '')
-                        .replace('/.renditions/', '/')
+                    url = url.pathname.replace('/media', '').replace('/.renditions/', '/')
 
                     return window.url(`/storage/${store}/resizes/${size}/magento${url}`)
                 },
