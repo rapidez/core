@@ -1,5 +1,7 @@
 window.debug = import.meta.env.VITE_DEBUG == 'true'
-window.Notify = (message, type = 'info', params = [], link = null) => window.app.$emit('notification-message', message, type, params, link)
+window.Notify = (message, type = 'info', params = [], link = null) =>
+    window.setTimeout(() => window.app.$emit('notification-message', message, type, params, link), window.app ? 0 : 500)
+
 if (!window.process) {
     // Workaround for process missing, if data is actually needed from here you should apply the following polyfill.
     // https://stackoverflow.com/questions/72221740/how-do-i-polyfill-the-process-node-module-in-the-vite-dev-server
@@ -43,11 +45,19 @@ if (import.meta.env.VITE_DEBUG === 'true') {
 }
 
 let booting = false
-function init() {
+async function init() {
     if (booting || document.body.contains(window.app.$el)) {
         return
     }
     booting = true
+
+    for (let i = 0; i < 20; i++) {
+        // Wait until config is available, for a max of 1s
+        if (window.config.store) {
+            break
+        }
+        await new Promise((resolve) => setTimeout(resolve, 50))
+    }
 
     // https://vuejs.org/api/application.html#app-config-performance
     Vue.config.performance = import.meta.env.VITE_PERFORMANCE == 'true'
