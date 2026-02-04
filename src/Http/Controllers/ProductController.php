@@ -40,6 +40,7 @@ class ProductController
             'min_sale_qty',
             'max_sale_qty',
             'qty_increments',
+            'review_summary',
 
             ...$product->superAttributeCodes,
         ];

@@ -1,6 +1,25 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0-alpha.6...5.0.0-alpha.6)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0-alpha.9...5.0.0-alpha.9)
+## [5.0.0-alpha.9](https://github.com/rapidez/core/releases/tag/5.0.0-alpha.9) - 2026-02-03
+
+### Fixed
+
+- Playwright press tab after filling the email (#1181)
+
+## [5.0.0-alpha.8](https://github.com/rapidez/core/releases/tag/5.0.0-alpha.8) - 2026-01-29
+
+### Fixed
+
+- Expose the review summary (#1179)
+- Remove .renditions from media url (#1177)
+
+## [5.0.0-alpha.7](https://github.com/rapidez/core/releases/tag/5.0.0-alpha.7) - 2026-01-29
+
+### Changed
+
+- Review package compatibility (#1173)
+
 ## [5.0.0-alpha.6](https://github.com/rapidez/core/releases/tag/5.0.0-alpha.6) - 2026-01-23
 
 ### Added
