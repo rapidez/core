@@ -221,11 +221,17 @@ trait HasCustomAttributes
 
     public function getCustomAttribute($key)
     {
+        if (!$this->exists) {
+            return null;
+        }
+
         return $this->customAttributes[$key] ?? null;
     }
 
     protected function throwMissingAttributeExceptionIfApplicable($key)
     {
-        return $this->getCustomAttribute($key);
+        // TODO: Check where we *don't* want this ->value chained on top
+        // Then figure out a proper fix from there
+        return $this->getCustomAttribute($key)?->value ?? null;
     }
 }
