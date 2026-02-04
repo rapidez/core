@@ -221,7 +221,7 @@ trait HasCustomAttributes
 
     public function getCustomAttribute($key)
     {
-        if (!$this->exists) {
+        if (! $this->exists) {
             return null;
         }
 
