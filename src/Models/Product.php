@@ -365,6 +365,7 @@ class Product extends Model
     {
         return Attribute::get(function (): array {
             $this->loadMissing('categoryProducts');
+
             return $this->categoryProducts->pluck('category_id')->all();
         });
     }
