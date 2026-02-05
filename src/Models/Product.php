@@ -65,6 +65,7 @@ class Product extends Model
         'price',
         'special_price',
         'url',
+        'category_ids',
     ];
 
     protected static function booted(): void
@@ -357,6 +358,14 @@ class Product extends Model
             }
 
             return $specialPrice < $this->price ? $specialPrice : null;
+        });
+    }
+
+    protected function categoryIds(): Attribute
+    {
+        return Attribute::get(function (): array {
+            $this->loadMissing('categoryProducts');
+            return $this->categoryProducts->pluck('category_id')->all();
         });
     }
 
