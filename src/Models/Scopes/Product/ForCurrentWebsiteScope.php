@@ -10,7 +10,7 @@ class ForCurrentWebsiteScope implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
-        $builder->leftJoin('catalog_product_website', 'catalog_product_website.product_id', '=', $model->getQualifiedKeyName());
+        $builder->leftJoin('catalog_product_website', 'catalog_product_website.product_id', '=', 'entity_id');
         $builder->where('website_id', config('rapidez.website'));
     }
 }
