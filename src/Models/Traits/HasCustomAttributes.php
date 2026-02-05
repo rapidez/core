@@ -223,8 +223,21 @@ trait HasCustomAttributes
 
     protected function throwMissingAttributeExceptionIfApplicable($key)
     {
-        // TODO: Check where we *don't* want this ->value chained on top
-        // Then figure out a proper fix from there
+        return $this->value($key);
+    }
+
+    public function value(string $key): mixed
+    {
         return $this->getCustomAttribute($key)?->value ?? null;
+    }
+
+    public function raw(string $key): mixed
+    {
+        return $this->getCustomAttribute($key)?->rawValue ?? null;
+    }
+
+    public function label(string $key): ?string
+    {
+        return $this->getCustomAttribute($key)?->label ?? null;
     }
 }

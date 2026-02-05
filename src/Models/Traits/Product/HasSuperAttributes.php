@@ -38,7 +38,7 @@ trait HasSuperAttributes
             ->mapWithKeys(fn ($attribute) => [
                 $attribute->attribute_code => $this->children
                     ->mapWithKeys(fn ($child) => [
-                        $child->entity_id => $child->{$attribute->attribute_code},
+                        $child->entity_id => $child->getCustomAttribute($attribute->attribute_code),
                     ])
                     ->sortBy('sort_order')
                     ->groupBy('rawValue')
