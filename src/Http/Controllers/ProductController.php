@@ -37,6 +37,7 @@ class ProductController
             'min_sale_qty',
             'max_sale_qty',
             'qty_increments',
+            'review_summary',
 
             'meta_title',
             'meta_description',
