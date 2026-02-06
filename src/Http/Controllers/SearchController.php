@@ -26,6 +26,8 @@ class SearchController
 
     public function store(Request $request)
     {
+        $request->validate(['q' => 'required|string|max:255']);
+
         if (! $request->q) {
             return response()->json(['success' => true]);
         }
