@@ -28,7 +28,7 @@ import { computed, createApp, watch } from 'vue'
 
 if (import.meta.env.VITE_DEBUG === 'true') {
     window.$on(
-        'rapidez:notification-message',
+        'notification-message',
         function (message, type, params, link) {
             switch (type) {
                 case 'error':
@@ -124,7 +124,7 @@ async function init() {
                     }
 
                     let url = new URL(imagePath)
-                    url = url.pathname.replace('/media', '')
+                    url = url.pathname.replace('/media', '').replace('/.renditions/', '/')
 
                     return window.url(`/storage/${store}/resizes/${size}/magento${url}`)
                 },

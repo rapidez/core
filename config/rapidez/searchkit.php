@@ -33,8 +33,7 @@ return [
         'min_sale_qty',
         'children',
         'super_*',
-        'reviews_count',
-        'reviews_score',
+        'review_summary',
         'parents',
     ],
 
