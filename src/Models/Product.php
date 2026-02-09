@@ -150,12 +150,12 @@ class Product extends Model
             'parent_id', 'child_id'
         )
         // Remove most relations from children
-        ->withOnly([
-            'stock',
-            'gallery',
-            'prices',
-        ])
-        ->withEventyGlobalScopes('product.child.scopes');
+            ->withOnly([
+                'stock',
+                'gallery',
+                'prices',
+            ])
+            ->withEventyGlobalScopes('product.child.scopes');
     }
 
     protected function grouped(): Attribute

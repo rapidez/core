@@ -377,21 +377,22 @@ class RapidezServiceProvider extends ServiceProvider
             }
         );
 
-        EloquentCollection::macro('removeAppends', function(array|string $appendsToRemove) {
+        EloquentCollection::macro('removeAppends', function (array|string $appendsToRemove) {
             /**
              * @var EloquentCollection $this
+             *
              * @see /vendor/laravel/framework/src/Illuminate/Database/Eloquent/Collection.php@setAppends
              */
             return $this->each->removeAppends(...func_get_args());
         });
 
-        Model::macro('removeAppends', function(array|string $appendsToRemove) {
+        Model::macro('removeAppends', function (array|string $appendsToRemove) {
             /** @var Model $this */
             $appendsToRemove = is_array($appendsToRemove) ? $appendsToRemove : func_get_args();
 
             $this->setAppends(
                 Arr::reject(
-                    $this->getAppends(), fn($curentAppends) => in_array($curentAppends, $appendsToRemove)
+                    $this->getAppends(), fn ($curentAppends) => in_array($curentAppends, $appendsToRemove)
                 )
             );
 
