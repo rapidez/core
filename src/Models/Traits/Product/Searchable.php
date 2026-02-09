@@ -70,6 +70,7 @@ trait Searchable
             'in_stock',
             'min_sale_qty',
             'qty_increments',
+            'category_ids',
             ...$indexableAttributeCodes,
             ...$this->superAttributeCodes,
             ...config('rapidez.searchkit.result_attributes'),
