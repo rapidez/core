@@ -17,4 +17,9 @@ class CategoryProduct extends Model
     {
         return $this->belongsTo(config('rapidez.models.category'), 'category_id', 'entity_id');
     }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(config('rapidez.models.product'), 'product_id', 'entity_id');
+    }
 }

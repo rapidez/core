@@ -13,6 +13,11 @@ class ReviewSummary extends Model
 
     public $timestamps = false;
 
+    protected $visible = [
+        'reviews_count',
+        'rating_summary',
+    ];
+
     protected static function booting(): void
     {
         static::addGlobalScope('only-product-reviews', fn (Builder $builder) => $builder

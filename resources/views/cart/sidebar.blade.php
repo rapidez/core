@@ -1,8 +1,8 @@
 <x-rapidez::summary>
     <div>
         <dt>@lang('Subtotal')</dt>
-        <dd v-if="showTax">@{{ window.price(cart.value.prices.subtotal_including_tax.value) }}</dd>
-        <dd v-else>@{{ window.price(cart.value.prices.subtotal_excluding_tax.value) }}</dd>
+        <dd v-if="showTax">@{{ price(cart.value.prices.subtotal_including_tax.value) }}</dd>
+        <dd v-else>@{{ price(cart.value.prices.subtotal_excluding_tax.value) }}</dd>
     </div>
 
     <template v-if="cart.value.shipping_addresses?.length">
@@ -12,8 +12,8 @@
                     @lang('Shipping')
                     <small class="text-muted">@{{ address.selected_shipping_method.carrier_title }} - @{{ address.selected_shipping_method.method_title }}</small>
                 </dt>
-                <dd v-if="showTax">@{{ window.price(address.selected_shipping_method.price_incl_tax.value) }}</dd>
-                <dd v-else>@{{ window.price(address.selected_shipping_method.price_excl_tax.value) }}</dd>
+                <dd v-if="showTax">@{{ price(address.selected_shipping_method.price_incl_tax.value) }}</dd>
+                <dd v-else>@{{ price(address.selected_shipping_method.price_excl_tax.value) }}</dd>
             </template>
         </div>
     </template>
@@ -21,28 +21,28 @@
     <template v-if="cart.value.prices?.applied_taxes?.length">
         <div v-for="tax in cart.value.prices.applied_taxes">
             <dt>@{{ tax.label }}</dt>
-            <dd>@{{ window.price(tax.amount.value) }}</dd>
+            <dd>@{{ price(tax.amount.value) }}</dd>
         </div>
     </template>
 
     <template v-if="cart.value.fixedProductTaxes?.value">
         <div v-for="value, label in cart.value.fixed_product_taxes">
             <dt>@{{ label }}</dt>
-            <dd>@{{ window.price(value) }}</dd>
+            <dd>@{{ price(value) }}</dd>
         </div>
     </template>
 
     <template v-if="cart.value.prices?.discounts?.length">
         <div v-for="discount in cart.value.fixed_product_taxes">
             <dt>@{{ discount.label }}</dt>
-            <dd>-@{{ window.price(discount.amount.value) }}</dd>
+            <dd>-@{{ price(discount.amount.value) }}</dd>
         </div>
     </template>
 
     <div class="border-t pt-3 mt-3 font-bold">
         <dt>@lang('Total')</dt>
-        <dd v-if="showTax">@{{ window.price(cart.value.prices.grand_total.value) }}</dd>
-        <dd v-else>@{{ window.price(cart.value.prices.grand_total.value - cart.value.taxTotal) }}</dd>
+        <dd v-if="showTax">@{{ price(cart.value.prices.grand_total.value) }}</dd>
+        <dd v-else>@{{ price(cart.value.prices.grand_total.value - cart.value.taxTotal) }}</dd>
     </div>
 </x-rapidez::summary>
 

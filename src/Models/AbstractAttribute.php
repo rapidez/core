@@ -4,6 +4,7 @@ namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Arr;
 use Rapidez\Core\Models\Scopes\ForCurrentStoreWithoutLimitScope;
 
@@ -16,7 +17,13 @@ class AbstractAttribute extends Model
         static::addGlobalScope('store', new ForCurrentStoreWithoutLimitScope(['attribute_id', 'entity_id']));
 
         static::addGlobalScope('attribute', function (Builder $builder) {
-            $builder->leftJoin('eav_attribute', $builder->qualifyColumn('attribute_id'), '=', 'eav_attribute.attribute_id');
+            $builder->leftJoin('eav_attribute', function (JoinClause $join) use ($builder) {
+                $join->on($builder->qualifyColumn('attribute_id'), '=', 'eav_attribute.attribute_id')
+                    ->when(
+                        $builder->getModel()->entity_type_id,
+                        fn ($query) => $query->where('entity_type_id', $builder->getModel()->entity_type_id)
+                    );
+            });
         });
 
         if (isset(static::$hasAttributeOptions)) { // @phpstan-ignore-line

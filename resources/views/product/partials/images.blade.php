@@ -1,5 +1,5 @@
 <div class="relative flex flex-col flex-1">
-    <images v-slot="{ images, active, zoomed, toggleZoom, change }">
+    <images v-slot="{ images, media, active, zoomed, toggleZoom, change }">
         <div class="flex-1" ref="root">
             <div class="sticky top-5 bg-white">
                 @include('rapidez::product.partials.gallery.slider')

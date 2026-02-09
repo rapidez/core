@@ -14,7 +14,7 @@
                 <x-heroicon-o-bars-3 class="inline w-7" />
             </label>
         </div>
-        <div class="flex items-center h-12 max-md:order-last max-md:w-full md:max-w-lg md:flex-1 max-lg:mt-2">
+        <div class="max-md:order-last h-12 w-full md:max-w-lg max-lg:mt-2 md:flex-1">
             @include('rapidez::layouts.partials.header.autocomplete')
         </div>
         <div class="ml-auto flex items-center justify-end pl-3">
@@ -28,4 +28,5 @@
             </div>
         </nav>
     </div>
+
 </header>
