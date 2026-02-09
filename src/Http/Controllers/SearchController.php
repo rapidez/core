@@ -38,7 +38,7 @@ class SearchController
     public function track(Request $request): SearchQuery
     {
         $request->validate(['q' => 'required|string|max:255']);
-        
+
         // Prevent automatic indexing each time it is updated.
         config('rapidez.models.search_query')::disableSearchSyncing();
         $searchQuery = config('rapidez.models.search_query')::withoutGlobalScope(IsActiveScope::class)
