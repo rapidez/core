@@ -10,5 +10,6 @@ export class AccountPage {
         await this.page.getByTestId('account-menu').click()
         await this.page.getByTestId('logout').click()
         await this.page.waitForLoadState('networkidle')
+        await expect(this.page.getByTestId('logout')).toBeHidden()
     }
 }

@@ -1,4 +1,4 @@
-import { useLocalStorage, useSessionStorage, StorageSerializers } from '@vueuse/core'
+import { useLocalStorage, StorageSerializers } from '@vueuse/core'
 import { useCookies } from '@vueuse/integrations/useCookies'
 import { clear as clearCart, loggedIn as cartLoginHandler, cart } from './useCart'
 import { clear as clearOrder } from './useOrder'
@@ -38,7 +38,7 @@ export const token = computed({
     },
 })
 
-const userStorage = useSessionStorage('user', {}, { serializer: StorageSerializers.object })
+const userStorage = useLocalStorage('user', {}, { serializer: StorageSerializers.object })
 let currentRefresh = null
 
 export const refresh = async function () {
@@ -63,14 +63,18 @@ export const refresh = async function () {
         try {
             const oldEmail = userStorage.value?.email
 
-            userStorage.value = {
-                ...(await magentoGraphQL(`{ customer { ${config.queries.customer} } }`))?.data?.customer,
-                // TODO: Is there anything unsafe to share in here?
-                // Plus, maybe we could remove the GraphQL call?
+            const [userGraphQL, userAPI] = await Promise.all([
+                magentoGraphQL(`{ customer { ${config.queries.customer} } }`),
                 // We're doing this for the customer group id
-                // GraphQL isn't explosing that value.
-                ...(await rapidezAPI('get', 'customer')),
+                // GraphQL isn't exposing that value.
+                rapidezAPI('get', 'customer'),
+            ])
+
+            userStorage.value = {
+                ...userGraphQL?.data?.customer,
+                ...userAPI,
             }
+
             if (oldEmail !== userStorage.value?.email) {
                 await loggedIn()
             }
@@ -205,13 +209,16 @@ export const user = computed({
 
 // If token gets changed or emptied we should update the user.
 watch(token, refresh)
+// Update the user on page load so the user will get logged out immediately
+// if their session has expired.
+window.setTimeout(() => refresh(), 200)
 if (userStorage.value?.email && !token.value) {
     token.value = ''
     userStorage.value = {}
 }
 
 on(
-    'rapidez:logout',
+    'logout',
     async function (data) {
         await logout()
         useLocalStorage('email', '').value = ''
@@ -225,7 +232,7 @@ on(
 )
 
 on(
-    'rapidez:cart-updated',
+    'cart-updated',
     () => {
         // Can be removed once https://github.com/magento/magento2/issues/39828 is fixed
         setTimeout(() => {

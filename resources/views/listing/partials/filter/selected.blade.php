@@ -40,7 +40,7 @@
                         <template v-if="false"></template>
                         @include('rapidez::listing.partials.filter.selected.boolean')
                         @include('rapidez::listing.partials.filter.selected.swatch')
-                        <span v-html="window.stripHtmlTags(refinement.label)"></span>
+                        <span v-html="stripHtmlTags(refinement.label)"></span>
                     </a>
                 </li>
             </template>
