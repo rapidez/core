@@ -6,8 +6,10 @@ use BladeUI\Icons\Factory;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
@@ -41,6 +43,7 @@ use Rapidez\Core\Listeners\Healthcheck\ModelsHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\OpensearchHealthcheck;
 use Rapidez\Core\Listeners\ReportProductView;
 use Rapidez\Core\Listeners\UpdateLatestIndexDate;
+use Rapidez\Core\Models\Model;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -373,6 +376,27 @@ class RapidezServiceProvider extends ServiceProvider
                 return $url;
             }
         );
+
+        EloquentCollection::macro('removeAppends', function(array|string $appendsToRemove) {
+            /**
+             * @var EloquentCollection $this
+             * @see /vendor/laravel/framework/src/Illuminate/Database/Eloquent/Collection.php@setAppends
+             */
+            return $this->each->removeAppends(...func_get_args());
+        });
+
+        Model::macro('removeAppends', function(array|string $appendsToRemove) {
+            /** @var Model $this */
+            $appendsToRemove = is_array($appendsToRemove) ? $appendsToRemove : func_get_args();
+
+            $this->setAppends(
+                Arr::reject(
+                    $this->getAppends(), fn($curentAppends) => in_array($curentAppends, $appendsToRemove)
+                )
+            );
+
+            return $this;
+        });
 
         return $this;
     }

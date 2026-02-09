@@ -14,6 +14,15 @@ class SuperAttribute extends Model
         'additional_data' => 'json',
     ];
 
+    protected $visible = [
+        'attribute_id',
+        'attribute_code',
+        'default_value',
+        'frontend_input',
+        'frontend_label',
+        'additional_data',
+    ];
+
     public static function boot()
     {
         parent::boot();
