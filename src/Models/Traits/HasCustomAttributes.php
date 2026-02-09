@@ -40,6 +40,13 @@ trait HasCustomAttributes
             : ['datetime', 'decimal', 'int', 'text', 'varchar'];
     }
 
+    protected function getEntityTypeId(): ?int
+    {
+        return property_exists(self::class, 'entityTypeId')
+            ? $this->entityTypeId
+            : null;
+    }
+
     protected function getCustomAttributeRelations(): array
     {
         return Arr::map($this->getCustomAttributeTypes(), fn ($type) => 'attribute' . ucfirst($type));
@@ -100,12 +107,22 @@ trait HasCustomAttributes
 
     public function scopeWhereAttribute(Builder $builder, string $attributeCode, $operator = null, $value = null)
     {
-        return $this->whereMethodAttribute('where', $attributeCode, $operator, $value);
+        return $builder->whereMethodAttribute('where', $attributeCode, $operator, $value);
     }
 
     public function scopeWhereInAttribute(Builder $builder, string $attributeCode, $values = null, $boolean = 'and', $not = false)
     {
-        return $this->whereMethodAttribute('whereIn', $attributeCode, $values, $boolean, $not);
+        return $builder->whereMethodAttribute('whereIn', $attributeCode, $values, $boolean, $not);
+    }
+
+    public function scopeWhereAttributeNot(Builder $builder, string $attributeCode, $operator = null, $value = null, $boolean = 'and')
+    {
+        return $builder->whereMethodAttribute('whereNot', $attributeCode, $operator, $value, $boolean);
+    }
+
+    public function scopeWhereAttributeNotNull(Builder $builder, string $attributeCode, $boolean = 'and')
+    {
+        return $builder->whereMethodAttribute('whereNotNull', $attributeCode, $boolean);
     }
 
     public function attributeDatetime(): HasMany
@@ -170,6 +187,7 @@ trait HasCustomAttributes
         $relation = $this->hasMany($class, $foreignKey, $localKey);
         $relation->getModel()->setTable($table);
         $relation->getQuery()->from($table);
+        $relation->getModel()->entity_type_id = $this->getEntityTypeId();
 
         return $this->modifyRelation($relation);
     }

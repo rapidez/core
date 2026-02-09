@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Relations\BelongsToManyCallback;
 use Rapidez\Core\Models\Scopes\Product\EnabledScope;
@@ -40,6 +41,7 @@ class Product extends Model
 
     protected $table = 'catalog_product_entity';
     protected $primaryKey = 'entity_id';
+    protected $entityTypeId = EavAttribute::ENTITY_TYPE_CATALOG_PRODUCT;
 
     protected $with = [
         'stock',
@@ -49,6 +51,7 @@ class Product extends Model
         'options',
         'gallery',
         'prices',
+        'reviewSummary',
     ];
 
     // TODO: Double check; do we really want all accessors
@@ -57,10 +60,12 @@ class Product extends Model
     protected $appends = [
         'grouped',
         'images',
+        'media',
         'in_stock',
         'price',
         'special_price',
         'url',
+        'category_ids',
     ];
 
     protected static function booted(): void
@@ -99,6 +104,19 @@ class Product extends Model
             'catalog_product_entity_media_gallery_value_to_entity',
             'entity_id',
             'value_id',
+        );
+    }
+
+    protected function media(): Attribute
+    {
+        return Attribute::get(
+            fn (): array => $this->gallery->sortBy('productImageValue.position')->map(function (ProductImage $value) {
+                return [
+                    'media_type' => $value->media_type,
+                    'image'      => $value->value,
+                    'video_url'  => isset($value->video) ? Str::embedUrl($value->video->url) : null, // @phpstan-ignore-line
+                ];
+            })->values()->toArray()
         );
     }
 
@@ -340,6 +358,15 @@ class Product extends Model
             }
 
             return $specialPrice < $this->price ? $specialPrice : null;
+        });
+    }
+
+    protected function categoryIds(): Attribute
+    {
+        return Attribute::get(function (): array {
+            $this->loadMissing('categoryProducts');
+
+            return $this->categoryProducts->pluck('category_id')->all();
         });
     }
 
