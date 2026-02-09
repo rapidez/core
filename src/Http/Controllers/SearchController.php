@@ -10,7 +10,7 @@ class SearchController
     public function __invoke(Request $request)
     {
         $request->validate(['q' => 'required|string|max:255']);
-        
+
         $searchQuery = config('rapidez.models.search_query')::firstOrNew([
             'query_text' => Str::lower($request->q),
             'store_id'   => config('rapidez.store'),
