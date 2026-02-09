@@ -20,7 +20,7 @@
         "blade-ui-kit/blade-heroicons": "^2.6",
         "blade-ui-kit/blade-icons": "^1.8",
         "http-interop/http-factory-guzzle": "^1.2",
-        "illuminate/database": "^12.0",
+        "illuminate/database": "^12.25",
         "illuminate/events": "^12.0",
         "illuminate/queue": "^12.0",
         "illuminate/support": "^12.22, <12.26.0 || >=12.27.0",
