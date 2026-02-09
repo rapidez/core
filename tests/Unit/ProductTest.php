@@ -56,8 +56,8 @@ class ProductTest extends TestCase
     {
         $product = Product::find(1578);
 
-        $this->assertEquals(8, $product->getLinkedProducts('up_sell')->count(), 'Product 1578 does not have 8 upsells.');
-        $this->assertEquals(4, $product->getLinkedProducts('cross_sell')->count(), 'Product 1578 does not have 4 crosssells.');
+        $this->assertEquals(8, $product->linkedProducts('up_sell')->count(), 'Product 1578 does not have 8 upsells.');
+        $this->assertEquals(4, $product->linkedProducts('cross_sell')->count(), 'Product 1578 does not have 4 crosssells.');
     }
 
     #[Test]

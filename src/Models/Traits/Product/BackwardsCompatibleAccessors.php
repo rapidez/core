@@ -37,4 +37,24 @@ trait BackwardsCompatibleAccessors
     {
         return Attribute::get(fn () => $this->stock->is_in_stock);
     }
+
+    /**
+     * @deprecated please use $product->upsells()->pluck('linked_product_id')
+     */
+    public function upsellIds(): Attribute
+    {
+        return Attribute::get(fn () =>
+            $this->upsells()->pluck('linked_product_id')
+        );
+    }
+
+    /**
+     * @deprecated please use $product->relationProducts()->pluck('linked_product_id')
+     */
+    public function relationIds(): Attribute
+    {
+        return Attribute::get(fn () =>
+            $this->relationProducts()->pluck('linked_product_id')
+        );
+    }
 }
