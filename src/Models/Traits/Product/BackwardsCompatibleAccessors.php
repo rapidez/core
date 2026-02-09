@@ -43,8 +43,7 @@ trait BackwardsCompatibleAccessors
      */
     public function upsellIds(): Attribute
     {
-        return Attribute::get(fn () =>
-            $this->upsells()->pluck('linked_product_id')
+        return Attribute::get(fn () => $this->upsells()->pluck('linked_product_id')
         );
     }
 
@@ -53,8 +52,7 @@ trait BackwardsCompatibleAccessors
      */
     public function relationIds(): Attribute
     {
-        return Attribute::get(fn () =>
-            $this->relationProducts()->pluck('linked_product_id')
+        return Attribute::get(fn () => $this->relationProducts()->pluck('linked_product_id')
         );
     }
 }
