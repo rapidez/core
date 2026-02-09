@@ -66,17 +66,17 @@
         </div>
     @endif
 
-    @if ($product->relation_ids || $product->upsell_ids)
+    @if ($product->relationProducts->count() || $product->upsells->count())
         <div class="container flex flex-col gap-5 mt-14">
             <x-rapidez::productlist
                 title="Related products"
                 field="entity_id"
-                :value="$product->relation_ids"
+                :value="$product->relationProducts->pluck('linked_product_id')"
             />
             <x-rapidez::productlist
                 title="We found other products you might like!"
                 field="entity_id"
-                :value="$product->upsell_ids"
+                :value="$product->upsells->pluck('linked_product_id')"
             />
         </div>
     @endif
