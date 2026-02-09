@@ -54,10 +54,10 @@ class ProductTest extends TestCase
     #[Test]
     public function product_can_have_upsells_and_crosssells()
     {
-        $product = Product::find(1578);
+        $product = Product::with('crosssells')->find(1578);
 
-        $this->assertEquals(8, $product->linkedProducts('up_sell')->count(), 'Product 1578 does not have 8 upsells.');
-        $this->assertEquals(4, $product->linkedProducts('cross_sell')->count(), 'Product 1578 does not have 4 crosssells.');
+        $this->assertEquals(8, $product->upsells()->count(), 'Product 1578 does not have 8 upsells.');
+        $this->assertEquals(4, $product->crosssells->count(), 'Product 1578 does not have 4 crosssells.');
     }
 
     #[Test]
