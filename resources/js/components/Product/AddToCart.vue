@@ -85,7 +85,7 @@ export default {
     methods: {
         async add() {
             if (this.shouldRedirectToProduct) {
-                Turbo.visit(window.url(this.product.url))
+                Turbo.visit(window.url(this.productUrl))
                 return
             }
 
