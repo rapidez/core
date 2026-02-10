@@ -167,12 +167,31 @@ class ConfigController
 
     }
 
+    public function isAttributeNumeric($attribute): bool
+    {
+        // Manually-set range attributes should always be assumed numeric.
+        if (in_array($attribute['code'], config('rapidez.searchkit.range_attributes'))) {
+            return true;
+        }
+
+        if ($attribute['visual_swatch'] || $attribute['text_swatch'] || in_array($attribute['input'], ['boolean', 'price'])) {
+            return true;
+        }
+
+        // Super attributes are usually numeric, not if it's a select field.
+        if ($attribute['super'] && $attribute['input'] !== 'select') {
+            return true;
+        }
+
+        return false;
+    }
+
     public function getSearchkitFacetAttributes(): array
     {
         // Get the filterable attributes and category levels
         $filterableAttributes = collect($this->getFilterableAttributes())
             ->map(function ($attribute) {
-                $isNumeric = $attribute['super'] || $attribute['visual_swatch'] || in_array($attribute['input'], ['boolean', 'price']);
+                $isNumeric = $this->isAttributeNumeric($attribute);
 
                 return [
                     'attribute' => $attribute['code'],
