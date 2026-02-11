@@ -221,9 +221,18 @@ trait HasCustomAttributes
         return $this->customAttributes[$key] ?? null;
     }
 
+    public function hasCustomAttribute($key): bool
+    {
+        return $this->exists && isset($this->customAttributes[$key]);
+    }
+    
     protected function throwMissingAttributeExceptionIfApplicable($key)
     {
-        return $this->value($key);
+        if ($this->hasCustomAttribute($key)) {
+            return $this->value($key);
+        }
+    
+        return parent::throwMissingAttributeExceptionIfApplicable($key);
     }
 
     public function value(string $key): mixed
