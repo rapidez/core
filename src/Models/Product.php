@@ -18,6 +18,7 @@ use Rapidez\Core\Models\Scopes\Product\SupportedScope;
 use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
 use Rapidez\Core\Models\Traits\HasCustomAttributes;
 use Rapidez\Core\Models\Traits\Product\BackwardsCompatibleAccessors;
+use Rapidez\Core\Models\Traits\Product\HasProductLinks;
 use Rapidez\Core\Models\Traits\Product\HasSuperAttributes;
 use Rapidez\Core\Models\Traits\Product\Searchable;
 use Rapidez\Core\Models\Traits\UsesCallbackRelations;
@@ -27,6 +28,7 @@ class Product extends Model
     use BackwardsCompatibleAccessors;
     use HasAlternatesThroughRewrites;
     use HasCustomAttributes;
+    use HasProductLinks;
     use HasSuperAttributes;
     use Searchable;
     use UsesCallbackRelations;
@@ -150,40 +152,6 @@ class Product extends Model
     protected function grouped(): Attribute
     {
         return Attribute::get(fn () => $this->children);
-    }
-
-    public function productLinks(): HasMany
-    {
-        return $this->hasMany(
-            config('rapidez.models.product_link', ProductLink::class),
-            'product_id', 'entity_id',
-        );
-    }
-
-    public function productLinkParents(): HasMany
-    {
-        return $this->hasMany(
-            config('rapidez.models.product_link', ProductLink::class),
-            'linked_product_id', 'entity_id',
-        );
-    }
-
-    public function getLinkedProducts(string $type): Collection
-    {
-        return $this->productLinks()
-            ->with('linkedProduct')
-            ->where('code', $type)
-            ->get()
-            ->pluck('linkedProduct');
-    }
-
-    public function getLinkedParents(string $type): Collection
-    {
-        return $this->productLinkParents()
-            ->with('linkedParent')
-            ->where('code', $type)
-            ->get()
-            ->pluck('linkedParent');
     }
 
     public function categoryProducts(): HasMany
