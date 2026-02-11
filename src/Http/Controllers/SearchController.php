@@ -4,26 +4,33 @@ namespace Rapidez\Core\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class SearchController
 {
     public function __invoke(Request $request)
     {
-        $searchQuery = config('rapidez.models.search_query')::firstOrNew([
-            'query_text' => Str::lower($request->q),
-            'store_id'   => config('rapidez.store'),
-        ], ['popularity' => 1]);
+        try {
+            $request->validate(['q' => 'required|string|max:255']);
 
-        if (! $searchQuery->exists) {
-            $searchQuery->save();
+            $searchQuery = config('rapidez.models.search_query')::firstOrNew([
+                'query_text' => Str::lower($request->q),
+                'store_id'   => config('rapidez.store'),
+            ], ['popularity' => 1]);
 
-            return view('rapidez::search.overview');
-        }
+            if (! $searchQuery->exists) {
+                $searchQuery->save();
 
-        $searchQuery->increment('popularity');
+                return view('rapidez::search.overview');
+            }
 
-        if ($searchQuery->is_active === 1 && $searchQuery->redirect) {
-            return redirect($searchQuery->redirect, 301);
+            $searchQuery->increment('popularity');
+
+            if ($searchQuery->is_active === 1 && $searchQuery->redirect) {
+                return redirect($searchQuery->redirect, 301);
+            }
+        } catch (ValidationException $e) {
+            //
         }
 
         return view('rapidez::search.overview');
