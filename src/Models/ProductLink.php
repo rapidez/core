@@ -5,20 +5,13 @@ namespace Rapidez\Core\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Rapidez\Core\Models\Traits\HasCustomAttributes;
 
 class ProductLink extends Model
 {
-    use HasCustomAttributes;
-
     const CREATED_AT = null;
     const UPDATED_AT = null;
 
     protected $table = 'catalog_product_link';
-
-    protected $attributeTypes = ['int', 'decimal', 'varchar'];
-    protected $attributeTablePrefix = 'catalog_product_link_attribute';
-    protected $attributeCode = 'product_link_attribute_code';
 
     protected $primaryKey = 'link_id';
 
@@ -26,7 +19,6 @@ class ProductLink extends Model
     {
         parent::boot();
 
-        static::withCustomAttributes();
         static::addGlobalScope('withLinkType', fn (Builder $builder) => $builder->join('catalog_product_link_type', 'catalog_product_link_type.link_type_id', '=', 'catalog_product_link.link_type_id'));
     }
 
