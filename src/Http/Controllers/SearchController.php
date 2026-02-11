@@ -4,6 +4,7 @@ namespace Rapidez\Core\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Rapidez\Core\Models\Scopes\IsActiveScope;
 use Rapidez\Core\Models\SearchQuery;
 
@@ -15,9 +16,13 @@ class SearchController
             return view('rapidez::search.overview');
         }
 
-        $searchQuery = $this->track($request);
+        try {
+            $searchQuery = $this->track($request);
+        } catch (ValidationException $e) {
+            $searchQuery = null;
+        }
 
-        if ($searchQuery->is_active === 1 && $searchQuery->redirect) {
+        if ($searchQuery && $searchQuery->is_active === 1 && $searchQuery->redirect) {
             return redirect($searchQuery->redirect, 301);
         }
 
