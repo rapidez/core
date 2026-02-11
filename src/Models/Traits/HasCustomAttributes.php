@@ -249,4 +249,9 @@ trait HasCustomAttributes
     {
         return $this->getCustomAttribute($key)?->label ?? null;
     }
+
+    protected function getAttributeFromArray($key)
+    {
+        return parent::getAttributeFromArray($key) ?? $this->getCustomAttribute($key);
+    }
 }
