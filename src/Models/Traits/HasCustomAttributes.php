@@ -225,13 +225,13 @@ trait HasCustomAttributes
     {
         return $this->exists && isset($this->customAttributes[$key]);
     }
-    
+
     protected function throwMissingAttributeExceptionIfApplicable($key)
     {
         if ($this->hasCustomAttribute($key)) {
             return $this->value($key);
         }
-    
+
         return parent::throwMissingAttributeExceptionIfApplicable($key);
     }
 
