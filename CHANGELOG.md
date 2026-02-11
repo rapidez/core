@@ -1,6 +1,13 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.10.0...4.10.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.10.1...4.10.1)
+## [4.10.1](https://github.com/rapidez/core/releases/tag/4.10.1) - 2026-01-23
+
+### Fixed
+
+- Expose position column of super attributes (#1166)
+- Redirect with attributes on addtocart (#1161)
+
 ## [4.10.0](https://github.com/rapidez/core/releases/tag/4.10.0) - 2026-01-21
 
 ### Added
