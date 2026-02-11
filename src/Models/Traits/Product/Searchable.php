@@ -81,6 +81,10 @@ trait Searchable
             ->map(fn ($code) => '/' . str_replace('*', '.+?', $code) . '/')
             ->toArray();
 
+        if ($this->relationLoaded('children') && $this->children->count()) {
+            $this->children->each->mergeVisible($attributeCodes);
+        }
+
         $data = array_filter($this->toArray(), function (string $attributeName) use ($attributeCodes, $wildcardAttributeCodes) {
             if (in_array($attributeName, $attributeCodes)) {
                 return true;

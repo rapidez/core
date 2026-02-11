@@ -142,11 +142,22 @@ class Product extends Model
     public function children(): BelongsToManyCallback
     {
         return $this->belongsToManyCallback(
-            fn ($results) => $results->keyBy('entity_id'),
+            function ($results) {
+                return $results->keyBy('entity_id')
+                    // Remove expensive appends from children
+                    ->removeAppends(['grouped', 'category_ids']);
+            },
             config('rapidez.models.product'),
             'catalog_product_relation',
             'parent_id', 'child_id'
-        );
+        )
+        // Remove most relations from children
+            ->withOnly([
+                'stock',
+                'gallery',
+                'prices',
+            ])
+            ->withEventyGlobalScopes('product.child.scopes');
     }
 
     protected function grouped(): Attribute
