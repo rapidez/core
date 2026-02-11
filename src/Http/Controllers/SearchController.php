@@ -15,9 +15,13 @@ class SearchController
             return view('rapidez::search.overview');
         }
 
-        $searchQuery = $this->track($request);
+        try {
+            $searchQuery = $this->track($request);
+        } catch (ValidationException $e) {
+            $searchQuery = null;
+        }
 
-        if ($searchQuery->is_active === 1 && $searchQuery->redirect) {
+        if ($searchQuery && $searchQuery->is_active === 1 && $searchQuery->redirect) {
             return redirect($searchQuery->redirect, 301);
         }
 
