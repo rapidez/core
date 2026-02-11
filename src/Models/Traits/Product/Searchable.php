@@ -81,6 +81,10 @@ trait Searchable
             ->map(fn ($code) => '/' . str_replace('*', '.+?', $code) . '/')
             ->toArray();
 
+        if ($this->relationLoaded('children') && $this->children->count()) {
+            $this->children->each->mergeVisible($attributeCodes);
+        }
+
         $data = array_filter($this->toArray(), function (string $attributeName) use ($attributeCodes, $wildcardAttributeCodes) {
             if (in_array($attributeName, $attributeCodes)) {
                 return true;
@@ -142,7 +146,7 @@ trait Searchable
             for ($i = 1; $i <= $level; $i++) {
                 $pathCategories = collect($path)
                     ->take($i)
-                    ->map(fn ($id) => $categories[$id]->name->value ?? null)
+                    ->map(fn ($id) => $categories[$id]->name ?? null)
                     ->whereNotNull()
                     ->join(' > ');
 

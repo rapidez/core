@@ -44,7 +44,7 @@
                             <dt>SKU</dt>
                             <dd>{{ $product->sku }}</dd>
                             @foreach (\Rapidez\Core\Models\EavAttribute::getCachedCatalog()->where(fn ($attribute) => $attribute->is_visible_on_front) as $attribute)
-                                @if (($value = $product->{$attribute['attribute_code']}))
+                                @if (($value = $product->label($attribute['attribute_code'])))
                                     <dt>{{ $attribute['frontend_label'] }}</dt>
                                     @if ($attribute['is_html_allowed_on_front'])
                                         <dd>{!! $value !!}</dd>
@@ -66,17 +66,17 @@
         </div>
     @endif
 
-    @if ($product->relation_ids || $product->upsell_ids)
+    @if ($product->relationProducts->count() || $product->upsells->count())
         <div class="container flex flex-col gap-5 mt-14">
             <x-rapidez::productlist
                 title="Related products"
                 field="entity_id"
-                :value="$product->relation_ids"
+                :value="$product->relationProducts->pluck('linked_product_id')"
             />
             <x-rapidez::productlist
                 title="We found other products you might like!"
                 field="entity_id"
-                :value="$product->upsell_ids"
+                :value="$product->upsells->pluck('linked_product_id')"
             />
         </div>
     @endif

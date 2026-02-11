@@ -130,8 +130,8 @@ trait HasCustomAttributes
         return $this->hasManyWithAttributeTypeTable(
             config('rapidez.models.attribute_datetime', AttributeDatetime::class),
             'datetime',
-            $this->primaryKey,
-            $this->primaryKey,
+            'entity_id',
+            'entity_id',
         );
     }
 
@@ -140,8 +140,8 @@ trait HasCustomAttributes
         return $this->hasManyWithAttributeTypeTable(
             config('rapidez.models.attribute_decimal', AttributeDecimal::class),
             'decimal',
-            $this->primaryKey,
-            $this->primaryKey,
+            'entity_id',
+            'entity_id',
         );
     }
 
@@ -150,8 +150,8 @@ trait HasCustomAttributes
         return $this->hasManyWithAttributeTypeTable(
             config('rapidez.models.attribute_int', AttributeInt::class),
             'int',
-            $this->primaryKey,
-            $this->primaryKey,
+            'entity_id',
+            'entity_id',
         );
     }
 
@@ -160,8 +160,8 @@ trait HasCustomAttributes
         return $this->hasManyWithAttributeTypeTable(
             config('rapidez.models.attribute_text', AttributeText::class),
             'text',
-            $this->primaryKey,
-            $this->primaryKey,
+            'entity_id',
+            'entity_id',
         );
     }
 
@@ -170,8 +170,8 @@ trait HasCustomAttributes
         return $this->hasManyWithAttributeTypeTable(
             config('rapidez.models.attribute_varchar', AttributeVarchar::class),
             'varchar',
-            $this->primaryKey,
-            $this->primaryKey,
+            'entity_id',
+            'entity_id',
         );
     }
 
@@ -214,12 +214,40 @@ trait HasCustomAttributes
 
     public function getCustomAttribute($key)
     {
+        if (! $this->exists) {
+            return null;
+        }
+
         return $this->customAttributes[$key] ?? null;
+    }
+
+    public function hasCustomAttribute($key): bool
+    {
+        return $this->exists && isset($this->customAttributes[$key]);
     }
 
     protected function throwMissingAttributeExceptionIfApplicable($key)
     {
-        return $this->getCustomAttribute($key);
+        if ($this->hasCustomAttribute($key)) {
+            return $this->value($key);
+        }
+
+        return parent::throwMissingAttributeExceptionIfApplicable($key);
+    }
+
+    public function value(string $key): mixed
+    {
+        return $this->getCustomAttribute($key)?->value ?? null;
+    }
+
+    public function raw(string $key): mixed
+    {
+        return $this->getCustomAttribute($key)?->rawValue ?? null;
+    }
+
+    public function label(string $key): ?string
+    {
+        return $this->getCustomAttribute($key)?->label ?? null;
     }
 
     protected function getAttributeFromArray($key)

@@ -54,10 +54,10 @@ class ProductTest extends TestCase
     #[Test]
     public function product_can_have_upsells_and_crosssells()
     {
-        $product = Product::find(1578);
+        $product = Product::with('crosssells')->find(1578);
 
-        $this->assertEquals(8, $product->getLinkedProducts('up_sell')->count(), 'Product 1578 does not have 8 upsells.');
-        $this->assertEquals(4, $product->getLinkedProducts('cross_sell')->count(), 'Product 1578 does not have 4 crosssells.');
+        $this->assertEquals(8, $product->upsells()->count(), 'Product 1578 does not have 8 upsells.');
+        $this->assertEquals(4, $product->crosssells->count(), 'Product 1578 does not have 4 crosssells.');
     }
 
     #[Test]
@@ -161,12 +161,11 @@ class ProductTest extends TestCase
     {
         $product = Product::find(10);
 
-        $this->assertEqualsCanonicalizing([8, 11], iterator_to_array($product->activity->rawValue), 'Activity attribute on product 10 did not return the right values.');
-        $this->assertEqualsCanonicalizing(['Gym', 'Yoga'], iterator_to_array($product->activity->value), 'Activity attribute on product 10 did not return the right values.');
-        $this->assertEquals('Gym, Yoga', $product->activity->label, 'Activity attribute on product 10 did not yield the right text output.');
+        $this->assertEqualsCanonicalizing([8, 11], iterator_to_array($product->raw('activity')), 'Activity attribute on product 10 did not return the right values.');
+        $this->assertEqualsCanonicalizing(['Gym', 'Yoga'], iterator_to_array($product->activity), 'Activity attribute on product 10 did not return the right values.');
+        $this->assertEquals('Gym, Yoga', $product->label('activity'), 'Activity attribute on product 10 did not yield the right text output.');
 
-        $this->assertEquals('Savvy Shoulder Tote', $product->name->label, 'Name attribute on product 10 did not return the right value.');
-        $this->assertEquals($product->name->label, $product->name, 'Product name did not return the right value or did not cast its value correctly.');
+        $this->assertEquals('Savvy Shoulder Tote', $product->label('name'), 'Name attribute on product 10 did not return the right label.');
     }
 
     #[Test]
