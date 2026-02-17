@@ -446,7 +446,7 @@ class RapidezServiceProvider extends ServiceProvider
             return $this;
         }
 
-        $path = config('rapidez.frontend.theme', false);
+        $path = config('rapidez.stores.' . request()->server('MAGE_RUN_CODE', request()->has('_store') && ! app()->isProduction() ? request()->get('_store') : 'default') . '.frontend.theme', config('rapidez.frontend.theme', false));
 
         if (! $path) {
             return $this;
