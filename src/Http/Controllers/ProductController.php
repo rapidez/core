@@ -5,8 +5,8 @@ namespace Rapidez\Core\Http\Controllers;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\View;
 use Rapidez\Core\Events\ProductViewEvent;
-use Rapidez\Core\Models\Product;
 use Rapidez\Core\Facades\Rapidez;
+use Rapidez\Core\Models\Product;
 use TorMorten\Eventy\Facades\Eventy;
 
 class ProductController
@@ -66,7 +66,7 @@ class ProductController
         ) ?? $product;
 
         if (Rapidez::config('reports/options/enabled') && Rapidez::config('reports/options/product_view_enabled')) {
-            View::composer('rapidez::layouts.app', fn($view) => $view->getFactory()->startPush('foot', view('rapidez::product.partials.track')));
+            View::composer('rapidez::layouts.app', fn ($view) => $view->getFactory()->startPush('foot', view('rapidez::product.partials.track')));
         }
 
         config(['frontend.product' => $data]);
