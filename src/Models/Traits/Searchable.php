@@ -91,7 +91,7 @@ trait Searchable
 
     public static function getIndexedMapping(): array
     {
-        $index = (new static)->searchableAs();
+        $index = (new self)->searchableAs();
 
         return Cache::rememberForever('elastic_mappings_' . $index, function () use ($index) {
             $client = resolve(ProxyClient::class);
