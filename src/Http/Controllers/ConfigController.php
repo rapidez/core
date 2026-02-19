@@ -174,7 +174,7 @@ class ConfigController
         // Get the filterable attributes and category levels
         $filterableAttributes = collect($this->getFilterableAttributes())
             ->map(function ($attribute) {
-                $isNumeric = !Attribute::hasKeyword($attribute['code']);
+                $isNumeric = ! Attribute::hasKeyword($attribute['code']);
 
                 return [
                     'attribute' => $attribute['code'],

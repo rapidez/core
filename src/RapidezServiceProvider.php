@@ -264,7 +264,7 @@ class RapidezServiceProvider extends ServiceProvider
     {
         Event::listen(ProductViewEvent::class, ReportProductView::class);
         Event::listen(IndexStoreAfterEvent::class, WarmProductMappings::class);
-        
+
         ModelsHealthcheck::register();
         MagentoSettingsHealthcheck::register();
         ElasticsearchHealthcheck::register();

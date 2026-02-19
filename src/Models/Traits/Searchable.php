@@ -92,11 +92,12 @@ trait Searchable
     public static function getIndexedMapping(): array
     {
         $index = (new static)->searchableAs();
-        return Cache::rememberForever('elastic_mappings_' . $index, function() use ($index) {
+
+        return Cache::rememberForever('elastic_mappings_' . $index, function () use ($index) {
             $client = resolve(ProxyClient::class);
 
             $exists = $client->indices()->exists(['index' => $index])->asBool();
-            if (!$exists) {
+            if (! $exists) {
                 return [];
             }
 

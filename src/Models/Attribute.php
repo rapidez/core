@@ -66,6 +66,7 @@ class Attribute extends Model
     public static function hasKeyword($code)
     {
         $mapping = Product::getIndexedMapping();
+
         return boolval(data_get($mapping[$code] ?? [], 'fields.keyword'));
     }
 }

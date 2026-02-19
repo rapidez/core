@@ -4,8 +4,8 @@ namespace Rapidez\Core\Listeners;
 
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Events\IndexStoreAfterEvent;
-use Rapidez\Core\Models\Product;
 use Rapidez\Core\Facades\Rapidez;
+use Rapidez\Core\Models\Product;
 
 class WarmProductMappings
 {
