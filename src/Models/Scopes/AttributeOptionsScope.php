@@ -17,9 +17,9 @@ class AttributeOptionsScope implements Scope
                 'eav_attribute.*',
                 'catalog_eav_attribute.*',
                 "{$model->getTable()}.*",
-                DB::raw("IF(ISNULL(ANY_VALUE(eav_attribute_option_value.value)), null, JSON_ARRAYAGG(eav_attribute_option_value.value)) AS option_values"),
+                DB::raw('IF(ISNULL(ANY_VALUE(eav_attribute_option_value.value)), null, JSON_ARRAYAGG(eav_attribute_option_value.value)) AS option_values'),
             ])
-            ->leftJoin('eav_attribute_option', function(JoinClause $join) use ($model) {
+            ->leftJoin('eav_attribute_option', function (JoinClause $join) use ($model) {
                 return $join->on('eav_attribute_option.attribute_id', "{$model->getTable()}.attribute_id")
                     ->where(DB::raw("FIND_IN_SET(eav_attribute_option.option_id, {$model->getTable()}.value)"), '<>', DB::raw(0));
             })
