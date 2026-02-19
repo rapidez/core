@@ -11,5 +11,5 @@
 <meta property="og:site_name" content="{{ config('app.name') }}" />
 <meta property="product:price:amount" content="{{ round($product->price, 2) }}" />
 <meta property="product:price:currency" content="@config('currency/options/default')" />
-<meta property="og:availability" content="{{ $product->in_stock ? 'instock' : 'out of stock' }}" />
+<meta property="og:availability" content="{{ $product->stock->is_in_stock ? 'instock' : 'out of stock' }}" />
 @endpush

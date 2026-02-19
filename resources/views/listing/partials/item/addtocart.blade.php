@@ -1,5 +1,5 @@
 <form v-on:submit.prevent="addToCart.add">
-    <p v-if="!item.in_stock" class="text-red-600 text-xs">
+    <p v-if="!item.stock.is_in_stock" class="text-red-600 text-xs">
         @lang('Sorry! This product is currently out of stock.')
     </p>
     <div v-else>

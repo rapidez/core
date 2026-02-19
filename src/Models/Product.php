@@ -17,7 +17,6 @@ use Rapidez\Core\Models\Scopes\Product\ForCurrentWebsiteScope;
 use Rapidez\Core\Models\Scopes\Product\SupportedScope;
 use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
 use Rapidez\Core\Models\Traits\HasCustomAttributes;
-use Rapidez\Core\Models\Traits\Product\BackwardsCompatibleAccessors;
 use Rapidez\Core\Models\Traits\Product\HasProductLinks;
 use Rapidez\Core\Models\Traits\Product\HasSuperAttributes;
 use Rapidez\Core\Models\Traits\Product\Searchable;
@@ -25,7 +24,6 @@ use Rapidez\Core\Models\Traits\UsesCallbackRelations;
 
 class Product extends Model
 {
-    use BackwardsCompatibleAccessors;
     use HasAlternatesThroughRewrites;
     use HasCustomAttributes;
     use HasProductLinks;
@@ -56,14 +54,8 @@ class Product extends Model
         'reviewSummary',
     ];
 
-    // TODO: Double check; do we really want all accessors
-    // defined here so they will show up in the indexer?
-    // See the BackwardsCompatibleAccessors
     protected $appends = [
-        'grouped',
-        'images',
         'media',
-        'in_stock',
         'price',
         'special_price',
         'url',
@@ -141,28 +133,24 @@ class Product extends Model
 
     public function children(): BelongsToManyCallback
     {
-        return $this->belongsToManyCallback(
-            function ($results) {
-                return $results->keyBy('entity_id')
-                    // Remove expensive appends from children
-                    ->removeAppends(['grouped', 'category_ids']);
-            },
-            config('rapidez.models.product'),
-            'catalog_product_relation',
-            'parent_id', 'child_id'
-        )
-        // Remove most relations from children
+        return $this
+            ->belongsToManyCallback(
+                function ($results) {
+                    return $results->keyBy('entity_id')
+                        // Remove expensive appends from children
+                        ->removeAppends(['category_ids']);
+                },
+                config('rapidez.models.product'),
+                'catalog_product_relation',
+                'parent_id', 'child_id'
+            )
+            // Remove most relations from children
             ->withOnly([
                 'stock',
                 'gallery',
                 'prices',
             ])
             ->withEventyGlobalScopes('product.child.scopes');
-    }
-
-    protected function grouped(): Attribute
-    {
-        return Attribute::get(fn () => $this->children);
     }
 
     public function categoryProducts(): HasMany
