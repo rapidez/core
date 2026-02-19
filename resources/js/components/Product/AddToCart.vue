@@ -360,6 +360,10 @@ export default {
                 return product
             }
 
+            if (!('children' in this.product)) {
+                return product
+            }
+
             if (Object.keys(this.product.children).length == this.matchingChildren.length && this.matchingChildren.length > 1) {
                 return product
             }
