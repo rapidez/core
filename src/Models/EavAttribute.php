@@ -4,7 +4,6 @@ namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 
 class EavAttribute extends Model
 {
@@ -25,7 +24,7 @@ class EavAttribute extends Model
 
         static::addGlobalScope('scoped_label', function ($builder) {
             $builder
-                ->addSelect(['frontend_label' => fn(Builder $q) => $q->selectRaw('COALESCE(eav_attribute_label.value, frontend_label, eav_attribute.attribute_code)')])
+                ->addSelect(['frontend_label' => fn (Builder $q) => $q->selectRaw('COALESCE(eav_attribute_label.value, frontend_label, eav_attribute.attribute_code)')])
                 ->leftJoin('eav_attribute_label', function ($join) {
                     $join->on('eav_attribute.attribute_id', '=', 'eav_attribute_label.attribute_id')
                         ->where('eav_attribute_label.store_id', config('rapidez.store'));
