@@ -27,6 +27,7 @@ use Rapidez\Core\Commands\InstallCommand;
 use Rapidez\Core\Commands\InstallTestsCommand;
 use Rapidez\Core\Commands\UpdateIndexCommand;
 use Rapidez\Core\Commands\ValidateCommand;
+use Rapidez\Core\Events\IndexStoreAfterEvent;
 use Rapidez\Core\Events\ProductViewEvent;
 use Rapidez\Core\Facades\Rapidez as RapidezFacade;
 use Rapidez\Core\Http\Controllers\Fallback\CmsPageController;
@@ -42,6 +43,7 @@ use Rapidez\Core\Listeners\Healthcheck\ModelsHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\OpensearchHealthcheck;
 use Rapidez\Core\Listeners\ReportProductView;
 use Rapidez\Core\Listeners\UpdateLatestIndexDate;
+use Rapidez\Core\Listeners\WarmProductMappings;
 use Rapidez\Core\Models\Model;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
@@ -261,6 +263,8 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootListeners(): self
     {
         Event::listen(ProductViewEvent::class, ReportProductView::class);
+        Event::listen(IndexStoreAfterEvent::class, WarmProductMappings::class);
+
         ModelsHealthcheck::register();
         MagentoSettingsHealthcheck::register();
         ElasticsearchHealthcheck::register();

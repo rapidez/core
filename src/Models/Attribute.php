@@ -62,4 +62,11 @@ class Attribute extends Model
             return $callback($attribute);
         });
     }
+
+    public static function hasKeyword($code)
+    {
+        $mapping = Product::getIndexedMapping();
+
+        return boolval(data_get($mapping[$code] ?? [], 'fields.keyword'));
+    }
 }
