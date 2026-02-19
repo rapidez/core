@@ -98,7 +98,7 @@ trait HasCustomAttributes
         $q = fn ($builder) => $builder->attributeHas(
             $attributeCode,
             fn ($query) => $query
-                ->$method('value', ...$args)
+                ->$method($query->qualifyColumn('value'), ...$args)
                 ->where($this->getCustomAttributeCode(), $attributeCode)
         );
 

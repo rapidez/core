@@ -7,9 +7,14 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Arr;
 use Rapidez\Core\Models\Scopes\ForCurrentStoreWithoutLimitScope;
+use Rapidez\Core\Models\Scopes\AttributeOptionsScope;
 
 class AbstractAttribute extends Model
 {
+    protected $casts = [
+        'option_values' => 'array',
+    ];
+
     protected static function boot(): void
     {
         parent::boot();
@@ -27,9 +32,7 @@ class AbstractAttribute extends Model
         });
 
         if (isset(static::$hasAttributeOptions)) { // @phpstan-ignore-line
-            static::addGlobalScope('attributeOptions', function (Builder $builder) {
-                $builder->with('attributeOptions'); // @phpstan-ignore-line
-            });
+            static::addGlobalScope(new AttributeOptionsScope);
         }
     }
 
@@ -77,9 +80,11 @@ class AbstractAttribute extends Model
     protected function label(): Attribute
     {
         return Attribute::get(function () {
-            return is_iterable($this->value)
-                ? implode(', ', iterator_to_array($this->value))
-                : $this->value;
+            $value = $this->option_values ?: $this->value;
+
+            return is_iterable($value)
+                ? implode(', ', $value)
+                : $value;
         });
     }
 

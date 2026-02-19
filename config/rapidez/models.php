@@ -3,7 +3,6 @@
 // The fully qualified class names of the models.
 return [
     'attribute'                 => Rapidez\Core\Models\Attribute::class,
-    'attribute_option'          => Rapidez\Core\Models\AttributeOption::class,
     'attribute_datetime'        => Rapidez\Core\Models\AttributeDatetime::class,
     'attribute_decimal'         => Rapidez\Core\Models\AttributeDecimal::class,
     'attribute_int'             => Rapidez\Core\Models\AttributeInt::class,
