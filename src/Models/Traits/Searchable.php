@@ -3,9 +3,11 @@
 namespace Rapidez\Core\Models\Traits;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable as ScoutSearchable;
 use Rapidez\Core\Index\WithSynonyms;
+use Rapidez\ScoutElasticSearch\Creator\ProxyClient;
 use TorMorten\Eventy\Facades\Eventy;
 
 trait Searchable
@@ -85,5 +87,22 @@ trait Searchable
             });
 
         return $data;
+    }
+
+    public static function getIndexedMapping(): array
+    {
+        $index = (new static)->searchableAs();
+        return Cache::rememberForever('elastic_mappings_' . $index, function() use ($index) {
+            $client = resolve(ProxyClient::class);
+
+            $exists = $client->indices()->exists(['index' => $index])->asBool();
+            if (!$exists) {
+                return [];
+            }
+
+            $data = $client->indices()->get(['index' => $index])->asArray();
+
+            return Arr::first($data)['mappings']['properties'] ?? [];
+        });
     }
 }
