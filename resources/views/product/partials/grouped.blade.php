@@ -1,6 +1,6 @@
 <div class="flex flex-wrap gap-3 justify-between">
     @foreach ($product->children as $groupedProduct)
-        <add-to-cart :product="config.product.grouped[{{ $groupedProduct->entity_id }}]" v-slot="addToCart" class="w-full">
+        <add-to-cart :product="config.product.children[{{ $groupedProduct->entity_id }}]" v-slot="addToCart" class="w-full">
             <form v-on:submit.prevent="addToCart.add" class="flex w-full justify-between max-lg:flex-wrap max-lg:gap-y-2">
                 <div class="lg:max-xl:max-w-36">
                     {{ $groupedProduct->name }}
