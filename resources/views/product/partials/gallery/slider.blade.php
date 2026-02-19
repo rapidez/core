@@ -5,12 +5,12 @@
         class="flex h-[440px] cursor-zoom-in items-center justify-center rounded border p-5"
     >
         <img
-            {{-- src should always be above v-bind:src --}}
             v-if="media[active].media_type === 'image'"
-            v-bind:src="window.url('/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product' + media[active].image + '.webp')"
+            {{-- src should always be above v-bind:src --}}
             @if (count($selectedChild->media))
                 src="{{ url('/storage/'.config('rapidez.store').'/resizes/400/magento/catalog/product'.Arr::first($selectedChild->media)['image'].'.webp') }}"
             @endif
+            v-bind:src="window.url('/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product' + media[active].image + '.webp')"
             alt="{{ $product->name }}"
             class="max-h-full object-contain"
             style="view-transition-name: image-{{ $product->sku }}"
