@@ -11,6 +11,8 @@
             @include('rapidez::product.partials.super-attributes')
             @include('rapidez::product.partials.options')
 
+            @includeWhen($product->tierPrices->count(), 'rapidez::product.partials.tier-prices')
+
             @if ($product->qty <= 0 && $product->backorder_type == 2)
                 <div class="flex gap-2">
                     <x-heroicon-o-exclamation-circle class="mt-px w-5" />
@@ -20,10 +22,10 @@
 
             <div class="flex flex-wrap items-center gap-3">
                 <div>
-                    <div class="text-2xl font-bold" v-txt="price(addToCart.specialPrice || addToCart.price)">
+                    <div data-testid="pdp-price" class="text-2xl font-bold" v-txt="price(addToCart.specialPrice || addToCart.price)">
                         {{ price($product->special_price ?: $product->price) }}
                     </div>
-                    <div class="text-lg text-muted line-through" v-if="addToCart.specialPrice" v-txt="price(addToCart.price)">
+                    <div data-testid="pdp-oldprice" class="text-lg text-muted line-through" v-if="addToCart.specialPrice" v-txt="price(addToCart.price)">
                         {{ $product->special_price ? price($product->price) : '' }}
                     </div>
                 </div>
