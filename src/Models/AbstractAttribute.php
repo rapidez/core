@@ -5,6 +5,7 @@ namespace Rapidez\Core\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Query\JoinClause;
+use Illuminate\Support\Arr;
 use Rapidez\Core\Models\Scopes\AttributeOptionsScope;
 use Rapidez\Core\Models\Scopes\ForCurrentStoreWithoutLimitScope;
 
@@ -60,7 +61,13 @@ class AbstractAttribute extends Model
     protected function value(): Attribute
     {
         return Attribute::get(function ($value) {
-            return $this->option_values ?? $this->rawValue ?? $value;
+            $value = $this->option_values ?? $this->rawValue ?? $value;
+
+            if (is_iterable($value) && count($value) === 1) {
+                return Arr::first($value);
+            }
+
+            return $value;
         });
     }
 
