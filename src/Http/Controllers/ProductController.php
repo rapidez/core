@@ -51,7 +51,7 @@ class ProductController
         $attributes = Eventy::filter('productpage.frontend.attributes', $attributes);
         $appends = array_filter($attributes, fn ($key) => $product->hasAnyGetMutator($key));
         $relations = array_filter(
-            array_map(fn($key) => Str::camel($key), $attributes),
+            array_map(fn ($key) => Str::camel($key), $attributes),
             fn ($key) => $product->isRelation($key)
         );
 
