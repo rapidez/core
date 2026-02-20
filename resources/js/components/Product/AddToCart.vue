@@ -484,22 +484,23 @@ export default {
 
         tierPrices() {
             // Filter out non-matching customer group and calculate price for percentage types.
-            const tierPrices = this.product?.tier_prices
-                ?.filter?.(price => price.all_groups || price.customer_group_id === Number(user.value?.group_id))
-                ?.map?.((tier_price) => {
-                    tier_price.qty = tier_price.qty * 1
-                    if (tier_price.percentage_value === null) {
-                        tier_price.value = tier_price.value * 1;
-                        tier_price.percentage_value = Math.ceil(100 - (tier_price.value * 100 / this.product.price));
+            const tierPrices =
+                this.product?.tier_prices
+                    ?.filter?.((price) => price.all_groups || price.customer_group_id === Number(user.value?.group_id))
+                    ?.map?.((tier_price) => {
+                        tier_price.qty = tier_price.qty * 1
+                        if (tier_price.percentage_value === null) {
+                            tier_price.value = tier_price.value * 1
+                            tier_price.percentage_value = Math.ceil(100 - (tier_price.value * 100) / this.product.price)
+                            return tier_price
+                        }
+                        tier_price.percentage_value = tier_price.percentage_value * 1
+                        tier_price.value = this.product.price - (this.product.price * tier_price.percentage_value) / 100
                         return tier_price
-                    }
-                    tier_price.percentage_value = tier_price.percentage_value * 1
-                    tier_price.value = this.product.price - (this.product.price * tier_price.percentage_value / 100)
-                    return tier_price;
-                }) ?? [];
+                    }) ?? []
 
             // Remove values that are not cheaper at higher quantities (or the same quantity if it's a different customer group).
-            return tierPrices.filter(price => !tierPrices.some((ref) => ref.qty <= price.qty && ref.value < price.value));
+            return tierPrices.filter((price) => !tierPrices.some((ref) => ref.qty <= price.qty && ref.value < price.value))
         },
         currentTierPrice() {
             return this.tierPrices.toSorted((a, b) => b.qty - a.qty).find((tierPrice) => tierPrice.qty <= this.qty)
