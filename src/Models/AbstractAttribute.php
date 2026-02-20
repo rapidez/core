@@ -5,7 +5,6 @@ namespace Rapidez\Core\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Query\JoinClause;
-use Illuminate\Support\Arr;
 use Rapidez\Core\Models\Scopes\AttributeOptionsScope;
 use Rapidez\Core\Models\Scopes\ForCurrentStoreWithoutLimitScope;
 
