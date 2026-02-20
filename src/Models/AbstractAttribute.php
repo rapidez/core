@@ -61,30 +61,16 @@ class AbstractAttribute extends Model
     protected function value(): Attribute
     {
         return Attribute::get(function ($value) {
-            $value = $this->rawValue ?? $value;
-            if ($this->frontend_input === 'select' || $this->frontend_input === 'multiselect') {
-                if (is_iterable($value)) {
-                    return Arr::map(
-                        iterator_to_array($value),
-                        fn ($value) => $this->options[$value]?->value ?? $value,
-                    );
-                }
-
-                return $this->options[$value]?->value ?? $value;
-            }
-
-            return $value;
+            return $this->option_values ?? $this->rawValue ?? $value;
         });
     }
 
     protected function label(): Attribute
     {
         return Attribute::get(function () {
-            $value = $this->option_values ?: $this->value;
-
-            return is_iterable($value)
-                ? implode(', ', $value)
-                : $value;
+            return is_iterable($this->value)
+                ? implode(', ', $this->value)
+                : $this->value;
         });
     }
 
