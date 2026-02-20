@@ -59,9 +59,9 @@
             </td>
             <td class="justify-center text-right max-md:flex max-md:w-full">
                 <div class="inline-flex flex-1 items-center justify-between gap-2 md:gap-5">
-                    <span class="w-20 text-left">@{{ price(item.prices.price_including_tax.value) }}</span>
+                    <span class="w-20 text-left" v-text="price(showTax ? item.prices.price_including_tax.value : item.prices.price.value)"></span>
                     @include('rapidez::cart.item.quantity')
-                    <span class="w-20">@{{ price(item.prices.row_total_including_tax.value) }}</span>
+                    <span class="w-20" v-text="price(showTax ? item.prices.row_total_including_tax.value : item.prices.row_total.value)"></span>
                 </div>
             </td>
         </tr>

@@ -21,6 +21,21 @@ test('product special price', BasePage.tags, async ({ page }) => {
     await new BasePage(page).screenshot('fullpage-footer')
 })
 
+test('product tier priece', BasePage.tags, async ({ page }) => {
+    await page.goto(process.env.PRODUCT_URL_TIER_PRICE)
+    await this.page.waitForTimeout(100)
+    await new BasePage(page).screenshot('fullpage-footer')
+
+    await this.page.getByTestId('qty').fill('')
+    expect(page.getByTestId('pdp-price')).toHaveText('58,00')
+    await this.page.getByTestId('qty').pressSequentially('2')
+    expect(page.getByTestId('pdp-price')).toHaveText('55,00')
+    await this.page.getByTestId('qty').pressSequentially('4')
+    expect(page.getByTestId('pdp-price')).toHaveText('41,30')
+    await this.page.getByTestId('qty').pressSequentially('6')
+    expect(page.getByTestId('pdp-price')).toHaveText('41,30')
+})
+
 test('wcag', BasePage.tags, async ({ page }, testInfo) => {
     await page.goto(process.env.PRODUCT_URL_SIMPLE)
     await new BasePage(page).wcag(testInfo)
