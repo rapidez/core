@@ -68,7 +68,7 @@ class AbstractAttribute extends Model
     {
         return Attribute::get(function () {
             return is_iterable($this->value)
-                ? implode(', ', iterable_to_array($this->value))
+                ? implode(', ', iterator_to_array($this->value))
                 : $this->value;
         });
     }
