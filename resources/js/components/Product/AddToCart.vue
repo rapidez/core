@@ -2,7 +2,7 @@
 import { GraphQLError } from '../../fetch'
 import { user } from '../../stores/useUser'
 import { mask, refreshMask } from '../../stores/useMask'
-import { reactive } from 'vue';
+import { reactive } from 'vue'
 
 export default {
     inject: {
@@ -489,7 +489,7 @@ export default {
                 this.product?.tier_prices
                     ?.filter?.((price) => price.all_groups || price.customer_group_id === Number(user.value?.group_id))
                     ?.map?.((tier_price) => {
-                        const tier_price_copy =  reactive({...tier_price})
+                        const tier_price_copy = reactive({ ...tier_price })
                         tier_price_copy.qty = tier_price_copy.qty * 1
                         if (tier_price_copy.percentage_value === null) {
                             tier_price_copy.value = tier_price_copy.value * 1
