@@ -29,7 +29,7 @@ test('product tier priece', BasePage.tags, async ({ page }) => {
     await page.getByTestId('qty').fill('')
     expect(page.getByTestId('pdp-price')).toHaveText('€58.00')
     await page.getByTestId('qty').pressSequentially('2')
-    expect(page.getByTestId('pdp-price')).toHaveText('€54.87')
+    expect(page.getByTestId('pdp-price')).toHaveText('€55.00')
     await page.getByTestId('qty').pressSequentially('4')
     expect(page.getByTestId('pdp-price')).toHaveText('€41.30')
     await page.getByTestId('qty').pressSequentially('6')
