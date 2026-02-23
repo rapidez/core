@@ -25,7 +25,6 @@ test('product tier priece', BasePage.tags, async ({ page }) => {
     await page.goto(process.env.PRODUCT_URL_TIER_PRICE)
     await page.waitForTimeout(100)
     await new BasePage(page).screenshot('fullpage-footer')
-
     await page.getByTestId('qty').fill('')
     expect(page.getByTestId('pdp-price')).toHaveText('€58.00')
     await page.getByTestId('qty').fill('')
