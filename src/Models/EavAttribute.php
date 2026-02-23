@@ -18,10 +18,8 @@ class EavAttribute extends Model
 
     protected $primaryKey = 'attribute_id';
 
-    public static function boot()
+    protected static function booted(): void
     {
-        parent::boot();
-
         static::addGlobalScope('scoped_label', function ($builder) {
             $builder
                 ->addSelect(['frontend_label' => fn (Builder $q) => $q->selectRaw('COALESCE(eav_attribute_label.value, frontend_label, eav_attribute.attribute_code)')])
