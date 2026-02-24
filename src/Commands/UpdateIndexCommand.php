@@ -7,6 +7,8 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use Rapidez\Core\Events\IndexAfterEvent;
 use Rapidez\Core\Events\IndexBeforeEvent;
+use Rapidez\Core\Events\IndexStoreAfterEvent;
+use Rapidez\Core\Events\IndexStoreBeforeEvent;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Traits\Searchable;
 
@@ -41,12 +43,15 @@ class UpdateIndexCommand extends Command
 
         foreach ($stores as $store) {
             Rapidez::setStore($store);
+            IndexStoreBeforeEvent::dispatch($this, config('rapidez.store'));
 
             $this->line('Store: ' . $store['name']);
 
             foreach ($types as $type => $model) {
                 $this->updateSearchable($model);
             }
+
+            IndexStoreAfterEvent::dispatch($this, config('rapidez.store'));
         }
 
         IndexAfterEvent::dispatch($this);

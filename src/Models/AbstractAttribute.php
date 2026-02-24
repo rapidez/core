@@ -6,10 +6,15 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Arr;
+use Rapidez\Core\Models\Scopes\AttributeOptionsScope;
 use Rapidez\Core\Models\Scopes\ForCurrentStoreWithoutLimitScope;
 
 class AbstractAttribute extends Model
 {
+    protected $casts = [
+        'option_values' => 'array',
+    ];
+
     protected static function boot(): void
     {
         parent::boot();
@@ -27,9 +32,7 @@ class AbstractAttribute extends Model
         });
 
         if (isset(static::$hasAttributeOptions)) { // @phpstan-ignore-line
-            static::addGlobalScope('attributeOptions', function (Builder $builder) {
-                $builder->with('attributeOptions'); // @phpstan-ignore-line
-            });
+            static::addGlobalScope(new AttributeOptionsScope);
         }
     }
 
@@ -58,16 +61,10 @@ class AbstractAttribute extends Model
     protected function value(): Attribute
     {
         return Attribute::get(function ($value) {
-            $value = $this->rawValue ?? $value;
-            if ($this->frontend_input === 'select' || $this->frontend_input === 'multiselect') {
-                if (is_iterable($value)) {
-                    return Arr::map(
-                        iterator_to_array($value),
-                        fn ($value) => $this->options[$value]?->value ?? $value,
-                    );
-                }
+            $value = $this->option_values ?? $this->rawValue ?? $value;
 
-                return $this->options[$value]?->value ?? $value;
+            if (is_iterable($value) && count($value) === 1) {
+                return Arr::first($value);
             }
 
             return $value;
