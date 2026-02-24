@@ -22,6 +22,8 @@ Route::middleware('api')->prefix('api')->group(function () {
 
     Route::get('order', OrderController::class);
 
+    Route::post('track/product/{productId}', [config('rapidez.routing.controllers.product'), 'track']);
+
     Route::post('get-checkout-url', GetSignedCheckoutController::class);
 
     Route::prefix('admin')->middleware(VerifyAdminToken::class)->group(function () {
