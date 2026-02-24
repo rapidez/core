@@ -1,11 +1,11 @@
 <add-to-cart
-    v-bind:default-qty="{{ $product->min_sale_qty > $product->qty_increments ? $product->min_sale_qty : $product->qty_increments }}"
+    v-bind:default-qty="{{ $product->stock->min_sale_qty > $product->stock->qty_increments ? $product->stock->min_sale_qty : $product->stock->qty_increments }}"
     url-params
     v-slot="addToCart"
 >
     <form v-on:submit.prevent="addToCart.add" class="flex flex-col gap-5">
         <h1 class="text-3xl font-bold" itemprop="name">{{ $product->name }}</h1>
-        @if (!$product->in_stock && $product->backorder_type === 0)
+        @if (!$product->stock->is_in_stock && $product->backorder_type === 0)
             <p class="text-red-600">@lang('Sorry! This product is currently out of stock.')</p>
         @else
             @include('rapidez::product.partials.super-attributes')
@@ -30,9 +30,9 @@
 
                 <x-rapidez::quantity
                     v-model.number="addToCart.qty"
-                    ::min="{{ $product->min_sale_qty }}"
-                    ::step="{{ $product->qty_increments }}"
-                    ::max="{{ $product->max_sale_qty ?: 'null' }}"
+                    ::min="{{ $product->stock->min_sale_qty }}"
+                    ::step="{{ $product->stock->qty_increments }}"
+                    ::max="{{ $product->stock->max_sale_qty ?: 'null' }}"
                 />
 
                 <x-rapidez::button.cart/>
