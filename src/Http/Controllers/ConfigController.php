@@ -6,6 +6,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Rapidez\Core\Facades\Rapidez;
+use Rapidez\Core\Models\Attribute;
 use Rapidez\Core\Models\Category;
 use Rapidez\Core\Models\CustomerGroup;
 use Rapidez\Core\Models\Traits\Searchable;
@@ -168,31 +169,12 @@ class ConfigController
 
     }
 
-    public function isAttributeNumeric($attribute): bool
-    {
-        // Manually-set range attributes should always be assumed numeric.
-        if (in_array($attribute['code'], config('rapidez.searchkit.range_attributes'))) {
-            return true;
-        }
-
-        if ($attribute['visual_swatch'] || $attribute['text_swatch'] || in_array($attribute['input'], ['boolean', 'price'])) {
-            return true;
-        }
-
-        // Super attributes are usually numeric, not if it's a select field.
-        if ($attribute['super'] && $attribute['input'] !== 'select') {
-            return true;
-        }
-
-        return false;
-    }
-
     public function getSearchkitFacetAttributes(): array
     {
         // Get the filterable attributes and category levels
         $filterableAttributes = collect($this->getFilterableAttributes())
             ->map(function ($attribute) {
-                $isNumeric = $this->isAttributeNumeric($attribute);
+                $isNumeric = ! Attribute::hasKeyword($attribute['code']);
 
                 return [
                     'attribute' => $attribute['code'],
@@ -268,7 +250,7 @@ class ConfigController
                     "rapidez::frontend.sorting.{$attribute['code']}.{$direction}",
                     trans_fallback("rapidez::frontend.{$attribute['code']}", ucfirst($attribute['code'])) . ' ' . trans_fallback("rapidez::frontend.{$direction}", $direction),
                 ),
-                'field' => $attribute['code'] . ($attribute['input'] == 'text' ? '.keyword' : ''),
+                'field' => $attribute['code'] . (Attribute::hasKeyword($attribute['code']) ? '.keyword' : ''),
                 'order' => $direction,
                 'value' => "{$index}_{$attribute['code']}_{$direction}",
                 'key'   => "_{$attribute['code']}_{$direction}",
