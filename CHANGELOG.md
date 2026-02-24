@@ -1,6 +1,21 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.10.1...4.10.1)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.10.2...4.10.2)
+## [4.10.2](https://github.com/rapidez/core/releases/tag/4.10.2) - 2026-02-24
+
+### Fixed
+
+- Remove .renditions from media url (#1178)
+- Wait max for 1s for config to load before init (#1180)
+- Check for nullish address (#1183)
+- Numeric attributes fix (#1137)
+- Empty media error fix (#1191)
+- Validate search terms (#1186)
+- Fix response typehint in boot (#1194)
+- Fix isExpired method to use correct context (#1198)
+- Fix ordering of src and v-bind:src (#1199)
+- Fixed issues during rapidez:install command (#1207)
+
 ## [4.10.1](https://github.com/rapidez/core/releases/tag/4.10.1) - 2026-01-23
 
 ### Fixed
