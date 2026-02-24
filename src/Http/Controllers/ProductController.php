@@ -4,7 +4,9 @@ namespace Rapidez\Core\Http\Controllers;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\View;
 use Rapidez\Core\Events\ProductViewEvent;
+use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Product;
 use TorMorten\Eventy\Facades\Eventy;
 
@@ -30,7 +32,6 @@ class ProductController
             'sku',
             'super_attributes',
             'children',
-            'grouped',
             'options',
             'price',
             'special_price',
@@ -38,10 +39,7 @@ class ProductController
             'images',
             'media',
             'url',
-            'in_stock',
-            'min_sale_qty',
-            'max_sale_qty',
-            'qty_increments',
+            'stock',
             'review_summary',
             'tier_prices',
 
@@ -71,7 +69,9 @@ class ProductController
         $selectedChild = $product->children->firstWhere(fn ($child) => count($selectedOptions) && collect($selectedOptions)->every(fn ($value, $code) => $child->getCustomAttribute($code)->value == $value)
         ) ?? $product;
 
-        ProductViewEvent::dispatch($product);
+        if (Rapidez::config('reports/options/enabled') && Rapidez::config('reports/options/product_view_enabled')) {
+            View::composer('rapidez::layouts.app', fn ($view) => $view->getFactory()->startPush('foot', view('rapidez::product.partials.track')));
+        }
 
         config(['frontend.product' => $data]);
 
@@ -80,5 +80,15 @@ class ProductController
         return $response
             ->setEtag(md5($response->getContent() ?? ''))
             ->setLastModified($product->updated_at);
+    }
+
+    public function track(int $productId)
+    {
+        $productModel = config('rapidez.models.product');
+
+        /** @var \Rapidez\Core\Models\Product $product */
+        $product = $productModel::findOrFail($productId);
+
+        ProductViewEvent::dispatch($product);
     }
 }

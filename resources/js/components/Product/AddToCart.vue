@@ -279,7 +279,7 @@ export default {
                 }
                 let value = option.values
                     .sort((aValue, bValue) => aValue.sort_order - bValue.sort_order)
-                    .find((value) => value.in_stock)?.option_type_id
+                    .find((value) => value.stock.is_in_stock)?.option_type_id
                 if (!value) {
                     return
                 }
@@ -339,7 +339,7 @@ export default {
             })
 
             // Remove out-of-stock products
-            children = children.filter((child) => this.product.children[child].in_stock)
+            children = children.filter((child) => this.product.children[child].stock.is_in_stock)
 
             return children
         },
@@ -363,6 +363,10 @@ export default {
             var product = this.product
 
             if (!product.super_attributes) {
+                return product
+            }
+
+            if (!('children' in this.product)) {
                 return product
             }
 
@@ -439,7 +443,7 @@ export default {
                     })
 
                     // Remove out-of-stock products
-                    matchingOrOwnChildren = matchingOrOwnChildren.filter((child) => this.product.children[child].in_stock)
+                    matchingOrOwnChildren = matchingOrOwnChildren.filter((child) => this.product.children[child].stock.is_in_stock)
 
                     // Then find all options that don't match any of these children
                     let disabled = Object.entries(this.product[superCode + '_values'])
