@@ -23,11 +23,11 @@
 
         $tierPrices = $tierPrices->filter(fn($tierPrice) => !$tierPrices->contains(fn($ref) => $ref->qty <= $tierPrice->qty && $ref->value < $tierPrice->value))
     @endphp
-    @foreach($tierPrices as $tierPrice)
+    @foreach ($tierPrices as $tierPrice)
         <div class="flex flex-col">
             <x-rapidez::input.radio
                 name="tierPrice"
-                v-on:click="addToCart.qty = {{$tierPrice->qty}}"
+                v-on:click="addToCart.qty = {{ $tierPrice->qty }}"
                 v-bind:checked="tierPrice === addToCart.currentTierPrice"
             >
                 <span>
