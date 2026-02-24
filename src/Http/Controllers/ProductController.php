@@ -3,8 +3,8 @@
 namespace Rapidez\Core\Http\Controllers;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Str;
 use Rapidez\Core\Events\ProductViewEvent;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Product;
