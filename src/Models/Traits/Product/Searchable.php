@@ -67,9 +67,6 @@ trait Searchable
             'prices',
             'url',
             'images',
-            'in_stock',
-            'min_sale_qty',
-            'qty_increments',
             'category_ids',
             ...$indexableAttributeCodes,
             ...$this->superAttributeCodes,
@@ -103,8 +100,28 @@ trait Searchable
 
         $data = $this->withCategories($data);
         $data['positions'] = $this->getPositions();
+        $data['popularity'] = $this->getPopularity();
 
         return Eventy::filter('index.' . static::getModelName() . '.data', $data, $this);
+    }
+
+    public function getPopularity(): int
+    {
+        $popularityList = Cache::driver('array')->rememberForever('product-popularity-' . config('rapidez.store'), function () {
+            $views = config('rapidez.models.product_view')::query()
+                ->groupBy('product_id')
+                ->selectRaw('COUNT(*) as views')
+                ->addSelect('product_id')
+                ->pluck('views', 'product_id');
+
+            // Create sorted list of products ordered by popularity
+            $popularityOrder = $views->sort()->keys();
+
+            // Swap keys and values to get a list of popularity keyed by product
+            return $popularityOrder->flip();
+        });
+
+        return $popularityList[$this->entity_id] ?? 0;
     }
 
     public function getPositions(): Collection
@@ -237,9 +254,6 @@ trait Searchable
                     'type' => 'double',
                 ],
                 'children' => [
-                    'type' => 'flattened',
-                ],
-                'grouped' => [
                     'type' => 'flattened',
                 ],
                 'positions' => [

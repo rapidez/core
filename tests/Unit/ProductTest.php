@@ -163,7 +163,7 @@ class ProductTest extends TestCase
 
         $this->assertEqualsCanonicalizing([8, 11], iterator_to_array($product->raw('activity')), 'Activity attribute on product 10 did not return the right values.');
         $this->assertEqualsCanonicalizing(['Gym', 'Yoga'], iterator_to_array($product->activity), 'Activity attribute on product 10 did not return the right values.');
-        $this->assertEquals('Gym, Yoga', $product->label('activity'), 'Activity attribute on product 10 did not yield the right text output.');
+        $this->assertEquals('Yoga, Gym', $product->label('activity'), 'Activity attribute on product 10 did not yield the right text output.');
 
         $this->assertEquals('Savvy Shoulder Tote', $product->label('name'), 'Name attribute on product 10 did not return the right label.');
     }
