@@ -141,5 +141,6 @@
     "Business": "Zakelijk",
     "Main menu": "Hoofdmenu",
     "Price from": "Prijs vanaf",
-    "Price to": "Prijs tot"
+    "Price to": "Prijs tot",
+    "Buy :qty for :price and save :percentage": "Koop :qty voor :price en bespaar :percentage"
 }

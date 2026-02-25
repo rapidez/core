@@ -1,6 +1,8 @@
 <script>
 import { GraphQLError } from '../../fetch'
+import { user } from '../../stores/useUser'
 import { mask, refreshMask } from '../../stores/useMask'
+import { reactive } from 'vue'
 
 export default {
     inject: {
@@ -170,6 +172,10 @@ export default {
         calculatePrices: function () {
             let price = window.productPrice(this.simpleProduct)
             let specialPrice = window.productSpecialPrice(this.simpleProduct)
+
+            if (this.currentTierPrice) {
+                price = this.currentTierPrice.value
+            }
 
             // Price additions for optionally selected options.
             price = window.sumPrices(price, this.priceAddition(price))
@@ -480,6 +486,31 @@ export default {
         refinementOptions() {
             return this.optionsFromNamedOptions(Object.entries(this.superRefinements))
         },
+
+        tierPrices() {
+            // Filter out non-matching customer group and calculate price for percentage types.
+            const tierPrices =
+                this.product?.tier_prices
+                    ?.filter?.((price) => price.all_groups || price.customer_group_id === Number(user.value?.group_id))
+                    ?.map?.((tier_price) => {
+                        const tier_price_copy = reactive({ ...tier_price })
+                        tier_price_copy.qty = tier_price_copy.qty * 1
+                        if (tier_price_copy.percentage_value === null) {
+                            tier_price_copy.value = tier_price_copy.value * 1
+                            tier_price_copy.percentage_value = Math.ceil(100 - (tier_price_copy.value * 100) / this.product.price)
+                            return tier_price_copy
+                        }
+                        tier_price_copy.percentage_value = tier_price_copy.percentage_value * 1
+                        tier_price_copy.value = this.product.price - (this.product.price * tier_price_copy.percentage_value) / 100
+                        return tier_price_copy
+                    }) ?? []
+
+            // Remove values that are not cheaper at higher quantities (or the same quantity if it's a different customer group).
+            return tierPrices.filter((price) => !tierPrices.some((ref) => ref.qty <= price.qty && ref.value < price.value))
+        },
+        currentTierPrice() {
+            return this.tierPrices.toSorted((a, b) => b.qty - a.qty).find((tierPrice) => tierPrice.qty <= this.qty)
+        },
     },
 
     watch: {
@@ -513,6 +544,16 @@ export default {
                 this.calculatePrices()
             },
             deep: true,
+        },
+        currentTierPrice: {
+            handler() {
+                this.calculatePrices()
+            },
+        },
+        tierPrices: {
+            handler() {
+                this.calculatePrices()
+            },
         },
     },
 }

@@ -4,6 +4,7 @@ namespace Rapidez\Core\Http\Controllers;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Str;
 use Rapidez\Core\Events\ProductViewEvent;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Product;
@@ -18,6 +19,7 @@ class ProductController
         /** @var \Rapidez\Core\Models\Product $product */
         $product = $productModel::query()
             ->withEventyGlobalScopes('productpage.scopes')
+            ->with(['tierPrices'])
             ->whereInAttribute('visibility', [
                 Product::VISIBILITY_IN_CATALOG,
                 Product::VISIBILITY_BOTH,
@@ -39,13 +41,19 @@ class ProductController
             'url',
             'stock',
             'review_summary',
+            'tier_prices',
 
             ...$product->superAttributeCodes,
         ];
 
         $attributes = Eventy::filter('productpage.frontend.attributes', $attributes);
+        $appends = array_filter($attributes, fn ($key) => $product->hasAnyGetMutator($key));
+        $relations = array_filter(
+            array_map(fn ($key) => Str::camel($key), $attributes),
+            fn ($key) => $product->isRelation($key)
+        );
 
-        $data = Arr::only($product->toArray(), $attributes);
+        $data = Arr::only($product->append($appends)->loadMissing($relations)->toArray(), $attributes);
 
         $queryOptions = request()->query;
         $selectedOptions = [];
