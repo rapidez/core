@@ -69,6 +69,12 @@ class ProductController
 
         $response = response()->view('rapidez::product.overview', compact('product', 'selectedChild'));
 
+        // Make sure product pages with customer
+        // group prices do not get cached.
+        if (auth('magento-customer')->user()) {
+            Eventy::filter('uncacheable.response', $response);
+        }
+
         return $response
             ->setEtag(md5($response->getContent() ?? ''))
             ->setLastModified($product->updated_at);
