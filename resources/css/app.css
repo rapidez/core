@@ -1,6 +1,123 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+@plugin 'tailwind-scrollbar-hide';
+
+@theme {
+    /*
+    Rapidez colors
+    See: https://docs.rapidez.io/5.x/theming.html#colors
+    */
+
+    --primary: #2fbc85;
+    --primary-text: var(--color-white);
+
+    --secondary: #202f60;
+    --secondary-text: var(--color-white);
+
+    --conversion: var(--color-green-500);
+    --conversion-text: var(--color-white);
+
+    --foreground-emphasis: var(--color-slate-900);
+    --foreground: var(--color-slate-800);
+    --foreground-muted: var(--color-slate-600);
+
+    --border-active: var(--color-slate-800);
+    --border-emphasis: var(--color-slate-400);
+    --border: var(--color-slate-300);
+    --border-muted: var(--color-slate-100);
+
+    --background-active: var(--color-slate-800);
+    --background-emphasis: var(--color-slate-200);
+    --background: var(--color-slate-100);
+    --background-muted: var(--color-slate-50);
+
+    --backdrop: rgba(0, 0, 0, 0.4);
+
+    /* Utilities where the Rapidez colors are used */
+
+    --color-primary: var(--primary);
+    --color-primary-text: var(--primary-text);
+
+    --color-secondary: var(--secondary);
+    --color-secondary-text: var(--secondary-text);
+
+    --color-conversion: var(--conversion);
+    --color-conversion-text: var(--conversion-text);
+
+    --text-color-emphasis: var(--foreground-emphasis);
+    --text-color-default: var(--foreground);
+    --text-color-muted: var(--foreground-muted);
+
+    --border-color-active: var(--border-active);
+    --border-color-emphasis: var(--border-emphasis);
+    --border-color-default: var(--border);
+    --border-color-muted: var(--border-muted);
+
+    --ring-color-active: var(--border-active);
+    --ring-color-emphasis: var(--border-emphasis);
+    --ring-color-default: var(--border);
+    --ring-color-muted: var(--border-muted);
+
+    --outline-color-active: var(--border-active);
+    --outline-color-emphasis: var(--border-emphasis);
+    --outline-color-default: var(--border);
+    --outline-color-muted: var(--border-muted);
+
+    --background-color-active: var(--background-active);
+    --background-color-emphasis: var(--background-emphasis);
+    --background-color-default: var(--background);
+    --background-color-muted: var(--background-muted);
+
+    --z-index-header: 100;
+    --z-index-header-autocomplete-overlay: 10;
+    --z-index-header-autocomplete: 20;
+    --z-index-header-dropdown: 30;
+    --z-index-header-minicart: 30;
+    --z-index-header-autocomplete-button: 30;
+
+    --z-index-notifications: 110;
+
+    --z-index-slideover: 120;
+    --z-index-slideover-overlay: 10;
+    --z-index-slideover-sidebar: 20;
+
+    --z-index-popup: 130;
+    --z-index-popup-actions: 10;
+
+    --z-index-cookie: 140;
+
+    --animate-loading: loading 1s infinite;
+
+    @keyframes loading {
+        0% {
+            left: 0%;
+            width: 0%;
+        }
+        50% {
+            left: 0%;
+            width: 100%;
+        }
+        100% {
+            left: 100%;
+            width: 0%;
+        }
+    }
+}
+
+@utility container {
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+}
+
+@utility text {
+    color: var(--text-color-default);
+}
+
+@utility bg {
+    background-color: var(--background-color-default);
+}
 
 [v-cloak] {
     display: none;
