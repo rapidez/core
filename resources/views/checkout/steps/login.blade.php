@@ -11,6 +11,7 @@
                 type="email"
                 v-model="checkoutLogin.email"
                 v-bind:disabled="loggedIn"
+                v-on:change="() => checkoutLogin.go()"
                 required
             />
         </label>
@@ -62,5 +63,13 @@
                 @lang('Create an account')
             </x-rapidez::input.checkbox>
         </template>
+        @if ($onestep ?? false)
+            <template v-if="!loggedIn && (checkoutLogin.createAccount || !checkoutLogin.isEmailAvailable)">
+                <x-rapidez::button.conversion v-on:click="checkoutLogin.go" type="button" formnovalidate data-testid="login" class="mt-3" loader>
+                    <template v-if="checkoutLogin.createAccount && checkoutLogin.isEmailAvailable">@lang('Register')</template>
+                    <template v-else>@lang('Login')</template>
+                </x-rapidez::button.conversion>
+            </template>
+        @endif
     </fieldset>
 </checkout-login>
