@@ -77,6 +77,7 @@ export default {
         running: false,
         initialVariables: {},
         data: {},
+        prevData: {},
         mutate: () => null,
     }),
 
@@ -117,6 +118,23 @@ export default {
                 deepMerge(this.data, diff)
             }
         },
+
+        data: {
+            handler() {
+                let diff = objectDiff(this.prevData, this.data)
+
+                // Remove ignored variables
+                diff = Object.fromEntries(Object.entries(diff).filter(([key, _]) => !['uid'].includes(key)))
+
+                // Only send event when changes are detected
+                if (Object.keys(diff).length > 0) {
+                    this.changeFn(this)
+                }
+
+                deepMerge(this.prevData, JSON.parse(JSON.stringify(diff)))
+            },
+            deep: true,
+        },
     },
 
     mounted() {
@@ -130,6 +148,10 @@ export default {
     },
 
     methods: {
+        changeFn: useDebounceFn((self) => {
+            self.$emit('change', { target: self.$el, mutate: self.mutate, variables: self.variables })
+        }, 500),
+
         async mutateFn() {
             if (this.running) {
                 return
