@@ -1,4 +1,5 @@
 <script>
+import { SessionExpired } from '../../fetch'
 import { cart, setGuestEmailOnCart } from '../../stores/useCart'
 import { isEmailAvailable, login, register, user } from '../../stores/useUser'
 import { useDebounceFn } from '@vueuse/core'
@@ -70,7 +71,15 @@ export default {
         async handleLogin() {
             return await login(this.email, this.password)
                 .then(() => true)
-                .catch((error) => {
+                .catch(async (error) => {
+                    if (error instanceof SessionExpired) {
+                        let data = await error.response.json()
+                        if (data?.errors?.[0]?.message) {
+                            Notify(data.errors[0].message, 'error')
+                            return false
+                        }
+                    }
+
                     if (error.message) {
                         Notify(error.message, 'error')
                     }
