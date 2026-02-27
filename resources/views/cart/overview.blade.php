@@ -37,7 +37,9 @@
             />
         </div>
 
-        <div v-if="!hasCart && !$root.loading" v-cloak>@lang('You don\'t have anything in your cart.')</div>
-        <div v-if="$root.loading">@lang('Loading')...</div>
+        <div v-if="!hasCart && !loading" v-cloak>
+            @include('rapidez::cart.empty')
+        </div>
+        <div v-if="loading">@lang('Loading')...</div>
     </div>
 @endsection
