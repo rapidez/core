@@ -40,7 +40,7 @@ class WithProductChildrenScope implements Scope
                     "in_stock", children_stock.is_in_stock,
                     {$stockQty}
                     "media", (
-                        SELECT JSON_ARRAYAGG(JSON_OBJECT("value", catalog_product_entity_media_gallery.value, "position", catalog_product_entity_media_gallery_value.position, "media_type", catalog_product_entity_media_gallery.media_type, "video_url", null))
+                        SELECT JSON_ARRAYAGG(JSON_OBJECT("image", catalog_product_entity_media_gallery.value, "position", catalog_product_entity_media_gallery_value.position, "media_type", catalog_product_entity_media_gallery.media_type, "video_url", null))
                         FROM catalog_product_entity_media_gallery_value
                         LEFT JOIN catalog_product_entity_media_gallery ON catalog_product_entity_media_gallery.value_id = catalog_product_entity_media_gallery_value.value_id
                         WHERE catalog_product_entity_media_gallery_value.entity_id = children.entity_id
