@@ -1,24 +1,3 @@
-@import 'nm/tailwindcss/index.css' source(none);
-
-@plugin 'nm/@tailwindcss/forms';
-@plugin 'nm/@tailwindcss/typography';
-@plugin 'nm/tailwind-scrollbar-hide';
-
-@source '../**/*.blade.php';
-@source '../**/*.vue';
-
-@source '../../vendor/rapidez/**/*.blade.php';
-@source '../../vendor/rapidez/**/*.vue';
-
-@source '../../config/rapidez/frontend.php';
-@source '../../vendor/rapidez/core/config/rapidez/frontend.php';
-
-@source '../../config/rapidez/menu.php';
-@source '../../vendor/rapidez/menu/config/rapidez/menu.php';
-
-@source '../../storage/framework/views/*.php';
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-
 @theme {
     /*
     Rapidez colors
