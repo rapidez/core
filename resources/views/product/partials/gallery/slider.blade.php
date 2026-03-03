@@ -8,7 +8,7 @@
             v-if="media[active].media_type === 'image'"
             {{-- src should always be above v-bind:src --}}
             @if (count($selectedChild->media))
-                src="{{ url('/storage/'.config('rapidez.store').'/resizes/400/magento/catalog/product'.Arr::first($selectedChild->media)['image'].'.webp') }}"
+                src="{{ url('/storage/'.config('rapidez.store').'/resizes/400/magento/catalog/product'.data_get($selectedChild, 'media.{first}.image').'.webp') }}"
             @endif
             v-bind:src="window.url('/storage/{{ config('rapidez.store') }}/resizes/400/magento/catalog/product' + media[active].image + '.webp')"
             alt="{{ $product->name }}"
