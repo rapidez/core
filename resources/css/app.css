@@ -1,8 +1,8 @@
-@import 'tailwindcss' source(none);
+@import 'nm/tailwindcss/index.css' source(none);
 
-@plugin '@tailwindcss/forms';
-@plugin '@tailwindcss/typography';
-@plugin 'tailwind-scrollbar-hide';
+@plugin 'nm/@tailwindcss/forms';
+@plugin 'nm/@tailwindcss/typography';
+@plugin 'nm/tailwind-scrollbar-hide';
 
 @source '../**/*.blade.php';
 @source '../**/*.vue';
