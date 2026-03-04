@@ -28,6 +28,6 @@ class AttributeOptionsScope implements Scope
                     ->whereIn('eav_attribute_option_value.store_id', [0, config('rapidez.store')]);
             })
             ->groupBy($model->qualifyColumn('value_id'), 'eav_attribute_option_value.store_id')
-            ->orderBy("eav_attribute_option_value.store_id");
+            ->orderBy('eav_attribute_option_value.store_id');
     }
 }
