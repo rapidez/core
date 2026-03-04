@@ -3,32 +3,30 @@
 namespace Rapidez\Core\Models\Traits\Product;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Rapidez\Core\Models\Relations\HasManyCallback;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Rapidez\Core\Models\Traits\HasToArrayData;
-use Rapidez\Core\Models\Traits\UsesCallbackRelations;
 
 trait HasSuperAttributes
 {
     use HasToArrayData;
-    use UsesCallbackRelations;
 
     /**
      * @deprecated please use superAttributes
      */
-    public function super_attributes(): HasManyCallback
+    public function super_attributes(): HasMany
     {
         return $this->superAttributes();
     }
 
-    public function superAttributes(): HasManyCallback
+    public function superAttributes(): HasMany
     {
-        return $this->hasManyCallback(
-            fn ($result) => $result->keyBy('attribute_id'),
+        return $this->hasMany(
             config('rapidez.models.super_attribute'),
             'product_id',
         )
             ->orderBy('eav_attribute.attribute_code')
-            ->orderBy('catalog_product_super_attribute.position');
+            ->orderBy('catalog_product_super_attribute.position')
+            ->afterQuery(fn ($result) => $result->keyBy('attribute_id'));
     }
 
     public function superAttributeValues(): Attribute

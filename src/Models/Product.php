@@ -11,7 +11,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Rapidez\Core\Facades\Rapidez;
-use Rapidez\Core\Models\Relations\BelongsToManyCallback;
 use Rapidez\Core\Models\Scopes\Product\EnabledScope;
 use Rapidez\Core\Models\Scopes\Product\ForCurrentWebsiteScope;
 use Rapidez\Core\Models\Scopes\Product\SupportedScope;
@@ -20,7 +19,6 @@ use Rapidez\Core\Models\Traits\HasCustomAttributes;
 use Rapidez\Core\Models\Traits\Product\HasProductLinks;
 use Rapidez\Core\Models\Traits\Product\HasSuperAttributes;
 use Rapidez\Core\Models\Traits\Product\Searchable;
-use Rapidez\Core\Models\Traits\UsesCallbackRelations;
 
 class Product extends Model
 {
@@ -29,7 +27,6 @@ class Product extends Model
     use HasProductLinks;
     use HasSuperAttributes;
     use Searchable;
-    use UsesCallbackRelations;
 
     public const VISIBILITY_NOT_VISIBLE = 1;
     public const VISIBILITY_IN_CATALOG = 2;
@@ -121,25 +118,19 @@ class Product extends Model
         )->shouldCache();
     }
 
-    public function parents(): BelongsToManyCallback
+    public function parents(): BelongsToMany
     {
-        return $this->belongsToManyCallback(
-            fn ($results) => $results->keyBy('entity_id'),
+        return $this->belongsToMany(
             config('rapidez.models.product'),
             'catalog_product_relation',
             'child_id', 'parent_id',
-        );
+        )->afterQuery(fn ($results) => $results->keyBy('entity_id'));
     }
 
-    public function children(): BelongsToManyCallback
+    public function children(): BelongsToMany
     {
         return $this
-            ->belongsToManyCallback(
-                function ($results) {
-                    return $results->keyBy('entity_id')
-                        // Remove expensive appends from children
-                        ->removeAppends(['category_ids']);
-                },
+            ->belongsToMany(
                 config('rapidez.models.product'),
                 'catalog_product_relation',
                 'parent_id', 'child_id'
@@ -150,6 +141,10 @@ class Product extends Model
                 'gallery',
                 'prices',
             ])
+            ->afterQuery(function ($results) {
+                // Remove expensive appends from children
+                return $results->keyBy('entity_id')->removeAppends(['category_ids']);
+            })
             ->withEventyGlobalScopes('product.child.scopes');
     }
 
