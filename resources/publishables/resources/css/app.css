@@ -1,6 +1,6 @@
-@import "../../vendor/rapidez/core/resources/css/app.css";
-@import "../../vendor/rapidez/blade-components/resources/css/package.css";
-@import "./luma.css";
+@import '../../vendor/rapidez/core/resources/css/app.css';
+@import '../../vendor/rapidez/blade-components/resources/css/package.css';
+@import './luma.css';
 
 @import 'tailwindcss' source(none);
 
