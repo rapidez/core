@@ -12,6 +12,7 @@ class AttributeOptionsScope implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
+        $store = config('rapidez.store');
         $builder
             ->select([
                 'eav_attribute.*',
@@ -24,6 +25,7 @@ class AttributeOptionsScope implements Scope
                     ->where(DB::raw("FIND_IN_SET(eav_attribute_option.option_id, {$model->qualifyColumn('value')})"), '<>', DB::raw(0));
             })
             ->leftJoin('eav_attribute_option_value', 'eav_attribute_option_value.option_id', 'eav_attribute_option.option_id')
-            ->groupBy($model->qualifyColumn('value_id'));
+            ->groupBy($model->qualifyColumn('value_id'), 'eav_attribute_option_value.store_id')
+            ->orderByRaw("FIELD(eav_attribute_option_value.store_id,0,$store)");
     }
 }
