@@ -90,11 +90,6 @@ trait Searchable
             return Arr::some($wildcardAttributeCodes, fn (string $regex) => preg_match($regex, $attributeName));
         }, ARRAY_FILTER_USE_KEY);
 
-        // TODO: Maybe we can handle this keying directly
-        // on the relationship as also proposed here:
-        // https://github.com/rapidez/core/pull/1062
-        $data['prices'] = (object) Arr::keyBy($data['prices'], 'customer_group_id');
-
         $data['store'] = config('rapidez.store');
         $data['super_attributes'] = $this->superAttributes->keyBy('attribute_id');
 

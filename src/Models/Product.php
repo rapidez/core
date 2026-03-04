@@ -285,7 +285,7 @@ class Product extends Model
     // We're not applying the customer group here so
     // all the prices for customer groups are
     // returned for the indexer.
-    public function prices(): hasMany
+    public function prices(): HasMany
     {
         // TODO: Double check the prices with the indexer.
         // We should index all customer group prices
@@ -298,7 +298,8 @@ class Product extends Model
                 config('rapidez.models.product_price', ProductPrice::class),
                 'entity_id',
                 'entity_id'
-            );
+            )
+            ->afterQuery(fn ($results) => $results->keyBy('customer_group_id'));
     }
 
     protected function specialPrice(): Attribute
