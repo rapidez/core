@@ -91,7 +91,7 @@ trait Searchable
         }, ARRAY_FILTER_USE_KEY);
 
         $data['store'] = config('rapidez.store');
-        $data['prices'] = $this->prices->keyBy('customer_group_id');
+        $data['prices'] = (object) Arr::keyBy($data['prices'], 'customer_group_id');
 
         $data = $this->withCategories($data);
         $data['positions'] = $this->getPositions();
