@@ -25,8 +25,7 @@ trait HasSuperAttributes
             'product_id',
         )
             ->orderBy('eav_attribute.attribute_code')
-            ->orderBy('catalog_product_super_attribute.position')
-            ->afterQuery(fn ($result) => $result->keyBy('attribute_id'));
+            ->orderBy('catalog_product_super_attribute.position');
     }
 
     public function superAttributeValues(): Attribute

@@ -290,7 +290,7 @@ class Product extends Model
         // TODO: Double check the prices with the indexer.
         // We should index all customer group prices
         // as we can only verify that on the
-        // frontend. But currenlty this
+        // frontend. But currently this
         // is also loading all prices
         // for just a product page.
         return $this
@@ -298,8 +298,7 @@ class Product extends Model
                 config('rapidez.models.product_price', ProductPrice::class),
                 'entity_id',
                 'entity_id'
-            )
-            ->afterQuery(fn ($results) => $results->keyBy('customer_group_id'));
+            );
     }
 
     protected function specialPrice(): Attribute

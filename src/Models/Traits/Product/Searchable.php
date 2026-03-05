@@ -91,7 +91,7 @@ trait Searchable
         }, ARRAY_FILTER_USE_KEY);
 
         $data['store'] = config('rapidez.store');
-        $data['super_attributes'] = $this->superAttributes->keyBy('attribute_id');
+        $data['prices'] = $this->prices->keyBy('customer_group_id');
 
         $data = $this->withCategories($data);
         $data['positions'] = $this->getPositions();
