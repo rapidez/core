@@ -3,7 +3,7 @@
         <x-rapidez::input.radio
             name="tierPrice"
             v-on:click="addToCart.qty = tierPrice.qty"
-            v-bind:checked="addToCart.currentTierPrice.value_id === tierPrice.value_id"
+            v-bind:checked="addToCart.currentTierPrice?.value_id === tierPrice.value_id"
         >
             <span
                 v-text="'@lang('Buy :qty for :price and save :percentage')'.replace(':qty', tierPrice.qty).replace(':price', window.price(tierPrice.value)).replace(':percentage', tierPrice.percentage_value + '%')"
@@ -28,7 +28,7 @@
             <x-rapidez::input.radio
                 name="tierPrice"
                 v-on:click="addToCart.qty = {{ $tierPrice->qty }}"
-                v-bind:checked="addToCart.currentTierPrice.value_id === tierPrice.value_id"
+                v-bind:checked="addToCart.currentTierPrice?.value_id === tierPrice.value_id"
             >
                 <span>
                     @lang('Buy :qty for :price and save :percentage', ['qty' => $tierPrice->qty * 1, 'price' => price($tierPrice->value  * 1), 'percentage' => ($tierPrice->percentage_value * 1) . '%'])
