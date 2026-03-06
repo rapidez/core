@@ -2,10 +2,12 @@
 
 namespace Rapidez\Core\Models\Traits;
 
+use Elastic\Elasticsearch\Client as ElasticsearchClient;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable as ScoutSearchable;
+use OpenSearch\Client as OpenSearchClient;
 use Rapidez\Core\Index\WithSynonyms;
 use Rapidez\ScoutElasticSearch\Creator\Helper;
 use Rapidez\ScoutElasticSearch\Creator\ProxyClient;
@@ -95,6 +97,7 @@ trait Searchable
         $index = (new self)->searchableAs();
 
         return Cache::rememberForever('elastic_mappings_' . $index, function () use ($index) {
+            /** @var ElasticsearchClient|OpenSearchClient $client */
             $client = resolve(ProxyClient::class);
 
             $exists = Helper::convertToBool($client->indices()->exists(['index' => $index]));
