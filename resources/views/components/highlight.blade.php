@@ -2,5 +2,5 @@
 
 <span
     {{ $attributes }}
-    v-html="htmlDecode({{ $item }}?._highlightResult?.{{ $attribute }}?.value || {{ $item }}.{{ $attribute }})"
+    v-html="{{ $item }}?._highlightResult?.{{ $attribute }}?.value ? htmlDecode({{ $item }}?._highlightResult?.{{ $attribute }}?.value) : {{ $item }}.{{ $attribute }}"
 ></span>
