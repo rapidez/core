@@ -131,7 +131,7 @@ export default {
             let scrollPosition = this.vertical ? event.target.scrollTop : event.target.scrollLeft
             if (scrollPosition < this.sliderStart) {
                 this.slider.scrollTo({ [this.vertical ? 'top' : 'left']: scrollPosition + this.sliderStart, behavior: 'instant' })
-            } else if (scrollPosition > this.sliderEnd) {
+            } else if (scrollPosition >= this.sliderEnd) {
                 this.slider.scrollTo({ [this.vertical ? 'top' : 'left']: scrollPosition - this.sliderStart, behavior: 'instant' })
             }
         },
