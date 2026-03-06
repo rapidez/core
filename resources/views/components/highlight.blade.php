@@ -2,5 +2,5 @@
 
 <span
     {{ $attributes }}
-    v-html="stripHtmlTags(htmlDecode({{ $item }}?._highlightResult?.{{ $attribute }}?.value || {{ $item }}.{{ $attribute }}))"
+    v-html="htmlDecode({{ $item }}?._highlightResult?.{{ $attribute }}?.value || {{ $item }}.{{ $attribute }})"
 ></span>

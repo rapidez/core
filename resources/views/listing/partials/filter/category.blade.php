@@ -23,7 +23,7 @@
                                 }"
                                 v-on:click.exact.left.prevent="refine(item.value)"
                             >
-                                @{{ item.label }}
+                                <span v-html="item.label"></span>
                                 <span class="text-xs">(@{{ item.count }})</span>
                             </a>
 
