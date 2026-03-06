@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable as ScoutSearchable;
 use Rapidez\Core\Index\WithSynonyms;
+use Rapidez\ScoutElasticSearch\Creator\Helper;
 use Rapidez\ScoutElasticSearch\Creator\ProxyClient;
 use TorMorten\Eventy\Facades\Eventy;
 
@@ -96,12 +97,12 @@ trait Searchable
         return Cache::rememberForever('elastic_mappings_' . $index, function () use ($index) {
             $client = resolve(ProxyClient::class);
 
-            $exists = $client->indices()->exists(['index' => $index])->asBool();
+            $exists = Helper::convertToBool($client->indices()->exists(['index' => $index]));
             if (! $exists) {
                 return [];
             }
 
-            $data = $client->indices()->get(['index' => $index])->asArray();
+            $data = Helper::convertToArray($client->indices()->get(['index' => $index]));
 
             return Arr::first($data)['mappings']['properties'] ?? [];
         });
