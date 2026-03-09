@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core\Models;
 
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Cache;
 
 class EavAttribute extends Model
@@ -17,12 +18,27 @@ class EavAttribute extends Model
 
     protected $primaryKey = 'attribute_id';
 
+    protected static function booted(): void
+    {
+        static::addGlobalScope('scoped_label', function ($builder) {
+            $builder
+                ->addSelect(['frontend_label' => fn (Builder $q) => $q->selectRaw('COALESCE(eav_attribute_label.value, frontend_label, eav_attribute.attribute_code)')])
+                ->leftJoin('eav_attribute_label', function ($join) {
+                    $join->on('eav_attribute.attribute_id', '=', 'eav_attribute_label.attribute_id')
+                        ->where('eav_attribute_label.store_id', config('rapidez.store'));
+                });
+        });
+    }
+
     public static function getCachedCatalog()
     {
         return Cache::memo()->rememberForever('catalog_eav_attributes', function () {
             return EavAttribute::query()
+                ->select('*')
                 ->leftJoin('catalog_eav_attribute', 'catalog_eav_attribute.attribute_id', '=', 'eav_attribute.attribute_id')
                 ->where('entity_type_id', self::ENTITY_TYPE_CATALOG_PRODUCT)
+                ->orderBy('position')
+                ->orderBy('eav_attribute.attribute_id')
                 ->get();
         });
     }
@@ -31,8 +47,11 @@ class EavAttribute extends Model
     {
         return Cache::memo()->rememberForever('customer_eav_attributes', function () {
             return EavAttribute::query()
+                ->select('*')
                 ->leftJoin('customer_eav_attribute', 'customer_eav_attribute.attribute_id', '=', 'eav_attribute.attribute_id')
                 ->where('entity_type_id', self::ENTITY_TYPE_CUSTOMER)
+                ->orderBy('sort_order')
+                ->orderBy('eav_attribute.attribute_id')
                 ->get();
         });
     }

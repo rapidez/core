@@ -67,9 +67,6 @@ trait Searchable
             'prices',
             'url',
             'images',
-            'in_stock',
-            'min_sale_qty',
-            'qty_increments',
             'category_ids',
             ...$indexableAttributeCodes,
             ...$this->superAttributeCodes,
@@ -257,9 +254,6 @@ trait Searchable
                     'type' => 'double',
                 ],
                 'children' => [
-                    'type' => 'flattened',
-                ],
-                'grouped' => [
                     'type' => 'flattened',
                 ],
                 'positions' => [

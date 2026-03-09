@@ -1,6 +1,39 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0-alpha.9...5.0.0-alpha.9)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0-beta.1...5.0.0-beta.1)
+## [5.0.0-beta.1](https://github.com/rapidez/core/releases/tag/5.0.0-beta.1) - 2026-02-24
+
+### Changed
+
+- Use joins for attribute option values instead of a relation (#1203)
+- Check ES types for keyword instead of guessing (#1201)
+- Improved rapidez/statamic compatibility (#1175)
+- Track products views with full page caching (#1202)
+- Get popular products from product views instead of reviews (#1171)
+
+### Removed
+
+- Removed the backwards compatibility accessors (#1200)
+
+### Fixed
+
+- Check for nullish address (#1182)
+- Re-introduce category_ids (#1184)
+- Numeric attributes fix (#1138)
+- Fix stock minSaleQty (#1124)
+- Empty media error fix (#1190)
+- Related products and upsells fix (#1189)
+- Reduced product and child data sizes (#1188)
+- Validate search terms (#1185)
+- Products in categories fix (#1193)
+- Fix response typehint in boot (#1195)
+- Restored theme functionality (#1196)
+- Fix isExpired method to use correct context (#1197)
+- Fixed sorting and label localization for specifications (#1204)
+- Fix the categories filter not showing (#1208)
+- Fixed issues during rapidez:install command (#1206)
+- Make custom attribute value available for attribute casts (#1127)
+
 ## [5.0.0-alpha.9](https://github.com/rapidez/core/releases/tag/5.0.0-alpha.9) - 2026-02-03
 
 ### Fixed

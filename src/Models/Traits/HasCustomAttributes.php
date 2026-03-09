@@ -98,7 +98,7 @@ trait HasCustomAttributes
         $q = fn ($builder) => $builder->attributeHas(
             $attributeCode,
             fn ($query) => $query
-                ->$method('value', ...$args)
+                ->$method($query->qualifyColumn('value'), ...$args)
                 ->where($this->getCustomAttributeCode(), $attributeCode)
         );
 
@@ -248,5 +248,10 @@ trait HasCustomAttributes
     public function label(string $key): ?string
     {
         return $this->getCustomAttribute($key)?->label ?? null;
+    }
+
+    protected function getAttributeFromArray($key)
+    {
+        return parent::getAttributeFromArray($key) ?? $this->getCustomAttribute($key);
     }
 }

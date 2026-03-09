@@ -61,8 +61,8 @@ document.addEventListener('vue:loaded', function (event) {
                 render() {
                     return this.$slots.default(this)
                 },
-                delay: 0,
             }),
+            delay: 0,
         }),
     )
     if (import.meta.env.VITE_DISABLE_DOUBLE_CLICK_FIX !== 'true') {

@@ -8,7 +8,6 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
@@ -28,6 +27,7 @@ use Rapidez\Core\Commands\InstallCommand;
 use Rapidez\Core\Commands\InstallTestsCommand;
 use Rapidez\Core\Commands\UpdateIndexCommand;
 use Rapidez\Core\Commands\ValidateCommand;
+use Rapidez\Core\Events\IndexStoreAfterEvent;
 use Rapidez\Core\Events\ProductViewEvent;
 use Rapidez\Core\Facades\Rapidez as RapidezFacade;
 use Rapidez\Core\Http\Controllers\Fallback\CmsPageController;
@@ -43,9 +43,11 @@ use Rapidez\Core\Listeners\Healthcheck\ModelsHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\OpensearchHealthcheck;
 use Rapidez\Core\Listeners\ReportProductView;
 use Rapidez\Core\Listeners\UpdateLatestIndexDate;
+use Rapidez\Core\Listeners\WarmProductMappings;
 use Rapidez\Core\Models\Model;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use TorMorten\Eventy\Facades\Eventy;
 
@@ -261,6 +263,8 @@ class RapidezServiceProvider extends ServiceProvider
     protected function bootListeners(): self
     {
         Event::listen(ProductViewEvent::class, ReportProductView::class);
+        Event::listen(IndexStoreAfterEvent::class, WarmProductMappings::class);
+
         ModelsHealthcheck::register();
         MagentoSettingsHealthcheck::register();
         ElasticsearchHealthcheck::register();
@@ -404,7 +408,7 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function bootUncacheable(): static
     {
-        Eventy::addFilter('uncacheable.response', function (Response $response) {
+        Eventy::addFilter('uncacheable.response', function (SymfonyResponse $response) {
             $response->setPrivate();
 
             return $response;
@@ -446,7 +450,7 @@ class RapidezServiceProvider extends ServiceProvider
             return $this;
         }
 
-        $path = config('rapidez.frontend.theme', false);
+        $path = config('rapidez.stores.' . request()->server('MAGE_RUN_CODE', request()->has('_store') && ! app()->isProduction() ? request()->get('_store') : 'default') . '.frontend.theme', config('rapidez.frontend.theme', false));
 
         if (! $path) {
             return $this;

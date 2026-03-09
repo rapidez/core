@@ -6,6 +6,8 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 use Rapidez\Core\Events\IndexAfterEvent;
 use Rapidez\Core\Events\IndexBeforeEvent;
+use Rapidez\Core\Events\IndexStoreAfterEvent;
+use Rapidez\Core\Events\IndexStoreBeforeEvent;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Traits\Searchable;
 use Rapidez\ScoutElasticSearch\Console\Commands\ImportCommand;
@@ -35,6 +37,7 @@ class IndexCommand extends Command
 
         foreach ($stores as $store) {
             Rapidez::setStore($store);
+            IndexStoreBeforeEvent::dispatch($this, config('rapidez.store'));
 
             $this->line('Store: ' . $store['name']);
 
@@ -55,6 +58,8 @@ class IndexCommand extends Command
                     'searchable' => $model,
                 ]);
             }
+
+            IndexStoreAfterEvent::dispatch($this, config('rapidez.store'));
         }
 
         IndexAfterEvent::dispatch($this);

@@ -4,9 +4,8 @@
     @attributes(['root-path' => $rootPath?->join(' > ')])
     show-more
     :limit="6"
-    v-slot="{ items, refine, createURL, isShowingMore, toggleShowMore, canToggleShowMore }"
 >
-    <template>
+    <template v-slot="{ items, refine, createURL, isShowingMore, toggleShowMore, canToggleShowMore }">
         <x-rapidez::accordion.filter v-show="items.length" canToggleShowMore>
             <x-slot:label>
                 @lang('Category')
