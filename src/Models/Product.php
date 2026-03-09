@@ -351,7 +351,7 @@ class Product extends Model
                 ->sortByDesc(fn ($category) => substr_count($category->path, '/'))
                 ->first();
 
-            return $longestPath->parentcategories;
+            return $longestPath?->parentcategories ?? collect();
         })->shouldCache();
     }
 }
