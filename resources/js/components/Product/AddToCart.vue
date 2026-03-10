@@ -385,7 +385,8 @@ export default {
             let selectedOptions = []
 
             Object.entries(this.options).forEach(([optionId, optionValue]) => {
-                selectedOptions.push(btoa('configurable/' + optionId + '/' + optionValue))
+                let attributeId = this.product.super_attributes[optionId].attribute_id
+                selectedOptions.push(btoa('configurable/' + attributeId + '/' + optionValue))
             })
 
             Object.entries(this.customSelectedOptions).forEach(([optionId, optionValues]) => {
