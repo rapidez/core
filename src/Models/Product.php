@@ -327,14 +327,15 @@ class Product extends Model
     {
         return Attribute::get(function (): Collection {
             $tierPrices = $this->tierPrices
-                ->filter(fn($tierPrice) => $tierPrice->all_groups && $tierPrice->qty > 1)
+                ->filter(fn ($tierPrice) => $tierPrice->all_groups && $tierPrice->qty > 1)
                 ->map(function ($tierPrice) {
                     $tierPrice->percentage_value ??= ceil(100 - ($tierPrice->value * 100) / $this->price);
                     $tierPrice->value = $tierPrice->value > 0 ? $tierPrice->value * 1 : $this->price - ($this->price * $tierPrice->percentage_value) / 100;
+
                     return $tierPrice;
                 });
 
-            return $tierPrices->filter(fn($tierPrice) => !$tierPrices->contains(fn($ref) => $ref->qty <= $tierPrice->qty && $ref->value < $tierPrice->value));
+            return $tierPrices->filter(fn ($tierPrice) => ! $tierPrices->contains(fn ($ref) => $ref->qty <= $tierPrice->qty && $ref->value < $tierPrice->value));
         });
     }
 
