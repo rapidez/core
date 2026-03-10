@@ -47,12 +47,13 @@ class ProductController
         ];
 
         $attributes = Eventy::filter('productpage.frontend.attributes', $attributes);
+        // Any attributes added to $attributes that have a get mutator should be appended to the model, and any attributes that are relations should be loaded.
+        // Otherwise they won't be included in the $data array and thus not available on the frontend.
         $appends = array_filter($attributes, fn ($key) => $product->hasAnyGetMutator($key));
         $relations = array_filter(
             array_map(fn ($key) => Str::camel($key), $attributes),
             fn ($key) => $product->isRelation($key)
         );
-
         $data = Arr::only($product->append($appends)->loadMissing($relations)->toArray(), $attributes);
 
         $queryOptions = request()->query;

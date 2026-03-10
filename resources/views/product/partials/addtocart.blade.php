@@ -22,10 +22,10 @@
 
             <div class="flex flex-wrap items-center gap-3">
                 <div>
-                    <div data-testid="pdp-price" class="text-2xl font-bold" v-txt="price(addToCart.specialPrice || addToCart.price)">
+                    <div data-testid="price" class="text-2xl font-bold" v-txt="price(addToCart.specialPrice || addToCart.price)">
                         {{ price($product->special_price ?: $product->price) }}
                     </div>
-                    <div data-testid="pdp-oldprice" class="text-lg text-muted line-through" v-if="addToCart.specialPrice" v-txt="price(addToCart.price)">
+                    <div data-testid="oldprice" class="text-lg text-muted line-through" v-if="addToCart.specialPrice" v-txt="price(addToCart.price)">
                         {{ $product->special_price ? price($product->price) : '' }}
                     </div>
                 </div>
