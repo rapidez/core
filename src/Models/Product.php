@@ -340,10 +340,18 @@ class Product extends Model
     protected function breadcrumbCategories(): Attribute
     {
         return Attribute::get(function (): Collection {
-            return $this->categoryProducts
+            $this->loadMissing('categoryProducts');
+
+            $categories = $this->categoryProducts
                 ->where('category_id', '!=', config('rapidez.root_category_id'))
                 ->pluck('category')
                 ->whereNotNull();
+
+            $longestPath = $categories
+                ->sortByDesc(fn ($category) => substr_count($category->path, '/'))
+                ->first();
+
+            return $longestPath?->parentcategories ?? collect();
         })->shouldCache();
     }
 }
