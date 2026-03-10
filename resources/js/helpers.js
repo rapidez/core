@@ -17,7 +17,11 @@ window.price = function (value, extra = {}) {
 }
 
 window.productPrice = function (product) {
-    return product.price
+    let groupId = user?.value?.group_id ?? 0
+    // Tier price only gets set if there is a specific price for the current group id with quantity 0 set
+    let price = product.prices?.[groupId]?.tier_price ? product.prices[groupId].tier_price : product.price
+
+    return price
 }
 
 window.productSpecialPrice = function (product) {
