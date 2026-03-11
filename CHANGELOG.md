@@ -1,6 +1,20 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.10.2...4.10.2)
+[Unreleased changes](https://github.com/rapidez/core/compare/...4.11.0)
+## [4.11.0](https://github.com/rapidez/core/releases/tag/4.11.0) - 2026-03-10
+
+### Changed
+
+- Get popular products from product views instead of reviews (#1172)
+
+### Fixed
+
+- Change images to media on children (#1212)
+- Product children media query fix (#1213)
+- Fix scrollend condition for slider bounds (#1215)
+- Sort media on child product images (#1217)
+- Use data_get for media->first()->image (#1218)
+
 ## [4.10.2](https://github.com/rapidez/core/releases/tag/4.10.2) - 2026-02-24
 
 ### Fixed
