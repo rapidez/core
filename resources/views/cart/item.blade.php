@@ -27,7 +27,7 @@
                             @lang('This product is out of stock, remove it to continue your order.')
                         </div>
                     </a>
-                    <div class="*:border-r last:*:border-r-0 *:px-2 *:mb-1.5 *:leading-3 -mx-2 flex flex-wrap text-sm mb-1.5 text-muted mt-1.5">
+                    <div class="*:border-r *:last:border-r-0 *:px-2 *:mb-1.5 *:leading-3 -mx-2 flex flex-wrap text-sm mb-1.5 text-muted mt-1.5">
                         <div v-for="option in item.configurable_options">
                             @{{ option.option_label }}: @{{ option.value_label }}
                         </div>

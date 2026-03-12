@@ -1,18 +1,18 @@
 <div class="px-5 py-10" data-testid="listing-item">
     <add-to-cart v-bind:product="item" v-slot="addToCart" v-cloak>
-        <div class="group relative flex flex-1 flex-col rounded bg-white h-full">
+        <div class="group relative flex flex-1 flex-col rounded-sm bg-white h-full">
             <a :href="url(addToCart.productUrl)" v-on:click="sendEvent('click', item, 'Hit Clicked')" class="block mb-auto">
                 <img
                     v-if="addToCart.currentThumbnail"
                     :src="url('/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + addToCart.currentThumbnail + '.webp')"
-                    class="mb-3 h-48 w-full rounded-t object-contain"
+                    class="mb-3 h-48 w-full rounded-t-sm object-contain"
                     :alt="item.name"
                     :loading="config.category && count <= 4 ? 'eager' : 'lazy'"
                     v-bind:style="{ 'view-transition-name': 'image-' + item.sku }"
                     width="200"
                     height="200"
                 />
-                <x-rapidez::no-image v-else="" class="mb-3 h-48 rounded-t" />
+                <x-rapidez::no-image v-else="" class="mb-3 h-48 rounded-t-sm" />
                 <div>
                     <x-rapidez::highlight attribute="name" class="text-base font-medium hover:underline decoration-2"/>
                     @if (App::providerIsLoaded('Rapidez\Reviews\ReviewsServiceProvider'))

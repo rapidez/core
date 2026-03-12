@@ -40,3 +40,18 @@
     etc, see: https://docs.rapidez.io/5.x/theming.html#colors
     */
 }
+
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--border, 'currentColor');
+    }
+
+    button:not(:disabled),
+    [role='button']:not(:disabled) {
+        cursor: pointer;
+    }
+}
