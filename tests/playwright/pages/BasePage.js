@@ -45,9 +45,12 @@ export class BasePage {
     }
 
     async scrolldown() {
-        await this.page.evaluate(() => window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: 'smooth' }))
+        for (let i = 10; i >= 1; i--) {
+            await this.page.evaluate((i) => window.scrollTo(0, document.body.scrollHeight / i), i)
+            await this.page.waitForTimeout(10)
+        }
         await this.page.waitForLoadState('networkidle')
-        await this.page.evaluate(() => window.scrollTo({ left: 0, top: 0, behavior: 'smooth' }))
+        await this.page.evaluate(() => window.scrollTo(0, 0))
         await this.page.waitForLoadState('networkidle')
     }
 
