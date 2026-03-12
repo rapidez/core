@@ -29,7 +29,7 @@ export class BasePage {
         options['mask'] = masks
 
         if (type.startsWith('fullpage')) {
-            await this.scrolldown()
+            await this.loadLazy()
             options['fullPage'] = true
         }
 
@@ -44,16 +44,6 @@ export class BasePage {
         await expect(this.page).toHaveScreenshot(options)
     }
 
-    async scrolldown() {
-        for (let i = 10; i >= 1; i--) {
-            await this.page.evaluate((i) => window.scrollTo(0, document.body.scrollHeight / i), i)
-            await this.page.waitForTimeout(10)
-        }
-        await this.page.waitForLoadState('networkidle')
-        await this.page.evaluate(() => window.scrollTo(0, 0))
-        await this.page.waitForLoadState('networkidle')
-    }
-
     async waitForImages() {
         for (const img of await this.page.locator('img[loading="lazy"]:visible').all()) {
             await img.scrollIntoViewIfNeeded()
@@ -62,6 +52,13 @@ export class BasePage {
         }
 
         await this.page.evaluate(() => window.scrollTo(0, 0))
+    }
+
+    async loadLazy() {
+        await this.page.waitForNetworkIdle()
+        await this.page.evaluate(() => window.$emit('load-lazy'))
+        await this.page.waitForTimeout(10)
+        await this.page.waitForNetworkIdle()
     }
 
     async wcag(testInfo, disabledRules = []) {
