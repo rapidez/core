@@ -55,10 +55,10 @@ export class BasePage {
     }
 
     async loadLazy() {
-        await this.page.waitForNetworkIdle()
+        await this.page.waitForLoadState('networkidle')
         await this.page.evaluate(() => window.$emit('load-lazy'))
         await this.page.waitForTimeout(10)
-        await this.page.waitForNetworkIdle()
+        await this.page.waitForLoadState('networkidle')
     }
 
     async wcag(testInfo, disabledRules = []) {
