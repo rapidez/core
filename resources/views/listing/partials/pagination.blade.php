@@ -6,7 +6,7 @@
                     href="createURL(currentRefinement - 1)"
                     v-on:click.exact.left.prevent="refine(currentRefinement - 1)"
                     aria-label="@lang('Previous Page')"
-                    class="flex justify-center items-center rounded border hover:border-emphasis max-sm:size-9 sm:pl-2 sm:pr-3 sm:h-full"
+                    class="flex justify-center items-center rounded-sm border hover:border-emphasis max-sm:size-9 sm:pl-2 sm:pr-3 sm:h-full"
                 >
                     <x-heroicon-o-chevron-left class="shrink-0 stroke-2 size-4" />
                     <span class="max-sm:hidden">@lang('Prev')</span>
@@ -17,7 +17,7 @@
                     href="createURL(0)"
                     v-on:click.exact.left.prevent="refine(0)"
                     aria-label="@lang('First Page')"
-                    class="flex justify-center items-center size-9 rounded border hover:border-emphasis sm:size-10"
+                    class="flex justify-center items-center size-9 rounded-sm border hover:border-emphasis sm:size-10"
                 >
                     1
                 </button>
@@ -31,7 +31,7 @@
                     v-bind:class="{ 'ring-1 bg-primary/10 ring-primary border-primary font-semibold hover:border-primary': page === currentRefinement }"
                     v-on:click.exact.left.prevent="refine(page)"
                     v-bind:aria-label="`{{ __('Page') }} ${page + 1}`"
-                    class="size-9 sm:size-10 rounded border hover:border-emphasis"
+                    class="size-9 sm:size-10 rounded-sm border hover:border-emphasis"
                 >
                     @{{ page + 1 }}
                 </button>
@@ -44,7 +44,7 @@
                     v-bind:href="createURL(nbPages)"
                     v-on:click.exact.left.prevent="refine(nbPages)"
                     aria-label="@lang('Last Page')"
-                    class="flex justify-center items-center size-9 sm:size-10 rounded border hover:border-emphasis"
+                    class="flex justify-center items-center size-9 sm:size-10 rounded-sm border hover:border-emphasis"
                 >
                     @{{ nbPages }}
                 </button>
@@ -54,7 +54,7 @@
                     v-bind:href="createURL(currentRefinement + 1)"
                     v-on:click.exact.left.prevent="refine(currentRefinement + 1)"
                     aria-label="@lang('Next Page')"
-                    class="flex justify-center items-center rounded border hover:border-emphasis max-sm:size-9 sm:pr-2 sm:pl-3 sm:h-full"
+                    class="flex justify-center items-center rounded-sm border hover:border-emphasis max-sm:size-9 sm:pr-2 sm:pl-3 sm:h-full"
                 >
                     <span class="max-sm:hidden">@lang('Next')</span>
                     <x-heroicon-o-chevron-right class="shrink-0 stroke-2 size-4 mt-0.5" />

@@ -26,8 +26,7 @@
     --background-emphasis: var(--color-slate-200);
     --background: var(--color-slate-100);
     --background-muted: var(--color-slate-50);
-
-    --backdrop: rgba(0, 0, 0, 0.4);
+    --background-backdrop: rgba(0, 0, 0, 0.4);
 
     /* Utilities where the Rapidez colors are used */
 
@@ -63,6 +62,7 @@
     --background-color-emphasis: var(--background-emphasis);
     --background-color-default: var(--background);
     --background-color-muted: var(--background-muted);
+    --background-color-backdrop: var(--background-backdrop);
 
     --z-index-header: 100;
     --z-index-header-autocomplete-overlay: 10;
@@ -118,7 +118,7 @@
 }
 
 [v-blur] {
-    @apply animate-pulse blur;
+    @apply animate-pulse blur-sm;
 }
 
 @view-transition {

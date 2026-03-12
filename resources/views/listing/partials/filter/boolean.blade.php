@@ -8,7 +8,7 @@
         <div class="overflow-clip">
             <x-rapidez::accordion.filter v-show="items.length" class="details-content:overflow-visible px-1 py-1">
                 <x-slot:content>
-                    <div class="flex flex-col *:py-1 first:*:pt-0 last:*:pb-0 items-start">
+                    <div class="flex flex-col *:py-1 *:first:pt-0 *:last:pb-0 items-start">
                         <template v-for="item in items">
                             <x-rapidez::input.checkbox
                                 v-bind:checked="item.isRefined"
