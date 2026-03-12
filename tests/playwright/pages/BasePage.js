@@ -37,10 +37,7 @@ export class BasePage {
             await expect(this.page.getByTestId('newsletter-email')).toBeVisible()
         }
 
-        if (type == 'fullpage-footer-images') {
-            await this.waitForImages()
-        }
-
+        await this.waitForImages()
         await expect(this.page).toHaveScreenshot(options)
     }
 
