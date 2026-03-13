@@ -12,7 +12,7 @@
         <option disabled selected hidden :value="undefined">
             @lang('Select') {{ strtolower($superAttribute->label) }}
         </option>
-        @foreach ($product->{'super_' . $superAttribute->code} as $optionId => $option)
+        @foreach (collect($product->{'super_' . $superAttribute->code})->sortBy('label')->sortBy('sort_order') as $optionId => $option)
             <option
                 value="{{ $option->value }}"
                 :disabled="addToCart.disabledOptions.super_{{ $superAttribute->code }}.includes({{ $option->value }})"
