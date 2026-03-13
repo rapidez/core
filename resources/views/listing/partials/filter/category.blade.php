@@ -24,7 +24,7 @@
                                 v-on:click.exact.left.prevent="refine(item.value)"
                             >
                                 <span v-html="item.label"></span>
-                                <span class="text-xs">(@{{ item.count }})</span>
+                                <span class="text-xs ml-0.5">(@{{ item.count }})</span>
                             </a>
 
                             <component :is="components[index]" class="mt-1.5 mb-2.5 text-sm/5" />
