@@ -43,10 +43,7 @@ export class BasePage {
 
     async waitForImages() {
         // Make all images eager loaded
-        await this.page.evaluate(() =>
-            window.document.querySelectorAll('img[loading="lazy"]')
-                .forEach(elem => elem.loading = 'eager')
-        )
+        await this.page.evaluate(() => window.document.querySelectorAll('img[loading="lazy"]').forEach((elem) => (elem.loading = 'eager')))
 
         // Check all images for completed state
         for (const img of await this.page.locator('img').all()) {
