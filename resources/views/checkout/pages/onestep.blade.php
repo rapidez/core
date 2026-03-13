@@ -17,7 +17,7 @@
                         ).catch();
                 }">
                     <div class="lg:w-1/2 lg:pr-2.5 lg:col-span-2">
-                        @include('rapidez::checkout.steps.login')
+                        @include('rapidez::checkout.steps.login', ['onestep' => true])
                     </div>
                     <div v-if="!cart.is_virtual">
                         <h2 class="text-xl font-bold mb-3 lg:mb-9">@lang('Shipping address')</h2>
