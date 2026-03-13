@@ -43,7 +43,7 @@ export class BasePage {
 
     async waitForImages() {
         for (const img of await this.page.locator('img[loading="lazy"]:visible').all()) {
-            await img.scrollIntoViewIfNeeded()
+            img.loading = 'eager'
             await expect(img).toHaveJSProperty('complete', true)
             await expect(img).not.toHaveJSProperty('naturalWidth', 0)
         }
