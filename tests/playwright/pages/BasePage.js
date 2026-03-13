@@ -42,13 +42,17 @@ export class BasePage {
     }
 
     async waitForImages() {
-        for (const img of await this.page.locator('img[loading="lazy"]:visible').all()) {
-            img.loading = 'eager'
+        // Make all images eager loaded
+        await this.page.evaluate(() =>
+            window.document.querySelectorAll('img[loading="lazy"]')
+                .forEach(elem => elem.loading = 'eager')
+        )
+
+        // Check all images for completed state
+        for (const img of await this.page.locator('img').all()) {
             await expect(img).toHaveJSProperty('complete', true)
             await expect(img).not.toHaveJSProperty('naturalWidth', 0)
         }
-
-        await this.page.evaluate(() => window.scrollTo(0, 0))
     }
 
     async loadLazy() {
