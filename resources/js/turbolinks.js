@@ -48,9 +48,9 @@ document.addEventListener('turbo:load', (event) => {
         delete videos[i].dataset.autoplay
     }
 
-    videos = document.querySelectorAll('video[muted],video[dataset-muted]');
-    for(let i = 0; i < videos.length; i++) {
-        videos[i].setAttribute('v-bind:muted.attr', true);
+    videos = document.querySelectorAll('video[muted],video[dataset-muted]')
+    for (let i = 0; i < videos.length; i++) {
+        videos[i].setAttribute('v-bind:muted.attr', true)
         delete videos[i].dataset.muted
     }
-});
+})
