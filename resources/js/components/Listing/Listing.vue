@@ -150,7 +150,7 @@ export default {
                 return this.baseFilters().concat([
                     {
                         query_string: {
-                            query: `(visibility:(2 OR 4) OR (NOT _exists_:visibility)) AND (category_ids:${this.categoryId})`
+                            query: `(visibility:(2 OR 4) OR (NOT _exists_:visibility)) AND (category_ids:${this.categoryId})`,
                         },
                     },
                 ])
