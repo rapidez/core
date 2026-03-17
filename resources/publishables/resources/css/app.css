@@ -1,12 +1,12 @@
-@import '../../vendor/rapidez/core/resources/css/app.css';
-@import '../../vendor/rapidez/blade-components/resources/css/package.css';
-@import './luma.css';
-
 @import 'tailwindcss' source(none);
 
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 @plugin 'tailwind-scrollbar-hide';
+
+@import '../../vendor/rapidez/core/resources/css/app.css';
+@import '../../vendor/rapidez/blade-components/resources/css/package.css';
+@import './luma.css';
 
 @source '../**/*.blade.php';
 @source '../**/*.vue';
