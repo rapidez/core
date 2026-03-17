@@ -77,7 +77,6 @@ jobs:
         with:
           repository: rapidez/rapidez
           path: rapidez/rapidez
-          ref: tailwind4
 
       - uses: actions/setup-node@v4
         with:
