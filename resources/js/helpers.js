@@ -9,9 +9,12 @@ window.truncate = function (value, limit) {
 }
 
 window.price = function (value, extra = {}) {
-    return new Intl.NumberFormat(config.locale.replace('_', '-'), {
+    return new Intl.NumberFormat([
+        (config.locale ?? 'default').replace('_', '-'),
+        'default',
+    ], {
         style: 'currency',
-        currency: config.currency,
+        currency: config.currency ?? 'eur',
         ...extra,
     }).format(value)
 }
