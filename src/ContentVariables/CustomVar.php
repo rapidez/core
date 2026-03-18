@@ -15,9 +15,10 @@ class CustomVar
 
             return $this->cache[$code] ??= DB::table('variable')
                 ->leftJoin('variable_value', 'variable_value.variable_id', '=', 'variable.variable_id')
-                ->where('store_id', 0)
+                ->whereIn('store_id', [0, config('rapidez.store')])
                 ->where('code', $code)
-                ->first()?->html_value ?? '';
+                ->orderByDesc('store_id')
+                ->first()->html_value ?? '';
         }, (string) $content);
     }
 }
