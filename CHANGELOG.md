@@ -1,6 +1,22 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0-beta.1...5.0.0-beta.1)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0-beta.2...5.0.0-beta.2)
+## [5.0.0-beta.2](https://github.com/rapidez/core/releases/tag/5.0.0-beta.2) - 2026-03-10
+
+### Changed
+
+- Product breadcrumbs from longest category path (#1221)
+- Replace UsesCallbackRelations with afterQuery (#1219)
+
+### Fixed
+
+- Use qualifyColumn (#1209)
+- Customer group pricing cache fix (#1210)
+- Fix scrollend condition for slider bounds (#1214)
+- Fixed autocomplete flickering during Vue init (#1216)
+- Elasticsearch & OpenSearch compatibility fix (#1222)
+- Fix playwright tests not showing related products (#1224)
+
 ## [5.0.0-beta.1](https://github.com/rapidez/core/releases/tag/5.0.0-beta.1) - 2026-02-24
 
 ### Changed

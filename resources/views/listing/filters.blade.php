@@ -1,5 +1,6 @@
 @pushOnce('head', 'listing-filters')
     @vite(vite_filename_paths([
+        'AisStatsAnalytics.vue',
         'ClearRefinements.vue',
         'CurrentRefinements.vue',
         'SearchBox.vue',
