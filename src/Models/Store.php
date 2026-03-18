@@ -14,6 +14,8 @@ class Store extends Model
 
     protected $primaryKey = 'store_id';
 
+    public $timestamps = false;
+
     protected static function booting()
     {
         static::addGlobalScope(new IsActiveScope);
