@@ -10,7 +10,7 @@ class CustomVar
 
     public function __invoke($content): ?string
     {
-        return preg_replace_callback('/{{customVar code=(.*?)}}/ms', function (array $matches): string {
+        return preg_replace_callback('/{{[cC]ustom[vV]ar code=(.*?)}}/ms', function (array $matches): string {
             [$full, $code] = $matches;
 
             return $this->cache[$code] ??= DB::table('variable')
