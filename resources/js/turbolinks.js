@@ -15,7 +15,6 @@ document.addEventListener('vue:loaded', (e) => {
     // This way you will only need to add `muted` to the video element
     let videos = document.querySelectorAll('video[muted]')
     for (let i = 0; i < videos.length; i++) {
-        console.log(videos[i])
         videos[i].setAttribute('v-bind:muted.attr', true)
     }
 })
