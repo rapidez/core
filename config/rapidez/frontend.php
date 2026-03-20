@@ -67,6 +67,7 @@ return [
         Rapidez\Core\ContentVariables\Media::class,
         Rapidez\Core\ContentVariables\Store::class,
         Rapidez\Core\ContentVariables\Widget::class,
+        Rapidez\Core\ContentVariables\CustomVar::class,
     ],
 
     // Localstorage keys that need to be flushed when the cache is cleared.
