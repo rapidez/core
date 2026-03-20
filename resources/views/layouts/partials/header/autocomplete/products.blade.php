@@ -19,7 +19,7 @@
                             width="200"
                             height="200"
                         />
-                        <x-rapidez::no-image v-else="" class="mb-3 h-48 rounded-t" />
+                        <x-rapidez::no-image v-else="" class="mb-3 h-48 rounded-t-sm" />
                         <div class="flex flex-1 justify-center flex-col px-2">
                             <x-rapidez::highlight attribute="name"/>
 
