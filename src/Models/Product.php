@@ -265,7 +265,7 @@ class Product extends Model
     // or by any tier pricing.
     protected function price(): Attribute
     {
-        return Attribute::get(function ($value) {
+        return Attribute::get(function (?AttributeDecimal $value) {
             $customerGroupId = auth('magento-customer')
                 ->user()
                 ?->group_id ?: 0;
@@ -275,7 +275,7 @@ class Product extends Model
                 ->firstWhere('customer_group_id', $customerGroupId);
 
             if ($price === null) {
-                return $value;
+                return $value?->value;
             }
 
             return $price->price ?: $price->min_price;
