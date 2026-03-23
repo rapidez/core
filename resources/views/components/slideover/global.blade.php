@@ -3,7 +3,7 @@ This is a wrapper for the global slideover. Use this as much as possible to redu
 Standard usage may look like this:
 ```
 <x-rapidez::slideover.global title="My slideover">
-    <x-slot:label class="rounded p-3 border">
+    <x-slot:label class="rounded-sm p-3 border">
         Click me
     </x-slot:label>
     <div class="font-semibold">

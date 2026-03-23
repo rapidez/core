@@ -19,7 +19,7 @@
                                 :placeholder="__('Enter your email')"
                                 required
                             />
-                            <div class="mt-3 rounded-md sm:mt-0 sm:ml-3 sm:flex-shrink-0">
+                            <div class="mt-3 rounded-md sm:mt-0 sm:ml-3 sm:shrink-0">
                                 <x-rapidez::button.secondary
                                     type="submit"
                                     data-testid="newsletter-submit"

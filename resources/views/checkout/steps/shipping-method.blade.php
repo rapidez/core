@@ -17,10 +17,10 @@
     v-if="!cart.value.is_virtual"
 >
     <fieldset class="flex flex-col gap-3" partial-submit v-on:partial-submit="(e) => mutate().then(e.detail.resolve).catch(e.detail.reject)" v-on:change="window.$emit('setShippingAddressesOnCart')">
-        <label class="flex items-center p-5 border rounded relative bg-white" v-if="!cart.value.shipping_addresses?.[0]?.uid">
+        <label class="flex items-center p-5 border rounded-sm relative bg-white" v-if="!cart.value.shipping_addresses?.[0]?.uid">
             <span>@lang('Please enter a shipping address first')</span>
         </label>
-        <label class="flex gap-x-1.5 p-5 border rounded bg-white text-sm text has-[[disabled]]:cursor-not-allowed" v-for="(method, index) in cart.value.shipping_addresses?.[0]?.available_shipping_methods">
+        <label class="flex gap-x-1.5 p-5 border rounded-sm bg-white text-sm text has-disabled:cursor-not-allowed" v-for="(method, index) in cart.value.shipping_addresses?.[0]?.available_shipping_methods">
             <template v-if="false"></template>
 
             @stack('shipping_methods')
