@@ -15,7 +15,7 @@
                 @include('rapidez-reviews::components.microdata')
             @endif
             <div class="relative flex max-lg:flex-col gap-10">
-                <div class="flex-1 flex flex-col shrink-0">
+                <div class="flex flex-col shrink-0 max-lg:flex-1 lg:w-1/2">
                     @include('rapidez::product.partials.images')
                 </div>
                 <div class="flex flex-col gap-5 flex-1 shrink-0">
