@@ -15,7 +15,7 @@
                 @include('rapidez-reviews::components.microdata')
             @endif
             <div class="relative flex max-lg:flex-col gap-10">
-                <div class="flex-1 flex flex-col shrink-0">
+                <div class="flex flex-col shrink-0 max-lg:flex-1 lg:w-1/2">
                     @include('rapidez::product.partials.images')
                 </div>
                 <div class="flex flex-col gap-5 flex-1 shrink-0">
@@ -38,7 +38,7 @@
                     </div>
                     <div>
                         <div class="mb-2 border-t pt-5 text-lg font-bold">@lang('Specifications')</div>
-                        <dl class="flex flex-col text-muted *:rounded *:p-2 odd:*:bg odd:*:font-semibold odd:*:text even:*:pl-4">
+                        <dl class="flex flex-col text-muted *:rounded-sm *:p-2 *:odd:bg *:odd:font-semibold *:odd:text *:even:pl-4">
                             <dt>ID</dt>
                             <dd>{{ $product->entity_id }}</dd>
                             <dt>SKU</dt>

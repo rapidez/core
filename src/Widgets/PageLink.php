@@ -17,9 +17,9 @@ class PageLink
     {
         $page = Page::withoutGlobalScope(IsActiveScope::class)->find($vars->page_id);
 
-        $this->url = $page->identifier ?? '/';
-        $this->anchorText = $vars->anchor_text ?? $page->title ?? 'link';
-        $this->title = $vars->title ?? $page->title ?? '';
+        $this->url = $page?->identifier ?? '/';
+        $this->anchorText = $vars->anchor_text ?? $page?->title ?? 'link';
+        $this->title = $vars->title ?? $page?->title ?? '';
     }
 
     public function render()

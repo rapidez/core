@@ -25,8 +25,8 @@
                     </div>
                     <div class="flex-1">
                         <div class="mb-1">@{{ item.product.name }}</div>
-                        <div class="last:*:pr-0 *:pr-2 flex flex-wrap gap-x-2 text-xs text-muted">
-                            <div class="*:border-r last:*:border-r-0 *:px-2 *:mb-1.5 *:leading-3 -mx-2 flex flex-wrap text-xs -mb-1.5">
+                        <div class="*:last:pr-0 *:pr-2 flex flex-wrap gap-x-2 text-xs text-muted">
+                            <div class="*:border-r *:last:border-r-0 *:px-2 *:mb-1.5 *:leading-3 -mx-2 flex flex-wrap text-xs -mb-1.5">
                                 <div>
                                     @{{ item.quantity }}x
                                 </div>
@@ -77,7 +77,7 @@
         </div>
     </x-rapidez::summary>
 
-    <div v-if="cart.value.shipping_addresses?.[0]" class="flex w-full flex-col gap-x-1 bg px-5 py-4 rounded">
+    <div v-if="cart.value.shipping_addresses?.[0]" class="flex w-full flex-col gap-x-1 bg px-5 py-4 rounded-sm">
         <p class="font-lg mb-2 font-bold">
             <template v-if="cart.value.billing_address?.same_as_shipping">@lang('Shipping & billing address')</template>
             <template v-else>@lang('Shipping address')</template>
