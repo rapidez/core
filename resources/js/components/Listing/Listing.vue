@@ -213,16 +213,14 @@ export default {
                 page: data.page > 0 ? String(data.page) : undefined,
                 sort: data.sortBy,
                 hits: data.hitsPerPage != config.grid_per_page ? data.hitsPerPage : undefined,
-                ...this.utmFields
+                ...this.utmFields,
             }
         },
 
         routeToState(routeState) {
             let ranges = Object.fromEntries(Object.entries(routeState).filter(([key]) => this.rangeAttributes.includes(key)))
 
-            this.utmFields = Object.fromEntries(
-                Object.entries(routeState).filter(([key]) => key.startsWith('utm_'))
-            )
+            this.utmFields = Object.fromEntries(Object.entries(routeState).filter(([key]) => key.startsWith('utm_')))
 
             let refinementList = Object.fromEntries(
                 Object.entries(routeState)
