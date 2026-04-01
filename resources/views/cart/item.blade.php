@@ -1,6 +1,6 @@
 <table class="w-full border-b">
     <tbody class="divide-y">
-        <tr v-for="(item, index) in cart.value.items" class="flex-wrap max-md:flex *:first:pt-0 *:p-2 md:*:p-4"  data-testid="cart-item">
+        <tr v-for="(item, index) in cart.value.items" class="flex-wrap max-md:flex first:*:pt-0 *:p-2 md:*:p-4"  data-testid="cart-item">
             <td class="w-24">
                 <a :href="url(item.product.url_key + item.product.url_suffix)">
                     <img
@@ -27,7 +27,7 @@
                             @lang('This product is out of stock, remove it to continue your order.')
                         </div>
                     </a>
-                    <div class="*:border-r last:*:border-r-0 *:px-2 *:mb-1.5 *:leading-3 -mx-2 flex flex-wrap text-sm mb-1.5 text-muted mt-1.5">
+                    <div class="*:border-r *:last:border-r-0 *:px-2 *:mb-1.5 *:leading-3 -mx-2 flex flex-wrap text-sm mb-1.5 text-muted mt-1.5">
                         <div v-for="option in item.configurable_options">
                             @{{ option.option_label }}: @{{ option.value_label }}
                         </div>

@@ -109,20 +109,31 @@ class InstallCommand extends Command
 
     protected function frontend($force = false)
     {
-        $filesToCopy = [
+        // We do this so we don't have to maintain 2 repo's,
+        // from one PR it's possible to change everything.
+
+        // These are also used by the core
+        $rootFilesToCopy = [
             'package.json',
-            'postcss.config.js',
-            'tailwind.config.js',
-            'vite.config.js',
             '.prettierrc.js',
+        ];
+
+        // These are explicitly for rapidez/rapidez
+        $publishablesToCopy = [
+            'resources/css/app.css',
+            'vite.config.js',
         ];
 
         if ($force || confirm(
             label: 'Copy all files for the frontend dependencies?',
-            hint: 'The files that will be copied to your project: ' . implode(', ', $filesToCopy)
+            hint: 'The files that will be copied to your project: ' . implode(', ', array_merge($rootFilesToCopy, $publishablesToCopy))
         )) {
-            foreach ($filesToCopy as $file) {
+            foreach ($rootFilesToCopy as $file) {
                 copy(__DIR__ . '/../../' . $file, base_path($file));
+            }
+
+            foreach ($publishablesToCopy as $file) {
+                copy(__DIR__ . '/../../resources/publishables/' . $file, base_path($file));
             }
         }
 

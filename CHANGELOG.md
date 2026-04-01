@@ -1,6 +1,28 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0-beta.2...5.0.0-beta.2)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0-beta.3...5.0.0-beta.3)
+## [5.0.0-beta.3](https://github.com/rapidez/core/releases/tag/5.0.0-beta.3) - 2026-03-20
+
+### Added
+
+- Tierpricing support (#1205)
+- Added CustomVar ContentVariable (#1241)
+
+### Changed
+
+- Tailwind 4 update (#1211)
+
+### Fixed
+
+- Fix playwright scrolling issue (#1226)
+- Add StatsAnalytics to pushOnce (#1232)
+- Don't show products without categories (#1230)
+- Fixed autoplay continuing on navigate, and muted getting removed on navigate (#1233)
+- Use default locale while config is not loaded yet (#1234)
+- Don't show hits too early (#1238)
+- Remove timestamps from store model (#1242)
+- Fix the Playwright tests (#1227)
+
 ## [5.0.0-beta.2](https://github.com/rapidez/core/releases/tag/5.0.0-beta.2) - 2026-03-10
 
 ### Changed

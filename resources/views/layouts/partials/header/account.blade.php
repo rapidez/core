@@ -1,11 +1,11 @@
 <div class="mr-3">
     <toggler v-if="window.app.config.globalProperties.loggedIn.value" v-cloak v-slot="{ toggle, close, isOpen }">
         <div v-on-click-away="close">
-            <button data-testid="account-menu" class="flex my-1" v-on:click="toggle">
+            <button data-testid="account-menu" class="flex my-1" v-on:click="() => toggle()">
                 <x-heroicon-o-user class="size-6"/>
                 @{{ user.value?.firstname }}
             </button>
-            <div v-if="isOpen" class="absolute bg-white border shadow rounded mr-1 z-header-dropdown">
+            <div v-if="isOpen" class="absolute bg-white border shadow-sm rounded-sm mr-1 z-header-dropdown">
                 @if (App::providerIsLoaded('Rapidez\Account\AccountServiceProvider'))
                     <a class="block hover:bg px-3 py-2" href="{{ route('account.overview') }}">@lang('Account')</a>
                     <a class="block hover:bg px-3 py-2" href="{{ route('account.orders') }}">@lang('Orders')</a>
