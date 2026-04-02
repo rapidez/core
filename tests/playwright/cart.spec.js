@@ -16,7 +16,7 @@ test('add product simple twice', BasePage.tags, async ({ page }) => {
 
 test('change quantity', BasePage.tags, async ({ page }) => {
     const product = await new ProductPage(page).addToCart(process.env.PRODUCT_URL_SIMPLE)
-    const cartPage = new CartPage(page);
+    const cartPage = new CartPage(page)
 
     await cartPage.gotoCart()
     await cartPage.setFirstItemQty(5)
@@ -25,7 +25,7 @@ test('change quantity', BasePage.tags, async ({ page }) => {
 
 test('remove product', BasePage.tags, async ({ page }) => {
     const product = await new ProductPage(page).addToCart(process.env.PRODUCT_URL_SIMPLE)
-    const cartPage = new CartPage(page);
+    const cartPage = new CartPage(page)
 
     await cartPage.gotoCart()
     await cartPage.removeFirstItem()
