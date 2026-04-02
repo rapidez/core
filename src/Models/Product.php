@@ -284,15 +284,9 @@ class Product extends Model
 
     // We're not applying the customer group here so
     // all the prices for customer groups are
-    // returned for the indexer.
+    // returned for the indexer, and cached pages.
     public function prices(): HasMany
     {
-        // TODO: Double check the prices with the indexer.
-        // We should index all customer group prices
-        // as we can only verify that on the
-        // frontend. But currently this
-        // is also loading all prices
-        // for just a product page.
         return $this
             ->hasMany(
                 config('rapidez.models.product_price', ProductPrice::class),

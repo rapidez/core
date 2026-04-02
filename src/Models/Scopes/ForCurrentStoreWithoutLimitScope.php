@@ -14,6 +14,9 @@ class ForCurrentStoreWithoutLimitScope implements Scope
 {
     public array $uniquePerStoreKeys;
 
+    /**
+     * @param string|array $uniquePerStoreKey column(s) that may be duplicate across stores, but must be unique when filtered by store.
+     */
     public function __construct(string|array $uniquePerStoreKey, public $storeIdColumn = 'store_id')
     {
         $this->uniquePerStoreKeys = is_array($uniquePerStoreKey) ? $uniquePerStoreKey : [$uniquePerStoreKey];

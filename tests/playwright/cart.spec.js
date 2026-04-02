@@ -16,21 +16,20 @@ test('add product simple twice', BasePage.tags, async ({ page }) => {
 
 test('change quantity', BasePage.tags, async ({ page }) => {
     const product = await new ProductPage(page).addToCart(process.env.PRODUCT_URL_SIMPLE)
-    // TODO: Extract to CartPage?
-    await page.goto('/cart')
-    await page.waitForLoadState('networkidle')
-    await page.getByTestId('qty').fill('5')
-    await page.getByTestId('qty').press('Tab')
-    await expect(page.getByTestId('cart-item')).toContainText((product.price * 5).toString())
+    const cartPage = new CartPage(page);
+
+    await cartPage.gotoCart()
+    await cartPage.setFirstItemQty(5)
+    await expect(cartPage.cartItem()).toContainText((product.price * 5).toString())
 })
 
 test('remove product', BasePage.tags, async ({ page }) => {
     const product = await new ProductPage(page).addToCart(process.env.PRODUCT_URL_SIMPLE)
-    // TODO: Extract to CartPage?
-    await page.goto('/cart')
-    await page.getByTestId('cart-item-remove').click()
-    await page.waitForLoadState('networkidle')
-    await expect(page.getByTestId('cart-item')).toHaveCount(0)
+    const cartPage = new CartPage(page);
+
+    await cartPage.gotoCart()
+    await cartPage.removeFirstItem()
+    await expect(cartPage.cartItem()).toHaveCount(0)
 })
 
 test('wcag', BasePage.tags, async ({ page }, testInfo) => {
