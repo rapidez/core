@@ -86,6 +86,10 @@ export default {
             }
         }
 
+        window.$on('load-lazy', () => {
+            this.state.isIntersected = true
+        })
+
         this.onIdle(() => {
             this.state.isIntersected = true
         })

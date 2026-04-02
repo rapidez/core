@@ -29,7 +29,7 @@ export class BasePage {
         options['mask'] = masks
 
         if (type.startsWith('fullpage')) {
-            await this.scrolldown()
+            await this.loadLazy()
             options['fullPage'] = true
         }
 
@@ -37,28 +37,27 @@ export class BasePage {
             await expect(this.page.getByTestId('newsletter-email')).toBeVisible()
         }
 
-        if (type == 'fullpage-footer-images') {
-            await this.waitForImages()
-        }
-
+        await this.waitForImages()
         await expect(this.page).toHaveScreenshot(options)
     }
 
-    async scrolldown() {
-        await this.page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
-        await this.page.waitForLoadState('networkidle')
-        await this.page.evaluate(() => window.scrollTo(0, 0))
-        await this.page.waitForLoadState('networkidle')
-    }
-
     async waitForImages() {
-        for (const img of await this.page.locator('img[loading="lazy"]:visible').all()) {
-            await img.scrollIntoViewIfNeeded()
+        // Make all images eager loaded
+        await this.page.evaluate(() => window.document.querySelectorAll('img[loading="lazy"]').forEach((elem) => (elem.loading = 'eager')))
+
+        // Check all images for completed state
+        for (const img of await this.page.locator('img').all()) {
             await expect(img).toHaveJSProperty('complete', true)
             await expect(img).not.toHaveJSProperty('naturalWidth', 0)
         }
+    }
 
-        await this.page.evaluate(() => window.scrollTo(0, 0))
+    async loadLazy() {
+        await this.page.waitForLoadState('networkidle')
+        await this.page.evaluate(() => window.$emit('load-lazy'))
+        await this.page.waitForTimeout(250)
+        await this.page.waitForLoadState('networkidle')
+        await this.page.waitForTimeout(250)
     }
 
     async wcag(testInfo, disabledRules = []) {
