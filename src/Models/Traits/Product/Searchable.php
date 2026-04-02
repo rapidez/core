@@ -33,7 +33,7 @@ trait Searchable
             ])
             ->when(
                 ! Rapidez::config('cataloginventory/options/show_out_of_stock', 0),
-                fn(Builder $q) => $q
+                fn (Builder $q) => $q
                     ->whereHas(
                         'stock',
                         fn (Builder $q) => $q
