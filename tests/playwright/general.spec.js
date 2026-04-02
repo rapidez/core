@@ -20,7 +20,7 @@ test('newsletter', BasePage.tags, async ({ page }) => {
     const email = `wayne+${Date.now()}@enterprises.com`
 
     await page.goto('/')
-    await new BasePage(page).scrolldown()
+    await new BasePage(page).loadLazy()
 
     await page.getByTestId('newsletter-email').fill(email)
     await page.getByTestId('newsletter-submit').click()
