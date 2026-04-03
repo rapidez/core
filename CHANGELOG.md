@@ -1,6 +1,20 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0-beta.3...5.0.0-beta.3)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0...5.0.0)
+## [5.0.0](https://github.com/rapidez/core/releases/tag/5.0.0) - 2026-04-03
+
+See the upgrade guide: https://docs.rapidez.io/5.x/upgrading.html
+
+Changes after the 5.0.0-beta.3 release:
+
+### Fixed
+
+- Only get store-specific values for options (#1220)
+- Product image bounce fix (#1245)
+- Fixed AttributeDecimal could not be converted to float (#1243)
+- Removed todos, and added refs to the rest (#1248)
+- Update Snapshots (#1249)
+
 ## [5.0.0-beta.3](https://github.com/rapidez/core/releases/tag/5.0.0-beta.3) - 2026-03-20
 
 ### Added
