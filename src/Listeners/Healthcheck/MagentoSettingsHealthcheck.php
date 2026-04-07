@@ -37,7 +37,7 @@ class MagentoSettingsHealthcheck extends Base
         if (! Rapidez::config('catalog/frontend/flat_catalog_product')) {
             $response['messages'][] = ['type' => 'error', 'value' => __(
                 'The product flat tables are disabled!' . PHP_EOL .
-                'Please enable them; see: https://docs.rapidez.io/3.x/installation.html#flat-tables'
+                'Please enable them; see: https://docs.rapidez.io/4.x/installation.html#flat-tables'
             )];
         }
 
@@ -70,7 +70,7 @@ class MagentoSettingsHealthcheck extends Base
                 'value' => __(
                     'Not all attributes are in the flat table: :nonFlatAttributes' . PHP_EOL .
                     'You should enable "Used in Product Listing" on them!' . PHP_EOL .
-                    'More information: https://docs.rapidez.io/3.x/installation.html#flat-tables',
+                    'More information: https://docs.rapidez.io/4.x/installation.html#flat-tables',
                     ['nonFlatAttributes' => PHP_EOL . '- ' . implode(PHP_EOL . '- ', $nonFlatAttributes)]
                 ),
             ];
@@ -109,11 +109,11 @@ class MagentoSettingsHealthcheck extends Base
     public function checkCustomerConfiguration(array $response): array
     {
         if (Rapidez::config('webapi/jwtauth/customer_expiration', 60) <= 60) {
-            $response['messages'][] = ['type' => 'warn', 'value' => __('Customer JWT token expiration is set to 60 minutes, customers will be logged out every hour! See: https://docs.rapidez.io/3.x/configuration.html#customer-token-lifetime')];
+            $response['messages'][] = ['type' => 'warn', 'value' => __('Customer JWT token expiration is set to 60 minutes, customers will be logged out every hour! See: https://docs.rapidez.io/4.x/configuration.html#customer-token-lifetime')];
         }
 
         if (Rapidez::config('customer/online_customers/section_data_lifetime', 60) <= 60) {
-            $response['messages'][] = ['type' => 'warn', 'value' => __('Customer Data Lifetime is set to 60 minutes, this could result in customers losing their cart! See: https://docs.rapidez.io/3.x/configuration.html#customer-data-lifetime')];
+            $response['messages'][] = ['type' => 'warn', 'value' => __('Customer Data Lifetime is set to 60 minutes, this could result in customers losing their cart! See: https://docs.rapidez.io/4.x/configuration.html#customer-data-lifetime')];
         }
 
         return $response;

@@ -31,7 +31,7 @@ export default {
                     Object.values(window.config.product.super_attributes).filter((attribute) => attribute.update_image).length
                 ) {
                     self.images = simpleProduct.images
-                    self.media = simpleProduct.media
+                    self.media = simpleProduct.media.toSorted((a, b) => a.position - b.position)
                     self.active = Math.min(self.active, self.media.length - 1)
                 }
             })
