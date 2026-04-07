@@ -31,8 +31,18 @@ window.productSpecialPrice = function (product) {
     return window.productPrice(product) > specialPrice ? specialPrice : null
 }
 
+window.roundCurrency = function (price) {
+    const formatter = new Intl.NumberFormat([(config.locale ?? 'default').replace('_', '-'), 'default'], {
+        style: 'currency',
+        currency: config.currency ?? 'eur',
+    })
+    const digits = formatter.resolvedOptions().maximumFractionDigits
+
+    return Number.parseFloat(price).toFixed(digits)
+}
+
 window.sumPrices = function (price1, price2) {
-    return Math.round((parseFloat(price1) + parseFloat(price2)) * 100) / 100
+    return window.roundCurrency(parseFloat(price1) + parseFloat(price2))
 }
 
 window.url = function (path = '') {
