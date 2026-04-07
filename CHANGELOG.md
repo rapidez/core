@@ -1,6 +1,140 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0-beta.3...5.0.0-beta.3)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0...5.0.0)
+## [5.0.0](https://github.com/rapidez/core/releases/tag/5.0.0) - 2026-04-03
+
+See the upgrade guide: https://docs.rapidez.io/5.x/upgrading.html
+
+Changes after the 5.0.0-beta.3 release:
+
+### Fixed
+
+- Only get store-specific values for options (#1220)
+- Product image bounce fix (#1245)
+- Fixed AttributeDecimal could not be converted to float (#1243)
+- Removed todos, and added refs to the rest (#1248)
+- Update Snapshots (#1249)
+
+---
+
+Full changelog:
+
+### Added
+
+- Tierpricing support (#1205)
+- Customer group pricing (#1074, #1106, #1111)
+- Product media video support (#1128)
+- Implemented cache tags to prevent clearing all caches every reindex (#1103)
+- Fullscreen search preparations (#976)
+- Shipping methods error messages (#1125)
+- Added CustomVar ContentVariable (#1241)
+
+### Changed
+
+- Vue 3 upgrade (#951)
+- Tailwind 4 update (#1211)
+- Use EAV structure instead of flat tables (#943)
+- Category model flat table migration (#1169, #1170)
+- Drop support for Laravel 11 (#1096)
+- Use joins for attribute option values instead of a relation (#1203)
+- Automatically make result_attributes indexable (#1163)
+- Get popular products from product views instead of reviews (#1171)
+- Track products views with full page caching (#1202)
+- Refactored and fixed the super attributes (#1076)
+- Uniform review model naming (#1098)
+- Centralize whereAttribute logic (#1093)
+- Use globalproperties for helpers (#1136)
+- Playwright reports in Cloudflare R2 (#1147)
+- Review package compatibility (#1173)
+- Check ES types for keyword instead of guessing (#1201)
+- Improved rapidez/statamic compatibility (#1175)
+- Product breadcrumbs from longest category path (#1221)
+- Replace UsesCallbackRelations with afterQuery (#1219)
+
+### Fixed
+
+- Vue 3 upgrade fixes (#1075)
+- Moved mixins to global properties (#1086)
+- Filter by visibility in the autocomplete (#1087)
+- Price index fallback (#1092)
+- Explicitly set value after clamping (#1094)
+- Tests fix (#1097)
+- Removed suspense after new Vue release (#1100)
+- Utilize DOM events to fix broken partial-submit (#1099)
+- Added missing productpage scopes (#1109)
+- Form label spelling fixes (#1110)
+- Attribute label casting fix (#1113)
+- Fixed csrf token retrieval (fc9d493)
+- Fix future Playwright tests (#1115)
+- Block identifier support for block widgets (#1118)
+- GraphQL mutation writable redirect url (#1119)
+- Quantity component + cart test fixes (#1122)
+- HTML entities fix + attribute value refactor (#1112)
+- Wait max for 1s for config to load before init (#1117)
+- Unit tests for product tier prices (#1120)
+- Fixed duplicate entry for search queries (#1121)
+- Make root refs available (#1116)
+- Fixed autocomplete focus (ec7f136)
+- Support text swatches on product listing tile (#1141)
+- Parallel customer requests and only expose customer group id (#1142)
+- Fix currency symbol location (#1144)
+- Screenshots update (#1123)
+- Mask the copyright year (#1149)
+- Playwright update all screenshots fix (#1152)
+- Screenshot update (#1153)
+- Playwright update all screenshots report fix (#1154)
+- Playwright report lines in CI (7378cc7)
+- Check for cart prices (#1130)
+- Categories cache per store (#1155)
+- Unprefix events (#1156)
+- Checkout items in sidebar fix (#1157)
+- Playwright run CI tests in parallel (#1158)
+- Playwright add to cart fix (#1164)
+- Redirect with attributes on addtocart (#1162)
+- Prevent login trigger when a new tab is opened (#1066)
+- Expose the review summary (#1179)
+- Remove .renditions from media url (#1177)
+- Playwright press tab after filling the email (#1181)
+- Check for nullish address (#1182)
+- Re-introduce category_ids (#1184)
+- Numeric attributes fix (#1138)
+- Fix stock minSaleQty (#1124)
+- Empty media error fix (#1190)
+- Related products and upsells fix (#1189)
+- Reduced product and child data sizes (#1188)
+- Validate search terms (#1185)
+- Products in categories fix (#1193)
+- Fix response typehint in boot (#1195)
+- Restored theme functionality (#1196)
+- Fix isExpired method to use correct context (#1197)
+- Fixed sorting and label localization for specifications (#1204)
+- Fix the categories filter not showing (#1208)
+- Fixed issues during rapidez:install command (#1206)
+- Make custom attribute value available for attribute casts (#1127)
+- Use qualifyColumn (#1209)
+- Customer group pricing cache fix (#1210)
+- Fix scrollend condition for slider bounds (#1214)
+- Fixed autocomplete flickering during Vue init (#1216)
+- Elasticsearch & OpenSearch compatibility fix (#1222)
+- Fix playwright tests not showing related products (#1224)
+- Fix playwright scrolling issue (#1226)
+- Add StatsAnalytics to pushOnce (#1232)
+- Don't show products without categories (#1230)
+- Fixed autoplay continuing on navigate, and muted getting removed on navigate (#1233)
+- Use default locale while config is not loaded yet (#1234)
+- Don't show hits too early (#1238)
+- Remove timestamps from store model (#1242)
+- Fix the Playwright tests (#1227)
+- Only get store-specific values for options (#1220)
+- Product image bounce fix (#1245)
+- Fixed AttributeDecimal could not be converted to float (#1243)
+- Removed todos, and added refs to the rest (#1248)
+- Update Snapshots (#1249)
+
+### Removed
+
+- Removed the backwards compatibility accessors (#1200)
+
 ## [5.0.0-beta.3](https://github.com/rapidez/core/releases/tag/5.0.0-beta.3) - 2026-03-20
 
 ### Added

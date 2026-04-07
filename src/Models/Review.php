@@ -12,5 +12,5 @@ class Review extends Model
 
     protected $primaryKey = 'detail_id';
 
-    // TODO: Add rating values to reviews
+    // TODO: RAP-1880 Add rating values to reviews (this is currently unused in favor of Graphql)
 }
