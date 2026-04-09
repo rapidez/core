@@ -41,8 +41,8 @@
             </li>
             <li v-if="!isLastPage && currentRefinement !== nbPages - 2 && nbPages !== 3">
                 <a
-                    v-bind:href="createURL(nbPages)"
-                    v-on:click.exact.left.prevent="refine(nbPages)"
+                    v-bind:href="createURL(nbPages - 1)"
+                    v-on:click.exact.left.prevent="refine(nbPages - 1)"
                     aria-label="@lang('Last Page')"
                     class="flex justify-center items-center size-9 sm:size-10 rounded border hover:border-emphasis"
                 >
