@@ -23,8 +23,21 @@ export class CartPage {
         await expect(this.cartItem()).toContainText(product.name)
     }
 
+    async setFirstItemQty(qty) {
+        const cartItemQty = this.cartItemQty()
+
+        await cartItemQty.fill(qty + '')
+        await cartItemQty.press('Tab')
+        await this.page.waitForLoadState('networkidle')
+    }
+
     async firstItemQtyIs(qty) {
         await this.gotoCart()
         await expect(this.cartItemQty()).toHaveValue(qty.toString())
+    }
+
+    async removeFirstItem() {
+        await this.cartItem().getByTestId('cart-item-remove').click()
+        await this.page.waitForLoadState('networkidle')
     }
 }

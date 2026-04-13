@@ -19,7 +19,7 @@ mutation (
     setBillingAddressOnCart(input: {
         cart_id: $cart_id,
         billing_address: {
-            # TODO: uncomment if https://github.com/magento/magento2/pull/38909 is merged
+            # TODO: RAP-1634 uncomment if https://github.com/magento/magento2/pull/38909 is merged
             # customer_address_id: $customer_address_id,
             same_as_shipping: $same_as_shipping,
             address: {
