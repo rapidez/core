@@ -34,7 +34,7 @@ checkoutTypes.forEach((type) => {
 
         await accountPage.logout()
 
-        checkoutPage.screenshots = [];
+        checkoutPage.screenshots = []
         // Login
         await productPage.addToCart(process.env.PRODUCT_URL_SIMPLE)
         await checkoutPage.checkout(email, password)

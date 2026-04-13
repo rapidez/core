@@ -1,11 +1,10 @@
 import { expect } from '@playwright/test'
 import { BasePage } from './BasePage'
 
-
-export const screenshot_login = 'login';
-export const screenshot_credentials = 'credentials';
-export const screenshot_payment = 'payment';
-export const screenshot_success = 'success';
+export const screenshot_login = 'login'
+export const screenshot_credentials = 'credentials'
+export const screenshot_payment = 'payment'
+export const screenshot_success = 'success'
 export class CheckoutPage {
     constructor(page, type = 'default', screenshots = []) {
         this.page = page
