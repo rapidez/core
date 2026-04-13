@@ -15,7 +15,7 @@ test('category pagination', BasePage.tags, async ({ page }) => {
     await page.goto(process.env.CATEGORY_URL_SIMPLE)
     await expect(page.getByTestId('listing-item')).toHaveCount(12)
     const firstProductPage1 = await page.getByTestId('listing-item').first().textContent()
-    await page.getByTestId('pagination').getByText('2').click()
+    await page.getByTestId('pagination').getByRole('link', { name: '2' }).click()
     await page.waitForLoadState('networkidle')
     const firstProductPage2 = await page.getByTestId('listing-item').first().textContent()
     expect(firstProductPage1).not.toBe(firstProductPage2)
