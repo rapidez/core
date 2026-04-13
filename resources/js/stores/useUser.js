@@ -148,6 +148,7 @@ export const login = async function (email, password) {
         },
         {
             notifyOnError: false,
+            redirectOnExpiration: false,
         },
     ).then(async (response) => {
         await loginByToken(response.data.generateCustomerToken.token)
