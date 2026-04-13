@@ -1,10 +1,16 @@
 import { expect } from '@playwright/test'
 import { BasePage } from './BasePage'
 
+
+export const screenshot_login = 'login';
+export const screenshot_credentials = 'credentials';
+export const screenshot_payment = 'payment';
+export const screenshot_success = 'success';
 export class CheckoutPage {
-    constructor(page, type = 'default') {
+    constructor(page, type = 'default', screenshots = []) {
         this.page = page
         this.type = type
+        this.screenshots = screenshots
     }
 
     async gotoCheckout() {
@@ -18,13 +24,17 @@ export class CheckoutPage {
         await this.page.waitForLoadState('networkidle')
 
         if (password && !register) {
-            await new BasePage(this.page).screenshot('fullpage')
+            if (this.screenshots.includes(screenshot_login)) {
+                await new BasePage(this.page).screenshot('fullpage')
+            }
             await this.page.fill('[name=password]', password)
         }
 
         if (password && register) {
             await this.page.getByTestId('create-account').click()
-            await new BasePage(this.page).screenshot('fullpage')
+            if (this.screenshots.includes(screenshot_login)) {
+                await new BasePage(this.page).screenshot('fullpage')
+            }
             await this.page.fill('[name=password]', password)
             await this.page.fill('[name=password_repeat]', password)
             await this.page.fill('[name=firstname]', 'Bruce')
@@ -91,16 +101,16 @@ export class CheckoutPage {
         await this.page.getByTestId('continue').waitFor({ state: 'visible' })
     }
 
-    async checkout(email, password = false, register = false, screenshots = []) {
+    async checkout(email, password = false, register = false) {
         const method = this.type === 'onestep' ? 'checkoutOnestep' : 'checkoutDefault'
 
-        await this[method](email, password, register, screenshots)
+        await this[method](email, password, register)
     }
 
-    async checkoutDefault(email = false, password = false, register = false, screenshots = []) {
+    async checkoutDefault(email = false, password = false, register = false) {
         await this.gotoCheckout()
 
-        if (screenshots.includes('login')) {
+        if (this.screenshots.includes(screenshot_login)) {
             await new BasePage(this.page).screenshot('fullpage')
         }
 
@@ -109,7 +119,7 @@ export class CheckoutPage {
             await this.continue('credentials')
         }
 
-        if (screenshots.includes('credentials')) {
+        if (this.screenshots.includes(screenshot_credentials)) {
             await new BasePage(this.page).screenshot('fullpage')
         }
 
@@ -117,7 +127,7 @@ export class CheckoutPage {
         await this.shippingMethod()
         await this.continue('payment')
 
-        if (screenshots.includes('payment')) {
+        if (this.screenshots.includes(screenshot_payment)) {
             await new BasePage(this.page).screenshot('fullpage')
         }
 
@@ -125,15 +135,15 @@ export class CheckoutPage {
         await this.continue('success')
         await this.success()
 
-        if (screenshots.includes('success')) {
+        if (this.screenshots.includes(screenshot_success)) {
             await new BasePage(this.page).screenshot('fullpage-footer')
         }
     }
 
-    async checkoutOnestep(email = false, password = false, register = false, screenshots = []) {
+    async checkoutOnestep(email = false, password = false, register = false) {
         await this.gotoCheckout()
 
-        if (screenshots.includes('login')) {
+        if (this.screenshots.includes(screenshot_login)) {
             await new BasePage(this.page).screenshot('fullpage')
         }
 
@@ -145,14 +155,14 @@ export class CheckoutPage {
         await this.shippingMethod()
         await this.paymentMethod()
 
-        if (screenshots.includes('payment')) {
+        if (this.screenshots.includes(screenshot_payment)) {
             await new BasePage(this.page).screenshot('fullpage')
         }
 
         await this.continue('success')
         await this.success()
 
-        if (screenshots.includes('success')) {
+        if (this.screenshots.includes(screenshot_success)) {
             await new BasePage(this.page).screenshot('fullpage-footer')
         }
     }
