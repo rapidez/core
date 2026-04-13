@@ -74,6 +74,6 @@
         "rapidez/reviews": "<4.1"
     },
     "scripts": {
-        "analyse": "phpstan --dmemory-limit=512M"
+        "analyse": "phpstan --memory-limit=512M"
     }
 }
