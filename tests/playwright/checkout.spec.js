@@ -64,7 +64,7 @@ test('incorrect password login', BasePage.tags, async ({ page }) => {
     await page.waitForTimeout(500)
     await page.waitForLoadState('networkidle')
     await expect(page.getByTestId('notifications')).toContainText(
-        'The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later.'
+        'The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later.',
     )
 
     await checkoutPage.checkout(email, password)
