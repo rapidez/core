@@ -105,7 +105,7 @@ export class CheckoutPage {
     async checkout(email, password = false, register = false) {
         const method = this.type === 'onestep' ? 'checkoutOnestep' : 'checkoutDefault'
 
-        await this[method](email, password, register, screenshots)
+        await this[method](email, password, register)
     }
 
     async checkoutDefault(email = false, password = false, register = false) {
