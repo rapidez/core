@@ -66,8 +66,8 @@ test('incorrect password login', BasePage.tags, async ({ page }) => {
     await expect(page.getByTestId('notifications')).toHaveText(
         'The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later.',
         {
-            useInnerText: true
-        }
+            useInnerText: true,
+        },
     )
 
     await checkoutPage.checkout(email, password)
