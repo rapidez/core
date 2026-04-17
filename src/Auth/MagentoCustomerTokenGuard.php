@@ -6,7 +6,6 @@ use Illuminate\Auth\TokenGuard;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Cookie\Middleware\EncryptCookies;
-use Illuminate\Http\Request;
 
 class MagentoCustomerTokenGuard extends TokenGuard implements Guard
 {
@@ -16,8 +15,10 @@ class MagentoCustomerTokenGuard extends TokenGuard implements Guard
             $middleware->disableFor('token');
         });
 
-        auth()->extend('magento-customer', function (Application $app, string $name, array $config) {
-            return new self(auth()->createUserProvider($config['provider']), request(), 'token', 'token');
+        $authGuardCreator = fn($config) => new self(auth()->createUserProvider($config['provider']), request(), 'token', 'token');
+
+        auth()->extend('magento-customer', function (Application $app, string $name, array $config) use ($authGuardCreator) {
+            return $authGuardCreator($config);
         });
 
         config([
