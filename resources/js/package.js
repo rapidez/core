@@ -184,10 +184,10 @@ async function init() {
                     if (newValue === true) {
                         throw new Error('Config.js failed to load due to an error.')
                     }
-                }
+                },
             },
             mounted() {
-                this.configError = window.configError ?? false;
+                this.configError = window.configError ?? false
 
                 setTimeout(() => {
                     const event = new CustomEvent('vue:mounted', { detail: { vue: window.app } })
