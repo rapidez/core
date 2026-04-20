@@ -142,8 +142,15 @@ async function init() {
                 },
             },
             mounted() {
+                window.$on('configError', () => {
+                    app.config.globalProperties.configError = true
+                    throw new Error('Config.js failed to load because of an error.')
+                })
+                if (window.configError ?? false) {
+                    window.$emit('configError')
+                }
+
                 window.app.config.globalProperties.refs = this.$refs
-                window.app.config.globalProperties.configError = window.configError ?? false
                 setTimeout(() => {
                     const event = new CustomEvent('vue:mounted', { detail: { vue: window.app, rootNode: this } })
                     document.dispatchEvent(event)
@@ -169,7 +176,6 @@ async function init() {
             showTax: window.config.show_tax,
             scrollLock: useScrollLock(document.body),
             configError: false,
-
             // Wrap the local storage in getter and setter functions so you do not have to interact using .value
             guestEmail: wrapValue(
                 useLocalStorage('email', window.debug ? 'wayne@enterprises.com' : '', { serializer: StorageSerializers.string }),
