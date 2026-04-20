@@ -23,7 +23,7 @@
 
     @php($configPath = route('config') . '?v=' . Cache::rememberForever('cachekey', fn () => md5(Str::random())) . '&s=' . config('rapidez.store'))
     <link href="{{ $configPath }}" rel="preload" as="script">
-    <script defer src="{{ $configPath }}" onerror="window.$emit ? window.$emit('configError') : window.configError = true"></script>
+    <script defer src="{{ $configPath }}" onerror="window.app?.config ? window.$emit('configError') : window.configError = true"></script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
