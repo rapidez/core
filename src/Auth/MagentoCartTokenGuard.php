@@ -15,7 +15,7 @@ class MagentoCartTokenGuard extends MagentoCustomerTokenGuard implements Guard
             $middleware->disableFor('mask');
         });
 
-        $authGuardCreator = fn($config) => new self(auth()->createUserProvider($config['provider']), request(), 'mask', 'mask');
+        $authGuardCreator = fn ($config) => new self(auth()->createUserProvider($config['provider']), request(), 'mask', 'mask');
         auth()->extend('magento-cart', function (Application $app, string $name, array $config) use ($authGuardCreator) {
             return $authGuardCreator($config);
         });
