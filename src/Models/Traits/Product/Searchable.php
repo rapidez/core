@@ -127,7 +127,7 @@ trait Searchable
             }
 
             foreach ($categoryHierarchy as $level => $category) {
-                $data['category_lvl' . ($level + 1)][] = $category;
+                $data['category_lvl' . ($level + 1)][] = trim($category);
             }
         }
 
