@@ -5,7 +5,6 @@ import { useDebounceFn } from '@vueuse/core'
 
 const debouncePromise = useDebounceFn(async function (self) {
     self.isEmailAvailable = await isEmailAvailable(self.email || '')
-    await self.handleGuest()
 }, 300)
 
 export default {
@@ -60,7 +59,7 @@ export default {
                 return await this.handleLogin()
             }
 
-            if (this.createAccount) {
+            if (this.createAccount && this.password) {
                 return await this.handleRegister()
             }
 
@@ -79,6 +78,9 @@ export default {
         },
 
         async handleRegister() {
+            if (!this.email || !this.firstname || !this.lastname || !this.password) {
+                return false
+            }
             if (this.password !== this.password_repeat) {
                 Notify(window.config.translations.account.password_mismatch, 'warning')
 
