@@ -55,7 +55,7 @@ class AbstractAttribute extends Model
             return array_key_exists('value', $this->getCasts())
                 ? $this->castAttribute('value', $value)
                 : $value;
-        });
+        })->shouldCache();
     }
 
     protected function value(): Attribute
