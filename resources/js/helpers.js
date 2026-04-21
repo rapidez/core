@@ -31,13 +31,13 @@ window.productSpecialPrice = function (product) {
     return window.productPrice(product) > specialPrice ? specialPrice : null
 }
 
-window.roundCurrency = function (price) {
-    const formatter = new Intl.NumberFormat([(config.locale ?? 'default').replace('_', '-'), 'default'], {
-        style: 'currency',
-        currency: config.currency ?? 'eur',
-    })
-    const digits = formatter.resolvedOptions().maximumFractionDigits
+const formatter = new Intl.NumberFormat([(config.locale ?? 'default').replace('_', '-'), 'default'], {
+    style: 'currency',
+    currency: config.currency ?? 'eur',
+})
+const digits = formatter.resolvedOptions().maximumFractionDigits
 
+window.roundCurrency = function (price) {
     return Number.parseFloat(price).toFixed(digits)
 }
 
