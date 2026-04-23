@@ -55,6 +55,11 @@ class Category extends Model
             : ('catalog/category/view/id/' . $this->entity_id)));
     }
 
+    public function name(): Attribute
+    {
+        return Attribute::get(fn($name) => trim($name));
+    }
+
     public function products(): HasManyThrough
     {
         return $this->hasManyThrough(
