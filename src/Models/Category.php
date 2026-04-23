@@ -57,7 +57,7 @@ class Category extends Model
 
     public function name(): Attribute
     {
-        return Attribute::get(fn($name) => trim($name));
+        return Attribute::get(fn ($name) => trim($name));
     }
 
     public function products(): HasManyThrough
