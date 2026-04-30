@@ -301,7 +301,7 @@ export default {
             await this.setOptionsFromValues(Object.fromEntries(options))
         },
         async setOptionsFromUrlParams() {
-            let options = new URLSearchParams(window.location.search).entries().toArray()
+            let options = Array.from(new URLSearchParams(window.location.search).entries())
             await this.setOptionsFromValues(this.optionsFromNamedOptions(options))
         },
         optionsFromNamedOptions(values) {
