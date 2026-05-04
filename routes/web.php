@@ -27,5 +27,5 @@ Route::middleware('web')->group(function () {
     Route::get('search', config('rapidez.routing.controllers.search'))->name('search');
     Route::fallback(config('rapidez.routing.controllers.fallback'));
 
-    Route::get('heartbeat', fn() => response()->json(['alive' => true]));
+    Route::get('heartbeat', fn () => response()->json(['alive' => true]));
 });
