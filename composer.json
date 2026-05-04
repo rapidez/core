@@ -32,7 +32,7 @@
         "rapidez/blade-components": "^2.0",
         "rapidez/blade-directives": "^1.1",
         "rapidez/laravel-multi-cache": "^2.1",
-        "rapidez/laravel-scout-elasticsearch": "^2.0",
+        "rapidez/laravel-scout-elasticsearch": "^1.0",
         "tormjens/eventy": "^0.8"
     },
     "require-dev": {
