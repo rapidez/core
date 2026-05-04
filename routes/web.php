@@ -13,6 +13,13 @@ Route::middleware('cache.headers:public;max_age=3600;s_maxage=3600;stale_while_r
     Route::get('config.js', ConfigController::class)->name('config');
 });
 
+Route::middleware('cache.headers:public;max_age=86400;s_maxage=86400')->group(function (): void {
+    Route::get('robots.txt', function () {
+        return response()->view('robots')
+            ->header('Content-Type', 'text/plain; charset=utf-8');
+    });
+});
+
 Route::middleware('web')->group(function () {
     Route::view('cart', 'rapidez::cart.overview')->name('cart');
 
