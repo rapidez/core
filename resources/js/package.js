@@ -92,6 +92,13 @@ async function init() {
         custom_attributes: [],
     }
 
+    // Heartbeat every 15 minutes to keep CSRF alive
+    if (!window.heartbeat) {
+        window.heartbeat = setInterval(() => {
+            rapidezFetch('/heartbeat')
+        }, 1000 * 60 * 15)
+    }
+
     requestAnimationFrame(() => {
         window.app = createApp({
             el: '#app',
@@ -151,6 +158,7 @@ async function init() {
             // If we have view transitions, we need to make sure we destroy after render.
             destroyEvent: !!document.startViewTransition ? 'turbo:before-cache-timeout' : 'turbo:before-cache',
         })
+
         // https://vuejs.org/api/application.html#app-config-performance
         window.app.config.performance = import.meta.env.VITE_PERFORMANCE == 'true'
         window.app.config.globalProperties = {
