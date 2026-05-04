@@ -94,9 +94,12 @@ async function init() {
 
     // Heartbeat every 15 minutes to keep CSRF alive
     if (!window.heartbeat) {
-        window.heartbeat = setInterval(() => {
-            rapidezFetch('/heartbeat')
-        }, 1000 * 60 * 15)
+        window.heartbeat = setInterval(
+            () => {
+                rapidezFetch('/heartbeat')
+            },
+            1000 * 60 * 15,
+        )
     }
 
     requestAnimationFrame(() => {
