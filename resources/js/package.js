@@ -23,7 +23,7 @@ import './callbacks'
 import './vue-components'
 import './instantsearch'
 import { fetchCount } from './stores/useFetches.js'
-import { computed, createApp, watch } from 'vue'
+import { computed, createApp, ref, watch } from 'vue'
 ;(() => import('./turbolinks'))()
 
 if (import.meta.env.VITE_DEBUG === 'true') {
@@ -154,13 +154,13 @@ async function init() {
         // https://vuejs.org/api/application.html#app-config-performance
         window.app.config.performance = import.meta.env.VITE_PERFORMANCE == 'true'
         window.app.config.globalProperties = {
-            custom: {},
+            custom: ref({}),
             config: window.config,
-            refs: {},
+            refs: ref({}),
             loadingCount: fetchCount,
-            loading: false,
+            loading: ref(false),
             autocompleteFacadeQuery: '',
-            csrfToken: document.querySelector('[name=csrf-token]')?.content,
+            csrfToken: ref(document.querySelector('[name=csrf-token]')?.content),
             cart: cart,
             order: useOrder(),
             user: user,
@@ -188,7 +188,7 @@ async function init() {
         window.app.config.globalProperties.config = window.config
 
         watch(fetchCount, function (count) {
-            app.config.globalProperties.loading = count > 0
+            app.config.globalProperties.loading.value = count > 0
         })
 
         setTimeout(() => {
