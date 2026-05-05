@@ -23,7 +23,7 @@ class Category extends Model
     protected $primaryKey = 'entity_id';
     protected $entityTypeId = EavAttribute::ENTITY_TYPE_CATALOG_CATEGORY;
 
-    protected $appends = ['url'];
+    protected $appends = ['url', 'name'];
 
     public const STATUS_ACTIVE = 1;
 
@@ -57,7 +57,7 @@ class Category extends Model
 
     public function name(): Attribute
     {
-        return Attribute::get(fn ($name) => trim($name));
+        return Attribute::get(fn () => trim($this->getCustomAttribute('name')));
     }
 
     public function products(): HasManyThrough
