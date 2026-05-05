@@ -52,8 +52,8 @@ async function init() {
     booting = true
 
     for (let i = 0; i < 20; i++) {
-        // Wait until config is available, for a max of 1s
-        if (window.config.store) {
+        // Wait until config is available, or has thrown an error, for a max of 1s
+        if (window.config.store || window.configError) {
             break
         }
         await new Promise((resolve) => setTimeout(resolve, 50))
@@ -66,7 +66,7 @@ async function init() {
 
     // Check if the localstorage needs a flush.
     let cachekey = useLocalStorage('cachekey')
-    if (cachekey.value !== window.config.cachekey) {
+    if (window.config.cachekey && cachekey.value !== window.config.cachekey) {
         window.config.flushable_localstorage_keys.forEach((key) => {
             useLocalStorage(key).value = null
         })
@@ -109,6 +109,7 @@ async function init() {
                 mask: useMask(),
                 showTax: window.config.show_tax,
                 scrollLock: useScrollLock(document.body),
+                configError: false,
             },
             methods: {
                 search(value) {
@@ -178,8 +179,16 @@ async function init() {
                 loadingCount: function (count) {
                     window.app.$data.loading = count > 0
                 },
+
+                configError: function (newValue) {
+                    if (newValue === true) {
+                        throw new Error('Config.js failed to load due to an error.')
+                    }
+                },
             },
             mounted() {
+                this.configError = window.configError ?? false
+
                 setTimeout(() => {
                     const event = new CustomEvent('vue:mounted', { detail: { vue: window.app } })
                     document.dispatchEvent(event)
