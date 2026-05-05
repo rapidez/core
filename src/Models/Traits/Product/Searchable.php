@@ -152,6 +152,7 @@ trait Searchable
                     ->take($i)
                     ->map(fn ($id) => $categories[$id]->name ?? null)
                     ->whereNotNull()
+                    ->map(fn ($name) => trim($name))
                     ->join(' > ');
 
                 $data['category_lvl' . $i][] = $pathCategories;

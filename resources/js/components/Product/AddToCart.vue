@@ -140,7 +140,7 @@ export default {
                     await this.callback(this.product, this.qty)
                 }
 
-                window.$emit('cart-add', { product: this.product, qty: this.qty })
+                window.$emit('cart-add', { product: this.product, simpleProduct: this.simpleProduct, qty: this.qty })
 
                 if (this.notifySuccess) {
                     Notify(this.product.name + ' ' + window.config.translations.cart.add, 'success', [], window.url('/cart'))
@@ -301,7 +301,7 @@ export default {
             await this.setOptionsFromValues(Object.fromEntries(options))
         },
         async setOptionsFromUrlParams() {
-            let options = new URLSearchParams(window.location.search).entries().toArray()
+            let options = Array.from(new URLSearchParams(window.location.search).entries())
             await this.setOptionsFromValues(this.optionsFromNamedOptions(options))
         },
         optionsFromNamedOptions(values) {
