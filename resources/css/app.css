@@ -1,21 +1,58 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/*
+All colors are defined in rapidez/blade-components, see:
+https://github.com/rapidez/blade-components/tree/master/resources/css
+
+For more information: https://docs.rapidez.io/5.x/theming.html#colors
+*/
+
+@theme {
+    --z-index-header: 100;
+    --z-index-header-autocomplete-overlay: 10;
+    --z-index-header-autocomplete: 20;
+    --z-index-header-dropdown: 30;
+    --z-index-header-minicart: 30;
+    --z-index-header-autocomplete-button: 30;
+
+    --z-index-notifications: 110;
+
+    --z-index-popup: 130;
+    --z-index-popup-actions: 10;
+
+    --z-index-cookie: 140;
+
+    --animate-loading: loading 1s infinite;
+
+    @keyframes loading {
+        0% {
+            left: 0%;
+            width: 0%;
+        }
+        50% {
+            left: 0%;
+            width: 100%;
+        }
+        100% {
+            left: 100%;
+            width: 0%;
+        }
+    }
+}
+
+@utility container {
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+}
 
 [v-cloak] {
     display: none;
 }
 
 [v-blur] {
-    @apply animate-pulse blur;
+    @apply animate-pulse blur-sm;
 }
 
 @view-transition {
     navigation: auto;
-}
-
-* {
-    -webkit-tap-highlight-color: transparant;
 }
 
 listing,
@@ -26,17 +63,6 @@ autocomplete {
     unicode-bidi: unset;
     margin: unset;
     white-space: unset;
-}
-
-/* Remove default browser arrows for input type="number" */
-.arrows-hidden[type='number']::-webkit-inner-spin-button,
-.arrows-hidden[type='number']::-webkit-outer-spin-button {
-    @apply appearance-none m-0;
-}
-
-/* Firefox */
-.arrows-hidden[type='number'] {
-    -moz-appearance: textfield;
 }
 
 mark {
@@ -53,12 +79,6 @@ input[type='search']::-webkit-search-results-decoration {
 .custom-select {
     background-position: right center;
     field-sizing: content;
-}
-
-@supports (interpolate-size: allow-keywords) {
-    :root {
-        interpolate-size: allow-keywords;
-    }
 }
 
 .turbo-progress-bar {

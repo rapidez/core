@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Cache;
 
 class EavAttribute extends Model
 {
-    // TODO: Maybe create a model for this and cache it?
-    // But most likely it's never going to change...
     public const ENTITY_TYPE_CUSTOMER = 1;
     public const ENTITY_TYPE_CUSTOMER_ADDRESS = 2;
     public const ENTITY_TYPE_CATALOG_CATEGORY = 3;

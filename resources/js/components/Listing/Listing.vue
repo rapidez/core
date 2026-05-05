@@ -58,6 +58,7 @@ export default {
         searchkit: null,
         searchClient: null,
         destroyed: false,
+        utmFields: [],
     }),
 
     render() {
@@ -150,10 +151,7 @@ export default {
                 return this.baseFilters().concat([
                     {
                         query_string: {
-                            query:
-                                '(visibility:(2 OR 4) OR (NOT _exists_:visibility)) AND (category_ids:' +
-                                this.categoryId +
-                                ' OR (NOT _exists_:category_ids))',
+                            query: `(visibility:(2 OR 4) OR (NOT _exists_:visibility)) AND (category_ids:${this.categoryId})`,
                         },
                     },
                 ])
@@ -215,15 +213,20 @@ export default {
                 page: data.page > 0 ? String(data.page) : undefined,
                 sort: data.sortBy,
                 hits: data.hitsPerPage != config.grid_per_page ? data.hitsPerPage : undefined,
+                ...this.utmFields,
             }
         },
 
         routeToState(routeState) {
             let ranges = Object.fromEntries(Object.entries(routeState).filter(([key]) => this.rangeAttributes.includes(key)))
 
+            this.utmFields = Object.fromEntries(Object.entries(routeState).filter(([key]) => key.startsWith('utm_')))
+
             let refinementList = Object.fromEntries(
                 Object.entries(routeState)
-                    .filter(([key]) => !['q', 'hits', 'sort', 'page', 'category'].includes(key) && !this.rangeAttributes.includes(key))
+                    .filter(([key]) => !['q', 'hits', 'sort', 'page', 'category'].includes(key))
+                    .filter(([key]) => !this.rangeAttributes.includes(key))
+                    .filter(([key]) => !key.startsWith('utm_'))
                     .map(([key, refinement]) => [key, typeof refinement === 'string' ? refinement.split(',') : refinement]),
             )
 

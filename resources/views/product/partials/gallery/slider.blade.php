@@ -2,7 +2,7 @@
     <a
         v-on:click.prevent="toggleZoom"
         v-bind:href="config.media_url + '/catalog/product' + media[active].image"
-        class="flex h-[440px] cursor-zoom-in items-center justify-center rounded border p-5"
+        class="flex h-110 cursor-zoom-in items-center justify-center rounded-sm border p-5"
     >
         <img
             {{-- src should always be below v-bind:src --}}

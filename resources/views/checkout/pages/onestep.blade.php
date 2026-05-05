@@ -7,7 +7,7 @@
 @section('content')
     <div class="container">
         <div v-if="hasCart" class="flex gap-14 max-xl:flex-col" v-cloak>
-            <div class="w-full bg rounded p-4 xl:p-8 xl:w-3/4">
+            <div class="w-full bg rounded-sm p-4 xl:p-8 xl:w-3/4">
                 <form class="grid gap-5 lg:grid-cols-2" v-on:submit.prevent="(e) => {
                     window.app.config.globalProperties.submitPartials(e.target?.form ?? e.target)
                         .then((result) =>
@@ -17,7 +17,7 @@
                         ).catch(() => {});
                 }">
                     <div class="lg:w-1/2 lg:pr-2.5 lg:col-span-2">
-                        @include('rapidez::checkout.steps.login')
+                        @include('rapidez::checkout.steps.login', ['onestep' => true])
                     </div>
                     <div v-if="!cart.value.is_virtual">
                         <h2 class="text-xl font-bold mb-3 lg:mb-9">@lang('Shipping address')</h2>

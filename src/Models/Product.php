@@ -265,7 +265,10 @@ class Product extends Model
     // or by any tier pricing.
     protected function price(): Attribute
     {
-        return Attribute::get(function ($value) {
+        return Attribute::get(function (?AttributeDecimal $value) {
+            /** @var ?AttributeDecimal $value */
+            $value ??= $this->getCustomAttribute('price');
+
             $customerGroupId = auth('magento-customer')
                 ->user()
                 ?->group_id ?: 0;
@@ -275,24 +278,18 @@ class Product extends Model
                 ->firstWhere('customer_group_id', $customerGroupId);
 
             if ($price === null) {
-                return $value;
+                return $value?->value;
             }
 
             return $price->price ?: $price->min_price;
-        });
+        })->shouldCache();
     }
 
     // We're not applying the customer group here so
     // all the prices for customer groups are
-    // returned for the indexer.
+    // returned for the indexer, and cached pages.
     public function prices(): HasMany
     {
-        // TODO: Double check the prices with the indexer.
-        // We should index all customer group prices
-        // as we can only verify that on the
-        // frontend. But currently this
-        // is also loading all prices
-        // for just a product page.
         return $this
             ->hasMany(
                 config('rapidez.models.product_price', ProductPrice::class),
@@ -320,7 +317,7 @@ class Product extends Model
             }
 
             return $specialPrice < $this->price ? $specialPrice : null;
-        });
+        })->shouldCache();
     }
 
     protected function calculatedTierPrices(): Attribute

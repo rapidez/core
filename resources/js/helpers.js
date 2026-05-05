@@ -9,9 +9,9 @@ window.truncate = function (value, limit) {
 }
 
 window.price = function (value, extra = {}) {
-    return new Intl.NumberFormat(config.locale.replace('_', '-'), {
+    return new Intl.NumberFormat([(config.locale ?? 'default').replace('_', '-'), 'default'], {
         style: 'currency',
-        currency: config.currency,
+        currency: config.currency ?? 'eur',
         ...extra,
     }).format(value)
 }
@@ -31,8 +31,18 @@ window.productSpecialPrice = function (product) {
     return window.productPrice(product) > specialPrice ? specialPrice : null
 }
 
+const formatter = new Intl.NumberFormat([(config.locale ?? 'default').replace('_', '-'), 'default'], {
+    style: 'currency',
+    currency: config.currency ?? 'eur',
+})
+const digits = formatter.resolvedOptions().maximumFractionDigits
+
+window.roundCurrency = function (price) {
+    return Number.parseFloat(price).toFixed(digits)
+}
+
 window.sumPrices = function (price1, price2) {
-    return Math.round((parseFloat(price1) + parseFloat(price2)) * 100) / 100
+    return window.roundCurrency(parseFloat(price1) + parseFloat(price2))
 }
 
 window.url = function (path = '') {

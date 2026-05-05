@@ -18,6 +18,6 @@ class Block
         $blockModel = config('rapidez.models.block');
         $block = new $blockModel;
 
-        return Rapidez::content($blockModel::where($block->getQualifiedKeyName(), $this->blockId)->orWhere($block->qualifyColumn('identifier'), $this->blockId)->first()->content);
+        return Rapidez::content($blockModel::where($block->getQualifiedKeyName(), $this->blockId)->orWhere($block->qualifyColumn('identifier'), $this->blockId)->first()?->content ?? '');
     }
 }

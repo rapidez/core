@@ -27,28 +27,20 @@ trait Searchable
         return $query
             ->with(['reviewSummary', 'children'])
             ->whereInAttribute('visibility', [
-                // TODO: Are we filtering this on the frontend?
-                // As "searchable" will be used for the
-                // listing and the search...
                 Product::VISIBILITY_IN_CATALOG,
                 Product::VISIBILITY_IN_SEARCH,
                 Product::VISIBILITY_BOTH,
             ])
+            ->when(
+                ! Rapidez::config('cataloginventory/options/show_out_of_stock', 0),
+                fn (Builder $q) => $q
+                    ->whereHas(
+                        'stock',
+                        fn (Builder $q) => $q
+                            ->where('is_in_stock', 1)
+                    )
+            )
             ->withEventyGlobalScopes('index.' . static::getModelName() . '.scopes');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function shouldBeSearchable(): bool
-    {
-        // TODO: Maybe also move this one to the query?
-        $showOutOfStock = (bool) Rapidez::config('cataloginventory/options/show_out_of_stock', 0);
-        if (! $showOutOfStock && ! $this->stock->is_in_stock) {
-            return false;
-        }
-
-        return true;
     }
 
     /**
@@ -160,6 +152,7 @@ trait Searchable
                     ->take($i)
                     ->map(fn ($id) => $categories[$id]->name ?? null)
                     ->whereNotNull()
+                    ->map(fn ($name) => trim($name))
                     ->join(' > ');
 
                 $data['category_lvl' . $i][] = $pathCategories;

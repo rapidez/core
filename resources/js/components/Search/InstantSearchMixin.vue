@@ -8,6 +8,7 @@ export default {
     data: () => ({
         searchkit: null,
         searchClient: null,
+        requestCount: 0,
     }),
     async mounted() {
         this.searchkit = await this.initSearchkit()
@@ -43,6 +44,10 @@ export default {
                             sr.request.params.highlightPostTag = '</mark>'
                             return sr
                         })
+                    },
+                    afterSearch: (searchRequests, searchResponses) => {
+                        this.requestCount += searchResponses.length
+                        return searchResponses
                     },
                 },
             }
