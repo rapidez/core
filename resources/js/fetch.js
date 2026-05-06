@@ -1,5 +1,7 @@
+import { fetchCart } from './stores/useCart.js'
 import { addFetch } from './stores/useFetches.js'
-import { token } from './stores/useUser'
+import { mask } from './stores/useMask.js'
+import { token } from './stores/useUser.js'
 import { get } from '@vueuse/core'
 
 export class FetchError extends Error {
@@ -124,6 +126,7 @@ export const magentoGraphQL = (window.magentoGraphQL = async (
         headers: {},
         redirectOnExpiration: true,
         notifyOnError: true,
+        retryOnCartError: true,
     },
 ) => {
     let response = await rapidezFetch(config.magento_url + '/graphql', {
@@ -149,28 +152,43 @@ export const magentoGraphQL = (window.magentoGraphQL = async (
     let data = await response.json()
 
     if (data?.errors) {
-        console.error(data.errors)
+        // Filter out errors with a message that contain the cart id, signifying an expired cart
+        let errors = data.errors.filter((error) => !(mask.value.length > 0 && error.message.includes(mask.value)))
+        let cartErrors = data.errors.filter((error) => mask.value.length > 0 && error.message.includes(mask.value))
 
-        data?.errors?.forEach((error) => {
-            if (
-                !['graphql-authorization', 'graphql-authentication'].includes(error?.extensions?.category) ||
-                error.path.includes('generateCustomerToken')
-            ) {
-                return
-            }
+        if (errors.length) {
+            console.error(data.errors)
+            errors.forEach((error) => {
+                if (
+                    !['graphql-authorization', 'graphql-authentication'].includes(error?.extensions?.category) ||
+                    error.path.includes('generateCustomerToken')
+                ) {
+                    return
+                }
 
-            if (options?.notifyOnError ?? true) {
-                Notify(window.config.translations.errors.session_expired, 'error')
-            }
+                if (options?.notifyOnError ?? true) {
+                    Notify(window.config.translations.errors.session_expired, 'error')
+                }
 
-            if (options?.redirectOnExpiration ?? true) {
-                window.$emit('logout', { redirect: '/login' })
-            } else {
-                throw new SessionExpired(window.config.translations.errors.session_expired, responseClone)
-            }
-        })
+                if (options?.redirectOnExpiration ?? true) {
+                    window.$emit('logout', { redirect: '/login' })
+                } else {
+                    throw new SessionExpired(window.config.translations.errors.session_expired, responseClone)
+                }
+            })
 
-        throw new GraphQLError(data.errors, responseClone)
+            throw new GraphQLError(data.errors, responseClone)
+        } else if (cartErrors.length) {
+            // Get a new cart and redo the query with updated cart id
+            await fetchCart()
+            window.Notify(window.config.translations.errors.cart_expired, 'warning')
+
+            return await window.magentoGraphQL(
+                query,
+                { ...variables, cartId: mask.value, cart_id: mask.value },
+                { ...options, retryOnCartError: false },
+            )
+        }
     }
 
     if (!response.ok) {
