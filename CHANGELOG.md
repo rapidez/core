@@ -1,6 +1,40 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.0.0...5.0.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.1.0...5.1.0)
+## [5.1.0](https://github.com/rapidez/core/releases/tag/5.1.0) - 2026-05-06
+
+### Added
+
+- Laravel 13 support (#1261)
+
+### Changed
+
+- Listen to is_html_allowed_on_front for attribute values (#1223)
+
+### Fixed
+
+- Bump playwright magento versions (#1247)
+- Trim category name before indexing it (#1255)
+- Changed button tags to anchor tags (#1253)
+- Fixed NaN Prices (#1251)
+- Fixed email is not valid errors (#1258)
+- Fixed track events being duplicated (#1259)
+- Use roundCurrency helper to round correctly for any currency (#1250)
+- Use array.from instead of toArray on entries (#1266)
+- Include simpleProduct in cart-add event (#1273)
+- Fallback for container not existing (#1270)
+- Fixed Turbo bfcache on vue unmount (#1269)
+- Make sure combining queries don't read the same stream multiple times (#1268)
+- Retain UTM query params in listings (#1246)
+- Use stock->backorders (#1264)
+- Custom robots.txt (#1275)
+- Ensure values are refs (#1276)
+- Allow duplicate graphql calls if variables are different (#1244)
+- Auto retry requests where the cart has expired (#1237)
+- Heartbeat to keep CSRF tokens alive (#1274)
+- Always trim category name (#1267)
+- Remove double robots.txt route (#1277)
+
 ## [5.0.0](https://github.com/rapidez/core/releases/tag/5.0.0) - 2026-04-03
 
 See the upgrade guide: https://docs.rapidez.io/5.x/upgrading.html
