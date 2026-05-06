@@ -76,6 +76,7 @@ export default {
         mutated: false,
         running: false,
         initialVariables: {},
+        runningVariables: {},
         data: {},
         mutate: () => null,
         redirectUrl: '',
@@ -141,7 +142,7 @@ export default {
 
     methods: {
         async mutateFn() {
-            if (this.running) {
+            if (this.running && JSON.stringify(this.data) === JSON.stringify(this.runningVariables)) {
                 return
             }
 
@@ -157,6 +158,8 @@ export default {
 
                 let variables = this.data,
                     query = this.query
+
+                this.runningVariables = JSON.parse(JSON.stringify(this.data))
 
                 if (this.beforeRequest) {
                     ;[query, variables, options] = await this.beforeRequest(query, variables, options)

@@ -2,6 +2,7 @@ import { fetchCart } from './stores/useCart.js'
 import { addFetch } from './stores/useFetches.js'
 import { mask } from './stores/useMask.js'
 import { token } from './stores/useUser.js'
+import { get } from '@vueuse/core'
 
 export class FetchError extends Error {
     constructor(message, response) {
@@ -44,7 +45,7 @@ export const rapidezAPI = (window.rapidezAPI = async (method, endpoint, data = {
                 Store: window.config.store_code,
                 Authorization: token.value ? `Bearer ${token.value}` : null,
                 'Content-Type': 'application/json',
-                'X-CSRF-Token': window.app.config.globalProperties.csrfToken,
+                'X-CSRF-Token': get(window.app.config.globalProperties.csrfToken),
             },
             options?.headers || {},
         ),
