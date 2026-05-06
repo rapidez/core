@@ -55,15 +55,22 @@ class AbstractAttribute extends Model
             return array_key_exists('value', $this->getCasts())
                 ? $this->castAttribute('value', $value)
                 : $value;
-        });
+        })->shouldCache();
     }
 
     protected function value(): Attribute
     {
         return Attribute::get(function ($value) {
             $value = $this->option_values ?? $this->rawValue ?? $value;
+            $value = array_map(function ($val) {
+                if ($this->is_html_allowed_on_front) {
+                    return $val;
+                }
 
-            if (is_iterable($value) && count($value) === 1) {
+                return e(htmlspecialchars_decode($val), false);
+            }, Arr::wrap($value));
+
+            if (count($value) === 1) {
                 return Arr::first($value);
             }
 

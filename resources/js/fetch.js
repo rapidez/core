@@ -1,5 +1,6 @@
 import { addFetch } from './stores/useFetches.js'
 import { token } from './stores/useUser'
+import { get } from '@vueuse/core'
 
 export class FetchError extends Error {
     constructor(message, response) {
@@ -42,7 +43,7 @@ export const rapidezAPI = (window.rapidezAPI = async (method, endpoint, data = {
                 Store: window.config.store_code,
                 Authorization: token.value ? `Bearer ${token.value}` : null,
                 'Content-Type': 'application/json',
-                'X-CSRF-Token': window.app.config.globalProperties.csrfToken,
+                'X-CSRF-Token': get(window.app.config.globalProperties.csrfToken),
             },
             options?.headers || {},
         ),
@@ -151,7 +152,10 @@ export const magentoGraphQL = (window.magentoGraphQL = async (
         console.error(data.errors)
 
         data?.errors?.forEach((error) => {
-            if (!['graphql-authorization', 'graphql-authentication'].includes(error?.extensions?.category)) {
+            if (
+                !['graphql-authorization', 'graphql-authentication'].includes(error?.extensions?.category) ||
+                error.path.includes('generateCustomerToken')
+            ) {
                 return
             }
 

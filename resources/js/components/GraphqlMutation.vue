@@ -170,7 +170,10 @@ export default {
                         throw error
                     }
 
-                    const errorResponse = await error.response.json()
+                    if (!error._responseData && !error.response.bodyUsed) {
+                        error._responseData = error.response.json()
+                    }
+                    const errorResponse = error._responseData ? await error._responseData : {}
                     if (this.errorCallback) {
                         await this.errorCallback(this.data, errorResponse)
                     }

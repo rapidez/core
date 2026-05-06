@@ -266,6 +266,9 @@ class Product extends Model
     protected function price(): Attribute
     {
         return Attribute::get(function (?AttributeDecimal $value) {
+            /** @var ?AttributeDecimal $value */
+            $value ??= $this->getCustomAttribute('price');
+
             $customerGroupId = auth('magento-customer')
                 ->user()
                 ?->group_id ?: 0;
@@ -279,7 +282,7 @@ class Product extends Model
             }
 
             return $price->price ?: $price->min_price;
-        });
+        })->shouldCache();
     }
 
     // We're not applying the customer group here so
@@ -314,7 +317,7 @@ class Product extends Model
             }
 
             return $specialPrice < $this->price ? $specialPrice : null;
-        });
+        })->shouldCache();
     }
 
     protected function calculatedTierPrices(): Attribute
