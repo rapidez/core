@@ -291,6 +291,8 @@ window.setTimeout(() => {
     watch(mask, refresh)
     if (cartStorage.value?.id && !mask.value) {
         clear()
+    } else {
+        window.setTimeout(() => refresh(), 200)
     }
 })
 
