@@ -59,7 +59,7 @@ class Category extends Model
     {
         return Attribute::get(function (?AttributeVarchar $value) {
             $value ??= $this->getCustomAttribute('name');
-            return trim($value);
+            return trim($value?->value ?? '');
         });
     }
 
