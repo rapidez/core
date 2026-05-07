@@ -94,7 +94,6 @@ class Category extends Model
     {
         return $this
             ->hasMany(config('rapidez.models.rewrite'), 'entity_id', 'entity_id')
-            ->withoutGlobalScope('store')
             ->where('entity_type', 'category');
     }
 
