@@ -55,6 +55,7 @@ trait Searchable
         $attributeCodes = [
             'entity_id',
             'sku',
+            'has_options',
             'children',
             'prices',
             'url',
