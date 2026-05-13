@@ -153,7 +153,7 @@ async function init() {
             },
             mounted() {
                 window.$on('configError', () => {
-                    app.config.globalProperties.configError = true
+                    app.config.globalProperties.configError.value = true
                     throw new Error('Config.js failed to load because of an error.')
                 })
                 if (window.configError ?? false) {
@@ -186,7 +186,7 @@ async function init() {
             mask: useMask(),
             showTax: window.config.show_tax,
             scrollLock: useScrollLock(document.body),
-            configError: false,
+            configError: ref(false),
             // Wrap the local storage in getter and setter functions so you do not have to interact using .value
             guestEmail: wrapValue(
                 useLocalStorage('email', window.debug ? 'wayne@enterprises.com' : '', { serializer: StorageSerializers.string }),
