@@ -1,4 +1,4 @@
-import TurbolinksAdapter from 'vue-turbolinks'
+import TurbolinksAdapter from './vue-turbolinks'
 import toggler from './components/Elements/Toggler.vue'
 import addToCart from './components/Product/AddToCart.vue'
 import user from './components/User/User.vue'

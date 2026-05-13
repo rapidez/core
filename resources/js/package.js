@@ -23,7 +23,7 @@ import './callbacks'
 import './vue-components'
 import './instantsearch'
 import { fetchCount } from './stores/useFetches.js'
-import { computed, createApp, watch } from 'vue'
+import { computed, createApp, ref, watch } from 'vue'
 ;(() => import('./turbolinks'))()
 
 if (import.meta.env.VITE_DEBUG === 'true') {
@@ -90,6 +90,16 @@ async function init() {
         telephone: window.debug ? '530-7972' : '',
         country_code: window.debug ? 'NL' : window.config.default_country,
         custom_attributes: [],
+    }
+
+    // Heartbeat every 15 minutes to keep CSRF alive
+    if (!window.heartbeat) {
+        window.heartbeat = setInterval(
+            () => {
+                rapidezFetch('/heartbeat')
+            },
+            1000 * 60 * 15,
+        )
     }
 
     requestAnimationFrame(() => {
@@ -159,16 +169,17 @@ async function init() {
             // If we have view transitions, we need to make sure we destroy after render.
             destroyEvent: !!document.startViewTransition ? 'turbo:before-cache-timeout' : 'turbo:before-cache',
         })
+
         // https://vuejs.org/api/application.html#app-config-performance
         window.app.config.performance = import.meta.env.VITE_PERFORMANCE == 'true'
         window.app.config.globalProperties = {
-            custom: {},
+            custom: ref({}),
             config: window.config,
-            refs: {},
+            refs: ref({}),
             loadingCount: fetchCount,
-            loading: false,
+            loading: ref(false),
             autocompleteFacadeQuery: '',
-            csrfToken: document.querySelector('[name=csrf-token]')?.content,
+            csrfToken: ref(document.querySelector('[name=csrf-token]')?.content),
             cart: cart,
             order: useOrder(),
             user: user,
@@ -197,7 +208,7 @@ async function init() {
         window.app.config.globalProperties.config = window.config
 
         watch(fetchCount, function (count) {
-            app.config.globalProperties.loading = count > 0
+            app.config.globalProperties.loading.value = count > 0
         })
 
         setTimeout(() => {

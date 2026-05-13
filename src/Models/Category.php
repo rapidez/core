@@ -23,7 +23,7 @@ class Category extends Model
     protected $primaryKey = 'entity_id';
     protected $entityTypeId = EavAttribute::ENTITY_TYPE_CATALOG_CATEGORY;
 
-    protected $appends = ['url'];
+    protected $appends = ['url', 'name'];
 
     public const STATUS_ACTIVE = 1;
 
@@ -53,6 +53,15 @@ class Category extends Model
         return Attribute::get(fn () => '/' . ($this->url_path
             ? $this->url_path . Rapidez::config('catalog/seo/category_url_suffix')
             : ('catalog/category/view/id/' . $this->entity_id)));
+    }
+
+    protected function name(): Attribute
+    {
+        return Attribute::get(function (?AttributeVarchar $value) {
+            $value ??= $this->getCustomAttribute('name');
+
+            return trim($value?->value ?? '');
+        });
     }
 
     public function products(): HasManyThrough

@@ -52,7 +52,7 @@ export default {
         },
         store: {
             type: String,
-            default: window.config.store_code,
+            default: () => window.config.store_code,
         },
         beforeRequest: {
             type: Function,
@@ -76,6 +76,7 @@ export default {
         mutated: false,
         running: false,
         initialVariables: {},
+        runningVariables: {},
         data: {},
         mutate: () => null,
         redirectUrl: '',
@@ -141,7 +142,7 @@ export default {
 
     methods: {
         async mutateFn() {
-            if (this.running) {
+            if (this.running && JSON.stringify(this.data) === JSON.stringify(this.runningVariables)) {
                 return
             }
 
@@ -158,6 +159,8 @@ export default {
                 let variables = this.data,
                     query = this.query
 
+                this.runningVariables = JSON.parse(JSON.stringify(this.data))
+
                 if (this.beforeRequest) {
                     ;[query, variables, options] = await this.beforeRequest(query, variables, options)
                 }
@@ -170,7 +173,10 @@ export default {
                         throw error
                     }
 
-                    const errorResponse = await error.response.json()
+                    if (!error._responseData && !error.response.bodyUsed) {
+                        error._responseData = error.response.json()
+                    }
+                    const errorResponse = error._responseData ? await error._responseData : {}
                     if (this.errorCallback) {
                         await this.errorCallback(this.data, errorResponse)
                     }
