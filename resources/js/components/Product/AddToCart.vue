@@ -314,7 +314,7 @@ export default {
             return this.simpleProduct?.thumbnail || this.images[0] || this.product?.thumbnail
         },
 
-        hoverImage: function() {
+        hoverImage: function () {
             if (!this.currentThumbnail) {
                 return null
             }
@@ -333,10 +333,8 @@ export default {
             return this.images[0]
         },
 
-        images: function() {
-            return this.simpleProduct?.media
-                ?.filter((media) => media.media_type == 'image')
-                ?.map((media) => media.image) ?? []
+        images: function () {
+            return this.simpleProduct?.media?.filter((media) => media.media_type == 'image')?.map((media) => media.image) ?? []
         },
 
         shouldRedirectToProduct: function () {
