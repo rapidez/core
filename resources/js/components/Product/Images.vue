@@ -3,7 +3,6 @@ import { useEventListener } from '@vueuse/core'
 
 export default {
     data: () => ({
-        images: config.product.images,
         media: config.product.media,
         active: 0,
         zoomed: false,
@@ -30,7 +29,6 @@ export default {
                     child === simpleProduct &&
                     Object.values(window.config.product.super_attributes).filter((attribute) => attribute.update_image).length
                 ) {
-                    self.images = simpleProduct.images
                     self.media = simpleProduct.media.toSorted((a, b) => a.position - b.position)
                     self.active = Math.min(self.active, self.media.length - 1)
                 }
