@@ -28,7 +28,7 @@
         "laravel/framework": "^12.50|^13.0",
         "laravel/scout": "^10.14",
         "lcobucci/clock": "^2.0|^3.2",
-        "lcobucci/jwt": "^4.0|^5.3",
+        "lcobucci/jwt": "^4.2|^5.3",
         "rapidez/blade-components": "^2.0",
         "rapidez/blade-directives": "^1.1",
         "rapidez/laravel-multi-cache": "^2.1",
