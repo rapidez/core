@@ -2,17 +2,28 @@
     <add-to-cart v-bind:product="item" v-slot="addToCart" v-cloak>
         <div class="group flex flex-1 flex-col rounded bg-white h-full">
             <a :href="addToCart.productUrl | url" v-on:click="sendEvent('click', item, 'Hit Clicked')" class="block mb-auto">
-                <img
-                    v-if="addToCart.currentThumbnail"
-                    :src="'/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + addToCart.currentThumbnail + '.webp' | url"
-                    class="mb-3 h-48 w-full rounded-t object-contain"
-                    :alt="item.name"
-                    :loading="config.category && count <= 4 ? 'eager' : 'lazy'"
-                    v-bind:style="{ 'view-transition-name': 'image-' + item.sku }"
-                    width="200"
-                    height="200"
-                />
-                <x-rapidez::no-image v-else class="mb-3 h-48 rounded-t" />
+                <div class="relative mb-3 h-48 w-full">
+                    <img
+                        v-if="addToCart.currentThumbnail"
+                        :src="'/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + addToCart.currentThumbnail + '.webp' | url"
+                        class="size-full rounded-t object-contain"
+                        v-bind:class="{ 'group-hover:opacity-0 transition-opacity': addToCart.hoverImage }"
+                        :alt="item.name"
+                        :loading="config.category && count <= 4 ? 'eager' : 'lazy'"
+                        v-bind:style="{ 'view-transition-name': 'image-' + item.sku }"
+                        width="200"
+                        height="200"
+                    />
+                    <x-rapidez::no-image v-else class="size-full rounded-t" />
+                    <img
+                        v-if="addToCart.hoverImage"
+                        :src="'/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + addToCart.hoverImage + '.webp' | url"
+                        class="absolute pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity inset-0 size-full rounded-t object-contain"
+                        loading="lazy"
+                        width="200"
+                        height="200"
+                    />
+                </div>
                 <div>
                     <x-rapidez::highlight attribute="name" class="text-base font-medium hover:underline decoration-2"/>
                     @if (App::providerIsLoaded('Rapidez\Reviews\ReviewsServiceProvider'))

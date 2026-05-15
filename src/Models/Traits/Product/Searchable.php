@@ -78,6 +78,7 @@ trait Searchable
             ->mapWithKeys(fn ($position, $category_id) => [$category_id => $maxPositions[$category_id] - $position]);
 
         $data['popularity'] = $this->getPopularity();
+        $data['media'] = $this->media;
 
         return Eventy::filter('index.' . static::getModelName() . '.data', $data, $this);
     }

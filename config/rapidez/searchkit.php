@@ -25,7 +25,7 @@ return [
         'price',
         'special_price',
         'image',
-        'images',
+        'media',
         'url',
         'thumbnail',
         'has_options',

@@ -311,7 +311,30 @@ export default {
 
     computed: {
         currentThumbnail: function () {
-            return this.simpleProduct?.thumbnail || this.simpleProduct?.images?.[0] || this.product?.thumbnail
+            return this.simpleProduct?.thumbnail || this.images[0] || this.product?.thumbnail
+        },
+
+        hoverImage: function () {
+            if (!this.currentThumbnail) {
+                return null
+            }
+
+            // Can't have a second image if there are no images
+            if (!this.images.length) {
+                return null
+            }
+
+            // Return the second image if the thumbnail is also the first image
+            if (this.currentThumbnail == this.images[0]) {
+                return this.images[1] ?? null
+            }
+
+            // Otherwise, return the first image because the thumbnail is something else
+            return this.images[0]
+        },
+
+        images: function () {
+            return this.simpleProduct?.media?.filter((media) => media.media_type == 'image')?.map((media) => media.image) ?? []
         },
 
         shouldRedirectToProduct: function () {

@@ -25,7 +25,7 @@ class Children implements CastsAttributes
                 }
             }
 
-            $child->images = isset($child->images) ? collect($child?->images)->sortBy('position')->pluck('value')->toArray() : [];
+            $child->media = isset($child->media) ? collect($child?->media)->sortBy('position')->toArray() : [];
 
             unset($child->special_from_date, $child->special_to_date);
         }
