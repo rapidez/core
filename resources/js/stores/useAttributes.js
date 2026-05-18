@@ -39,7 +39,7 @@ export const attributes = computedAsync(
 )
 
 window.attributeLabel = (attributeCode) => {
-    return computed(() => Object.values(attributes.value)?.find((attribute) => attribute.code === attributeCode)?.name)
+    return computed(() => Object.values(attributes.value)?.find((attribute) => attribute.code === attributeCode)?.name ?? attributeCode.replaceAll(/[_-]/g, ' '))
 }
 
 export default () => attributes
