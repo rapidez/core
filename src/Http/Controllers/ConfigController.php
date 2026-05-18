@@ -270,7 +270,7 @@ class ConfigController
         // Set default sort by
         $defaultSortBy = Rapidez::config('catalog/frontend/default_sort_by');
         $sortableAttributes = $sortableAttributes
-            ->sortBy(fn($attribute) => $attribute['code'] == $defaultSortBy ? 0 : 1)
+            ->sortBy(fn ($attribute) => $attribute['code'] == $defaultSortBy ? 0 : 1)
             ->values()
             ->toArray();
 
