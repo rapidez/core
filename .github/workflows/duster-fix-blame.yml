@@ -8,25 +8,7 @@ on:
 
 jobs:
   duster:
-    runs-on: ubuntu-latest
-
-    permissions:
-      contents: write
-
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.head_ref }}
-          token: ${{ secrets.RAPIDEZ_ACTIONS_ACCOUNT_PAT }}
-
-      - name: "Duster Fix"
-        uses: tighten/duster-action@v2
-        with:
-          args: fix -vvv
-
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        id: auto_commit_action
-        with:
-          commit_message: Apply fixes from Duster
-          commit_user_name: GitHub Action
-          commit_user_email: actions@github.com
+    uses: rapidez/workflows/.github/workflows/duster-fix-blame.yml@master
+    with:
+      ref: ${{ github.head_ref }}
+      repo-token: ${{ secrets.RAPIDEZ_ACTIONS_ACCOUNT_PAT }}

@@ -10,7 +10,7 @@ mutation setNewShippingAddressOnCart (
     $city: String!,
     $country_code: String!,
     $region_id: Int,
-    $telephone: String,
+    $telephone: String!,
     $fax: String,
     $company: String,
     $vat_id: String,
