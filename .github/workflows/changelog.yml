@@ -12,6 +12,5 @@ jobs:
       repository: ${{ github.repository }}
       branch: ${{ github.event.release.target_commitish }}
       ref: ${{ github.head_ref || github.ref_name }}
-      token: ${{ secrets.RAPIDEZ_ACTIONS_ACCOUNT_PAT }}
-      github-token: ${{ secrets.GITHUB_TOKEN }}
+    secrets: inherit
       

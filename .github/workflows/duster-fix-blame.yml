@@ -11,4 +11,4 @@ jobs:
     uses: rapidez/workflows/.github/workflows/duster-fix-blame.yml@master
     with:
       ref: ${{ github.head_ref }}
-      repo-token: ${{ secrets.RAPIDEZ_ACTIONS_ACCOUNT_PAT }}
+    secrets: inherit
