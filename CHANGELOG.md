@@ -1,6 +1,6 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.1.0...5.1.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.1.0...master)
 ## [5.1.0](https://github.com/rapidez/core/releases/tag/5.1.0) - 2026-05-06
 
 ### Added
