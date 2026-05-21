@@ -135,7 +135,7 @@ export default {
                     label: 'Default',
                     order: 'desc',
                     value: window.config.index.product,
-                }
+                },
             }
 
             return config
