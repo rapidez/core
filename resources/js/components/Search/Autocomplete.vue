@@ -131,6 +131,22 @@ export default {
             return client
         },
 
+        async getSearchSettings() {
+            let config = await InstantSearchMixin.methods.getSearchSettings.bind(this).call()
+
+            config.sorting = {
+                default: {
+                    field: '_score',
+                    key: 'default',
+                    label: 'Default',
+                    order: 'desc',
+                    value: window.config.index.product,
+                }
+            }
+
+            return config
+        },
+
         async getInstantSearchClientConfig() {
             const config = await InstantSearchMixin.methods.getInstantSearchClientConfig.bind(this).call()
 
