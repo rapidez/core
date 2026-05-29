@@ -1,6 +1,25 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.1.0...master)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.2.0...5.2.0)
+## [5.2.0](https://github.com/rapidez/core/releases/tag/5.2.0) - 2026-05-26
+
+### Changed
+
+- Added Magento 2.4.9 to tests & use workflows repo (#1287)
+- Use default_sort_by from magento (#1290)
+
+### Fixed
+
+- Make rewrites store-specific again (#1278)
+- Fixed incorrect coupon clearing cart (#1280)
+- Add has_options to elastic data (#1285)
+- Make config props defaults lazy (#1283)
+- Error handling for config.js (#1263)
+- Remove unnecessary disallow in robots.txt (#1292)
+- Return null on no values instead of empty array (#1289)
+- Fallback when prices don't exist (#1293)
+- Always use score field for autocomplete sorting (#1294)
+
 ## [5.1.0](https://github.com/rapidez/core/releases/tag/5.1.0) - 2026-05-06
 
 ### Added
