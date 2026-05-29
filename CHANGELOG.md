@@ -1,6 +1,34 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/...4.11.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.12.0...4.12.0)
+## [4.12.0](https://github.com/rapidez/core/releases/tag/4.12.0) - 2026-05-26
+
+### Changed
+
+- Use default_sort_by from magento (#1291)
+- Changed button tags to anchor tags (#1254)
+
+### Fixed
+
+- Fix sorting of swatches & dropdown (#1229)
+- Don't show products without categories (#1231)
+- Use default locale while config is not loaded yet (#1235)
+- Don't show hits too early (#1239)
+- Bump playwright magento versions (#1252)
+- Added error handling for config.js (#1262)
+- Fixed track events being duplicated (#1260)
+- Trim category name before indexing it (#1256)
+- Fixed media on selected child (#1240)
+- Fixed email is not valid errors (#1072)
+- Use array.from instead of toArray on entries (#1265)
+- Fallback for container not existing (#1271)
+- Auto retry requests where the cart has expired (#1236)
+- Make rewrites store-specific again (#1279)
+- Fix password input toggle (#1281)
+- Add has_options to elastic data (#1282)
+- Make config props defaults lazy (#1284)
+- Always use score field for autocomplete sorting (#1295)
+
 ## [4.11.0](https://github.com/rapidez/core/releases/tag/4.11.0) - 2026-03-10
 
 ### Changed
