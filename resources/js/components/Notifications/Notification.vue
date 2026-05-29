@@ -23,7 +23,7 @@ export default {
     mounted() {
         setTimeout(() => {
             this.close()
-        }, this.duration)
+        }, Math.max(this.duration, this.message.split(' ').length / 3 * 1000))
     },
     data: () => ({
         message: null,
