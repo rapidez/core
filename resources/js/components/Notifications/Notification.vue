@@ -21,9 +21,12 @@ export default {
         this.link = this.notification.link
     },
     mounted() {
-        setTimeout(() => {
-            this.close()
-        }, Math.max(this.duration, this.message.split(' ').length / 3 * 1000))
+        setTimeout(
+            () => {
+                this.close()
+            },
+            Math.max(this.duration, (this.message.split(' ').length / 3) * 1000),
+        )
     },
     data: () => ({
         message: null,
