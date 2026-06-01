@@ -5,9 +5,9 @@ namespace Rapidez\Core\Http\Controllers;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
+use Rapidez\Core\Enums\Visibility;
 use Rapidez\Core\Events\ProductViewEvent;
 use Rapidez\Core\Facades\Rapidez;
-use Rapidez\Core\Models\Product;
 use TorMorten\Eventy\Facades\Eventy;
 
 class ProductController
@@ -21,8 +21,8 @@ class ProductController
             ->withEventyGlobalScopes('productpage.scopes')
             ->with(['tierPrices'])
             ->whereInAttribute('visibility', [
-                Product::VISIBILITY_IN_CATALOG,
-                Product::VISIBILITY_BOTH,
+                Visibility::Catalog->value,
+                Visibility::Both->value,
             ])
             ->findOrFail($productId);
 

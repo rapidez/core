@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Rapidez\Core\Enums\Visibility;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Category;
 use Rapidez\Core\Models\CategoryProduct;
 use Rapidez\Core\Models\EavAttribute;
-use Rapidez\Core\Models\Product;
 use Rapidez\Core\Models\SuperAttribute;
 use Rapidez\Core\Models\Traits\Searchable as ParentSearchable;
 use TorMorten\Eventy\Facades\Eventy;
@@ -27,9 +27,9 @@ trait Searchable
         return $query
             ->with(['reviewSummary', 'children'])
             ->whereInAttribute('visibility', [
-                Product::VISIBILITY_IN_CATALOG,
-                Product::VISIBILITY_IN_SEARCH,
-                Product::VISIBILITY_BOTH,
+                Visibility::Catalog->value,
+                Visibility::Search->value,
+                Visibility::Both->value,
             ])
             ->when(
                 ! Rapidez::config('cataloginventory/options/show_out_of_stock', 0),
