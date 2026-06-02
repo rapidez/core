@@ -72,9 +72,7 @@ class Category extends Model
 
     protected function name(): Attribute
     {
-        return Attribute::get(function (?string $value) {
-            return trim($value ?? '');
-        });
+        return Attribute::get(fn (?string $value) => trim($value ?? ''));
     }
 
     public function subcategories()
