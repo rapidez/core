@@ -4,6 +4,6 @@ namespace Rapidez\Core\Enums;
 
 enum ProductStatus: int
 {
-    case Disabled = 1;
-    case Enabled = 2;
+    case Enabled = 1;
+    case Disabled = 2;
 }
