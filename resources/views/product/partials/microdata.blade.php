@@ -1,14 +1,8 @@
-@php
-    $description = $product->description
-        ? str(html_entity_decode(strip_tags($product->description), ENT_QUOTES | ENT_HTML5))->squish()
-        : null;
-@endphp
-
 <meta itemprop="name" content="{{ $product->name }}" />
 <meta itemprop="mpn" content="{{ $product->entity_id }}" />
 <meta itemprop="sku" content="{{ $product->sku }}" />
-@if ($description)
-    <meta itemprop="description" content="{{ $description }}" />
+@if ($product->description)
+    <meta itemprop="description" content="{{ str($product->description)->stripTags()->squish() }}" />
 @endif
 
 @foreach ($product->images as $image)
@@ -22,6 +16,6 @@
     <meta itemprop="price" content="{{ round($product->special_price ?: $product->price, 2) }}" />
     <meta itemprop="url" content="{{ url($product->url) }}" />
     @if ($product->special_to_date && $product->special_to_date > now()->toDateTimeString())
-        <meta itemprop="priceValidUntil" content="{{ \Illuminate\Support\Carbon::parse($product->special_to_date)->toDateString() }}" />
+        <meta itemprop="priceValidUntil" content="{{ str($product->special_to_date)->before(' ')->before('T') }}" />
     @endif
 </div>
