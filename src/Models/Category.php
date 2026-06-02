@@ -76,6 +76,14 @@ class Category extends Model
         );
     }
 
+    public function listingProducts(): HasManyThrough
+    {
+        return $this->products()->whereInAttribute('visibility', [
+            Product::VISIBILITY_IN_CATALOG,
+            Product::VISIBILITY_BOTH,
+        ]);
+    }
+
     public function categoryProducts(): HasMany
     {
         return $this->hasMany(
