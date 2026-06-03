@@ -23,7 +23,7 @@ class Category extends Model
         self::CREATED_AT => 'datetime',
     ];
 
-    protected $appends = ['url'];
+    protected $appends = ['url', 'name'];
 
     protected static function booting()
     {
@@ -68,6 +68,11 @@ class Category extends Model
         return Attribute::make(
             get: fn () => '/' . ($this->url_path ? $this->url_path : 'catalog/category/view/id/' . $this->entity_id)
         );
+    }
+
+    protected function name(): Attribute
+    {
+        return Attribute::get(fn (?string $value) => trim($value ?? ''));
     }
 
     public function subcategories()
