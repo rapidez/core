@@ -5,7 +5,7 @@
 >
     <form v-on:submit.prevent="addToCart.add" class="flex flex-col gap-5">
         <h1 class="text-3xl font-bold" itemprop="name">{{ $product->name }}</h1>
-        @if (!$product->stock->is_in_stock && $product->stock->backorders === 0)
+        @if (!$product->stock->is_in_stock && $product->stock->backorders === Rapidez\Core\Enums\Backorders::No->value)
             <p class="text-red-600">@lang('Sorry! This product is currently out of stock.')</p>
         @else
             @include('rapidez::product.partials.super-attributes')
@@ -13,7 +13,7 @@
 
             @includeWhen($product->tierPrices->count(), 'rapidez::product.partials.tier-prices')
 
-            @if ($product->qty <= 0 && $product->stock->backorders === 2)
+            @if ($product->qty <= 0 && $product->stock->backorders === Rapidez\Core\Enums\Backorders::Notify->value)
                 <div class="flex gap-2">
                     <x-heroicon-o-exclamation-circle class="mt-px w-5" />
                     <span>@lang('This product will be backordered')</span>
