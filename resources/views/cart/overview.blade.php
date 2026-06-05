@@ -37,7 +37,7 @@
             />
         </div>
 
-        <div v-if="!hasCart && !loading" v-cloak>@lang('You don\'t have anything in your cart.')</div>
-        <div v-if="loading">@lang('Loading')...</div>
+        <div v-if="!hasCart && !loading.value" v-cloak>@lang('You don\'t have anything in your cart.')</div>
+        <div v-if="loading.value">@lang('Loading')...</div>
     </div>
 @endsection
