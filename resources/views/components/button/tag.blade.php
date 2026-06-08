@@ -7,7 +7,7 @@
 
 <x-rapidez::tag
     is="{{ $tag }}"
-    :v-bind:class="$loader ? '{ \'button-loading\': $root.loading }' : ''"
+    :v-bind:class="$loader ? '{ \'button-loading\': $root.loading }' : null"
     {{ $attributes->merge([
         ':disabled' => $attributes->has('href') || $attributes->has(':href') || !$disableWhenLoading ? null : '$root.loading',
     ]) }}
