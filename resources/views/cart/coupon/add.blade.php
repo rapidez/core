@@ -12,7 +12,7 @@
             name="couponCode"
             placeholder="Coupon code"
             v-model="variables.coupon_code"
-            v-bind:disabled="loading"
+            v-bind:disabled="loading.value"
             required
         />
         <x-rapidez::button.outline type="submit" class="sm:text-sm" data-testid="apply-coupon">
