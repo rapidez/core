@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
+use Rapidez\Core\Enums\EntityType;
 
 class OnlyProductAttributesScope implements Scope
 {
@@ -53,6 +54,6 @@ class OnlyProductAttributesScope implements Scope
                     ->where('table_name', $productTable)
                     ->where('table_schema', $databaseName);
             })
-            ->where($model->qualifyColumn('entity_type_id'), 4); // catalog_product
+            ->where($model->qualifyColumn('entity_type_id'), EntityType::Product->value);
     }
 }

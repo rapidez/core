@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Rapidez\Core\Enums\EntityType;
+use Rapidez\Core\Enums\ReviewEntityType;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Scopes\Product\EnabledScope;
 use Rapidez\Core\Models\Scopes\Product\ForCurrentWebsiteScope;
@@ -28,17 +30,9 @@ class Product extends Model
     use HasSuperAttributes;
     use Searchable;
 
-    public const VISIBILITY_NOT_VISIBLE = 1;
-    public const VISIBILITY_IN_CATALOG = 2;
-    public const VISIBILITY_IN_SEARCH = 3;
-    public const VISIBILITY_BOTH = 4;
-
-    public const STATUS_ENABLED = 1;
-    public const STATUS_DISABLED = 2;
-
     protected $table = 'catalog_product_entity';
     protected $primaryKey = 'entity_id';
-    protected $entityTypeId = EavAttribute::ENTITY_TYPE_CATALOG_PRODUCT;
+    protected $entityTypeId = EntityType::Product->value;
 
     protected $with = [
         'stock',
@@ -189,7 +183,7 @@ class Product extends Model
             config('rapidez.models.review', Review::class), 'review',
             'entity_pk_value', 'review_id',
             'entity_id', 'review_id',
-        )->where('review.entity_id', Review::REVIEW_ENTITY_PRODUCT);
+        )->where('review.entity_id', ReviewEntityType::Product->value);
     }
 
     public function views(): HasMany

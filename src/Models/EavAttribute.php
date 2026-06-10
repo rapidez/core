@@ -4,14 +4,10 @@ namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Cache;
+use Rapidez\Core\Enums\EntityType;
 
 class EavAttribute extends Model
 {
-    public const ENTITY_TYPE_CUSTOMER = 1;
-    public const ENTITY_TYPE_CUSTOMER_ADDRESS = 2;
-    public const ENTITY_TYPE_CATALOG_CATEGORY = 3;
-    public const ENTITY_TYPE_CATALOG_PRODUCT = 4;
-
     protected $table = 'eav_attribute';
 
     protected $primaryKey = 'attribute_id';
@@ -34,7 +30,7 @@ class EavAttribute extends Model
             return EavAttribute::query()
                 ->select('*')
                 ->leftJoin('catalog_eav_attribute', 'catalog_eav_attribute.attribute_id', '=', 'eav_attribute.attribute_id')
-                ->where('entity_type_id', self::ENTITY_TYPE_CATALOG_PRODUCT)
+                ->where('entity_type_id', EntityType::Product->value)
                 ->orderBy('position')
                 ->orderBy('eav_attribute.attribute_id')
                 ->get();
@@ -47,7 +43,7 @@ class EavAttribute extends Model
             return EavAttribute::query()
                 ->select('*')
                 ->leftJoin('customer_eav_attribute', 'customer_eav_attribute.attribute_id', '=', 'eav_attribute.attribute_id')
-                ->where('entity_type_id', self::ENTITY_TYPE_CUSTOMER)
+                ->where('entity_type_id', EntityType::Customer->value)
                 ->orderBy('sort_order')
                 ->orderBy('eav_attribute.attribute_id')
                 ->get();
