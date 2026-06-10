@@ -8,7 +8,7 @@
     <div class="container">
         <h1 class="mb-5 text-4xl font-bold">@lang('Cart')</h1>
         <graphql
-            v-if="mask"
+            v-if="mask?.value"
             :query="'query getCart($cart_id: String!) { cart (cart_id: $cart_id) { ...cart } } ' + config.fragments.cart"
             :variables="{ cart_id: mask.value }"
             :callback="updateCart"
@@ -37,7 +37,7 @@
             />
         </div>
 
-        <div v-if="!hasCart && !loading" v-cloak>@lang('You don\'t have anything in your cart.')</div>
-        <div v-if="loading">@lang('Loading')...</div>
+        <div v-if="!hasCart && !loading.value" v-cloak>@lang('You don\'t have anything in your cart.')</div>
+        <div v-if="loading.value">@lang('Loading')...</div>
     </div>
 @endsection
