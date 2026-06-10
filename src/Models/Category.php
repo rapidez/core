@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Rapidez\Core\Enums\EntityType;
+use Rapidez\Core\Enums\Visibility;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Scopes\Category\IsActiveScope;
 use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
@@ -78,8 +79,8 @@ class Category extends Model
     public function listingProducts(): HasManyThrough
     {
         return $this->products()->whereInAttribute('visibility', [
-            Product::VISIBILITY_IN_CATALOG,
-            Product::VISIBILITY_BOTH,
+            Visibility::Catalog->value,
+            Visibility::Both->value,
         ]);
     }
 
