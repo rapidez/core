@@ -30,7 +30,7 @@ class SearchQuery extends Model
         // Simply using an orderBy with a limit on the query doesn't work as the limit gets stripped off.
         $minPopularity = Cache::driver('array')->rememberForever(
             'minPopularity',
-            fn() => DB::table('search_query')
+            fn () => DB::table('search_query')
                 ->orderByDesc('popularity')
                 ->limit(1)
                 ->offset(10000)
@@ -40,9 +40,9 @@ class SearchQuery extends Model
 
         return $query
             ->where(
-                fn($subQuery) => $subQuery
-                ->where(fn($subSubQuery) => $subSubQuery->where('num_results', '>', 0)->where('popularity', '>', $minPopularity))
-                ->orWhereNotNull('redirect')
+                fn ($subQuery) => $subQuery
+                    ->where(fn ($subSubQuery) => $subSubQuery->where('num_results', '>', 0)->where('popularity', '>', $minPopularity))
+                    ->orWhereNotNull('redirect')
             );
     }
 }
