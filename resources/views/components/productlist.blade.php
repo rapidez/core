@@ -9,9 +9,9 @@ Examples:
 <x-rapidez::productlist :value="false" v-bind:base-filters="() => [{dslQuery}}]"/>
 --}}
 
-@if ($value !== [])
+@if (!is_iterable($value) || count($value))
     <lazy v-slot="{ intersected }">
-        @if (!is_array($value)) <template v-if="{{ $value }}.length"> @endif
+        @if (!is_iterable($value)) <template v-if="{{ $value }}.length"> @endif
             <listing
                 {{ $attributes }}
                 v-if="intersected"
