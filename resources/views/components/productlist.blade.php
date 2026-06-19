@@ -34,7 +34,7 @@ Examples:
                                 }})'"/>
                             @endif
                         @endslotdefault
-    
+
                         <ais-hits v-slot="{ items, sendEvent }" v-bind:transform-items="listingSlotProps.transformItems">
                             <div v-if="items.length" class="flex flex-col gap-5">
                                 @if ($title)
@@ -47,7 +47,7 @@ Examples:
                                 @endslotdefault
                             </div>
                         </ais-hits>
-    
+
                         {{ $after ?? '' }}
                     </ais-instant-search>
                 </div>
