@@ -15,8 +15,14 @@ export function triggerNotifications() {
     let notifications = pendingNotifications
     pendingNotifications = []
 
-    notifications.forEach(notification => {
-        window.app.$emit('notification-message', notification.message ?? '', notification.type ?? 'info', notification.params ?? [], notification.link ?? null)
+    notifications.forEach((notification) => {
+        window.app.$emit(
+            'notification-message',
+            notification.message ?? '',
+            notification.type ?? 'info',
+            notification.params ?? [],
+            notification.link ?? null,
+        )
     })
 }
 
