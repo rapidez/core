@@ -7,7 +7,6 @@ export const notificationCount = computed(() => {
 })
 
 export function pushNotification(notification) {
-    let hasPreviousNotifications = pendingNotifications.length > 0
     pendingNotifications.value.push(notification)
 }
 
