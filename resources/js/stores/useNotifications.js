@@ -1,29 +1,15 @@
-export let pendingNotifications = []
+import { ref, computed } from 'vue'
+
+export let pendingNotifications = ref([])
+
+export const notificationCount = computed(() => {
+    return pendingNotifications.value.length
+})
 
 export function pushNotification(notification) {
-    let hasPreviousNotifications = pendingNotifications.length > 0
-    pendingNotifications.push(notification)
-
-    // Immediately trigger notifications if possible
-    if (window.app && window.$emit) {
-        triggerNotifications()
-    }
+    pendingNotifications.value.push(notification)
 }
 
-export function triggerNotifications() {
-    // Use a temp variable and insta-clear to avoid race conditions as much as possible
-    let notifications = pendingNotifications
-    pendingNotifications = []
-
-    notifications.forEach((notification) => {
-        window.$emit(
-            'notification-message',
-            notification.message ?? '',
-            notification.type ?? 'info',
-            notification.params ?? [],
-            notification.link ?? null,
-        )
-    })
+export function clearNotifications() {
+    pendingNotifications.value = []
 }
-
-window.document.addEventListener('vue:loaded', triggerNotifications)
