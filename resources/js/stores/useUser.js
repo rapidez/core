@@ -44,7 +44,7 @@ let currentRefresh = null
 export const refresh = async function () {
     if (!token.value) {
         let loggedOutValue = {
-            is_logged_in: false
+            is_logged_in: false,
         }
 
         // We're doing this as the userStorage is reactive and

@@ -2,10 +2,7 @@ import { defineAsyncComponent } from 'vue'
 import { addQuery } from './stores/useSearchHistory'
 
 const instantsearchComponents = import('./instantsearch-components')
-const component = name =>
-    defineAsyncComponent(() =>
-        instantsearchComponents.then(m => m[name])
-    )
+const component = (name) => defineAsyncComponent(() => instantsearchComponents.then((m) => m[name]))
 
 document.addEventListener('vue:loaded', function (event) {
     const vue = event.detail.vue
