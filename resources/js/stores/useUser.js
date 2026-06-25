@@ -43,7 +43,18 @@ let currentRefresh = null
 
 export const refresh = async function () {
     if (!token.value) {
-        userStorage.value = {}
+        let loggedOutValue = {
+            is_logged_in: false
+        }
+
+        // We're doing this as the userStorage is reactive and
+        // used in the Listing.vue for the user groupId. So
+        // if the userStorage changes; the listing will
+        // update, we don't want unneeded refreshes.
+        if (JSON.stringify(userStorage.value) !== JSON.stringify(loggedOutValue)) {
+            userStorage.value = loggedOutValue
+        }
+
         return false
     }
 
