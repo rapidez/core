@@ -1,16 +1,18 @@
 @php
-    $currentPage = max((int) request('page', 1), 1);
-    $lastPage = max(ceil($total / $perPage), 1);
+    $perPage = max((int) $perPage, 1);
+    $currentPageIndex = max((int) request('page', 0), 0);
+    $lastPageIndex = max((int) ceil($total / $perPage) - 1, 0);
+    $pageUrl = fn (int $page) => $page > 0 ? $url . '?' . http_build_query(['page' => $page]) : $url;
 @endphp
 
-@section('canonical', $currentPage === 1 ? $url : $url . '?page=' . $currentPage)
+@section('canonical', $pageUrl($currentPageIndex))
 
 @push('head')
-    @if ($currentPage > 1)
-        <link rel="prev" href="{{ $url . '?page=' . ($currentPage - 1) }}" />
+    @if ($currentPageIndex > 0)
+        <link rel="prev" href="{{ $pageUrl($currentPageIndex - 1) }}" />
     @endif
 
-    @if ($currentPage < $lastPage)
-        <link rel="next" href="{{ $url . '?page=' . ($currentPage + 1) }}" />
+    @if ($currentPageIndex < $lastPageIndex)
+        <link rel="next" href="{{ $pageUrl($currentPageIndex + 1) }}" />
     @endif
 @endpush
