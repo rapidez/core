@@ -4,7 +4,7 @@
 @section('description', $category->meta_description)
 @if ($category->is_anchor)
     @php
-        $total = $category->listingProducts()->count()
+        $total = $category->products()->count();
     @endphp
     @include('rapidez::layouts.partials.head.pagination', [
         'url' => url($category->url),
