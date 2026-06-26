@@ -2,7 +2,15 @@
 
 @section('title', $category->meta_title ?: $category->name)
 @section('description', $category->meta_description)
-@section('canonical', url($category->url))
+@if ($category->is_anchor)
+    @include('rapidez::layouts.partials.head.pagination', [
+        'url' => url($category->url),
+        'total' => $category->products()->count(),
+        'perPage' => Rapidez::config('catalog/frontend/grid_per_page'),
+    ])
+@else
+    @section('canonical', url($category->url))
+@endif
 @include('rapidez::layouts.partials.head.hreflang', ['alternates' => $category->alternates])
 
 @section('content')
