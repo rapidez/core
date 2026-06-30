@@ -12,9 +12,10 @@
 @endPushOnce
 <x-rapidez::slideover.mobile id="category-filters-slideover" :title="__('Filters')">
     <div class="max-lg:container max-lg:pt-6">
-        @include('rapidez::listing.partials.filter.selected')
-        @include('rapidez::listing.partials.filter.search')
-        @include('rapidez::listing.partials.filter.category')
+        {{-- TODO: Check these, they result in multple queries --}}
+        {{-- @include('rapidez::listing.partials.filter.selected') --}}
+        {{-- @include('rapidez::listing.partials.filter.search') --}}
+        {{-- @include('rapidez::listing.partials.filter.category') --}}
 
         <template v-for="filter in config.filterable_attributes">
             @include('rapidez::listing.partials.filter.price')
