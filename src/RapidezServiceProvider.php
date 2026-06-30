@@ -179,7 +179,12 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function bootViews(): self
     {
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'rapidez');
+        // Make sure that we always prioritize any views from this package over others with the same namespace
+        // For example: blade-components uses the same namespace
+        View::prependNamespace('rapidez', [
+            resource_path('views/vendor/rapidez'),
+            __DIR__ . '/../resources/views',
+        ]);
 
         View::addExtension('graphql', 'blade');
 
