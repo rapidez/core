@@ -136,7 +136,7 @@ trait Searchable
             return Category::all()->keyBy('entity_id');
         });
 
-        foreach ($this->breadcrumbCategories as $category) {
+        foreach ($this->allCategories->flatten() as $category) {
             if (! $category) {
                 continue;
             }
