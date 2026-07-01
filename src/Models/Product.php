@@ -349,7 +349,7 @@ class Product extends Model
                 ->pluck('category')
                 ->whereNotNull();
 
-            return $categories->map(fn($category) => $category->parentcategories ?? collect());
+            return $categories->map(fn ($category) => $category->parentcategories ?? collect());
         });
     }
 
