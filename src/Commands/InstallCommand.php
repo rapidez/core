@@ -94,7 +94,7 @@ class InstallCommand extends Command
             if ($this->call('rapidez:validate')) {
                 $this->newLine();
                 $this->error('The validation did not pass, please fix the errors first');
-                $this->error('Note: If you need to change something in the .env, you will need to restart this command');
+                $this->error('Note: If you need to change something in the .env, you should answer no to the following question');
                 if (confirm('Did you fix the error?', yes: 'Yes, check it again and continue.', no: 'No, exit install. I will run rapidez:install once fixed.')) {
                     return $this->validate();
                 }
