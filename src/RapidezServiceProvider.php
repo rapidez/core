@@ -177,14 +177,25 @@ class RapidezServiceProvider extends ServiceProvider
         return $this;
     }
 
+    protected function prependViewsFrom($path, $namespace)
+    {
+        $this->callAfterResolving('view', function ($view) use ($path, $namespace) {
+            $view->prependNamespace($namespace, $path);
+
+            if (isset($this->app->config['view']['paths']) &&
+                is_array($this->app->config['view']['paths'])) {
+                foreach (array_reverse($this->app->config['view']['paths']) as $viewPath) {
+                    if (is_dir($appPath = $viewPath . '/vendor/' . $namespace)) {
+                        $view->prependNamespace($namespace, $appPath);
+                    }
+                }
+            }
+        });
+    }
+
     protected function bootViews(): self
     {
-        // Make sure that we always prioritize any views from this package over others with the same namespace
-        // For example: blade-components uses the same namespace
-        View::prependNamespace('rapidez', [
-            resource_path('views/vendor/rapidez'),
-            __DIR__ . '/../resources/views',
-        ]);
+        $this->prependViewsFrom(__DIR__ . '/../resources/views', 'rapidez');
 
         View::addExtension('graphql', 'blade');
 
