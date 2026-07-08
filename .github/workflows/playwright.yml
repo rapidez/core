@@ -33,10 +33,11 @@ jobs:
           - magento-version: 2.4.8-p5
             magento-php-version: php84-fpm
             rapidez-php-version: 8.4
-          - magento-version: 2.4.9
-            magento-php-version: php85-fpm
-            rapidez-php-version: 8.5
             screenshots: true
+          # - magento-version: 2.4.9
+          #   magento-php-version: php85-fpm
+          #   rapidez-php-version: 8.5
+          #   screenshots: true
 
     services:
       magento:
