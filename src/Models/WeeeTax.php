@@ -21,8 +21,7 @@ class WeeeTax extends Model
     protected static function booting()
     {
         static::addGlobalScope('website', new ForCurrentWebsiteWithoutLimitScope(['entity_id', 'attribute_id']));
-        static::addGlobalScope('withAttributeData', fn (Builder $query) =>
-            $query->leftJoin('eav_attribute', 'eav_attribute.attribute_id', 'weee_tax.attribute_id')
+        static::addGlobalScope('withAttributeData', fn (Builder $query) => $query->leftJoin('eav_attribute', 'eav_attribute.attribute_id', 'weee_tax.attribute_id')
         );
     }
 
@@ -35,4 +34,3 @@ class WeeeTax extends Model
         );
     }
 }
-
