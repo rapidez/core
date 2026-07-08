@@ -185,7 +185,7 @@ class RapidezServiceProvider extends ServiceProvider
             if (isset($this->app->config['view']['paths']) &&
                 is_array($this->app->config['view']['paths'])) {
                 foreach (array_reverse($this->app->config['view']['paths']) as $viewPath) {
-                    if (is_dir($appPath = $viewPath.'/vendor/'.$namespace)) {
+                    if (is_dir($appPath = $viewPath . '/vendor/' . $namespace)) {
                         $view->prependNamespace($namespace, $appPath);
                     }
                 }
