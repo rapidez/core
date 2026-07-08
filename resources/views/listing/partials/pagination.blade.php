@@ -30,11 +30,10 @@
                     v-bind:href="createURL(page)"
                     v-bind:class="{ 'ring-1 bg-primary/10 ring-primary border-primary font-semibold hover:border-primary': page === currentRefinement }"
                     v-on:click.exact.left.prevent="refine(page)"
+                    role="button"
                     v-bind:aria-label="`{{ __('Page') }} ${page + 1}`"
                     class="flex items-center justify-center size-9 sm:size-10 rounded-sm border hover:border-emphasis"
-                >
-                    @{{ page + 1 }}
-                </a>
+                >@{{ page + 1 }}</a>
             </li>
             <li v-if="!isLastPage && currentRefinement !== nbPages - 2 && currentRefinement !== nbPages - 3" class="flex items-center text-muted max-sm:text-xs">
                 ...

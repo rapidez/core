@@ -49,15 +49,19 @@ export class CheckoutPage {
             }
         }
 
+        await this.page.waitForTimeout(100)
         await this.page.fill('[name=shipping_firstname]', 'Bruce')
+         await this.page.waitForTimeout(100)
         await this.page.fill('[name=shipping_lastname]', 'Wayne')
+         await this.page.waitForTimeout(100)
         await this.page.fill('[name=shipping_postcode]', '72000')
         await this.page.fill('[name=shipping_housenumber]', '1007')
         await this.page.fill('[name=shipping_street]', 'Mountain Drive')
         await this.page.fill('[name=shipping_city]', 'Gotham')
         await this.page.selectOption('[name=shipping_country]', 'NL')
         await this.page.fill('[name=shipping_telephone]', '530-7972')
-        await this.page.locator('input[name=shipping_telephone]').press('Tab')
+        await this.page.locator('input[name=shipping_telephone]')
+        await this.page.getByTestId('continue').focus()
         await this.page.waitForLoadState('networkidle')
     }
 
@@ -78,6 +82,8 @@ export class CheckoutPage {
     }
 
     async continue(expectedStep) {
+        await this.page.getByTestId('continue').focus()
+        await this.page.waitForLoadState('networkidle')
         await this.page.getByTestId('continue').click()
         await this.page.waitForTimeout(500)
         await this.page.waitForLoadState('networkidle')
