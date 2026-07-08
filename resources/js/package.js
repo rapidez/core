@@ -1,6 +1,15 @@
+import { pushNotification } from './stores/useNotifications'
+
 window.debug = import.meta.env.VITE_DEBUG == 'true'
-window.Notify = (message, type = 'info', params = [], link = null) =>
-    setTimeout(() => window.$emit('notification-message', message, type, params, link), window.app ? 0 : 500)
+window.Notify = (message, type = 'info', params = [], link = null) => {
+    pushNotification({
+        message: message,
+        type: type,
+        params: params,
+        link: link,
+        timestamp: +new Date(),
+    })
+}
 
 if (!window.process) {
     // Workaround for process missing, if data is actually needed from here you should apply the following polyfill.
@@ -10,7 +19,7 @@ if (!window.process) {
 
 import './polyfills'
 import { useLocalStorage, StorageSerializers, useScrollLock } from '@vueuse/core'
-import useOrder from './stores/useOrder.js'
+import useOrder from './stores/useOrder'
 import { cart } from './stores/useCart'
 import { user } from './stores/useUser'
 import useMask from './stores/useMask'
@@ -22,7 +31,7 @@ import './cookies'
 import './callbacks'
 import './vue-components'
 import './instantsearch'
-import { fetchCount } from './stores/useFetches.js'
+import { fetchCount } from './stores/useFetches'
 import { computed, createApp, ref, watch } from 'vue'
 ;(() => import('./turbolinks'))()
 
@@ -55,8 +64,8 @@ async function init() {
     }
     booting = true
     for (let i = 0; i < 20; i++) {
-        // Wait until config is available, for a max of 1s
-        if (window.config.store) {
+        // Wait until config is available, or has thrown an error, for a max of 1s
+        if (window.config.store || window.configError) {
             break
         }
         await new Promise((resolve) => setTimeout(resolve, 50))
@@ -65,7 +74,7 @@ async function init() {
 
     // Check if the localstorage needs a flush.
     let cachekey = useLocalStorage('cachekey')
-    if (cachekey.value !== window.config.cachekey) {
+    if (window.config.cachekey && cachekey.value !== window.config.cachekey) {
         window.config.flushable_localstorage_keys.forEach((key) => {
             useLocalStorage(key).value = null
         })
@@ -90,6 +99,16 @@ async function init() {
         telephone: window.debug ? '530-7972' : '',
         country_code: window.debug ? 'NL' : window.config.default_country,
         custom_attributes: [],
+    }
+
+    // Heartbeat every 15 minutes to keep CSRF alive
+    if (!window.heartbeat) {
+        window.heartbeat = setInterval(
+            () => {
+                rapidezFetch('/heartbeat')
+            },
+            1000 * 60 * 15,
+        )
     }
 
     requestAnimationFrame(() => {
@@ -142,6 +161,14 @@ async function init() {
                 },
             },
             mounted() {
+                window.$on('configError', () => {
+                    app.config.globalProperties.configError.value = true
+                    throw new Error('Config.js failed to load because of an error.')
+                })
+                if (window.configError ?? false) {
+                    window.$emit('configError')
+                }
+
                 window.app.config.globalProperties.refs = this.$refs
                 setTimeout(() => {
                     const event = new CustomEvent('vue:mounted', { detail: { vue: window.app, rootNode: this } })
@@ -151,6 +178,7 @@ async function init() {
             // If we have view transitions, we need to make sure we destroy after render.
             destroyEvent: !!document.startViewTransition ? 'turbo:before-cache-timeout' : 'turbo:before-cache',
         })
+
         // https://vuejs.org/api/application.html#app-config-performance
         window.app.config.performance = import.meta.env.VITE_PERFORMANCE == 'true'
         window.app.config.globalProperties = {
@@ -167,6 +195,7 @@ async function init() {
             mask: useMask(),
             showTax: window.config.show_tax,
             scrollLock: useScrollLock(document.body),
+            configError: ref(false),
             // Wrap the local storage in getter and setter functions so you do not have to interact using .value
             guestEmail: wrapValue(
                 useLocalStorage('email', window.debug ? 'wayne@enterprises.com' : '', { serializer: StorageSerializers.string }),

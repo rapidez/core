@@ -22,6 +22,7 @@ return [
         'entity_id',
         'name',
         'sku',
+        'has_options',
         'price',
         'special_price',
         'prices',

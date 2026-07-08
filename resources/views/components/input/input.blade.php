@@ -1,1 +1,1 @@
-<x-rapidez::input v-bind:disabled="$root.loading" />
+<x-blade-components::input v-bind:disabled="loading.value" />

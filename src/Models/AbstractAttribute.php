@@ -70,7 +70,8 @@ class AbstractAttribute extends Model
                 return e(htmlspecialchars_decode($val), false);
             }, Arr::wrap($value));
 
-            if (count($value) === 1) {
+            // NOTE: doing it this way properly returns null when there are no values
+            if (count($value) <= 1) {
                 return Arr::first($value);
             }
 

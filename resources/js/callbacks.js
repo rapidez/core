@@ -61,7 +61,7 @@ document.addEventListener('vue:loaded', function (event) {
                     error.extensions?.category === 'graphql-no-such-entity' &&
                     // Untested, but something like this is maybe a better idea as
                     // we're using a lot of different mutations in the checkout.
-                    error.path.some((path) => path.toLowerCase().includes('cart')),
+                    error.path.some((path) => path.toLowerCase().includes('cart') && !path.toLowerCase().includes('applycoupon')),
             )
         ) {
             Notify(window.config.translations.errors.cart_expired, 'error')

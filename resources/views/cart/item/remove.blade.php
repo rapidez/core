@@ -10,7 +10,7 @@
         v-on:click="mutate"
         title="@lang('Remove')"
         class="hover:underline text-red-700"
-        :disabled="$root.loading"
+        :disabled="loading.value"
         data-testid="cart-item-remove"
     >
         @lang('Remove')

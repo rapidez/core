@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Rapidez\Core\Enums\EntityType;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Scopes\Category\IsActiveScope;
 use Rapidez\Core\Models\Traits\HasAlternatesThroughRewrites;
@@ -21,11 +22,9 @@ class Category extends Model
 
     protected $table = 'catalog_category_entity';
     protected $primaryKey = 'entity_id';
-    protected $entityTypeId = EavAttribute::ENTITY_TYPE_CATALOG_CATEGORY;
+    protected $entityTypeId = EntityType::Category->value;
 
-    protected $appends = ['url'];
-
-    public const STATUS_ACTIVE = 1;
+    protected $appends = ['url', 'name'];
 
     protected static function booted(): void
     {
@@ -53,6 +52,15 @@ class Category extends Model
         return Attribute::get(fn () => '/' . ($this->url_path
             ? $this->url_path . Rapidez::config('catalog/seo/category_url_suffix')
             : ('catalog/category/view/id/' . $this->entity_id)));
+    }
+
+    protected function name(): Attribute
+    {
+        return Attribute::get(function (?AttributeVarchar $value) {
+            $value ??= $this->getCustomAttribute('name');
+
+            return trim($value?->value ?? '');
+        });
     }
 
     public function products(): HasManyThrough

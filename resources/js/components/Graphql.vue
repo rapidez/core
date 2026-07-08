@@ -34,7 +34,7 @@ export default {
         },
         store: {
             type: String,
-            default: window.config.store_code,
+            default: () => window.config.store_code,
         },
     },
 

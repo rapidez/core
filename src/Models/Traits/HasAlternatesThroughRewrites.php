@@ -14,7 +14,6 @@ trait HasAlternatesThroughRewrites
     {
         return $this
             ->hasMany(config('rapidez.models.rewrite'), 'entity_id')
-            ->withoutGlobalScope('store')
             ->where('entity_type', static::getEntityType());
     }
 
@@ -23,6 +22,7 @@ trait HasAlternatesThroughRewrites
         return Attribute::make(
             get: function () {
                 $rewrites = $this->rewrites()
+                    ->withoutGlobalScope('store')
                     ->where('redirect_type', 0)
                     ->whereHas('store', fn ($query) => $query->where('store.group_id', config('rapidez.group')))
                     ->pluck('request_path', 'store_id');

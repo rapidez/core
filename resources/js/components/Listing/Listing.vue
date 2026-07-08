@@ -22,7 +22,7 @@ export default {
     props: {
         index: {
             type: String,
-            default: window.config.index.product,
+            default: () => window.config.index.product,
         },
         query: {
             type: Function,
