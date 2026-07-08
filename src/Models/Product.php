@@ -254,6 +254,15 @@ class Product extends Model
         )->shouldCache();
     }
 
+    public function fixedProductTaxes(): HasMany
+    {
+        return $this->hasMany(
+            config('rapidez.models.weee_tax', WeeeTax::class),
+            'entity_id',
+            'entity_id',
+        )->afterQuery(fn ($results) => $results->keyBy('attribute_code'));
+    }
+
     private function getImageFrom(?string $image): ?string
     {
         return $image !== 'no_selection' ? $image : null;
