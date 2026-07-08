@@ -51,9 +51,9 @@ export class CheckoutPage {
 
         await this.page.waitForTimeout(100)
         await this.page.fill('[name=shipping_firstname]', 'Bruce')
-         await this.page.waitForTimeout(100)
+        await this.page.waitForTimeout(100)
         await this.page.fill('[name=shipping_lastname]', 'Wayne')
-         await this.page.waitForTimeout(100)
+        await this.page.waitForTimeout(100)
         await this.page.fill('[name=shipping_postcode]', '72000')
         await this.page.fill('[name=shipping_housenumber]', '1007')
         await this.page.fill('[name=shipping_street]', 'Mountain Drive')
