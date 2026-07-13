@@ -9,6 +9,6 @@ export default {
             type: Array,
             default: () => [...config.category_attributes, 'query'],
         },
-    }
+    },
 }
 </script>
