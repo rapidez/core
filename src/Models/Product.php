@@ -260,7 +260,7 @@ class Product extends Model
             config('rapidez.models.weee_tax', WeeeTax::class),
             'entity_id',
             'entity_id',
-        )->afterQuery(fn ($results) => $results->keyBy('attribute_code'));
+        );
     }
 
     private function getImageFrom(?string $image): ?string
