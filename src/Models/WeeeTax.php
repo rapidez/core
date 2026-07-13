@@ -8,8 +8,7 @@ use Rapidez\Core\Models\Scopes\ForCurrentWebsiteWithoutLimitScope;
 
 class WeeeTax extends Model
 {
-    const CREATED_AT = null;
-    const UPDATED_AT = null;
+    public $timestamps = false;
 
     protected $table = 'weee_tax';
     protected $primaryKey = 'value_id';
