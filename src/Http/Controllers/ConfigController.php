@@ -51,6 +51,7 @@ class ConfigController
             'filterable_attributes'        => $this->getFilterableAttributes(),
             'fragments'                    => $this->getGraphqlQueryFragments(),
             'max_category_level'           => $this->getMaxCategoryLevel(),
+            'category_attributes'          => collect()->range(1, $this->getMaxCategoryLevel())->map(fn ($level) => 'category_lvl' . $level)->toArray(),
             'queries'                      => $this->getGraphqlQueries(),
             'searchkit'                    => $this->getSearchkitConfig(),
             'show_customer_address_fields' => $this->getCustomerAddressFields(),

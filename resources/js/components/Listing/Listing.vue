@@ -70,10 +70,6 @@ export default {
     },
 
     computed: {
-        categoryAttributes() {
-            return Array.from({ length: config.max_category_level ?? 3 }).map((_, index) => 'category_lvl' + (index + 1))
-        },
-
         hitsPerPage() {
             let hasDefault = this.$root.config.grid_per_page_values.includes(this.$root.config.grid_per_page)
 

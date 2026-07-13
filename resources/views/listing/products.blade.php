@@ -1,16 +1,3 @@
-@pushOnce('head', 'listing-products')
-    @vite(
-        vite_filename_paths([
-            'HitsPerPage.vue',
-            'SortBy.vue',
-            'Stats.vue',
-            'Hits.vue',
-            'Pagination.vue',
-            'Hits.js'
-        ])
-    )
-@endPushOnce
-
 <div id="products" class="flex flex-col max-lg:flex-wrap">
     <div class="pb-4 border-b">
         @include('rapidez::listing.partials.toolbar')
