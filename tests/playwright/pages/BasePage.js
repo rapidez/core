@@ -52,6 +52,27 @@ export class BasePage {
         }
     }
 
+    async waitUntilIdle() {
+        await expect(
+            await this.page.evaluate(async () => {
+                return await new Promise((resolve, reject) => {
+                    let counter = 0;
+                    let interval = setInterval(async function () {
+                        let result = await new Promise((resolve, reject) => window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), {timeout: 5}))
+                        counter = result ? counter + 1 : 0;
+                        if (counter >= (0.5 / 0.05)) {
+                            clearInterval(interval)
+                            resolve(true)
+                        }
+                    }, 0.05 * 1000);
+                    setTimeout(() => resolve(false), 60 * 1000)
+                }) === true
+            }),
+            'Page should become idle within a minute'
+        )
+        .toBeTruthy()
+    }
+
     async loadLazy() {
         await this.page.waitForLoadState('networkidle')
         await this.page.evaluate(() => window.$emit('load-lazy'))
