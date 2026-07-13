@@ -209,7 +209,7 @@ class Product extends Model
             config('rapidez.models.weee_tax', WeeeTax::class),
             'entity_id',
             'entity_id',
-        )->afterQuery(fn ($results) => $results->keyBy('attribute_code'));
+        );
     }
 
     public function getUnitPrice(int $quantity = 1, int $customerGroup = 0)
