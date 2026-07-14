@@ -133,7 +133,7 @@ class RapidezServiceProvider extends ServiceProvider
 
             // We're so explicit here as otherwise the json translations will also be published.
             // That will publish to /lang/vendor/rapidez/nl.json where it will not be loaded
-            // by default and; you should keep everyting in one place: /lang/nl.json
+            // by default and; you should keep everything in one place: /lang/nl.json
             foreach (['en', 'nl'] as $lang) {
                 $this->publishes([
                     __DIR__ . '/../lang/' . $lang . '/frontend.php' => lang_path('vendor/rapidez/' . $lang . '/frontend.php'),
@@ -236,6 +236,15 @@ class RapidezServiceProvider extends ServiceProvider
 
         Blade::directive('config', function ($expression) {
             return "<?php echo Rapidez::config({$expression}) ?>";
+        });
+
+        Blade::directive('turboframe', function (string $frame) {
+            $viewPath = config('rapidez.frontend.turbo-frames')[$frame] ?? null;
+            if (!$viewPath) {
+                throw new \Exception('Turbo frame ' . $frame . ' not found.');
+            }
+
+            return "<?php echo \$__env->make('rapidez::turbo-frame', [...\Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']), 'frame' => '$frame', 'viewPath' => '$viewPath', 'isRoute' => false])->render(); ?>";
         });
 
         Blade::if('storecode', function ($value) {
@@ -412,7 +421,7 @@ class RapidezServiceProvider extends ServiceProvider
 
             $this->setAppends(
                 Arr::reject(
-                    $this->getAppends(), fn ($curentAppends) => in_array($curentAppends, $appendsToRemove)
+                    $this->getAppends(), fn ($currentAppends) => in_array($currentAppends, $appendsToRemove)
                 )
             );
 
