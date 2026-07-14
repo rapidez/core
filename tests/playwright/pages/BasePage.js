@@ -12,7 +12,7 @@ export class BasePage {
     }
 
     async screenshot(type = '', options = {}) {
-        const masks = options['mask'] || [];
+        const masks = options['mask'] || []
         masks.push(this.page.getByTestId('masked'))
         const emailFields = this.page.locator('[name=email]')
 
