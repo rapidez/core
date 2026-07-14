@@ -12,7 +12,8 @@ export class BasePage {
     }
 
     async screenshot(type = '', options = {}) {
-        const masks = [this.page.getByTestId('masked')]
+        const masks = options['mask'] || [];
+        masks.push(this.page.getByTestId('masked'))
         const emailFields = this.page.locator('[name=email]')
 
         // Only mask filled email fields
@@ -26,7 +27,7 @@ export class BasePage {
             }
         }
 
-        options['mask'] = masks
+        options['mask'] = [...masks, this.page.locator('[data-attribute=id]')]
 
         if (type.startsWith('fullpage')) {
             await this.loadLazy()

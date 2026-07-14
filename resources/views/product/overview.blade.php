@@ -40,13 +40,13 @@
                         <div class="mb-2 border-t pt-5 text-lg font-bold">@lang('Specifications')</div>
                         <dl class="flex flex-col text-muted *:rounded-sm *:p-2 *:odd:bg *:odd:font-semibold *:odd:text *:even:pl-4">
                             <dt>ID</dt>
-                            <dd>{{ $product->entity_id }}</dd>
+                            <dd data-attribute="id">{{ $product->entity_id }}</dd>
                             <dt>SKU</dt>
-                            <dd>{{ $product->sku }}</dd>
+                            <dd data-attribute="sku">{{ $product->sku }}</dd>
                             @foreach (\Rapidez\Core\Models\EavAttribute::getCachedCatalog()->where(fn ($attribute) => $attribute->is_visible_on_front) as $attribute)
                                 @if (($value = $product->label($attribute['attribute_code'])))
                                     <dt>{{ $attribute['frontend_label'] }}</dt>
-                                    <dd>{!! $value !!}</dd>
+                                    <dd data-attribute="{{ $attribute['attribute_code'] }}">{!! $value !!}</dd>
                                 @endif
                             @endforeach
                         </dl>
