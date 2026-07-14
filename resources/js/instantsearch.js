@@ -31,10 +31,7 @@ document.addEventListener('vue:loaded', function (event) {
     vue.component('ais-stats', component('Stats'))
 
     // Custom component
-    vue.component(
-        'ais-stats-analytics',
-        defineAsyncComponent(() => import('./components/Search/AisStatsAnalytics.vue')),
-    )
+    vue.component('ais-stats-analytics', component('StatsAnalytics'))
 })
 
 document.addEventListener('insights-event:viewedObjectIDs', (event) => {
