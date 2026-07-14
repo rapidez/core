@@ -4,7 +4,6 @@ namespace Rapidez\Core\Http\Controllers;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Attribute;
 use Rapidez\Core\Models\Category;
@@ -44,7 +43,7 @@ class ConfigController
     public function getConfig(): array
     {
         return [
-            'cachekey'     => Cache::rememberForever('cachekey', fn () => md5(Str::random())),
+            'cachekey'     => Rapidez::getCacheKey(),
             'translations' => __('rapidez::frontend'),
 
             'index'                        => $this->getIndexNames(),
