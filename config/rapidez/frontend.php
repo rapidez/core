@@ -100,5 +100,5 @@ return [
     // These should then be used by using @turboframe('frame-name')
     'turbo-frames' => [
         // 'frame-name' => 'view-path',
-    ]
+    ],
 ];

@@ -36,9 +36,9 @@ Route::middleware('web')->group(function () {
     // Register all turbo frame routes
     if (count(config('rapidez.frontend.turbo-frames', []))) {
         Route::middleware('cache.headers:public;max_age=3600;stale_while_revalidate=3600;etag')->group(function () {
-            Route::get('turbo/{frame}/{cachekey}', function(string $frame) {
+            Route::get('turbo/{frame}/{cachekey}', function (string $frame) {
                 $viewPath = config('rapidez.frontend.turbo-frames')[$frame] ?? null;
-                if (!$viewPath) {
+                if (! $viewPath) {
                     abort(404);
                 }
 
