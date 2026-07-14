@@ -4,7 +4,7 @@
     v-slot="addToCart"
 >
     <form v-on:submit.prevent="addToCart.add" class="flex flex-col gap-5">
-        <h1 class="text-3xl font-bold">{{ $product->name }}</h1>
+        <h1 class="text-3xl font-bold" itemprop="name">{{ $product->name }}</h1>
         @if (!$product->stock->is_in_stock && $product->stock->backorders === Rapidez\Core\Enums\Backorders::No->value)
             <p class="text-red-600">@lang('Sorry! This product is currently out of stock.')</p>
         @else

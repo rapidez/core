@@ -1,9 +1,5 @@
-<meta itemprop="name" content="{{ $product->name }}" />
 <meta itemprop="mpn" content="{{ $product->entity_id }}" />
 <meta itemprop="sku" content="{{ $product->sku }}" />
-@if ($product->description)
-    <meta itemprop="description" content="{{ str($product->description)->stripTags()->squish() }}" />
-@endif
 
 @foreach ($product->images as $image)
     <meta itemprop="image" content="{{ config('rapidez.media_url').'/catalog/product'.$image }}" />
