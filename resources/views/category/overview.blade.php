@@ -3,9 +3,12 @@
 @section('title', $category->meta_title ?: $category->name)
 @section('description', $category->meta_description)
 @if ($category->is_anchor)
+    @php
+        $total = $category->products()->count();
+    @endphp
     @include('rapidez::layouts.partials.head.pagination', [
         'url' => url($category->url),
-        'total' => $category->products()->count(),
+        'total' => $total,
         'perPage' => Rapidez::config('catalog/frontend/grid_per_page'),
     ])
 @else
@@ -20,7 +23,7 @@
         <h1 class="text-2xl font-medium mb-5">{{ $category->name }}</h1>
 
         @if ($category->is_anchor)
-            @if (!$category->products()->exists())
+            @if ($total === 0)
                 @include('rapidez::listing.partials.no-products')
             @else
                 <x-rapidez::listing
