@@ -7,9 +7,11 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 use Rapidez\Core\Exceptions\StoreNotFoundException;
 use Rapidez\Core\Models\Config;
 use Rapidez\Core\Models\ConfigScopes;
@@ -84,6 +86,11 @@ class Rapidez
         ];
 
         return json_decode(str_replace(array_values($mapping), array_keys($mapping), $encodedString));
+    }
+
+    public function getCacheKey(): string
+    {
+        return Cache::rememberForever('cachekey', fn () => md5(Str::random()));
     }
 
     public function getStores(callable|array|int|string|null $store = null): array
