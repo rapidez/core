@@ -232,7 +232,8 @@ export default {
             }
 
             return Math.round(
-                (this.sliderSpan / (this.vertical ? this.container.scrollHeight : this.container.scrollWidth)) * this.container.children.length,
+                (this.sliderSpan / (this.vertical ? this.container.scrollHeight : this.container.scrollWidth)) *
+                    this.container.children.length,
             )
         },
         slidesTotal() {
