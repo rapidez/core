@@ -95,4 +95,10 @@ return [
 
     // The path to redirect to after a failed checkout
     'checkout_success_fail_redirect_path' => 'cart',
+
+    // This array should contain any turbo frames with their respective views.
+    // These should then be used by using @turboframe('frame-name')
+    'turbo-frames' => [
+        // 'frame-name' => 'view-path',
+    ],
 ];
