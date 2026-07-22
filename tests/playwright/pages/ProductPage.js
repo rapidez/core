@@ -20,8 +20,9 @@ export class ProductPage {
             await this.page.getByTestId('qty').pressSequentially(qty.toString())
         }
 
-        await this.page.getByTestId('add-to-cart').scrollIntoViewIfNeeded()
-        await this.page.getByTestId('add-to-cart').click()
+        const pdpWrapper = await this.page.locator('[itemtype=https\\:\\/\\/schema\\.org\\/Product]')
+        await pdpWrapper.getByTestId('add-to-cart').scrollIntoViewIfNeeded()
+        await pdpWrapper.getByTestId('add-to-cart').click()
         await expect(this.page.getByTestId('minicart-count')).toContainText(qty.toString())
 
         return product
