@@ -4,7 +4,6 @@ namespace Rapidez\Core\Http\Controllers;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Attribute;
 use Rapidez\Core\Models\Category;
@@ -44,13 +43,14 @@ class ConfigController
     public function getConfig(): array
     {
         return [
-            'cachekey'     => Cache::rememberForever('cachekey', fn () => md5(Str::random())),
+            'cachekey'     => Rapidez::getCacheKey(),
             'translations' => __('rapidez::frontend'),
 
             'index'                        => $this->getIndexNames(),
             'filterable_attributes'        => $this->getFilterableAttributes(),
             'fragments'                    => $this->getGraphqlQueryFragments(),
             'max_category_level'           => $this->getMaxCategoryLevel(),
+            'category_attributes'          => collect()->range(1, $this->getMaxCategoryLevel())->map(fn ($level) => 'category_lvl' . $level)->toArray(),
             'queries'                      => $this->getGraphqlQueries(),
             'searchkit'                    => $this->getSearchkitConfig(),
             'show_customer_address_fields' => $this->getCustomerAddressFields(),

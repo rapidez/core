@@ -21,7 +21,7 @@
     <meta name="robots" content="@yield('robots', Rapidez::config('design/search_engine_robots/default_robots'))"/>
     <link rel="canonical" href="@yield('canonical', url()->current())" />
 
-    @php($configPath = route('config') . '?v=' . Cache::rememberForever('cachekey', fn () => md5(Str::random())) . '&s=' . config('rapidez.store'))
+    @php($configPath = route('config') . '?v=' . Rapidez::getCacheKey() . '&s=' . config('rapidez.store'))
     <link href="{{ $configPath }}" rel="preload" as="script">
     <script defer src="{{ $configPath }}" onerror="window.app?.config ? window.$emit('configError') : window.configError = true"></script>
 

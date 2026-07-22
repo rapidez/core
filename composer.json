@@ -31,6 +31,7 @@
         "lcobucci/jwt": "^4.2|^5.3",
         "rapidez/blade-components": "^2.0 >=2.2.2",
         "rapidez/blade-directives": "^1.1",
+        "rapidez/composer-template-diff-plugin": "^1.0",
         "rapidez/laravel-multi-cache": "^2.1",
         "rapidez/laravel-scout-elasticsearch": "^1.0",
         "tormjens/eventy": "^0.8"
