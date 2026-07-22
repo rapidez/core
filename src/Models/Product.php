@@ -339,6 +339,20 @@ class Product extends Model
         });
     }
 
+    protected function allCategories(): Attribute
+    {
+        return Attribute::get(function (): Collection {
+            $this->loadMissing('categoryProducts');
+
+            $categories = $this->categoryProducts
+                ->where('category_id', '!=', config('rapidez.root_category_id'))
+                ->pluck('category')
+                ->whereNotNull();
+
+            return $categories->map(fn ($category) => $category->parentcategories ?? collect());
+        });
+    }
+
     protected function breadcrumbCategories(): Attribute
     {
         return Attribute::get(function (): Collection {
