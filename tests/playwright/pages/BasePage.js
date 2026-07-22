@@ -58,7 +58,7 @@ export class BasePage {
         if (this.page.context().browser().browserType().name() === 'webkit') {
             await this.page.waitForTimeout(200)
             await this.page.waitForLoadState('networkidle')
-            return;
+            return
         }
 
         await expect(
@@ -70,7 +70,7 @@ export class BasePage {
                         let idleForTime = 0.5
                         let interval = setInterval(async function () {
                             if (window.app?.config === undefined) {
-                                return;
+                                return
                             }
                             let result = await new Promise((resolve, reject) =>
                                 window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), { timeout: 5 }),
