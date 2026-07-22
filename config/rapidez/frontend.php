@@ -23,7 +23,7 @@ return [
     // in the url and in the progressbar on steps. Keep
     // them lowercase and do not include any spaces.
     'checkout_steps' => [
-        'login', 'credentials', 'payment',
+        'login', 'credentials', 'payment', 'success',
         // 'onestep',
     ],
 
