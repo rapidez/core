@@ -1,6 +1,15 @@
+import { pushNotification } from './stores/useNotifications'
+
 window.debug = import.meta.env.VITE_DEBUG == 'true'
-window.Notify = (message, type = 'info', params = [], link = null) =>
-    setTimeout(() => window.$emit('notification-message', message, type, params, link), window.app ? 0 : 500)
+window.Notify = (message, type = 'info', params = [], link = null) => {
+    pushNotification({
+        message: message,
+        type: type,
+        params: params,
+        link: link,
+        timestamp: +new Date(),
+    })
+}
 
 if (!window.process) {
     // Workaround for process missing, if data is actually needed from here you should apply the following polyfill.
@@ -10,7 +19,7 @@ if (!window.process) {
 
 import './polyfills'
 import { useLocalStorage, StorageSerializers, useScrollLock } from '@vueuse/core'
-import useOrder from './stores/useOrder.js'
+import useOrder from './stores/useOrder'
 import { cart } from './stores/useCart'
 import { user } from './stores/useUser'
 import useMask from './stores/useMask'
@@ -22,7 +31,7 @@ import './cookies'
 import './callbacks'
 import './vue-components'
 import './instantsearch'
-import { fetchCount } from './stores/useFetches.js'
+import { fetchCount } from './stores/useFetches'
 import { computed, createApp, ref, watch } from 'vue'
 ;(() => import('./turbolinks'))()
 

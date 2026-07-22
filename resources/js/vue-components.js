@@ -52,6 +52,15 @@ document.addEventListener('vue:loaded', function (event) {
                 }),
             // https://vuejs.org/guide/components/async#loading-and-error-states
             loadingComponent: defineComponent({
+                props: {
+                    hitsPerPage: {
+                        type: Number,
+                        default: 3,
+                    },
+                    filterQueryString: {
+                        type: String,
+                    },
+                },
                 data: () => ({
                     loaded: false,
                     searchClient: null,
