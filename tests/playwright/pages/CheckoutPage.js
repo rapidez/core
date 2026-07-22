@@ -11,6 +11,7 @@ export class CheckoutPage {
         const url = this.type === 'onestep' ? '/checkout?checkout=onestep' : '/checkout'
 
         await this.page.goto(url)
+        await new BasePage(this.page).waitUntilIdle()
     }
 
     async login(email, password = false, register = false) {
