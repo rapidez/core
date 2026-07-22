@@ -1,4 +1,5 @@
 import { expect } from '@playwright/test'
+import { BasePage } from './BasePage'
 
 export class ProductPage {
     constructor(page) {
@@ -7,6 +8,7 @@ export class ProductPage {
 
     async goto(url) {
         await this.page.goto(url)
+        await new BasePage(this.page).waitUntilIdle()
         return await this.page.evaluate(() => window.config.product)
     }
 
@@ -20,9 +22,8 @@ export class ProductPage {
             await this.page.getByTestId('qty').pressSequentially(qty.toString())
         }
 
-        const pdpWrapper = await this.page.locator('[itemtype=https\\:\\/\\/schema\\.org\\/Product]')
-        await pdpWrapper.getByTestId('add-to-cart').scrollIntoViewIfNeeded()
-        await pdpWrapper.getByTestId('add-to-cart').click()
+        await this.page.getByTestId('add-to-cart').scrollIntoViewIfNeeded()
+        await this.page.getByTestId('add-to-cart').click()
         await expect(this.page.getByTestId('minicart-count')).toContainText(qty.toString())
 
         return product
