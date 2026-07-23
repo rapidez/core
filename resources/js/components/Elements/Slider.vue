@@ -64,11 +64,11 @@ export default {
         }
         this.$nextTick(() => {
             useResizeObserver(this.slider, useThrottleFn(this.updateSpan, 150, true, true))
+            setTimeout(() => this.slider.dispatchEvent(new CustomEvent('scroll')))
+            this.mounted = true
             if (this.loop) {
                 this.initLoop()
             }
-            setTimeout(() => this.slider.dispatchEvent(new CustomEvent('scroll')))
-            this.mounted = true
 
             this.initAutoPlay()
         })
@@ -151,7 +151,7 @@ export default {
             this.navigate(next)
         },
         navigate(index, behavior = 'smooth') {
-            index = this.loop ? index + this.slides.length : index
+            index = Math.min(Math.max(index, 0), this.container?.children.length - 1)
 
             this.vertical
                 ? this.slider.scrollTo({ top: this.container?.children[index]?.offsetTop, behavior: behavior })
@@ -202,14 +202,39 @@ export default {
             if (!this.mounted) {
                 return 0
             }
-            return Math.round(this.position / this.childSpan) % this.slides.length
+            // First make a calculated guess, improving performance by not having to loop through all slides
+            const bestGuess = Math.round(this.position / this.childSpan) % this.slides.length
+            const getSlideByGuess = (slide) => {
+                const bestGuessChild = this.container.children[slide]
+                if (!bestGuessChild) {
+                    return slide
+                }
+                const bestGuessSpan = this.vertical ? bestGuessChild.offsetHeight : bestGuessChild.offsetWidth
+                const bestGuessOffset = this.vertical ? bestGuessChild.offsetTop : bestGuessChild.offsetLeft
+
+                // Past halfway to the slide it will snap
+                if (this.position + bestGuessSpan / 2 < bestGuessOffset) {
+                    return getSlideByGuess(slide - 1)
+                }
+
+                if (this.position >= bestGuessOffset + bestGuessSpan) {
+                    return getSlideByGuess(slide + 1)
+                }
+
+                return slide
+            }
+
+            return getSlideByGuess(bestGuess)
         },
         slidesVisible() {
             if (!this.mounted) {
                 return 0
             }
 
-            return Math.round(this.sliderSpan / this.childSpan)
+            return Math.round(
+                (this.sliderSpan / (this.vertical ? this.container.scrollHeight : this.container.scrollWidth)) *
+                    this.container.children.length,
+            )
         },
         slidesTotal() {
             if (!this.mounted) {
