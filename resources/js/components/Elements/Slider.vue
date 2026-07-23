@@ -151,10 +151,7 @@ export default {
             this.navigate(next)
         },
         navigate(index, behavior = 'smooth') {
-            index = Math.min(
-                Math.max(index, 0),
-                this.container?.children.length - 1
-            )
+            index = Math.min(Math.max(index, 0), this.container?.children.length - 1)
 
             this.vertical
                 ? this.slider.scrollTo({ top: this.container?.children[index]?.offsetTop, behavior: behavior })
