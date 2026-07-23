@@ -210,25 +210,21 @@ export default {
             const getSlideByGuess = (slide) => {
                 const bestGuessChild = this.container.children[slide]
                 if (!bestGuessChild) {
-                    return slide;
+                    return slide
                 }
-                const bestGuessSpan = this.vertical
-                        ? bestGuessChild.offsetHeight
-                        : bestGuessChild.offsetWidth
-                const bestGuessOffset = this.vertical
-                        ? bestGuessChild.offsetTop
-                        : bestGuessChild.offsetLeft
+                const bestGuessSpan = this.vertical ? bestGuessChild.offsetHeight : bestGuessChild.offsetWidth
+                const bestGuessOffset = this.vertical ? bestGuessChild.offsetTop : bestGuessChild.offsetLeft
 
                 // Past halfway to the slide it will snap
-                if (this.position + (bestGuessSpan / 2) < bestGuessOffset) {
-                    return getSlideByGuess(slide - 1);
+                if (this.position + bestGuessSpan / 2 < bestGuessOffset) {
+                    return getSlideByGuess(slide - 1)
                 }
 
                 if (this.position >= bestGuessOffset + bestGuessSpan) {
-                    return getSlideByGuess(slide + 1);
+                    return getSlideByGuess(slide + 1)
                 }
 
-                return slide;
+                return slide
             }
 
             return getSlideByGuess(bestGuess)
@@ -238,7 +234,10 @@ export default {
                 return 0
             }
 
-            return Math.round(this.sliderSpan / (this.vertical ? this.container.scrollHeight : this.container.scrollWidth) * this.slides.length)
+            return Math.round(
+                (this.sliderSpan / (this.vertical ? this.container.scrollHeight : this.container.scrollWidth)) *
+                    this.container.children.length,
+            )
         },
         slidesTotal() {
             if (!this.mounted) {
