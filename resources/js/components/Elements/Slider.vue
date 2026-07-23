@@ -64,11 +64,11 @@ export default {
         }
         this.$nextTick(() => {
             useResizeObserver(this.slider, useThrottleFn(this.updateSpan, 150, true, true))
+            setTimeout(() => this.slider.dispatchEvent(new CustomEvent('scroll')))
+            this.mounted = true
             if (this.loop) {
                 this.initLoop()
             }
-            setTimeout(() => this.slider.dispatchEvent(new CustomEvent('scroll')))
-            this.mounted = true
 
             this.initAutoPlay()
         })
@@ -152,10 +152,7 @@ export default {
         },
         navigate(index, behavior = 'smooth') {
             index = Math.min(
-                Math.max(
-                    this.loop ? index + this.slides.length : index,
-                    0
-                ),
+                Math.max(index, 0),
                 this.container?.children.length - 1
             )
 
