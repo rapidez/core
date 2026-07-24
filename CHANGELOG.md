@@ -1,6 +1,22 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.12.0...4.12.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/...4.13.0)
+## [4.13.0](https://github.com/rapidez/core/releases/tag/4.13.0) - 2026-07-14
+
+### Added
+
+- Install template diffs plugin (#1331)
+
+### Changed
+
+- Add useNotifications store for notifications (#1313)
+
+### Fixed
+
+- Add fallback to error.path (#1298)
+- Always trim category name (#1303)
+- Fix translation on search clear button (#1305)
+
 ## [4.12.0](https://github.com/rapidez/core/releases/tag/4.12.0) - 2026-05-26
 
 ### Changed
