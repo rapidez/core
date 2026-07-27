@@ -191,9 +191,7 @@ export default {
                 }
             }
 
-            const position = this.vertical
-                ? this.container?.children[index]?.offsetTop
-                : this.container?.children[index]?.offsetLeft
+            const position = this.vertical ? this.container?.children[index]?.offsetTop : this.container?.children[index]?.offsetLeft
 
             if (position === undefined) {
                 return
@@ -250,11 +248,11 @@ export default {
     },
     computed: {
         position: {
-            get () {
+            get() {
                 return this.vertical ? this.scrollY : this.scrollX
             },
-            set (position) {
-                return this.vertical ? this.scrollY = position : this.scrollX = position
+            set(position) {
+                return this.vertical ? (this.scrollY = position) : (this.scrollX = position)
             },
         },
         showLeft() {
