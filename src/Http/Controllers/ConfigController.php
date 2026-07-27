@@ -67,6 +67,8 @@ class ConfigController
             'street_lines'         => Rapidez::config('customer/address/street_lines', 2),
             'show_swatches'        => (bool) Rapidez::config('catalog/frontend/show_swatches_in_product_list'),
             'show_tax'             => in_array(Rapidez::config('tax/display/type', 1), [2, 3]),
+            // Compadre config data
+            'collapsed_attributes' => explode(',', Rapidez::config('rapidez/catalog/collapsed_attributes', '')),
         ];
     }
 
