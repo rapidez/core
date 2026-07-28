@@ -12,12 +12,7 @@ checkoutTypes.forEach((type) => {
         const checkoutPage = new CheckoutPage(page, type)
 
         await productPage.addToCart(process.env.PRODUCT_URL_SIMPLE)
-        await checkoutPage.checkout(`${crypto.randomUUID()}@enterprises.com`, false, false, [
-            'login',
-            'credentials',
-            'payment',
-            'success',
-        ])
+        await checkoutPage.checkout(`${crypto.randomUUID()}@enterprises.com`, false, false, ['login', 'credentials', 'payment', 'success'])
     })
 
     test(type + ' - as user', BasePage.tags, async ({ page }) => {
