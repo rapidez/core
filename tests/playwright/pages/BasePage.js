@@ -121,8 +121,8 @@ export class BasePage {
 
         await page.goto(url)
         // Wait for images and other lazy content so the container may have cached some data.
-        await this.waitUntilIdle()
         await this.waitForImages()
+        await this.waitUntilIdle()
         await this.loadLazy()
 
         try {
