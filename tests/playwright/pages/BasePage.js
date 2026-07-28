@@ -120,6 +120,9 @@ export class BasePage {
         const reportName = `lighthouse-${new Date().getTime()}`
 
         await page.goto(url)
+        // Wait for images and other lazy content so the container may have cached some data.
+        await this.loadLazy()
+        await this.waitForImages()
 
         try {
             await playAudit({
@@ -156,10 +159,12 @@ export class BasePage {
                 },
             })
         } catch (error) {
-            await test.info().attach(reportName, {
-                path: 'lighthouse/' + reportName + '.html',
-                contentType: 'text/html',
-            })
+            try {
+                await test.info().attach(reportName, {
+                    path: 'lighthouse/' + reportName + '.html',
+                    contentType: 'text/html',
+                })
+            } catch (e) {}
 
             throw error
         } finally {
