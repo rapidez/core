@@ -146,6 +146,7 @@ export class BasePage {
                     ...lighthouseMobileConfig,
                     settings: {
                         ...lighthouseMobileConfig.settings,
+                        throttlingMethod: 'devtools',
                         throttling: {
                             cpuSlowdownMultiplier: 1,
                         },
