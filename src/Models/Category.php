@@ -72,7 +72,11 @@ class Category extends Model
 
     protected function name(): Attribute
     {
-        return Attribute::get(fn (?string $value) => trim($value ?? ''));
+        return Attribute::get(function (?string $value) {
+            $value ??= $this->getAttributeFromArray('name');
+
+            return trim($value ?? '');
+        });
     }
 
     public function subcategories()
