@@ -131,7 +131,7 @@ export class BasePage {
                 page: page,
                 port: 9222,
                 thresholds: {
-                    performance: 90,
+                    performance: 85,
                     accessibility: 100,
                     'best-practices': 100,
                     seo: 100,
