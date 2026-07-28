@@ -18,22 +18,22 @@
     "require": {
         "php": "^8.2|^8.3",
         "blade-ui-kit/blade-heroicons": "^2.4",
-        "illuminate/database": "^11.0",
-        "illuminate/events": "^11.0",
-        "illuminate/queue": "^11.0",
-        "illuminate/support": "^11.0",
+        "illuminate/database": "^11.0|^12.0",
+        "illuminate/events": "^11.0|^12.0",
+        "illuminate/queue": "^11.0|^12.0",
+        "illuminate/support": "^11.0|^12.0",
         "lcobucci/clock": "^2.0|^3.2",
         "lcobucci/jwt": "^4.0|^5.3",
         "mailerlite/laravel-elasticsearch": "^11.1",
-        "rapidez/blade-directives": "^0.6",
+        "rapidez/blade-directives": "^0.6|^1.0",
         "rapidez/composer-template-diff-plugin": "^1.0",
         "rapidez/laravel-multi-cache": "^2.1",
         "tormjens/eventy": "^0.8"
     },
     "require-dev": {
         "laravel/dusk": "^8.2",
-        "orchestra/testbench": "^9.4",
-        "orchestra/testbench-dusk": "^9.7",
+        "orchestra/testbench": "^9.4|^10.0",
+        "orchestra/testbench-dusk": "^9.7|^10.0",
         "phpunit/phpunit": "^10.5.34|^11.3.5"
     },
     "autoload": {
