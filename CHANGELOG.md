@@ -1,6 +1,19 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.26.0...2.26.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/2.27.0...2.27.0)
+## [2.27.0](https://github.com/rapidez/core/releases/tag/2.27.0) - 2026-07-28
+
+### Added
+
+- Laravel 12 support (#1336)
+- Install template diffs plugin (#1333)
+
+### Fixed
+
+- Validate search terms (#1187)
+- Fallback for container not existing (#1272)
+- Fixed attributeLabel is not a function (#1288)
+
 ## [2.26.0](https://github.com/rapidez/core/releases/tag/2.26.0) - 2026-01-23
 
 ### Added
