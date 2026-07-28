@@ -121,8 +121,9 @@ export class BasePage {
 
         await page.goto(url)
         // Wait for images and other lazy content so the container may have cached some data.
-        await this.loadLazy()
+        await this.waitUntilIdle()
         await this.waitForImages()
+        await this.loadLazy()
 
         try {
             await playAudit({
@@ -144,6 +145,9 @@ export class BasePage {
                     ...lighthouseMobileConfig,
                     settings: {
                         ...lighthouseMobileConfig.settings,
+                        throttling: {
+                            cpuSlowdownMultiplier: 1,
+                        },
                         skipAudits: [
                             ...lighthouseMobileConfig.settings.skipAudits,
                             // Skip everything that's not fixed within CI tests.
