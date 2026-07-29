@@ -44,7 +44,7 @@ jobs:
         env:
           URL: http://localhost:1234/
           FLAT_TABLES: true
-          CUSTOM_ENTRYPOINT_COMMAND: "php bin/magento encryption:key:change -k 5AM3SD5SkwT8iwIxL6L1q8XQhzK3wk51; magerun2 config:store:set system/smtp/disable 1; magerun2 config:store:set checkout/options/enable_guest_checkout_login 1; magerun2 config:store:delete design/head/includes"
+          CUSTOM_ENTRYPOINT_COMMAND: 'php bin/magento encryption:key:change -k 5AM3SD5SkwT8iwIxL6L1q8XQhzK3wk51; magerun2 config:store:set system/smtp/disable 1; magerun2 config:store:set checkout/options/enable_guest_checkout_login 1; magerun2 config:store:delete design/head/includes; composer require graycore/magento2-cors; magerun2 module:enable Graycore_Cors; magerun2 config:store:set web/graphql/cors_allowed_origins "*"; magerun2 config:store:set web/graphql/cors_allowed_methods "POST, OPTIONS, GET"; magerun2 config:store:set web/graphql/cors_allowed_headers "Content-Currency, Store, X-Magento-Cache-Id, X-Captcha, Content-Type, Authorization, DNT, TE"; magerun2 config:store:set web/api_rest/cors_allowed_origins "*"'
         ports:
           - 3307:3306
           - 1234:80
