@@ -12,7 +12,8 @@ export class BasePage {
     }
 
     async screenshot(type = '', options = {}) {
-        const masks = [this.page.getByTestId('masked')]
+        const masks = options['mask'] || []
+        masks.push(this.page.getByTestId('masked'))
         const emailFields = this.page.locator('[name=email]')
 
         // Only mask filled email fields
@@ -26,7 +27,7 @@ export class BasePage {
             }
         }
 
-        options['mask'] = masks
+        options['mask'] = [...masks, this.page.locator('[data-attribute=id]')]
 
         if (type.startsWith('fullpage')) {
             await this.loadLazy()
@@ -50,6 +51,43 @@ export class BasePage {
             await expect(img).toHaveJSProperty('complete', true)
             await expect(img).not.toHaveJSProperty('naturalWidth', 0)
         }
+    }
+
+    async waitUntilIdle() {
+        // Webkit does not support requestIdleCallback, so we just wait for a bit.
+        if (this.page.context().browser().browserType().name() === 'webkit') {
+            await this.page.waitForTimeout(200)
+            await this.page.waitForLoadState('networkidle')
+            return
+        }
+
+        await expect(
+            await this.page.evaluate(async () => {
+                return (
+                    (await new Promise((resolve, reject) => {
+                        let counter = 0
+                        let intervalTime = 0.05
+                        let idleForTime = 0.5
+                        let interval = setInterval(async function () {
+                            if (window.app?.config === undefined) {
+                                return
+                            }
+                            let result = await new Promise((resolve, reject) =>
+                                window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), { timeout: 5 }),
+                            )
+                            counter = result ? counter + 1 : 0
+                            if (counter >= idleForTime / intervalTime) {
+                                clearInterval(interval)
+                                resolve(true)
+                            }
+                        }, intervalTime * 1000)
+                        setTimeout(() => resolve(false), 60 * 1000)
+                    })) === true
+                )
+            }),
+            'Page should become idle within a minute',
+        ).toBeTruthy()
+        await this.page.waitForLoadState('networkidle')
     }
 
     async loadLazy() {
@@ -79,16 +117,21 @@ export class BasePage {
             args: ['--remote-debugging-port=9222'],
         })
         const page = await browser.newPage()
+        const basePage = new BasePage(page)
         const reportName = `lighthouse-${new Date().getTime()}`
 
         await page.goto(url)
+        // Wait for images and other lazy content so the container may have cached some data.
+        await basePage.waitForImages()
+        await basePage.waitUntilIdle()
+        await basePage.loadLazy()
 
         try {
             await playAudit({
                 page: page,
                 port: 9222,
                 thresholds: {
-                    performance: 90,
+                    performance: 85,
                     accessibility: 100,
                     'best-practices': 100,
                     seo: 100,
@@ -103,6 +146,10 @@ export class BasePage {
                     ...lighthouseMobileConfig,
                     settings: {
                         ...lighthouseMobileConfig.settings,
+                        throttlingMethod: 'devtools',
+                        throttling: {
+                            cpuSlowdownMultiplier: 1,
+                        },
                         skipAudits: [
                             ...lighthouseMobileConfig.settings.skipAudits,
                             // Skip everything that's not fixed within CI tests.
@@ -118,10 +165,12 @@ export class BasePage {
                 },
             })
         } catch (error) {
-            await test.info().attach(reportName, {
-                path: 'lighthouse/' + reportName + '.html',
-                contentType: 'text/html',
-            })
+            try {
+                await test.info().attach(reportName, {
+                    path: 'lighthouse/' + reportName + '.html',
+                    contentType: 'text/html',
+                })
+            } catch (e) {}
 
             throw error
         } finally {

@@ -11,6 +11,7 @@ export class CheckoutPage {
         const url = this.type === 'onestep' ? '/checkout?checkout=onestep' : '/checkout'
 
         await this.page.goto(url)
+        await new BasePage(this.page).waitUntilIdle()
     }
 
     async login(email, password = false, register = false) {
@@ -43,33 +44,39 @@ export class CheckoutPage {
             if (addressCount > 1) {
                 await addressSelect.selectOption({ index: 0 })
                 await addressSelect.dispatchEvent('change')
-                await this.page.waitForTimeout(200)
+                await new BasePage(this.page).waitUntilIdle()
                 await this.page.waitForLoadState('networkidle')
                 return
             }
         }
 
+        await new BasePage(this.page).waitUntilIdle()
         await this.page.fill('[name=shipping_firstname]', 'Bruce')
+        await new BasePage(this.page).waitUntilIdle()
         await this.page.fill('[name=shipping_lastname]', 'Wayne')
+        await new BasePage(this.page).waitUntilIdle()
         await this.page.fill('[name=shipping_postcode]', '72000')
         await this.page.fill('[name=shipping_housenumber]', '1007')
         await this.page.fill('[name=shipping_street]', 'Mountain Drive')
         await this.page.fill('[name=shipping_city]', 'Gotham')
         await this.page.selectOption('[name=shipping_country]', 'NL')
         await this.page.fill('[name=shipping_telephone]', '530-7972')
-        await this.page.locator('input[name=shipping_telephone]').press('Tab')
+        await this.page.locator('input[name=shipping_telephone]')
+        await this.page.getByTestId('continue').focus()
+        await new BasePage(this.page).waitUntilIdle()
         await this.page.waitForLoadState('networkidle')
     }
 
     async shippingMethod() {
+        await this.page.waitForLoadState('networkidle')
         await this.page.getByTestId('shipping-method').first().click()
-        await this.page.waitForTimeout(200)
+        await new BasePage(this.page).waitUntilIdle()
         await this.page.waitForLoadState('networkidle')
     }
 
     async paymentMethod() {
         await this.page.getByTestId('payment-method').first().click()
-        await this.page.waitForTimeout(200)
+        await new BasePage(this.page).waitUntilIdle()
         await this.page.waitForLoadState('networkidle')
     }
 
@@ -78,14 +85,17 @@ export class CheckoutPage {
     }
 
     async continue(expectedStep) {
+        await this.page.getByTestId('continue').focus()
+        await new BasePage(this.page).waitUntilIdle()
+        await this.page.waitForLoadState('networkidle')
         await this.page.getByTestId('continue').click()
-        await this.page.waitForTimeout(500)
+        await new BasePage(this.page).waitUntilIdle()
         await this.page.waitForLoadState('networkidle')
         await this.page.waitForURL('**/' + expectedStep)
         if (expectedStep != 'success') {
             await this.continueButtonVisible()
         }
-        await this.page.waitForTimeout(500)
+        await new BasePage(this.page).waitUntilIdle()
     }
 
     async continueButtonVisible() {
