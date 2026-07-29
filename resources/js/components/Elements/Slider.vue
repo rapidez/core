@@ -307,6 +307,9 @@ export default {
                 return 0
             }
 
+            // TODO: slidesVisible is now calculated by an average so the number does not change and cause issues.
+            // For the slidesTotal only the visible slides at the end of the slider are relevant.
+            // We should replace `this.slidesVisible` with a function that only gets the visible slides at the end.
             return (this.slides?.length ?? 1) - (this.loop ? 0 : this.slidesVisible - 1)
         },
         slides() {
