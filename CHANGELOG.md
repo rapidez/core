@@ -1,6 +1,22 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.3.0...5.3.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.4.0...5.4.0)
+## [5.4.0](https://github.com/rapidez/core/releases/tag/5.4.0) - 2026-07-30
+
+### Added
+
+- Added collapsible filter configuration (#1335)
+
+### Fixed
+
+- Check if history state is not null (#1337)
+- Cache attributes per store (#1338)
+- Fix collection being turned into array bracket string (#1340)
+- Perform image slider calculation based on child elements (#1334)
+- Playwright tests fixes (#1322)
+- Removed duplicate if check for wrapping div (#1341)
+- Use cart.value everywhere (#1342)
+
 ## [5.3.0](https://github.com/rapidez/core/releases/tag/5.3.0) - 2026-07-14
 
 ### Added
