@@ -26,7 +26,7 @@ export class CheckoutPage {
         await this.page.waitForLoadState('networkidle')
 
         if (password && !register) {
-            if (this.this.screenshots.includes(screenshot_login)) {
+            if (this.screenshots.includes(screenshot_login)) {
                 await new BasePage(this.page).screenshot('fullpage')
             }
             await this.page.fill('[name=password]', password)
@@ -34,7 +34,7 @@ export class CheckoutPage {
 
         if (password && register) {
             await this.page.getByTestId('create-account').click()
-            if (this.this.screenshots.includes(screenshot_login)) {
+            if (this.screenshots.includes(screenshot_login)) {
                 await new BasePage(this.page).screenshot('fullpage')
             }
             await this.page.fill('[name=password]', password)
