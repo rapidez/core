@@ -157,6 +157,10 @@ trait Searchable
                     ->map(fn ($name) => trim($name))
                     ->join(' > ');
 
+                if ($pathCategories === '') {
+                    continue;
+                }
+
                 $data['category_lvl' . $i][] = $pathCategories;
             }
         }
