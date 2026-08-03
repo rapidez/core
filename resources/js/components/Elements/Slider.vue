@@ -1,5 +1,5 @@
 <script>
-import { useElementHover, useIntervalFn, useEventListener, useThrottleFn, useResizeObserver } from '@vueuse/core'
+import { useElementHover, useIntervalFn, useScroll, useThrottleFn, useResizeObserver } from '@vueuse/core'
 
 export default {
     render() {
@@ -43,9 +43,17 @@ export default {
         return {
             slider: '',
             container: '',
-            position: 0,
-            showLeft: false,
-            showRight: false,
+            scrollX: 0,
+            scrollY: 0,
+            isScrolling: false,
+            arrivedState: {
+                left: false,
+                right: false,
+                top: false,
+                bottom: false,
+            },
+            scrollBehavior: 'smooth',
+            resetMeasure: () => {},
             mounted: false,
             hover: false,
             direction: 1,
@@ -58,17 +66,13 @@ export default {
     },
     mounted() {
         this.initSlider()
-        useEventListener(this.slider, 'scroll', useThrottleFn(this.scroll, 150, true, true), { passive: true })
-        if (this.loop) {
-            useEventListener(this.slider, 'scrollend', this.scrollend, { passive: true })
-        }
+        this.initScrollState()
         this.$nextTick(() => {
             useResizeObserver(this.slider, useThrottleFn(this.updateSpan, 150, true, true))
+            this.mounted = true
             if (this.loop) {
                 this.initLoop()
             }
-            setTimeout(() => this.slider.dispatchEvent(new CustomEvent('scroll')))
-            this.mounted = true
 
             this.initAutoPlay()
         })
@@ -82,6 +86,32 @@ export default {
                 this.slider = this.slider[0]
             }
             this.container = this.containerReference ? this.$slots.default(this)[0].ctx.refs[this.containerReference] : this.slider
+        },
+        initScrollState() {
+            const { x, y, isScrolling, arrivedState, measure } = useScroll(this.slider, {
+                throttle: 150,
+                idle: 100,
+                eventListenerOptions: { passive: true },
+                behavior: this.scrollBehavior,
+            })
+
+            this.scrollX = x
+            this.scrollY = y
+            this.isScrolling = isScrolling
+            this.arrivedState = arrivedState
+            this.resetMeasure = measure
+        },
+        scrollToPosition(position, behavior = 'smooth') {
+            if (behavior === 'instant') {
+                this.vertical
+                    ? this.slider.scrollTo({ top: position, behavior: 'instant' })
+                    : this.slider.scrollTo({ left: position, behavior: 'instant' })
+                this.resetMeasure()
+                return
+            }
+
+            this.scrollBehavior = behavior
+            this.position = position
         },
         initLoop() {
             if (!this.loop) {
@@ -104,8 +134,7 @@ export default {
                     endClone.dataset.clone = true
                     endClone.dataset.position = 'end'
                 }
-
-                this.slider.dispatchEvent(new CustomEvent('scrollend'))
+                this.handleLoopBoundary()
             })
         },
         initAutoPlay() {
@@ -122,17 +151,18 @@ export default {
             }
             this.hover = useElementHover(this.$el.nextSibling)
         },
-        scroll(event) {
-            this.position = this.vertical ? event.target.scrollTop : event.target.scrollLeft
-            this.showLeft = this.loop || this.position
-            this.showRight = this.loop || this.container?.offsetWidth + this.position < this.container?.scrollWidth - 1
-        },
-        scrollend(event) {
-            let scrollPosition = this.vertical ? event.target.scrollTop : event.target.scrollLeft
+        handleLoopBoundary() {
+            if (!this.loop) {
+                return
+            }
+
+            let scrollPosition = this.position
             if (scrollPosition < this.sliderStart) {
-                this.slider.scrollTo({ [this.vertical ? 'top' : 'left']: scrollPosition + this.sliderStart, behavior: 'instant' })
+                const position = scrollPosition + this.sliderStart
+                this.scrollToPosition(position, 'instant')
             } else if (scrollPosition >= this.sliderEnd) {
-                this.slider.scrollTo({ [this.vertical ? 'top' : 'left']: scrollPosition - this.sliderStart, behavior: 'instant' })
+                const position = scrollPosition - this.sliderStart
+                this.scrollToPosition(position, 'instant')
             }
         },
         autoScroll() {
@@ -151,11 +181,23 @@ export default {
             this.navigate(next)
         },
         navigate(index, behavior = 'smooth') {
-            index = this.loop ? index + this.slides.length : index
+            this.handleLoopBoundary()
+            index = Math.min(Math.max(index, 0), this.container?.children.length - 1)
+            if (this.loop) {
+                if (index < this.slides.length - 1) {
+                    index += this.slides.length
+                } else if (index > this.slides.length * 2 + 1) {
+                    index -= this.slides.length
+                }
+            }
 
-            this.vertical
-                ? this.slider.scrollTo({ top: this.container?.children[index]?.offsetTop, behavior: behavior })
-                : this.slider.scrollTo({ left: this.container?.children[index]?.offsetLeft, behavior: behavior })
+            const position = this.vertical ? this.container?.children[index]?.offsetTop : this.container?.children[index]?.offsetLeft
+
+            if (position === undefined) {
+                return
+            }
+
+            requestAnimationFrame(() => this.scrollToPosition(position, behavior))
         },
         handleLoop() {
             requestAnimationFrame(() => {
@@ -193,29 +235,81 @@ export default {
                 this.pause()
             }
         },
+        isScrolling(isScrolling) {
+            if (isScrolling) {
+                return
+            }
+
+            this.handleLoopBoundary()
+        },
         currentSlide() {
             this.initSlider()
         },
     },
     computed: {
+        position: {
+            get() {
+                return this.vertical ? this.scrollY : this.scrollX
+            },
+            set(position) {
+                return this.vertical ? (this.scrollY = position) : (this.scrollX = position)
+            },
+        },
+        showLeft() {
+            return !(this.vertical ? this.arrivedState.top : this.arrivedState.left)
+        },
+        showRight() {
+            return !(this.vertical ? this.arrivedState.bottom : this.arrivedState.right)
+        },
         currentSlide() {
             if (!this.mounted) {
                 return 0
             }
-            return Math.round(this.position / this.childSpan) % this.slides.length
+            // First make a calculated guess, improving performance by not having to loop through all slides
+            const bestGuess = Math.round(
+                this.position /
+                    ((this.vertical ? this.container.scrollHeight : this.container.scrollWidth) / this.container.children.length),
+            )
+            const getSlideByGuess = (slide) => {
+                const bestGuessChild = this.container.children[slide]
+                if (!bestGuessChild) {
+                    return slide
+                }
+                const bestGuessSpan = this.vertical ? bestGuessChild.offsetHeight : bestGuessChild.offsetWidth
+                const bestGuessOffset = this.vertical ? bestGuessChild.offsetTop : bestGuessChild.offsetLeft
+
+                // Past halfway to the slide it will snap
+                if (this.position + bestGuessSpan / 2 < bestGuessOffset) {
+                    return getSlideByGuess(slide - 1)
+                }
+
+                if (this.position >= bestGuessOffset + bestGuessSpan) {
+                    return getSlideByGuess(slide + 1)
+                }
+
+                return slide
+            }
+
+            return getSlideByGuess(bestGuess)
         },
         slidesVisible() {
             if (!this.mounted) {
                 return 0
             }
 
-            return Math.round(this.sliderSpan / this.childSpan)
+            return Math.round(
+                (this.sliderSpan / (this.vertical ? this.container.scrollHeight : this.container.scrollWidth)) *
+                    this.container.children.length,
+            )
         },
         slidesTotal() {
             if (!this.mounted) {
                 return 0
             }
 
+            // TODO: slidesVisible is now calculated by an average so the number does not change and cause issues.
+            // For the slidesTotal only the visible slides at the end of the slider are relevant.
+            // We should replace `this.slidesVisible` with a function that only gets the visible slides at the end.
             return (this.slides?.length ?? 1) - (this.loop ? 0 : this.slidesVisible - 1)
         },
         slides() {
