@@ -54,6 +54,10 @@ fragment cart on Cart {
         ... on BundleCartItem {
             @include('rapidez::cart.queries.partials.customizable-options')
         }
+        errors {
+            code
+            message
+        }
     }
     applied_coupons {
         code
