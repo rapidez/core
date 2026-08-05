@@ -65,7 +65,7 @@ export default {
         return this.$slots.default(this)
     },
 
-    destroyed() {
+    unmounted() {
         this.destroyed = true
     },
 
