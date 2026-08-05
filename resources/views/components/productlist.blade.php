@@ -52,6 +52,6 @@ Examples:
                     </ais-instant-search>
                 </div>
             </listing>
-        @if (!is_array($value)) </template> @endif
+        @if (!is_iterable($value)) </template> @endif
     </lazy>
 @endif
