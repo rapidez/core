@@ -80,6 +80,7 @@ export default {
         data: {},
         mutate: () => null,
         redirectUrl: '',
+        stopMutateListener: () => null,
     }),
 
     render() {
@@ -129,7 +130,7 @@ export default {
     mounted() {
         if (this.mutateEvent) {
             this.$nextTick(() =>
-                window.$on(
+                this.stopMutateListener = window.$on(
                     this.mutateEvent,
                     () => {
                         this.mutate()
@@ -138,6 +139,10 @@ export default {
                 ),
             )
         }
+    },
+
+    unmounted() {
+        this.stopMutateListener()
     },
 
     methods: {
