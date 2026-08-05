@@ -129,14 +129,15 @@ export default {
 
     mounted() {
         if (this.mutateEvent) {
-            this.$nextTick(() =>
-                this.stopMutateListener = window.$on(
-                    this.mutateEvent,
-                    () => {
-                        this.mutate()
-                    },
-                    { defer: false },
-                ),
+            this.$nextTick(
+                () =>
+                    (this.stopMutateListener = window.$on(
+                        this.mutateEvent,
+                        () => {
+                            this.mutate()
+                        },
+                        { defer: false },
+                    )),
             )
         }
     },
