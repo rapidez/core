@@ -136,7 +136,8 @@ trait Searchable
             return Category::all()->keyBy('entity_id');
         });
 
-        foreach ($this->breadcrumbCategories as $category) {
+        foreach ($this->category_ids as $category_id) {
+            $category = $categories[$category_id] ?? null;
             if (! $category) {
                 continue;
             }
@@ -155,6 +156,10 @@ trait Searchable
                     ->whereNotNull()
                     ->map(fn ($name) => trim($name))
                     ->join(' > ');
+
+                if ($pathCategories === '') {
+                    continue;
+                }
 
                 $data['category_lvl' . $i][] = $pathCategories;
             }

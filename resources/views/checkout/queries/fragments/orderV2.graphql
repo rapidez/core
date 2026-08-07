@@ -51,7 +51,10 @@ fragment orderV2 on CustomerOrder {
         ...orderItem
     }
     total {
-        subtotal {
+        subtotal_incl_tax {
+            value
+        }
+        subtotal_excl_tax {
             value
         }
         shipping_handling {
