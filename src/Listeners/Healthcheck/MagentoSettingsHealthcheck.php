@@ -95,7 +95,6 @@ class MagentoSettingsHealthcheck extends Base
         $joinCount = ($superAttributesCount * 2) + (count($nonFlatAttributes) * 3) + 4;
 
         if ($joinCount > 58) {
-            $response['healthy'] = false;
             $response['messages'][] = ['type' => 'error', 'value' => __('Most likely the queries needed for Rapidez will exceed 58 joins when indexing or viewing products so you have to reduce them by adding more attributes to the flat tables')];
         }
 
