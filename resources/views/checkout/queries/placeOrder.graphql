@@ -10,10 +10,6 @@ mutation placeOrder (
         orderV2 {
             ...orderV2
         }
-        errors {
-            code
-            message
-        }
     }
 }
 
