@@ -45,11 +45,11 @@ export class BasePage {
 
     async resetScroll() {
         await this.page.evaluate(() => {
-            document.querySelectorAll('[class*="overflow"], [style*="overflow"], html, body').forEach(el => {
+            document.querySelectorAll('[class*="overflow"], [style*="overflow"], html, body').forEach((el) => {
                 el.scrollTo({
                     top: 0,
                     left: 0,
-                    behavior: 'instant'
+                    behavior: 'instant',
                 })
             })
         })
