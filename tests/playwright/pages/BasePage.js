@@ -39,7 +39,20 @@ export class BasePage {
         }
 
         await this.waitForImages()
+        await this.resetScroll()
         await expect(this.page).toHaveScreenshot(options)
+    }
+
+    async resetScroll() {
+        await this.page.evaluate(() => {
+            document.querySelectorAll('[class*="overflow"], [style*="overflow"], html, body').forEach(el => {
+                el.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: 'instant'
+                })
+            })
+        })
     }
 
     async waitForImages() {
