@@ -1,6 +1,28 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.4.0...5.4.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.5.0...5.5.0)
+## [5.5.0](https://github.com/rapidez/core/releases/tag/5.5.0) - 2026-08-11
+
+### Added
+
+- Added weee_tax models (#1324)
+
+### Changed
+
+- Drop Magento 2.4.7 support (a1c7fbd)
+- Use subtotal_incl / excl_tax (#1346)
+
+### Fixed
+
+- Fixed attribute sorting to prioritize position (#1347)
+- Fixed only a single category tree getting indexed (#1343)
+- Check for searchquery being undefined (#1344)
+- Clear cart on unmount (#1345)
+- Improve checks for emptiness in productlist (#1312)
+- Prevent logout flow being triggered when incorrect credentials are used (#1257)
+- Playwright test scroll up before screenshots (#1354)
+- Fix props on global slideover (#1349)
+
 ## [5.4.0](https://github.com/rapidez/core/releases/tag/5.4.0) - 2026-07-30
 
 ### Added
