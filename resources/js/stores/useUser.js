@@ -159,6 +159,7 @@ export const login = async function (email, password) {
         },
         {
             notifyOnError: false,
+            redirectOnExpiration: false,
         },
     )
 
