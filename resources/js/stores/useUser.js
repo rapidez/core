@@ -128,7 +128,7 @@ export const register = async function (email, firstname, lastname, password, in
 }
 
 export const login = async function (email, password) {
-    return magentoGraphQL(
+    const response = await magentoGraphQL(
         'mutation generateCustomerToken ($email: String!, $password: String!) { generateCustomerToken (email: $email, password: $password) { token } }',
         {
             email: email,
@@ -138,10 +138,11 @@ export const login = async function (email, password) {
             notifyOnError: false,
             redirectOnExpiration: false,
         },
-    ).then(async (response) => {
-        await loginByToken(response.data.generateCustomerToken.token)
-        return response
-    })
+    )
+
+    await loginByToken(response.data.generateCustomerToken.token)
+
+    return response
 }
 
 export const loginByToken = async function (customerToken) {

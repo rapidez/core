@@ -146,7 +146,6 @@ class Product extends Model
     {
         return $this
             ->hasMany(config('rapidez.models.rewrite'), 'entity_id')
-            ->withoutGlobalScope('store')
             ->where('entity_type', 'product');
     }
 
@@ -253,6 +252,15 @@ class Product extends Model
         return Attribute::make(
             get: fn (): array => $this->gallery->sortBy('productImageValue.position')->pluck('value')->toArray()
         )->shouldCache();
+    }
+
+    public function fixedProductTaxes(): HasMany
+    {
+        return $this->hasMany(
+            config('rapidez.models.weee_tax', WeeeTax::class),
+            'entity_id',
+            'entity_id',
+        );
     }
 
     private function getImageFrom(?string $image): ?string

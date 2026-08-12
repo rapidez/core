@@ -28,6 +28,7 @@ return [
         'images',
         'url',
         'thumbnail',
+        'has_options',
         'in_stock',
         'children',
         'super_*',

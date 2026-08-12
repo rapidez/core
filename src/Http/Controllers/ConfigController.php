@@ -258,21 +258,34 @@ class ConfigController
                     "rapidez::frontend.sorting.{$attribute['code']}.{$direction}",
                     trans_fallback("rapidez::frontend.{$attribute['code']}", ucfirst($attribute['code'])) . ' ' . trans_fallback("rapidez::frontend.{$direction}", $direction),
                 ),
+                'code'  => $attribute['code'],
                 'field' => $attribute['code'] . ($attribute['input'] == 'text' ? '.keyword' : ''),
                 'order' => $direction,
                 'value' => "{$index}_{$attribute['code']}_{$direction}",
                 'key'   => "_{$attribute['code']}_{$direction}",
             ]));
 
-        // Add default relevance sort
+        // Add relevance sort
         $sortableAttributes->prepend([
             'label' => __('Relevance'),
+            'code'  => 'position',
             'field' => '_score',
             'order' => 'desc',
-            'value' => $index,
-            'key'   => 'default',
+            'value' => "{$index}_score_desc",
+            'key'   => '_score_desc',
         ]);
 
-        return $sortableAttributes->keyBy('key')->toArray();
+        // Set default sort by
+        $defaultSortBy = Rapidez::config('catalog/frontend/default_sort_by');
+        $sortableAttributes = $sortableAttributes
+            ->sortBy(fn ($attribute) => $attribute['code'] == $defaultSortBy ? 0 : 1)
+            ->values()
+            ->toArray();
+
+        // Change value and key of default sort
+        $sortableAttributes[0]['value'] = $index;
+        $sortableAttributes[0]['key'] = 'default';
+
+        return Arr::keyBy($sortableAttributes, 'key');
     }
 }
