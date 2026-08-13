@@ -8,6 +8,7 @@ import RangeInput from 'vue-instantsearch/vue3/es/src/components/RangeInput.vue.
 import HierarchicalMenu from 'vue-instantsearch/vue3/es/src/components/HierarchicalMenu.vue.js'
 import RefinementList from 'vue-instantsearch/vue3/es/src/components/RefinementList.vue.js'
 import SortBy from 'vue-instantsearch/vue3/es/src/components/SortBy.vue.js'
+import { instantsearchMiddlewares } from '../../stores/useInstantsearchMiddlewares'
 
 export default {
     mixins: [InstantSearchMixin],
@@ -59,6 +60,7 @@ export default {
         searchClient: null,
         destroyed: false,
         utmFields: [],
+        instantSearchInstance: null,
     }),
 
     render() {
@@ -127,6 +129,19 @@ export default {
     },
 
     methods: {
+        getMiddlewares() {
+            return [
+                ({ instantSearchInstance }) => {
+                    this.instantSearchInstance = instantSearchInstance
+                    return {
+                        onStateChange: () => {},
+                        subscribe: () => {},
+                        unsubscribe: () => {},
+                    }
+                },
+                ...instantsearchMiddlewares
+            ]
+        },
         async getInstantSearchClientConfig() {
             const config = await InstantSearchMixin.methods.getInstantSearchClientConfig.bind(this).call()
 
@@ -256,6 +271,31 @@ export default {
                 ...item,
             }))
         },
+
+        isRelevantFilter(filterItems, minProductPercentage = null) {
+            if (!filterItems?.length) {
+                return false
+            }
+
+            if (filterItems.some((item) => item.isRefined)) {
+                return true
+            }
+
+            if (!this.instantSearchInstance) {
+                return true
+            }
+            const totalHits = this.instantSearchInstance?.helper?.lastResults?.nbHits;
+            if (!totalHits) {
+                return true
+            }
+            if (isNaN(minProductPercentage) || minProductPercentage === null) {
+                minProductPercentage = window.config.searchkit.min_filter_product_percentage ?? 10
+            }
+
+            const resultCount = filterItems.reduce((sum, item) => item.count + sum, 0)
+
+            return resultCount / totalHits > minProductPercentage / 100
+        }
     },
 }
 </script>
