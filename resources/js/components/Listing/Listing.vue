@@ -139,7 +139,7 @@ export default {
                         unsubscribe: () => {},
                     }
                 },
-                ...instantsearchMiddlewares
+                ...instantsearchMiddlewares,
             ]
         },
         async getInstantSearchClientConfig() {
@@ -284,7 +284,7 @@ export default {
             if (!this.instantSearchInstance) {
                 return true
             }
-            const totalHits = this.instantSearchInstance?.helper?.lastResults?.nbHits;
+            const totalHits = this.instantSearchInstance?.helper?.lastResults?.nbHits
             if (!totalHits) {
                 return true
             }
@@ -295,7 +295,7 @@ export default {
             const resultCount = filterItems.reduce((sum, item) => item.count + sum, 0)
 
             return resultCount / totalHits > minProductPercentage / 100
-        }
+        },
     },
 }
 </script>
