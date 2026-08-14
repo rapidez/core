@@ -12,3 +12,4 @@ IMPORTANT!! For all Rapidez specific questions please check the https://docs.rap
 - Cart, checkout, customer mutations, etc everything that has authentication, is dynamic or need to write to Magento → Magento GraphQL.
 - Search and category filtering → IntantSearch with Elasticsearch or OpenSearch, kept in sync via the indexing commands this package provides.
 - Views are plain Blade — no `.phtml`, no Magento XML layout files.
+- Vue components are renderless; separating the logic of a component from its presentation
