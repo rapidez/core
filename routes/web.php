@@ -12,7 +12,7 @@ Route::middleware('cache.headers:public;max_age=3600;s_maxage=3600;stale_while_r
 
 Route::middleware('cache.headers:public;max_age=86400;s_maxage=86400')->group(function (): void {
     Route::get('robots.txt', function () {
-        return response()->view('robots')
+        return response()->view('rapidez::robots')
             ->header('Content-Type', 'text/plain; charset=utf-8');
     });
 });

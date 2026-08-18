@@ -32,7 +32,7 @@ export default {
         useEventListener(window, 'beforeunload', this.beforeUnloadCallback, { once: true })
     },
 
-    destroyed() {
+    unmounted() {
         this.beforeUnloadCallback()
     },
 
