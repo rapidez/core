@@ -9,7 +9,7 @@ Examples:
 <x-rapidez::productlist :value="false" v-bind:base-filters="() => [{dslQuery}}]"/>
 --}}
 
-@if (is_string($value) || count($value))
+@if (!is_iterable($value) || count($value))
     <lazy v-slot="{ intersected }">
         @if (is_string($value)) <template v-if="{{ $value }}.length"> @endif
             <listing
@@ -52,6 +52,6 @@ Examples:
                     </ais-instant-search>
                 </div>
             </listing>
-        @if (!is_iterable($value)) </template> @endif
+        @if (is_string($value)) </template> @endif
     </lazy>
 @endif
