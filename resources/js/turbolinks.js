@@ -9,6 +9,12 @@ document.addEventListener('turbo:before-visit', function (e) {
     }
 })
 
+document.addEventListener('turbo:visit', () => {
+    // Clean up old config.
+    delete window.config.product
+    delete window.config.category
+})
+
 document.addEventListener('vue:loaded', (e) => {
     // https://github.com/vuejs/core/issues/6154
     // This ensures the `v-bind:muted.attr` attribute is set before vue mounts

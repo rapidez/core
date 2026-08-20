@@ -203,6 +203,15 @@ class Product extends Model
         )->whereIn('website_id', [0, config('rapidez.website')]);
     }
 
+    public function fixedProductTaxes(): HasMany
+    {
+        return $this->hasMany(
+            config('rapidez.models.weee_tax', WeeeTax::class),
+            'entity_id',
+            'entity_id',
+        );
+    }
+
     public function getUnitPrice(int $quantity = 1, int $customerGroup = 0)
     {
         $tierPrice = $this->tierPrices()
