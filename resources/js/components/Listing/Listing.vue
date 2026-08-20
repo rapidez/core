@@ -296,6 +296,28 @@ export default {
 
             return resultCount / totalHits > minProductPercentage / 100
         },
+        isRelevantRange(filterCode, minProductPercentage = null) {
+            if (Object.keys(this.instantSearchInstance?.helper?.state?.numericRefinements?.[filterCode] || {}).length) {
+                return true
+            }
+
+            if (!this.instantSearchInstance) {
+                return true
+            }
+
+            const totalHits = this.instantSearchInstance?.helper?.lastResults?.nbHits
+            const facetStats = this.instantSearchInstance?.helper?.lastResults?.facets_stats?.[filterCode]
+            if (!totalHits || !facetStats) {
+                return true
+            }
+            if (isNaN(minProductPercentage) || minProductPercentage === null) {
+                minProductPercentage = window.config.searchkit.min_filter_product_percentage ?? 10
+            }
+
+            const resultCount = facetStats.sum / facetStats.avg
+
+            return resultCount / totalHits > minProductPercentage / 100
+        },
     },
 }
 </script>
