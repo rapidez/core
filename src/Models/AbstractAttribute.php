@@ -62,13 +62,13 @@ class AbstractAttribute extends Model
     {
         return Attribute::get(function ($value) {
             $value = $this->option_values ?? $this->rawValue ?? $value;
-            $value = array_map(function ($val) {
+            $value = collect($value)->map(function ($val) {
                 if ($this->is_html_allowed_on_front) {
                     return $val;
                 }
 
                 return e(htmlspecialchars_decode($val), false);
-            }, Arr::wrap($value));
+            })->all();
 
             // NOTE: doing it this way properly returns null when there are no values
             if (count($value) <= 1) {

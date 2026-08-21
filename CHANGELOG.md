@@ -1,6 +1,74 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.2.0...5.2.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.5.0...5.5.0)
+## [5.5.0](https://github.com/rapidez/core/releases/tag/5.5.0) - 2026-08-11
+
+### Added
+
+- Added weee_tax models (#1324)
+
+### Changed
+
+- Drop Magento 2.4.7 support (a1c7fbd)
+- Use subtotal_incl / excl_tax (#1346)
+
+### Fixed
+
+- Fixed attribute sorting to prioritize position (#1347)
+- Fixed only a single category tree getting indexed (#1343)
+- Check for searchquery being undefined (#1344)
+- Clear cart on unmount (#1345)
+- Improve checks for emptiness in productlist (#1312)
+- Prevent logout flow being triggered when incorrect credentials are used (#1257)
+- Playwright test scroll up before screenshots (#1354)
+- Fix props on global slideover (#1349)
+
+## [5.4.0](https://github.com/rapidez/core/releases/tag/5.4.0) - 2026-07-30
+
+### Added
+
+- Added collapsible filter configuration (#1335)
+
+### Fixed
+
+- Check if history state is not null (#1337)
+- Cache attributes per store (#1338)
+- Fix collection being turned into array bracket string (#1340)
+- Perform image slider calculation based on child elements (#1334)
+- Playwright tests fixes (#1322)
+- Removed duplicate if check for wrapping div (#1341)
+- Use cart.value everywhere (#1342)
+
+## [5.3.0](https://github.com/rapidez/core/releases/tag/5.3.0) - 2026-07-14
+
+### Added
+
+- Install template diffs plugin (#1330)
+
+### Changed
+
+- Use enums for constant values (#1300)
+- Add useNotifications store for notifications (#1314)
+- Use v-validate.vat (#1323)
+- InstantSearch reduce requests and bounces (#1316)
+- Move cachekey to Rapidez facade (#1328)
+
+### Fixed
+
+- Add fallback to error.path (#1297)
+- Increase notification open time depending on words (#1296)
+- Fix translation on search clear button (#1304)
+- Typo (#1306)
+- Use loading.value (#1307)
+- Fix button without loader (#1308)
+- Fix view path for robots.txt (#1310)
+- Fix console warnings & errors (#1315)
+- Prioritize core for Rapidez namespace (#1318)
+- Add message for .env changes in the install (#1319)
+- Fixed recursion caused by view hint reordering (#1321)
+- Fix v-else (#1317)
+- 
+
 ## [5.2.0](https://github.com/rapidez/core/releases/tag/5.2.0) - 2026-05-26
 
 ### Changed

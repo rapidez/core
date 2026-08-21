@@ -1,7 +1,7 @@
 @slots(['content', 'label', 'icon'])
 @props(['canToggleShowMore' => false])
 
-<x-rapidez::accordion open class="border-t" :$attributes :$icon>
+<x-rapidez::accordion v-bind:open="!window.config.collapsed_attributes?.includes(filter?.code?.replace('super_', '')) || items.some(item => item.isRefined)" class="border-t" :$attributes :$icon>
     <x-slot:label>
         @slotdefault('label')
             @{{ filter?.name?.replace('_', ' ') }}

@@ -24,8 +24,8 @@ trait HasSuperAttributes
             config('rapidez.models.super_attribute'),
             'product_id',
         )
-            ->orderBy('eav_attribute.attribute_code')
-            ->orderBy('catalog_product_super_attribute.position');
+            ->orderBy('catalog_product_super_attribute.position')
+            ->orderBy('eav_attribute.attribute_code');
     }
 
     public function superAttributeValues(): Attribute

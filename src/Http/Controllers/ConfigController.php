@@ -50,6 +50,7 @@ class ConfigController
             'filterable_attributes'        => $this->getFilterableAttributes(),
             'fragments'                    => $this->getGraphqlQueryFragments(),
             'max_category_level'           => $this->getMaxCategoryLevel(),
+            'category_attributes'          => collect()->range(1, $this->getMaxCategoryLevel())->map(fn ($level) => 'category_lvl' . $level)->toArray(),
             'queries'                      => $this->getGraphqlQueries(),
             'searchkit'                    => $this->getSearchkitConfig(),
             'show_customer_address_fields' => $this->getCustomerAddressFields(),
@@ -66,6 +67,8 @@ class ConfigController
             'street_lines'         => Rapidez::config('customer/address/street_lines', 2),
             'show_swatches'        => (bool) Rapidez::config('catalog/frontend/show_swatches_in_product_list'),
             'show_tax'             => in_array(Rapidez::config('tax/display/type', 1), [2, 3]),
+            // Compadre config data
+            'collapsed_attributes' => explode(',', Rapidez::config('rapidez/catalog/collapsed_attributes', '')),
         ];
     }
 

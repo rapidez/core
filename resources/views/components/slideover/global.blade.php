@@ -13,10 +13,9 @@ Standard usage may look like this:
 ```
 --}}
 
-@props(['title', 'position' => 'left'])
 @slots(['label'])
 
-<global-slideover title="{{ $title }}" position="{{ $position }}" v-slot="slideover">
+<global-slideover {{ $attributes->merge(['position' => 'left']) }} v-slot="slideover">
     <div>
         <label {{ $label->attributes->class('global-slideover-label cursor-pointer') }} v-on:click="slideover.open">
             {{ $label }}

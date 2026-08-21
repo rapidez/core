@@ -40,13 +40,13 @@
                         <div class="mb-2 border-t pt-5 text-lg font-bold">@lang('Specifications')</div>
                         <dl class="flex flex-col text-muted *:rounded-sm *:p-2 *:odd:bg *:odd:font-semibold *:odd:text *:even:pl-4">
                             <dt>ID</dt>
-                            <dd>{{ $product->entity_id }}</dd>
+                            <dd data-attribute="id">{{ $product->entity_id }}</dd>
                             <dt>SKU</dt>
-                            <dd>{{ $product->sku }}</dd>
+                            <dd data-attribute="sku">{{ $product->sku }}</dd>
                             @foreach (\Rapidez\Core\Models\EavAttribute::getCachedCatalog()->where(fn ($attribute) => $attribute->is_visible_on_front) as $attribute)
                                 @if (($value = $product->label($attribute['attribute_code'])))
                                     <dt>{{ $attribute['frontend_label'] }}</dt>
-                                    <dd>{!! $value !!}</dd>
+                                    <dd data-attribute="{{ $attribute['attribute_code'] }}">{!! $value !!}</dd>
                                 @endif
                             @endforeach
                         </dl>
@@ -62,20 +62,22 @@
         </div>
     @endif
 
-    @if ($product->relationProducts->count() || $product->upsells->count())
-        <div class="container flex flex-col gap-5 mt-14">
+    <div class="container has-[*]:flex hidden flex-col gap-5  mt-14">
+        @if (count($ids = $product->relationProducts->pluck('linked_product_id')))
             <x-rapidez::productlist
                 title="Related products"
                 field="entity_id"
-                :value="$product->relationProducts->pluck('linked_product_id')"
+                :value="$ids"
             />
+        @endif
+        @if (count($ids = $product->upsells->pluck('linked_product_id')))
             <x-rapidez::productlist
                 title="We found other products you might like!"
                 field="entity_id"
-                :value="$product->upsells->pluck('linked_product_id')"
+                :value="$ids"
             />
-        </div>
-    @endif
+        @endif
+    </div>
 
     @include('rapidez::product.partials.widget')
 @endsection
