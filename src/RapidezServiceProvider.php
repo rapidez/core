@@ -3,7 +3,6 @@
 namespace Rapidez\Core;
 
 use BladeUI\Icons\Factory;
-use Exception;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Http\Kernel;
@@ -241,9 +240,9 @@ class RapidezServiceProvider extends ServiceProvider
 
         Blade::directive('turboframe', function (string $frame) {
             return "<?php
-\$viewPath = config('rapidez.frontend.turbo_frames')[$frame] ?? null;
+\$viewPath = config('rapidez.frontend.turbo_frames')[{$frame}] ?? null;
 if (\$viewPath) { echo \$__env->make('rapidez::turbo-frame', [...\Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']), 'frame' => {$frame}, 'viewPath' => \$viewPath, 'isRoute' => false])->render(); }
-elseif (!app()->environment('production')) { echo 'Turbo frame \"' . $frame .'\" not found'; }
+elseif (!app()->environment('production')) { echo 'Turbo frame \"' . {$frame} .'\" not found'; }
 ?>";
         });
 
