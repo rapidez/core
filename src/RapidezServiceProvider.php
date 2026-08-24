@@ -240,12 +240,11 @@ class RapidezServiceProvider extends ServiceProvider
         });
 
         Blade::directive('turboframe', function (string $frame) {
-            $viewPath = config('rapidez.frontend.turbo-frames')[$frame] ?? null;
-            if (! $viewPath) {
-                throw new Exception('Turbo frame ' . $frame . ' not found.');
-            }
-
-            return "<?php echo \$__env->make('rapidez::turbo-frame', [...\Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']), 'frame' => '{$frame}', 'viewPath' => '{$viewPath}', 'isRoute' => false])->render(); ?>";
+            return "<?php
+\$viewPath = config('rapidez.frontend.turbo_frames')[$frame] ?? null;
+if (\$viewPath) { echo \$__env->make('rapidez::turbo-frame', [...\Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']), 'frame' => {$frame}, 'viewPath' => \$viewPath, 'isRoute' => false])->render(); }
+elseif (!app()->environment('production')) { echo 'Turbo frame \"' . $frame .'\" not found'; }
+?>";
         });
 
         Blade::if('storecode', function ($value) {

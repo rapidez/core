@@ -98,7 +98,7 @@ return [
 
     // This array should contain any turbo frames with their respective views.
     // These should then be used by using @turboframe('frame-name')
-    'turbo-frames' => [
+    'turbo_frames' => [
         // 'frame-name' => 'view-path',
     ],
 ];
