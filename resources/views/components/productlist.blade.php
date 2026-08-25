@@ -11,7 +11,7 @@ Examples:
 
 @if (!is_iterable($value) || count($value))
     <lazy v-slot="{ intersected }">
-        @if (!is_iterable($value)) <template v-if="{{ $value }}.length"> @endif
+        @if (is_string($value)) <template v-if="{{ $value }}.length"> @endif
             <listing
                 {{ $attributes }}
                 v-if="intersected"
@@ -52,6 +52,6 @@ Examples:
                     </ais-instant-search>
                 </div>
             </listing>
-        @if (!is_iterable($value)) </template> @endif
+        @if (is_string($value)) </template> @endif
     </lazy>
 @endif
