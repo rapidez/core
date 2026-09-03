@@ -33,7 +33,7 @@
                             @include('rapidez::checkout.steps.shipping-method')
                         </template>
 
-                        <x-rapidez::button.conversion type="submit" data-testid="continue" class="self-start" loader>
+                        <x-rapidez::button.conversion type="submit" data-testid="continue" class="self-start" loader v-on:mousedown.prevent="{{-- Do not remove, this prevents requiring double click for the submit action --}}">
                             @lang('Next')
                         </x-rapidez::button.conversion>
                     </form>
