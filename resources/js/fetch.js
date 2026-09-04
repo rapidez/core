@@ -177,7 +177,7 @@ export const magentoGraphQL = (window.magentoGraphQL = async (
             })
 
             throw new GraphQLError(data.errors, responseClone)
-        } else if (cartErrors.length) {
+        } else if (cartErrors.length && options.retryOnCartError) {
             // Get a new cart and redo the query with updated cart id
             await fetchCart()
             window.Notify(window.config.translations.errors.cart_expired, 'warning')
