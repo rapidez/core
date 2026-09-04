@@ -42,7 +42,7 @@ trait HasSuperAttributes
                     ->map(fn ($children, $value) => (object) [
                         'children' => $children->pluck('entity_id'),
                         'value'    => $value,
-                        'label'    => $children->first()->label,
+                        'label'    => $children->first()?->label,
                     ]),
             ])
         )->shouldCache();
