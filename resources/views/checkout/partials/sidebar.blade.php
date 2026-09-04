@@ -66,8 +66,8 @@
                 <small class="text-muted">@{{ cart.value.shipping_addresses[0].selected_shipping_method.carrier_title }} - @{{ cart.value.shipping_addresses[0].selected_shipping_method.method_title }}</small>
             </dt>
             <dd>
-                <template v-if="showTax">@{{ window.price(cart.value.shipping_addresses?.[0]?.selected_shipping_method.price_incl_tax.value) }}</template>
-                <template v-else>@{{ window.price(cart.value.shipping_addresses?.[0]?.selected_shipping_method.price_excl_tax.value) }}</template>
+                <template v-if="showTax">@{{ price(cart.value.shipping_addresses[0].selected_shipping_method.price_incl_tax.value) }}</template>
+                <template v-else>@{{ price(cart.value.shipping_addresses[0].selected_shipping_method.price_excl_tax.value) }}</template>
             </dd>
         </div>
         <div v-for="discount in cart.value.prices.discounts" class="border-t pt-3 mt-3">
