@@ -37,12 +37,13 @@ trait HasSuperAttributes
                     ->mapWithKeys(fn ($child) => [
                         $child->entity_id => $child->getCustomAttribute($attribute->attribute_code),
                     ])
+                    ->filter()
                     ->sortBy('sort_order')
                     ->groupBy('rawValue')
                     ->map(fn ($children, $value) => (object) [
                         'children' => $children->pluck('entity_id'),
                         'value'    => $value,
-                        'label'    => $children->first()?->label,
+                        'label'    => $children->first()->label,
                     ]),
             ])
         )->shouldCache();
