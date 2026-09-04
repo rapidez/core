@@ -32,8 +32,9 @@ export const on = (window.$on = (event, callback, options = {}) => {
     }
 
     if (options.autoRemove) {
-        useEventListener(document, event, callbackFn)
+        return useEventListener(document, event, callbackFn)
     } else {
         document.addEventListener(event, callbackFn)
+        return () => document.removeEventListener(event, callbackFn)
     }
 })
