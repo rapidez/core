@@ -100,7 +100,7 @@ export default {
 
     created() {
         this.initialVariables = JSON.parse(JSON.stringify(this.variables))
-        this.data = this.variables
+        this.data = JSON.parse(JSON.stringify(this.variables))
         this.redirectUrl = this.redirect
 
         if (this.debounce) {
