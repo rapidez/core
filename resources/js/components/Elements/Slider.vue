@@ -208,7 +208,7 @@ export default {
             if (!this.mounted) {
                 return 0
             }
-            
+
             if (this.childSpan <= 0) {
                 return 0
             }
