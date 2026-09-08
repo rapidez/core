@@ -209,6 +209,10 @@ export default {
                 return 0
             }
 
+            if (this.childSpan <= 0) {
+                return 0
+            }
+
             return Math.round(this.sliderSpan / this.childSpan)
         },
         slidesTotal() {
