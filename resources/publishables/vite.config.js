@@ -18,8 +18,8 @@ export default defineConfig({
     resolve: {
         preserveSymlinks: true,
         alias: {
-            '@': path.resolve(__dirname, './resources/js'),
-            Vendor: path.resolve(__dirname, './vendor'),
+            '@': path.resolve(import.meta.dirname, './resources/js'),
+            Vendor: path.resolve(import.meta.dirname, './vendor'),
             vue: 'vue/dist/vue.esm-bundler.js',
         },
     },
