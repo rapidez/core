@@ -88,11 +88,6 @@ class AbstractAttribute extends Model
         });
     }
 
-    protected function sortOrder(): Attribute
-    {
-        return Attribute::get(fn () => $this->options[$this->rawValue]->sort_order ?? null);
-    }
-
     public function __toString(): string
     {
         return (string) $this->label;

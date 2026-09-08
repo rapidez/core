@@ -1,5 +1,7 @@
 import { useEventListener } from '@vueuse/core'
 
+let autoRemoveCleanupFunctions = []
+
 // Replace old window.app.$emit and window.app.$on
 export const emit = (window.$emit = (event, ...args) => {
     return document.dispatchEvent(new CustomEvent(event, { detail: { args: args } }))
@@ -32,8 +34,13 @@ export const on = (window.$on = (event, callback, options = {}) => {
     }
 
     if (options.autoRemove) {
-        useEventListener(document, event, callbackFn)
+        autoRemoveCleanupFunctions.push(useEventListener(document, event, callbackFn))
     } else {
         document.addEventListener(event, callbackFn)
     }
+})
+
+window.addEventListener('turbo:before-cache', () => {
+    autoRemoveCleanupFunctions.forEach((cleanup) => cleanup())
+    autoRemoveCleanupFunctions = []
 })
