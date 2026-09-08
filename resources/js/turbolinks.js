@@ -8,3 +8,9 @@ document.addEventListener('turbo:before-visit', function (e) {
         Turbo?.navigator?.history?.replace(window.location)
     }
 })
+
+document.addEventListener('turbo:visit', () => {
+    // Clean up old config.
+    delete window.config.product
+    delete window.config.category
+})
