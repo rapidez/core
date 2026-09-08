@@ -1,6 +1,39 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.5.0...5.5.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.6.0...5.6.0)
+## [5.6.0](https://github.com/rapidez/core/releases/tag/5.6.0) - 2026-09-08
+
+### Added
+
+- Vite 8 support (#1353)
+- Info for AI (#1356)
+- Turbo frame caching support (#1329)
+
+### Changed
+
+- Hide irrelevant filters when they barely return products (#1355)
+- Lock turbo version (#1372)
+- Remove default loading state from input (#1376)
+
+### Fixed
+
+- Clean up leftover product and category page config on navigation (#1357)
+- Fixed productlist causing errors when value is false (#1361)
+- Removed old selectAttributes code (#1363)
+- Actually listen to retryOnCartError (#1365)
+- Prevent breaking indexer on missing data on super attribute (#1373)
+- Use useLocalStorage for popup (#1367)
+- Fixed double click submit before next (#1370)
+- Fixed attribute option sort order (#1368)
+- Fix multiselect setting incorrect type mapping (#1364)
+- Fixed Vite 8 warning (#1371)
+- Fix tax on shipping (#1374)
+- Preload instantsearch-components on listing pages (#1375)
+- Update screenshot (#1359)
+- Fix double html escaping (#1380)
+- Removed reactivity between data and variables (#1369)
+- Run cleanup functions on before-cache (#1360)
+
 ## [5.5.0](https://github.com/rapidez/core/releases/tag/5.5.0) - 2026-08-11
 
 ### Added
