@@ -4,6 +4,7 @@ namespace Rapidez\Core\Models\Traits\Product;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 use Rapidez\Core\Models\Traits\HasToArrayData;
 
 trait HasSuperAttributes
@@ -30,7 +31,7 @@ trait HasSuperAttributes
 
     public function superAttributeValues(): Attribute
     {
-        return Attribute::get(fn () => $this->superAttributes
+        return Attribute::get(fn (): Collection => $this->superAttributes
             ->sortBy('position')
             ->mapWithKeys(fn ($attribute) => [
                 $attribute->attribute_code => $this->children
@@ -52,8 +53,9 @@ trait HasSuperAttributes
     public function superAttributesToArrayData(): array
     {
         return $this->superAttributeValues
-            ->mapWithKeys(fn ($values, $attribute) => [
+            ->mapWithKeys(fn (Collection $values, $attribute) => [
                 "super_{$attribute}"        => $values->pluck('value'),
+                "super_{$attribute}_labels" => $values->pluck('label')->filter(),
                 "super_{$attribute}_values" => $values,
             ])
             ->toArray();
@@ -65,6 +67,7 @@ trait HasSuperAttributes
             ->pluck('attribute_code')->map(fn ($attribute) => [
                 $attribute,
                 "super_{$attribute}",
+                "super_{$attribute}_labels",
                 "super_{$attribute}_values",
             ])
             ->flatten()

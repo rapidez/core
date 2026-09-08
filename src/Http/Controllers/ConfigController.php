@@ -117,7 +117,7 @@ class ConfigController
         return collect($attributes)
             ->map(fn ($attribute) => [
                 ...$attribute,
-                'code'      => ($attribute['prefix'] ?? '') . $attribute['code'],
+                'code'      => ($attribute['prefix'] ?? '') . $attribute['code'] . ($attribute['super'] ? '_labels' : ''),
                 'base_code' => $attribute['code'],
             ])
             ->sortBy('position')
