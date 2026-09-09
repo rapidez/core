@@ -5,6 +5,7 @@ namespace Rapidez\Core\Commands;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
+use Rapidez\Core\Actions\GetLatestIndexTimestamp;
 use Rapidez\Core\Events\IndexAfterEvent;
 use Rapidez\Core\Events\IndexBeforeEvent;
 use Rapidez\Core\Facades\Rapidez;
@@ -23,6 +24,13 @@ class UpdateIndexCommand extends Command
         if (! $this->getLatestIndexDate()) {
             $this->error(__('No latest index date has been found yet, please run php artisan rapidez:index first.'));
 
+            return;
+        }
+
+        $latest = resolve(GetLatestIndexTimestamp::class)->get();
+
+        if ($latest <= $this->getLatestIndexDate()) {
+            $this->info(__('The latest index date has not changed.'));
             return;
         }
 
