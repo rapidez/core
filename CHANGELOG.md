@@ -1,6 +1,19 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/...3.11.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/...3.12.0)
+## [3.12.0](https://github.com/rapidez/core/releases/tag/3.12.0) - 2026-09-09
+
+### Added
+
+- Install template diffs plugin (#1332)
+
+### Fixed
+
+- Make query count health check non-breaking (#1351)
+- Make sure no NaN comes out of the calculation (#1378)
+
+
+
 ## [3.11.0](https://github.com/rapidez/core/releases/tag/3.11.0) - 2026-01-06
 
 ### Changed
