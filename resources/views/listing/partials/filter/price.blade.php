@@ -4,7 +4,7 @@
     class="relative -mx-1 -mt-1"
 >
     <template v-slot="{ currentRefinement, range, canRefine, refine, sendEvent }">
-        <div class="overflow-clip" v-show="range.max">
+        <div class="overflow-clip" v-show="range.max && listingSlotProps.isRelevantRange(filter.code)">
             <x-rapidez::accordion.filter class="details-content:overflow-visible px-1 py-1">
                 <x-slot:content>
                     <div class="flex flex-col">

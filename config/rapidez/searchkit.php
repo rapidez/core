@@ -59,6 +59,11 @@ return [
         ['attribute' => 'visibility', 'field' => 'visibility', 'type' => 'numeric'],
     ],
 
+    // The minimum percentage of products that should be available for a filter to be shown.
+    // For example, if you have 100 products in the listing and a filter has only 5 products available,
+    // the filter will not be shown because it is only available for 5% of the products.
+    'min_filter_product_percentage' => 10,
+
     // Additional sorting options to be added to the product listings
     // Given directions can only be an array of 'asc' and/or 'desc'
     // Order shown here will be the order shown in the dropdown (including the order of the given directions!)

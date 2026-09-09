@@ -21,6 +21,6 @@ class SalesOrderItem extends Model
 
     public function product(): BelongsTo
     {
-        return $this->belongsTo(config('rapidez.models.product'), 'sku', 'sku')->selectAttributes(config('rapidez.frontend.cart_attributes'));
+        return $this->belongsTo(config('rapidez.models.product'), 'sku', 'sku');
     }
 }

@@ -194,7 +194,7 @@ trait Searchable
                     return false;
                 }
 
-                if ($attribute['input'] === 'select') {
+                if ($attribute['input'] === 'select' || $attribute['input'] === 'multiselect') {
                     // Select means that while the type may be an int, the data won't be an int.
                     return false;
                 }

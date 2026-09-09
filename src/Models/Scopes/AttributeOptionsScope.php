@@ -16,6 +16,7 @@ class AttributeOptionsScope implements Scope
             ->select([
                 'eav_attribute.*',
                 'catalog_eav_attribute.*',
+                DB::raw('MIN(eav_attribute_option.sort_order) AS sort_order'),
                 $model->qualifyColumn('*'),
                 DB::raw('IF(COUNT(eav_attribute_option_value.value) = 0, NULL, CAST(CONCAT(\'[\', GROUP_CONCAT( JSON_QUOTE(eav_attribute_option_value.value) ORDER BY eav_attribute_option.sort_order ASC), \']\') AS JSON)) AS option_values'),
             ])
