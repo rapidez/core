@@ -27,10 +27,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - magento-version: 2.4.7-p8
+          - magento-version: 2.4.7-p9
             magento-php-version: php83-fpm
             rapidez-php-version: 8.3
-          - magento-version: 2.4.8-p3
+          - magento-version: 2.4.8-p4
             magento-php-version: php84-fpm
             rapidez-php-version: 8.4
             screenshots: true
@@ -41,7 +41,7 @@ jobs:
         env:
           URL: http://localhost:1234/
           FLAT_TABLES: true
-          CUSTOM_ENTRYPOINT_COMMAND: "php bin/magento encryption:key:change -k 5AM3SD5SkwT8iwIxL6L1q8XQhzK3wk51; magerun2 config:store:set system/smtp/disable 1; magerun2 config:store:set checkout/options/enable_guest_checkout_login 1; magerun2 config:store:delete design/head/includes"
+          CUSTOM_ENTRYPOINT_COMMAND: 'php bin/magento encryption:key:change -k 5AM3SD5SkwT8iwIxL6L1q8XQhzK3wk51; magerun2 config:store:set system/smtp/disable 1; magerun2 config:store:set checkout/options/enable_guest_checkout_login 1; magerun2 config:store:delete design/head/includes'
         ports:
           - 3307:3306
           - 1234:80

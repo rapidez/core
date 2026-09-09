@@ -1,9 +1,10 @@
 <?php
 
 return [
+    'catalog/frontend/default_sort_by'                    => 'position',
     'catalog/frontend/flat_catalog_category'              => '0',
-    'catalog/frontend/grid_per_page_values'               => '12,24,36',
     'catalog/frontend/flat_catalog_product'               => '0',
+    'catalog/frontend/grid_per_page_values'               => '12,24,36',
     'catalog/frontend/grid_per_page'                      => '12',
     'catalog/frontend/show_swatches_in_product_list'      => '1',
     'catalog/recently_products/viewed_count'              => '5',

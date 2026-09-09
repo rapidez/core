@@ -1,5 +1,16 @@
+import { pushNotification } from './stores/useNotifications'
+
 window.debug = import.meta.env.VITE_DEBUG == 'true'
-window.Notify = (message, type = 'info', params = [], link = null) => window.app.$emit('notification-message', message, type, params, link)
+window.Notify = (message, type = 'info', params = [], link = null) => {
+    pushNotification({
+        message: message,
+        type: type,
+        params: params,
+        link: link,
+        timestamp: +new Date(),
+    })
+}
+
 if (!window.process) {
     // Workaround for process missing, if data is actually needed from here you should apply the following polyfill.
     // https://stackoverflow.com/questions/72221740/how-do-i-polyfill-the-process-node-module-in-the-vite-dev-server
@@ -8,7 +19,7 @@ if (!window.process) {
 
 import './polyfills'
 import { useLocalStorage, StorageSerializers, useScrollLock } from '@vueuse/core'
-import useOrder from './stores/useOrder.js'
+import useOrder from './stores/useOrder'
 import useCart from './stores/useCart'
 import useUser from './stores/useUser'
 import useMask from './stores/useMask'
@@ -20,7 +31,7 @@ import './cookies'
 import './callbacks'
 import './vue-components'
 import './instantsearch'
-import { fetchCount } from './stores/useFetches.js'
+import { fetchCount } from './stores/useFetches'
 ;(() => import('./turbolinks'))()
 
 if (import.meta.env.VITE_DEBUG === 'true') {
@@ -43,11 +54,19 @@ if (import.meta.env.VITE_DEBUG === 'true') {
 }
 
 let booting = false
-function init() {
+async function init() {
     if (booting || document.body.contains(window.app.$el)) {
         return
     }
     booting = true
+
+    for (let i = 0; i < 20; i++) {
+        // Wait until config is available, or has thrown an error, for a max of 1s
+        if (window.config.store || window.configError) {
+            break
+        }
+        await new Promise((resolve) => setTimeout(resolve, 50))
+    }
 
     // https://vuejs.org/api/application.html#app-config-performance
     Vue.config.performance = import.meta.env.VITE_PERFORMANCE == 'true'
@@ -56,7 +75,7 @@ function init() {
 
     // Check if the localstorage needs a flush.
     let cachekey = useLocalStorage('cachekey')
-    if (cachekey.value !== window.config.cachekey) {
+    if (window.config.cachekey && cachekey.value !== window.config.cachekey) {
         window.config.flushable_localstorage_keys.forEach((key) => {
             useLocalStorage(key).value = null
         })
@@ -99,6 +118,7 @@ function init() {
                 mask: useMask(),
                 showTax: window.config.show_tax,
                 scrollLock: useScrollLock(document.body),
+                configError: false,
             },
             methods: {
                 search(value) {
@@ -129,7 +149,7 @@ function init() {
                     }
 
                     let url = new URL(imagePath)
-                    url = url.pathname.replace('/media', '')
+                    url = url.pathname.replace('/media', '').replace('/.renditions/', '/')
 
                     return window.url(`/storage/${store}/resizes/${size}/magento${url}`)
                 },
@@ -168,8 +188,16 @@ function init() {
                 loadingCount: function (count) {
                     window.app.$data.loading = count > 0
                 },
+
+                configError: function (newValue) {
+                    if (newValue === true) {
+                        throw new Error('Config.js failed to load due to an error.')
+                    }
+                },
             },
             mounted() {
+                this.configError = window.configError ?? false
+
                 setTimeout(() => {
                     const event = new CustomEvent('vue:mounted', { detail: { vue: window.app } })
                     document.dispatchEvent(event)

@@ -1,6 +1,131 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/...4.9.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.14.0...4.14.0)
+## [4.14.0](https://github.com/rapidez/core/releases/tag/4.14.0) - 2026-09-09
+
+### Added
+
+- Added weee_tax models (#1325)
+
+### Fixed
+
+- Fix category name being empty in indexer (#1339)
+- Make query count health check non-breaking (#1352)
+- Clean up leftover product and category page config on navigation (#1358)
+- Actually listen to retryOnCartError (#1366)
+- Prevent logout flow being triggered when incorrect credentials are used (#1054)
+- Make sure no NaN comes out of the calculation (#1379)
+- Get latest timestamp from indexer (#1382)
+
+## [4.13.0](https://github.com/rapidez/core/releases/tag/4.13.0) - 2026-07-14
+
+### Added
+
+- Install template diffs plugin (#1331)
+
+### Changed
+
+- Add useNotifications store for notifications (#1313)
+
+### Fixed
+
+- Add fallback to error.path (#1298)
+- Always trim category name (#1303)
+- Fix translation on search clear button (#1305)
+
+## [4.12.0](https://github.com/rapidez/core/releases/tag/4.12.0) - 2026-05-26
+
+### Changed
+
+- Use default_sort_by from magento (#1291)
+- Changed button tags to anchor tags (#1254)
+
+### Fixed
+
+- Fix sorting of swatches & dropdown (#1229)
+- Don't show products without categories (#1231)
+- Use default locale while config is not loaded yet (#1235)
+- Don't show hits too early (#1239)
+- Bump playwright magento versions (#1252)
+- Added error handling for config.js (#1262)
+- Fixed track events being duplicated (#1260)
+- Trim category name before indexing it (#1256)
+- Fixed media on selected child (#1240)
+- Fixed email is not valid errors (#1072)
+- Use array.from instead of toArray on entries (#1265)
+- Fallback for container not existing (#1271)
+- Auto retry requests where the cart has expired (#1236)
+- Make rewrites store-specific again (#1279)
+- Fix password input toggle (#1281)
+- Add has_options to elastic data (#1282)
+- Make config props defaults lazy (#1284)
+- Always use score field for autocomplete sorting (#1295)
+
+## [4.11.0](https://github.com/rapidez/core/releases/tag/4.11.0) - 2026-03-10
+
+### Changed
+
+- Get popular products from product views instead of reviews (#1172)
+
+### Fixed
+
+- Change images to media on children (#1212)
+- Product children media query fix (#1213)
+- Fix scrollend condition for slider bounds (#1215)
+- Sort media on child product images (#1217)
+- Use data_get for media->first()->image (#1218)
+
+## [4.10.2](https://github.com/rapidez/core/releases/tag/4.10.2) - 2026-02-24
+
+### Fixed
+
+- Remove .renditions from media url (#1178)
+- Wait max for 1s for config to load before init (#1180)
+- Check for nullish address (#1183)
+- Numeric attributes fix (#1137)
+- Empty media error fix (#1191)
+- Validate search terms (#1186)
+- Fix response typehint in boot (#1194)
+- Fix isExpired method to use correct context (#1198)
+- Fix ordering of src and v-bind:src (#1199)
+- Fixed issues during rapidez:install command (#1207)
+
+## [4.10.1](https://github.com/rapidez/core/releases/tag/4.10.1) - 2026-01-23
+
+### Fixed
+
+- Expose position column of super attributes (#1166)
+- Redirect with attributes on addtocart (#1161)
+
+## [4.10.0](https://github.com/rapidez/core/releases/tag/4.10.0) - 2026-01-21
+
+### Added
+
+- Uncacheable middleware (#1079)
+- Implemented cache tags to prevent clearing all caches every reindex (#1104)
+- Shipping methods error messages (#1107)
+- Fullscreen search preparations (#1139)
+- Product media video support (#1129)
+
+### Changed
+
+- Playwright reports in Cloudflare R2 (#1148)
+
+### Fixed
+
+- Use 4.x branch for Playwright tests (#1102)
+- Fix playwright tests (#1114)
+- Fixed duplicate entry for search queries (#1108)
+- Prevent login trigger when a new tab is opened (#1126)
+- Check for cart prices (#1131)
+- Screenshots update (#1140)
+- Disabled shipping method styling (#1145)
+- Mask the copyright year (#1150)
+- Screenshot update (#1151)
+- Playwright fixes from master (7437412)
+- Playwright run CI tests in parallel (#1160)
+- Playwright add to cart fix (#1165)
+
 ## [4.9.0](https://github.com/rapidez/core/releases/tag/4.9.0) - 2025-12-02
 
 ### Added

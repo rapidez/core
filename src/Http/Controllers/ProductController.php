@@ -2,7 +2,9 @@
 
 namespace Rapidez\Core\Http\Controllers;
 
+use Illuminate\Support\Facades\View;
 use Rapidez\Core\Events\ProductViewEvent;
+use Rapidez\Core\Facades\Rapidez;
 use TorMorten\Eventy\Facades\Eventy;
 
 class ProductController
@@ -52,7 +54,9 @@ class ProductController
             return count($selectedOptions) && collect($selectedOptions)->every(fn ($value, $code) => $child->{$code} == $value);
         }) ?? $product;
 
-        ProductViewEvent::dispatch($product);
+        if (Rapidez::config('reports/options/enabled') && Rapidez::config('reports/options/product_view_enabled')) {
+            View::composer('rapidez::layouts.app', fn ($view) => $view->getFactory()->startPush('foot', view('rapidez::product.partials.track')));
+        }
 
         config(['frontend.product' => $product->only($attributes)]);
 
@@ -61,5 +65,15 @@ class ProductController
         return $response
             ->setEtag(md5($response->getContent() ?? ''))
             ->setLastModified($product->updated_at);
+    }
+
+    public function track(int $productId)
+    {
+        $productModel = config('rapidez.models.product');
+
+        /** @var \Rapidez\Core\Models\Product $product */
+        $product = $productModel::findOrFail($productId);
+
+        ProductViewEvent::dispatch($product);
     }
 }

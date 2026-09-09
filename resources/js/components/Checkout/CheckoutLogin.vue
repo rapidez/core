@@ -1,11 +1,11 @@
 <script>
+import { SessionExpired } from '../../fetch'
 import { cart, setGuestEmailOnCart } from '../../stores/useCart'
 import { isEmailAvailable, login, register, user } from '../../stores/useUser'
 import { useDebounceFn } from '@vueuse/core'
 
 const debouncePromise = useDebounceFn(async function (self) {
     self.isEmailAvailable = await isEmailAvailable(self.email || '')
-    await self.handleGuest()
 }, 300)
 
 export default {
@@ -60,7 +60,7 @@ export default {
                 return await this.handleLogin()
             }
 
-            if (this.createAccount) {
+            if (this.createAccount && this.password) {
                 return await this.handleRegister()
             }
 
@@ -70,7 +70,15 @@ export default {
         async handleLogin() {
             return await login(this.email, this.password)
                 .then(() => true)
-                .catch((error) => {
+                .catch(async (error) => {
+                    if (error instanceof SessionExpired) {
+                        let data = await error.response.json()
+                        if (data?.errors?.[0]?.message) {
+                            Notify(data.errors[0].message, 'error')
+                            return false
+                        }
+                    }
+
                     if (error.message) {
                         Notify(error.message, 'error')
                     }
@@ -79,6 +87,9 @@ export default {
         },
 
         async handleRegister() {
+            if (!this.email || !this.firstname || !this.lastname || !this.password) {
+                return false
+            }
             if (this.password !== this.password_repeat) {
                 Notify(window.config.translations.account.password_mismatch, 'warning')
 

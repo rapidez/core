@@ -12,7 +12,7 @@
             v-on:click="refine('')"
             class="absolute top-1/2 -translate-y-1/2 right-4 transition-opacity opacity-100 peer-placeholder-shown:pointer-events-none peer-placeholder-shown:opacity-0"
             type="reset"
-            title="__('Clear the search query')"
+            title="@lang('Clear the search query')"
             v-cloak
         >
             <x-heroicon-s-x-mark class="size-5" />

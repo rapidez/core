@@ -3,10 +3,9 @@
         v-if="intersected"
         v-bind:query="() => [{
             function_score: {
-                script_score: {
-                    script: {
-                        source: `(doc['reviews_score'].empty ? 0 : doc['reviews_score'].value) * (1 - 1 / Math.max(1, doc['reviews_count'].empty ? 0 : doc['reviews_count'].value))`,
-                    },
+                field_value_factor: {
+                    field: 'popularity',
+                    missing: 0,
                 },
             },
         }]"

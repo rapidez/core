@@ -85,7 +85,7 @@ export default {
     methods: {
         async add() {
             if (this.shouldRedirectToProduct) {
-                Turbo.visit(window.url(this.product.url))
+                Turbo.visit(window.url(this.productUrl))
                 return
             }
 
@@ -290,7 +290,7 @@ export default {
             await this.setOptionsFromValues(Object.fromEntries(options))
         },
         async setOptionsFromUrlParams() {
-            let options = new URLSearchParams(window.location.search).entries().toArray()
+            let options = Array.from(new URLSearchParams(window.location.search).entries())
             await this.setOptionsFromValues(this.optionsFromNamedOptions(options))
         },
         optionsFromNamedOptions(values) {

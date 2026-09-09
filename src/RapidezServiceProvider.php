@@ -7,7 +7,6 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
@@ -43,6 +42,7 @@ use Rapidez\Core\Listeners\ReportProductView;
 use Rapidez\Core\Listeners\UpdateLatestIndexDate;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use TorMorten\Eventy\Facades\Eventy;
 
@@ -378,7 +378,7 @@ class RapidezServiceProvider extends ServiceProvider
 
     protected function bootUncacheable(): static
     {
-        Eventy::addFilter('uncacheable.response', function (Response $response) {
+        Eventy::addFilter('uncacheable.response', function (SymfonyResponse $response) {
             $response->setPrivate();
 
             return $response;

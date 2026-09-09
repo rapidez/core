@@ -4,7 +4,9 @@ When Vue is loaded it takes over and all `v-cloak`'s show up.
 With `$breakpoints` you can control the amount of images.
 --}}
 
-@php($breakpoints = ['xl' => 7, 'lg' => 5, 'md' => 7, 'sm' => 5, 'xs' => 3])
+@php
+    $breakpoints = ['xl' => 7, 'lg' => 5, 'md' => 7, 'sm' => 5, 'xs' => 3];
+@endphp
 
 <div class="mt-3 flex gap-2">
     @for ($imageId = 0; $imageId < max($breakpoints); $imageId++)
@@ -31,10 +33,13 @@ With `$breakpoints` you can control the amount of images.
             <img
                 {{-- src should always be above v-bind:src --}}
                 @if ($imageId < count($selectedChild->media))
-                    @if ($selectedChild->media[$imageId]['media_type'] === 'external-video')
-                        src="{{ config('rapidez.media_url') }}/catalog/product{{ $selectedChild->media[$imageId]['image'] }}"
+                    @php
+                        $media = collect($selectedChild->media[$imageId]);
+                    @endphp
+                    @if ($media['media_type'] === 'external-video')
+                        src="{{ config('rapidez.media_url') }}/catalog/product{{ $media['image'] }}"
                     @else
-                        src="{{ url('/storage/'.config('rapidez.store').'/resizes/80x80/magento/catalog/product'.$selectedChild->media[$imageId]['image'].'.webp') }}"
+                        src="{{ url('/storage/'.config('rapidez.store').'/resizes/80x80/magento/catalog/product'.$media['image'].'.webp') }}"
                     @endif
                 @endif
                 v-bind:src="window.url(media[{{ $imageId }}].media_type === 'external-video' ? window.config.media_url + '/catalog/product' + media[{{ $imageId }}].image : '/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product' + media[{{ $imageId }}].image + '.webp')"                alt="{{ $product->name }}"

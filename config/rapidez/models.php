@@ -40,4 +40,5 @@ return [
     'sales_order_payment'       => Rapidez\Core\Models\SalesOrderPayment::class,
     'search_query'              => Rapidez\Core\Models\SearchQuery::class,
     'search_synonym'            => Rapidez\Core\Models\SearchSynonym::class,
+    'weee_tax'                  => Rapidez\Core\Models\WeeeTax::class,
 ];

@@ -125,13 +125,13 @@ export default {
         scroll(event) {
             this.position = this.vertical ? event.target.scrollTop : event.target.scrollLeft
             this.showLeft = this.loop || this.position
-            this.showRight = this.loop || this.container.offsetWidth + this.position < this.container.scrollWidth - 1
+            this.showRight = this.loop || this.container?.offsetWidth + this.position < this.container?.scrollWidth - 1
         },
         scrollend(event) {
             let scrollPosition = this.vertical ? event.target.scrollTop : event.target.scrollLeft
             if (scrollPosition < this.sliderStart) {
                 this.slider.scrollTo({ [this.vertical ? 'top' : 'left']: scrollPosition + this.sliderStart, behavior: 'instant' })
-            } else if (scrollPosition > this.sliderEnd) {
+            } else if (scrollPosition >= this.sliderEnd) {
                 this.slider.scrollTo({ [this.vertical ? 'top' : 'left']: scrollPosition - this.sliderStart, behavior: 'instant' })
             }
         },
@@ -154,8 +154,8 @@ export default {
             index = this.loop ? index + this.slides.length : index
 
             this.vertical
-                ? this.slider.scrollTo({ top: this.container.children[index]?.offsetTop, behavior: behavior })
-                : this.slider.scrollTo({ left: this.container.children[index]?.offsetLeft, behavior: behavior })
+                ? this.slider.scrollTo({ top: this.container?.children[index]?.offsetTop, behavior: behavior })
+                : this.slider.scrollTo({ left: this.container?.children[index]?.offsetLeft, behavior: behavior })
         },
         handleLoop() {
             requestAnimationFrame(() => {
@@ -176,12 +176,12 @@ export default {
                 let slide = this.childSpan == 0 ? 0 : this.currentSlide
 
                 this.childSpan = this.vertical
-                    ? (this.container.children[0]?.offsetHeight ?? this.container.offsetHeight)
-                    : (this.container.children[0]?.offsetWidth ?? this.container.offsetWidth)
+                    ? (this.container?.children[0]?.offsetHeight ?? this.container?.offsetHeight)
+                    : (this.container?.children[0]?.offsetWidth ?? this.container?.offsetWidth)
 
                 this.navigate(slide, 'instant')
 
-                this.sliderSpan = this.vertical ? this.container.offsetHeight : this.container.offsetWidth
+                this.sliderSpan = this.vertical ? this.container?.offsetHeight : this.container?.offsetWidth
             })
         },
     },
@@ -209,6 +209,10 @@ export default {
                 return 0
             }
 
+            if (this.childSpan <= 0) {
+                return 0
+            }
+
             return Math.round(this.sliderSpan / this.childSpan)
         },
         slidesTotal() {
@@ -219,6 +223,9 @@ export default {
             return (this.slides?.length ?? 1) - (this.loop ? 0 : this.slidesVisible - 1)
         },
         slides() {
+            if (!this.mounted || !this.container) {
+                return []
+            }
             return this.container.querySelectorAll(':scope > :not([data-clone=true])')
         },
         sliderStart() {

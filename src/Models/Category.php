@@ -23,7 +23,7 @@ class Category extends Model
         self::CREATED_AT => 'datetime',
     ];
 
-    protected $appends = ['url'];
+    protected $appends = ['url', 'name'];
 
     protected static function booting()
     {
@@ -70,6 +70,15 @@ class Category extends Model
         );
     }
 
+    protected function name(): Attribute
+    {
+        return Attribute::get(function (?string $value) {
+            $value ??= $this->getAttributeFromArray('name');
+
+            return trim($value ?? '');
+        });
+    }
+
     public function subcategories()
     {
         return $this->hasMany(config('rapidez.models.category'), 'parent_id', 'entity_id');
@@ -94,7 +103,6 @@ class Category extends Model
     {
         return $this
             ->hasMany(config('rapidez.models.rewrite'), 'entity_id', 'entity_id')
-            ->withoutGlobalScope('store')
             ->where('entity_type', 'category');
     }
 
