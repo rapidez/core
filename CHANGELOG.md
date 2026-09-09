@@ -1,6 +1,22 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/...4.13.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.14.0...4.14.0)
+## [4.14.0](https://github.com/rapidez/core/releases/tag/4.14.0) - 2026-09-09
+
+### Added
+
+- Added weee_tax models (#1325)
+
+### Fixed
+
+- Fix category name being empty in indexer (#1339)
+- Make query count health check non-breaking (#1352)
+- Clean up leftover product and category page config on navigation (#1358)
+- Actually listen to retryOnCartError (#1366)
+- Prevent logout flow being triggered when incorrect credentials are used (#1054)
+- Make sure no NaN comes out of the calculation (#1379)
+- Get latest timestamp from indexer (#1382)
+
 ## [4.13.0](https://github.com/rapidez/core/releases/tag/4.13.0) - 2026-07-14
 
 ### Added
