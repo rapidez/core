@@ -31,6 +31,7 @@ class UpdateIndexCommand extends Command
 
         if ($latest <= $this->getLatestIndexDate()) {
             $this->info(__('The latest index date has not changed.'));
+
             return;
         }
 
