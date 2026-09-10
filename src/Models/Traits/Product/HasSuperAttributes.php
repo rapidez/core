@@ -53,7 +53,7 @@ trait HasSuperAttributes
     {
         return $this->superAttributeValues
             ->mapWithKeys(fn ($values, $attribute) => [
-                "super_{$attribute}"        => $values->pluck('value'),
+                "super_{$attribute}"        => $values->pluck('value')->filter()->values(),
                 "super_{$attribute}_values" => $values,
             ])
             ->toArray();
