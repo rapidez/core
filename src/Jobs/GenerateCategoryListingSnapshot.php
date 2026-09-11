@@ -31,9 +31,7 @@ class GenerateCategoryListingSnapshot implements ShouldQueue
 
     public int $timeout = 60;
 
-    public function __construct(public int $categoryId)
-    {
-    }
+    public function __construct(public int $categoryId) {}
 
     public function handle(CategoryListingSnapshotStore $store): void
     {
