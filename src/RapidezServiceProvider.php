@@ -58,6 +58,7 @@ class RapidezServiceProvider extends ServiceProvider
         'frontend',
         'healthcheck',
         'jwt',
+        'listing_snapshot',
         'magento-defaults',
         'models',
         'routing',
