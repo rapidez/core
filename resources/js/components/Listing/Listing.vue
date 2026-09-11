@@ -61,6 +61,11 @@ export default {
         destroyed: false,
         utmFields: [],
         instantSearchInstance: null,
+        // Stays false until the first real results have rendered, so the listing
+        // can be kept hidden (rather than briefly showing an empty/no-results
+        // state) while the SSR snapshot is still covering for it - see
+        // `listingSlotProps.rendered` in resources/views/components/listing.blade.php.
+        rendered: false,
     }),
 
     render() {
@@ -135,7 +140,22 @@ export default {
                     this.instantSearchInstance = instantSearchInstance
                     return {
                         onStateChange: () => {},
-                        subscribe: () => {},
+                        // Tells the SSR listing snapshot (resources/views/components/listing.blade.php)
+                        // it can hand over: it's kept around until real results have actually rendered,
+                        // rather than as soon as Vue mounts, to avoid a flash of empty content between the two.
+                        subscribe: () => {
+                            instantSearchInstance.once('render', () => {
+                                this.rendered = true
+
+                                // Wait for Vue to have actually applied the `rendered` change (i.e. the
+                                // real listing becoming visible) before swapping the snapshot out, so
+                                // the two DOM changes land in the same paint instead of the snapshot
+                                // disappearing a frame before the real listing appears underneath it.
+                                this.$nextTick(() => {
+                                    document.dispatchEvent(new CustomEvent('listing:rendered'))
+                                })
+                            })
+                        },
                         unsubscribe: () => {},
                     }
                 },
