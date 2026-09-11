@@ -144,7 +144,18 @@ export default {
                         // it can hand over: it's kept around until real results have actually rendered,
                         // rather than as soon as Vue mounts, to avoid a flash of empty content between the two.
                         subscribe: () => {
-                            instantSearchInstance.once('render', () => {
+                            // InstantSearch emits 'render' as soon as a search is *kicked off* (before
+                            // the request resolves), not just once results are back - on a fast
+                            // connection the real one follows near-instantly so it's easy to miss, but
+                            // on a slow one this would swap in an empty/loading state well before the
+                            // real results arrive. `helper.lastResults` is only set once a response has
+                            // actually been processed, so wait for a render pass that has it.
+                            const onRender = () => {
+                                if (!instantSearchInstance.helper?.lastResults) {
+                                    return
+                                }
+
+                                instantSearchInstance.removeListener('render', onRender)
                                 this.rendered = true
 
                                 // Wait for Vue to have actually applied the `rendered` change (i.e. the
