@@ -1,8 +1,13 @@
 import { defineAsyncComponent } from 'vue'
 import { addQuery } from './stores/useSearchHistory'
 
-const instantsearchComponents = import('./instantsearch-components')
-const component = (name) => defineAsyncComponent(() => instantsearchComponents.then((m) => m[name]))
+let loaded = null
+export const instantsearchComponents = import('./instantsearch-components').then((m) => (loaded = m))
+
+// Once the chunk is in, registering the component itself instead of an async
+// wrapper saves a render pass per component; without it every one of them resolves
+// separately before InstantSearch can register its widgets and search.
+const component = (name) => (loaded ? loaded[name] : defineAsyncComponent(() => instantsearchComponents.then((m) => m[name])))
 
 document.addEventListener('vue:loaded', function (event) {
     const vue = event.detail.vue
