@@ -45,7 +45,6 @@ class OptionSwatch extends Model
                         ->where('eav_attribute_option_value.store_id', '=', 0);
                 })
                 ->join('eav_attribute', 'eav_attribute.attribute_id', '=', 'eav_attribute_option.attribute_id')
-                ->whereNotNull('eav_attribute_option_swatch.value')
                 ->groupBy('eav_attribute.attribute_code')
                 ->distinct()
                 ->get()
