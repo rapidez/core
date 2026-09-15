@@ -138,6 +138,8 @@ export default {
             this.running = true
             this.error = false
 
+            const currentVariables = JSON.parse(JSON.stringify(this.data))
+
             try {
                 let options = { headers: { Store: this.store } }
 
@@ -162,7 +164,7 @@ export default {
 
                     const errorResponse = await error.response.json()
                     if (this.errorCallback) {
-                        await this.errorCallback(this.data, errorResponse)
+                        await this.errorCallback(currentVariables, errorResponse)
                     }
 
                     this.error = error.message
@@ -181,7 +183,7 @@ export default {
                 }
 
                 if (this.callback) {
-                    await this.callback(this.data, response)
+                    await this.callback(currentVariables, response)
                 }
 
                 if (this.clear) {
