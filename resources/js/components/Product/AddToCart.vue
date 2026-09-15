@@ -123,7 +123,7 @@ export default {
                     }]) { cart { ...cart } user_errors { code message } } }
 
                     ` + config.fragments.cart,
-                    variables
+                    variables,
                 )
 
                 // If there are user errors we may still get a newly updated cart back.
