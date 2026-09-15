@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Rapidez\Core\Facades\Rapidez;
 
 class ProductStock extends Model
