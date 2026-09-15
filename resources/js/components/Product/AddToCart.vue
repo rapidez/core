@@ -99,6 +99,14 @@ export default {
                 await refreshMask()
             }
 
+            const variables = {
+                sku: this.product.sku,
+                cartId: mask.value,
+                quantity: this.qty,
+                selected_options: this.selectedOptions,
+                entered_options: this.enteredOptions,
+            }
+
             try {
                 let response = await window.magentoGraphQL(
                     `mutation (
@@ -115,13 +123,7 @@ export default {
                     }]) { cart { ...cart } user_errors { code message } } }
 
                     ` + config.fragments.cart,
-                    {
-                        sku: this.product.sku,
-                        cartId: mask.value,
-                        quantity: this.qty,
-                        selected_options: this.selectedOptions,
-                        entered_options: this.enteredOptions,
-                    },
+                    variables
                 )
 
                 // If there are user errors we may still get a newly updated cart back.
@@ -159,7 +161,7 @@ export default {
 
                 if (error?.response) {
                     const responseData = await error.response.json()
-                    if (GraphQLError.prototype.isPrototypeOf(error) && !(await this.checkResponseForExpiredCart({}, responseData))) {
+                    if (GraphQLError.prototype.isPrototypeOf(error) && !(await this.checkResponseForExpiredCart(variables, responseData))) {
                         // If there are errors we may still get a newly updated cart back.
                         await this.updateCart({}, responseData)
                     }
