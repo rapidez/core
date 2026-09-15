@@ -129,6 +129,8 @@ export const magentoGraphQL = (window.magentoGraphQL = async (
         retryOnCartError: true,
     },
 ) => {
+    const requestCartId = variables.cart_id ?? variables.cartId ?? null
+
     let response = await rapidezFetch(config.magento_url + '/graphql', {
         method: 'POST',
         headers: {
@@ -153,8 +155,8 @@ export const magentoGraphQL = (window.magentoGraphQL = async (
 
     if (data?.errors) {
         // Filter out errors with a message that contain the cart id, signifying an expired cart
-        let errors = data.errors.filter((error) => !(mask.value.length > 0 && error.message.includes(mask.value)))
-        let cartErrors = data.errors.filter((error) => mask.value.length > 0 && error.message.includes(mask.value))
+        let errors = data.errors.filter((error) => !(requestCartId.length > 0 && error.message.includes(requestCartId)))
+        let cartErrors = data.errors.filter((error) => requestCartId.length > 0 && error.message.includes(requestCartId))
 
         if (errors.length) {
             console.error(data.errors)
@@ -179,9 +181,13 @@ export const magentoGraphQL = (window.magentoGraphQL = async (
 
             throw new GraphQLError(data.errors, responseClone)
         } else if (cartErrors.length && options.retryOnCartError) {
-            // Get a new cart and redo the query with updated cart id
-            await fetchCart()
-            window.Notify(window.config.translations.errors.cart_expired, 'warning')
+            // Two possibilities: Either the cart expired, or the cart id changed mid-request.
+            if (requestCartId == mask.value) {
+                // The cart id did not change, so the cart actually expired
+                // Thus, get a new cart and redo the query with updated cart id.
+                await fetchCart()
+                window.Notify(window.config.translations.errors.cart_expired, 'warning')
+            }
 
             return await window.magentoGraphQL(
                 query,
