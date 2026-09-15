@@ -35,6 +35,8 @@ class IndexCommand extends Command
 
         IndexBeforeEvent::dispatch($this);
 
+        $failed = false;
+
         foreach ($stores as $store) {
             Rapidez::setStore($store);
             IndexStoreBeforeEvent::dispatch($this, config('rapidez.store'));
@@ -54,14 +56,20 @@ class IndexCommand extends Command
                     config()->set('elasticsearch.indices.settings.' . $searchableAs, $indexSettings);
                 }
 
-                $this->call(ImportCommand::class, [
+                $exitCode = $this->call(ImportCommand::class, [
                     'searchable' => $model,
                 ]);
+
+                if ($exitCode !== self::SUCCESS) {
+                    $failed = true;
+                }
             }
 
             IndexStoreAfterEvent::dispatch($this, config('rapidez.store'));
         }
 
         IndexAfterEvent::dispatch($this);
+
+        return $failed ? self::FAILURE : self::SUCCESS;
     }
 }
