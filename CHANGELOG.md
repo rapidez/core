@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.14.0...4.14.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.14.1...4.14.1)
+## [4.14.1](https://github.com/rapidez/core/releases/tag/4.14.1) - 2026-09-15
+
+### Fixed
+
+- Support text swatches on product listing tile (#1388)
+
 ## [4.14.0](https://github.com/rapidez/core/releases/tag/4.14.0) - 2026-09-09
 
 ### Added
