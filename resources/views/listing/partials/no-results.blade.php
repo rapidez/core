@@ -48,7 +48,7 @@
                 </ais-hits>
             </ais-instant-search>
         </search-suggestions>
-    </search-suggestions>
+    </ais-state-results>
 </div>
 
 @include('rapidez::listing.partials.popular-products')
