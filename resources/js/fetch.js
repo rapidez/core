@@ -129,7 +129,7 @@ export const magentoGraphQL = (window.magentoGraphQL = async (
         retryOnCartError: true,
     },
 ) => {
-    const requestCartId = variables.cart_id ?? variables.cartId ?? null
+    const requestCartId = variables.cart_id ?? variables.cartId ?? ''
 
     let response = await rapidezFetch(config.magento_url + '/graphql', {
         method: 'POST',
