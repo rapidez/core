@@ -16,7 +16,7 @@ This is how the Rapidez color classes should be used:
     <div class="flex">
         <div class="w-2/3 bg border rounded p-3">
             <p>Lorem ipsum</p>
-            
+
             <ul class="text-emphasis">
                 <li>USP</li>
                 <li>USP</li>
@@ -51,4 +51,3 @@ This is how the Rapidez color classes should be used:
 - `text-foreground`, you should just use: `text`. The CSS variables names like `foreground` should not be used
 - `bg-background-emphasis/10`, you should use: `bg-emphasis/10`
 - `border border-border`, you should just use: `border` as we already set the default border color
-
