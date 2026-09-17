@@ -117,7 +117,12 @@ jobs:
         run: php artisan vendor:publish --tag=payment-icons
 
       - name: Install Node dependencies
-        run: curl -fsSL https://get.pnpm.io/install.sh | sh - && pnpm install
+        uses: pnpm/setup@v1
+        with:
+          version: 11
+          runtime: node@lts
+          cache: false
+          install: true
 
       - name: Install Playwright Browsers
         run: pnpm playwright install --with-deps
