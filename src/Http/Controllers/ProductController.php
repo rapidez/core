@@ -94,7 +94,7 @@ class ProductController
         $productModel = config('rapidez.models.product');
 
         /** @var \Rapidez\Core\Models\Product $product */
-        $product = $productModel::query()->withOnly([])->findOrFail($productId);
+        $product = $productModel::withOnly([])->findOrFail($productId);
 
         ProductViewEvent::dispatch($product);
     }
