@@ -1,6 +1,15 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.6.0...5.6.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.6.1...5.6.1)
+## [5.6.1](https://github.com/rapidez/core/releases/tag/5.6.1) - 2026-09-15
+
+### Fixed
+
+- Fixed text to long error during indexing (#1383)
+- Added relation return types (#1397)
+
+
+
 ## [5.6.0](https://github.com/rapidez/core/releases/tag/5.6.0) - 2026-09-08
 
 ### Added
