@@ -1,0 +1,6 @@
+allowBuilds:
+  esbuild: true
+minimumReleaseAge: 4320
+minimumReleaseAgeExclude:
+  - graphql-combine-query
+shamefullyHoist: true

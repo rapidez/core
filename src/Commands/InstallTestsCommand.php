@@ -36,6 +36,6 @@ class InstallTestsCommand extends Command
             ));
         }
 
-        $this->info('Done 🚀 you can now run the browser tests with: yarn playwright test');
+        $this->info('Done 🚀 you can now run the browser tests with: pnpm playwright test');
     }
 }
