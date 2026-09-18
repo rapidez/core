@@ -7,6 +7,7 @@ import { user } from './useUser'
 const cartStorage = useLocalStorage('cart', {}, { serializer: StorageSerializers.object })
 let age = 0
 let currentRefresh = null
+let cartWriteSeq = 0
 
 export const refresh = async function (force = false) {
     if (!mask.value) {
@@ -200,6 +201,8 @@ export const cart = computed({
         return cartStorage.value
     },
     set(value) {
+        const seq = ++cartWriteSeq
+
         value.shipping_addresses = value.shipping_addresses?.map(addCustomerAddressId)
         if (value.billing_address !== null) {
             value.billing_address = addCustomerAddressId(value.billing_address)
@@ -265,6 +268,11 @@ export const cart = computed({
                 })
             })
             .finally(() => {
+                //  Ignore this stale response if a newer started.
+                if (seq !== cartWriteSeq) {
+                    return
+                }
+
                 cartStorage.value = value
                 age = Date.now()
             })
