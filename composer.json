@@ -34,6 +34,7 @@
         "rapidez/composer-template-diff-plugin": "^1.0",
         "rapidez/laravel-multi-cache": "^2.1",
         "rapidez/laravel-scout-elasticsearch": "^1.0",
+        "spatie/browsershot": "^5.0",
         "tormjens/eventy": "^0.8"
     },
     "require-dev": {
