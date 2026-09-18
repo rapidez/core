@@ -1,5 +1,6 @@
 import { useEventListener } from '@vueuse/core'
 import { cart, clear as clearCart } from './stores/useCart'
+import { mask } from './stores/useMask'
 import { fillFromGraphqlResponse as updateOrder } from './stores/useOrder'
 import { runAfterPlaceOrderHandlers, runBeforePaymentMethodHandlers, runBeforePlaceOrderHandlers } from './stores/usePaymentHandlers'
 import { refresh as refreshUser, token } from './stores/useUser'
@@ -64,6 +65,13 @@ document.addEventListener('vue:loaded', function (event) {
                     error.path.some((path) => path.toLowerCase().includes('cart') && !path.toLowerCase().includes('applycoupon')),
             )
         ) {
+            let requestCartId = variables.cart_id ?? variables.cartId ?? null
+            if (requestCartId && mask.value != requestCartId) {
+                // Error response is from different cart ID and thus should be ignored
+                // This can happen when you log in in the checkout during the debounce time of the graphql mutation component
+                return false
+            }
+
             Notify(window.config.translations.errors.cart_expired, 'error')
             clearCart()
             if (token.value !== undefined) {
