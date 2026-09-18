@@ -1,5 +1,7 @@
 allowBuilds:
   esbuild: true
+packages:
+  - vendor/rapidez/*
 minimumReleaseAge: 4320
 minimumReleaseAgeExclude:
   - graphql-combine-query
