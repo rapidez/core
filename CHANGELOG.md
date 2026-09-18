@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.6.1...5.6.1)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.7.0...5.7.0)
+## [5.7.0](https://github.com/rapidez/core/releases/tag/5.7.0) - 2026-09-18
+
+### Changed
+
+- Use pnpm as package manager (#1405)
+
 ## [5.6.1](https://github.com/rapidez/core/releases/tag/5.6.1) - 2026-09-15
 
 ### Fixed
