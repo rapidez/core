@@ -40,6 +40,10 @@ export default {
         })
     },
 
+    beforeUnmount() {
+        this.stopKeyUpListener()
+    },
+
     methods: {
         toggleZoom() {
             this.zoomed = !this.zoomed
