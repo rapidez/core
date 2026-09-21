@@ -64,11 +64,11 @@ export default {
         }
         this.$nextTick(() => {
             useResizeObserver(this.slider, useThrottleFn(this.updateSpan, 150, true, true))
+            this.mounted = true
             if (this.loop) {
                 this.initLoop()
             }
             setTimeout(() => this.slider.dispatchEvent(new CustomEvent('scroll')))
-            this.mounted = true
 
             this.initAutoPlay()
         })
