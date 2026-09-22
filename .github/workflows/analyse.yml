@@ -22,7 +22,7 @@ jobs:
             testbench: 10.*
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.RAPIDEZ_ACTIONS_ACCOUNT_PAT }}

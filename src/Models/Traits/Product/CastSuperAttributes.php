@@ -8,7 +8,12 @@ trait CastSuperAttributes
 {
     protected function getSuperAttributeCasts(): array
     {
-        $attributeModel = config('rapidez.models.attribute');
+        $casts = ['super_attributes' => 'object'];
+
+        if (! $attributeModel = config('rapidez.models.attribute')) {
+            return $casts;
+        }
+
         $superAttributes = Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {
             return $attribute['super'] && $attribute['flat'];
         }), 'code');
@@ -16,8 +21,6 @@ trait CastSuperAttributes
         foreach ($superAttributes as $superAttribute) {
             $casts['super_' . $superAttribute] = 'object';
         }
-
-        $casts['super_attributes'] = 'object';
 
         return $casts;
     }
