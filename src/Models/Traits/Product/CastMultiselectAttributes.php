@@ -9,7 +9,12 @@ trait CastMultiselectAttributes
 {
     protected function getMultiselectAttributeCasts(): array
     {
-        $attributeModel = config('rapidez.models.attribute');
+        $casts = [];
+
+        if (! $attributeModel = config('rapidez.models.attribute')) {
+            return $casts;
+        }
+
         $multiselectAttributes = Arr::pluck($attributeModel::getCachedWhere(function ($attribute) {
             return $attribute['input'] == 'multiselect';
         }), 'code');
@@ -18,6 +23,6 @@ trait CastMultiselectAttributes
             $casts[$multiselectAttribute] = Multiselect::class;
         }
 
-        return $casts ?? [];
+        return $casts;
     }
 }
