@@ -1,6 +1,28 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.7.0...5.7.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.8.0...5.8.0)
+## [5.8.0](https://github.com/rapidez/core/releases/tag/5.8.0) - 2026-09-22
+
+### Changed
+
+- Reduce the data returned from children by ElasticSearch (#1386)
+
+### Fixed
+
+- Disallow empty cart in checkout (#1403)
+- Current store/website scope cleanup (#1396)
+- Close the ais-state-results correctly (#1398)
+- Vue 3 upgrade misses fix (#1399)
+- Cleanup the image component listener (#1400)
+- Return empty array if cart attribute value is null (#1402)
+- Import the correct attribute class (#1394)
+- Reduce the queries to track a product view (#1392)
+- Set mask SameSite to lax (#1395)
+- Per store swatches cache (#1393)
+- More AI guideline info and a skill for colors (#1404)
+- Fix pnpm upgrade packages config (#1406)
+- Avoid error from overwritten NumberFormat functions (#1407)
+
 ## [5.7.0](https://github.com/rapidez/core/releases/tag/5.7.0) - 2026-09-18
 
 ### Changed
