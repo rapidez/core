@@ -30,6 +30,7 @@ document.addEventListener('vue:loaded', function (event) {
             style: 'currency',
             currency: config.currency,
             maximumFractionDigits: 0,
+            minimumFractionDigits: 0,
         })
             .format(0)
             .replace(/\d/g, '')
