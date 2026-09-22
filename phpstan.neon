@@ -10,10 +10,3 @@ parameters:
         - '#^Result of static method TorMorten\\Eventy\\Events::#'
         - "#Access to an undefined property#"
     level: 1
-    parallel:
-        # Every PHPStan process boots its own Laravel app through Larastan, which
-        # races to build the Testbench package manifest when it doesn't exist yet
-        # (a fresh vendor dir, so always on CI). Processes that lose the race boot
-        # without the discovered packages, which makes facades like Eventy
-        # unresolvable. Analysing in a single process keeps the boot deterministic.
-        maximumNumberOfProcesses: 1

@@ -1,0 +1,13 @@
+# Larastan boots a Testbench application to analyse this package. On a fresh
+# vendor directory — which is every CI run — that application comes up before
+# package auto-discovery has produced a usable manifest, so Eventy's service
+# provider is missing and its facade can't be resolved. Larastan calls
+# Product::getCasts() during analysis, which calls Eventy::filter(), so the
+# analysis dies with "Target class [eventy] does not exist". Registering the
+# provider here makes the boot independent of auto-discovery.
+#
+# Rapidez\Core\RapidezServiceProvider is deliberately not listed: with the
+# Rapidez config loaded, Product::getCasts() would query the database while
+# PHPStan is analysing.
+providers:
+  - TorMorten\Eventy\EventServiceProvider
