@@ -1,6 +1,13 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/4.14.1...4.14.1)
+[Unreleased changes](https://github.com/rapidez/core/compare/...4.14.2)
+## [4.14.2](https://github.com/rapidez/core/releases/tag/4.14.2) - 2026-09-22
+
+### Fixed
+
+- Slider loop option fix (#1408)
+- Fix analyse workflow (#1409)
+
 ## [4.14.1](https://github.com/rapidez/core/releases/tag/4.14.1) - 2026-09-15
 
 ### Fixed
