@@ -41,6 +41,7 @@ return [
     'newsletter/subscription/allow_guest_subscribe'       => '1',
     'reports/options/enabled'                             => '0',
     'reports/options/product_view_enabled'                => '1',
+    'tax/calculation/price_includes_tax'                  => '0',
     'tax/display/type'                                    => '1',
     'trans_email/ident_general/email'                     => 'owner@example.com',
     'web/secure/base_url'                                 => '{{unsecure_base_url}}',
