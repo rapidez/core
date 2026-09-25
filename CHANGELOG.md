@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.8.0...5.8.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.9.0...5.9.0)
+## [5.9.0](https://github.com/rapidez/core/releases/tag/5.9.0) - 2026-09-25
+
+### Added
+
+- Added commonly used fields in the cart/order GraphQL fragments (#1410)
+
 ## [5.8.0](https://github.com/rapidez/core/releases/tag/5.8.0) - 2026-09-22
 
 ### Changed
