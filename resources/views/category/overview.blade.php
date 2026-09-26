@@ -17,6 +17,7 @@
             @else
                 <x-rapidez::listing
                     :root-path="$category->parentcategories->pluck('name')"
+                    :ssr="$ssrListing ?? null"
                     v-bind:category-id="{{ $category->entity_id }}"
                 />
             @endif
