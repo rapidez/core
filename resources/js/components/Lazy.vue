@@ -124,7 +124,8 @@ export default {
         },
         unobserve() {
             if ('IntersectionObserver' in window) {
-                this.state.observer.unobserve(this.$refs.root)
+                this.state.observer?.disconnect()
+                this.state.observer = null
             }
         },
     },
