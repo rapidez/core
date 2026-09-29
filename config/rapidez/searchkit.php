@@ -31,7 +31,17 @@ return [
         'media',
         'url',
         'stock',
-        'children',
+
+        // Used child attributes in listings
+        'children.*.entity_id',
+        'children.*.sku',
+        'children.*.name',
+        'children.*.stock.is_in_stock',
+        'children.*.thumbnail',
+        'children.*.prices',
+        'children.*.price',
+        'children.*.special_price',
+
         'super_*',
         'review_summary',
         'parents',
@@ -58,6 +68,11 @@ return [
         ['attribute' => 'category_ids', 'field' => 'category_ids', 'type' => 'numeric'],
         ['attribute' => 'visibility', 'field' => 'visibility', 'type' => 'numeric'],
     ],
+
+    // The minimum percentage of products that should be available for a filter to be shown.
+    // For example, if you have 100 products in the listing and a filter has only 5 products available,
+    // the filter will not be shown because it is only available for 5% of the products.
+    'min_filter_product_percentage' => 10,
 
     // Additional sorting options to be added to the product listings
     // Given directions can only be an array of 'asc' and/or 'desc'

@@ -1,6 +1,150 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.2.0...5.2.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.9.0...5.9.0)
+## [5.9.0](https://github.com/rapidez/core/releases/tag/5.9.0) - 2026-09-25
+
+### Added
+
+- Added commonly used fields in the cart/order GraphQL fragments (#1410)
+
+## [5.8.0](https://github.com/rapidez/core/releases/tag/5.8.0) - 2026-09-22
+
+### Changed
+
+- Reduce the data returned from children by ElasticSearch (#1386)
+
+### Fixed
+
+- Disallow empty cart in checkout (#1403)
+- Current store/website scope cleanup (#1396)
+- Close the ais-state-results correctly (#1398)
+- Vue 3 upgrade misses fix (#1399)
+- Cleanup the image component listener (#1400)
+- Return empty array if cart attribute value is null (#1402)
+- Import the correct attribute class (#1394)
+- Reduce the queries to track a product view (#1392)
+- Set mask SameSite to lax (#1395)
+- Per store swatches cache (#1393)
+- More AI guideline info and a skill for colors (#1404)
+- Fix pnpm upgrade packages config (#1406)
+- Avoid error from overwritten NumberFormat functions (#1407)
+
+## [5.7.0](https://github.com/rapidez/core/releases/tag/5.7.0) - 2026-09-18
+
+### Changed
+
+- Use pnpm as package manager (#1405)
+
+## [5.6.1](https://github.com/rapidez/core/releases/tag/5.6.1) - 2026-09-15
+
+### Fixed
+
+- Fixed text to long error during indexing (#1383)
+- Added relation return types (#1397)
+
+
+
+## [5.6.0](https://github.com/rapidez/core/releases/tag/5.6.0) - 2026-09-08
+
+### Added
+
+- Vite 8 support (#1353)
+- Info for AI (#1356)
+- Turbo frame caching support (#1329)
+
+### Changed
+
+- Hide irrelevant filters when they barely return products (#1355)
+- Lock turbo version (#1372)
+- Remove default loading state from input (#1376)
+
+### Fixed
+
+- Clean up leftover product and category page config on navigation (#1357)
+- Fixed productlist causing errors when value is false (#1361)
+- Removed old selectAttributes code (#1363)
+- Actually listen to retryOnCartError (#1365)
+- Prevent breaking indexer on missing data on super attribute (#1373)
+- Use useLocalStorage for popup (#1367)
+- Fixed double click submit before next (#1370)
+- Fixed attribute option sort order (#1368)
+- Fix multiselect setting incorrect type mapping (#1364)
+- Fixed Vite 8 warning (#1371)
+- Fix tax on shipping (#1374)
+- Preload instantsearch-components on listing pages (#1375)
+- Update screenshot (#1359)
+- Fix double html escaping (#1380)
+- Removed reactivity between data and variables (#1369)
+- Run cleanup functions on before-cache (#1360)
+
+## [5.5.0](https://github.com/rapidez/core/releases/tag/5.5.0) - 2026-08-11
+
+### Added
+
+- Added weee_tax models (#1324)
+
+### Changed
+
+- Drop Magento 2.4.7 support (a1c7fbd)
+- Use subtotal_incl / excl_tax (#1346)
+
+### Fixed
+
+- Fixed attribute sorting to prioritize position (#1347)
+- Fixed only a single category tree getting indexed (#1343)
+- Check for searchquery being undefined (#1344)
+- Clear cart on unmount (#1345)
+- Improve checks for emptiness in productlist (#1312)
+- Prevent logout flow being triggered when incorrect credentials are used (#1257)
+- Playwright test scroll up before screenshots (#1354)
+- Fix props on global slideover (#1349)
+
+## [5.4.0](https://github.com/rapidez/core/releases/tag/5.4.0) - 2026-07-30
+
+### Added
+
+- Added collapsible filter configuration (#1335)
+
+### Fixed
+
+- Check if history state is not null (#1337)
+- Cache attributes per store (#1338)
+- Fix collection being turned into array bracket string (#1340)
+- Perform image slider calculation based on child elements (#1334)
+- Playwright tests fixes (#1322)
+- Removed duplicate if check for wrapping div (#1341)
+- Use cart.value everywhere (#1342)
+
+## [5.3.0](https://github.com/rapidez/core/releases/tag/5.3.0) - 2026-07-14
+
+### Added
+
+- Install template diffs plugin (#1330)
+
+### Changed
+
+- Use enums for constant values (#1300)
+- Add useNotifications store for notifications (#1314)
+- Use v-validate.vat (#1323)
+- InstantSearch reduce requests and bounces (#1316)
+- Move cachekey to Rapidez facade (#1328)
+
+### Fixed
+
+- Add fallback to error.path (#1297)
+- Increase notification open time depending on words (#1296)
+- Fix translation on search clear button (#1304)
+- Typo (#1306)
+- Use loading.value (#1307)
+- Fix button without loader (#1308)
+- Fix view path for robots.txt (#1310)
+- Fix console warnings & errors (#1315)
+- Prioritize core for Rapidez namespace (#1318)
+- Add message for .env changes in the install (#1319)
+- Fixed recursion caused by view hint reordering (#1321)
+- Fix v-else (#1317)
+- 
+
 ## [5.2.0](https://github.com/rapidez/core/releases/tag/5.2.0) - 2026-05-26
 
 ### Changed

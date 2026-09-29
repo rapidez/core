@@ -1,15 +1,3 @@
-@pushOnce('head', 'listing-filters')
-    @vite(vite_filename_paths([
-        'AisStatsAnalytics.vue',
-        'ClearRefinements.vue',
-        'CurrentRefinements.vue',
-        'SearchBox.vue',
-        'RangeInput.vue',
-        'RangeSlider.vue',
-        'RefinementList.vue',
-        'HierarchicalMenu.vue',
-    ]))
-@endPushOnce
 <x-rapidez::slideover.mobile id="category-filters-slideover" :title="__('Filters')">
     <div class="max-lg:container max-lg:pt-6">
         @include('rapidez::listing.partials.filter.selected')

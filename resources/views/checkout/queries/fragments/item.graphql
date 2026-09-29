@@ -13,12 +13,32 @@ fragment orderItem on OrderItemInterface {
     product {
         ...product
     }
+    ... on ConfigurableOrderItem {
+        parent_sku
+    }
+    prices {
+        price {
+            value
+        }
+        price_including_tax {
+            value
+        }
+        fixed_product_taxes {
+            amount {
+                value
+            }
+            label
+        }
+    }
     discounts {
         amount {
             currency
             value
         }
         label
+        coupon {
+            code
+        }
     }
     entered_options {
         label

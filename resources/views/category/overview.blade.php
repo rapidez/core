@@ -9,7 +9,7 @@
     <div class="container">
         @include('rapidez::category.partials.breadcrumbs')
 
-        <h1 class="text-2xl font-medium mb-5">{{ $category->name }}</h1>
+        <h1 class="text-2xl font-medium mb-5">{!! $category->name !!}</h1>
 
         @if ($category->is_anchor)
             @if (!$category->products()->exists())

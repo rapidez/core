@@ -94,6 +94,7 @@ class InstallCommand extends Command
             if ($this->call('rapidez:validate')) {
                 $this->newLine();
                 $this->error('The validation did not pass, please fix the errors first');
+                $this->error('Note: If you need to change something in the .env, you should answer no to the following question');
                 if (confirm('Did you fix the error?', yes: 'Yes, check it again and continue.', no: 'No, exit install. I will run rapidez:install once fixed.')) {
                     return $this->validate();
                 }
@@ -115,6 +116,7 @@ class InstallCommand extends Command
         // These are also used by the core
         $rootFilesToCopy = [
             'package.json',
+            'pnpm-workspace.yaml',
             '.prettierrc.js',
         ];
 
@@ -143,21 +145,21 @@ class InstallCommand extends Command
 
         if (confirm(
             label: 'Install and build the frontend dependencies?',
-            hint: 'This will run `yarn` and `yarn run prod`'
+            hint: 'This will run `pnpm install` and `pnpm run prod`'
         )) {
-            passthru('yarn');
+            passthru('pnpm install');
 
             if ($this->selectedPackages->contains('rapidez/sentry')) {
                 $this->line('Sentry also needs @sentry/vue');
-                passthru('yarn add @sentry/vue -D');
+                passthru('pnpm add @sentry/vue -d');
             }
 
             if ($this->selectedPackages->contains('rapidez/openreplay')) {
                 $this->line('Openreplay also needs @openreplay/tracker');
-                passthru('yarn add @openreplay/tracker -D');
+                passthru('pnpm add @openreplay/tracker -d');
             }
 
-            passthru('yarn run prod');
+            passthru('pnpm run prod');
         }
 
         return $this;

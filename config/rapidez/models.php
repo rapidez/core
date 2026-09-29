@@ -50,5 +50,6 @@ return [
     'search_synonym'            => Rapidez\Core\Models\SearchSynonym::class,
     'store'                     => Rapidez\Core\Models\Store::class,
     'super_attribute'           => Rapidez\Core\Models\SuperAttribute::class,
+    'weee_tax'                  => Rapidez\Core\Models\WeeeTax::class,
     'widget'                    => Rapidez\Core\Models\Widget::class,
 ];

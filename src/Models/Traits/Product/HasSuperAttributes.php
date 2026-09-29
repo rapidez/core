@@ -24,8 +24,8 @@ trait HasSuperAttributes
             config('rapidez.models.super_attribute'),
             'product_id',
         )
-            ->orderBy('eav_attribute.attribute_code')
-            ->orderBy('catalog_product_super_attribute.position');
+            ->orderBy('catalog_product_super_attribute.position')
+            ->orderBy('eav_attribute.attribute_code');
     }
 
     public function superAttributeValues(): Attribute
@@ -37,6 +37,7 @@ trait HasSuperAttributes
                     ->mapWithKeys(fn ($child) => [
                         $child->entity_id => $child->getCustomAttribute($attribute->attribute_code),
                     ])
+                    ->filter(fn ($value, $key) => $value && $key)
                     ->sortBy('sort_order')
                     ->groupBy('rawValue')
                     ->map(fn ($children, $value) => (object) [

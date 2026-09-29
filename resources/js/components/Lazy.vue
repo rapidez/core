@@ -99,7 +99,7 @@ export default {
             this.$emit('intersected', this.$refs.root)
         }
     },
-    beforeDestroy() {
+    beforeUnmount() {
         if (!this.state.isIntersected && !this.state.idle) {
             this.unobserve()
         }

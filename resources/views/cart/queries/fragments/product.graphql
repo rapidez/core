@@ -6,6 +6,7 @@ fragment product on ProductInterface {
         'type_id',
         'url_key',
         'url_suffix',
+        'special_price',
     ])->merge(config('rapidez.frontend.cart_attributes'))->unique() as $attribute)
         {{ $attribute }}
     @endforeach
@@ -23,4 +24,23 @@ fragment product on ProductInterface {
             qty_increments
         }
     @endif
+    ... on CustomizableProductInterface {
+        options {
+            uid
+            title
+            required
+            sort_order
+            @foreach(['CustomizableRadioOption', 'CustomizableCheckboxOption', 'CustomizableDropDownOption', 'CustomizableMultipleOption'] as $optionType)
+                ... on {{ $optionType }} {
+                    value {
+                        uid
+                        sku
+                        title
+                        price
+                        price_type
+                    }
+                }
+            @endforeach
+        }
+    }
 }

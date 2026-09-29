@@ -4,7 +4,6 @@ namespace Rapidez\Core\Http\Controllers;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Attribute;
 use Rapidez\Core\Models\Category;
@@ -44,13 +43,14 @@ class ConfigController
     public function getConfig(): array
     {
         return [
-            'cachekey'     => Cache::rememberForever('cachekey', fn () => md5(Str::random())),
+            'cachekey'     => Rapidez::getCacheKey(),
             'translations' => __('rapidez::frontend'),
 
             'index'                        => $this->getIndexNames(),
             'filterable_attributes'        => $this->getFilterableAttributes(),
             'fragments'                    => $this->getGraphqlQueryFragments(),
             'max_category_level'           => $this->getMaxCategoryLevel(),
+            'category_attributes'          => collect()->range(1, $this->getMaxCategoryLevel())->map(fn ($level) => 'category_lvl' . $level)->toArray(),
             'queries'                      => $this->getGraphqlQueries(),
             'searchkit'                    => $this->getSearchkitConfig(),
             'show_customer_address_fields' => $this->getCustomerAddressFields(),
@@ -62,11 +62,14 @@ class ConfigController
             'grid_per_page'        => Rapidez::config('catalog/frontend/grid_per_page', 12),
             'grid_per_page_values' => explode(',', Rapidez::config('catalog/frontend/grid_per_page_values', '12,24,36')),
             'locale'               => Rapidez::config('general/locale/code', 'en_US'),
+            'price_includes_tax'   => (bool) Rapidez::config('tax/calculation/price_includes_tax'),
             'recaptcha'            => Rapidez::config('recaptcha_frontend/type_recaptcha_v3/public_key', null, true),
             'redirect_cart'        => (bool) Rapidez::config('checkout/cart/redirect_to_cart'),
             'street_lines'         => Rapidez::config('customer/address/street_lines', 2),
             'show_swatches'        => (bool) Rapidez::config('catalog/frontend/show_swatches_in_product_list'),
             'show_tax'             => in_array(Rapidez::config('tax/display/type', 1), [2, 3]),
+            // Compadre config data
+            'collapsed_attributes' => explode(',', Rapidez::config('rapidez/catalog/collapsed_attributes', '')),
         ];
     }
 

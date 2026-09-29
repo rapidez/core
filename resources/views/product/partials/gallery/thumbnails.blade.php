@@ -38,7 +38,7 @@ With `$breakpoints` you can control the amount of images.
                     @endif
                 @endif
                 v-bind:src="url(media[{{ $imageId }}].media_type === 'external-video' ? window.config.media_url + '/catalog/product' + media[{{ $imageId }}].image : '/storage/{{ config('rapidez.store') }}/resizes/80x80/magento/catalog/product' + media[{{ $imageId }}].image + '.webp')"
-                alt="{{ $product->name }}"
+                alt="{!! $product->name !!}"
                 class="block max-h-full w-auto object-contain"
                 width="80"
                 height="80"

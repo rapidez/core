@@ -20,7 +20,7 @@
         >
             @include('rapidez::checkout.steps.login')
 
-            <x-rapidez::button.conversion type="submit" data-testid="continue" class="mt-3" loader>
+            <x-rapidez::button.conversion type="submit" data-testid="continue" class="mt-3" loader v-on:mousedown.prevent="{{-- Do not remove, this prevents requiring double click for the submit action (#1370) --}}">
                 @lang('Next')
             </x-rapidez::button.conversion>
         </form>

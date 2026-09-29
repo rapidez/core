@@ -3,7 +3,7 @@
         <add-to-cart :product="config.product.children[{{ $groupedProduct->entity_id }}]" v-slot="addToCart">
             <form v-on:submit.prevent="addToCart.add" class="flex w-full justify-between max-lg:flex-wrap max-lg:gap-y-2">
                 <div class="lg:max-xl:max-w-36">
-                    {{ $groupedProduct->name }}
+                    {!! $groupedProduct->name !!}
                     <div class="flex items-center space-x-3 font-bold mr-auto">
                         <div>{{ price($groupedProduct->special_price ?: $groupedProduct->price) }}</div>
                         @if ($groupedProduct->special_price)
