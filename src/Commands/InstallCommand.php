@@ -223,10 +223,8 @@ class InstallCommand extends Command
         $packages[] = select(
             label: 'Shall we install a postcode integration?',
             options: [
-                null                   => 'No thanks',
-                'postcodeservice'      => 'Postcodeservice.com directly',
-                'experius-postcode-nl' => 'Postcode.nl, requires the `experius/module-postcode` Magento module',
-                'pro6pp-postcode'      => 'pro6pp.nl directly',
+                null       => 'No thanks',
+                'postcode' => 'Rapidez Postcode; supports Postcode.eu, Pro6pp and Postcodeservice.com',
             ],
         );
 
@@ -308,6 +306,11 @@ class InstallCommand extends Command
         if ($this->selectedPackages->contains('rapidez/statamic')) {
             $this->newLine();
             $this->warn('Next thing to do manually, run: php artisan rapidez-statamic:install');
+        }
+
+        if ($this->selectedPackages->contains('rapidez/postcode')) {
+            $this->newLine();
+            $this->warn('Next thing to do manually, set POSTCODE_DRIVER and its credentials in the .env, see: https://github.com/rapidez/postcode#configuration');
         }
 
         return $this;
