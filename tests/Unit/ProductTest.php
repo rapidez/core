@@ -187,7 +187,17 @@ class ProductTest extends TestCase
         $data = $product->toSearchableArray();
         $firstChild = $data['children'][53];
 
-        $this->assertEquals('XS', $firstChild['size'], 'Child product under product 68 did not get indexed with the right size.');
+        $this->assertEqualsCanonicalizing(
+            ['entity_id', 'sku', 'name', 'stock', 'thumbnail', 'prices', 'price', 'special_price'],
+            array_keys($firstChild),
+            'Child product under product 68 was not indexed with exactly the configured `children.*.` attributes.',
+        );
+
+        $this->assertEqualsCanonicalizing(
+            ['is_in_stock'],
+            array_keys($firstChild['stock']),
+            'Child product under product 68 was not indexed with exactly the configured `children.*.stock.*` attributes.',
+        );
 
         $this->assertEquals('XS', $data['super_size_values'][166]->label, 'super_size_values on product 68 did not get indexed with the right labels.');
         $this->assertEquals(166, $data['super_size_values'][166]->value, 'super_size_values on product 68 did not get indexed with the right values.');
