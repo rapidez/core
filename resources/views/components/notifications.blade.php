@@ -14,7 +14,7 @@
                 leave-class="opacity-100"
                 leave-to-class="opacity-0"
             >
-                <component :is="link ? 'a' : 'div'" v-if="show" class="relative flex items-end justify-center pointer-events-none mb-3 sm:items-start sm:justify-end" :class="{ 'pointer-events-none': !link }">
+                <component :is="link ? 'a' : 'div'" :href="link" v-if="show" class="relative flex items-end justify-center pointer-events-none mb-3 sm:items-start sm:justify-end" :class="{ 'pointer-events-none': !link }">
 
                     <div class="max-w-sm w-full rounded-lg pointer-events-auto ring-1 ring-emphasis/10 overflow-hidden border" :class="classes">
                         <div class="p-4">
