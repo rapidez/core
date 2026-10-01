@@ -1,6 +1,15 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.9.0...5.9.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.9.1...5.9.1)
+## [5.9.1](https://github.com/rapidez/core/releases/tag/5.9.1) - 2026-10-01
+
+### Fixed
+
+- Use disconnect instead of unobserve in lazy.vue (#1411)
+- Remove coupon from item.graphql (#1414)
+- Add urlencode to redirect paths (#1412)
+- Added rapidez/postcode in the install command (#1413)
+
 ## [5.9.0](https://github.com/rapidez/core/releases/tag/5.9.0) - 2026-09-25
 
 ### Added
