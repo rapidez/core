@@ -30,7 +30,7 @@ import './mixins'
 import './cookies'
 import './callbacks'
 import './vue-components'
-import './instantsearch'
+import { instantsearchComponents } from './instantsearch'
 import { fetchCount } from './stores/useFetches'
 import { computed, createApp, ref, watch } from 'vue'
 ;(() => import('./turbolinks'))()
@@ -54,6 +54,24 @@ if (import.meta.env.VITE_DEBUG === 'true') {
         },
         { autoRemove: false },
     )
+}
+
+// Booting is deferred to the next frame so the server rendered markup can paint
+// before Vue starts. requestAnimationFrame never fires while the tab is hidden,
+// which would leave the page unbooted until it's focused, so a timer runs against
+// it and whichever comes first wins.
+function nextFrame(callback) {
+    let called = false
+    let run = () => {
+        if (called) {
+            return
+        }
+        called = true
+        callback()
+    }
+
+    requestAnimationFrame(run)
+    setTimeout(run, 50)
 }
 
 let booting = false
@@ -111,7 +129,7 @@ async function init() {
         )
     }
 
-    requestAnimationFrame(() => {
+    nextFrame(async () => {
         window.app = createApp({
             el: '#app',
             methods: {
@@ -149,11 +167,17 @@ async function init() {
                 },
 
                 categoryPositions(categoryId) {
+                    // The category is passed as a param instead of being interpolated into the
+                    // source, otherwise every category compiles its own script; Elasticsearch
+                    // caches compiled scripts by source and rate limits compilations.
+                    let field = `'positions.' + params.category_id`
+
                     return {
                         function_score: {
                             script_score: {
                                 script: {
-                                    source: `doc.containsKey('positions.${categoryId}') && !doc['positions.${categoryId}'].empty && doc['positions.${categoryId}'].value =~ /^\\d+$/ ? Integer.parseInt(doc['positions.${categoryId}'].value) : 0`,
+                                    source: `doc.containsKey(${field}) && !doc[${field}].empty && doc[${field}].value =~ /^\\d+$/ ? Integer.parseInt(doc[${field}].value) : 0`,
+                                    params: { category_id: String(categoryId) },
                                 },
                             },
                         },
@@ -220,13 +244,18 @@ async function init() {
             app.config.globalProperties.loading.value = count > 0
         })
 
-        setTimeout(() => {
-            booting = false
-            const event = new CustomEvent('vue:loaded', { detail: { vue: window.app } })
-            document.dispatchEvent(event)
+        // The listing renders through the InstantSearch components, so it's worth
+        // waiting for that (preloaded) chunk here; they then register synchronously
+        // instead of resolving one by one during the first renders.
+        if (document.querySelector('listing')) {
+            await instantsearchComponents.catch(() => {})
+        }
 
-            window.app.mount('#app')
-        })
+        booting = false
+        const event = new CustomEvent('vue:loaded', { detail: { vue: window.app } })
+        document.dispatchEvent(event)
+
+        window.app.mount('#app')
     })
 }
 
