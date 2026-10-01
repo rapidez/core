@@ -36,9 +36,6 @@ fragment orderItem on OrderItemInterface {
             value
         }
         label
-        coupon {
-            code
-        }
     }
     entered_options {
         label
