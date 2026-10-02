@@ -116,14 +116,19 @@ jobs:
       - name: Publish payment icons
         run: php artisan vendor:publish --tag=payment-icons
 
-      - name: Install Yarn dependencies
-        run: npm install -g yarn && yarn
+      - name: Install Node dependencies
+        uses: pnpm/setup@v1
+        with:
+          version: 11
+          runtime: node@lts
+          cache: false
+          install: true
 
       - name: Install Playwright Browsers
-        run: yarn playwright install --with-deps
+        run: pnpm playwright install --with-deps
 
       - name: Frontend Build
-        run: yarn run prod
+        run: pnpm run prod
 
       - name: Install Playwright tests
         run: php artisan rapidez:install:tests
@@ -142,23 +147,23 @@ jobs:
 
       - name: Run Playwright tests
         if: ${{ !inputs.update_all_screenshots }}
-        run: yarn playwright test
+        run: pnpm playwright test
 
       # Screenshots
       - name: Collect failed tests
         if: ${{ failure() && !inputs.update_all_screenshots }}
-        run: yarn playwright test --last-failed --list --reporter=dot --pass-with-no-tests > failed-tests.txt
+        run: pnpm playwright test --last-failed --list --reporter=dot --pass-with-no-tests > failed-tests.txt
 
       - name: Update screenshots
         if: ${{ failure() && !inputs.update_all_screenshots && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x'))) }}
         run: |
           while read -r test_name; do
-            yarn playwright test "$test_name" --update-snapshots --reporter=list
+            pnpm playwright test "$test_name" --update-snapshots --reporter=list
           done < <(awk -F ' › ' 'NF>1{print $2}' failed-tests.txt | sort -u)
 
       - name: Update all screenshots
         if: ${{ inputs.update_all_screenshots && matrix.screenshots == true }}
-        run: yarn playwright test --update-snapshots
+        run: pnpm playwright test --update-snapshots
 
       - name: Move the screenshots
         if: (failure() || inputs.update_all_screenshots) && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))

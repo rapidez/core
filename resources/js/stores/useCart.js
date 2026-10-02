@@ -245,6 +245,7 @@ export const cart = computed({
                         }
 
                         if (cartItem.product.attribute_values[key].value === null) {
+                            cartItem.product.attribute_values[key].value = []
                             continue
                         }
 

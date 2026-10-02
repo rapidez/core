@@ -31,7 +31,17 @@ return [
         'media',
         'url',
         'stock',
-        'children',
+
+        // Used child attributes in listings
+        'children.*.entity_id',
+        'children.*.sku',
+        'children.*.name',
+        'children.*.stock.is_in_stock',
+        'children.*.thumbnail',
+        'children.*.prices',
+        'children.*.price',
+        'children.*.special_price',
+
         'super_*',
         'review_summary',
         'parents',

@@ -116,6 +116,7 @@ class InstallCommand extends Command
         // These are also used by the core
         $rootFilesToCopy = [
             'package.json',
+            'pnpm-workspace.yaml',
             '.prettierrc.js',
         ];
 
@@ -144,21 +145,21 @@ class InstallCommand extends Command
 
         if (confirm(
             label: 'Install and build the frontend dependencies?',
-            hint: 'This will run `yarn` and `yarn run prod`'
+            hint: 'This will run `pnpm install` and `pnpm run prod`'
         )) {
-            passthru('yarn');
+            passthru('pnpm install');
 
             if ($this->selectedPackages->contains('rapidez/sentry')) {
                 $this->line('Sentry also needs @sentry/vue');
-                passthru('yarn add @sentry/vue -D');
+                passthru('pnpm add @sentry/vue -d');
             }
 
             if ($this->selectedPackages->contains('rapidez/openreplay')) {
                 $this->line('Openreplay also needs @openreplay/tracker');
-                passthru('yarn add @openreplay/tracker -D');
+                passthru('pnpm add @openreplay/tracker -d');
             }
 
-            passthru('yarn run prod');
+            passthru('pnpm run prod');
         }
 
         return $this;
@@ -222,10 +223,8 @@ class InstallCommand extends Command
         $packages[] = select(
             label: 'Shall we install a postcode integration?',
             options: [
-                null                   => 'No thanks',
-                'postcodeservice'      => 'Postcodeservice.com directly',
-                'experius-postcode-nl' => 'Postcode.nl, requires the `experius/module-postcode` Magento module',
-                'pro6pp-postcode'      => 'pro6pp.nl directly',
+                null       => 'No thanks',
+                'postcode' => 'Rapidez Postcode; supports Postcode.eu, Pro6pp and Postcodeservice.com',
             ],
         );
 
@@ -307,6 +306,11 @@ class InstallCommand extends Command
         if ($this->selectedPackages->contains('rapidez/statamic')) {
             $this->newLine();
             $this->warn('Next thing to do manually, run: php artisan rapidez-statamic:install');
+        }
+
+        if ($this->selectedPackages->contains('rapidez/postcode')) {
+            $this->newLine();
+            $this->warn('Next thing to do manually, set POSTCODE_DRIVER and its credentials in the .env, see: https://github.com/rapidez/postcode#configuration');
         }
 
         return $this;

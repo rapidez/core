@@ -99,7 +99,7 @@ export default {
             this.$emit('intersected', this.$refs.root)
         }
     },
-    beforeDestroy() {
+    beforeUnmount() {
         if (!this.state.isIntersected && !this.state.idle) {
             this.unobserve()
         }
@@ -124,7 +124,8 @@ export default {
         },
         unobserve() {
             if ('IntersectionObserver' in window) {
-                this.state.observer.unobserve(this.$refs.root)
+                this.state.observer?.disconnect()
+                this.state.observer = null
             }
         },
     },

@@ -1,6 +1,58 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.6.0...5.6.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.9.1...5.9.1)
+## [5.9.1](https://github.com/rapidez/core/releases/tag/5.9.1) - 2026-10-01
+
+### Fixed
+
+- Use disconnect instead of unobserve in lazy.vue (#1411)
+- Remove coupon from item.graphql (#1414)
+- Add urlencode to redirect paths (#1412)
+- Added rapidez/postcode in the install command (#1413)
+
+## [5.9.0](https://github.com/rapidez/core/releases/tag/5.9.0) - 2026-09-25
+
+### Added
+
+- Added commonly used fields in the cart/order GraphQL fragments (#1410)
+
+## [5.8.0](https://github.com/rapidez/core/releases/tag/5.8.0) - 2026-09-22
+
+### Changed
+
+- Reduce the data returned from children by ElasticSearch (#1386)
+
+### Fixed
+
+- Disallow empty cart in checkout (#1403)
+- Current store/website scope cleanup (#1396)
+- Close the ais-state-results correctly (#1398)
+- Vue 3 upgrade misses fix (#1399)
+- Cleanup the image component listener (#1400)
+- Return empty array if cart attribute value is null (#1402)
+- Import the correct attribute class (#1394)
+- Reduce the queries to track a product view (#1392)
+- Set mask SameSite to lax (#1395)
+- Per store swatches cache (#1393)
+- More AI guideline info and a skill for colors (#1404)
+- Fix pnpm upgrade packages config (#1406)
+- Avoid error from overwritten NumberFormat functions (#1407)
+
+## [5.7.0](https://github.com/rapidez/core/releases/tag/5.7.0) - 2026-09-18
+
+### Changed
+
+- Use pnpm as package manager (#1405)
+
+## [5.6.1](https://github.com/rapidez/core/releases/tag/5.6.1) - 2026-09-15
+
+### Fixed
+
+- Fixed text to long error during indexing (#1383)
+- Added relation return types (#1397)
+
+
+
 ## [5.6.0](https://github.com/rapidez/core/releases/tag/5.6.0) - 2026-09-08
 
 ### Added

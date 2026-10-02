@@ -20,6 +20,10 @@ class CheckoutController
 
         abort_if(! in_array($step, $checkoutSteps), 404);
 
+        if (! auth('magento-cart')->user()?->items_count) {
+            return redirect()->route('cart');
+        }
+
         return view('rapidez::checkout.pages.' . $step, [
             'checkoutSteps'  => $checkoutSteps,
             'currentStep'    => $step,

@@ -62,6 +62,7 @@ class ConfigController
             'grid_per_page'        => Rapidez::config('catalog/frontend/grid_per_page', 12),
             'grid_per_page_values' => explode(',', Rapidez::config('catalog/frontend/grid_per_page_values', '12,24,36')),
             'locale'               => Rapidez::config('general/locale/code', 'en_US'),
+            'price_includes_tax'   => (bool) Rapidez::config('tax/calculation/price_includes_tax'),
             'recaptcha'            => Rapidez::config('recaptcha_frontend/type_recaptcha_v3/public_key', null, true),
             'redirect_cart'        => (bool) Rapidez::config('checkout/cart/redirect_to_cart'),
             'street_lines'         => Rapidez::config('customer/address/street_lines', 2),

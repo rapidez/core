@@ -31,6 +31,10 @@ fragment cart on Cart {
                 label
             }
         }
+        errors {
+            code
+            message
+        }
         ... on SimpleCartItem {
             @include('rapidez::cart.queries.partials.customizable-options')
         }
@@ -71,6 +75,7 @@ fragment cart on Cart {
         city
         region {
             region_id
+            code
             label
         }
         postcode
@@ -148,6 +153,9 @@ fragment cart on Cart {
             label
             amount {
                 value
+            }
+            coupon {
+                code
             }
         }
         subtotal_with_discount_excluding_tax {
