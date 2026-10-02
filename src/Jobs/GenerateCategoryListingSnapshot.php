@@ -7,19 +7,12 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Search\CategoryListingSnapshotStore;
+use RuntimeException;
 use Spatie\Browsershot\Browsershot;
 use Throwable;
 
-/**
- * Visits a category page with a headless browser, waits for the real,
- * client-rendered listing to have results, and stores the rendered markup
- * as an HTML snapshot to be shown to future visitors before Vue boots.
- *
- * This deliberately captures Vue's own output rather than re-implementing the
- * listing in PHP, so the snapshot can never drift from what the real listing
- * looks like.
- */
 class GenerateCategoryListingSnapshot implements ShouldQueue
 {
     use Dispatchable;
@@ -27,66 +20,122 @@ class GenerateCategoryListingSnapshot implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    public const USER_AGENT_TOKEN = 'RapidezSsr';
+
     public int $tries = 1;
 
     public int $timeout = 60;
 
-    public function __construct(public int $categoryId) {}
+    public function __construct(public int $categoryId, public int $storeId, public array $query = []) {}
 
     public function handle(CategoryListingSnapshotStore $store): void
+    {
+        Rapidez::withStore($this->storeId, function () use ($store) {
+            if ($this->generate($store)) {
+                $store->releaseLock($this->categoryId, $this->query);
+            }
+        });
+    }
+
+    protected function generate(CategoryListingSnapshotStore $store): bool
     {
         $categoryModel = config('rapidez.models.category');
         $category = $categoryModel::withoutGlobalScopes()->find($this->categoryId);
 
         if (! $category) {
-            return;
+            return false;
         }
 
         try {
-            $html = $this->render($category->url);
+            $url = url($category->url) . ($this->query ? '?' . http_build_query($this->query) : '');
+            $result = json_decode($this->render($url), true, flags: JSON_THROW_ON_ERROR);
+
+            throw_if(
+                (string) ($result['store'] ?? '') !== (string) $this->storeId,
+                RuntimeException::class,
+                'Captured listing snapshot of category ' . $this->categoryId . ' belongs to store "' . ($result['store'] ?? '') . '" instead of "' . $this->storeId . '", make sure the url resolves to the right store.'
+            );
         } catch (Throwable $e) {
             report($e);
 
-            return;
+            return false;
         }
 
-        if (! trim($html)) {
-            return;
+        if (! ($result['items'] ?? 0) || ! trim($result['html'] ?? '')) {
+            return false;
         }
 
-        $store->put($category, $html);
+        $store->put($category, $result['html'], $this->query);
+
+        return true;
     }
 
     protected function render(string $categoryUrl): string
     {
-        $browsershot = Browsershot::url(url($categoryUrl))
+        $browsershot = Browsershot::url($categoryUrl)
+            ->userAgent('Mozilla/5.0 (compatible; ' . static::USER_AGENT_TOKEN . '/1.0)')
             ->windowSize(1440, 900)
             ->waitUntilNetworkIdle()
-            // `#listing-content` (resources/views/components/listing.blade.php) always
-            // exists once Vue mounts the listing, but an actual product means real
-            // results made it back from Elasticsearch and got rendered into it.
-            ->waitForSelector('[data-testid="listing-item"]', ['timeout' => 15000]);
+            ->waitForSelector('#listing-content[data-listing-loaded]', ['timeout' => 15000]);
 
-        if (config('rapidez.listing_snapshot.no_sandbox')) {
+        if (config('rapidez.ssr.browsershot.no_sandbox')) {
             $browsershot->noSandbox();
         }
 
-        if ($nodeBinary = config('rapidez.listing_snapshot.node_binary')) {
+        if ($nodeBinary = config('rapidez.ssr.browsershot.node_binary')) {
             $browsershot->setNodeBinary($nodeBinary);
         }
 
-        if ($npmBinary = config('rapidez.listing_snapshot.npm_binary')) {
+        if ($npmBinary = config('rapidez.ssr.browsershot.npm_binary')) {
             $browsershot->setNpmBinary($npmBinary);
         }
 
-        if ($nodeModulePath = config('rapidez.listing_snapshot.node_module_path')) {
+        if ($nodeModulePath = config('rapidez.ssr.browsershot.node_module_path')) {
             $browsershot->setNodeModulePath($nodeModulePath);
         }
 
-        if ($chromePath = config('rapidez.listing_snapshot.chrome_path')) {
+        if ($chromePath = config('rapidez.ssr.browsershot.chrome_path')) {
             $browsershot->setChromePath($chromePath);
         }
 
-        return $browsershot->evaluate("document.getElementById('listing-content').innerHTML");
+        return $browsershot->evaluate(<<<'JS'
+            (() => {
+                const listing = document.getElementById('listing-content').cloneNode(true)
+                const items = listing.querySelectorAll('[data-testid="listing-item"]')
+
+                const replace = (element, tagName) => {
+                    const replacement = document.createElement(tagName)
+                    Array.from(element.attributes).forEach((attribute) => replacement.setAttribute(attribute.name, attribute.value))
+                    replacement.append(...element.childNodes)
+                    element.replaceWith(replacement)
+
+                    return replacement
+                }
+
+                // Replace add to cart buttons with anchor links.
+                items.forEach((item) => {
+                    const productUrl = item.querySelector('a[href]')?.getAttribute('href')
+
+                    item.querySelectorAll('form button[type="submit"]').forEach((button) => {
+                        if (productUrl) {
+                            const link = replace(button, 'a')
+                            link.removeAttribute('type')
+                            link.setAttribute('href', productUrl)
+                        }
+                    })
+                })
+
+                listing.querySelectorAll('form').forEach((form) => replace(form, 'div'))
+
+                // Remove ID's to keep them unique when Vue kicks in.
+                listing.querySelectorAll('[id], [for], [data-testid]').forEach((element) => {
+                    element.removeAttribute('id')
+                    element.removeAttribute('for')
+                    element.removeAttribute('data-testid')
+                })
+
+                return JSON.stringify({ store: window.config?.store, items: items.length, html: listing.innerHTML })
+            })()
+        JS);
     }
 }
