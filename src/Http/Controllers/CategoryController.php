@@ -13,9 +13,6 @@ class CategoryController
 
         config(['frontend.category' => $category->only('entity_id')]);
 
-        // Some fallback routes (e.g. UrlRewriteController) call this controller
-        // directly rather than through the router, so this can't rely on method
-        // dependency injection to get here.
         $ssrListing = $category->is_anchor ? app(CategoryListingSnapshotStore::class)->get($category) : null;
 
         $response = response()->view('rapidez::category.overview', compact('category', 'ssrListing'));
