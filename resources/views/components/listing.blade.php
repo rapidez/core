@@ -14,7 +14,6 @@
                 </div>
             </div>
         </listing-snapshot>
-
     @endif
 
     <listing

@@ -3,9 +3,14 @@
 namespace Rapidez\Core\Tests\Feature;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
+use Rapidez\Core\Commands\IndexCommand;
+use Rapidez\Core\Commands\UpdateIndexCommand;
+use Rapidez\Core\Events\IndexStoreAfterEvent;
 use Rapidez\Core\Jobs\GenerateCategoryListingSnapshot;
+use Rapidez\Core\Listeners\FlushListingSnapshots;
 use Rapidez\Core\Models\Category;
 use Rapidez\Core\Search\CategoryListingSnapshotStore;
 use Rapidez\Core\Tests\TestCase;
@@ -22,6 +27,7 @@ class CategoryListingSnapshotStoreTest extends TestCase
 
         config([
             'cache.default'       => 'array',
+            'queue.default'       => 'database',
             'rapidez.ssr.enabled' => true,
         ]);
 
@@ -87,6 +93,47 @@ class CategoryListingSnapshotStoreTest extends TestCase
         $this->travel(60)->minutes();
 
         $this->assertNull($this->store->get($this->category, $this->request()));
+    }
+
+    #[Test]
+    public function it_flushes_the_snapshots_of_a_store()
+    {
+        $this->store->put($this->category, '<div>snapshot</div>');
+        $this->store->flush((int) config('rapidez.store') + 1);
+
+        $this->assertEquals('<div>snapshot</div>', $this->store->get($this->category, $this->request()));
+
+        $this->store->flush((int) config('rapidez.store'));
+
+        $this->assertNull($this->store->get($this->category, $this->request()));
+        Queue::assertPushed(GenerateCategoryListingSnapshot::class, 1);
+
+        $this->store->put($this->category, '<div>new snapshot</div>');
+
+        $this->assertEquals('<div>new snapshot</div>', $this->store->get($this->category, $this->request()));
+    }
+
+    #[Test]
+    public function only_a_full_index_flushes_the_snapshots()
+    {
+        $this->store->put($this->category, '<div>snapshot</div>');
+
+        (new FlushListingSnapshots)->handle(new IndexStoreAfterEvent(new UpdateIndexCommand, (int) config('rapidez.store')));
+        $this->assertEquals('<div>snapshot</div>', $this->store->get($this->category, $this->request()));
+
+        (new FlushListingSnapshots)->handle(new IndexStoreAfterEvent(new IndexCommand, (int) config('rapidez.store')));
+        $this->assertNull($this->store->get($this->category, $this->request()));
+    }
+
+    #[Test]
+    public function it_generates_after_the_response_with_the_sync_queue()
+    {
+        Bus::fake();
+        config(['queue.default' => 'sync']);
+
+        $this->store->get($this->category, $this->request());
+
+        Bus::assertDispatchedAfterResponse(GenerateCategoryListingSnapshot::class);
     }
 
     #[Test]

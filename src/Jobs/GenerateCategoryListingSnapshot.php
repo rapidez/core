@@ -42,7 +42,7 @@ class GenerateCategoryListingSnapshot implements ShouldQueue
         $categoryModel = config('rapidez.models.category');
         $category = $categoryModel::withoutGlobalScopes()->find($this->categoryId);
 
-        if (! $category) {
+        if (! $category || ! $category->products()->exists()) {
             return false;
         }
 
@@ -75,6 +75,7 @@ class GenerateCategoryListingSnapshot implements ShouldQueue
         $browsershot = Browsershot::url($categoryUrl)
             ->userAgent('Mozilla/5.0 (compatible; ' . static::USER_AGENT_TOKEN . '/1.0)')
             ->windowSize(1440, 900)
+            ->timeout(45)
             ->waitUntilNetworkIdle()
             ->waitForSelector('#listing-content[data-listing-loaded]', ['timeout' => 15000]);
 

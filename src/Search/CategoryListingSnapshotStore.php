@@ -13,6 +13,10 @@ class CategoryListingSnapshotStore
 {
     public function get(Category $category, ?Request $request = null): ?string
     {
+        if (! config('rapidez.ssr.enabled') || ! class_exists(Browsershot::class)) {
+            return null;
+        }
+
         $request ??= request();
         $query = $this->listingQuery($request);
 
@@ -44,6 +48,11 @@ class CategoryListingSnapshotStore
         );
     }
 
+    public function flush(int $storeId): void
+    {
+        Cache::forever($this->versionKey($storeId), $this->version($storeId) + 1);
+    }
+
     public function releaseLock(int $categoryId, array $query = []): void
     {
         Cache::forget($this->lockKey($categoryId, $query));
@@ -51,10 +60,6 @@ class CategoryListingSnapshotStore
 
     protected function shouldServe(Request $request, array $query): bool
     {
-        if (! config('rapidez.ssr.enabled') || ! class_exists(Browsershot::class)) {
-            return false;
-        }
-
         if (str_contains((string) $request->userAgent(), GenerateCategoryListingSnapshot::USER_AGENT_TOKEN)) {
             return false;
         }
@@ -88,17 +93,31 @@ class CategoryListingSnapshotStore
             return;
         }
 
-        GenerateCategoryListingSnapshot::dispatch($category->entity_id, (int) config('rapidez.store'), $query);
+        $job = GenerateCategoryListingSnapshot::dispatch($category->entity_id, (int) config('rapidez.store'), $query);
+
+        if (config('queue.default') === 'sync') {
+            $job->afterResponse();
+        }
     }
 
     protected function snapshotKey(int $categoryId, array $query): string
     {
-        return 'category-listing-snapshot-' . $this->keySuffix($categoryId, $query);
+        return 'category-listing-snapshot-' . $this->version((int) config('rapidez.store')) . '-' . $this->keySuffix($categoryId, $query);
     }
 
     protected function lockKey(int $categoryId, array $query): string
     {
         return 'category-listing-snapshot-lock-' . $this->keySuffix($categoryId, $query);
+    }
+
+    protected function version(int $storeId): int
+    {
+        return (int) Cache::get($this->versionKey($storeId), 0);
+    }
+
+    protected function versionKey(int $storeId): string
+    {
+        return 'category-listing-snapshot-version-' . $storeId;
     }
 
     protected function keySuffix(int $categoryId, array $query): string
