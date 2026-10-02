@@ -53,6 +53,10 @@ export default {
             type: Function,
             default: (items) => items,
         },
+        hasSnapshot: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data: () => ({
@@ -61,6 +65,8 @@ export default {
         destroyed: false,
         utmFields: [],
         instantSearchInstance: null,
+        loaded: false,
+        failed: false,
     }),
 
     render() {
@@ -71,7 +77,19 @@ export default {
         this.destroyed = true
     },
 
+    watch: {
+        rendered(rendered) {
+            if (rendered) {
+                window.$emit('listing:rendered')
+            }
+        },
+    },
+
     computed: {
+        rendered() {
+            return !this.hasSnapshot || this.loaded || this.failed
+        },
+
         hitsPerPage() {
             let hasDefault = this.$root.config.grid_per_page_values.includes(this.$root.config.grid_per_page)
 
@@ -135,7 +153,21 @@ export default {
                     this.instantSearchInstance = instantSearchInstance
                     return {
                         onStateChange: () => {},
-                        subscribe: () => {},
+                        subscribe: () => {
+                            const onRender = () => {
+                                if (instantSearchInstance.status === 'error') {
+                                    this.failed = true
+                                } else if (instantSearchInstance.helper?.lastResults) {
+                                    this.loaded = true
+                                } else {
+                                    return
+                                }
+
+                                instantSearchInstance.removeListener('render', onRender)
+                            }
+
+                            instantSearchInstance.addListener('render', onRender)
+                        },
                         unsubscribe: () => {},
                     }
                 },

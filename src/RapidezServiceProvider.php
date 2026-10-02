@@ -37,6 +37,7 @@ use Rapidez\Core\Http\Middleware\CheckStoreCode;
 use Rapidez\Core\Http\Middleware\ConfigForTesting;
 use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
 use Rapidez\Core\Http\Middleware\Uncacheable;
+use Rapidez\Core\Listeners\FlushListingSnapshots;
 use Rapidez\Core\Listeners\Healthcheck\ElasticsearchHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\MagentoSettingsHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\ModelsHealthcheck;
@@ -62,6 +63,7 @@ class RapidezServiceProvider extends ServiceProvider
         'models',
         'routing',
         'searchkit',
+        'ssr',
         'system',
     ];
 
@@ -288,6 +290,7 @@ elseif (!app()->environment('production')) { echo 'Turbo frame \"' . {$frame} .'
     {
         Event::listen(ProductViewEvent::class, ReportProductView::class);
         Event::listen(IndexStoreAfterEvent::class, WarmProductMappings::class);
+        Event::listen(IndexStoreAfterEvent::class, FlushListingSnapshots::class);
 
         ModelsHealthcheck::register();
         MagentoSettingsHealthcheck::register();
