@@ -29,10 +29,10 @@ export class SessionExpired extends FetchError {
 }
 window.SessionExpired = SessionExpired
 
-export class GraphQLInputError extends GraphQLError {
-    constructor(errors, response) {
-        super(errors, response)
-        this.message = errors.find((error) => error?.extensions?.category === 'graphql-input')?.message ?? this.message
+export class GraphQLInputError extends FetchError {
+    constructor(message, response) {
+        super(message, response)
+        this.name = this.constructor.name
     }
 }
 window.GraphQLInputError = GraphQLInputError
@@ -167,8 +167,13 @@ export const magentoGraphQL = (window.magentoGraphQL = async (
         if (errors.length) {
             console.error(data.errors)
             errors.forEach((error) => {
+                const category = error?.extensions?.category
+                if (category === 'graphql-input') {
+                    throw new GraphQLInputError(error.message, responseClone)
+                }
+
                 if (
-                    !['graphql-authorization', 'graphql-authentication'].includes(error?.extensions?.category) ||
+                    !['graphql-authorization', 'graphql-authentication'].includes(category) ||
                     error.path?.includes('generateCustomerToken')
                 ) {
                     return
@@ -184,10 +189,6 @@ export const magentoGraphQL = (window.magentoGraphQL = async (
                     throw new SessionExpired(window.config.translations.errors.session_expired, responseClone)
                 }
             })
-
-            if (errors.some((error) => error?.extensions?.category === 'graphql-input')) {
-                throw new GraphQLInputError(data.errors, responseClone)
-            }
 
             throw new GraphQLError(data.errors, responseClone)
         } else if (cartErrors.length && options.retryOnCartError) {

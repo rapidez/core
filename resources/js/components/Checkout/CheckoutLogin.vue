@@ -157,7 +157,7 @@ export default {
             await debouncePromise(this)
         },
         error: function (error) {
-            this.$el?.querySelector?.('input[name="email"]')?.setCustomValidity(error ?? '')
+            this.$el?.parentNode?.querySelector?.('input[name="email"]')?.setCustomValidity(error ?? '')
         },
         isEmailAvailable: function (isAvailable) {
             if (!isAvailable) {
