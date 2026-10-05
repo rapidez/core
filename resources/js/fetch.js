@@ -29,6 +29,14 @@ export class SessionExpired extends FetchError {
 }
 window.SessionExpired = SessionExpired
 
+export class GraphQLInputError extends GraphQLError {
+    constructor(errors, response) {
+        super(errors, response)
+        this.message = errors.find((error) => error?.extensions?.category === 'graphql-input')?.message ?? this.message
+    }
+}
+window.GraphQLInputError = GraphQLInputError
+
 export const rapidezFetch = (window.rapidezFetch = (...args) => {
     const result = fetch.apply(this, args)
     addFetch(result)
@@ -176,6 +184,10 @@ export const magentoGraphQL = (window.magentoGraphQL = async (
                     throw new SessionExpired(window.config.translations.errors.session_expired, responseClone)
                 }
             })
+
+            if (errors.some((error) => error?.extensions?.category === 'graphql-input')) {
+                throw new GraphQLInputError(data.errors, responseClone)
+            }
 
             throw new GraphQLError(data.errors, responseClone)
         } else if (cartErrors.length && options.retryOnCartError) {
