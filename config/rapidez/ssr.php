@@ -1,8 +1,11 @@
 <?php
 
 return [
-    // Enable SSR for listings (categories and productlists)? This requires spatie/browsershot!
+    // Enable SSR for listings? This requires spatie/browsershot!
     'enabled' => env('RAPIDEZ_SSR', false),
+
+    // Also for productlists by default? Per productlist with: <x-rapidez::productlist :snapshot="true" ...>
+    'productlists' => env('RAPIDEZ_SSR_PRODUCTLISTS', false),
 
     // Time to serve the snapshots
     'ttl'       => env('RAPIDEZ_SSR_TTL', 60),
@@ -10,6 +13,9 @@ return [
 
     // Also save snapshots for filter urls?
     'filters' => env('RAPIDEZ_SSR_FILTERS', false),
+
+    // Queue to capture the snapshots on, as it uses a headless browser.
+    'queue' => env('RAPIDEZ_SSR_QUEUE'),
 
     // Browsershot/Puppeteer options, see https://spatie.be/docs/browsershot.
     'browsershot' => [

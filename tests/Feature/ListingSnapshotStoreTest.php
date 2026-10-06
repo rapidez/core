@@ -69,6 +69,16 @@ class ListingSnapshotStoreTest extends TestCase
     }
 
     #[Test]
+    public function it_queues_on_the_configured_queue()
+    {
+        config(['rapidez.ssr.queue' => 'snapshots']);
+
+        $this->store->get('category-123', request: $this->request());
+
+        Queue::assertPushedOn('snapshots', GenerateListingSnapshot::class);
+    }
+
+    #[Test]
     public function it_queues_again_once_the_lock_is_released()
     {
         $this->store->get('category-123', request: $this->request());
@@ -198,6 +208,32 @@ class ListingSnapshotStoreTest extends TestCase
         $this->store->get('category-123', request: $this->request());
 
         Bus::assertDispatchedAfterResponse(GenerateListingSnapshot::class);
+    }
+
+    #[Test]
+    public function the_id_ignores_unique_values_per_request()
+    {
+        $slot = fn () => '<div ref="' . uniqid('slider') . '" data-id="' . str()->uuid() . '">MS04</div>';
+
+        $this->assertEquals($this->store->id('productlist', ['MS04'], $slot()), $this->store->id('productlist', ['MS04'], $slot()));
+        $this->assertNotEquals($this->store->id('productlist', ['MS04'], $slot()), $this->store->id('productlist', ['MS05'], $slot()));
+        $this->assertStringStartsWith('productlist-', $this->store->id('productlist', ['MS04']));
+    }
+
+    #[Test]
+    public function it_stops_capturing_when_paused()
+    {
+        $this->store->put('category-123', ['default' => '<div>snapshot</div>']);
+        $this->travel(61)->minutes();
+        $this->store->pause();
+
+        $this->assertEquals(['default' => '<div>snapshot</div>'], $this->store->get('category-123', request: $this->request()));
+        $this->assertEquals([], $this->store->get('category-456', request: $this->request()));
+        Queue::assertNothingPushed();
+
+        $this->travel(61)->minutes();
+        $this->store->get('category-456', request: $this->request());
+        Queue::assertPushed(GenerateListingSnapshot::class, 1);
     }
 
     protected function request(string $query = '', string $userAgent = 'Mozilla/5.0'): Request

@@ -23,6 +23,21 @@ class ListingSnapshotStore
     }
 
     /**
+     * Generate an id based on the definition of a listing, so the same listing on different pages shares the snapshot.
+     */
+    public function id(string $type, mixed ...$definition): string
+    {
+        // Unique values per request, like a uniqid() slider reference, would result in a new snapshot every time.
+        $definition = preg_replace(
+            '/[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}|[0-9a-f]{13}(?![0-9a-f])/i',
+            '',
+            (string) json_encode($definition, JSON_INVALID_UTF8_SUBSTITUTE),
+        );
+
+        return $type . '-' . md5((string) $definition);
+    }
+
+    /**
      * Get the snapshot parts (part => html) of a listing and queue a (re)generation when needed.
      * Routed listings, like the category listing, get a snapshot per filter combination.
      *
@@ -45,7 +60,7 @@ class ListingSnapshotStore
         $key = $id . ($query ? '-' . md5(http_build_query($query)) : '');
         $snapshot = Cache::get($this->snapshotKey($key));
 
-        if (! is_array($snapshot) || ! isset($snapshot['parts']) || $snapshot['fresh_until'] < now()->getTimestamp()) {
+        if (! is_array($snapshot['parts'] ?? null) || $snapshot['fresh_until'] < now()->getTimestamp()) {
             $this->queueGeneration($key, $id, $request->getPathInfo() . ($query ? '?' . http_build_query($query) : ''));
         }
 
@@ -104,14 +119,26 @@ class ListingSnapshotStore
             ->all();
     }
 
+    /**
+     * Stop capturing snapshots for the current store for a while, for example when it's misconfigured.
+     */
+    public function pause(): void
+    {
+        Cache::put('listing-snapshot-paused-' . config('rapidez.store'), true, now()->addMinutes((int) config('rapidez.ssr.ttl', 60)));
+    }
+
     protected function queueGeneration(string $key, string $id, string $path): void
     {
+        if (Cache::has('listing-snapshot-paused-' . config('rapidez.store'))) {
+            return;
+        }
+
         // Make sure we're not dispatching the same snapshot multiple times.
         if (! Cache::add($this->lockKey($key), true, now()->addMinutes(5))) {
             return;
         }
 
-        $job = GenerateListingSnapshot::dispatch($key, $id, $path, (int) config('rapidez.store'));
+        $job = GenerateListingSnapshot::dispatch($key, $id, $path, (int) config('rapidez.store'))->onQueue(config('rapidez.ssr.queue'));
 
         if (config('queue.default') === 'sync') {
             $job->afterResponse();

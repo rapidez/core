@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Search\ListingSnapshotStore;
 use RuntimeException;
@@ -40,22 +41,34 @@ class GenerateListingSnapshot implements ShouldQueue
     protected function generate(ListingSnapshotStore $store): bool
     {
         try {
-            $result = json_decode($this->render(url($this->path)), true, flags: JSON_THROW_ON_ERROR);
+            $url = rtrim(Rapidez::config('web/secure/base_url') ?: url('/'), '/') . $this->path;
+            $result = json_decode($this->render($url), true, flags: JSON_THROW_ON_ERROR);
 
-            throw_if(
-                (string) ($result['store'] ?? '') !== (string) $this->storeId,
-                RuntimeException::class,
-                'Captured listing snapshot "' . $this->id . '" belongs to store "' . ($result['store'] ?? '') . '" instead of "' . $this->storeId . '", make sure the url resolves to the right store.'
-            );
+            if ((string) ($result['store'] ?? '') !== (string) $this->storeId) {
+                // All snapshots of this store will end up on the wrong store.
+                $store->pause();
+
+                throw new RuntimeException('Captured listing snapshot "' . $this->id . '" on ' . $url . ' belongs to store "' . ($result['store'] ?? '') . '" instead of "' . $this->storeId . '", make sure web/secure/base_url of the store is its url.');
+            }
         } catch (Throwable $e) {
             report($e);
 
             return false;
         }
 
-        // Also store an empty result, when the listing isn't on the page or has no results,
-        // so we're not trying again on every page view.
-        $parts = ($result['hits'] ?? 0) ? array_filter($result['parts'] ?? [], fn ($html) => trim($html)) : [];
+        // Not on the page for the headless browser, for example because it depends on the
+        // visitor. Not stored as the snapshot can be shared with other pages, so we try again later.
+        if ($result['absent'] ?? true) {
+            if (($result['status'] ?? 200) >= 400) {
+                Log::warning('Capturing listing snapshot "' . $this->id . '" failed with status ' . $result['status'] . ' on ' . $url);
+            }
+
+            return false;
+        }
+
+        // Also store an empty result, when there are no results or it's too big, so we're not trying again on every page view.
+        $parts = array_filter($result['parts'] ?? [], fn ($html) => trim($html));
+        $parts = ($result['hits'] ?? 0) && strlen(implode($parts)) < 2_000_000 ? $parts : [];
         $store->put($this->key, $parts);
 
         return true;
@@ -71,9 +84,13 @@ class GenerateListingSnapshot implements ShouldQueue
             ->timeout(45)
             // Lazy loaded listings, like the productlist, would otherwise wait until they're idle.
             ->evaluateOnNewDocument("document.addEventListener('vue:mounted', () => { window.ssrMounted = Date.now(); window.\$emit?.('load-lazy') })")
-            ->waitUntilNetworkIdle()
+            // Not strict, so open connections like a live chat don't block it.
+            ->waitUntilNetworkIdle(false)
             // Wait until the listing is loaded or, for example when it depends on the cart, isn't there at all.
-            ->waitForFunction(strtr("document.querySelector('SELECTOR[data-listing-loaded]') || (window.ssrMounted < Date.now() - 3000 && ! document.querySelector('SELECTOR'))", ['SELECTOR' => $selector]), timeout: 15000);
+            ->waitForFunction(strtr(
+                "document.querySelector('SELECTOR[data-listing-loaded]') || (! document.querySelector('SELECTOR') && (Date.now() - window.ssrMounted > 3000 || performance.now() > 10000))",
+                ['SELECTOR' => $selector],
+            ), timeout: 15000);
 
         if (config('rapidez.ssr.browsershot.no_sandbox')) {
             $browsershot->noSandbox();
@@ -146,10 +163,14 @@ class GenerateListingSnapshot implements ShouldQueue
 
                     part.querySelectorAll('form').forEach((form) => replace(form, 'div'))
 
-                    // Remove ID's to keep them unique when Vue kicks in.
-                    part.querySelectorAll('[id], [for], [data-testid]').forEach((element) => {
+                    // Scripts would run again and are already in the real listing.
+                    part.querySelectorAll('script').forEach((script) => script.remove())
+
+                    // Keep ID's and radio groups unique while the real listing is rendered next to it.
+                    part.querySelectorAll('[id], [for], [name], [data-testid]').forEach((element) => {
                         element.removeAttribute('id')
                         element.removeAttribute('for')
+                        element.removeAttribute('name')
                         element.removeAttribute('data-testid')
                     })
 
@@ -157,7 +178,13 @@ class GenerateListingSnapshot implements ShouldQueue
                     parts[name] = (parts[name] ?? '') + part.innerHTML
                 })
 
-                return JSON.stringify({ store: window.config?.store, hits, parts })
+                return JSON.stringify({
+                    store: window.config?.store,
+                    status: performance.getEntriesByType('navigation')[0]?.responseStatus,
+                    absent: !elements.length,
+                    hits,
+                    parts,
+                })
             }
         JS . ')(' . json_encode($selector) . ')');
     }
