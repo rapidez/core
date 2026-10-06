@@ -1,5 +1,12 @@
 <script>
 export default {
+    props: {
+        snapshotId: {
+            type: String,
+            required: true,
+        },
+    },
+
     data: () => ({
         visible: true,
     }),
@@ -9,8 +16,10 @@ export default {
     },
 
     methods: {
-        hide() {
-            this.visible = false
+        hide(snapshotId) {
+            if (snapshotId === this.snapshotId) {
+                this.visible = false
+            }
         },
     },
 

@@ -1,4 +1,4 @@
-@props(['value', 'title' => false, 'field' => 'sku'])
+@props(['value', 'title' => false, 'field' => 'sku', 'snapshot' => true])
 @slots(['items'])
 
 {{--
@@ -7,9 +7,20 @@ Examples:
 <x-rapidez::productlist value="productIds" field="entity_id"/>
 <x-rapidez::productlist :value="false" filter-query-string="sku:MS04,MS05,MS09"/>
 <x-rapidez::productlist :value="false" v-bind:base-filters="() => [{dslQuery}}]"/>
+<x-rapidez::productlist value="cart.items" :snapshot="false"/> (no SSR snapshot, for example when it depends on the visitor)
 --}}
 
 @if (!is_iterable($value) || count($value))
+    @php
+        // Based on the definition, so the same productlist on different pages shares the snapshot. A string
+        // value is evaluated in the browser and probably depends on the page, like the related products.
+        $snapshotId = config('rapidez.ssr.enabled') && $snapshot
+            ? 'productlist-' . md5(json_encode([$value, $field, $title, $attributes->getAttributes(), (string) ($before ?? ''), (string) $items, (string) ($after ?? ''), is_string($value) ? request()->getPathInfo() : null]))
+            : null;
+        $snapshotParts = $snapshotId ? app(\Rapidez\Core\Search\ListingSnapshotStore::class)->get($snapshotId) : [];
+    @endphp
+
+    @if ($snapshotParts) <div> @endif
     <lazy v-slot="{ intersected }">
         @if (is_string($value)) <template v-if="{{ $value }}.length"> @endif
             <listing
@@ -17,6 +28,8 @@ Examples:
                 v-if="intersected"
                 v-slot="listingSlotProps"
                 v-cloak
+                @if ($snapshotId) snapshot-id="{{ $snapshotId }}" @endif
+                @if ($snapshotParts) v-bind:has-snapshot="true" @endif
             >
                 <div ref="root">
                     <ais-instant-search
@@ -35,7 +48,12 @@ Examples:
                             @endif
                         @endslotdefault
 
-                        <ais-hits v-slot="{ items, sendEvent }" v-bind:transform-items="listingSlotProps.transformItems">
+                        <ais-hits
+                            v-slot="{ items, sendEvent }"
+                            v-bind:transform-items="listingSlotProps.transformItems"
+                            v-show="listingSlotProps.rendered"
+                            v-bind="listingSlotProps.snapshotAttributes()"
+                        >
                             <div v-if="items.length" class="flex flex-col gap-5">
                                 @if ($title)
                                     <strong class="font-bold text-2xl">
@@ -54,4 +72,9 @@ Examples:
             </listing>
         @if (is_string($value)) </template> @endif
     </lazy>
+    @if ($snapshotParts)
+        {{-- After the lazy component, so that doesn't move when the snapshot is replaced. --}}
+        <x-rapidez::listing-snapshot :id="$snapshotId"/>
+        </div>
+    @endif
 @endif

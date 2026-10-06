@@ -4,7 +4,7 @@ namespace Rapidez\Core\Listeners;
 
 use Rapidez\Core\Commands\IndexCommand;
 use Rapidez\Core\Events\IndexStoreAfterEvent;
-use Rapidez\Core\Search\CategoryListingSnapshotStore;
+use Rapidez\Core\Search\ListingSnapshotStore;
 
 class FlushListingSnapshots
 {
@@ -15,6 +15,6 @@ class FlushListingSnapshots
             return;
         }
 
-        app(CategoryListingSnapshotStore::class)->flush($event->store);
+        app(ListingSnapshotStore::class)->flush($event->store);
     }
 }

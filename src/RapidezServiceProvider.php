@@ -46,6 +46,7 @@ use Rapidez\Core\Listeners\ReportProductView;
 use Rapidez\Core\Listeners\UpdateLatestIndexDate;
 use Rapidez\Core\Listeners\WarmProductMappings;
 use Rapidez\Core\Models\Model;
+use Rapidez\Core\Search\ListingSnapshotStore;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
@@ -497,6 +498,7 @@ elseif (!app()->environment('production')) { echo 'Turbo frame \"' . {$frame} .'
     {
         $this->app->singleton('rapidez', Rapidez::class);
         $this->app->bind('widget-directive', WidgetDirective::class);
+        $this->app->scoped(ListingSnapshotStore::class);
 
         return $this;
     }

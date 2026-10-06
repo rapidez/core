@@ -2,8 +2,6 @@
 
 namespace Rapidez\Core\Http\Controllers;
 
-use Rapidez\Core\Search\CategoryListingSnapshotStore;
-
 class CategoryController
 {
     public function show(int $categoryId)
@@ -13,9 +11,7 @@ class CategoryController
 
         config(['frontend.category' => $category->only('entity_id')]);
 
-        $ssrListing = $category->is_anchor ? app(CategoryListingSnapshotStore::class)->get($category) : null;
-
-        $response = response()->view('rapidez::category.overview', compact('category', 'ssrListing'));
+        $response = response()->view('rapidez::category.overview', compact('category'));
 
         return $response
             ->setEtag(md5($response->getContent() ?? ''))

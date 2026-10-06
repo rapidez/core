@@ -1,7 +1,7 @@
 <?php
 
 return [
-    // Enable SSR for categories? This requires spatie/browsershot!
+    // Enable SSR for listings (categories and productlists)? This requires spatie/browsershot!
     'enabled' => env('RAPIDEZ_SSR', false),
 
     // Time to serve the snapshots
