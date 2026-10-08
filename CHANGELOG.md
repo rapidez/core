@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.10.0...5.10.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.11.0...5.11.0)
+## [5.11.0](https://github.com/rapidez/core/releases/tag/5.11.0) - 2026-10-08
+
+### Changed
+
+- Revert "SSR on categories and productlists (#1384)" (#1421)
+
+
+
 ## [5.10.0](https://github.com/rapidez/core/releases/tag/5.10.0) - 2026-10-08
 
 ### Added
