@@ -37,6 +37,7 @@ use Rapidez\Core\Http\Middleware\CheckStoreCode;
 use Rapidez\Core\Http\Middleware\ConfigForTesting;
 use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
 use Rapidez\Core\Http\Middleware\Uncacheable;
+use Rapidez\Core\Listeners\FlushListingSnapshots;
 use Rapidez\Core\Listeners\Healthcheck\ElasticsearchHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\MagentoSettingsHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\ModelsHealthcheck;
@@ -45,6 +46,7 @@ use Rapidez\Core\Listeners\ReportProductView;
 use Rapidez\Core\Listeners\UpdateLatestIndexDate;
 use Rapidez\Core\Listeners\WarmProductMappings;
 use Rapidez\Core\Models\Model;
+use Rapidez\Core\Search\ListingSnapshotStore;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
@@ -62,6 +64,7 @@ class RapidezServiceProvider extends ServiceProvider
         'models',
         'routing',
         'searchkit',
+        'ssr',
         'system',
     ];
 
@@ -288,6 +291,7 @@ elseif (!app()->environment('production')) { echo 'Turbo frame \"' . {$frame} .'
     {
         Event::listen(ProductViewEvent::class, ReportProductView::class);
         Event::listen(IndexStoreAfterEvent::class, WarmProductMappings::class);
+        Event::listen(IndexStoreAfterEvent::class, FlushListingSnapshots::class);
 
         ModelsHealthcheck::register();
         MagentoSettingsHealthcheck::register();
@@ -494,6 +498,7 @@ elseif (!app()->environment('production')) { echo 'Turbo frame \"' . {$frame} .'
     {
         $this->app->singleton('rapidez', Rapidez::class);
         $this->app->bind('widget-directive', WidgetDirective::class);
+        $this->app->scoped(ListingSnapshotStore::class);
 
         return $this;
     }
