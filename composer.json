@@ -39,11 +39,7 @@
     "require-dev": {
         "larastan/larastan": "^3.1",
         "orchestra/testbench": "^10.0|^11.0",
-        "phpunit/phpunit": "^11.3.5",
-        "spatie/browsershot": "^5.0"
-    },
-    "suggest": {
-        "spatie/browsershot": "Required for SSR listing snapshots (rapidez.ssr.enabled)"
+        "phpunit/phpunit": "^11.3.5"
     },
     "autoload": {
         "psr-4": {
