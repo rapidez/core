@@ -53,13 +53,6 @@ export default {
             type: Function,
             default: (items) => items,
         },
-        snapshotId: {
-            type: String,
-        },
-        hasSnapshot: {
-            type: Boolean,
-            default: false,
-        },
     },
 
     data: () => ({
@@ -68,9 +61,6 @@ export default {
         destroyed: false,
         utmFields: [],
         instantSearchInstance: null,
-        loaded: false,
-        failed: false,
-        hits: 0,
     }),
 
     render() {
@@ -81,19 +71,7 @@ export default {
         this.destroyed = true
     },
 
-    watch: {
-        rendered(rendered) {
-            if (rendered) {
-                window.$emit('listing:rendered', this.snapshotId)
-            }
-        },
-    },
-
     computed: {
-        rendered() {
-            return !this.hasSnapshot || this.loaded || this.failed
-        },
-
         hitsPerPage() {
             let hasDefault = this.$root.config.grid_per_page_values.includes(this.$root.config.grid_per_page)
 
@@ -151,41 +129,13 @@ export default {
     },
 
     methods: {
-        // Marks the elements to capture as (a part of) the SSR snapshot, see GenerateListingSnapshot.
-        snapshotAttributes(part = 'default') {
-            if (!this.snapshotId) {
-                return {}
-            }
-
-            return {
-                'data-listing-snapshot': this.snapshotId,
-                'data-listing-snapshot-part': part,
-                'data-listing-loaded': this.loaded ? this.hits : null,
-            }
-        },
-
         getMiddlewares() {
             return [
                 ({ instantSearchInstance }) => {
                     this.instantSearchInstance = instantSearchInstance
                     return {
                         onStateChange: () => {},
-                        subscribe: () => {
-                            const onRender = () => {
-                                if (instantSearchInstance.status === 'error') {
-                                    this.failed = true
-                                } else if (instantSearchInstance.helper?.lastResults) {
-                                    this.hits = instantSearchInstance.helper.lastResults.nbHits
-                                    this.loaded = true
-                                } else {
-                                    return
-                                }
-
-                                instantSearchInstance.removeListener('render', onRender)
-                            }
-
-                            instantSearchInstance.addListener('render', onRender)
-                        },
+                        subscribe: () => {},
                         unsubscribe: () => {},
                     }
                 },

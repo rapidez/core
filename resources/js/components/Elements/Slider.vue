@@ -69,9 +69,6 @@ export default {
         this.initScrollState()
         this.$nextTick(() => {
             useResizeObserver(this.slider, useThrottleFn(this.updateSpan, 150, true, true))
-            // Measure before mounting so the indicator and buttons are right on the first render.
-            this.measureSpan()
-            this.resetMeasure()
             this.mounted = true
             if (this.loop) {
                 this.initLoop()
@@ -220,16 +217,14 @@ export default {
             setTimeout(() => {
                 let slide = this.childSpan == 0 ? 0 : this.currentSlide
 
-                this.measureSpan()
-                this.navigate(slide, 'instant')
-            })
-        },
-        measureSpan() {
-            this.childSpan = this.vertical
-                ? (this.container?.children[0]?.offsetHeight ?? this.container?.offsetHeight)
-                : (this.container?.children[0]?.offsetWidth ?? this.container?.offsetWidth)
+                this.childSpan = this.vertical
+                    ? (this.container?.children[0]?.offsetHeight ?? this.container?.offsetHeight)
+                    : (this.container?.children[0]?.offsetWidth ?? this.container?.offsetWidth)
 
-            this.sliderSpan = this.vertical ? this.container?.offsetHeight : this.container?.offsetWidth
+                this.navigate(slide, 'instant')
+
+                this.sliderSpan = this.vertical ? this.container?.offsetHeight : this.container?.offsetWidth
+            })
         },
     },
     watch: {
