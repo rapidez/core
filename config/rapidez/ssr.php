@@ -4,7 +4,7 @@ return [
     // Enable SSR for listings? This requires spatie/browsershot!
     'enabled' => env('RAPIDEZ_SSR', false),
 
-    // Also for productlists by default? Per productlist with: <x-rapidez::productlist :snapshot="true" ...>
+    // Also for productlists? Disable it per productlist with: <x-rapidez::productlist :snapshot="false" ...>
     'productlists' => env('RAPIDEZ_SSR_PRODUCTLISTS', false),
 
     // Time to serve the snapshots

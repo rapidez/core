@@ -13,6 +13,9 @@ class ListingSnapshotStore
     /** @var array<string, array<string, string>> */
     protected array $resolved = [];
 
+    /** @var array<int, array<string, array<string, string>>> */
+    protected array $pending = [];
+
     public function enabled(?Request $request = null): bool
     {
         $request ??= request();
@@ -145,9 +148,44 @@ class ListingSnapshotStore
             return;
         }
 
-        $job = GenerateListingSnapshot::dispatch($key, $id, $path, (int) config('rapidez.store'))->onQueue(config('rapidez.ssr.queue'));
+        $storeId = (int) config('rapidez.store');
 
-        if (config('queue.default') === 'sync') {
+        // Only a web request terminates after rendering the page, so in the console (like a queue worker) dispatch it directly.
+        if (app()->runningInConsole() && ! app()->runningUnitTests()) {
+            $this->dispatch([$key => $id], $path, $storeId);
+
+            return;
+        }
+
+        // Generate all snapshots of a page with one headless browser after the response.
+        if (! $this->pending) {
+            app()->terminating(fn () => $this->dispatchPending());
+        }
+
+        $this->pending[$storeId][$path][$key] = $id;
+    }
+
+    public function dispatchPending(): void
+    {
+        $pending = $this->pending;
+        $this->pending = [];
+
+        foreach ($pending as $storeId => $paths) {
+            foreach ($paths as $path => $snapshots) {
+                $this->dispatch($snapshots, $path, $storeId, afterResponse: false);
+            }
+        }
+    }
+
+    /**
+     * @param  array<string, string>  $snapshots
+     */
+    protected function dispatch(array $snapshots, string $path, int $storeId, bool $afterResponse = true): void
+    {
+        $job = GenerateListingSnapshot::dispatch($snapshots, $path, $storeId)->onQueue(config('rapidez.ssr.queue'));
+
+        // Without a queue worker the job runs directly, so not before the response is sent.
+        if ($afterResponse && config('queue.default') === 'sync') {
             $job->afterResponse();
         }
     }

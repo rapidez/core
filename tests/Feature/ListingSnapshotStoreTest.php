@@ -41,6 +41,7 @@ class ListingSnapshotStoreTest extends TestCase
         $this->store->put('category-123', ['default' => '<div>snapshot</div>']);
 
         $this->assertEquals([], $this->store->get('category-123', request: $this->request()));
+        $this->app->terminate();
         Queue::assertNothingPushed();
     }
 
@@ -50,6 +51,7 @@ class ListingSnapshotStoreTest extends TestCase
         $request = $this->request(userAgent: 'Mozilla/5.0 (compatible; ' . GenerateListingSnapshot::USER_AGENT_TOKEN . '/1.0)');
 
         $this->assertEquals([], $this->store->get('category-123', request: $request));
+        $this->app->terminate();
         Queue::assertNothingPushed();
     }
 
@@ -59,11 +61,11 @@ class ListingSnapshotStoreTest extends TestCase
         $this->assertEquals([], $this->store->get('productlist-abc', request: $this->request()));
         $this->assertEquals([], $this->store->get('productlist-abc', request: $this->request()));
 
+        $this->app->terminate();
         Queue::assertPushed(GenerateListingSnapshot::class, 1);
         Queue::assertPushed(
             GenerateListingSnapshot::class,
-            fn ($job) => $job->key === 'productlist-abc'
-                && $job->id === 'productlist-abc'
+            fn ($job) => $job->snapshots === ['productlist-abc' => 'productlist-abc']
                 && $job->path === '/some-page.html'
                 && $job->storeId === (int) config('rapidez.store')
         );
@@ -76,6 +78,7 @@ class ListingSnapshotStoreTest extends TestCase
 
         $this->store->get('category-123', request: $this->request());
 
+        $this->app->terminate();
         Queue::assertPushedOn('snapshots', GenerateListingSnapshot::class);
     }
 
@@ -83,9 +86,11 @@ class ListingSnapshotStoreTest extends TestCase
     public function it_queues_again_once_the_lock_is_released()
     {
         $this->store->get('category-123', request: $this->request());
+        $this->app->terminate();
         $this->store->releaseLock('category-123');
         $this->store->get('category-123', request: $this->request());
 
+        $this->app->terminate();
         Queue::assertPushed(GenerateListingSnapshot::class, 2);
     }
 
@@ -100,6 +105,7 @@ class ListingSnapshotStoreTest extends TestCase
         );
         $this->assertEquals('<div>filters</div>', $this->store->part('category-123', 'filters'));
         $this->assertNull($this->store->part('category-123', 'unknown'));
+        $this->app->terminate();
         Queue::assertNothingPushed();
     }
 
@@ -111,8 +117,9 @@ class ListingSnapshotStoreTest extends TestCase
         $this->assertEquals('<div>products</div>', $this->store->part('category-123', 'products', request: $this->request()));
         $this->assertNull($this->store->part('category-456', 'products', request: $this->request()));
         $this->assertNull($this->store->part('category-456', 'filters', request: $this->request()));
+        $this->app->terminate();
         Queue::assertPushed(GenerateListingSnapshot::class, 1);
-        Queue::assertPushed(GenerateListingSnapshot::class, fn ($job) => $job->id === 'category-456');
+        Queue::assertPushed(GenerateListingSnapshot::class, fn ($job) => $job->snapshots === ['category-456' => 'category-456']);
     }
 
     #[Test]
@@ -122,6 +129,7 @@ class ListingSnapshotStoreTest extends TestCase
 
         $this->assertNull($this->store->part('category-123', 'products', true, $this->request('?super_color=red')));
         $this->assertEquals('<div>unfiltered</div>', (new ListingSnapshotStore)->part('category-123', 'products', request: $this->request('?super_color=red')));
+        $this->app->terminate();
         Queue::assertNothingPushed();
     }
 
@@ -131,11 +139,13 @@ class ListingSnapshotStoreTest extends TestCase
         $this->store->put('productlist-abc', []);
 
         $this->assertEquals([], $this->store->get('productlist-abc', request: $this->request()));
+        $this->app->terminate();
         Queue::assertNothingPushed();
 
         $this->travel(61)->minutes();
 
         $this->store->get('productlist-abc', request: $this->request());
+        $this->app->terminate();
         Queue::assertPushed(GenerateListingSnapshot::class, 1);
     }
 
@@ -148,6 +158,7 @@ class ListingSnapshotStoreTest extends TestCase
         $this->travel(90)->minutes();
 
         $this->assertEquals(['default' => '<div>snapshot</div>'], $this->store->get('category-123', request: $this->request()));
+        $this->app->terminate();
         Queue::assertPushed(GenerateListingSnapshot::class, 1);
 
         $this->travel(60)->minutes();
@@ -164,6 +175,7 @@ class ListingSnapshotStoreTest extends TestCase
         $this->assertEquals([], $this->store->get('category-123', true, $this->request('?utm_source=newsletter&page=2')));
         $this->assertEquals([], $this->store->get('category-123', true, $this->request('?hits=24')));
         $this->assertEquals(['default' => '<div>snapshot</div>'], $this->store->get('category-123', true, $this->request('?utm_source=newsletter&gclid=abc&unknown=1')));
+        $this->app->terminate();
         Queue::assertNothingPushed();
     }
 
@@ -174,9 +186,9 @@ class ListingSnapshotStoreTest extends TestCase
         $this->store->put('category-123', ['default' => '<div>unfiltered</div>']);
 
         $this->assertEquals([], $this->store->get('category-123', true, $this->request('?super_color=blue&hits=24&gclid=abc')));
+        $this->app->terminate();
         Queue::assertPushed(GenerateListingSnapshot::class, function ($job) {
-            return $job->id === 'category-123'
-                && $job->key === 'category-123-' . md5('hits=24&super_color=blue')
+            return $job->snapshots === ['category-123-' . md5('hits=24&super_color=blue') => 'category-123']
                 && $job->path === '/some-page.html?hits=24&super_color=blue';
         });
 
@@ -192,6 +204,7 @@ class ListingSnapshotStoreTest extends TestCase
         $this->store->put('productlist-abc', ['default' => '<div>snapshot</div>']);
 
         $this->assertEquals(['default' => '<div>snapshot</div>'], $this->store->get('productlist-abc', request: $this->request('?super_color=red&page=2')));
+        $this->app->terminate();
         Queue::assertNothingPushed();
     }
 
@@ -206,6 +219,7 @@ class ListingSnapshotStoreTest extends TestCase
         $this->store->flush((int) config('rapidez.store'));
 
         $this->assertEquals([], $this->store->get('category-123', request: $this->request()));
+        $this->app->terminate();
         Queue::assertPushed(GenerateListingSnapshot::class, 1);
     }
 
@@ -222,14 +236,37 @@ class ListingSnapshotStoreTest extends TestCase
     }
 
     #[Test]
-    public function it_generates_after_the_response_with_the_sync_queue()
+    public function it_generates_after_the_response()
     {
         Bus::fake();
         config(['queue.default' => 'sync']);
 
         $this->store->get('category-123', request: $this->request());
+        Bus::assertNothingDispatched();
 
-        Bus::assertDispatchedAfterResponse(GenerateListingSnapshot::class);
+        $this->app->terminate();
+        Bus::assertDispatched(GenerateListingSnapshot::class);
+        Bus::assertNotDispatchedAfterResponse(GenerateListingSnapshot::class);
+    }
+
+    #[Test]
+    public function it_generates_the_snapshots_of_a_page_together()
+    {
+        $this->store->get('category-123', true, $this->request());
+        $this->store->get('productlist-abc', request: $this->request());
+        $this->store->get('productlist-def', request: Request::create('/other-page.html', server: ['HTTP_USER_AGENT' => 'Mozilla/5.0']));
+
+        $this->app->terminate();
+        Queue::assertPushed(GenerateListingSnapshot::class, 2);
+        Queue::assertPushed(
+            GenerateListingSnapshot::class,
+            fn ($job) => $job->snapshots === ['category-123' => 'category-123', 'productlist-abc' => 'productlist-abc'] && $job->path === '/some-page.html'
+        );
+        $this->app->terminate();
+        Queue::assertPushed(
+            GenerateListingSnapshot::class,
+            fn ($job) => $job->snapshots === ['productlist-def' => 'productlist-def'] && $job->path === '/other-page.html'
+        );
     }
 
     #[Test]
@@ -251,10 +288,12 @@ class ListingSnapshotStoreTest extends TestCase
 
         $this->assertEquals(['default' => '<div>snapshot</div>'], $this->store->get('category-123', request: $this->request()));
         $this->assertEquals([], $this->store->get('category-456', request: $this->request()));
+        $this->app->terminate();
         Queue::assertNothingPushed();
 
         $this->travel(61)->minutes();
         $this->store->get('category-456', request: $this->request());
+        $this->app->terminate();
         Queue::assertPushed(GenerateListingSnapshot::class, 1);
     }
 

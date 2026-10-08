@@ -27,18 +27,17 @@ class GenerateListingSnapshot implements ShouldQueue
 
     public int $timeout = 60;
 
-    public function __construct(public string $key, public string $id, public string $path, public int $storeId) {}
+    /**
+     * @param  array<string, string>  $snapshots  Cache key => listing id, all on the same page.
+     */
+    public function __construct(public array $snapshots, public string $path, public int $storeId) {}
 
     public function handle(ListingSnapshotStore $store): void
     {
-        Rapidez::withStore($this->storeId, function () use ($store) {
-            if ($this->generate($store)) {
-                $store->releaseLock($this->key);
-            }
-        });
+        Rapidez::withStore($this->storeId, fn () => $this->generate($store));
     }
 
-    protected function generate(ListingSnapshotStore $store): bool
+    protected function generate(ListingSnapshotStore $store): void
     {
         try {
             $url = rtrim(Rapidez::config('web/secure/base_url') ?: url('/'), '/') . $this->path;
@@ -48,35 +47,38 @@ class GenerateListingSnapshot implements ShouldQueue
                 // All snapshots of this store will end up on the wrong store.
                 $store->pause();
 
-                throw new RuntimeException('Captured listing snapshot "' . $this->id . '" on ' . $url . ' belongs to store "' . ($result['store'] ?? '') . '" instead of "' . $this->storeId . '", make sure web/secure/base_url of the store is its url.');
+                throw new RuntimeException('Captured listing snapshots on ' . $url . ' belong to store "' . ($result['store'] ?? '') . '" instead of "' . $this->storeId . '", make sure web/secure/base_url of the store is its url.');
             }
         } catch (Throwable $e) {
             report($e);
 
-            return false;
+            return;
         }
 
-        // Not on the page for the headless browser, for example because it depends on the
-        // visitor. Not stored as the snapshot can be shared with other pages, so we try again later.
-        if ($result['absent'] ?? true) {
-            if (($result['status'] ?? 200) >= 400) {
-                Log::warning('Capturing listing snapshot "' . $this->id . '" failed with status ' . $result['status'] . ' on ' . $url);
+        foreach ($this->snapshots as $key => $id) {
+            $listing = $result['listings'][$id] ?? [];
+
+            // Not (loaded) on the page for the headless browser, for example because it depends on the visitor.
+            // Not stored as the snapshot can be shared with other pages, so we try again later.
+            if (! ($listing['loaded'] ?? false)) {
+                if (($result['status'] ?? 200) >= 400) {
+                    Log::warning('Capturing listing snapshot "' . $id . '" failed with status ' . $result['status'] . ' on ' . $url);
+                }
+
+                continue;
             }
 
-            return false;
+            // Also store an empty result, when there are no results or it's too big, so we're not trying again on every page view.
+            $parts = array_filter($listing['parts'] ?? [], fn ($html) => trim($html));
+            $parts = ($listing['hits'] ?? 0) && strlen(implode($parts)) < 2_000_000 ? $parts : [];
+            $store->put($key, $parts);
+            $store->releaseLock($key);
         }
-
-        // Also store an empty result, when there are no results or it's too big, so we're not trying again on every page view.
-        $parts = array_filter($result['parts'] ?? [], fn ($html) => trim($html));
-        $parts = ($result['hits'] ?? 0) && strlen(implode($parts)) < 2_000_000 ? $parts : [];
-        $store->put($this->key, $parts);
-
-        return true;
     }
 
     protected function render(string $url): string
     {
-        $selector = '[data-listing-snapshot="' . $this->id . '"]';
+        $ids = json_encode(array_values(array_unique($this->snapshots)));
 
         $browsershot = Browsershot::url($url)
             ->userAgent('Mozilla/5.0 (compatible; ' . static::USER_AGENT_TOKEN . '/1.0)')
@@ -86,11 +88,16 @@ class GenerateListingSnapshot implements ShouldQueue
             ->evaluateOnNewDocument("document.addEventListener('vue:mounted', () => { window.ssrMounted = Date.now(); window.\$emit?.('load-lazy') })")
             // Not strict, so open connections like a live chat don't block it.
             ->waitUntilNetworkIdle(false)
-            // Wait until the listing is loaded or, for example when it depends on the cart, isn't there at all.
-            ->waitForFunction(strtr(
-                "document.querySelector('SELECTOR[data-listing-loaded]') || (! document.querySelector('SELECTOR') && (Date.now() - window.ssrMounted > 3000 || performance.now() > 10000))",
-                ['SELECTOR' => $selector],
-            ), timeout: 15000);
+            // Wait until the listings are loaded or, for example when it depends on the cart, aren't there at all.
+            // When one of them doesn't load at all, we continue with the others.
+            ->waitForFunction(strtr(<<<'JS'
+                IDS.every((id) => {
+                    const selector = `[data-listing-snapshot="${CSS.escape(id)}"]`
+
+                    return document.querySelector(selector + '[data-listing-loaded]')
+                        || (! document.querySelector(selector) && (Date.now() - window.ssrMounted > 3000 || performance.now() > 10000))
+                }) || performance.now() > 14000
+                JS, ['IDS' => $ids]), timeout: 15000);
 
         if (config('rapidez.ssr.browsershot.no_sandbox')) {
             $browsershot->noSandbox();
@@ -113,8 +120,8 @@ class GenerateListingSnapshot implements ShouldQueue
         }
 
         return $browsershot->evaluate('(' . <<<'JS'
-            async (selector) => {
-                // Give async components and teleports within the listing a moment to render.
+            async (ids) => {
+                // Give async components and teleports within the listings a moment to render.
                 let observer
                 await new Promise((resolve) => {
                     let timeout = setTimeout(resolve, 200)
@@ -127,10 +134,6 @@ class GenerateListingSnapshot implements ShouldQueue
                 })
                 observer.disconnect()
 
-                const elements = Array.from(document.querySelectorAll(selector))
-                const hits = Number(elements.find((element) => element.hasAttribute('data-listing-loaded'))?.dataset.listingLoaded ?? 0)
-                const parts = {}
-
                 const replace = (element, tagName) => {
                     const replacement = document.createElement(tagName)
                     Array.from(element.attributes).forEach((attribute) => replacement.setAttribute(attribute.name, attribute.value))
@@ -140,52 +143,62 @@ class GenerateListingSnapshot implements ShouldQueue
                     return replacement
                 }
 
-                elements.forEach((element) => {
-                    // The html only contains the attributes, not the current state.
-                    element.querySelectorAll('option').forEach((option) => option.toggleAttribute('selected', option.selected))
-                    element.querySelectorAll('input[type=checkbox], input[type=radio]').forEach((input) => input.toggleAttribute('checked', input.checked))
-                    element.querySelectorAll('input:not([type=checkbox]):not([type=radio])').forEach((input) => input.setAttribute('value', input.value))
+                const capture = (id) => {
+                    const elements = Array.from(document.querySelectorAll(`[data-listing-snapshot="${CSS.escape(id)}"]`))
+                    const loaded = elements.find((element) => element.hasAttribute('data-listing-loaded'))
+                    const parts = {}
 
-                    const part = element.cloneNode(true)
+                    elements.forEach((element) => {
+                        // The html only contains the attributes, not the current state.
+                        element.querySelectorAll('option').forEach((option) => option.toggleAttribute('selected', option.selected))
+                        element.querySelectorAll('input[type=checkbox], input[type=radio]').forEach((input) => input.toggleAttribute('checked', input.checked))
+                        element.querySelectorAll('input:not([type=checkbox]):not([type=radio])').forEach((input) => input.setAttribute('value', input.value))
 
-                    // Replace add to cart buttons with anchor links.
-                    part.querySelectorAll('[data-testid="listing-item"]').forEach((item) => {
-                        const productUrl = item.querySelector('a[href]')?.getAttribute('href')
+                        const part = element.cloneNode(true)
 
-                        item.querySelectorAll('form button[type="submit"]').forEach((button) => {
-                            if (productUrl) {
-                                const link = replace(button, 'a')
-                                link.removeAttribute('type')
-                                link.setAttribute('href', productUrl)
-                            }
+                        // Replace add to cart buttons with anchor links.
+                        part.querySelectorAll('[data-testid="listing-item"]').forEach((item) => {
+                            const productUrl = item.querySelector('a[href]')?.getAttribute('href')
+
+                            item.querySelectorAll('form button[type="submit"]').forEach((button) => {
+                                if (productUrl) {
+                                    const link = replace(button, 'a')
+                                    link.removeAttribute('type')
+                                    link.setAttribute('href', productUrl)
+                                }
+                            })
                         })
+
+                        part.querySelectorAll('form').forEach((form) => replace(form, 'div'))
+
+                        // Scripts would run again and are already in the real listing.
+                        part.querySelectorAll('script').forEach((script) => script.remove())
+
+                        // Keep ID's and radio groups unique while the real listing is rendered next to it.
+                        part.querySelectorAll('[id], [for], [name], [data-testid]').forEach((element) => {
+                            element.removeAttribute('id')
+                            element.removeAttribute('for')
+                            element.removeAttribute('name')
+                            element.removeAttribute('data-testid')
+                        })
+
+                        const name = element.dataset.listingSnapshotPart || 'default'
+                        parts[name] = (parts[name] ?? '') + part.innerHTML
                     })
 
-                    part.querySelectorAll('form').forEach((form) => replace(form, 'div'))
-
-                    // Scripts would run again and are already in the real listing.
-                    part.querySelectorAll('script').forEach((script) => script.remove())
-
-                    // Keep ID's and radio groups unique while the real listing is rendered next to it.
-                    part.querySelectorAll('[id], [for], [name], [data-testid]').forEach((element) => {
-                        element.removeAttribute('id')
-                        element.removeAttribute('for')
-                        element.removeAttribute('name')
-                        element.removeAttribute('data-testid')
-                    })
-
-                    const name = element.dataset.listingSnapshotPart || 'default'
-                    parts[name] = (parts[name] ?? '') + part.innerHTML
-                })
+                    return {
+                        loaded: !!loaded,
+                        hits: Number(loaded?.dataset.listingLoaded ?? 0),
+                        parts,
+                    }
+                }
 
                 return JSON.stringify({
                     store: window.config?.store,
                     status: performance.getEntriesByType('navigation')[0]?.responseStatus,
-                    absent: !elements.length,
-                    hits,
-                    parts,
+                    listings: Object.fromEntries(ids.map((id) => [id, capture(id)])),
                 })
             }
-        JS . ')(' . json_encode($selector) . ')');
+        JS . ')(' . $ids . ')');
     }
 }
