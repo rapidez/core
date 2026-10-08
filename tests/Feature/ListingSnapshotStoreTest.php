@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Route;
 use PHPUnit\Framework\Attributes\Test;
 use Rapidez\Core\Commands\IndexCommand;
 use Rapidez\Core\Commands\UpdateIndexCommand;
@@ -14,6 +15,7 @@ use Rapidez\Core\Jobs\GenerateListingSnapshot;
 use Rapidez\Core\Listeners\FlushListingSnapshots;
 use Rapidez\Core\Search\ListingSnapshotStore;
 use Rapidez\Core\Tests\TestCase;
+use TorMorten\Eventy\Facades\Eventy;
 
 class ListingSnapshotStoreTest extends TestCase
 {
@@ -317,6 +319,92 @@ class ListingSnapshotStoreTest extends TestCase
         // An explicit id isn't routed by default, like a productlist.
         $this->app->forgetScopedInstances();
         $this->assertStringContainsString('<div>unfiltered</div>', Blade::render('<x-rapidez::listing-snapshot id="category-123" part="products"/>'));
+    }
+
+    #[Test]
+    public function a_page_is_not_cacheable_while_its_snapshots_are_generated()
+    {
+        $this->assertTrue($this->store->cacheable($this->request()));
+
+        $this->store->get('category-123', request: $this->request());
+        $this->assertFalse($this->store->cacheable($this->request()));
+
+        $this->store->put('category-123', ['default' => '<div>snapshot</div>']);
+        $this->store->releaseLock('category-123');
+        $this->app->forgetScopedInstances();
+
+        $store = app(ListingSnapshotStore::class);
+        $store->get('category-123', request: $this->request());
+        $this->assertTrue($store->cacheable($this->request()));
+    }
+
+    #[Test]
+    public function a_page_is_cacheable_when_generating_fails_or_takes_too_long()
+    {
+        config(['rapidez.ssr.cache_wait' => 120]);
+
+        $this->store->get('category-123', request: $this->request());
+        $this->store->get('category-456', request: $this->request());
+        $this->store->failed('category-123');
+        $this->app->forgetScopedInstances();
+
+        $store = app(ListingSnapshotStore::class);
+        $store->get('category-123', request: $this->request());
+        $this->assertTrue($store->cacheable($this->request()));
+
+        $store->get('category-456', request: $this->request());
+        $this->assertFalse($store->cacheable($this->request()));
+
+        $this->travel(121)->seconds();
+        $this->app->forgetScopedInstances();
+
+        $store = app(ListingSnapshotStore::class);
+        $store->get('category-456', request: $this->request());
+        $this->assertTrue($store->cacheable($this->request()));
+    }
+
+    #[Test]
+    public function a_page_with_a_stale_or_empty_snapshot_is_cacheable()
+    {
+        $this->store->put('category-123', ['default' => '<div>snapshot</div>']);
+        $this->store->put('productlist-abc', []);
+        $this->travel(61)->minutes();
+
+        $this->store->get('category-123', request: $this->request());
+        $this->store->get('productlist-abc', request: $this->request());
+        $this->app->terminate();
+
+        Queue::assertPushed(GenerateListingSnapshot::class, 1);
+        $this->assertTrue($this->store->cacheable($this->request()));
+    }
+
+    #[Test]
+    public function the_page_captured_by_the_headless_browser_is_not_cacheable()
+    {
+        $this->assertFalse($this->store->cacheable($this->request(userAgent: 'Mozilla/5.0 (compatible; ' . GenerateListingSnapshot::USER_AGENT_TOKEN . '/1.0)')));
+
+        config(['rapidez.ssr.enabled' => false]);
+        $this->assertTrue($this->store->cacheable($this->request(userAgent: 'Mozilla/5.0 (compatible; ' . GenerateListingSnapshot::USER_AGENT_TOKEN . '/1.0)')));
+    }
+
+    #[Test]
+    public function the_response_is_marked_uncacheable_while_generating()
+    {
+        Eventy::addFilter('uncacheable.response', function ($response) {
+            $response->headers->set('X-Uncacheable', 'true');
+
+            return $response;
+        });
+
+        Route::get('/listing-page', fn () => Blade::render('<x-rapidez::listing-snapshot id="category-123"/>'));
+
+        $this->get('/listing-page')->assertHeader('X-Uncacheable');
+
+        $this->store->put('category-123', ['default' => '<div>snapshot</div>']);
+        $this->store->releaseLock('category-123');
+        $this->app->forgetScopedInstances();
+
+        $this->get('/listing-page')->assertHeaderMissing('X-Uncacheable')->assertSee('<div>snapshot</div>', false);
     }
 
     protected function request(string $query = '', string $userAgent = 'Mozilla/5.0'): Request

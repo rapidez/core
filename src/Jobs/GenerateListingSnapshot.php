@@ -51,6 +51,7 @@ class GenerateListingSnapshot implements ShouldQueue
             }
         } catch (Throwable $e) {
             report($e);
+            array_map($store->failed(...), array_keys($this->snapshots));
 
             return;
         }
@@ -64,6 +65,8 @@ class GenerateListingSnapshot implements ShouldQueue
                 if (($result['status'] ?? 200) >= 400) {
                     Log::warning('Capturing listing snapshot "' . $id . '" failed with status ' . $result['status'] . ' on ' . $url);
                 }
+
+                $store->failed($key);
 
                 continue;
             }

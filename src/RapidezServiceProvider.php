@@ -8,6 +8,7 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Events\ResponsePrepared;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
@@ -42,6 +43,7 @@ use Rapidez\Core\Listeners\Healthcheck\ElasticsearchHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\MagentoSettingsHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\ModelsHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\OpensearchHealthcheck;
+use Rapidez\Core\Listeners\PreventCachingIncompleteListingSnapshots;
 use Rapidez\Core\Listeners\ReportProductView;
 use Rapidez\Core\Listeners\UpdateLatestIndexDate;
 use Rapidez\Core\Listeners\WarmProductMappings;
@@ -292,6 +294,7 @@ elseif (!app()->environment('production')) { echo 'Turbo frame \"' . {$frame} .'
         Event::listen(ProductViewEvent::class, ReportProductView::class);
         Event::listen(IndexStoreAfterEvent::class, WarmProductMappings::class);
         Event::listen(IndexStoreAfterEvent::class, FlushListingSnapshots::class);
+        Event::listen(ResponsePrepared::class, PreventCachingIncompleteListingSnapshots::class);
 
         ModelsHealthcheck::register();
         MagentoSettingsHealthcheck::register();

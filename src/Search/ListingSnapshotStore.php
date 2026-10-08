@@ -16,6 +16,8 @@ class ListingSnapshotStore
     /** @var array<int, array<string, array<string, string>>> */
     protected array $pending = [];
 
+    protected bool $incomplete = false;
+
     public function enabled(?Request $request = null): bool
     {
         $request ??= request();
@@ -67,7 +69,25 @@ class ListingSnapshotStore
             $this->queueGeneration($key, $id, $request->getPathInfo() . ($query ? '?' . http_build_query($query) : ''));
         }
 
+        if (! is_array($snapshot['parts'] ?? null) && $this->generating($key)) {
+            $this->incomplete = true;
+        }
+
         return $this->resolved[$id] = $snapshot['parts'] ?? [];
+    }
+
+    /**
+     * Whether a full page cache can cache the page, so not while the snapshots on it are being generated
+     * and not the page the headless browser captures, as that doesn't contain any snapshots.
+     */
+    public function cacheable(?Request $request = null): bool
+    {
+        $request ??= request();
+
+        return ! $this->incomplete && ! (
+            config('rapidez.ssr.enabled')
+            && str_contains((string) $request->userAgent(), GenerateListingSnapshot::USER_AGENT_TOKEN)
+        );
     }
 
     /**
@@ -110,6 +130,14 @@ class ListingSnapshotStore
         Cache::forget($this->lockKey($key));
     }
 
+    /**
+     * Keep the lock so it's not tried again right away, but stop waiting for it.
+     */
+    public function failed(string $key): void
+    {
+        Cache::put($this->lockKey($key), 0, now()->addMinutes(5));
+    }
+
     protected function listingQuery(Request $request): array
     {
         return Arr::sortRecursive(Arr::only($request->query(), $this->listingParameters()));
@@ -144,7 +172,7 @@ class ListingSnapshotStore
         }
 
         // Make sure we're not dispatching the same snapshot multiple times.
-        if (! Cache::add($this->lockKey($key), true, now()->addMinutes(5))) {
+        if (! Cache::add($this->lockKey($key), now()->getTimestamp(), now()->addMinutes(5))) {
             return;
         }
 
@@ -188,6 +216,16 @@ class ListingSnapshotStore
         if ($afterResponse && config('queue.default') === 'sync') {
             $job->afterResponse();
         }
+    }
+
+    /**
+     * Whether the snapshot is queued within the cache_wait and didn't fail.
+     */
+    protected function generating(string $key): bool
+    {
+        $queuedAt = (int) Cache::get($this->lockKey($key));
+
+        return $queuedAt > now()->subSeconds((int) config('rapidez.ssr.cache_wait', 120))->getTimestamp();
     }
 
     protected function snapshotKey(string $key): string
