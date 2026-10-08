@@ -3,6 +3,7 @@
 namespace Rapidez\Core\Tests\Feature;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
@@ -99,7 +100,28 @@ class ListingSnapshotStoreTest extends TestCase
         );
         $this->assertEquals('<div>filters</div>', $this->store->part('category-123', 'filters'));
         $this->assertNull($this->store->part('category-123', 'unknown'));
-        $this->assertNull($this->store->part('category-456', 'filters'));
+        Queue::assertNothingPushed();
+    }
+
+    #[Test]
+    public function a_part_resolves_the_snapshot_when_rendered_before_the_listing()
+    {
+        $this->store->put('category-123', ['products' => '<div>products</div>']);
+
+        $this->assertEquals('<div>products</div>', $this->store->part('category-123', 'products', request: $this->request()));
+        $this->assertNull($this->store->part('category-456', 'products', request: $this->request()));
+        $this->assertNull($this->store->part('category-456', 'filters', request: $this->request()));
+        Queue::assertPushed(GenerateListingSnapshot::class, 1);
+        Queue::assertPushed(GenerateListingSnapshot::class, fn ($job) => $job->id === 'category-456');
+    }
+
+    #[Test]
+    public function a_routed_part_respects_the_filters()
+    {
+        $this->store->put('category-123', ['products' => '<div>unfiltered</div>']);
+
+        $this->assertNull($this->store->part('category-123', 'products', true, $this->request('?super_color=red')));
+        $this->assertEquals('<div>unfiltered</div>', (new ListingSnapshotStore)->part('category-123', 'products', request: $this->request('?super_color=red')));
         Queue::assertNothingPushed();
     }
 
@@ -234,6 +256,28 @@ class ListingSnapshotStoreTest extends TestCase
         $this->travel(61)->minutes();
         $this->store->get('category-456', request: $this->request());
         Queue::assertPushed(GenerateListingSnapshot::class, 1);
+    }
+
+    #[Test]
+    public function a_part_within_a_listing_is_routed_by_default()
+    {
+        $directory = sys_get_temp_dir() . '/listing-snapshot-test';
+        @mkdir($directory);
+        file_put_contents($directory . '/listing.blade.php', "@props(['snapshot' => null])\n<x-rapidez::listing-snapshot part=\"products\"/>");
+        Blade::anonymousComponentPath($directory, 'test');
+
+        $this->store->put('category-123', ['products' => '<div>unfiltered</div>']);
+
+        $this->app->instance('request', $this->request());
+        $this->assertStringContainsString('<div>unfiltered</div>', Blade::render('<x-test::listing snapshot="category-123"/>'));
+
+        $this->app->forgetScopedInstances();
+        $this->app->instance('request', $this->request('?super_color=red'));
+        $this->assertStringNotContainsString('<div>unfiltered</div>', Blade::render('<x-test::listing snapshot="category-123"/>'));
+
+        // An explicit id isn't routed by default, like a productlist.
+        $this->app->forgetScopedInstances();
+        $this->assertStringContainsString('<div>unfiltered</div>', Blade::render('<x-rapidez::listing-snapshot id="category-123" part="products"/>'));
     }
 
     protected function request(string $query = '', string $userAgent = 'Mozilla/5.0'): Request

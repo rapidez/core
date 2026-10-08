@@ -67,8 +67,15 @@ class ListingSnapshotStore
         return $this->resolved[$id] = $snapshot['parts'] ?? [];
     }
 
-    public function part(string $id, string $part = 'default'): ?string
+    /**
+     * Get a part of the snapshot, resolved with get() when that's not done yet, for
+     * example when the part is rendered before the listing. A routed listing,
+     * like the category listing, also has to be resolved routed here.
+     */
+    public function part(string $id, string $part = 'default', bool $routed = false, ?Request $request = null): ?string
     {
+        $this->resolved[$id] ??= $this->get($id, $routed, $request);
+
         return $this->resolved[$id][$part] ?? null;
     }
 
