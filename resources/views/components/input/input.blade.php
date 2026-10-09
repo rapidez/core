@@ -1,1 +1,4 @@
-<x-blade-components::input {{ $attributes }} />
+<x-blade-components::input
+    v-loading="loading.value"
+    {{ $attributes }}
+/>
