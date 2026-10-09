@@ -5,7 +5,7 @@ import { clear as clearOrder } from './useOrder'
 import { computed, watch } from 'vue'
 import Jwt from '../jwt'
 import { mask } from './useMask'
-import { magentoGraphQL, rapidezAPI } from '../fetch'
+import { GraphQLInputError, magentoGraphQL, rapidezAPI } from '../fetch'
 import { on, emit } from '../polyfills/emit'
 /**
  * @deprecated using localstorage to retrieve the token is deprecated, use the useUser.token instead
@@ -123,7 +123,13 @@ export const isEmailAvailable = async function (email) {
         email: email,
     })
         .then((response) => response.data.isEmailAvailable.is_email_available)
-        .catch(() => true)
+        .catch((error) => {
+            if (error instanceof GraphQLInputError) {
+                throw error
+            }
+
+            return true
+        })
 }
 
 export const register = async function (email, firstname, lastname, password, input = {}) {
