@@ -218,12 +218,12 @@ trait HasCustomAttributes
             return null;
         }
 
-        return $this->customAttributes[$key] ?? null;
+        return $this->customAttributes->get($key);
     }
 
     public function hasCustomAttribute($key): bool
     {
-        return $this->exists && isset($this->customAttributes[$key]);
+        return $this->exists && $this->customAttributes->has($key);
     }
 
     protected function throwMissingAttributeExceptionIfApplicable($key)
@@ -252,6 +252,6 @@ trait HasCustomAttributes
 
     protected function getAttributeFromArray($key)
     {
-        return parent::getAttributeFromArray($key) ?? $this->getCustomAttribute($key);
+        return parent::getAttributeFromArray($key) ?? ($key === 'customAttributes' ? null : $this->getCustomAttribute($key));
     }
 }

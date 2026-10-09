@@ -61,7 +61,7 @@ class AbstractAttribute extends Model
     protected function value(): Attribute
     {
         return Attribute::get(function ($value) {
-            $value = $this->option_values ?? $this->rawValue ?? $value;
+            $value = $this->getAttribute('option_values') ?? $this->getAttribute('rawValue') ?? $value;
             $value = collect($value)->map(function ($val) {
                 if ($this->is_html_allowed_on_front) {
                     return $val;

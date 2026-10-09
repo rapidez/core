@@ -21,8 +21,11 @@ class AttributeOptionsScope implements Scope
                 DB::raw('IF(COUNT(eav_attribute_option_value.value) = 0, NULL, CAST(CONCAT(\'[\', GROUP_CONCAT( JSON_QUOTE(eav_attribute_option_value.value) ORDER BY eav_attribute_option.sort_order ASC), \']\') AS JSON)) AS option_values'),
             ])
             ->leftJoin('eav_attribute_option', function (JoinClause $join) use ($model) {
-                return $join->on('eav_attribute_option.attribute_id', $model->qualifyColumn('attribute_id'))
-                    ->where(DB::raw("FIND_IN_SET(eav_attribute_option.option_id, {$model->qualifyColumn('value')})"), '<>', DB::raw(0));
+                $join->on('eav_attribute_option.attribute_id', $model->qualifyColumn('attribute_id'));
+
+                return str_ends_with($model->getTable(), '_int')
+                    ? $join->on('eav_attribute_option.option_id', $model->qualifyColumn('value'))
+                    : $join->where(DB::raw("FIND_IN_SET(eav_attribute_option.option_id, {$model->qualifyColumn('value')})"), '<>', DB::raw(0));
             })
             ->leftJoin('eav_attribute_option_value', function (JoinClause $join) {
                 return $join->on('eav_attribute_option_value.option_id', 'eav_attribute_option.option_id')
