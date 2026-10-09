@@ -1,7 +1,7 @@
-import { StorageSerializers, asyncComputed, useLocalStorage, useMemoize } from '@vueuse/core'
+import { StorageSerializers, useLocalStorage, useMemoize } from '@vueuse/core'
 import { computed, watch } from 'vue'
 import { GraphQLError } from '../fetch'
-import { mask, clearMask } from './useMask'
+import { clearMask, mask } from './useMask'
 import { user } from './useUser'
 
 const cartStorage = useLocalStorage('cart', {}, { serializer: StorageSerializers.object })
@@ -173,6 +173,37 @@ function addCustomerAddressId(address) {
     return address
 }
 
+function addIsAddressComplete(address) {
+    if (!address) {
+        return address
+    }
+
+    return {
+        ...address,
+        isAddressComplete: isAddressComplete(address),
+    }
+}
+
+function isAddressComplete(address) {
+    if (!address) {
+        return false
+    }
+
+    if (
+        !address.firstname ||
+        !address.lastname ||
+        !address.street ||
+        !address.street.join('').length ||
+        !address.postcode ||
+        !address.city ||
+        !(address.country_code || (address.country && address.country.code))
+    ) {
+        return false
+    }
+
+    return true
+}
+
 export const checkAvailability = function (cartItem) {
     // Here we polyfill the is_available field. We need to do this
     // because the default is_available field supported by Magento
@@ -200,9 +231,11 @@ export const cart = computed({
         return cartStorage.value
     },
     set(value) {
-        value.shipping_addresses = value.shipping_addresses?.map(addCustomerAddressId)
+        value.shipping_addresses = value.shipping_addresses?.map(addCustomerAddressId)?.map(addIsAddressComplete)
+
         if (value.billing_address !== null) {
             value.billing_address = addCustomerAddressId(value.billing_address)
+            value.billing_address = addIsAddressComplete(value.billing_address)
             // TODO: RAP-1879 Remove if https://github.com/magento/magento2/pull/38970 is merged
             value.billing_address.same_as_shipping = areAddressesSame(value.shipping_addresses[0], value.billing_address)
         }
