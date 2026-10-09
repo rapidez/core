@@ -29,8 +29,14 @@ class SuperAttribute extends Model
 
         static::addGlobalScope('attribute', function (Builder $builder) {
             $builder
+                ->select($builder->qualifyColumn('*'), 'eav_attribute.*', 'catalog_eav_attribute.*')
+                ->selectRaw('COALESCE(eav_attribute_label.value, eav_attribute.frontend_label, eav_attribute.attribute_code) AS frontend_label')
                 ->leftJoin('eav_attribute', $builder->qualifyColumn('attribute_id'), '=', 'eav_attribute.attribute_id')
-                ->leftJoin('catalog_eav_attribute', $builder->qualifyColumn('attribute_id'), '=', 'catalog_eav_attribute.attribute_id');
+                ->leftJoin('catalog_eav_attribute', $builder->qualifyColumn('attribute_id'), '=', 'catalog_eav_attribute.attribute_id')
+                ->leftJoin('eav_attribute_label', function ($join) use ($builder) {
+                    $join->on($builder->qualifyColumn('attribute_id'), '=', 'eav_attribute_label.attribute_id')
+                        ->where('eav_attribute_label.store_id', config('rapidez.store'));
+                });
         });
     }
 
