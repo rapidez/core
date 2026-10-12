@@ -10,9 +10,9 @@ class ProductStock extends Model
     protected $table = 'cataloginventory_stock_item';
 
     protected $casts = [
-        'is_in_stock' => 'boolean',
+        'is_in_stock'    => 'boolean',
         'qty_increments' => 'float',
-        'backorders' => 'integer',
+        'backorders'     => 'integer',
     ];
 
     public function getHidden()
