@@ -29,7 +29,9 @@ class ProductStock extends Model
     public function __get($key)
     {
         if ($this->hasAttribute('use_config_' . $key) && $this->getAttribute('use_config_' . $key) == 1) {
-            return $this->castAttribute($key, Rapidez::config('cataloginventory/item_options/' . $key));
+            $value = Rapidez::config('cataloginventory/item_options/' . $key);
+
+            return $this->hasCast($key) ? $this->castAttribute($key, $value) : $value;
         }
 
         return parent::__get($key);
