@@ -498,7 +498,7 @@ export default {
                         tier_price_copy.qty = tier_price_copy.qty * 1
                         if (tier_price_copy.percentage_value === null) {
                             tier_price_copy.value = tier_price_copy.value * 1
-                            tier_price_copy.percentage_value = Math.ceil(100 - (tier_price_copy.value * 100) / this.product.price)
+                            tier_price_copy.percentage_value = Math.round(100 - (tier_price_copy.value * 100) / this.product.price)
                             return tier_price_copy
                         }
                         tier_price_copy.percentage_value = tier_price_copy.percentage_value * 1
