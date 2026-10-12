@@ -11,6 +11,8 @@ class ProductStock extends Model
 
     protected $casts = [
         'is_in_stock' => 'boolean',
+        'qty_increments' => 'float',
+        'backorders' => 'integer',
     ];
 
     public function getHidden()
@@ -27,7 +29,7 @@ class ProductStock extends Model
     public function __get($key)
     {
         if ($this->hasAttribute('use_config_' . $key) && $this->getAttribute('use_config_' . $key) == 1) {
-            return Rapidez::config('cataloginventory/item_options/' . $key);
+            return $this->castAttribute($key, Rapidez::config('cataloginventory/item_options/' . $key));
         }
 
         return parent::__get($key);
