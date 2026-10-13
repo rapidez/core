@@ -41,6 +41,95 @@ checkoutTypes.forEach((type) => {
     })
 })
 
+test('different billing address', BasePage.tags, async ({ page }) => {
+    const productPage = new ProductPage(page)
+    const checkoutPage = new CheckoutPage(page)
+
+    await productPage.addToCart(process.env.PRODUCT_URL_SIMPLE)
+    await checkoutPage.gotoCheckout()
+    await checkoutPage.login(`${crypto.randomUUID()}@enterprises.com`)
+    await checkoutPage.continue('credentials')
+    await checkoutPage.shippingAddress()
+
+    // Only the country differs, it should still be a separate billing address.
+    await page.getByTestId('same-as-shipping').uncheck()
+    await new BasePage(page).waitUntilIdle()
+    await page.selectOption('[name=billing_country]', 'BE')
+    await page.getByTestId('continue').focus()
+    await new BasePage(page).waitUntilIdle()
+
+    await page.reload()
+    await new BasePage(page).waitUntilIdle()
+    await expect(page.getByTestId('same-as-shipping')).not.toBeChecked()
+    await expect(page.locator('[name=billing_country]')).toHaveValue('BE')
+
+    await checkoutPage.shippingMethod()
+    await checkoutPage.continue('payment')
+    await checkoutPage.paymentMethod()
+    await checkoutPage.continue('success')
+    await checkoutPage.success()
+    await expect(page.getByTestId('checkout-success')).toContainText('Gotham - BE')
+})
+
+test('same billing address after shipping method change', BasePage.tags, async ({ page }) => {
+    const productPage = new ProductPage(page)
+    const checkoutPage = new CheckoutPage(page)
+
+    await productPage.addToCart(process.env.PRODUCT_URL_SIMPLE)
+    await checkoutPage.gotoCheckout()
+    await checkoutPage.login(`${crypto.randomUUID()}@enterprises.com`)
+    await checkoutPage.continue('credentials')
+    await checkoutPage.shippingAddress()
+
+    // Changing the shipping method saves the shipping address again,
+    // which resets same_as_billing within Magento.
+    await page.getByTestId('shipping-method').last().click()
+    await new BasePage(page).waitUntilIdle()
+
+    await page.reload()
+    await new BasePage(page).waitUntilIdle()
+    await expect(page.getByTestId('same-as-shipping')).toBeChecked()
+})
+
+test('new address as user', BasePage.tags, async ({ page }) => {
+    const productPage = new ProductPage(page)
+    const checkoutPage = new CheckoutPage(page)
+    const accountPage = new AccountPage(page)
+
+    const email = `${crypto.randomUUID()}@enterprises.com`
+    const password = 'IronManSucks.91939'
+
+    // Register, this saves the address in the address book
+    await productPage.addToCart(process.env.PRODUCT_URL_SIMPLE)
+    await checkoutPage.checkout(email, password, true)
+
+    await accountPage.logout()
+
+    await productPage.addToCart(process.env.PRODUCT_URL_SIMPLE)
+    await checkoutPage.gotoCheckout()
+    await checkoutPage.login(email, password)
+    await checkoutPage.continue('credentials')
+
+    // Only the country differs from the address book address, it should stay a new address.
+    const addressSelect = page.getByTestId('shipping-address-select')
+    await addressSelect.selectOption({ index: (await addressSelect.locator('option').count()) - 1 })
+    await new BasePage(page).waitUntilIdle()
+    await page.selectOption('[name=shipping_country]', 'BE')
+    await page.getByTestId('continue').focus()
+    await new BasePage(page).waitUntilIdle()
+
+    await page.reload()
+    await new BasePage(page).waitUntilIdle()
+    await expect(page.locator('[name=shipping_country]')).toHaveValue('BE')
+
+    await checkoutPage.shippingMethod()
+    await checkoutPage.continue('payment')
+    await checkoutPage.paymentMethod()
+    await checkoutPage.continue('success')
+    await checkoutPage.success()
+    await expect(page.getByTestId('checkout-success')).toContainText('Gotham - BE')
+})
+
 test('incorrect password login', BasePage.tags, async ({ page }) => {
     const productPage = new ProductPage(page)
     const checkoutPage = new CheckoutPage(page, 'default', [screenshot_credentials])

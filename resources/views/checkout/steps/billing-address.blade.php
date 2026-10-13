@@ -23,7 +23,7 @@
             && window.$emit('setBillingAddressOnCart')
         }">
             <template v-if="!cart.value.is_virtual">
-                <x-rapidez::input.checkbox v-model="variables.same_as_shipping">
+                <x-rapidez::input.checkbox v-model="variables.same_as_shipping" data-testid="same-as-shipping">
                     @lang('My billing and shipping address are the same')
                 </x-rapidez::input.checkbox>
             </template>

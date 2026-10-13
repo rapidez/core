@@ -16,7 +16,8 @@
     v-if="!cart.value.is_virtual"
     key="checkout-shipping-address"
 >
-    <fieldset partial-submit v-on:partial-submit="(e) => mutate().then(e.detail.resolve).catch(e.detail.reject)" v-on:change="function (e) {e.target.closest('fieldset').querySelector(':invalid') === null && mutate().then(() => (cart?.value?.billing_address?.same_as_shipping ?? true) && window.$emit('setBillingAddressOnCart'))}">
+    {{-- A billing address that's the same as the shipping address is updated within the shipping address mutation --}}
+    <fieldset partial-submit v-on:partial-submit="(e) => mutate().then(e.detail.resolve).catch(e.detail.reject)" v-on:change="function (e) {e.target.closest('fieldset').querySelector(':invalid') === null && mutate().then(() => !cart?.value?.billing_address && window.$emit('setBillingAddressOnCart'))}">
         @include('rapidez::checkout.partials.address', ['type' => 'shipping'])
     </fieldset>
 </graphql-mutation>
