@@ -329,14 +329,17 @@ export default {
         },
 
         hoverImage: function () {
+            // Can't have a second image if there are no images
             if (!this.currentThumbnail || !this.images.length) {
                 return null
             }
 
+            // Return the second image if the thumbnail is also the first image
             if (this.currentThumbnail == this.images[0]) {
                 return this.images[1] ?? null
             }
 
+            // Otherwise, return the first image because the thumbnail is something else
             return this.images[0]
         },
 
