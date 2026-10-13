@@ -325,7 +325,23 @@ export default {
 
     computed: {
         currentThumbnail: function () {
-            return this.simpleProduct?.thumbnail || this.simpleProduct?.images?.[0] || this.product?.thumbnail
+            return this.simpleProduct?.thumbnail || this.images[0] || this.product?.thumbnail
+        },
+
+        hoverImage: function () {
+            if (!this.currentThumbnail || !this.images.length) {
+                return null
+            }
+
+            if (this.currentThumbnail == this.images[0]) {
+                return this.images[1] ?? null
+            }
+
+            return this.images[0]
+        },
+
+        images: function () {
+            return this.simpleProduct?.media?.filter((media) => media.media_type == 'image')?.map((media) => media.image) ?? []
         },
 
         matchingChildren: function () {
