@@ -3,6 +3,8 @@
 namespace Rapidez\Core\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProductOptionTypeValue extends Model
 {
@@ -18,7 +20,7 @@ class ProductOptionTypeValue extends Model
 
     protected $hidden = ['titles', 'prices'];
 
-    public function option()
+    public function option(): BelongsTo
     {
         return $this->belongsTo(config('rapidez.models.product_option'), 'option_id');
     }
@@ -30,7 +32,7 @@ class ProductOptionTypeValue extends Model
         )->shouldCache();
     }
 
-    public function titles()
+    public function titles(): HasMany
     {
         return $this->hasMany(config('rapidez.models.product_option_type_title'), 'option_type_id');
     }
@@ -61,7 +63,7 @@ class ProductOptionTypeValue extends Model
         )->shouldCache();
     }
 
-    public function prices()
+    public function prices(): HasMany
     {
         return $this->hasMany(config('rapidez.models.product_option_type_price'), 'option_type_id');
     }

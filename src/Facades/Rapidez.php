@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static ?string config(string $path, $default = null, bool $sensitive = false)
  * @method static ?string content($content)
  * @method static object fancyMagentoSyntaxDecoder(string $encodedString)
+ * @method static string getCacheKey()
  * @method static array getStores($storeId = null)
  * @method static array getStore($storeId)
  * @method static void setStore($store)

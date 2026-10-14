@@ -1,4 +1,5 @@
 <script>
+import { useLocalStorage } from '@vueuse/core'
 export default {
     render() {
         return this.$slots.default(this)
@@ -46,7 +47,7 @@ export default {
             }
 
             if (this.showUntilClose) {
-                localStorage.setItem(this.name, true)
+                useLocalStorage(this.name, false).value = true
             }
 
             if (this.callback) {
@@ -60,11 +61,11 @@ export default {
                 this.open()
             }
 
-            if ((this.showOnce || this.showUntilClose) && !localStorage.getItem(this.name)) {
+            if ((this.showOnce || this.showUntilClose) && !useLocalStorage(this.name, false).value) {
                 this.open()
 
                 if (this.showOnce) {
-                    localStorage.setItem(this.name, true)
+                    useLocalStorage(this.name, false).value = true
                 }
             }
 

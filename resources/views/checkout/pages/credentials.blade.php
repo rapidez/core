@@ -12,7 +12,7 @@
                 <div class="w-full rounded-sm bg p-4 xl:p-8 xl:w-3/4">
                     <form
                         v-on:submit.prevent="(e) => {
-                            window.app.config.globalProperties.submitPartials(e.target?.form ?? e.target, (cart?.billing_address?.same_as_shipping ?? true))
+                            window.app.config.globalProperties.submitPartials(e.target?.form ?? e.target, (cart?.value?.billing_address?.same_as_shipping ?? true))
                                 .then((result) =>
                                     window.$emit('checkout-credentials-saved')
                                     && window.Turbo.visit(url('{{ route('checkout', ['step' => 'payment']) }}'))
@@ -33,7 +33,7 @@
                             @include('rapidez::checkout.steps.shipping-method')
                         </template>
 
-                        <x-rapidez::button.conversion type="submit" data-testid="continue" class="self-start" loader>
+                        <x-rapidez::button.conversion type="submit" data-testid="continue" class="self-start" loader v-on:mousedown.prevent="{{-- Do not remove, this prevents requiring double click for the submit action (#1370) --}}">
                             @lang('Next')
                         </x-rapidez::button.conversion>
                     </form>

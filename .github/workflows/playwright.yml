@@ -27,9 +27,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - magento-version: 2.4.7-p10
-            magento-php-version: php83-fpm
-            rapidez-php-version: 8.3
           - magento-version: 2.4.8-p5
             magento-php-version: php84-fpm
             rapidez-php-version: 8.4
@@ -44,7 +41,7 @@ jobs:
         env:
           URL: http://localhost:1234/
           FLAT_TABLES: true
-          CUSTOM_ENTRYPOINT_COMMAND: "php bin/magento encryption:key:change -k 5AM3SD5SkwT8iwIxL6L1q8XQhzK3wk51; magerun2 config:store:set system/smtp/disable 1; magerun2 config:store:set checkout/options/enable_guest_checkout_login 1; magerun2 config:store:delete design/head/includes"
+          CUSTOM_ENTRYPOINT_COMMAND: 'php bin/magento encryption:key:change -k 5AM3SD5SkwT8iwIxL6L1q8XQhzK3wk51; magerun2 config:store:set system/smtp/disable 1; magerun2 config:store:set checkout/options/enable_guest_checkout_login 1; magerun2 config:store:delete design/head/includes'
         ports:
           - 3307:3306
           - 1234:80
@@ -119,14 +116,19 @@ jobs:
       - name: Publish payment icons
         run: php artisan vendor:publish --tag=payment-icons
 
-      - name: Install Yarn dependencies
-        run: npm install -g yarn && yarn
+      - name: Install Node dependencies
+        uses: pnpm/setup@v1
+        with:
+          version: 11
+          runtime: node@lts
+          cache: false
+          install: true
 
       - name: Install Playwright Browsers
-        run: yarn playwright install --with-deps
+        run: pnpm playwright install --with-deps
 
       - name: Frontend Build
-        run: yarn run prod
+        run: pnpm run prod
 
       - name: Install Playwright tests
         run: php artisan rapidez:install:tests
@@ -145,23 +147,23 @@ jobs:
 
       - name: Run Playwright tests
         if: ${{ !inputs.update_all_screenshots }}
-        run: yarn playwright test
+        run: pnpm playwright test
 
       # Screenshots
       - name: Collect failed tests
         if: ${{ failure() && !inputs.update_all_screenshots }}
-        run: yarn playwright test --last-failed --list --reporter=dot --pass-with-no-tests > failed-tests.txt
+        run: pnpm playwright test --last-failed --list --reporter=dot --pass-with-no-tests > failed-tests.txt
 
       - name: Update screenshots
         if: ${{ failure() && !inputs.update_all_screenshots && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x'))) }}
         run: |
           while read -r test_name; do
-            yarn playwright test "$test_name" --update-snapshots --reporter=list
+            pnpm playwright test "$test_name" --update-snapshots --reporter=list
           done < <(awk -F ' › ' 'NF>1{print $2}' failed-tests.txt | sort -u)
 
       - name: Update all screenshots
         if: ${{ inputs.update_all_screenshots && matrix.screenshots == true }}
-        run: yarn playwright test --update-snapshots
+        run: pnpm playwright test --update-snapshots
 
       - name: Move the screenshots
         if: (failure() || inputs.update_all_screenshots) && matrix.screenshots == true && github.event_name != 'schedule' && !(github.event_name == 'push' && (github.ref_name == 'master' || endsWith(github.ref_name, '.x')))

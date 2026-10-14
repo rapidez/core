@@ -1,7 +1,15 @@
 customizable_options {
+    customizable_option_uid
     label
+    type
+    is_required
     values {
+        customizable_option_value_uid
         label
         value
+        price {
+            type
+            value
+        }
     }
 }

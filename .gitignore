@@ -5,6 +5,7 @@
 .phpunit.result.cache
 composer.lock
 yarn.lock
+pnpm-lock.yaml
 phpunit.xml
 stats.html
 

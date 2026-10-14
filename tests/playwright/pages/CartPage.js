@@ -1,4 +1,5 @@
 import { expect } from '@playwright/test'
+import { BasePage } from './BasePage'
 
 export class CartPage {
     constructor(page) {
@@ -7,6 +8,7 @@ export class CartPage {
 
     async gotoCart() {
         await this.page.goto('/cart')
+        await new BasePage(this.page).waitUntilIdle()
         await this.page.waitForLoadState('networkidle')
     }
 

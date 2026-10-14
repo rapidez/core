@@ -492,13 +492,16 @@ export default {
             // Filter out non-matching customer group and calculate price for percentage types.
             const tierPrices =
                 this.product?.tier_prices
-                    ?.filter?.((price) => price.all_groups || price.customer_group_id === Number(user.value?.group_id))
+                    ?.filter?.((price) => price.all_groups || price.customer_group_id === Number(user.value?.group_id ?? 0))
                     ?.map?.((tier_price) => {
                         const tier_price_copy = reactive({ ...tier_price })
                         tier_price_copy.qty = tier_price_copy.qty * 1
                         if (tier_price_copy.percentage_value === null) {
                             tier_price_copy.value = tier_price_copy.value * 1
-                            tier_price_copy.percentage_value = Math.ceil(100 - (tier_price_copy.value * 100) / this.product.price)
+                            tier_price_copy.percentage_value = Math.round(100 - (tier_price_copy.value * 100) / this.product.price)
+                            if (tier_price_copy.percentage_value == 0 && tier_price_copy.value < this.product.price) {
+                                tier_price_copy.percentage_value = 1
+                            }
                             return tier_price_copy
                         }
                         tier_price_copy.percentage_value = tier_price_copy.percentage_value * 1
