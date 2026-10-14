@@ -74,9 +74,9 @@ docker exec rapidez php artisan key:generate
 echo "✓ key generated"
 docker exec rapidez php artisan rapidez:install --frontendonly
 echo "✓ frontend dependencies copied"
-docker exec rapidez yarn
+docker exec rapidez pnpm install
 echo "✓ frontend dependencies installed"
-docker exec rapidez yarn run prod
+docker exec rapidez pnpm run prod
 echo "✓ frontend dependencies built"
 docker exec rapidez php artisan storage:link
 echo "✓ storage linked"
