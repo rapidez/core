@@ -83,7 +83,7 @@ echo "✓ storage linked"
 docker exec rapidez php artisan rapidez:index
 echo "✓ products indexed"
 docker exec rapidez php artisan vendor:publish --provider "Rapidez\Core\RapidezServiceProvider"
-echo "✓ configs published"
+echo "✓ configs, views, and translation files published"
 
 docker compose up -d
 
