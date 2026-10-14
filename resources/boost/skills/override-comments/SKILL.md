@@ -52,12 +52,12 @@ When the script couldn't find a base but there's no hash (or the hash mismatches
 - Blade comment, also in `.graphql` files (they render as Blade, so `#` would end up in the query).
 - Directly below `{{-- vendor-hash:… --}}`, or on line 1 if there is none.
 - One change: `{{-- Overwritten to … --}}`. Several: up to ~4 bullets:
-  ```blade
-  {{-- Overwritten to:
-      - Add X
-      - Remove Y
-  --}}
-  ```
+    ```blade
+    {{-- Overwritten to:
+        - Add X
+        - Remove Y
+    --}}
+    ```
 
 **Content**
 
