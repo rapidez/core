@@ -77,7 +77,7 @@ echo "✓ frontend dependencies copied"
 docker exec rapidez yarn
 echo "✓ frontend dependencies installed"
 docker exec rapidez yarn run prod
-echo "✓ frontend dependencies build"
+echo "✓ frontend dependencies built"
 docker exec rapidez php artisan storage:link
 echo "✓ storage linked"
 docker exec rapidez php artisan rapidez:index
