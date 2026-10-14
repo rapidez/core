@@ -72,6 +72,11 @@ async function init() {
     }
     rootEl = document.querySelector('#app')
 
+    if (!rootEl || rootEl.__vue_app__ || rootEl.__rapidez__) {
+        return
+    }
+    rootEl.__rapidez__ = true
+
     // Check if the localstorage needs a flush.
     let cachekey = useLocalStorage('cachekey')
     if (window.config.cachekey && cachekey.value !== window.config.cachekey) {
