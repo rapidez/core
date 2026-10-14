@@ -40,11 +40,11 @@ mutation setNewShippingAddressOnCart (
             }
         ]
     }) {
-        cart { ...cart }
+        # The cart is returned by the billing address mutation when that runs.
+        cart @@skip(if: $same_as_billing) { ...cart }
     }
 
     # Magento resets same_as_billing when the shipping address is saved, so copy it to the billing address again.
-    # The same_as_billing variable comes from the current shipping address on the cart.
     setBillingAddressOnCart(input: {
         cart_id: $cart_id,
         billing_address: {

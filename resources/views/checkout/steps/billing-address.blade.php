@@ -14,9 +14,11 @@
     :error-callback="checkResponseForExpiredCart"
     group="billing"
     mutate-event="setBillingAddressOnCart"
+    ref="billingAddress"
     v-slot="{ mutate, variables }"
 >
-    <div partial-submit v-on:partial-submit="(e) => mutate().then(e.detail.resolve).catch(e.detail.reject)">
+    {{-- A billing address that's the same as the shipping address is updated within the shipping address mutation --}}
+    <div partial-submit v-on:partial-submit="(e) => variables.same_as_shipping && cart.value.billing_address?.same_as_shipping ? e.detail.resolve() : mutate().then(e.detail.resolve).catch(e.detail.reject)">
         <fieldset v-on:change="function (e) {
             e.target.closest('fieldset').querySelector(':invalid') === null
             && (!variables.same_as_shipping || !!cart?.value?.shipping_addresses?.[0]?.postcode)
