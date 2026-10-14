@@ -1,5 +1,6 @@
 <script>
 import { useLocalStorage } from '@vueuse/core'
+import { GraphQLInputError } from '../../fetch'
 import { user, login } from '../../stores/useUser'
 
 export default {
@@ -38,7 +39,7 @@ export default {
                     return true
                 }
             } catch (e) {
-                Notify(window.config.translations.account.login_failed, 'error')
+                Notify(e instanceof GraphQLInputError ? e.message : window.config.translations.account.login_failed, 'error')
             }
 
             return false
