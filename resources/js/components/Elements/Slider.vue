@@ -293,8 +293,7 @@ export default {
             const position = this.vertical ? this.slider.scrollTop : this.slider.scrollLeft
             // First make a calculated guess, improving performance by not having to loop through all slides
             const bestGuess = Math.round(
-                position /
-                    ((this.vertical ? this.container.scrollHeight : this.container.scrollWidth) / this.container.children.length),
+                position / ((this.vertical ? this.container.scrollHeight : this.container.scrollWidth) / this.container.children.length),
             )
             const getSlideByGuess = (slide) => {
                 const bestGuessChild = this.container.children[slide]
