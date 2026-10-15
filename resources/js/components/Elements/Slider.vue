@@ -156,14 +156,36 @@ export default {
                 return
             }
 
-            let scrollPosition = this.position
-            if (scrollPosition < this.sliderStart) {
-                const position = scrollPosition + this.sliderStart
-                this.scrollToPosition(position, 'instant')
-            } else if (scrollPosition >= this.sliderEnd) {
-                const position = scrollPosition - this.sliderStart
-                this.scrollToPosition(position, 'instant')
+            // Read from the DOM: useScroll position can be stale after resize,
+            // and offsetLeft/Width are not reactive so computeds would cache them.
+            const scrollPosition = this.vertical ? this.slider.scrollTop : this.slider.scrollLeft
+            const sliderStart = this.getSliderStart()
+            const sliderEnd = this.getSliderEnd()
+            if (scrollPosition < sliderStart) {
+                this.scrollToPosition(scrollPosition + sliderStart, 'instant')
+            } else if (scrollPosition >= sliderEnd) {
+                this.scrollToPosition(scrollPosition - sliderStart, 'instant')
             }
+        },
+        getSliderStart() {
+            if (!this.slides?.length) {
+                return 0
+            }
+
+            return this.vertical ? this.slides[0].offsetTop : this.slides[0].offsetLeft
+        },
+        getSliderEnd() {
+            if (!this.slides?.length) {
+                return 0
+            }
+
+            const lastChild = this.slides[this.slides.length - 1]
+
+            if (this.vertical) {
+                return lastChild.offsetTop + lastChild.offsetHeight
+            }
+
+            return lastChild.offsetLeft + lastChild.offsetWidth
         },
         autoScroll() {
             if (this.slidesTotal == 1) {
@@ -265,9 +287,13 @@ export default {
             if (!this.mounted) {
                 return 0
             }
+            // Depend on useScroll for reactivity during scroll, but read the DOM position
+            // so we stay correct when useScroll lags behind (e.g. after resize).
+            void this.position
+            const position = this.vertical ? this.slider.scrollTop : this.slider.scrollLeft
             // First make a calculated guess, improving performance by not having to loop through all slides
             const bestGuess = Math.round(
-                this.position /
+                position /
                     ((this.vertical ? this.container.scrollHeight : this.container.scrollWidth) / this.container.children.length),
             )
             const getSlideByGuess = (slide) => {
@@ -279,11 +305,11 @@ export default {
                 const bestGuessOffset = this.vertical ? bestGuessChild.offsetTop : bestGuessChild.offsetLeft
 
                 // Past halfway to the slide it will snap
-                if (this.position + bestGuessSpan / 2 < bestGuessOffset) {
+                if (position + bestGuessSpan / 2 < bestGuessOffset) {
                     return getSlideByGuess(slide - 1)
                 }
 
-                if (this.position >= bestGuessOffset + bestGuessSpan) {
+                if (position >= bestGuessOffset + bestGuessSpan) {
                     return getSlideByGuess(slide + 1)
                 }
 
@@ -317,18 +343,6 @@ export default {
                 return []
             }
             return this.container.querySelectorAll(':scope > :not([data-clone=true])')
-        },
-        sliderStart() {
-            return this.vertical ? this.slides[0].offsetTop : this.slides[0].offsetLeft
-        },
-        sliderEnd() {
-            let lastChild = this.slides[this.slides.length - 1]
-
-            if (this.vertical) {
-                return lastChild.offsetTop + lastChild.offsetHeight
-            }
-
-            return lastChild.offsetLeft + lastChild.offsetWidth
         },
     },
 }
