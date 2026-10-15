@@ -62,6 +62,8 @@ export default {
 
             childSpan: 0,
             sliderSpan: 0,
+            sliderStart: 0,
+            sliderEnd: 0,
         }
     },
     mounted() {
@@ -134,6 +136,8 @@ export default {
                     endClone.dataset.clone = true
                     endClone.dataset.position = 'end'
                 }
+                this.updateLoopBounds()
+                this.resetMeasure()
                 this.handleLoopBoundary()
             })
         },
@@ -151,41 +155,36 @@ export default {
             }
             this.hover = useElementHover(this.$el.nextSibling)
         },
+        updateLoopBounds() {
+            if (!this.loop || !this.slides?.length) {
+                this.sliderStart = 0
+                this.sliderEnd = 0
+                return
+            }
+
+            const firstChild = this.slides[0]
+            const lastChild = this.slides[this.slides.length - 1]
+
+            if (this.vertical) {
+                this.sliderStart = firstChild.offsetTop
+                this.sliderEnd = lastChild.offsetTop + lastChild.offsetHeight
+                return
+            }
+
+            this.sliderStart = firstChild.offsetLeft
+            this.sliderEnd = lastChild.offsetLeft + lastChild.offsetWidth
+        },
         handleLoopBoundary() {
             if (!this.loop) {
                 return
             }
 
-            // Read from the DOM: useScroll position can be stale after resize,
-            // and offsetLeft/Width are not reactive so computeds would cache them.
-            const scrollPosition = this.vertical ? this.slider.scrollTop : this.slider.scrollLeft
-            const sliderStart = this.getSliderStart()
-            const sliderEnd = this.getSliderEnd()
-            if (scrollPosition < sliderStart) {
-                this.scrollToPosition(scrollPosition + sliderStart, 'instant')
-            } else if (scrollPosition >= sliderEnd) {
-                this.scrollToPosition(scrollPosition - sliderStart, 'instant')
+            const scrollPosition = this.position
+            if (scrollPosition < this.sliderStart) {
+                this.scrollToPosition(scrollPosition + this.sliderStart, 'instant')
+            } else if (scrollPosition >= this.sliderEnd) {
+                this.scrollToPosition(scrollPosition - this.sliderStart, 'instant')
             }
-        },
-        getSliderStart() {
-            if (!this.slides?.length) {
-                return 0
-            }
-
-            return this.vertical ? this.slides[0].offsetTop : this.slides[0].offsetLeft
-        },
-        getSliderEnd() {
-            if (!this.slides?.length) {
-                return 0
-            }
-
-            const lastChild = this.slides[this.slides.length - 1]
-
-            if (this.vertical) {
-                return lastChild.offsetTop + lastChild.offsetHeight
-            }
-
-            return lastChild.offsetLeft + lastChild.offsetWidth
         },
         autoScroll() {
             if (this.slidesTotal == 1) {
@@ -237,15 +236,17 @@ export default {
         },
         updateSpan() {
             setTimeout(() => {
-                let slide = this.childSpan == 0 ? 0 : this.currentSlide
+                const isInitial = this.childSpan == 0
 
+                // Batch geometry reads, then sync useScroll so position stays correct after resize.
+                this.updateLoopBounds()
                 this.childSpan = this.vertical
                     ? (this.container?.children[0]?.offsetHeight ?? this.container?.offsetHeight)
                     : (this.container?.children[0]?.offsetWidth ?? this.container?.offsetWidth)
-
-                this.navigate(slide, 'instant')
-
                 this.sliderSpan = this.vertical ? this.container?.offsetHeight : this.container?.offsetWidth
+                this.resetMeasure()
+
+                this.navigate(isInitial ? 0 : this.currentSlide, 'instant')
             })
         },
     },
@@ -287,13 +288,9 @@ export default {
             if (!this.mounted) {
                 return 0
             }
-            // Depend on useScroll for reactivity during scroll, but read the DOM position
-            // so we stay correct when useScroll lags behind (e.g. after resize).
-            void this.position
-            const position = this.vertical ? this.slider.scrollTop : this.slider.scrollLeft
             // First make a calculated guess, improving performance by not having to loop through all slides
             const bestGuess = Math.round(
-                position /
+                this.position /
                     ((this.vertical ? this.container.scrollHeight : this.container.scrollWidth) / this.container.children.length),
             )
             const getSlideByGuess = (slide) => {
@@ -305,11 +302,11 @@ export default {
                 const bestGuessOffset = this.vertical ? bestGuessChild.offsetTop : bestGuessChild.offsetLeft
 
                 // Past halfway to the slide it will snap
-                if (position + bestGuessSpan / 2 < bestGuessOffset) {
+                if (this.position + bestGuessSpan / 2 < bestGuessOffset) {
                     return getSlideByGuess(slide - 1)
                 }
 
-                if (position >= bestGuessOffset + bestGuessSpan) {
+                if (this.position >= bestGuessOffset + bestGuessSpan) {
                     return getSlideByGuess(slide + 1)
                 }
 
