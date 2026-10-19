@@ -2,6 +2,15 @@ import { pushNotification } from './stores/useNotifications'
 
 window.debug = import.meta.env.VITE_DEBUG == 'true'
 window.Notify = (message, type = 'info', params = [], link = null) => {
+    if (!message) {
+        message = window.config?.translations?.errors?.wrong ?? null
+        reportError(new Error(`Notify called without a message (type: ${type})`))
+
+        if (!message || type !== 'error') {
+            return
+        }
+    }
+
     pushNotification({
         message: message,
         type: type,
