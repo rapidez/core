@@ -47,7 +47,7 @@ export default {
     },
     mounted() {
         let element = null
-        if (focusId && (element = this.$el?.parentNode?.querySelector?.('#' + focusId))) {
+        if (focusId && (element = this.$el?.parentNode?.querySelector?.('#' + CSS.escape(focusId)))) {
             setTimeout(() => {
                 requestAnimationFrame(() => {
                     element?.focus()
@@ -59,7 +59,7 @@ export default {
             setTimeout(() => {
                 requestAnimationFrame(() => {
                     let element = null
-                    if (focusId && (element = this.$el.parentNode.querySelector('#' + focusId))) {
+                    if (focusId && (element = this.$el.parentNode.querySelector('#' + CSS.escape(focusId)))) {
                         element?.focus()
                     }
                 })
