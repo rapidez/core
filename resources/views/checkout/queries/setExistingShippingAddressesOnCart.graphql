@@ -1,6 +1,7 @@
 mutation setExistingShippingAddressOnCart (
     $cart_id: String!,
-    $customer_address_id: Int
+    $customer_address_id: Int,
+    $same_as_billing: Boolean = false
 ) {
     setShippingAddressesOnCart(input: {
         cart_id: $cart_id,
@@ -10,6 +11,17 @@ mutation setExistingShippingAddressOnCart (
             }
         ]
     }) {
+        # The cart is returned by the billing address mutation when that runs.
+        cart @@skip(if: $same_as_billing) { ...cart }
+    }
+
+    # Magento resets same_as_billing when the shipping address is saved, so copy it to the billing address again.
+    setBillingAddressOnCart(input: {
+        cart_id: $cart_id,
+        billing_address: {
+            same_as_shipping: true
+        }
+    }) @@include(if: $same_as_billing) {
         cart { ...cart }
     }
 }
