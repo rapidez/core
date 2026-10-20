@@ -34,6 +34,7 @@
                 value="cart.value.items.flatMap((item) => item.product.crosssell_products.map((crosssell) => crosssell.id))"
                 title="More choices to go with your product"
                 field="entity_id"
+                :snapshot="false"
             />
         </div>
 

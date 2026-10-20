@@ -3,6 +3,7 @@
         title="Recently viewed"
         field="entity_id"
         value="products"
+        :snapshot="false"
         v-bind:transform-items="sort"
     />
 </recently-viewed>
