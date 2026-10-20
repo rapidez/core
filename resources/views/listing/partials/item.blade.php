@@ -7,7 +7,9 @@
                         v-if="addToCart.currentThumbnail"
                         :src="url('/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + addToCart.currentThumbnail + '.webp')"
                         class="size-full rounded-t-sm object-contain"
-                        v-bind:class="{ 'group-hover:opacity-0 transition-opacity': addToCart.hoverImage }"
+                        @if (config('rapidez.frontend.hover_images'))
+                            v-bind:class="{ 'group-hover:opacity-0 transition-opacity': addToCart.hoverImage }"
+                        @endif
                         :alt="item.name"
                         :loading="config.category && count <= 4 ? 'eager' : 'lazy'"
                         v-bind:style="{ 'view-transition-name': 'image-' + item.sku }"
@@ -15,15 +17,17 @@
                         height="200"
                     />
                     <x-rapidez::no-image v-else="" class="size-full rounded-t-sm" />
-                    <img
-                        v-if="addToCart.hoverImage"
-                        :src="url('/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + addToCart.hoverImage + '.webp')"
-                        class="absolute inset-0 size-full rounded-t-sm object-contain opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
-                        alt=""
-                        loading="lazy"
-                        width="200"
-                        height="200"
-                    />
+                    @if (config('rapidez.frontend.hover_images'))
+                        <img
+                            v-if="addToCart.hoverImage"
+                            :src="url('/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + addToCart.hoverImage + '.webp')"
+                            class="absolute inset-0 size-full rounded-t-sm object-contain opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+                            alt=""
+                            loading="lazy"
+                            width="200"
+                            height="200"
+                        />
+                    @endif
                 </div>
                 <div>
                     <x-rapidez::highlight attribute="name" class="text-base font-medium hover:underline decoration-2"/>
