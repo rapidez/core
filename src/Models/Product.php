@@ -169,11 +169,11 @@ class Product extends Model
         return Attribute::make(
             get: function (?float $price): ?float {
                 if ($this->type_id == 'configurable') {
-                    return collect($this->children)->min->price;
+                    return collect($this->children)->where('in_stock')->min->price;
                 }
 
                 if ($this->type_id == 'grouped') {
-                    return collect($this->grouped)->min->price;
+                    return collect($this->grouped)->where('in_stock')->min->price;
                 }
 
                 return $price;
@@ -197,21 +197,23 @@ class Product extends Model
                     return $specialPrice < $this->price ? $specialPrice : null;
                 }
 
-                return collect($this->type_id == 'configurable' ? $this->children : $this->grouped)->filter(function ($child) {
-                    if (! $child->special_price) {
-                        return false;
-                    }
-
-                    if (isset($child->special_from_date) && $child->special_from_date > now()->toDateTimeString()) {
-                        return false;
-                    }
-
-                    if (isset($child->special_to_date) && $child->special_to_date < now()->toDateTimeString()) {
-                        return false;
-                    }
-
-                    return true;
-                })->min->special_price;
+                return collect($this->type_id == 'configurable' ? $this->children : $this->grouped)
+                    ->where('in_stock')
+                    ->filter(function ($child) {
+                        if (! $child->special_price) {
+                            return false;
+                        }
+    
+                        if (isset($child->special_from_date) && $child->special_from_date > now()->toDateTimeString()) {
+                            return false;
+                        }
+    
+                        if (isset($child->special_to_date) && $child->special_to_date < now()->toDateTimeString()) {
+                            return false;
+                        }
+    
+                        return true;
+                    })->min->special_price;
             }
         );
     }
