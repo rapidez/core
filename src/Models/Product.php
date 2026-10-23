@@ -203,15 +203,15 @@ class Product extends Model
                         if (! $child->special_price) {
                             return false;
                         }
-    
+
                         if (isset($child->special_from_date) && $child->special_from_date > now()->toDateTimeString()) {
                             return false;
                         }
-    
+
                         if (isset($child->special_to_date) && $child->special_to_date < now()->toDateTimeString()) {
                             return false;
                         }
-    
+
                         return true;
                     })->min->special_price;
             }
