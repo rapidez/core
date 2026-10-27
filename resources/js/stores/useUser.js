@@ -220,20 +220,29 @@ document.addEventListener('vue:loaded', function (event) {
 })
 
 document.addEventListener('cart-updated', (event) => {
-    // Can be removed once https://github.com/magento/magento2/issues/39828 is fixed
+    // Set the default billing and shipping when they are null
+    // Magento sets these by itself when a new cart is made via GraphQL, but not when linking a guest cart.
+    // Because of this (and potentially other issues), we need to do this manually.
     setTimeout(() => {
-        if (cart?.value?.shipping_addresses?.length > 0 || userStorage.value?.addresses?.length < 1) {
+        if (userStorage.value?.addresses?.length < 1) {
             return
         }
 
         const defaultShipping = userStorage.value?.addresses?.find((address) => address.default_shipping)
-        if (!defaultShipping) {
+        const defaultBilling = userStorage.value?.addresses?.find((address) => address.default_billing)
+        const setShipping = !cart?.value?.is_virtual && !cart?.value?.shipping_addresses?.length && Boolean(defaultShipping)
+        const setBilling = !cart?.value?.billing_address && Boolean(defaultBilling)
+
+        if (!setShipping && !setBilling) {
             return
         }
 
-        magentoGraphQL(config.queries.setExistingShippingAddressesOnCart, {
+        magentoGraphQL(config.queries.setExistingAddressesOnCart, {
             cart_id: mask.value,
-            customer_address_id: defaultShipping.id,
+            shipping_address_id: defaultShipping?.id,
+            billing_address_id: defaultBilling?.id,
+            set_shipping: setShipping,
+            set_billing: setBilling,
         }).then((response) => Vue.prototype.updateCart([], response))
     })
 })
