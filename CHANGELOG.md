@@ -1,6 +1,26 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.11.0...5.11.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.12.0...5.12.0)
+## [5.12.0](https://github.com/rapidez/core/releases/tag/5.12.0) - 2026-10-28
+
+### Added
+
+- Install script to try out Rapidez easily (#1326)
+
+### Fixed
+
+- Fix notification link + tier prices for guests + super attribute label translations (#1416)
+- Fix aria label translations (#1424)
+- Fix casts in stock model (#1425)
+- Round tier_price percentage instead of ceil (#1427)
+- Add watcher ignore to default vite config (#1431)
+- Fix the CSS querying of invalid ids (#1435)
+- Fix product config timing issue (#1437)
+- Catch notification without message (#1436)
+- Harden v-html labels and decode in swatch (#1441)
+
+
+
 ## [5.11.0](https://github.com/rapidez/core/releases/tag/5.11.0) - 2026-10-08
 
 ### Changed
