@@ -250,6 +250,7 @@ on(
         // Set the default billing and shipping when they are null
         // Magento sets these by itself when a new cart is made via GraphQL, but not when linking a guest cart.
         // Because of this (and potentially other issues), we need to do this manually.
+        // Also fixes: https://github.com/magento/magento2/issues/39828
         setTimeout(() => {
             if (userStorage.value?.addresses?.length < 1) {
                 return
