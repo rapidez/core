@@ -1,6 +1,13 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/...4.14.2)
+[Unreleased changes](https://github.com/rapidez/core/compare/...4.14.3)
+## [4.14.3](https://github.com/rapidez/core/releases/tag/4.14.3) - 2026-10-29
+
+### Fixed
+
+- Fill billing and shipping address when null instead of only shipping (#1440)
+- Only use in_stock products for configurable product min price (#1438)
+
 ## [4.14.2](https://github.com/rapidez/core/releases/tag/4.14.2) - 2026-09-22
 
 ### Fixed
