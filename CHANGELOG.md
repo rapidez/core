@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.12.0...5.12.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.12.1...5.12.1)
+## [5.12.1](https://github.com/rapidez/core/releases/tag/5.12.1) - 2026-10-29
+
+### Fixed
+
+- Fill billing and shipping address when null instead of only shipping (#1439)
+
 ## [5.12.0](https://github.com/rapidez/core/releases/tag/5.12.0) - 2026-10-28
 
 ### Added
