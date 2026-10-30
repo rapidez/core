@@ -1,4 +1,5 @@
 import { cart, clear as clearCart } from './stores/useCart'
+import { mask } from './stores/useMask'
 import { fillFromGraphqlResponse as updateOrder } from './stores/useOrder'
 import { runAfterPlaceOrderHandlers, runBeforePaymentMethodHandlers, runBeforePlaceOrderHandlers } from './stores/usePaymentHandlers'
 import { refresh as refreshUser, token } from './stores/useUser'
@@ -51,6 +52,13 @@ Vue.prototype.checkResponseForExpiredCart = async function (variables, response)
                 error.path.some((path) => path.toLowerCase().includes('cart')),
         )
     ) {
+        let requestCartId = variables.cart_id ?? variables.cartId ?? null
+        if (requestCartId && mask.value != requestCartId) {
+            // Error response is from different cart ID and thus should be ignored
+            // This can happen when you log in in the checkout during the debounce time of the graphql mutation component
+            return false
+        }
+
         Notify(window.config.translations.errors.cart_expired, 'error')
         clearCart()
         if (token.value !== undefined) {
