@@ -293,7 +293,7 @@ export default {
                     return
                 }
 
-                this.options[key] = values[0]
+                this.options[key] = values.at(-1)
             })
         },
         async setOptionsFromRefinements() {
@@ -524,12 +524,6 @@ export default {
                     window.$emit('product-super-attribute-change', newProduct)
                 }
             },
-        },
-        superRefinements: {
-            handler(refinements) {
-                this.setOptionsFromRefinements()
-            },
-            deep: true,
         },
         customOptions: {
             handler() {
