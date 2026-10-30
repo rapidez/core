@@ -6,7 +6,7 @@
                     v-if="addToCart.currentThumbnail"
                     :src="url('/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + addToCart.currentThumbnail + '.webp')"
                     class="mb-3 h-48 w-full rounded-t-sm object-contain"
-                    :alt="item.name"
+                    :alt="htmlDecode(item.name)"
                     :loading="config.category && count <= 4 ? 'eager' : 'lazy'"
                     v-bind:style="{ 'view-transition-name': 'image-' + item.sku }"
                     width="200"
