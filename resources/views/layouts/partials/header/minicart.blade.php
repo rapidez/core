@@ -32,7 +32,7 @@
                 </tr>
             </table>
             <div class="flex flex-col gap-y-2 items-center">
-                <div class="flex w-full" :class="{ 'cursor-not-allowed': !canOrder.value }">
+                <div class="flex w-full" v-bind:class="{ 'cursor-not-allowed': !canOrder.value }">
                     <x-rapidez::button.conversion href="{{ route('checkout') }}" v-bind:class="{ 'pointer-events-none': !canOrder.value }" class="flex-1">
                         @lang('Checkout')
                     </x-rapidez::button.conversion>

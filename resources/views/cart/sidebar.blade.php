@@ -46,7 +46,7 @@
     </div>
 </x-rapidez::summary>
 
-<div class="mt-5 w-full" :class="{ 'cursor-not-allowed opacity-50': !canOrder.value }">
+<div class="mt-5 w-full" v-bind:class="{ 'cursor-not-allowed opacity-50': !canOrder.value }">
     <x-rapidez::button.conversion
         href="{{ route('checkout') }}"
         class="w-full text-center"

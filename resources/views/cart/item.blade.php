@@ -26,7 +26,7 @@
             </td>
             <td class="max-md:flex flex-1">
                 <div class="flex flex-col items-start">
-                    <a :href="url(item.product.url_key + item.product.url_suffix)" class="font-medium flex flex-col gap-1">
+                    <a v-bind:href="url(item.product.url_key + item.product.url_suffix)" class="font-medium flex flex-col gap-1">
                         <span>@{{ item.product.name }}</span>
                         <div class="flex text-red-700 text-sm items-start gap-1" v-if="!item.is_available">
                             <x-heroicon-o-exclamation-circle class="size-4 mt-0.5 shrink-0" />
