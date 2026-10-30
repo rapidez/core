@@ -2,6 +2,7 @@
 
 namespace Rapidez\Core\Tests\Feature;
 
+use Illuminate\Support\Arr;
 use PHPUnit\Framework\Attributes\Test;
 use Rapidez\Core\Events\ProductViewEvent;
 use Rapidez\Core\Models\Config;
@@ -194,5 +195,28 @@ class ProductTest extends TestCase
         $this->assertTrue($data['super_size_values'][166]->children->contains(53), 'super_size_values on product 68 did not get indexed with the right children data.');
 
         $this->assertEquals([49, 52, 56], $data['super_color'], 'super_size on product 68 did not get indexed with the right data.');
+    }
+
+    #[Test]
+    public function product_indexing_does_not_affect_serialization()
+    {
+        $product = Product::find(68);
+        $before = Arr::except($product->toArray(), 'children');
+
+        $data = $product->toSearchableArray();
+
+        $this->assertArrayHasKey('description', $before, 'Product 68 did not serialize the description.');
+        $this->assertArrayNotHasKey('description', $data, 'Product 68 got indexed with the description.');
+        $this->assertEquals([], $product->getVisible(), 'Indexing product 68 did not restore the visible attributes.');
+        $this->assertEquals($before, Arr::except($product->toArray(), 'children'), 'Indexing product 68 changed its serialization.');
+    }
+
+    #[Test]
+    public function product_parents_can_be_eager_loaded_for_siblings()
+    {
+        $children = Product::with('parents')->findMany(Product::find(68)->children->keys());
+
+        $this->assertGreaterThan(1, $children->count(), 'Product 68 does not have multiple children.');
+        $children->each(fn (Product $child) => $this->assertTrue($child->parents->contains('entity_id', 68), 'Child ' . $child->entity_id . ' did not get product 68 as eager loaded parent.'));
     }
 }
