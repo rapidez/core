@@ -29,15 +29,21 @@ jobs:
         include:
           - magento-version: 2.4.8-p5
             magento-php-version: php84-fpm
+            magento-image: michielgerritsen/magento-project-community-edition:php84-fpm-magento2.4.8-p5-sample-data
             rapidez-php-version: 8.4
           - magento-version: 2.4.9
             magento-php-version: php85-fpm
+            magento-image: michielgerritsen/magento-project-community-edition:php85-fpm-magento2.4.9-sample-data
             rapidez-php-version: 8.5
             screenshots: true
+          - magento-version: mage-os-3.6.0
+            magento-php-version: php85-fpm
+            magento-image: michielgerritsen/mage-os-community-edition:php85-fpm-mage-os3.6.0-sample-data
+            rapidez-php-version: 8.5
 
     services:
       magento:
-        image: michielgerritsen/magento-project-community-edition:${{matrix.magento-php-version}}-magento${{matrix.magento-version}}-sample-data
+        image: ${{ matrix.magento-image }}
         env:
           URL: http://localhost:1234/
           FLAT_TABLES: true
