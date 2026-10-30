@@ -1,3 +1,4 @@
+@use(Rapidez\Core\Actions\Listing\GetInitialListingItems)
 @extends('rapidez::layouts.app')
 
 @section('title', $category->meta_title ?: $category->name)
@@ -15,9 +16,13 @@
             @if (!$category->products()->exists())
                 @include('rapidez::listing.partials.no-products')
             @else
+                @php
+                    $initialItems = app(GetInitialListingItems::class)->forCategory($category->entity_id);
+                @endphp
                 <x-rapidez::listing
                     :root-path="$category->parentcategories->pluck('name')"
                     v-bind:category-id="{{ $category->entity_id }}"
+                    :initial-items="$initialItems"
                 />
             @endif
         @else
