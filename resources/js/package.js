@@ -219,7 +219,7 @@ async function init() {
             }),
 
             canOrder: computed(function () {
-                return cart.value.items.every((item) => item.is_available)
+                return cart.value.items.every((item) => item.is_available && !item.errors?.length)
             }),
         }
         window.app.config.globalProperties.window = window
