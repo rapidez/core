@@ -28,12 +28,12 @@
                 <div class="flex flex-col items-start">
                     <a v-bind:href="url(item.product.url_key + item.product.url_suffix)" class="font-medium flex flex-col gap-1">
                         <span>@{{ item.product.name }}</span>
-                        <div class="flex text-red-700 text-sm items-start gap-1" v-if="!item.is_available">
+                        <div class="flex text-red-700 items-start gap-1" v-if="!item.is_available">
                             <x-heroicon-o-exclamation-circle class="size-4 mt-0.5 shrink-0" />
                             @lang('This product is out of stock, remove it to continue your order.')
                         </div>
                         <template v-else v-for="error in item.errors ?? []">
-                            <div class="flex text-red-700 text-sm items-start gap-1">
+                            <div class="flex text-red-700 items-start gap-1">
                                 <x-heroicon-o-exclamation-circle class="size-4 mt-0.5 shrink-0" />
                                 @{{ error.message }}
                             </div>

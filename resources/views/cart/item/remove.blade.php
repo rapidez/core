@@ -6,13 +6,13 @@
     :error-callback="checkResponseForExpiredCart"
     v-slot="{ mutate }"
 >
-    <button
+    <x-rapidez::button.link
         v-on:click="mutate"
         title="@lang('Remove')"
-        class="underline hover:no-underline text-red-700"
-        :disabled="loading.value"
+        class="text-red-700"
+        v-bind:disabled="loading.value"
         data-testid="cart-item-remove"
     >
         @lang('Remove')
-    </button>
+    </x-rapidedz::button.link>
 </graphql-mutation>
