@@ -46,11 +46,11 @@
     </div>
 </x-rapidez::summary>
 
-<div class="mt-5 w-full" :class="{ 'cursor-not-allowed': !canOrder }">
+<div class="mt-5 w-full" :class="{ 'cursor-not-allowed opacity-50': !canOrder.value }">
     <x-rapidez::button.conversion
         href="{{ route('checkout') }}"
         class="w-full text-center"
-        v-bind:class="{ 'pointer-events-none': !canOrder }"
+        v-bind:class="{ 'pointer-events-none': !canOrder.value }"
         loader
     >
         @lang('Checkout')

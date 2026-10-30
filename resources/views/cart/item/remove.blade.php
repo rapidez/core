@@ -9,7 +9,7 @@
     <button
         v-on:click="mutate"
         title="@lang('Remove')"
-        class="hover:underline text-red-700"
+        class="underline hover:no-underline text-red-700"
         :disabled="loading.value"
         data-testid="cart-item-remove"
     >
