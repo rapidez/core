@@ -1,7 +1,9 @@
 import { directive as onClickaway } from 'vue3-click-away'
+import loading from './directives/loading'
 
 document.addEventListener('vue:loaded', function (event) {
     event.detail.vue.directive('on-click-away', onClickaway)
+    event.detail.vue.directive('loading', loading)
     event.detail.vue.directive('blur', (el) => {
         el.removeAttribute('v-blur')
     })
