@@ -153,26 +153,6 @@ export const getAttributeValues = async function () {
     return await fetchAttributeValuesMemo(window.config.cart_attributes)
 }
 
-function areAddressesSame(address1, address2) {
-    const fieldsToCompare = ['city', 'postcode', 'company', 'firstname', 'lastname', 'telephone']
-
-    return (
-        fieldsToCompare.every((field) => (address1?.[field] ?? '') === (address2?.[field] ?? '')) &&
-        [0, 1, 2].every((key) => (address1?.street?.[key] ?? '') === (address2?.street?.[key] ?? ''))
-    )
-}
-
-function addCustomerAddressId(address) {
-    // TODO: RAP-1634 Remove if https://github.com/magento/magento2/pull/38909 is merged
-    if (address?.customer_address_id || address == null) {
-        return address
-    }
-    const customerAddress = user.value?.addresses?.find((customerAddress) => areAddressesSame(customerAddress, address))
-    address.customer_address_id = address.customer_address_id || customerAddress?.id
-
-    return address
-}
-
 export const checkAvailability = function (cartItem) {
     // Here we polyfill the is_available field. We need to do this
     // because the default is_available field supported by Magento
@@ -200,11 +180,15 @@ export const cart = computed({
         return cartStorage.value
     },
     set(value) {
-        value.shipping_addresses = value.shipping_addresses?.map(addCustomerAddressId)
-        if (value.billing_address !== null) {
-            value.billing_address = addCustomerAddressId(value.billing_address)
-            // TODO: RAP-1879 Remove if https://github.com/magento/magento2/pull/38970 is merged
-            value.billing_address.same_as_shipping = areAddressesSame(value.shipping_addresses[0], value.billing_address)
+        if (value.billing_address) {
+            // Magento resets this flag every time the shipping address is saved,
+            // it's set again when the billing address is saved with same_as_shipping.
+            value.billing_address.same_as_shipping = !!value.shipping_addresses?.[0]?.same_as_billing
+
+            if (value.billing_address.same_as_shipping) {
+                // Magento drops the customer address id when it copies the shipping address.
+                value.billing_address.customer_address_id = value.shipping_addresses[0].customer_address_id
+            }
         }
 
         if (value.id && value.id !== mask.value) {

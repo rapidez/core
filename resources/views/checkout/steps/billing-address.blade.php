@@ -14,16 +14,18 @@
     :error-callback="checkResponseForExpiredCart"
     group="billing"
     mutate-event="setBillingAddressOnCart"
+    ref="billingAddress"
     v-slot="{ mutate, variables }"
 >
-    <div partial-submit v-on:partial-submit="(e) => mutate().then(e.detail.resolve).catch(e.detail.reject)">
+    {{-- A billing address that's the same as the shipping address is updated within the shipping address mutation --}}
+    <div partial-submit v-on:partial-submit="(e) => variables.same_as_shipping && cart.value.billing_address?.same_as_shipping ? e.detail.resolve() : mutate().then(e.detail.resolve).catch(e.detail.reject)">
         <fieldset v-on:change="function (e) {
             e.target.closest('fieldset').querySelector(':invalid') === null
             && (!variables.same_as_shipping || !!cart?.value?.shipping_addresses?.[0]?.postcode)
             && window.$emit('setBillingAddressOnCart')
         }">
             <template v-if="!cart.value.is_virtual">
-                <x-rapidez::input.checkbox v-model="variables.same_as_shipping">
+                <x-rapidez::input.checkbox v-model="variables.same_as_shipping" data-testid="same-as-shipping">
                     @lang('My billing and shipping address are the same')
                 </x-rapidez::input.checkbox>
             </template>
