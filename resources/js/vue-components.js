@@ -13,6 +13,7 @@ import globalSlideoverInstance from './components/GlobalSlideoverInstance.vue'
 import VueTurboFrame from './components/VueTurboFrame.vue'
 import images from './components/Product/Images.vue'
 import quantitySelect from './components/Product/QuantitySelect.vue'
+import listingShell from './components/Listing/ListingShell.vue'
 import { defineAsyncComponent, defineComponent } from 'vue'
 import { vIntersectionObserver } from '@vueuse/components'
 
@@ -41,6 +42,8 @@ document.addEventListener('vue:loaded', function (event) {
     vue.component('images', images)
 
     vue.component('quantity-select', quantitySelect)
+
+    vue.component('listing-shell', listingShell)
 
     vue.component(
         'autocomplete',
