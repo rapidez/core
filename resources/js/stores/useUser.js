@@ -64,9 +64,6 @@ export const refresh = async function () {
     }
 
     if (Jwt.isJwt(token.value) && Jwt.decode(token.value)?.isExpired()) {
-        Notify(window.config.translations.errors.session_expired, 'error')
-        await clear()
-
         return false
     }
 
@@ -179,12 +176,16 @@ export const loggedIn = async function () {
 }
 
 export const logout = async function () {
-    await magentoGraphQL('mutation { revokeCustomerToken { result } }', {}, { notifyOnError: false, redirectOnExpiration: false }).finally(
-        async () => {
-            await clear()
-            emit('logged-out')
-        },
-    )
+    await magentoGraphQL('mutation { revokeCustomerToken { result } }', {}, { notifyOnError: false, redirectOnExpiration: false })
+        .catch(() => {
+            // The cause of revokeCustomerToken failing is usually that the token has already expired, so we can ignore this error.
+        })
+        .finally(
+            async () => {
+                await clear()
+                emit('logged-out')
+            },
+        )
 }
 
 export const user = computed({
@@ -229,6 +230,38 @@ if (userStorage.value?.email && !token.value) {
     token.value = ''
     userStorage.value = {}
 }
+
+export const expireDate = computed(() => {
+    const tokenJwt = Jwt.isJwt(token.value) ? Jwt.decode(token.value) : false
+    if (!tokenJwt) {
+        return null;
+    }
+
+    return tokenJwt.expDate
+})
+
+let loginTimerId = null
+watch(expireDate, (date) => {
+    if (!date) {
+        return
+    }
+
+    if (loginTimerId) {
+        clearTimeout(loginTimerId)
+        loginTimerId = null
+    }
+
+    const expires = date.valueOf() - (60 * 1000) // 1 minute before the actual expiration date so we can still call revokeCustomerToken.
+    const now = (new Date()).valueOf()
+
+    loginTimerId = setTimeout(
+        () => {
+            emit('logout')
+            Notify(window.config.translations.errors.session_expired, 'warning')
+        },
+        expires <= now ? 0 : expires - now
+    );
+}, { immediate: true })
 
 on(
     'logout',
