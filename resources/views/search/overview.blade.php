@@ -1,3 +1,4 @@
+@use(Rapidez\Core\Actions\Listing\GetInitialListingItems)
 @extends('rapidez::layouts.app')
 
 @section('robots', 'NOINDEX,NOFOLLOW')
@@ -8,7 +9,14 @@
 
 @section('content')
     <div class="container">
-        <x-rapidez::listing use-search-title filter-query-string="(visibility:(3 OR 4) OR (NOT _exists_:visibility))">
+        @php
+            $initialItems = app(GetInitialListingItems::class)->forSearch(request('q'));
+        @endphp
+        <x-rapidez::listing
+            use-search-title
+            filter-query-string="(visibility:(3 OR 4) OR (NOT _exists_:visibility))"
+            :initial-items="$initialItems"
+        >
             <x-slot:before>
                 <ais-state-results>
                     <template v-slot="{ state: { query } }">

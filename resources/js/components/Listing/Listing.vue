@@ -55,6 +55,8 @@ export default {
         },
     },
 
+    emits: ['request-complete'],
+
     data: () => ({
         searchkit: null,
         searchClient: null,
@@ -69,6 +71,14 @@ export default {
 
     unmounted() {
         this.destroyed = true
+    },
+
+    watch: {
+        requestCount(value, oldValue) {
+            if (oldValue === 0 && value > 0) {
+                this.$emit('request-complete')
+            }
+        },
     },
 
     computed: {

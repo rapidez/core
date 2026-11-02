@@ -1,5 +1,6 @@
 @props(['value', 'title' => false, 'field' => 'sku'])
 @slots(['items'])
+@use(Rapidez\Core\Actions\Listing\GetInitialListingItems)
 
 {{--
 Examples:
@@ -10,48 +11,50 @@ Examples:
 --}}
 
 @if (!is_iterable($value) || count($value))
+    @php
+        $initialItems = is_iterable($value)
+            ? app(GetInitialListingItems::class)->forValues($field, collect($value)->values()->all())
+            : [];
+    @endphp
     <lazy v-slot="{ intersected }">
         @if (is_string($value)) <template v-if="{{ $value }}.length"> @endif
-            <listing
-                {{ $attributes }}
-                v-if="intersected"
-                v-slot="listingSlotProps"
-                v-cloak
-            >
-                <div ref="root">
-                    <ais-instant-search
-                        v-if="listingSlotProps.searchClient"
-                        :future="{ preserveSharedStateOnUnmount: true }"
-                        :search-client="listingSlotProps.searchClient"
-                        :index-name="listingSlotProps.index"
-                        :middlewares="listingSlotProps.middlewares"
+            <listing-shell v-if="intersected" v-cloak v-bind:initial-items='@json($initialItems)' v-slot="{ items, sendEvent, setLive }">
+                @include('rapidez::listing.partials.items-list')
+
+                <div v-show="!items.length">
+                    <listing
+                        {{ $attributes }}
+                        v-slot="listingSlotProps"
+                        v-cloak
+                        v-on:request-complete="setLive"
                     >
-                        @slotdefault('before')
-                            @if ($value && $value !== [])
-                                <ais-configure :filters="'{{ $field }}:({{ is_array($value)
-                                    ? implode(' OR ', $value)
-                                    : "'+".$value.".join(' OR ')+'"
-                                }})'"/>
-                            @endif
-                        @endslotdefault
-
-                        <ais-hits v-slot="{ items, sendEvent }" v-bind:transform-items="listingSlotProps.transformItems">
-                            <div v-if="items.length" class="flex flex-col gap-5">
-                                @if ($title)
-                                    <strong class="font-bold text-2xl">
-                                        @lang($title)
-                                    </strong>
-                                @endif
-                                @slotdefault('items')
-                                    <x-rapidez::slider />
+                        <div ref="root">
+                            <ais-instant-search
+                                v-if="listingSlotProps.searchClient"
+                                :future="{ preserveSharedStateOnUnmount: true }"
+                                :search-client="listingSlotProps.searchClient"
+                                :index-name="listingSlotProps.index"
+                                :middlewares="listingSlotProps.middlewares"
+                            >
+                                @slotdefault('before')
+                                    @if ($value && $value !== [])
+                                        <ais-configure :filters="'{{ $field }}:({{ is_array($value)
+                                            ? implode(' OR ', $value)
+                                            : "'+".$value.".join(' OR ')+'"
+                                        }})'"/>
+                                    @endif
                                 @endslotdefault
-                            </div>
-                        </ais-hits>
 
-                        {{ $after ?? '' }}
-                    </ais-instant-search>
+                                <ais-hits v-slot="{ items, sendEvent }" v-bind:transform-items="listingSlotProps.transformItems">
+                                    @include('rapidez::listing.partials.items-list')
+                                </ais-hits>
+
+                                {{ $after ?? '' }}
+                            </ais-instant-search>
+                        </div>
+                    </listing>
                 </div>
-            </listing>
+            </listing-shell>
         @if (is_string($value)) </template> @endif
     </lazy>
 @endif
