@@ -180,12 +180,10 @@ export const logout = async function () {
         .catch(() => {
             // The cause of revokeCustomerToken failing is usually that the token has already expired, so we can ignore this error.
         })
-        .finally(
-            async () => {
-                await clear()
-                emit('logged-out')
-            },
-        )
+        .finally(async () => {
+            await clear()
+            emit('logged-out')
+        })
 }
 
 export const user = computed({
@@ -234,34 +232,38 @@ if (userStorage.value?.email && !token.value) {
 export const expireDate = computed(() => {
     const tokenJwt = Jwt.isJwt(token.value) ? Jwt.decode(token.value) : false
     if (!tokenJwt) {
-        return null;
+        return null
     }
 
     return tokenJwt.expDate
 })
 
 let loginTimerId = null
-watch(expireDate, (date) => {
-    if (!date) {
-        return
-    }
+watch(
+    expireDate,
+    (date) => {
+        if (!date) {
+            return
+        }
 
-    if (loginTimerId) {
-        clearTimeout(loginTimerId)
-        loginTimerId = null
-    }
+        if (loginTimerId) {
+            clearTimeout(loginTimerId)
+            loginTimerId = null
+        }
 
-    const expires = date.valueOf() - (60 * 1000) // 1 minute before the actual expiration date so we can still call revokeCustomerToken.
-    const now = (new Date()).valueOf()
+        const expires = date.valueOf() - 60 * 1000 // 1 minute before the actual expiration date so we can still call revokeCustomerToken.
+        const now = new Date().valueOf()
 
-    loginTimerId = setTimeout(
-        () => {
-            emit('logout')
-            Notify(window.config.translations.errors.session_expired, 'warning')
-        },
-        expires <= now ? 0 : expires - now
-    );
-}, { immediate: true })
+        loginTimerId = setTimeout(
+            () => {
+                emit('logout')
+                Notify(window.config.translations.errors.session_expired, 'warning')
+            },
+            expires <= now ? 0 : expires - now,
+        )
+    },
+    { immediate: true },
+)
 
 on(
     'logout',
