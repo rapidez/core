@@ -37,7 +37,7 @@ Call `rapidez-override-upgrade-diff` with the `file` (and the same `from` / `old
 
 ### a. Check the comment
 
-Apply the rules of the `rapidez-core-override-comments` skill (*Check and write the comments*, *Format* and *Content*) to the **override changes** section. It tells you what the override changes and why, and that is what you need for the next steps. Fix or add the comment.
+Apply the rules of the `rapidez-core-override-comments` skill (_Check and write the comments_, _Format_ and _Content_) to the **override changes** section. It tells you what the override changes and why, and that is what you need for the next steps. Fix or add the comment.
 
 ### b. Port the vendor changes
 
