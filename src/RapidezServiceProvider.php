@@ -47,6 +47,8 @@ use Rapidez\Core\Listeners\UpdateLatestIndexDate;
 use Rapidez\Core\Listeners\WarmProductMappings;
 use Rapidez\Core\Mcp\Tools\ListViewOverrides;
 use Rapidez\Core\Mcp\Tools\ViewOverrideDiff;
+use Rapidez\Core\Mcp\Tools\ChangedOverrides;
+use Rapidez\Core\Mcp\Tools\OverrideUpgradeDiff;
 use Rapidez\Core\Models\Model;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
@@ -500,7 +502,7 @@ elseif (!app()->environment('production')) { echo 'Turbo frame \"' . {$frame} .'
             return $this;
         }
 
-        foreach ([ListViewOverrides::class, ViewOverrideDiff::class] as $tool) {
+        foreach ([ListViewOverrides::class, ViewOverrideDiff::class, ChangedOverrides::class, OverrideUpgradeDiff::class] as $tool) {
             config()->push('boost.mcp.tools.include', $tool);
         }
 
