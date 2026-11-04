@@ -9,7 +9,7 @@
     is="{{ $tag }}"
     :v-bind:class="$loader ? '{ \'button-loading\': loading.value }' : null"
     {{ $attributes->merge([
-        ':disabled' => $attributes->has('href') || $attributes->has(':href') || !$disableWhenLoading ? null : 'loading.value',
+        'v-bind:disabled' => $attributes->hasAny('href', ':href', ':disabled') || !$disableWhenLoading ? null : 'loading.value',
     ]) }}
 >
     {{ $slot }}

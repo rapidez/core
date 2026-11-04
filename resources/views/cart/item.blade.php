@@ -1,6 +1,11 @@
 <table class="w-full border-b">
     <tbody class="divide-y">
-        <tr v-for="(item, index) in cart.value.items" class="flex-wrap max-md:flex first:*:pt-0 *:p-2 md:*:p-4"  data-testid="cart-item">
+        <tr
+            v-for="(item, index) in cart.value.items"
+            class="flex-wrap max-md:flex first:*:pt-0 *:p-2 md:*:p-4"
+            v-bind:class="{'opacity-60': !item.is_available}"
+            data-testid="cart-item"
+        >
             <td class="w-24">
                 <a :href="url(item.product.url_key + item.product.url_suffix)">
                     <img
@@ -21,11 +26,18 @@
             </td>
             <td class="max-md:flex flex-1">
                 <div class="flex flex-col items-start">
-                    <a :href="url(item.product.url_key + item.product.url_suffix)" class="font-medium">
-                        @{{ item.product.name }}
-                        <div class="text-red-600" v-if="!item.is_available">
+                    <a v-bind:href="url(item.product.url_key + item.product.url_suffix)" class="font-medium flex flex-col gap-1">
+                        <span>@{{ item.product.name }}</span>
+                        <div class="flex text-red-700 items-start gap-1" v-if="!item.is_available">
+                            <x-heroicon-o-exclamation-circle class="size-4 mt-0.5 shrink-0" />
                             @lang('This product is out of stock, remove it to continue your order.')
                         </div>
+                        <template v-else v-for="error in item.errors ?? []">
+                            <div class="flex text-red-700 items-start gap-1">
+                                <x-heroicon-o-exclamation-circle class="size-4 mt-0.5 shrink-0" />
+                                @{{ error.message }}
+                            </div>
+                        </template>
                     </a>
                     <div class="*:border-r *:last:border-r-0 *:px-2 *:mb-1.5 *:leading-3 -mx-2 flex flex-wrap text-sm mb-1.5 text-muted mt-1.5">
                         <div v-for="option in item.configurable_options">
