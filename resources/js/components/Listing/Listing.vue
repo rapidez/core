@@ -231,7 +231,7 @@ export default {
                 page: data.page > 0 ? String(data.page) : undefined,
                 sort: data.sortBy,
                 hits: data.hitsPerPage != config.grid_per_page ? data.hitsPerPage : undefined,
-                ...this.utmFields,
+                ...toRaw(this.utmFields),
             }
         },
 
