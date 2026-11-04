@@ -61,6 +61,7 @@ export default {
         destroyed: false,
         utmFields: [],
         instantSearchInstance: null,
+        uiState: {},
     }),
 
     render() {
@@ -120,6 +121,10 @@ export default {
             }
         },
 
+        superRefinements() {
+            return Object.entries(this.uiState[this.index]?.refinementList || {}).filter(([key]) => key.startsWith('super_'))
+        },
+
         rangeAttributes() {
             return config.filterable_attributes
                 .filter((filter) => filter.input == 'price')
@@ -134,7 +139,9 @@ export default {
                 ({ instantSearchInstance }) => {
                     this.instantSearchInstance = instantSearchInstance
                     return {
-                        onStateChange: () => {},
+                        onStateChange: ({ uiState }) => {
+                            this.uiState = uiState
+                        },
                         subscribe: () => {},
                         unsubscribe: () => {},
                     }
