@@ -201,10 +201,10 @@ export const cart = computed({
     },
     set(value) {
         value.shipping_addresses = value.shipping_addresses?.map(addCustomerAddressId)
-        if (value.billing_address !== null) {
+        if (value.billing_address != null) {
             value.billing_address = addCustomerAddressId(value.billing_address)
             // TODO: RAP-1879 Remove if https://github.com/magento/magento2/pull/38970 is merged
-            value.billing_address.same_as_shipping = areAddressesSame(value.shipping_addresses[0], value.billing_address)
+            value.billing_address.same_as_shipping = areAddressesSame(value.shipping_addresses?.[0], value.billing_address)
         }
 
         if (value.id && value.id !== mask.value) {
