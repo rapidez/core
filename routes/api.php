@@ -24,7 +24,7 @@ Route::middleware('api')->prefix('api')->group(function () {
 
     Route::post('track/product/{productId}', [config('rapidez.routing.controllers.product'), 'track']);
 
-    Route::post('get-checkout-url', GetSignedCheckoutController::class);
+    Route::post('get-checkout-url', GetSignedCheckoutController::class)->middleware(VerifyAdminToken::class);
 
     Route::prefix('admin')->middleware(VerifyAdminToken::class)->group(function () {
         Route::match(['get', 'post'], 'cache/clear', fn () => Artisan::call('cache:clear'));
