@@ -72,7 +72,7 @@ export class BasePage {
     }
 
     async waitForFetches() {
-        await this.page.waitForFunction(() => window.app?.config?.globalProperties?.loadingCount?.value === 0)
+        await this.page.waitForFunction(() => window.app?.loadingCount === 0)
     }
 
     async wcag(testInfo, disabledRules = []) {
