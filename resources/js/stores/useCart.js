@@ -200,6 +200,11 @@ export const cart = computed({
         return cartStorage.value
     },
     set(value) {
+        if (value.itemsV2) {
+            value.items = value.itemsV2.items
+            delete value.itemsV2
+        }
+
         value.shipping_addresses = value.shipping_addresses?.map(addCustomerAddressId)
         if (value.billing_address != null) {
             value.billing_address = addCustomerAddressId(value.billing_address)
