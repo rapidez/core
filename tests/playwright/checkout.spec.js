@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test'
-import { BasePage } from './pages/BasePage'
 import { ProductPage } from './pages/ProductPage'
 import { CheckoutPage, screenshot_login, screenshot_credentials, screenshot_payment, screenshot_success } from './pages/CheckoutPage'
 import { AccountPage } from './pages/AccountPage'
@@ -7,7 +6,7 @@ import { AccountPage } from './pages/AccountPage'
 const checkoutTypes = ['default', 'onestep']
 
 checkoutTypes.forEach((type) => {
-    test(type + ' - as guest', BasePage.tags, async ({ page }) => {
+    test(type + ' - as guest', async ({ page }) => {
         const productPage = new ProductPage(page)
         const checkoutPage = new CheckoutPage(page, type, [
             screenshot_login,
@@ -20,7 +19,7 @@ checkoutTypes.forEach((type) => {
         await checkoutPage.checkout(`${crypto.randomUUID()}@enterprises.com`, false, false)
     })
 
-    test(type + ' - as user', BasePage.tags, async ({ page }) => {
+    test(type + ' - as user', async ({ page }) => {
         const productPage = new ProductPage(page)
         const checkoutPage = new CheckoutPage(page, type, [screenshot_login, screenshot_credentials])
         const accountPage = new AccountPage(page)
@@ -41,7 +40,7 @@ checkoutTypes.forEach((type) => {
     })
 })
 
-test('incorrect password login', BasePage.tags, async ({ page }) => {
+test('incorrect password login', async ({ page }) => {
     const productPage = new ProductPage(page)
     const checkoutPage = new CheckoutPage(page, 'default', [screenshot_credentials])
     const accountPage = new AccountPage(page)
