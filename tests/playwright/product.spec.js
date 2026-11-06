@@ -1,27 +1,27 @@
 import { test, expect } from '@playwright/test'
 import { BasePage } from './pages/BasePage'
 
-test('product simple', BasePage.tags, async ({ page }) => {
+test('product simple', async ({ page }) => {
     await page.goto(process.env.PRODUCT_URL_SIMPLE)
     await new BasePage(page).screenshot('fullpage-footer')
 })
 
-test('product configurable', BasePage.tags, async ({ page }) => {
+test('product configurable', async ({ page }) => {
     await page.goto(process.env.PRODUCT_URL_CONFIGURABLE)
     await new BasePage(page).screenshot('fullpage-footer')
 })
 
-test('product grouped', BasePage.tags, async ({ page }) => {
+test('product grouped', async ({ page }) => {
     await page.goto(process.env.PRODUCT_URL_GROUPED)
     await new BasePage(page).screenshot('fullpage-footer')
 })
 
-test('product special price', BasePage.tags, async ({ page }) => {
+test('product special price', async ({ page }) => {
     await page.goto(process.env.PRODUCT_URL_SPECIAL_PRICE)
     await new BasePage(page).screenshot('fullpage-footer')
 })
 
-test('product tier priece', BasePage.tags, async ({ page }) => {
+test('product tier priece', async ({ page }) => {
     await page.goto(process.env.PRODUCT_URL_TIER_PRICE)
     await page.waitForTimeout(100)
     await new BasePage(page).screenshot('fullpage-footer')
@@ -38,7 +38,7 @@ test('product tier priece', BasePage.tags, async ({ page }) => {
     await expect(page.getByTestId('price')).toHaveText('€41.30')
 })
 
-test('wcag', BasePage.tags, async ({ page }, testInfo) => {
+test('wcag', async ({ page }, testInfo) => {
     await page.goto(process.env.PRODUCT_URL_SIMPLE)
     await new BasePage(page).wcag(testInfo)
 })

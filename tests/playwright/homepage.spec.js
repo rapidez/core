@@ -1,12 +1,12 @@
 import { test, expect } from '@playwright/test'
 import { BasePage } from './pages/BasePage'
 
-test('homepage', BasePage.tags, async ({ page }, testInfo) => {
+test('homepage', async ({ page }, testInfo) => {
     await page.goto('/')
     await new BasePage(page).screenshot('fullpage-footer')
 })
 
-test('wcag', BasePage.tags, async ({ page }, testInfo) => {
+test('wcag', async ({ page }, testInfo) => {
     await page.goto('/')
     await new BasePage(page).wcag(testInfo, 'page-has-heading-one')
 })
