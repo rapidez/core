@@ -74,6 +74,22 @@ export class BasePage {
             return
         }
 
+        try {
+            await this.waitForIdleCallback()
+        } catch (error) {
+            if (!error.message.includes('Execution context was destroyed')) {
+                throw error
+            }
+
+            await this.page.waitForLoadState()
+            return await this.waitUntilIdle()
+        }
+
+        await this.waitForFetches()
+        await this.page.waitForLoadState('networkidle')
+    }
+
+    async waitForIdleCallback() {
         await expect(
             await this.page.evaluate(async () => {
                 return (
@@ -100,8 +116,6 @@ export class BasePage {
             }),
             'Page should become idle within a minute',
         ).toBeTruthy()
-        await this.waitForFetches()
-        await this.page.waitForLoadState('networkidle')
     }
 
     async waitForFetches() {
@@ -117,6 +131,8 @@ export class BasePage {
     }
 
     async wcag(testInfo, disabledRules = []) {
+        await this.waitUntilIdle()
+
         const page = this.page
         const accessibilityScanResults = await new AxeBuilder({ page }).disableRules(disabledRules).analyze()
 
@@ -129,8 +145,6 @@ export class BasePage {
     }
 
     async lighthouse(url) {
-        test.skip(test.info().project.name !== 'chromium', 'Chromium only')
-
         const browser = await playwright['chromium'].launch({
             args: ['--remote-debugging-port=9222'],
         })
