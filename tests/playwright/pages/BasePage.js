@@ -70,37 +70,41 @@ export class BasePage {
         // Webkit does not support requestIdleCallback, so we just wait for a bit.
         if (this.page.context().browser().browserType().name() === 'webkit') {
             await this.page.waitForTimeout(200)
-            await this.page.waitForLoadState('networkidle')
-            return
+        } else {
+            await expect(
+                await this.page.evaluate(async () => {
+                    return (
+                        (await new Promise((resolve, reject) => {
+                            let counter = 0
+                            let intervalTime = 0.05
+                            let idleForTime = 0.5
+                            let interval = setInterval(async function () {
+                                if (window.app?.config === undefined) {
+                                    return
+                                }
+                                let result = await new Promise((resolve, reject) =>
+                                    window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), { timeout: 5 }),
+                                )
+                                counter = result ? counter + 1 : 0
+                                if (counter >= idleForTime / intervalTime) {
+                                    clearInterval(interval)
+                                    resolve(true)
+                                }
+                            }, intervalTime * 1000)
+                            setTimeout(() => resolve(false), 60 * 1000)
+                        })) === true
+                    )
+                }),
+                'Page should become idle within a minute',
+            ).toBeTruthy()
         }
 
-        await expect(
-            await this.page.evaluate(async () => {
-                return (
-                    (await new Promise((resolve, reject) => {
-                        let counter = 0
-                        let intervalTime = 0.05
-                        let idleForTime = 0.5
-                        let interval = setInterval(async function () {
-                            if (window.app?.config === undefined) {
-                                return
-                            }
-                            let result = await new Promise((resolve, reject) =>
-                                window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), { timeout: 5 }),
-                            )
-                            counter = result ? counter + 1 : 0
-                            if (counter >= idleForTime / intervalTime) {
-                                clearInterval(interval)
-                                resolve(true)
-                            }
-                        }, intervalTime * 1000)
-                        setTimeout(() => resolve(false), 60 * 1000)
-                    })) === true
-                )
-            }),
-            'Page should become idle within a minute',
-        ).toBeTruthy()
+        await this.waitForFetches()
         await this.page.waitForLoadState('networkidle')
+    }
+
+    async waitForFetches() {
+        await this.page.waitForFunction(() => window.app?.config?.globalProperties?.loadingCount?.value === 0)
     }
 
     async loadLazy() {

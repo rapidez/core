@@ -93,6 +93,7 @@ export class CheckoutPage {
     async success() {
         await expect(this.page.getByTestId('checkout-success')).toBeVisible()
         await new BasePage(this.page).waitUntilIdle()
+        await new BasePage(this.page).waitForImages()
     }
 
     async continue(expectedStep) {
