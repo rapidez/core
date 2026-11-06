@@ -41,6 +41,7 @@ export class BasePage {
             await this.waitForImages()
         }
 
+        await this.page.evaluate(() => document.activeElement?.blur())
         await expect(this.page).toHaveScreenshot(options)
     }
 
