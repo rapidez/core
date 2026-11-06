@@ -41,6 +41,7 @@ export class BasePage {
             await this.waitForImages()
         }
 
+        await this.page.evaluate(() => document.activeElement?.blur())
         await expect(this.page).toHaveScreenshot(options)
     }
 
@@ -61,7 +62,22 @@ export class BasePage {
         await this.page.evaluate(() => window.scrollTo(0, 0))
     }
 
+    async waitUntilIdle() {
+        await this.page.waitForTimeout(200)
+        await this.waitForFetches()
+
+        if (this.page.context().browser().browserType().name() !== 'webkit') {
+            await this.page.waitForLoadState('networkidle')
+        }
+    }
+
+    async waitForFetches() {
+        await this.page.waitForFunction(() => window.app?.loadingCount === 0)
+    }
+
     async wcag(testInfo, disabledRules = []) {
+        await this.waitUntilIdle()
+
         const page = this.page
         const accessibilityScanResults = await new AxeBuilder({ page }).disableRules(disabledRules).analyze()
 
@@ -74,8 +90,6 @@ export class BasePage {
     }
 
     async lighthouse(url) {
-        test.skip(test.info().project.name !== 'chromium', 'Chromium only')
-
         const browser = await playwright['chromium'].launch({
             args: ['--remote-debugging-port=9222'],
         })
