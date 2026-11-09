@@ -10,6 +10,7 @@
     <form v-on:submit.prevent="mutate" class="flex gap-3">
         <x-rapidez::input
             name="couponCode"
+            autocomplete="off"
             placeholder="Coupon code"
             v-model="variables.coupon_code"
             v-bind:disabled="loading.value"
