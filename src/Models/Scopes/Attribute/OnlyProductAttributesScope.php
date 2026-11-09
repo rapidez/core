@@ -25,6 +25,7 @@ class OnlyProductAttributesScope implements Scope
                 'backend_type AS type',
                 'frontend_input AS input',
                 'source_model',
+                'backend_model',
                 DB::raw('IF(eav_attribute.attribute_code IN ("price", "tax_class_id"), 0, is_searchable) AS `search`'),
                 'search_weight',
                 'is_filterable AS filter',
@@ -39,6 +40,11 @@ class OnlyProductAttributesScope implements Scope
                     FROM catalog_product_super_attribute
                     WHERE catalog_product_super_attribute.attribute_id = eav_attribute.attribute_id
                 ) AS `super`'),
+                DB::raw('EXISTS(
+                    SELECT 1
+                    FROM eav_attribute_option
+                    WHERE eav_attribute_option.attribute_id = eav_attribute.attribute_id
+                ) AS `has_options`'),
                 DB::raw("JSON_UNQUOTE(JSON_EXTRACT(IF(JSON_VALID(additional_data), additional_data, null), '$.swatch_input_type')) = 'text' AS `text_swatch`"),
                 DB::raw("JSON_UNQUOTE(JSON_EXTRACT(IF(JSON_VALID(additional_data), additional_data, null), '$.swatch_input_type')) = 'visual' AS `visual_swatch`"),
                 DB::raw("JSON_UNQUOTE(JSON_EXTRACT(IF(JSON_VALID(additional_data), additional_data, null), '$.update_product_preview_image')) = 1 AS `update_image`"),
