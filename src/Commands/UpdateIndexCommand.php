@@ -61,7 +61,7 @@ class UpdateIndexCommand extends Command
 
     protected function updateSearchable(string $model): void
     {
-        // Creating an alias too early here causes the indexer to break, so we skip non-existent ones
+        // Creating an index too early here causes the indexer to break, so we skip non-existent ones
         $exists = Helper::convertToBool(resolve(ProxyClient::class)->indices()->existsAlias(['name' => (new $model)->searchableAs()]));
         if (! $exists) {
             return;
