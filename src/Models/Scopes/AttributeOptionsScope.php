@@ -26,7 +26,8 @@ class AttributeOptionsScope implements Scope
             })
             ->leftJoin('eav_attribute_option_value', function (JoinClause $join) {
                 return $join->on('eav_attribute_option_value.option_id', 'eav_attribute_option.option_id')
-                    ->whereIn('eav_attribute_option_value.store_id', [0, config('rapidez.store')]);
+                    ->whereIn('eav_attribute_option_value.store_id', [0, config('rapidez.store')])
+                    ->whereNotNull('eav_attribute_option_value.value');
             })
             ->groupBy($model->qualifyColumn('value_id'), 'eav_attribute_option_value.store_id')
             ->orderBy('eav_attribute_option_value.store_id');
