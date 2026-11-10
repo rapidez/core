@@ -21,7 +21,7 @@ export class CheckoutPage {
     async login(email, password = false, register = false) {
         await this.page.waitForLoadState('networkidle')
         await this.page.fill('[name=email]', email)
-        await this.page.locator('[name=email]').dispatchEvent('change')
+        await this.page.locator('[name=email]').press('Tab')
         await this.page.waitForTimeout(200)
         await this.page.waitForLoadState('networkidle')
 
