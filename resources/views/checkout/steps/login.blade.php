@@ -8,7 +8,7 @@
             <x-rapidez::label>@lang('Email')</x-rapidez::label>
             <x-rapidez::input
                 name="email"
-                autocomplete="username"
+                autocomplete="email"
                 type="email"
                 v-model="checkoutLogin.email"
                 v-bind:disabled="window.app.config.globalProperties.loggedIn.value"
