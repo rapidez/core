@@ -72,7 +72,26 @@ export class BasePage {
     }
 
     async waitForFetches() {
-        await this.page.waitForFunction(() => window.app?.loadingCount === 0)
+        // Chained requests leave short gaps without any fetch, so wait until it stays quiet for a moment.
+        await this.page.waitForFunction(
+            (token) => {
+                if (window.idleCheck?.token !== token) {
+                    window.idleCheck = { token: token, since: null }
+                }
+
+                if (window.app?.loadingCount !== 0) {
+                    window.idleCheck.since = null
+
+                    return false
+                }
+
+                window.idleCheck.since ??= Date.now()
+
+                return Date.now() - window.idleCheck.since >= 250
+            },
+            crypto.randomUUID(),
+            { polling: 50 },
+        )
     }
 
     async wcag(testInfo, disabledRules = []) {
