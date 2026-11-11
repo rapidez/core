@@ -1,7 +1,7 @@
 @extends('rapidez::layouts.app')
 
-@section('title', $product->meta_title ?: $product->name)
-@section('description', $product->meta_description)
+@section('title'){!! e(strip_tags($product->meta_title ?: $product->name), false) !!}@endsection
+@section('description'){!! e(strip_tags($product->meta_description), false) !!}@endsection
 @section('canonical', url($product->url))
 @include('rapidez::layouts.partials.head.hreflang', ['alternates' => $product->alternates])
 

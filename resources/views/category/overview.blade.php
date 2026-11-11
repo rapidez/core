@@ -1,7 +1,7 @@
 @extends('rapidez::layouts.app')
 
-@section('title', $category->meta_title ?: $category->name)
-@section('description', $category->meta_description)
+@section('title'){!! e(strip_tags($category->meta_title ?: $category->name), false) !!}@endsection
+@section('description'){!! e(strip_tags($category->meta_description), false) !!}@endsection
 @section('canonical', url($category->url))
 @include('rapidez::layouts.partials.head.hreflang', ['alternates' => $category->alternates])
 

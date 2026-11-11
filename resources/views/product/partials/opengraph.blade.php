@@ -2,7 +2,7 @@
 <meta property="og:type" content="og:product" />
 <meta property="og:title" content="{!! $product->name !!}" />
 @if ($product->meta_description)
-<meta property="og:description" content="{{ $product->meta_description }}" />
+<meta property="og:description" content="{!! e(strip_tags($product->meta_description), false) !!}" />
 @endif
 <meta property="og:url" content="{{ url($product->url) }}"/>
 @isset($product->images[0])

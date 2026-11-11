@@ -15,7 +15,7 @@
                             v-if="item.thumbnail"
                             :src="url('/storage/{{ config('rapidez.store') }}/resizes/200/magento/catalog/product' + item.thumbnail + '.webp')"
                             class="shrink-0 self-center object-contain size-16 mix-blend-multiply"
-                            :alt="item.name"
+                            :alt="htmlDecode(item.name)"
                             width="200"
                             height="200"
                         />
