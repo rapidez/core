@@ -94,7 +94,7 @@ return [
     ],
 
     // Show the second product image when hovering over a product in listings
-    'hover_images' => false,
+    'hover_images' => true,
 
     // The path to redirect to after a failed checkout
     'checkout_success_fail_redirect_path' => 'cart',
