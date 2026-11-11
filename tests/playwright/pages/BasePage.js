@@ -56,7 +56,10 @@ export class BasePage {
     async loadLazy() {
         await this.page.waitForLoadState('networkidle')
         await this.page.waitForFunction(() => window.app)
-        await this.page.evaluate(() => window.app.$emit('load-lazy'))
+        // Vue 2 returns the instance from $emit, which can't be serialized.
+        await this.page.evaluate(() => {
+            window.app.$emit('load-lazy')
+        })
         await this.page.waitForTimeout(250)
         await this.page.waitForLoadState('networkidle')
         await this.page.waitForTimeout(250)
