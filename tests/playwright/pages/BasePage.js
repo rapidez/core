@@ -46,10 +46,20 @@ export class BasePage {
     }
 
     async scrolldown() {
+        await this.loadLazy()
         await this.page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
         await this.page.waitForLoadState('networkidle')
         await this.page.evaluate(() => window.scrollTo(0, 0))
         await this.page.waitForLoadState('networkidle')
+    }
+
+    async loadLazy() {
+        await this.page.waitForLoadState('networkidle')
+        await this.page.waitForFunction(() => window.app)
+        await this.page.evaluate(() => window.app.$emit('load-lazy'))
+        await this.page.waitForTimeout(250)
+        await this.page.waitForLoadState('networkidle')
+        await this.page.waitForTimeout(250)
     }
 
     async waitForImages() {

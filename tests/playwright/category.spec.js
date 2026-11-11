@@ -38,6 +38,7 @@ test('category filter', BasePage.tags, async ({ page }) => {
 
     await filter.click()
     await expect(page.getByTestId('listing-item')).toHaveCount(count)
+    await expect(page.getByTestId('listing-selected-filters')).toBeVisible()
     await new BasePage(page).screenshot('fullpage-footer-images')
 })
 
