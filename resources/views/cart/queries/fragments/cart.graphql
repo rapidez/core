@@ -66,6 +66,7 @@ fragment cart on Cart {
     shipping_addresses {
         uid
         company
+        vat_id
         prefix
         firstname
         middlename
@@ -114,6 +115,7 @@ fragment cart on Cart {
     billing_address {
         uid
         company
+        vat_id
         prefix
         firstname
         middlename
