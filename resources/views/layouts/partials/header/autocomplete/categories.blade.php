@@ -3,7 +3,7 @@
         <ais-configure :hits-per-page.camel="{{ $size }}" />
     @endif
     <ais-hits v-slot="{ items }">
-        <div class="border-b py-2.5" v-if="items && items.length">
+        <div class="border-b py-2.5" v-if="items && items.length" data-autocomplete-results>
             <x-rapidez::autocomplete.title>
                 @lang('Categories')
             </x-rapidez::autocomplete.title>
