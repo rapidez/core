@@ -1,9 +1,11 @@
 fragment product on ProductInterface {
     @foreach(collect([
         'id',
+        'uid',
         'sku',
         'name',
         'type_id',
+        '__typename',
         'url_key',
         'url_suffix',
         'special_price',
@@ -15,6 +17,7 @@ fragment product on ProductInterface {
     }
     crosssell_products {
         id
+        uid
     }
     @if (Rapidez::checkCompadreVersion('0.0.1'))
         stock_item {
