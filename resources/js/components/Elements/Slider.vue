@@ -62,6 +62,8 @@ export default {
 
             childSpan: 0,
             sliderSpan: 0,
+            sliderStart: 0,
+            sliderEnd: 0,
         }
     },
     mounted() {
@@ -134,6 +136,8 @@ export default {
                     endClone.dataset.clone = true
                     endClone.dataset.position = 'end'
                 }
+                this.updateLoopBounds()
+                this.resetMeasure()
                 this.handleLoopBoundary()
             })
         },
@@ -151,18 +155,35 @@ export default {
             }
             this.hover = useElementHover(this.$el.nextSibling)
         },
+        updateLoopBounds() {
+            if (!this.loop || !this.slides?.length) {
+                this.sliderStart = 0
+                this.sliderEnd = 0
+                return
+            }
+
+            const firstChild = this.slides[0]
+            const lastChild = this.slides[this.slides.length - 1]
+
+            if (this.vertical) {
+                this.sliderStart = firstChild.offsetTop
+                this.sliderEnd = lastChild.offsetTop + lastChild.offsetHeight
+                return
+            }
+
+            this.sliderStart = firstChild.offsetLeft
+            this.sliderEnd = lastChild.offsetLeft + lastChild.offsetWidth
+        },
         handleLoopBoundary() {
             if (!this.loop) {
                 return
             }
 
-            let scrollPosition = this.position
+            const scrollPosition = this.position
             if (scrollPosition < this.sliderStart) {
-                const position = scrollPosition + this.sliderStart
-                this.scrollToPosition(position, 'instant')
+                this.scrollToPosition(scrollPosition + this.sliderStart, 'instant')
             } else if (scrollPosition >= this.sliderEnd) {
-                const position = scrollPosition - this.sliderStart
-                this.scrollToPosition(position, 'instant')
+                this.scrollToPosition(scrollPosition - this.sliderStart, 'instant')
             }
         },
         autoScroll() {
@@ -215,15 +236,17 @@ export default {
         },
         updateSpan() {
             setTimeout(() => {
-                let slide = this.childSpan == 0 ? 0 : this.currentSlide
+                const isInitial = this.childSpan == 0
 
+                // Batch geometry reads, then sync useScroll so position stays correct after resize.
+                this.updateLoopBounds()
                 this.childSpan = this.vertical
                     ? (this.container?.children[0]?.offsetHeight ?? this.container?.offsetHeight)
                     : (this.container?.children[0]?.offsetWidth ?? this.container?.offsetWidth)
-
-                this.navigate(slide, 'instant')
-
                 this.sliderSpan = this.vertical ? this.container?.offsetHeight : this.container?.offsetWidth
+                this.resetMeasure()
+
+                this.navigate(isInitial ? 0 : this.currentSlide, 'instant')
             })
         },
     },
@@ -317,18 +340,6 @@ export default {
                 return []
             }
             return this.container.querySelectorAll(':scope > :not([data-clone=true])')
-        },
-        sliderStart() {
-            return this.vertical ? this.slides[0].offsetTop : this.slides[0].offsetLeft
-        },
-        sliderEnd() {
-            let lastChild = this.slides[this.slides.length - 1]
-
-            if (this.vertical) {
-                return lastChild.offsetTop + lastChild.offsetHeight
-            }
-
-            return lastChild.offsetLeft + lastChild.offsetWidth
         },
     },
 }
