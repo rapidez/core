@@ -92,7 +92,7 @@ export default {
                 throttle: 150,
                 idle: 100,
                 eventListenerOptions: { passive: true },
-                behavior: this.scrollBehavior,
+                behavior: () => this.scrollBehavior,
             })
 
             this.scrollX = x
@@ -102,16 +102,11 @@ export default {
             this.resetMeasure = measure
         },
         scrollToPosition(position, behavior = 'smooth') {
-            if (behavior === 'instant') {
-                this.vertical
-                    ? this.slider.scrollTo({ top: position, behavior: 'instant' })
-                    : this.slider.scrollTo({ left: position, behavior: 'instant' })
-                this.resetMeasure()
-                return
-            }
-
             this.scrollBehavior = behavior
             this.position = position
+
+            // Fix: Browsers forcing instant scrolling on smooth scroll behavior don't get an update
+            this.resetMeasure()
         },
         initLoop() {
             if (!this.loop) {
