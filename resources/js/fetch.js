@@ -29,10 +29,10 @@ export class SessionExpired extends FetchError {
 }
 window.SessionExpired = SessionExpired
 
-export class GraphQLInputError extends FetchError {
-    constructor(message, response) {
-        super(message, response)
-        this.name = this.constructor.name
+export class GraphQLInputError extends GraphQLError {
+    constructor(errors, response, message) {
+        super(errors, response)
+        this.message = message ?? this.message
     }
 }
 window.GraphQLInputError = GraphQLInputError
@@ -169,7 +169,7 @@ export const magentoGraphQL = (window.magentoGraphQL = async (
             errors.forEach((error) => {
                 const category = error?.extensions?.category
                 if (category === 'graphql-input') {
-                    throw new GraphQLInputError(error.message, responseClone)
+                    throw new GraphQLInputError(data.errors, responseClone, error.message)
                 }
 
                 if (
