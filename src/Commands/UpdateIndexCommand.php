@@ -11,6 +11,8 @@ use Rapidez\Core\Events\IndexStoreAfterEvent;
 use Rapidez\Core\Events\IndexStoreBeforeEvent;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Traits\Searchable;
+use Rapidez\ScoutElasticSearch\Creator\Helper;
+use Rapidez\ScoutElasticSearch\Creator\ProxyClient;
 
 class UpdateIndexCommand extends Command
 {
@@ -59,6 +61,12 @@ class UpdateIndexCommand extends Command
 
     protected function updateSearchable(string $model): void
     {
+        // Creating an index too early here causes the indexer to break, so we skip non-existent ones
+        $exists = Helper::convertToBool(resolve(ProxyClient::class)->indices()->existsAlias(['name' => (new $model)->searchableAs()]));
+        if (! $exists) {
+            return;
+        }
+
         $model::where(fn ($query) => $model::makeAllSearchableUsing($query))
             ->where(
                 (new $model)->getQualifiedUpdatedAtColumn(),
