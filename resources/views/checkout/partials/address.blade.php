@@ -41,6 +41,7 @@
                                 <x-rapidez::label>@lang('Company')</x-rapidez::label>
                                 <x-rapidez::input
                                     name="{{ $type }}_company"
+                                    autocomplete="organization"
                                     v-model="variables.company"
                                     :required="Rapidez::config('customer/address/company_show') == 'req'"
                                 />
@@ -69,6 +70,7 @@
                     <x-rapidez::label>@lang('Prefix')</x-rapidez::label>
                     <x-rapidez::input.select
                         name="{{ $type }}_prefix"
+                        autocomplete="honorific-prefix"
                         v-model="variables.prefix"
                         :required="Rapidez::config('customer/address/prefix_show') == 'req'"
                     >
@@ -89,6 +91,7 @@
                 <x-rapidez::label>@lang('First name')</x-rapidez::label>
                 <x-rapidez::input
                     name="{{ $type }}_firstname"
+                    autocomplete="given-name"
                     v-model="variables.firstname"
                     required
                 />
@@ -100,6 +103,7 @@
                     <x-rapidez::label>@lang('Middle name')</x-rapidez::label>
                     <x-rapidez::input
                         name="{{ $type }}_middlename"
+                        autocomplete="additional-name"
                         v-model="variables.middlename"
                     />
                 </label>
@@ -110,6 +114,7 @@
                 <x-rapidez::label>@lang('Last name')</x-rapidez::label>
                 <x-rapidez::input
                     name="{{ $type }}_lastname"
+                    autocomplete="family-name"
                     v-model="variables.lastname"
                     required
                 />
@@ -121,6 +126,7 @@
                     <x-rapidez::label>@lang('Suffix')</x-rapidez::label>
                     <x-rapidez::input.select
                         name="{{ $type }}_suffix"
+                        autocomplete="honorific-suffix"
                         v-model="variables.suffix"
                         :required="Rapidez::config('customer/address/suffix_show') == 'req'"
                     >
@@ -141,6 +147,7 @@
                 <x-rapidez::label>@lang('Country')</x-rapidez::label>
                 <x-rapidez::input.select.country
                     name="{{ $type }}_country"
+                    autocomplete="country"
                     v-model="variables.country_code"
                     v-on:change="(event) => $root.$nextTick(() => {
                         window.$emit('postcode-change', variables, event);
@@ -156,6 +163,7 @@
                 <x-rapidez::input.select.region
                     class="region exists"
                     name="{{ $type }}_region"
+                    autocomplete="address-level1"
                     country="variables.country_code"
                     v-model="variables.region_id"
                 />
@@ -167,6 +175,7 @@
                     <x-rapidez::label>@lang('Telephone')</x-rapidez::label>
                     <x-rapidez::input
                         name="{{ $type }}_telephone"
+                        autocomplete="tel"
                         v-model="variables.telephone"
                         :required="Rapidez::config('customer/address/telephone_show') == 'req'"
                     />
@@ -178,6 +187,7 @@
                 <x-rapidez::label>@lang('Postcode')</x-rapidez::label>
                 <x-rapidez::input
                     name="{{ $type }}_postcode"
+                    autocomplete="postal-code"
                     v-model="variables.postcode"
                     v-on:change="(event) => $root.$nextTick(() => window.$emit('postcode-change', variables, event))"
                     required
@@ -223,6 +233,7 @@
                 <x-rapidez::label>@lang('City')</x-rapidez::label>
                 <x-rapidez::input
                     name="{{ $type }}_city"
+                    autocomplete="address-level2"
                     v-model="variables.city"
                     required
                 />
@@ -234,6 +245,7 @@
                     <x-rapidez::label>@lang('Fax')</x-rapidez::label>
                     <x-rapidez::input
                         name="{{ $type }}_fax"
+                        autocomplete="fax tel"
                         v-model="variables.fax"
                         :required="Rapidez::config('customer/address/fax_show') === 'req'"
                     />
