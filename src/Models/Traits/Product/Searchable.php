@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Rapidez\Core\Enums\Visibility;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Category;
@@ -52,6 +53,28 @@ trait Searchable
             ->pluck($this->getCustomAttributeCode())
             ->toArray();
 
+        $resultAttributes = config('rapidez.searchkit.result_attributes');
+
+        // Attributes prefixed with `children.*.` define which (optionally nested, e.g.
+        // `stock.is_in_stock`) attributes are kept on each child, instead of every
+        // attribute of the parent being exposed on them as well.
+        $childAttributePaths = collect($resultAttributes)
+            ->filter(fn (string $code) => str_starts_with($code, 'children.*.'))
+            ->map(fn (string $code) => Str::after($code, 'children.*.'))
+            ->values()
+            ->toArray();
+
+        $childAttributeCodes = collect($childAttributePaths)
+            ->map(fn (string $path) => Str::before($path, '.'))
+            ->unique()
+            ->values()
+            ->toArray();
+
+        $resultAttributes = collect($resultAttributes)
+            ->reject(fn (string $code) => str_starts_with($code, 'children.*.'))
+            ->values()
+            ->toArray();
+
         $attributeCodes = [
             'entity_id',
             'sku',
@@ -63,7 +86,7 @@ trait Searchable
             'category_ids',
             ...$indexableAttributeCodes,
             ...$this->superAttributeCodes,
-            ...config('rapidez.searchkit.result_attributes'),
+            ...$resultAttributes,
         ];
 
         $wildcardAttributeCodes = collect($attributeCodes)
@@ -72,7 +95,7 @@ trait Searchable
             ->toArray();
 
         if ($this->relationLoaded('children') && $this->children->count()) {
-            $this->children->each->mergeVisible($attributeCodes);
+            $this->children->each->mergeVisible($childAttributeCodes ?: $attributeCodes);
         }
 
         $data = array_filter($this->toArray(), function (string $attributeName) use ($attributeCodes, $wildcardAttributeCodes) {
@@ -83,6 +106,14 @@ trait Searchable
             return Arr::some($wildcardAttributeCodes, fn (string $regex) => preg_match($regex, $attributeName));
         }, ARRAY_FILTER_USE_KEY);
 
+        // `mergeVisible` only restricts relations/appends; custom EAV attributes are always
+        // added by `HasToArrayData`, so explicitly strip those back down on the children too.
+        if ($childAttributePaths && ! empty($data['children'])) {
+            $data['children'] = collect($data['children'])
+                ->map(fn (array $child) => static::onlyPaths($child, $childAttributePaths))
+                ->all();
+        }
+
         $data['store'] = config('rapidez.store');
         $data['prices'] = (object) Arr::keyBy($data['prices'], 'customer_group_id');
 
@@ -91,6 +122,37 @@ trait Searchable
         $data['popularity'] = $this->getPopularity();
 
         return Eventy::filter('index.' . static::getModelName() . '.data', $data, $this);
+    }
+
+    /**
+     * Recursively keep only the given dot-notated paths (e.g. `stock.is_in_stock`) of an array.
+     */
+    protected static function onlyPaths(array $data, array $paths): array
+    {
+        $tree = [];
+        foreach ($paths as $path) {
+            Arr::set($tree, $path, true);
+        }
+
+        return static::pruneToTree($data, $tree);
+    }
+
+    protected static function pruneToTree(mixed $data, array $tree): mixed
+    {
+        if (! is_array($data)) {
+            return $data;
+        }
+
+        $result = [];
+        foreach ($tree as $key => $value) {
+            if (! array_key_exists($key, $data)) {
+                continue;
+            }
+
+            $result[$key] = $value === true ? $data[$key] : static::pruneToTree($data[$key], $value);
+        }
+
+        return $result;
     }
 
     public function getPopularity(): int
