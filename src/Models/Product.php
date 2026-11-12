@@ -118,7 +118,7 @@ class Product extends Model
             config('rapidez.models.product'),
             'catalog_product_relation',
             'child_id', 'parent_id',
-        )->afterQuery(fn ($results) => $results->keyBy('entity_id'));
+        );
     }
 
     public function children(): BelongsToMany
