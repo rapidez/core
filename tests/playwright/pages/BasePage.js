@@ -139,9 +139,14 @@ export class BasePage {
             args: ['--remote-debugging-port=9222'],
         })
         const page = await browser.newPage()
+        const basePage = new BasePage(page)
         const reportName = `lighthouse-${new Date().getTime()}`
 
         await page.goto(url)
+        // Wait for images and other lazy content so the container may have cached some data.
+        await basePage.waitForImages()
+        await basePage.waitUntilIdle()
+        await basePage.loadLazy()
 
         try {
             await playAudit({
@@ -163,6 +168,10 @@ export class BasePage {
                     ...lighthouseMobileConfig,
                     settings: {
                         ...lighthouseMobileConfig.settings,
+                        throttlingMethod: 'devtools',
+                        throttling: {
+                            cpuSlowdownMultiplier: 1,
+                        },
                         skipAudits: [
                             ...lighthouseMobileConfig.settings.skipAudits,
                             // Skip everything that's not fixed within CI tests.
