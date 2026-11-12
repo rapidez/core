@@ -18,8 +18,8 @@ class GetSignedCheckoutController
     public function __invoke(Request $request)
     {
         $data = $request->validate([
-            'mask'  => 'required',
-            'token' => 'nullable',
+            'mask'           => 'required',
+            'customer_token' => 'nullable',
         ]);
         $cachekey = (string) Str::uuid();
         Cache::store(config('rapidez.standalone_checkout.cache_store'))->put('checkout-' . $cachekey, $data, static::URL_TIMEOUT);
