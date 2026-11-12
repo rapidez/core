@@ -21,9 +21,8 @@ export class CheckoutPage {
     async login(email, password = false, register = false) {
         await this.page.waitForLoadState('networkidle')
         await this.page.fill('[name=email]', email)
-        await this.page.locator('[name=email]').dispatchEvent('change')
-        await this.page.waitForTimeout(200)
-        await this.page.waitForLoadState('networkidle')
+        await this.page.locator('[name=email]').press('Tab')
+        await new BasePage(this.page).waitUntilIdle()
 
         if (password && !register) {
             if (this.screenshots.includes(screenshot_login)) {
@@ -45,7 +44,7 @@ export class CheckoutPage {
     }
 
     async shippingAddress() {
-        await this.page.waitForLoadState('networkidle')
+        await new BasePage(this.page).waitUntilIdle()
 
         const addressSelect = this.page.getByTestId('shipping-address-select')
         if (await addressSelect.isVisible()) {
@@ -54,8 +53,7 @@ export class CheckoutPage {
             if (addressCount > 1) {
                 await addressSelect.selectOption({ index: 0 })
                 await addressSelect.dispatchEvent('change')
-                await this.page.waitForTimeout(200)
-                await this.page.waitForLoadState('networkidle')
+                await new BasePage(this.page).waitUntilIdle()
                 return
             }
         }
@@ -69,34 +67,33 @@ export class CheckoutPage {
         await this.page.selectOption('[name=shipping_country]', 'NL')
         await this.page.fill('[name=shipping_telephone]', '530-7972')
         await this.page.locator('input[name=shipping_telephone]').press('Tab')
-        await this.page.waitForLoadState('networkidle')
+        await new BasePage(this.page).waitUntilIdle()
     }
 
     async shippingMethod() {
         await this.page.getByTestId('shipping-method').first().click()
-        await this.page.waitForTimeout(200)
-        await this.page.waitForLoadState('networkidle')
+        await new BasePage(this.page).waitUntilIdle()
     }
 
     async paymentMethod() {
         await this.page.getByTestId('payment-method').first().click()
-        await this.page.waitForTimeout(200)
-        await this.page.waitForLoadState('networkidle')
+        await new BasePage(this.page).waitUntilIdle()
     }
 
     async success() {
         await expect(this.page.getByTestId('checkout-success')).toBeVisible()
+        await new BasePage(this.page).waitUntilIdle()
+        await new BasePage(this.page).waitForImages()
     }
 
     async continue(expectedStep) {
         await this.page.getByTestId('continue').click()
-        await this.page.waitForTimeout(500)
-        await this.page.waitForLoadState('networkidle')
+        await new BasePage(this.page).waitUntilIdle()
         await this.page.waitForURL('**/' + expectedStep)
         if (expectedStep != 'success') {
             await this.continueButtonVisible()
         }
-        await this.page.waitForTimeout(500)
+        await new BasePage(this.page).waitUntilIdle()
     }
 
     async continueButtonVisible() {
@@ -152,8 +149,7 @@ export class CheckoutPage {
         if (email) {
             await this.login(email, password, register)
             if (password) await this.page.getByTestId('login').click()
-            await this.page.waitForTimeout(500)
-            await this.page.waitForLoadState('networkidle')
+            await new BasePage(this.page).waitUntilIdle()
         }
 
         await this.shippingAddress()

@@ -1,6 +1,6 @@
 <ais-clear-refinements v-bind:excluded-attributes="[...listingSlotProps.categoryAttributes, 'query']">
     <template v-slot="{ canRefine, refine, createURL }">
-        <div v-show="canRefine" class="flex flex-wrap items-baseline justify-between gap-2 w-full pb-2.5">
+        <div v-show="canRefine" class="flex flex-wrap items-baseline justify-between gap-2 w-full pb-2.5" data-testid="listing-selected-filters">
             <div class="text-sm">
                 @lang('Selected filters'):
             </div>

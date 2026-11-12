@@ -1,4 +1,5 @@
 import { expect } from '@playwright/test'
+import { BasePage } from './BasePage'
 
 export class CartPage {
     constructor(page) {
@@ -7,6 +8,7 @@ export class CartPage {
 
     async gotoCart() {
         await this.page.goto('/cart')
+        await new BasePage(this.page).waitUntilIdle()
         await this.page.waitForLoadState('networkidle')
     }
 
@@ -23,8 +25,25 @@ export class CartPage {
         await expect(this.cartItem()).toContainText(product.name)
     }
 
+    async setFirstItemQty(qty) {
+        const cartItemQty = this.cartItemQty()
+
+        await expect(cartItemQty).toBeVisible()
+        await cartItemQty.fill(qty + '')
+        await cartItemQty.press('Tab')
+        await this.page.waitForLoadState('networkidle')
+    }
+
     async firstItemQtyIs(qty) {
         await this.gotoCart()
         await expect(this.cartItemQty()).toHaveValue(qty.toString())
+    }
+
+    async removeFirstItem() {
+        const removeButton = this.cartItem().getByTestId('cart-item-remove')
+
+        await expect(removeButton).toBeVisible()
+        await removeButton.click()
+        await this.page.waitForLoadState('networkidle')
     }
 }

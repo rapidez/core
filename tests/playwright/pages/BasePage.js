@@ -41,14 +41,41 @@ export class BasePage {
             await this.waitForImages()
         }
 
+        await this.resetScroll()
+        await this.page.evaluate(() => document.activeElement?.blur())
         await expect(this.page).toHaveScreenshot(options)
     }
 
+    async resetScroll() {
+        await this.page.evaluate(() => {
+            document.querySelectorAll('[class*="overflow"], [style*="overflow"], html, body').forEach((el) => {
+                el.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: 'instant',
+                })
+            })
+        })
+    }
+
     async scrolldown() {
+        await this.loadLazy()
         await this.page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
         await this.page.waitForLoadState('networkidle')
         await this.page.evaluate(() => window.scrollTo(0, 0))
         await this.page.waitForLoadState('networkidle')
+    }
+
+    async loadLazy() {
+        await this.page.waitForLoadState('networkidle')
+        await this.page.waitForFunction(() => window.app)
+        // Vue 2 returns the instance from $emit, which can't be serialized.
+        await this.page.evaluate(() => {
+            window.app.$emit('load-lazy')
+        })
+        await this.page.waitForTimeout(250)
+        await this.page.waitForLoadState('networkidle')
+        await this.page.waitForTimeout(250)
     }
 
     async waitForImages() {
@@ -61,7 +88,41 @@ export class BasePage {
         await this.page.evaluate(() => window.scrollTo(0, 0))
     }
 
+    async waitUntilIdle() {
+        await this.page.waitForTimeout(200)
+        await this.waitForFetches()
+
+        if (this.page.context().browser().browserType().name() !== 'webkit') {
+            await this.page.waitForLoadState('networkidle')
+        }
+    }
+
+    async waitForFetches() {
+        // Chained requests leave short gaps without any fetch, so wait until it stays quiet for a moment.
+        await this.page.waitForFunction(
+            (token) => {
+                if (window.idleCheck?.token !== token) {
+                    window.idleCheck = { token: token, since: null }
+                }
+
+                if (window.app?.loadingCount !== 0) {
+                    window.idleCheck.since = null
+
+                    return false
+                }
+
+                window.idleCheck.since ??= Date.now()
+
+                return Date.now() - window.idleCheck.since >= 250
+            },
+            crypto.randomUUID(),
+            { polling: 50 },
+        )
+    }
+
     async wcag(testInfo, disabledRules = []) {
+        await this.waitUntilIdle()
+
         const page = this.page
         const accessibilityScanResults = await new AxeBuilder({ page }).disableRules(disabledRules).analyze()
 
@@ -74,15 +135,18 @@ export class BasePage {
     }
 
     async lighthouse(url) {
-        test.skip(test.info().project.name !== 'chromium', 'Chromium only')
-
         const browser = await playwright['chromium'].launch({
             args: ['--remote-debugging-port=9222'],
         })
         const page = await browser.newPage()
+        const basePage = new BasePage(page)
         const reportName = `lighthouse-${new Date().getTime()}`
 
         await page.goto(url)
+        // Wait for images and other lazy content so the container may have cached some data.
+        await basePage.waitForImages()
+        await basePage.waitUntilIdle()
+        await basePage.loadLazy()
 
         try {
             await playAudit({
@@ -104,6 +168,10 @@ export class BasePage {
                     ...lighthouseMobileConfig,
                     settings: {
                         ...lighthouseMobileConfig.settings,
+                        throttlingMethod: 'devtools',
+                        throttling: {
+                            cpuSlowdownMultiplier: 1,
+                        },
                         skipAudits: [
                             ...lighthouseMobileConfig.settings.skipAudits,
                             // Skip everything that's not fixed within CI tests.

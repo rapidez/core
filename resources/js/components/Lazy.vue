@@ -86,6 +86,8 @@ export default {
             }
         }
 
+        this.$root.$on('load-lazy', this.load)
+
         this.onIdle(() => {
             this.state.isIntersected = true
         })
@@ -95,11 +97,16 @@ export default {
         }
     },
     beforeDestroy() {
+        this.$root.$off('load-lazy', this.load)
+
         if (!this.state.isIntersected && !this.state.idle) {
             this.unobserve()
         }
     },
     methods: {
+        load() {
+            this.state.isIntersected = true
+        },
         onIdle(callback) {
             setTimeout(() => {
                 this.$nextTick(callback)
