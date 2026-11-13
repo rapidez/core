@@ -132,8 +132,11 @@ trait Searchable
      */
     public function withCategories(array $data): array
     {
-        $categories = Cache::driver('array')->rememberForever('categories-' . config('rapidez.store'), function () {
-            return Category::all()->keyBy('entity_id');
+        $categories = Cache::driver('array')->rememberForever('category-paths-' . config('rapidez.store'), function () {
+            return Category::all()->mapWithKeys(fn ($category) => [$category->entity_id => (object) [
+                'path' => $category->path,
+                'name' => $category->name,
+            ]]);
         });
 
         foreach ($this->category_ids as $category_id) {
@@ -152,7 +155,7 @@ trait Searchable
             for ($i = 1; $i <= $level; $i++) {
                 $pathCategories = collect($path)
                     ->take($i)
-                    ->map(fn ($id) => $categories[$id]->name ?? null)
+                    ->map(fn ($id) => $categories[(int) $id]->name ?? null)
                     ->whereNotNull()
                     ->map(fn ($name) => trim($name))
                     ->join(' > ');
