@@ -77,8 +77,12 @@ export const linkUserToCart = async function () {
             {
                 cart_id: mask.value,
             },
+            {
+                retryOnCartError: false,
+            },
         )
         .then((response) => window.app.config.globalProperties.updateCart([], response))
+        .catch(() => fetchCustomerCart())
 }
 
 export const fetchCustomerCart = async function () {
