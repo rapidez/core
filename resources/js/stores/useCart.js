@@ -79,7 +79,6 @@ export const linkUserToCart = async function () {
             },
             {
                 retryOnCartError: false,
-                notifyOnError: false,
             },
         )
         .then((response) => window.app.config.globalProperties.updateCart([], response))
