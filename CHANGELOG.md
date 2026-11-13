@@ -1,6 +1,30 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.12.1...5.12.1)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.13.0...5.13.0)
+## [5.13.0](https://github.com/rapidez/core/releases/tag/5.13.0) - 2026-11-13
+
+### Added
+
+- Show an error per item in the cart (#1444)
+- Product hover images in listings (#1429)
+
+### Fixed
+
+- Fix swatch color reactivity in listings (#1442)
+- Automatically log the user out on token expiry (#1445)
+- Only escape strings (#1446)
+- Fix data clone error (#1426)
+- Fix undefined errors (#1450)
+- Added Mage-OS to the Playwright tests (#1434)
+- Use the Playwright workflow from rapidez/workflows + fixes (#1451)
+- Remove focus before Playwright screenshots (#1452)
+- Use Playwright global tag for CI blob reports (#1457)
+- Fix double mount causing white screen (#1420)
+- Show GraphQL input errors on login fields (#1417)
+- Add vat id to cart fragment addresses (#1467)
+
+
+
 ## [5.12.1](https://github.com/rapidez/core/releases/tag/5.12.1) - 2026-10-29
 
 ### Fixed
