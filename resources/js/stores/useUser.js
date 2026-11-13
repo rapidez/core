@@ -231,8 +231,7 @@ watch(token, refresh)
 // if their session has expired.
 window.setTimeout(() => refresh(), 200)
 if (userStorage.value?.email && !token.value) {
-    token.value = ''
-    userStorage.value = {}
+    window.setTimeout(() => clear())
 }
 
 export const expireDate = computed(() => {
