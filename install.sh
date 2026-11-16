@@ -8,6 +8,7 @@
 # Optional environment variables:
 #   RAPIDEZ_HOME     The directory to install into (default: rapidez)
 #   RAPIDEZ_VERSION  The rapidez/rapidez version (default: ^5.0)
+#   RAPIDEZ_CONTAINER_PREFIX  The prefix for the container names (default: rapidez-)
 
 set -Eeuo pipefail
 trap 'echo "" >&2; echo "❌ Something went wrong, check the errors above and try again" >&2' ERR
@@ -15,6 +16,7 @@ trap 'echo "" >&2; echo "❌ Something went wrong, check the errors above and tr
 # Vars
 INSTALL_DIR="${RAPIDEZ_HOME:-rapidez}"
 RAPIDEZ_VERSION="${RAPIDEZ_VERSION:-^5.0}"
+CONTAINER_PREFIX="${RAPIDEZ_CONTAINER_PREFIX-rapidez-}"
 DEFAULT_TRAEFIK_PORT=80
 DEFAULT_DB_PORT=3306
 CONTAINERS=(traefik elasticsearch magento nginx rapidez)
@@ -133,6 +135,7 @@ main() {
   success "Docker found"
 
   for container in "${CONTAINERS[@]}"; do
+    container="$CONTAINER_PREFIX$container"
     if docker container inspect "$container" >/dev/null 2>&1; then
       fail "There is already a Docker container named \"$container\"" \
         "Remove it first with: docker rm -f $container"
@@ -163,6 +166,7 @@ main() {
   cp .env.example.traefik .env
   set_env TRAEFIK_PORT "$TRAEFIK_PORT"
   set_env DB_PORT "$DB_PORT"
+  set_env CONTAINER_PREFIX "$CONTAINER_PREFIX"
 
   success "Rapidez downloaded and configured"
   echo "  HTTP port:  $TRAEFIK_PORT"
