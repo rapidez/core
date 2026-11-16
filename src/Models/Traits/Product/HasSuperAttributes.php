@@ -51,6 +51,10 @@ trait HasSuperAttributes
 
     public function superAttributesToArrayData(): array
     {
+        if ($this->type_id !== 'configurable') {
+            return [];
+        }
+
         return $this->superAttributeValues
             ->mapWithKeys(fn ($values, $attribute) => [
                 "super_{$attribute}"        => $values->pluck('value'),

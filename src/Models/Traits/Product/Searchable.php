@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Rapidez\Core\Enums\Visibility;
 use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Models\Category;
@@ -61,6 +62,7 @@ trait Searchable
             'url',
             'images',
             'category_ids',
+            'super_attributes',
             ...$indexableAttributeCodes,
             ...$this->superAttributeCodes,
             ...config('rapidez.searchkit.result_attributes'),
@@ -75,7 +77,16 @@ trait Searchable
             $this->children->each->mergeVisible($attributeCodes);
         }
 
-        $data = array_filter($this->toArray(), function (string $attributeName) use ($attributeCodes, $wildcardAttributeCodes) {
+        // Add camelCased versions to deal with the magics for relations (e.g. super_attributes vs superAttributes)
+        $tempVisible = [...$attributeCodes, ...array_map(Str::camel(...), $attributeCodes)];
+        $prevVisible = $this->getVisible();
+
+        // Temporarily limit visible attributes to reduce what ->toArray() serializes
+        $this->setVisible($tempVisible);
+        $array = $this->toArray();
+        $this->setVisible($prevVisible);
+
+        $data = array_filter($array, function (string $attributeName) use ($attributeCodes, $wildcardAttributeCodes) {
             if (in_array($attributeName, $attributeCodes)) {
                 return true;
             }
