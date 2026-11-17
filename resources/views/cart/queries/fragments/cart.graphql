@@ -2,61 +2,65 @@ fragment cart on Cart {
     id
     is_virtual
     total_quantity
-    items {
-        id
-        quantity
-        @if (Rapidez::checkCompadreVersion('0.0.2'))
-            qty_backordered
-        @endif
-        product {
-            ...product
-        }
-        prices {
-            price {
-                value
-            }
-            price_including_tax {
-                value
-            }
-            row_total {
-                value
-            }
-            row_total_including_tax {
-                value
-            }
-            fixed_product_taxes {
-                amount {
-                    value
-                }
-                label
-            }
-        }
-        errors {
-            code
-            message
-        }
-        ... on SimpleCartItem {
-            @include('rapidez::cart.queries.partials.customizable-options')
-        }
-        ... on VirtualCartItem {
-            @include('rapidez::cart.queries.partials.customizable-options')
-        }
-        ... on DownloadableCartItem {
-            @include('rapidez::cart.queries.partials.customizable-options')
-        }
-        ... on ConfigurableCartItem {
-            @include('rapidez::cart.queries.partials.customizable-options')
-            configurable_options {
-                id
-                option_label
-                value_label
-            }
-            configured_variant {
+    itemsV2(pageSize: 9999) {
+        items {
+            id
+            uid
+            quantity
+            @if (Rapidez::checkCompadreVersion('0.0.2'))
+                qty_backordered
+            @endif
+            product {
                 ...product
             }
-        }
-        ... on BundleCartItem {
-            @include('rapidez::cart.queries.partials.customizable-options')
+            prices {
+                price {
+                    value
+                }
+                price_including_tax {
+                    value
+                }
+                row_total {
+                    value
+                }
+                row_total_including_tax {
+                    value
+                }
+                fixed_product_taxes {
+                    amount {
+                        value
+                    }
+                    label
+                }
+            }
+            errors {
+                code
+                message
+            }
+            ... on SimpleCartItem {
+                @include('rapidez::cart.queries.partials.customizable-options')
+            }
+            ... on VirtualCartItem {
+                @include('rapidez::cart.queries.partials.customizable-options')
+            }
+            ... on DownloadableCartItem {
+                @include('rapidez::cart.queries.partials.customizable-options')
+            }
+            ... on ConfigurableCartItem {
+                @include('rapidez::cart.queries.partials.customizable-options')
+                configurable_options {
+                    id
+                    configurable_product_option_uid
+                    option_label
+                    value_label
+                }
+                configured_variant {
+                    ...product
+                }
+            }
+            ... on BundleCartItem {
+                @include('rapidez::cart.queries.partials.customizable-options')
+            }
         }
     }
     applied_coupons {
