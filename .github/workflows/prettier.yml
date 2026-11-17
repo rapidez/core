@@ -21,9 +21,12 @@ jobs:
           token: ${{ secrets.RAPIDEZ_ACTIONS_ACCOUNT_PAT }}
 
       - name: Run install
-        uses: borales/actions-yarn@v4
+        uses: pnpm/setup@v1
         with:
-          cmd: install
+          version: 11
+          runtime: node@lts
+          cache: false
+          install: true
 
       - name: "Prettier Fix"
         uses: creyD/prettier_action@v4.3

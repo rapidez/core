@@ -75,6 +75,15 @@ fragment orderV2 on CustomerOrder {
         grand_total {
             value
         }
+        discounts {
+            label
+            amount {
+                value
+            }
+            coupon {
+                code
+            }
+        }
     }
     @foreach(array_unique(Eventy::filter('checkout.queries.orderV2.data', []), SORT_REGULAR) as $attribute)
         {{ $attribute }}

@@ -77,7 +77,7 @@
                         v-model.lazy="rangeInput.minValue"
                         v-on:change="rangeInput.updateRefinement"
                         class="text-center arrows-hidden"
-                        aria-label="@lang('Price from')"
+                        :aria-label="__('Price from')"
                     />
                     <span
                         v-if="rangeInput.prefix"
@@ -101,7 +101,7 @@
                         v-model.lazy="rangeInput.maxValue"
                         v-on:change="rangeInput.updateRefinement"
                         class="text-center arrows-hidden"
-                        aria-label="@lang('Price to')"
+                        :aria-label="__('Price to')"
                     />
                     <span
                         v-if="rangeInput.prefix"

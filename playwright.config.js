@@ -17,6 +17,7 @@ dotenv.config({ path: [path.resolve(__dirname, '.env'), path.resolve(__dirname, 
  */
 export default defineConfig({
     testDir: './tests/playwright',
+    testIgnore: 'lighthouse.spec.js',
     /* Timeout of 1 minute */
     timeout: 60_000,
     /* Run tests in files in parallel */
@@ -28,7 +29,9 @@ export default defineConfig({
     /* Opt out of parallel tests on CI. */
     workers: process.env.CI ? '50%' : undefined,
     /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-    reporter: process.env.CI ? [['blob', { outputFile: `./blob-report/report-${Date.now()}.zip` }], ['line']] : 'html',
+    reporter: process.env.CI ? [['blob'], ['line']] : 'html',
+    /* Tag all tests with the Magento version so the merged CI report shows the environment */
+    tag: process.env.MAGENTO_VERSION ? `@${process.env.MAGENTO_VERSION}` : undefined,
     /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
     use: {
         /* Base URL to use in actions like `await page.goto('/')`. */
@@ -63,6 +66,15 @@ export default defineConfig({
         {
             name: 'Mobile Safari',
             use: { ...devices['iPhone 12'] },
+        },
+
+        {
+            name: 'lighthouse',
+            testMatch: 'lighthouse.spec.js',
+            testIgnore: [],
+            use: { ...devices['Desktop Chrome'] },
+            workers: 1,
+            dependencies: ['chromium', 'firefox', 'webkit', 'Mobile Chrome', 'Mobile Safari'],
         },
 
         /* Test against branded browsers. */
