@@ -5,14 +5,13 @@ import playwright from 'playwright'
 import lighthouseMobileConfig from 'lighthouse/core/config/lr-mobile-config.js'
 
 export class BasePage {
-    static tags = { tag: process.env.MAGENTO_VERSION ? '@' + process.env.MAGENTO_VERSION : null }
-
     constructor(page) {
         this.page = page
     }
 
     async screenshot(type = '', options = {}) {
-        const masks = [this.page.getByTestId('masked')]
+        const masks = options['mask'] || []
+        masks.push(this.page.getByTestId('masked'))
         const emailFields = this.page.locator('[name=email]')
 
         // Only mask filled email fields
@@ -26,7 +25,7 @@ export class BasePage {
             }
         }
 
-        options['mask'] = masks
+        options['mask'] = [...masks, this.page.locator('[data-attribute=id]')]
 
         if (type.startsWith('fullpage')) {
             await this.loadLazy()
@@ -38,7 +37,21 @@ export class BasePage {
         }
 
         await this.waitForImages()
+        await this.resetScroll()
+        await this.page.evaluate(() => document.activeElement?.blur())
         await expect(this.page).toHaveScreenshot(options)
+    }
+
+    async resetScroll() {
+        await this.page.evaluate(() => {
+            document.querySelectorAll('[class*="overflow"], [style*="overflow"], html, body').forEach((el) => {
+                el.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: 'instant',
+                })
+            })
+        })
     }
 
     async waitForImages() {
@@ -52,6 +65,62 @@ export class BasePage {
         }
     }
 
+    async waitUntilIdle() {
+        // Webkit does not support requestIdleCallback, so we just wait for a bit.
+        if (this.page.context().browser().browserType().name() === 'webkit') {
+            await this.page.waitForTimeout(200)
+            await this.waitForFetches()
+            return
+        }
+
+        try {
+            await this.waitForIdleCallback()
+        } catch (error) {
+            if (!error.message.includes('Execution context was destroyed')) {
+                throw error
+            }
+
+            await this.page.waitForLoadState()
+            return await this.waitUntilIdle()
+        }
+
+        await this.waitForFetches()
+        await this.page.waitForLoadState('networkidle')
+    }
+
+    async waitForIdleCallback() {
+        await expect(
+            await this.page.evaluate(async () => {
+                return (
+                    (await new Promise((resolve, reject) => {
+                        let counter = 0
+                        let intervalTime = 0.05
+                        let idleForTime = 0.5
+                        let interval = setInterval(async function () {
+                            if (window.app?.config === undefined) {
+                                return
+                            }
+                            let result = await new Promise((resolve, reject) =>
+                                window.requestIdleCallback((deadline) => resolve(!deadline.didTimeout), { timeout: 5 }),
+                            )
+                            counter = result ? counter + 1 : 0
+                            if (counter >= idleForTime / intervalTime) {
+                                clearInterval(interval)
+                                resolve(true)
+                            }
+                        }, intervalTime * 1000)
+                        setTimeout(() => resolve(false), 60 * 1000)
+                    })) === true
+                )
+            }),
+            'Page should become idle within a minute',
+        ).toBeTruthy()
+    }
+
+    async waitForFetches() {
+        await this.page.waitForFunction(() => window.app?.config?.globalProperties?.loadingCount?.value === 0)
+    }
+
     async loadLazy() {
         await this.page.waitForLoadState('networkidle')
         await this.page.evaluate(() => window.$emit('load-lazy'))
@@ -61,6 +130,8 @@ export class BasePage {
     }
 
     async wcag(testInfo, disabledRules = []) {
+        await this.waitUntilIdle()
+
         const page = this.page
         const accessibilityScanResults = await new AxeBuilder({ page }).disableRules(disabledRules).analyze()
 
@@ -73,15 +144,18 @@ export class BasePage {
     }
 
     async lighthouse(url) {
-        test.skip(test.info().project.name !== 'chromium', 'Chromium only')
-
         const browser = await playwright['chromium'].launch({
             args: ['--remote-debugging-port=9222'],
         })
         const page = await browser.newPage()
+        const basePage = new BasePage(page)
         const reportName = `lighthouse-${new Date().getTime()}`
 
         await page.goto(url)
+        // Wait for images and other lazy content so the container may have cached some data.
+        await basePage.waitForImages()
+        await basePage.waitUntilIdle()
+        await basePage.loadLazy()
 
         try {
             await playAudit({
@@ -103,6 +177,10 @@ export class BasePage {
                     ...lighthouseMobileConfig,
                     settings: {
                         ...lighthouseMobileConfig.settings,
+                        throttlingMethod: 'devtools',
+                        throttling: {
+                            cpuSlowdownMultiplier: 1,
+                        },
                         skipAudits: [
                             ...lighthouseMobileConfig.settings.skipAudits,
                             // Skip everything that's not fixed within CI tests.
@@ -118,10 +196,12 @@ export class BasePage {
                 },
             })
         } catch (error) {
-            await test.info().attach(reportName, {
-                path: 'lighthouse/' + reportName + '.html',
-                contentType: 'text/html',
-            })
+            try {
+                await test.info().attach(reportName, {
+                    path: 'lighthouse/' + reportName + '.html',
+                    contentType: 'text/html',
+                })
+            } catch (e) {}
 
             throw error
         } finally {

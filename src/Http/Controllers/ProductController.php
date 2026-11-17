@@ -71,7 +71,7 @@ class ProductController
         ) ?? $product;
 
         if (Rapidez::config('reports/options/enabled') && Rapidez::config('reports/options/product_view_enabled')) {
-            View::composer('rapidez::layouts.app', fn ($view) => $view->getFactory()->startPush('foot', view('rapidez::product.partials.track')));
+            View::composer('rapidez::layouts.app', fn ($view) => $view->getFactory()->startPush('foot', view('rapidez::product.partials.track', ['id' => $product->entity_id])));
         }
 
         config(['frontend.product' => $data]);
@@ -94,7 +94,7 @@ class ProductController
         $productModel = config('rapidez.models.product');
 
         /** @var \Rapidez\Core\Models\Product $product */
-        $product = $productModel::findOrFail($productId);
+        $product = $productModel::withOnly([])->findOrFail($productId);
 
         ProductViewEvent::dispatch($product);
     }

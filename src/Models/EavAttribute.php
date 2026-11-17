@@ -26,7 +26,7 @@ class EavAttribute extends Model
 
     public static function getCachedCatalog()
     {
-        return Cache::memo()->rememberForever('catalog_eav_attributes', function () {
+        return Cache::memo()->rememberForever('catalog_eav_attributes_' . config('rapidez.store'), function () {
             return EavAttribute::query()
                 ->select('*')
                 ->leftJoin('catalog_eav_attribute', 'catalog_eav_attribute.attribute_id', '=', 'eav_attribute.attribute_id')
@@ -39,7 +39,7 @@ class EavAttribute extends Model
 
     public static function getCachedCustomer()
     {
-        return Cache::memo()->rememberForever('customer_eav_attributes', function () {
+        return Cache::memo()->rememberForever('customer_eav_attributes_' . config('rapidez.store'), function () {
             return EavAttribute::query()
                 ->select('*')
                 ->leftJoin('customer_eav_attribute', 'customer_eav_attribute.attribute_id', '=', 'eav_attribute.attribute_id')
@@ -52,7 +52,7 @@ class EavAttribute extends Model
 
     public static function getCachedIndexable()
     {
-        return Cache::memo()->rememberForever('indexable_eav_attributes', function () {
+        return Cache::memo()->rememberForever('indexable_eav_attributes_' . config('rapidez.store'), function () {
             return static::getCachedCatalog()->where(fn ($attribute) => $attribute->backend_type === 'static'
                 || $attribute->is_used_for_promo_rules
                 || $attribute->used_in_product_listing

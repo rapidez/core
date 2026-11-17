@@ -1,0 +1,28 @@
+mutation setExistingAddressesOnCart (
+    $cart_id: String!,
+    $shipping_address_id: Int,
+    $billing_address_id: Int,
+    $set_shipping: Boolean!,
+    $set_billing: Boolean!
+) {
+    setShippingAddressesOnCart(input: {
+        cart_id: $cart_id,
+        shipping_addresses: [
+            {
+                customer_address_id: $shipping_address_id,
+            }
+        ]
+    }) @@include(if: $set_shipping) {
+        cart { ...cart }
+    }
+    setBillingAddressOnCart(input: {
+        cart_id: $cart_id,
+        billing_address: {
+            customer_address_id: $billing_address_id,
+        }
+    }) @@include(if: $set_billing) {
+        cart { ...cart }
+    }
+}
+
+@include('rapidez::cart.queries.fragments.cart')

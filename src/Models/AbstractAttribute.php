@@ -61,14 +61,18 @@ class AbstractAttribute extends Model
     protected function value(): Attribute
     {
         return Attribute::get(function ($value) {
+            if ($this->option_id && is_null($this->option_values)) {
+                return null;
+            }
+
             $value = $this->option_values ?? $this->rawValue ?? $value;
-            $value = array_map(function ($val) {
-                if ($this->is_html_allowed_on_front) {
+            $value = collect($value)->map(function ($val) {
+                if (! is_string($val) || $this->is_html_allowed_on_front) {
                     return $val;
                 }
 
                 return e(htmlspecialchars_decode($val), false);
-            }, Arr::wrap($value));
+            })->all();
 
             // NOTE: doing it this way properly returns null when there are no values
             if (count($value) <= 1) {
@@ -86,11 +90,6 @@ class AbstractAttribute extends Model
                 ? implode(', ', iterator_to_array($this->value))
                 : $this->value;
         });
-    }
-
-    protected function sortOrder(): Attribute
-    {
-        return Attribute::get(fn () => $this->options[$this->rawValue]->sort_order ?? null);
     }
 
     public function __toString(): string

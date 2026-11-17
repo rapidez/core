@@ -3,7 +3,7 @@
         <img
             v-if="media[active].media_type === 'image'"
             :src="config.media_url + '/catalog/product' + media[active].image"
-            alt="{{ $product->name }}"
+            alt="{!! $product->name !!}"
             class="object-contain max-h-full mx-auto block"
             loading="lazy"
         />

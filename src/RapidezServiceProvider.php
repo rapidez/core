@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\View\View as ViewComponent;
+use Laravel\Mcp\Server\Tool;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
 use Rapidez\Core\Auth\MagentoCartTokenGuard;
 use Rapidez\Core\Auth\MagentoCustomerTokenGuard;
@@ -44,6 +45,10 @@ use Rapidez\Core\Listeners\Healthcheck\OpensearchHealthcheck;
 use Rapidez\Core\Listeners\ReportProductView;
 use Rapidez\Core\Listeners\UpdateLatestIndexDate;
 use Rapidez\Core\Listeners\WarmProductMappings;
+use Rapidez\Core\Mcp\Tools\ChangedOverrides;
+use Rapidez\Core\Mcp\Tools\ListViewOverrides;
+use Rapidez\Core\Mcp\Tools\OverrideUpgradeDiff;
+use Rapidez\Core\Mcp\Tools\ViewOverrideDiff;
 use Rapidez\Core\Models\Model;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
@@ -90,7 +95,8 @@ class RapidezServiceProvider extends ServiceProvider
             ->registerThemes()
             ->registerBladeDirectives()
             ->registerExceptionHandlers()
-            ->registerBladeIconConfig();
+            ->registerBladeIconConfig()
+            ->registerBoostTools();
     }
 
     protected function bootAuth(): self
@@ -133,7 +139,7 @@ class RapidezServiceProvider extends ServiceProvider
 
             // We're so explicit here as otherwise the json translations will also be published.
             // That will publish to /lang/vendor/rapidez/nl.json where it will not be loaded
-            // by default and; you should keep everyting in one place: /lang/nl.json
+            // by default and; you should keep everything in one place: /lang/nl.json
             foreach (['en', 'nl'] as $lang) {
                 $this->publishes([
                     __DIR__ . '/../lang/' . $lang . '/frontend.php' => lang_path('vendor/rapidez/' . $lang . '/frontend.php'),
@@ -177,9 +183,25 @@ class RapidezServiceProvider extends ServiceProvider
         return $this;
     }
 
+    protected function prependViewsFrom($path, $namespace)
+    {
+        $this->callAfterResolving('view', function ($view) use ($path, $namespace) {
+            $view->prependNamespace($namespace, $path);
+
+            if (isset($this->app->config['view']['paths']) &&
+                is_array($this->app->config['view']['paths'])) {
+                foreach (array_reverse($this->app->config['view']['paths']) as $viewPath) {
+                    if (is_dir($appPath = $viewPath . '/vendor/' . $namespace)) {
+                        $view->prependNamespace($namespace, $appPath);
+                    }
+                }
+            }
+        });
+    }
+
     protected function bootViews(): self
     {
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'rapidez');
+        $this->prependViewsFrom(__DIR__ . '/../resources/views', 'rapidez');
 
         View::addExtension('graphql', 'blade');
 
@@ -220,6 +242,14 @@ class RapidezServiceProvider extends ServiceProvider
 
         Blade::directive('config', function ($expression) {
             return "<?php echo Rapidez::config({$expression}) ?>";
+        });
+
+        Blade::directive('turboframe', function (string $frame) {
+            return "<?php
+\$viewPath = config('rapidez.frontend.turbo_frames')[{$frame}] ?? null;
+if (\$viewPath) { echo \$__env->make('rapidez::turbo-frame', [...\Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']), 'frame' => {$frame}, 'viewPath' => \$viewPath, 'isRoute' => false])->render(); }
+elseif (!app()->environment('production')) { echo 'Turbo frame \"' . {$frame} .'\" not found'; }
+?>";
         });
 
         Blade::if('storecode', function ($value) {
@@ -396,7 +426,7 @@ class RapidezServiceProvider extends ServiceProvider
 
             $this->setAppends(
                 Arr::reject(
-                    $this->getAppends(), fn ($curentAppends) => in_array($curentAppends, $appendsToRemove)
+                    $this->getAppends(), fn ($currentAppends) => in_array($currentAppends, $appendsToRemove)
                 )
             );
 
@@ -462,6 +492,19 @@ class RapidezServiceProvider extends ServiceProvider
                 ...config('view.paths'),
             ],
         ]);
+
+        return $this;
+    }
+
+    protected function registerBoostTools(): self
+    {
+        if (! $this->app->runningInConsole() || ! class_exists(Tool::class)) {
+            return $this;
+        }
+
+        foreach ([ListViewOverrides::class, ViewOverrideDiff::class, ChangedOverrides::class, OverrideUpgradeDiff::class] as $tool) {
+            config()->push('boost.mcp.tools.include', $tool);
+        }
 
         return $this;
     }

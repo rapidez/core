@@ -1,6 +1,6 @@
 @push('head')
 <meta property="og:type" content="og:product" />
-<meta property="og:title" content="{{ $product->name }}" />
+<meta property="og:title" content="{!! $product->name !!}" />
 @if ($product->meta_description)
 <meta property="og:description" content="{{ $product->meta_description }}" />
 @endif
