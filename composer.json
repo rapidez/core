@@ -34,6 +34,7 @@
     },
     "require-dev": {
         "larastan/larastan": "^3.1",
+        "laravel/mcp": "^1.0",
         "laravel/dusk": "^8.3",
         "orchestra/testbench": "^9.4|^10.0",
         "orchestra/testbench-dusk": "^9.7|^10.0",
