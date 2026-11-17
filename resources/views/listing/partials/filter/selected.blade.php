@@ -1,4 +1,4 @@
-<ais-clear-refinements v-bind:excluded-attributes="[...listingSlotProps.categoryAttributes, 'query']">
+<ais-clear-refinements>
     <template v-slot="{ canRefine, refine, createURL }">
         <div v-show="canRefine" class="flex flex-wrap items-baseline justify-between gap-2 w-full pb-2.5">
             <div class="text-sm">
@@ -40,7 +40,7 @@
                         <template v-if="false"></template>
                         @include('rapidez::listing.partials.filter.selected.boolean')
                         @include('rapidez::listing.partials.filter.selected.swatch')
-                        <span v-html="refinement.label" v-else></span>
+                        <span v-else>@{{ htmlDecode(refinement.label) }}</span>
                     </a>
                 </li>
             </template>

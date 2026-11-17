@@ -41,14 +41,14 @@
                                 </a>
                             </li>
                         </ul>
-                        <x-rapidez::button.outline href="/" class="mt-4 bg-white" aria-label="@lang('Go to home')">
+                        <x-rapidez::button.outline href="/" class="mt-4 bg-white" :aria-label="__('Go to home')">
                             @lang('Go to home')
                         </x-rapidez::button.outline>
                     </div>
                 </ais-hits>
             </ais-instant-search>
         </search-suggestions>
-    </search-suggestions>
+    </ais-state-results>
 </div>
 
 @include('rapidez::listing.partials.popular-products')

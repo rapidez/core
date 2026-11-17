@@ -5,7 +5,7 @@
             :active="$parentcategory->entity_id == $category->entity_id"
             :position="$loop->iteration + 1"
         >
-            {{ $parentcategory->name }}
+            {!! $parentcategory->name !!}
         </x-rapidez::breadcrumb>
     @endforeach
 </x-rapidez::breadcrumbs>

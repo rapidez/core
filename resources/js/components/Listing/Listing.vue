@@ -8,6 +8,8 @@ import RangeInput from 'vue-instantsearch/vue3/es/src/components/RangeInput.vue.
 import HierarchicalMenu from 'vue-instantsearch/vue3/es/src/components/HierarchicalMenu.vue.js'
 import RefinementList from 'vue-instantsearch/vue3/es/src/components/RefinementList.vue.js'
 import SortBy from 'vue-instantsearch/vue3/es/src/components/SortBy.vue.js'
+import { toRaw } from 'vue'
+import { instantsearchMiddlewares } from '../../stores/useInstantsearchMiddlewares'
 
 export default {
     mixins: [InstantSearchMixin],
@@ -59,21 +61,19 @@ export default {
         searchClient: null,
         destroyed: false,
         utmFields: [],
+        instantSearchInstance: null,
+        uiState: {},
     }),
 
     render() {
         return this.$slots.default(this)
     },
 
-    destroyed() {
+    unmounted() {
         this.destroyed = true
     },
 
     computed: {
-        categoryAttributes() {
-            return Array.from({ length: config.max_category_level ?? 3 }).map((_, index) => 'category_lvl' + (index + 1))
-        },
-
         hitsPerPage() {
             let hasDefault = this.$root.config.grid_per_page_values.includes(this.$root.config.grid_per_page)
 
@@ -122,6 +122,10 @@ export default {
             }
         },
 
+        superRefinements() {
+            return Object.entries(this.uiState[this.index]?.refinementList || {}).filter(([key]) => key.startsWith('super_'))
+        },
+
         rangeAttributes() {
             return config.filterable_attributes
                 .filter((filter) => filter.input == 'price')
@@ -131,6 +135,21 @@ export default {
     },
 
     methods: {
+        getMiddlewares() {
+            return [
+                ({ instantSearchInstance }) => {
+                    this.instantSearchInstance = instantSearchInstance
+                    return {
+                        onStateChange: ({ uiState }) => {
+                            this.uiState = uiState
+                        },
+                        subscribe: () => {},
+                        unsubscribe: () => {},
+                    }
+                },
+                ...instantsearchMiddlewares,
+            ]
+        },
         async getInstantSearchClientConfig() {
             const config = await InstantSearchMixin.methods.getInstantSearchClientConfig.bind(this).call()
 
@@ -205,15 +224,21 @@ export default {
                 category.splice(0, 1)
             }
 
+            // Use `toRaw` on all of the entries in the refinementList to get rid of reactive Vue proxies
+            // Avoids the `DataCloneError` with unknown parameters
+            let rawRefinementList = Object.fromEntries(
+                Object.entries(data.refinementList || {}).map(([key, values]) => [key, toRaw(values)]),
+            )
+
             return {
                 ...(data.range || {}),
-                ...(data.refinementList || {}),
+                ...rawRefinementList,
                 category: category?.length ? category.join('--') : undefined,
                 q: data.query !== '__NO_QUERY__' ? data.query : undefined,
                 page: data.page > 0 ? String(data.page) : undefined,
                 sort: data.sortBy,
                 hits: data.hitsPerPage != config.grid_per_page ? data.hitsPerPage : undefined,
-                ...this.utmFields,
+                ...toRaw(this.utmFields),
             }
         },
 
@@ -259,6 +284,53 @@ export default {
                 swatch: window.config.swatches[filter?.base_code]?.options?.[item.value] ?? null,
                 ...item,
             }))
+        },
+
+        isRelevantFilter(filterItems, minProductPercentage = null) {
+            if (!filterItems?.length) {
+                return false
+            }
+
+            if (filterItems.some((item) => item.isRefined)) {
+                return true
+            }
+
+            if (!this.instantSearchInstance) {
+                return true
+            }
+            const totalHits = this.instantSearchInstance?.helper?.lastResults?.nbHits
+            if (!totalHits) {
+                return true
+            }
+            if (isNaN(minProductPercentage) || minProductPercentage === null) {
+                minProductPercentage = window.config.searchkit.min_filter_product_percentage ?? 10
+            }
+
+            const resultCount = filterItems.reduce((sum, item) => item.count + sum, 0)
+
+            return resultCount / totalHits > minProductPercentage / 100
+        },
+        isRelevantRange(filterCode, minProductPercentage = null) {
+            if (Object.keys(this.instantSearchInstance?.helper?.state?.numericRefinements?.[filterCode] || {}).length) {
+                return true
+            }
+
+            if (!this.instantSearchInstance) {
+                return true
+            }
+
+            const totalHits = this.instantSearchInstance?.helper?.lastResults?.nbHits
+            const facetStats = this.instantSearchInstance?.helper?.lastResults?.facets_stats?.[filterCode]
+            if (!totalHits || !facetStats) {
+                return true
+            }
+            if (isNaN(minProductPercentage) || minProductPercentage === null) {
+                minProductPercentage = window.config.searchkit.min_filter_product_percentage ?? 10
+            }
+
+            const resultCount = facetStats.sum / facetStats.avg
+
+            return resultCount / totalHits > minProductPercentage / 100
         },
     },
 }

@@ -93,6 +93,15 @@ return [
         'auto_select_product_options'      => false,
     ],
 
+    // Show the second product image when hovering over a product in listings
+    'hover_images' => true,
+
     // The path to redirect to after a failed checkout
     'checkout_success_fail_redirect_path' => 'cart',
+
+    // This array should contain any turbo frames with their respective views.
+    // These should then be used by using @turboframe('frame-name')
+    'turbo_frames' => [
+        // 'frame-name' => 'view-path',
+    ],
 ];

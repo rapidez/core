@@ -203,6 +203,15 @@ class Product extends Model
         )->whereIn('website_id', [0, config('rapidez.website')]);
     }
 
+    public function fixedProductTaxes(): HasMany
+    {
+        return $this->hasMany(
+            config('rapidez.models.weee_tax', WeeeTax::class),
+            'entity_id',
+            'entity_id',
+        );
+    }
+
     public function getUnitPrice(int $quantity = 1, int $customerGroup = 0)
     {
         $tierPrice = $this->tierPrices()
@@ -320,7 +329,12 @@ class Product extends Model
             $tierPrices = $this->tierPrices
                 ->filter(fn ($tierPrice) => $tierPrice->all_groups && $tierPrice->qty > 1)
                 ->map(function ($tierPrice) {
-                    $tierPrice->percentage_value ??= ceil(100 - ($tierPrice->value * 100) / $this->price);
+                    if ($tierPrice->percentage_value === null) {
+                        $tierPrice->percentage_value = round(100 - ($tierPrice->value * 100) / $this->price);
+                        if ($tierPrice->percentage_value == 0 && $tierPrice->value < $this->price) {
+                            $tierPrice->percentage_value = 1;
+                        }
+                    }
                     $tierPrice->value = $tierPrice->value > 0 ? $tierPrice->value * 1 : $this->price - ($this->price * $tierPrice->percentage_value) / 100;
 
                     return $tierPrice;

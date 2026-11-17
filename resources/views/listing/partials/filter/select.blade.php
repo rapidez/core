@@ -8,7 +8,7 @@
 >
     <template v-slot="{ items, refine, isShowingMore, toggleShowMore, canToggleShowMore }">
         <div class="overflow-clip">
-            <x-rapidez::accordion.filter v-show="items.length" class="details-content:overflow-visible px-1 py-1" canToggleShowMore>
+            <x-rapidez::accordion.filter v-show="listingSlotProps.isRelevantFilter(items)" class="details-content:overflow-visible px-1 py-1" canToggleShowMore>
                 <x-slot:content>
                     <div class="flex flex-col *:py-1 *:first:pt-0 *:last:pb-0 items-start">
                         <template v-for="item in items">
@@ -20,7 +20,7 @@
                                     class="items-baseline flex text-base/5"
                                     :class="item.isRefined ? 'text' : 'text-muted hover:text'"
                                 >
-                                    <span v-html="item.label"></span>
+                                    <span>@{{ htmlDecode(item.label) }}</span>
                                     <span class="block ml-0.5 text-xs" data-testid="listing-filter-count">
                                         (@{{ item.count }})
                                     </span>
