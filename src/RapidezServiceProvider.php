@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\View\View as ViewComponent;
+use Laravel\Mcp\Server\Tool;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
 use Rapidez\Core\Auth\MagentoCartTokenGuard;
 use Rapidez\Core\Auth\MagentoCustomerTokenGuard;
@@ -44,6 +45,8 @@ use Rapidez\Core\Listeners\Healthcheck\OpensearchHealthcheck;
 use Rapidez\Core\Listeners\ReportProductView;
 use Rapidez\Core\Listeners\UpdateLatestIndexDate;
 use Rapidez\Core\Listeners\WarmProductMappings;
+use Rapidez\Core\Mcp\Tools\ListViewOverrides;
+use Rapidez\Core\Mcp\Tools\ViewOverrideDiff;
 use Rapidez\Core\Models\Model;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
@@ -90,7 +93,8 @@ class RapidezServiceProvider extends ServiceProvider
             ->registerThemes()
             ->registerBladeDirectives()
             ->registerExceptionHandlers()
-            ->registerBladeIconConfig();
+            ->registerBladeIconConfig()
+            ->registerBoostTools();
     }
 
     protected function bootAuth(): self
@@ -486,6 +490,19 @@ elseif (!app()->environment('production')) { echo 'Turbo frame \"' . {$frame} .'
                 ...config('view.paths'),
             ],
         ]);
+
+        return $this;
+    }
+
+    protected function registerBoostTools(): self
+    {
+        if (! $this->app->runningInConsole() || ! class_exists(Tool::class)) {
+            return $this;
+        }
+
+        foreach ([ListViewOverrides::class, ViewOverrideDiff::class] as $tool) {
+            config()->push('boost.mcp.tools.include', $tool);
+        }
 
         return $this;
     }
