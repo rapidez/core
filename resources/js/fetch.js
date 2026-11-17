@@ -29,6 +29,14 @@ export class SessionExpired extends FetchError {
 }
 window.SessionExpired = SessionExpired
 
+export class GraphQLInputError extends GraphQLError {
+    constructor(errors, response, message) {
+        super(errors, response)
+        this.message = message ?? this.message
+    }
+}
+window.GraphQLInputError = GraphQLInputError
+
 export const rapidezFetch = (window.rapidezFetch = (...args) => {
     const result = fetch.apply(this, args)
     addFetch(result)
@@ -159,8 +167,13 @@ export const magentoGraphQL = (window.magentoGraphQL = async (
         if (errors.length) {
             console.error(data.errors)
             errors.forEach((error) => {
+                const category = error?.extensions?.category
+                if (category === 'graphql-input') {
+                    throw new GraphQLInputError(data.errors, responseClone, error.message)
+                }
+
                 if (
-                    !['graphql-authorization', 'graphql-authentication'].includes(error?.extensions?.category) ||
+                    !['graphql-authorization', 'graphql-authentication'].includes(category) ||
                     error.path?.includes('generateCustomerToken')
                 ) {
                     return

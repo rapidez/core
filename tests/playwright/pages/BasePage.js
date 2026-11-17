@@ -5,8 +5,6 @@ import playwright from 'playwright'
 import lighthouseMobileConfig from 'lighthouse/core/config/lr-mobile-config.js'
 
 export class BasePage {
-    static tags = { tag: process.env.MAGENTO_VERSION ? '@' + process.env.MAGENTO_VERSION : null }
-
     constructor(page) {
         this.page = page
     }
@@ -40,6 +38,7 @@ export class BasePage {
 
         await this.waitForImages()
         await this.resetScroll()
+        await this.page.evaluate(() => document.activeElement?.blur())
         await expect(this.page).toHaveScreenshot(options)
     }
 
@@ -70,10 +69,26 @@ export class BasePage {
         // Webkit does not support requestIdleCallback, so we just wait for a bit.
         if (this.page.context().browser().browserType().name() === 'webkit') {
             await this.page.waitForTimeout(200)
-            await this.page.waitForLoadState('networkidle')
+            await this.waitForFetches()
             return
         }
 
+        try {
+            await this.waitForIdleCallback()
+        } catch (error) {
+            if (!error.message.includes('Execution context was destroyed')) {
+                throw error
+            }
+
+            await this.page.waitForLoadState()
+            return await this.waitUntilIdle()
+        }
+
+        await this.waitForFetches()
+        await this.page.waitForLoadState('networkidle')
+    }
+
+    async waitForIdleCallback() {
         await expect(
             await this.page.evaluate(async () => {
                 return (
@@ -100,7 +115,10 @@ export class BasePage {
             }),
             'Page should become idle within a minute',
         ).toBeTruthy()
-        await this.page.waitForLoadState('networkidle')
+    }
+
+    async waitForFetches() {
+        await this.page.waitForFunction(() => window.app?.config?.globalProperties?.loadingCount?.value === 0)
     }
 
     async loadLazy() {
@@ -112,6 +130,8 @@ export class BasePage {
     }
 
     async wcag(testInfo, disabledRules = []) {
+        await this.waitUntilIdle()
+
         const page = this.page
         const accessibilityScanResults = await new AxeBuilder({ page }).disableRules(disabledRules).analyze()
 
@@ -124,8 +144,6 @@ export class BasePage {
     }
 
     async lighthouse(url) {
-        test.skip(test.info().project.name !== 'chromium', 'Chromium only')
-
         const browser = await playwright['chromium'].launch({
             args: ['--remote-debugging-port=9222'],
         })
@@ -144,7 +162,7 @@ export class BasePage {
                 page: page,
                 port: 9222,
                 thresholds: {
-                    performance: 80,
+                    performance: 90,
                     accessibility: 100,
                     'best-practices': 100,
                     seo: 100,

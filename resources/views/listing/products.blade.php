@@ -5,7 +5,7 @@
     <ais-hits v-show="listingSlotProps.requestCount > 0" :transform-items="listingSlotProps.transformItems">
         <template v-slot="{ items, sendEvent }">
             <div v-if="items && items.length" class="overflow-hidden">
-                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 -mx-5 -mb-px *:border-b">
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 -mx-5 -mb-px *:border-b" v-bind:key="listingSlotProps.superRefinements.flatMap(([key, values]) => values).join()">
                     <template v-for="(item, count) in items" v-bind:key="item.entity_id">
                         @include('rapidez::listing.partials.item')
                     </template>
