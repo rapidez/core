@@ -148,13 +148,13 @@ test('new address as user', async ({ page }) => {
     await checkoutPage.continue('credentials')
 
     // Select the address book address first, so the new address starts with its data.
-    const addressSelect = page.getByTestId('shipping-address-select')
-    await addressSelect.selectOption({ index: 0 })
-    await new BasePage(page).waitUntilIdle()
+    await checkoutPage.shippingAddress()
 
     // Only the country differs from the address book address, it should stay a new address.
+    const addressSelect = page.getByTestId('shipping-address-select')
     await addressSelect.selectOption({ index: (await addressSelect.locator('option').count()) - 1 })
     await new BasePage(page).waitUntilIdle()
+    await expect(page.locator('[name=shipping_city]')).toHaveValue('Gotham')
     await page.selectOption('[name=shipping_country]', 'LU')
     await page.getByTestId('continue').focus()
     await new BasePage(page).waitUntilIdle()
