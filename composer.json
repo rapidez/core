@@ -41,6 +41,9 @@
         "orchestra/testbench": "^9.4|^10.0",
         "phpunit/phpunit": "^11.3.5"
     },
+    "suggest": {
+        "laravel/boost": "Adds the rapidez-changed-overrides and rapidez-override-upgrade-diff MCP tools used by the upgrade-overwritten-templates skill"
+    },
     "autoload": {
         "psr-4": {
             "Rapidez\\Core\\": "src"
