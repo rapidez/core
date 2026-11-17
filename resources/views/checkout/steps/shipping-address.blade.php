@@ -9,7 +9,8 @@
     }"
     group="shipping"
     {{-- Saving the shipping address resets same_as_billing in Magento, so the billing address is copied again within the same mutation. --}}
-    {{-- Without a billing address on the cart yet we follow the checkbox of the billing address step. --}}
+    {{-- Without a billing address on the cart yet we follow the checkbox of the billing address step, --}}
+    {{-- otherwise the billing address would be overwritten while it's being filled in. --}}
     :before-request="(query, variables, options) => [
         variables.customer_address_id ? config.queries.setExistingShippingAddressesOnCart : query,
         { ...variables, same_as_billing: cart.value.billing_address ? cart.value.billing_address.same_as_shipping : (refs.billingAddress?.data.same_as_shipping ?? true) },

@@ -2,6 +2,15 @@ import { pushNotification } from './stores/useNotifications'
 
 window.debug = import.meta.env.VITE_DEBUG == 'true'
 window.Notify = (message, type = 'info', params = [], link = null) => {
+    if (!message) {
+        message = window.config?.translations?.errors?.wrong ?? null
+        reportError(new Error(`Notify called without a message (type: ${type})`))
+
+        if (!message || type !== 'error') {
+            return
+        }
+    }
+
     pushNotification({
         message: message,
         type: type,
@@ -71,6 +80,11 @@ async function init() {
         await new Promise((resolve) => setTimeout(resolve, 50))
     }
     rootEl = document.querySelector('#app')
+
+    if (!rootEl || rootEl.__vue_app__ || rootEl.__rapidez__) {
+        return
+    }
+    rootEl.__rapidez__ = true
 
     // Check if the localstorage needs a flush.
     let cachekey = useLocalStorage('cachekey')
@@ -210,7 +224,7 @@ async function init() {
             }),
 
             canOrder: computed(function () {
-                return cart.value.items.every((item) => item.is_available)
+                return cart.value.items.every((item) => item.is_available && !item.errors?.length)
             }),
         }
         window.app.config.globalProperties.window = window

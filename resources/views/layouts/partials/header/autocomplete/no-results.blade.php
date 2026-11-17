@@ -5,7 +5,7 @@
     </div>
     <ais-hits>
         <template v-slot="{ items }">
-            <div v-if="items.length === 0 && query !== '' && status === 'idle'" class="p-5">
+            <div v-if="items.length === 0 && query !== '' && status === 'idle'" class="p-5 group-has-data-autocomplete-results/autocomplete:hidden">
                 <div class="font-bold text text-lg break-all">
                     @lang('No results found for :searchterm', [
                         'searchterm' => '<span class="text-primary">"@{{ query }}"</span>'

@@ -1,7 +1,7 @@
-import { StorageSerializers, asyncComputed, useLocalStorage, useMemoize } from '@vueuse/core'
+import { StorageSerializers, useLocalStorage, useMemoize } from '@vueuse/core'
 import { computed, watch } from 'vue'
 import { GraphQLError } from '../fetch'
-import { mask, clearMask } from './useMask'
+import { clearMask, mask } from './useMask'
 import { user } from './useUser'
 
 const cartStorage = useLocalStorage('cart', {}, { serializer: StorageSerializers.object })
@@ -153,6 +153,37 @@ export const getAttributeValues = async function () {
     return await fetchAttributeValuesMemo(window.config.cart_attributes)
 }
 
+function addIsAddressComplete(address) {
+    if (!address) {
+        return address
+    }
+
+    return {
+        ...address,
+        isAddressComplete: isAddressComplete(address),
+    }
+}
+
+function isAddressComplete(address) {
+    if (!address) {
+        return false
+    }
+
+    if (
+        !address.firstname ||
+        !address.lastname ||
+        !address.street ||
+        !address.street.join('').length ||
+        !address.postcode ||
+        !address.city ||
+        !(address.country_code || (address.country && address.country.code))
+    ) {
+        return false
+    }
+
+    return true
+}
+
 export const checkAvailability = function (cartItem) {
     // Here we polyfill the is_available field. We need to do this
     // because the default is_available field supported by Magento
@@ -180,10 +211,17 @@ export const cart = computed({
         return cartStorage.value
     },
     set(value) {
+        if (value.itemsV2) {
+            value.items = value.itemsV2.items
+            delete value.itemsV2
+        }
+
+        value.shipping_addresses = value.shipping_addresses?.map(addIsAddressComplete)
         if (value.billing_address) {
+            value.billing_address = addIsAddressComplete(value.billing_address)
             // Magento resets this flag every time the shipping address is saved,
             // it's set again when the billing address is saved with same_as_shipping.
-            value.billing_address.same_as_shipping = !!value.shipping_addresses?.[0]?.same_as_billing
+            value.billing_address.same_as_shipping = Boolean(value.shipping_addresses?.[0]?.same_as_billing)
 
             if (value.billing_address.same_as_shipping) {
                 // Magento drops the customer address id when it copies the shipping address.

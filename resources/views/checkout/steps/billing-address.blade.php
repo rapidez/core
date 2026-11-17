@@ -17,7 +17,8 @@
     ref="billingAddress"
     v-slot="{ mutate, variables }"
 >
-    {{-- A billing address that's the same as the shipping address is updated within the shipping address mutation --}}
+    {{-- A billing address that's the same as the shipping address is updated within the shipping address mutation. --}}
+    {{-- It's only skipped when that's also saved in Magento, the checkbox could be checked without being saved yet. --}}
     <div partial-submit v-on:partial-submit="(e) => variables.same_as_shipping && cart.value.billing_address?.same_as_shipping ? e.detail.resolve() : mutate().then(e.detail.resolve).catch(e.detail.reject)">
         <fieldset v-on:change="function (e) {
             e.target.closest('fieldset').querySelector(':invalid') === null

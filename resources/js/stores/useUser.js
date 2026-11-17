@@ -5,7 +5,7 @@ import { clear as clearOrder } from './useOrder'
 import { computed, watch } from 'vue'
 import Jwt from '../jwt'
 import { mask } from './useMask'
-import { magentoGraphQL, rapidezAPI } from '../fetch'
+import { GraphQLInputError, magentoGraphQL, rapidezAPI } from '../fetch'
 import { on, emit } from '../polyfills/emit'
 /**
  * @deprecated using localstorage to retrieve the token is deprecated, use the useUser.token instead
@@ -64,9 +64,6 @@ export const refresh = async function () {
     }
 
     if (Jwt.isJwt(token.value) && Jwt.decode(token.value)?.isExpired()) {
-        Notify(window.config.translations.errors.session_expired, 'error')
-        await clear()
-
         return false
     }
 
@@ -123,7 +120,13 @@ export const isEmailAvailable = async function (email) {
         email: email,
     })
         .then((response) => response.data.isEmailAvailable.is_email_available)
-        .catch(() => true)
+        .catch((error) => {
+            if (error instanceof GraphQLInputError) {
+                throw error
+            }
+
+            return true
+        })
 }
 
 export const register = async function (email, firstname, lastname, password, input = {}) {
@@ -179,12 +182,14 @@ export const loggedIn = async function () {
 }
 
 export const logout = async function () {
-    await magentoGraphQL('mutation { revokeCustomerToken { result } }', {}, { notifyOnError: false, redirectOnExpiration: false }).finally(
-        async () => {
+    await magentoGraphQL('mutation { revokeCustomerToken { result } }', {}, { notifyOnError: false, redirectOnExpiration: false })
+        .catch(() => {
+            // The cause of revokeCustomerToken failing is usually that the token has already expired, so we can ignore this error.
+        })
+        .finally(async () => {
             await clear()
             emit('logged-out')
-        },
-    )
+        })
 }
 
 export const user = computed({
@@ -230,6 +235,42 @@ if (userStorage.value?.email && !token.value) {
     userStorage.value = {}
 }
 
+export const expireDate = computed(() => {
+    const tokenJwt = Jwt.isJwt(token.value) ? Jwt.decode(token.value) : false
+    if (!tokenJwt) {
+        return null
+    }
+
+    return tokenJwt.expDate
+})
+
+let loginTimerId = null
+watch(
+    expireDate,
+    (date) => {
+        if (!date) {
+            return
+        }
+
+        if (loginTimerId) {
+            clearTimeout(loginTimerId)
+            loginTimerId = null
+        }
+
+        const expires = date.valueOf() - 60 * 1000 // 1 minute before the actual expiration date so we can still call revokeCustomerToken.
+        const now = new Date().valueOf()
+
+        loginTimerId = setTimeout(
+            () => {
+                emit('logout')
+                Notify(window.config.translations.errors.session_expired, 'warning')
+            },
+            expires <= now ? 0 : expires - now,
+        )
+    },
+    { immediate: true },
+)
+
 on(
     'logout',
     async function (data) {
@@ -247,20 +288,33 @@ on(
 on(
     'cart-updated',
     () => {
-        // Can be removed once https://github.com/magento/magento2/issues/39828 is fixed
+        // Set the default billing and shipping when they are null
+        // Magento sets these by itself when a new cart is made via GraphQL, but not when linking a guest cart.
+        // Because of this (and potentially other issues), we need to do this manually.
+        // Also fixes: https://github.com/magento/magento2/issues/39828
         setTimeout(() => {
-            if (cart?.value?.shipping_addresses?.length > 0 || userStorage.value?.addresses?.length < 1) {
+            if (userStorage.value?.addresses?.length < 1) {
                 return
             }
 
             const defaultShipping = userStorage.value?.addresses?.find((address) => address.default_shipping)
-            if (!defaultShipping) {
+            const defaultBilling = userStorage.value?.addresses?.find((address) => address.default_billing)
+            const setShipping = !cart?.value?.is_virtual && !cart?.value?.shipping_addresses?.length && Boolean(defaultShipping)
+            const setBilling = !cart?.value?.billing_address && Boolean(defaultBilling)
+
+            if (!setShipping && !setBilling) {
                 return
             }
 
-            magentoGraphQL(config.queries.setExistingShippingAddressesOnCart, {
+            const shippingAddressId = setShipping ? defaultShipping?.id : cart?.value?.shipping_addresses?.[0]?.customer_address_id
+
+            magentoGraphQL(config.queries.setExistingAddressesOnCart, {
                 cart_id: mask.value,
-                customer_address_id: defaultShipping.id,
+                shipping_address_id: defaultShipping?.id,
+                billing_address_id: defaultBilling?.id,
+                billing_same_as_shipping: Boolean(shippingAddressId) && shippingAddressId === defaultBilling?.id,
+                set_shipping: setShipping,
+                set_billing: setBilling,
             }).then((response) => window.app.config.globalProperties.updateCart([], response))
         })
     },

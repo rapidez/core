@@ -139,6 +139,7 @@ class ConfigController
             'setExistingShippingAddressesOnCart',
             'setNewBillingAddressOnCart',
             'setExistingBillingAddressOnCart',
+            'setExistingAddressesOnCart',
             'setShippingMethodsOnCart',
             'setPaymentMethodOnCart',
             'placeOrder',

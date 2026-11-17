@@ -22,8 +22,7 @@ export class ProductPage {
             await this.page.getByTestId('qty').pressSequentially(qty.toString())
         }
 
-        await this.page.getByTestId('add-to-cart').scrollIntoViewIfNeeded()
-        await this.page.getByTestId('add-to-cart').click()
+        await this.page.getByTestId('add-to-cart').first().click()
         await expect(this.page.getByTestId('minicart-count')).toContainText(qty.toString())
 
         return product

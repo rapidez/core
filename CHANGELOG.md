@@ -1,6 +1,56 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.11.0...5.11.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.13.0...5.13.0)
+## [5.13.0](https://github.com/rapidez/core/releases/tag/5.13.0) - 2026-11-13
+
+### Added
+
+- Show an error per item in the cart (#1444)
+- Product hover images in listings (#1429)
+
+### Fixed
+
+- Fix swatch color reactivity in listings (#1442)
+- Automatically log the user out on token expiry (#1445)
+- Only escape strings (#1446)
+- Fix data clone error (#1426)
+- Fix undefined errors (#1450)
+- Added Mage-OS to the Playwright tests (#1434)
+- Use the Playwright workflow from rapidez/workflows + fixes (#1451)
+- Remove focus before Playwright screenshots (#1452)
+- Use Playwright global tag for CI blob reports (#1457)
+- Fix double mount causing white screen (#1420)
+- Show GraphQL input errors on login fields (#1417)
+- Add vat id to cart fragment addresses (#1467)
+
+
+
+## [5.12.1](https://github.com/rapidez/core/releases/tag/5.12.1) - 2026-10-29
+
+### Fixed
+
+- Fill billing and shipping address when null instead of only shipping (#1439)
+
+## [5.12.0](https://github.com/rapidez/core/releases/tag/5.12.0) - 2026-10-28
+
+### Added
+
+- Install script to try out Rapidez easily (#1326)
+
+### Fixed
+
+- Fix notification link + tier prices for guests + super attribute label translations (#1416)
+- Fix aria label translations (#1424)
+- Fix casts in stock model (#1425)
+- Round tier_price percentage instead of ceil (#1427)
+- Add watcher ignore to default vite config (#1431)
+- Fix the CSS querying of invalid ids (#1435)
+- Fix product config timing issue (#1437)
+- Catch notification without message (#1436)
+- Harden v-html labels and decode in swatch (#1441)
+
+
+
 ## [5.11.0](https://github.com/rapidez/core/releases/tag/5.11.0) - 2026-10-08
 
 ### Changed

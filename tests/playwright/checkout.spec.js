@@ -1,13 +1,13 @@
 import { test, expect } from '@playwright/test'
-import { BasePage } from './pages/BasePage'
 import { ProductPage } from './pages/ProductPage'
 import { CheckoutPage, screenshot_login, screenshot_credentials, screenshot_payment, screenshot_success } from './pages/CheckoutPage'
 import { AccountPage } from './pages/AccountPage'
+import { BasePage } from './pages/BasePage'
 
 const checkoutTypes = ['default', 'onestep']
 
 checkoutTypes.forEach((type) => {
-    test(type + ' - as guest', BasePage.tags, async ({ page }) => {
+    test(type + ' - as guest', async ({ page }) => {
         const productPage = new ProductPage(page)
         const checkoutPage = new CheckoutPage(page, type, [
             screenshot_login,
@@ -20,7 +20,7 @@ checkoutTypes.forEach((type) => {
         await checkoutPage.checkout(`${crypto.randomUUID()}@enterprises.com`, false, false)
     })
 
-    test(type + ' - as user', BasePage.tags, async ({ page }) => {
+    test(type + ' - as user', async ({ page }) => {
         const productPage = new ProductPage(page)
         const checkoutPage = new CheckoutPage(page, type, [screenshot_login, screenshot_credentials])
         const accountPage = new AccountPage(page)
@@ -41,7 +41,7 @@ checkoutTypes.forEach((type) => {
     })
 })
 
-test('different billing address', BasePage.tags, async ({ page }) => {
+test('different billing address', async ({ page }) => {
     const productPage = new ProductPage(page)
     const checkoutPage = new CheckoutPage(page)
 
@@ -71,7 +71,7 @@ test('different billing address', BasePage.tags, async ({ page }) => {
     await expect(page.getByTestId('checkout-success')).toContainText('Gotham - BE')
 })
 
-test('same billing address after shipping method change', BasePage.tags, async ({ page }) => {
+test('same billing address after shipping method change', async ({ page }) => {
     const productPage = new ProductPage(page)
     const checkoutPage = new CheckoutPage(page)
 
@@ -91,7 +91,7 @@ test('same billing address after shipping method change', BasePage.tags, async (
     await expect(page.getByTestId('same-as-shipping')).toBeChecked()
 })
 
-test('new address as user', BasePage.tags, async ({ page }) => {
+test('new address as user', async ({ page }) => {
     const productPage = new ProductPage(page)
     const checkoutPage = new CheckoutPage(page)
     const accountPage = new AccountPage(page)
@@ -130,7 +130,7 @@ test('new address as user', BasePage.tags, async ({ page }) => {
     await expect(page.getByTestId('checkout-success')).toContainText('Gotham - BE')
 })
 
-test('incorrect password login', BasePage.tags, async ({ page }) => {
+test('incorrect password login', async ({ page }) => {
     const productPage = new ProductPage(page)
     const checkoutPage = new CheckoutPage(page, 'default', [screenshot_credentials])
     const accountPage = new AccountPage(page)

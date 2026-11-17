@@ -12,7 +12,7 @@
         "@axe-core/playwright": "^4.10.2",
         "@babel/core": "^8.0.1",
         "@hotwired/turbo": "8.0.20",
-        "@playwright/test": "^1.53.0",
+        "@playwright/test": "^1.57.0",
         "@searchkit/instantsearch-client": "^4.14.1",
         "@tailwindcss/forms": "^0.5.3",
         "@tailwindcss/typography": "^0.5.9",
