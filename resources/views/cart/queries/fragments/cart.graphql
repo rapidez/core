@@ -69,6 +69,7 @@ fragment cart on Cart {
     email
     shipping_addresses {
         uid
+        customer_address_id: id
         company
         vat_id
         prefix
@@ -89,6 +90,7 @@ fragment cart on Cart {
             code
             label
         }
+        same_as_billing
         selected_shipping_method {
             carrier_title
             carrier_code
@@ -118,6 +120,7 @@ fragment cart on Cart {
     }
     billing_address {
         uid
+        customer_address_id: id
         company
         vat_id
         prefix
