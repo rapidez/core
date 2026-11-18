@@ -67,6 +67,7 @@ class RapidezServiceProvider extends ServiceProvider
         'models',
         'routing',
         'searchkit',
+        'ssr',
         'system',
     ];
 

@@ -27,6 +27,7 @@
         "graphql": "^17.0.2",
         "graphql-combine-query": "indykoning/graphql-combine-query#feature/add-allowed-duplicates",
         "graphql-tag": "^2.12.6",
+        "happy-dom": "21.0.4",
         "instantsearch.js": "^4.79.2",
         "laravel-vite-plugin": "^3.1.3",
         "lighthouse": "^12.8.2",
@@ -42,7 +43,6 @@
         "vue-instantsearch": "^4.19.13",
         "vue3-click-away": "^1.2.4"
     },
-    "dependencies": {},
     "workspaces": [
         "vendor/rapidez/*"
     ]

@@ -63,6 +63,9 @@ export default {
         utmFields: [],
         instantSearchInstance: null,
         uiState: {},
+        // POC: the server rendered listing is shown until this one has results.
+        ssrReplaced: import.meta.env.SSR || !document.querySelector('[data-ssr-listing]'),
+        ssrHydrating: false,
     }),
 
     render() {
@@ -135,15 +138,70 @@ export default {
     },
 
     methods: {
+        // POC: start with the results from the server render, so there is no
+        // search request needed for the first render.
+        useSsrResults(instantSearchInstance) {
+            if (import.meta.env.SSR || instantSearchInstance.started) {
+                return
+            }
+
+            const element = document.getElementById('ssr-listing-results')
+            const results = element ? JSON.parse(element.textContent) : null
+            element?.remove()
+
+            if (results) {
+                instantSearchInstance._initialResults = results
+                // The widgets are async components, added after start(). By default
+                // instantsearch only skips the search for widgets added in the
+                // same tick, so we reset that ourselves once they're loaded.
+                instantSearchInstance._manuallyResetScheduleSearch = true
+                this.ssrHydrating = true
+                this.requestCount++
+            }
+        },
+
+        finishSsrHydration(instantSearchInstance) {
+            if (!this.ssrHydrating) {
+                return
+            }
+
+            import('../../instantsearch-components').then(() =>
+                setTimeout(() => {
+                    this.ssrHydrating = false
+                    instantSearchInstance._resetScheduleSearch?.()
+                    instantSearchInstance.scheduleRender()
+                }),
+            )
+        },
+
         getMiddlewares() {
             return [
                 ({ instantSearchInstance }) => {
                     this.instantSearchInstance = instantSearchInstance
+                    this.useSsrResults(instantSearchInstance)
+
                     return {
                         onStateChange: ({ uiState }) => {
                             this.uiState = uiState
                         },
-                        subscribe: () => {},
+                        subscribe: () => {
+                            if (this.ssrReplaced) {
+                                return
+                            }
+
+                            const onRender = () => {
+                                if (!instantSearchInstance.helper?.lastResults && instantSearchInstance.status !== 'error') {
+                                    return
+                                }
+
+                                instantSearchInstance.removeListener('render', onRender)
+                                this.ssrReplaced = true
+                                this.$nextTick(() => document.querySelector('[data-ssr-listing]')?.remove())
+                            }
+
+                            instantSearchInstance.addListener('render', onRender)
+                        },
+                        started: () => this.finishSsrHydration(instantSearchInstance),
                         unsubscribe: () => {},
                     }
                 },
