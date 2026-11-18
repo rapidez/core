@@ -27,19 +27,20 @@ export const refresh = async function (force = false) {
     age = Date.now()
 
     return (currentRefresh = (async function () {
+        const variables = { cart_id: mask.value }
         try {
             let response = await window.magentoGraphQL(
                 `query getCart($cart_id: String!) { cart (cart_id: $cart_id) { ...cart } }
 
                 ` + config.fragments.cart,
-                { cart_id: mask.value },
+                variables,
             )
 
             window.app.config.globalProperties.updateCart([], response)
         } catch (error) {
             console.error(error)
             GraphQLError.prototype.isPrototypeOf(error) &&
-                window.app.config.globalProperties.checkResponseForExpiredCart({}, await error?.response?.json())
+                window.app.config.globalProperties.checkResponseForExpiredCart(variables, await error?.response?.json())
 
             return false
         }
