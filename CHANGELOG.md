@@ -1,6 +1,31 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.13.0...5.13.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.14.0...5.14.0)
+## [5.14.0](https://github.com/rapidez/core/releases/tag/5.14.0) - 2026-11-18
+
+### Added
+
+- Blade override comments skill (#1432)
+- Add autocomplete attribute (#1461)
+- Install script Docker container prefixes (#1473)
+
+### Changed
+
+- Use same_as_billing and address id instead of comparing addresses (#1430)
+- Add isAddressComplete variable to addresses in cart (#1423)
+- Fix Magento GraphQL deprecations in a backwards-compatible way (#1456)
+
+### Fixed
+
+- Hide "no results" when there are results (#1466)
+- Fix case where attribute option value is null (#1459)
+- Automatically upgrade overwritten Blade templates skill (#1448)
+- Fix alias creation in update command (#1458)
+- Fix empty-string group in superAttributeValues() for valueless children (#1464)
+- Fix racing condition error in guest cart assignment (#1470)
+- Reduce memory increase per store from category caching (#1468)
+- Product structured data fixes (#1302)
+
 ## [5.13.0](https://github.com/rapidez/core/releases/tag/5.13.0) - 2026-11-13
 
 ### Added
