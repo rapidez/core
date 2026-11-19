@@ -49,6 +49,8 @@ jobs:
           coverage: none
 
       - name: Install dependencies
+        env:
+          COMPOSER_NO_SECURITY_BLOCKING: 1
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "orchestra/testbench-dusk:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-suggest

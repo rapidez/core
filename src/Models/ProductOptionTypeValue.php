@@ -30,6 +30,7 @@ class ProductOptionTypeValue extends Model
         )->shouldCache();
     }
 
+    /** @return \Illuminate\Database\Eloquent\Relations\HasMany<\Illuminate\Database\Eloquent\Model, $this> */
     public function titles()
     {
         return $this->hasMany(config('rapidez.models.product_option_type_title'), 'option_type_id');
@@ -61,6 +62,7 @@ class ProductOptionTypeValue extends Model
         )->shouldCache();
     }
 
+    /** @return \Illuminate\Database\Eloquent\Relations\HasMany<\Illuminate\Database\Eloquent\Model, $this> */
     public function prices()
     {
         return $this->hasMany(config('rapidez.models.product_option_type_price'), 'option_type_id');

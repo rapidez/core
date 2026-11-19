@@ -21,6 +21,8 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
           coverage: none
       - name: Install dependencies
+        env:
+          COMPOSER_NO_SECURITY_BLOCKING: 1
         run: composer install --prefer-dist --no-interaction
       - name: Check translations
         uses: rapidez/laravel-translation-checker@master
