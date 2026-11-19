@@ -6,7 +6,7 @@ import { mask } from './useMask'
 
 export const token = useLocalStorage('token', '')
 const userStorage = useLocalStorage('user', {}, { serializer: StorageSerializers.object })
-let refreshPromise = null
+let isRefreshing = false
 
 export const refresh = async function () {
     if (!token.value) {
@@ -14,10 +14,9 @@ export const refresh = async function () {
         return false
     }
 
-    // Wait for the request that's already in progress instead of
-    // canceling, so callers always continue with the loaded user.
-    if (refreshPromise) {
-        return refreshPromise
+    if (isRefreshing) {
+        console.debug('Refresh canceled, request already in progress...')
+        return
     }
 
     if (Jwt.isJwt(token.value) && Jwt.decode(token.value)?.isExpired()) {
@@ -27,22 +26,20 @@ export const refresh = async function () {
         return false
     }
 
-    refreshPromise = (async () => {
-        try {
-            // TODO: Migrate to GraphQL?
-            userStorage.value = (await window.magentoAPI('GET', 'customers/me', {}, { redirectOnExpiration: false })) || {}
-        } catch (error) {
-            if (error instanceof SessionExpired) {
-                await clear()
-            } else {
-                throw error
-            }
-        } finally {
-            refreshPromise = null
-        }
-    })()
+    try {
+        isRefreshing = true
+        // TODO: Migrate to GraphQL?
+        userStorage.value = (await window.magentoAPI('GET', 'customers/me', {}, { redirectOnExpiration: false })) || {}
+        isRefreshing = false
+    } catch (error) {
+        isRefreshing = false
 
-    return refreshPromise
+        if (error instanceof SessionExpired) {
+            await clear()
+        } else {
+            throw error
+        }
+    }
 }
 
 export const clear = async function () {
