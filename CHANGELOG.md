@@ -1,6 +1,17 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/2.27.0...2.27.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/...2.27.1)
+## [2.27.1](https://github.com/rapidez/core/releases/tag/2.27.1) - 2026-11-19
+
+### Fixed
+
+- Make query count health check non-breaking (#1350)
+- Make sure no NaN comes out of the calculation (#1377)
+- Harden search (#1472)
+- Blade override comments skill (#1475)
+
+
+
 ## [2.27.0](https://github.com/rapidez/core/releases/tag/2.27.0) - 2026-07-28
 
 ### Added
