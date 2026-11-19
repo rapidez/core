@@ -56,6 +56,8 @@ jobs:
           coverage: none
 
       - name: Install dependencies
+        env:
+          COMPOSER_NO_SECURITY_BLOCKING: 1
         run: composer install --prefer-dist --no-interaction
 
       - name: Publish icons
