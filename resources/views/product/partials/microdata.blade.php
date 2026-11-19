@@ -7,10 +7,11 @@
 
 <div itemprop="offers" itemtype="https://schema.org/Offer" itemscope>
     <meta itemprop="availability" content="https://schema.org/{{ $product->stock->is_in_stock ? 'InStock' : 'OutOfStock' }}" />
+    <meta itemprop="itemCondition" content="https://schema.org/NewCondition" />
     <meta itemprop="priceCurrency" content="@config('currency/options/default')" />
     <meta itemprop="price" content="{{ round($product->special_price ?: $product->price, 2) }}" />
     <meta itemprop="url" content="{{ url($product->url) }}" />
-    @if ($product->special_to_date && $product->special_to_date > now()->toDateTimeString())
-        <meta itemprop="priceValidUntil" content="{{ $product->special_to_date }}" />
+    @if ($product->special_to_date?->isFuture())
+        <meta itemprop="priceValidUntil" content="{{ $product->special_to_date->format('Y-m-d') }}" />
     @endif
 </div>

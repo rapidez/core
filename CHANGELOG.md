@@ -1,6 +1,153 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.6.0...5.6.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.14.0...5.14.0)
+## [5.14.0](https://github.com/rapidez/core/releases/tag/5.14.0) - 2026-11-18
+
+### Added
+
+- Blade override comments skill (#1432)
+- Add autocomplete attribute (#1461)
+- Install script Docker container prefixes (#1473)
+
+### Changed
+
+- Use same_as_billing and address id instead of comparing addresses (#1430)
+- Add isAddressComplete variable to addresses in cart (#1423)
+- Fix Magento GraphQL deprecations in a backwards-compatible way (#1456)
+
+### Fixed
+
+- Hide "no results" when there are results (#1466)
+- Fix case where attribute option value is null (#1459)
+- Automatically upgrade overwritten Blade templates skill (#1448)
+- Fix alias creation in update command (#1458)
+- Fix empty-string group in superAttributeValues() for valueless children (#1464)
+- Fix racing condition error in guest cart assignment (#1470)
+- Reduce memory increase per store from category caching (#1468)
+- Product structured data fixes (#1302)
+
+## [5.13.0](https://github.com/rapidez/core/releases/tag/5.13.0) - 2026-11-13
+
+### Added
+
+- Show an error per item in the cart (#1444)
+- Product hover images in listings (#1429)
+
+### Fixed
+
+- Fix swatch color reactivity in listings (#1442)
+- Automatically log the user out on token expiry (#1445)
+- Only escape strings (#1446)
+- Fix data clone error (#1426)
+- Fix undefined errors (#1450)
+- Added Mage-OS to the Playwright tests (#1434)
+- Use the Playwright workflow from rapidez/workflows + fixes (#1451)
+- Remove focus before Playwright screenshots (#1452)
+- Use Playwright global tag for CI blob reports (#1457)
+- Fix double mount causing white screen (#1420)
+- Show GraphQL input errors on login fields (#1417)
+- Add vat id to cart fragment addresses (#1467)
+
+
+
+## [5.12.1](https://github.com/rapidez/core/releases/tag/5.12.1) - 2026-10-29
+
+### Fixed
+
+- Fill billing and shipping address when null instead of only shipping (#1439)
+
+## [5.12.0](https://github.com/rapidez/core/releases/tag/5.12.0) - 2026-10-28
+
+### Added
+
+- Install script to try out Rapidez easily (#1326)
+
+### Fixed
+
+- Fix notification link + tier prices for guests + super attribute label translations (#1416)
+- Fix aria label translations (#1424)
+- Fix casts in stock model (#1425)
+- Round tier_price percentage instead of ceil (#1427)
+- Add watcher ignore to default vite config (#1431)
+- Fix the CSS querying of invalid ids (#1435)
+- Fix product config timing issue (#1437)
+- Catch notification without message (#1436)
+- Harden v-html labels and decode in swatch (#1441)
+
+
+
+## [5.11.0](https://github.com/rapidez/core/releases/tag/5.11.0) - 2026-10-08
+
+### Changed
+
+- Revert "SSR on categories and productlists (#1384)" (#1421)
+
+
+
+## [5.10.0](https://github.com/rapidez/core/releases/tag/5.10.0) - 2026-10-08
+
+### Added
+
+- SSR on categories and productlists (#1384)
+
+### Fixed
+
+- Fix turbo frame having hardcoded id by accident (#1415)
+
+
+
+## [5.9.1](https://github.com/rapidez/core/releases/tag/5.9.1) - 2026-10-01
+
+### Fixed
+
+- Use disconnect instead of unobserve in lazy.vue (#1411)
+- Remove coupon from item.graphql (#1414)
+- Add urlencode to redirect paths (#1412)
+- Added rapidez/postcode in the install command (#1413)
+
+## [5.9.0](https://github.com/rapidez/core/releases/tag/5.9.0) - 2026-09-25
+
+### Added
+
+- Added commonly used fields in the cart/order GraphQL fragments (#1410)
+
+## [5.8.0](https://github.com/rapidez/core/releases/tag/5.8.0) - 2026-09-22
+
+### Changed
+
+- Reduce the data returned from children by ElasticSearch (#1386)
+
+### Fixed
+
+- Disallow empty cart in checkout (#1403)
+- Current store/website scope cleanup (#1396)
+- Close the ais-state-results correctly (#1398)
+- Vue 3 upgrade misses fix (#1399)
+- Cleanup the image component listener (#1400)
+- Return empty array if cart attribute value is null (#1402)
+- Import the correct attribute class (#1394)
+- Reduce the queries to track a product view (#1392)
+- Set mask SameSite to lax (#1395)
+- Per store swatches cache (#1393)
+- More AI guideline info and a skill for colors (#1404)
+- Fix pnpm upgrade packages config (#1406)
+- Avoid error from overwritten NumberFormat functions (#1407)
+
+## [5.7.0](https://github.com/rapidez/core/releases/tag/5.7.0) - 2026-09-18
+
+### Changed
+
+- Use pnpm as package manager (#1405)
+
+## [5.6.1](https://github.com/rapidez/core/releases/tag/5.6.1) - 2026-09-15
+
+### Fixed
+
+- Fixed text to long error during indexing (#1383)
+- Added relation return types (#1397)
+
+
+
 ## [5.6.0](https://github.com/rapidez/core/releases/tag/5.6.0) - 2026-09-08
 
 ### Added

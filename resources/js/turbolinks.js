@@ -9,7 +9,7 @@ document.addEventListener('turbo:before-visit', function (e) {
     }
 })
 
-document.addEventListener('turbo:visit', () => {
+document.addEventListener('turbo:before-render', () => {
     // Clean up old config.
     delete window.config.product
     delete window.config.category

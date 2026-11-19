@@ -8,6 +8,7 @@ import RangeInput from 'vue-instantsearch/vue3/es/src/components/RangeInput.vue.
 import HierarchicalMenu from 'vue-instantsearch/vue3/es/src/components/HierarchicalMenu.vue.js'
 import RefinementList from 'vue-instantsearch/vue3/es/src/components/RefinementList.vue.js'
 import SortBy from 'vue-instantsearch/vue3/es/src/components/SortBy.vue.js'
+import { toRaw } from 'vue'
 import { instantsearchMiddlewares } from '../../stores/useInstantsearchMiddlewares'
 
 export default {
@@ -61,6 +62,7 @@ export default {
         destroyed: false,
         utmFields: [],
         instantSearchInstance: null,
+        uiState: {},
     }),
 
     render() {
@@ -120,6 +122,10 @@ export default {
             }
         },
 
+        superRefinements() {
+            return Object.entries(this.uiState[this.index]?.refinementList || {}).filter(([key]) => key.startsWith('super_'))
+        },
+
         rangeAttributes() {
             return config.filterable_attributes
                 .filter((filter) => filter.input == 'price')
@@ -134,7 +140,9 @@ export default {
                 ({ instantSearchInstance }) => {
                     this.instantSearchInstance = instantSearchInstance
                     return {
-                        onStateChange: () => {},
+                        onStateChange: ({ uiState }) => {
+                            this.uiState = uiState
+                        },
                         subscribe: () => {},
                         unsubscribe: () => {},
                     }
@@ -216,15 +224,21 @@ export default {
                 category.splice(0, 1)
             }
 
+            // Use `toRaw` on all of the entries in the refinementList to get rid of reactive Vue proxies
+            // Avoids the `DataCloneError` with unknown parameters
+            let rawRefinementList = Object.fromEntries(
+                Object.entries(data.refinementList || {}).map(([key, values]) => [key, toRaw(values)]),
+            )
+
             return {
                 ...(data.range || {}),
-                ...(data.refinementList || {}),
+                ...rawRefinementList,
                 category: category?.length ? category.join('--') : undefined,
                 q: data.query !== '__NO_QUERY__' ? data.query : undefined,
                 page: data.page > 0 ? String(data.page) : undefined,
                 sort: data.sortBy,
                 hits: data.hitsPerPage != config.grid_per_page ? data.hitsPerPage : undefined,
-                ...this.utmFields,
+                ...toRaw(this.utmFields),
             }
         },
 

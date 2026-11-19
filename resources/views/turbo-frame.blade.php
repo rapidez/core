@@ -1,6 +1,6 @@
 @props(['frame', 'viewPath', 'isRoute' => false])
 <turbo-frame
-    id="menu"
+    id="frame-{{ $frame }}"
     @unless ($isRoute)
         src="{{ route('turbo-frame', ['frame' => $frame, 'cachekey' => Rapidez::getCacheKey()]) }}"
         loading="lazy"

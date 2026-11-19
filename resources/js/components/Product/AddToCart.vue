@@ -301,7 +301,7 @@ export default {
                     return
                 }
 
-                this.options[key] = values[0]
+                this.options[key] = values.at(-1)
             })
         },
         async setOptionsFromRefinements() {
@@ -333,7 +333,26 @@ export default {
 
     computed: {
         currentThumbnail: function () {
-            return this.simpleProduct?.thumbnail || this.simpleProduct?.images?.[0] || this.product?.thumbnail
+            return this.simpleProduct?.thumbnail || this.images[0] || this.product?.thumbnail
+        },
+
+        hoverImage: function () {
+            // Can't have a second image if there are no images
+            if (!this.currentThumbnail || !this.images.length) {
+                return null
+            }
+
+            // Return the second image if the thumbnail is also the first image
+            if (this.currentThumbnail == this.images[0]) {
+                return this.images[1] ?? null
+            }
+
+            // Otherwise, return the first image because the thumbnail is something else
+            return this.images[0]
+        },
+
+        images: function () {
+            return this.simpleProduct?.media?.filter((media) => media.media_type == 'image')?.map((media) => media.image) ?? []
         },
 
         matchingChildren: function () {
@@ -500,13 +519,16 @@ export default {
             // Filter out non-matching customer group and calculate price for percentage types.
             const tierPrices =
                 this.product?.tier_prices
-                    ?.filter?.((price) => price.all_groups || price.customer_group_id === Number(user.value?.group_id))
+                    ?.filter?.((price) => price.all_groups || price.customer_group_id === Number(user.value?.group_id ?? 0))
                     ?.map?.((tier_price) => {
                         const tier_price_copy = reactive({ ...tier_price })
                         tier_price_copy.qty = tier_price_copy.qty * 1
                         if (tier_price_copy.percentage_value === null) {
                             tier_price_copy.value = tier_price_copy.value * 1
-                            tier_price_copy.percentage_value = Math.ceil(100 - (tier_price_copy.value * 100) / this.product.price)
+                            tier_price_copy.percentage_value = Math.round(100 - (tier_price_copy.value * 100) / this.product.price)
+                            if (tier_price_copy.percentage_value == 0 && tier_price_copy.value < this.product.price) {
+                                tier_price_copy.percentage_value = 1
+                            }
                             return tier_price_copy
                         }
                         tier_price_copy.percentage_value = tier_price_copy.percentage_value * 1
@@ -529,12 +551,6 @@ export default {
                     window.$emit('product-super-attribute-change', newProduct)
                 }
             },
-        },
-        superRefinements: {
-            handler(refinements) {
-                this.setOptionsFromRefinements()
-            },
-            deep: true,
         },
         customOptions: {
             handler() {

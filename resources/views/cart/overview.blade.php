@@ -16,6 +16,15 @@
         >
         </graphql>
         <div v-if="hasCart.value" v-cloak>
+            <div v-if="!canOrder.value" class="bg-red-700/10 text-red-700 flex gap-1 w-fit px-2 py-1 rounded mb-2">
+                <x-heroicon-o-exclamation-circle class="size-5 mt-0.5 shrink-0" />
+                <template v-if="cart.value.items.filter(item => !item.is_available || item.errors?.length).length > 1">
+                    @lang(':count items need your attention before you can check out.', ['count' => '@{{ cart.value.items.filter(item => !item.is_available || item.errors?.length).length }}'])
+                </template>
+                <template v-else>
+                    @lang('1 item needs your attention before you can check out.')
+                </template>
+            </div>
             <div class="flex gap-x-10 mb-8 max-lg:flex-col">
                 <div class="flex w-full flex-col">
                     @include('rapidez::cart.item')
