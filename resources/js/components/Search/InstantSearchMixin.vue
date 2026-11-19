@@ -14,6 +14,13 @@ export default {
         this.searchkit = await this.initSearchkit()
         this.searchClient = await this.initSearchClient()
     },
+    // Only runs during SSR, where mounted() isn't called.
+    async serverPrefetch() {
+        this.searchkit = await this.initSearchkit()
+        this.searchClient = await this.initSearchClient()
+        // The results are there when rendering server side.
+        this.requestCount = 1
+    },
     methods: {
         async initSearchClient() {
             return Client(this.searchkit, await this.getInstantSearchClientConfig())
@@ -110,6 +117,10 @@ export default {
                 createInsightsMiddleware({
                     insightsClient: null,
                     onEvent: (event) => {
+                        if (import.meta.env.SSR) {
+                            return
+                        }
+
                         this.$el.nextSibling.dispatchEvent(
                             new CustomEvent('insights-event:' + event.insightsMethod, {
                                 bubbles: true,
