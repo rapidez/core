@@ -25,12 +25,7 @@ export default {
                             return h('span')
                         }
 
-                        return h('recursion', {
-                            props: {
-                                data: item.data,
-                            },
-                            slots: self.$slots,
-                        })
+                        return h(self.$options, { data: item.data }, self.$slots)
                     },
                 }
             })
