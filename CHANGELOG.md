@@ -1,6 +1,14 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/...4.14.3)
+[Unreleased changes](https://github.com/rapidez/core/compare/4.14.4...4.14.4)
+## [4.14.4](https://github.com/rapidez/core/releases/tag/4.14.4) - 2026-11-19
+
+### Fixed
+
+- Stop testing with Laravel 11 (#1454)
+- Use the Playwright workflow from rapidez/workflows + fixes (#1463)
+- Blade override comments skill (#1477)
+
 ## [4.14.3](https://github.com/rapidez/core/releases/tag/4.14.3) - 2026-10-29
 
 ### Fixed
