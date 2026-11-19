@@ -32,9 +32,13 @@
     },
     "require-dev": {
         "laravel/dusk": "^8.2",
+        "laravel/mcp": "^1.0",
         "orchestra/testbench": "^9.4|^10.0",
         "orchestra/testbench-dusk": "^9.7|^10.0",
         "phpunit/phpunit": "^10.5.34|^11.3.5"
+    },
+    "suggest": {
+        "laravel/boost": "Adds the rapidez-changed-overrides and rapidez-override-upgrade-diff MCP tools used by the upgrade-overwritten-templates skill"
     },
     "autoload": {
         "psr-4": {

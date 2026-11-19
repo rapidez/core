@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\View\View as ViewComponent;
+use Laravel\Mcp\Server\Tool;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
 use Rapidez\Core\Auth\MagentoCustomerTokenGuard;
 use Rapidez\Core\Commands\IndexCategoriesCommand;
@@ -35,6 +36,10 @@ use Rapidez\Core\Listeners\Healthcheck\ElasticsearchHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\MagentoSettingsHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\ModelsHealthcheck;
 use Rapidez\Core\Listeners\ReportProductView;
+use Rapidez\Core\Mcp\Tools\ChangedOverrides;
+use Rapidez\Core\Mcp\Tools\ListViewOverrides;
+use Rapidez\Core\Mcp\Tools\OverrideUpgradeDiff;
+use Rapidez\Core\Mcp\Tools\ViewOverrideDiff;
 use Rapidez\Core\ViewComponents\PlaceholderComponent;
 use Rapidez\Core\ViewDirectives\WidgetDirective;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -74,7 +79,8 @@ class RapidezServiceProvider extends ServiceProvider
             ->registerThemes()
             ->registerBladeDirectives()
             ->registerExceptionHandlers()
-            ->registerBladeIconConfig();
+            ->registerBladeIconConfig()
+            ->registerBoostTools();
     }
 
     protected function bootAuth(): self
@@ -368,6 +374,19 @@ class RapidezServiceProvider extends ServiceProvider
                 ],
                 'sync_missed_stores' => true,
             ]);
+        }
+
+        return $this;
+    }
+
+    protected function registerBoostTools(): self
+    {
+        if (! $this->app->runningInConsole() || ! class_exists(Tool::class)) {
+            return $this;
+        }
+
+        foreach ([ListViewOverrides::class, ViewOverrideDiff::class, ChangedOverrides::class, OverrideUpgradeDiff::class] as $tool) {
+            config()->push('boost.mcp.tools.include', $tool);
         }
 
         return $this;
