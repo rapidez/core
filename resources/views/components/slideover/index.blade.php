@@ -24,7 +24,7 @@
     $closeId = $isInForm ? 'close-' . $id : $id;
 @endphp
 
-<x-tag v-on:reset="toggleScroll(false)" :is="$tag">
+<x-rapidez::tag v-on:reset="toggleScroll(false)" :is="$tag">
     <input id="{{ 'close-' . $id }}" class="hidden" type="reset">
     @if (!$hasParent)
         <input @checked($open) id="{{ $id }}" class="peer hidden" v-on:change="toggleScroll($event.target.checked)" type="checkbox">
@@ -45,4 +45,4 @@
             {{ $slot }}
         </div>
     </div>
-</x-tag>
+</x-rapidez::tag>

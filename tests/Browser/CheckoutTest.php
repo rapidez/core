@@ -63,19 +63,15 @@ class CheckoutTest extends DuskTestCase
                 ->waitUntilIdle();
         }
 
+        // A logged in customer gets their default address preselected,
+        // in that case the address form isn't shown and can be skipped.
         $browser
-            ->waitFor('@shipping_country', 15)
-            ->type('@shipping_firstname', 'Bruce')
-            ->type('@shipping_lastname', 'Wayne')
-            ->type('@shipping_postcode', '72000')
-            ->type('@shipping_housenumber', '1007')
-            ->type('@shipping_street', 'Mountain Drive')
-            ->type('@shipping_city', 'Gotham')
-            ->select('@shipping_country', 'NL')
-            ->type('@shipping_telephone', '530-7972')
-            ->waitUntilIdle()
-            ->assertFormValid('form')
+            ->waitUsing(15, 100, fn () => $browser->element('@shipping_country') || $browser->element('@shipping_address_select'))
             ->waitUntilIdle();
+
+        if ($browser->element('@shipping_country')) {
+            $this->fillShippingAddress($browser);
+        }
 
         if ($password && $register) {
             $browser->click('@create_account')
@@ -104,5 +100,21 @@ class CheckoutTest extends DuskTestCase
             ->assertPresent('@checkout-success');
 
         return $browser;
+    }
+
+    public function fillShippingAddress(Browser $browser)
+    {
+        return $browser
+            ->type('@shipping_firstname', 'Bruce')
+            ->type('@shipping_lastname', 'Wayne')
+            ->type('@shipping_postcode', '72000')
+            ->type('@shipping_housenumber', '1007')
+            ->type('@shipping_street', 'Mountain Drive')
+            ->type('@shipping_city', 'Gotham')
+            ->select('@shipping_country', 'NL')
+            ->type('@shipping_telephone', '530-7972')
+            ->waitUntilIdle()
+            ->assertFormValid('form')
+            ->waitUntilIdle();
     }
 }
