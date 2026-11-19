@@ -33,6 +33,7 @@ export default {
         lastname: '',
         isEmailAvailable: true,
         error: null,
+        running: false,
     }),
 
     render() {
@@ -51,25 +52,35 @@ export default {
                 return true
             }
 
-            let isAvailable = await this.checkEmailAvailability()
-
-            if (isAvailable === null) {
+            if (this.running) {
                 return false
             }
 
-            if (!this.allowPasswordless && !isAvailable && !this.password) {
-                return false
-            }
+            this.running = true
 
-            if (!isAvailable && this.password) {
-                return await this.handleLogin()
-            }
+            try {
+                let isAvailable = await this.checkEmailAvailability()
 
-            if (this.createAccount && this.password) {
-                return await this.handleRegister()
-            }
+                if (isAvailable === null) {
+                    return false
+                }
 
-            return await this.handleGuest()
+                if (!this.allowPasswordless && !isAvailable && !this.password) {
+                    return false
+                }
+
+                if (!isAvailable && this.password) {
+                    return await this.handleLogin()
+                }
+
+                if (this.createAccount && this.password) {
+                    return await this.handleRegister()
+                }
+
+                return await this.handleGuest()
+            } finally {
+                this.running = false
+            }
         },
 
         async handleLogin() {

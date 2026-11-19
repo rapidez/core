@@ -7,6 +7,7 @@ import { user } from './useUser'
 const cartStorage = useLocalStorage('cart', {}, { serializer: StorageSerializers.object })
 let age = 0
 let currentRefresh = null
+let cartWriteSeq = 0
 
 export const refresh = async function (force = false) {
     if (!mask.value) {
@@ -215,6 +216,9 @@ export const cart = computed({
         return cartStorage.value
     },
     set(value) {
+        cartWriteSeq++
+        const seq = cartWriteSeq
+
         if (value.itemsV2) {
             value.items = value.itemsV2.items
             delete value.itemsV2
@@ -292,6 +296,11 @@ export const cart = computed({
                 })
             })
             .finally(() => {
+                //  Ignore this stale response if a newer started.
+                if (seq !== cartWriteSeq) {
+                    return
+                }
+
                 cartStorage.value = value
                 age = Date.now()
             })

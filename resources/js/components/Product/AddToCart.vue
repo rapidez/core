@@ -91,15 +91,19 @@ export default {
                 return
             }
 
+            if (this.adding) {
+                return
+            }
+
             this.added = false
             this.adding = true
             this.error = null
 
-            if (!mask.value) {
-                await refreshMask()
-            }
-
             try {
+                if (!mask.value) {
+                    await refreshMask()
+                }
+
                 let response = await window.magentoGraphQL(
                     `mutation (
                         $cartId: String!,
@@ -158,15 +162,19 @@ export default {
                 }
 
                 if (error?.response) {
-                    const responseData = await error.response.json()
-                    if (GraphQLError.prototype.isPrototypeOf(error) && !(await this.checkResponseForExpiredCart({}, responseData))) {
-                        // If there are errors we may still get a newly updated cart back.
-                        await this.updateCart({}, responseData)
+                    try {
+                        const responseData = await error.response.json()
+                        if (GraphQLError.prototype.isPrototypeOf(error) && !(await this.checkResponseForExpiredCart({}, responseData))) {
+                            // If there are errors we may still get a newly updated cart back.
+                            await this.updateCart({}, responseData)
+                        }
+                    } catch (parseError) {
+                        console.error('Could not parse add-to-cart error response', parseError)
                     }
                 }
+            } finally {
+                this.adding = false
             }
-
-            this.adding = false
         },
 
         calculatePrices: function () {

@@ -1,5 +1,6 @@
 import { useEventListener } from '@vueuse/core'
 import { cart, clear as clearCart } from './stores/useCart'
+import { addFetch } from './stores/useFetches'
 import { fillFromGraphqlResponse as updateOrder } from './stores/useOrder'
 import { runAfterPlaceOrderHandlers, runBeforePaymentMethodHandlers, runBeforePlaceOrderHandlers } from './stores/usePaymentHandlers'
 import { refresh as refreshUser, token } from './stores/useUser'
@@ -21,37 +22,44 @@ document.addEventListener('vue:loaded', function (event) {
     }
 
     vue.config.globalProperties.submitPartials = async function (form, sequential = false) {
-        let promises = []
-        for (const element of form.querySelectorAll('[partial-submit]')) {
-            let resolveFn, rejectFn
-            const createdPromise = new Promise((res, rej) => {
-                resolveFn = res
-                rejectFn = rej
-            }).then((result) => {
-                if (result === false) {
-                    throw new Error('Result was false')
+        let resolveSentinel
+        addFetch(new Promise((resolve) => (resolveSentinel = resolve)))
+
+        try {
+            let promises = []
+            for (const element of form.querySelectorAll('[partial-submit]')) {
+                let resolveFn, rejectFn
+                const createdPromise = new Promise((res, rej) => {
+                    resolveFn = res
+                    rejectFn = rej
+                }).then((result) => {
+                    if (result === false) {
+                        throw new Error('Result was false')
+                    }
+                })
+
+                const e = new CustomEvent('partial-submit', {
+                    detail: { resolve: resolveFn, reject: rejectFn },
+                    bubbles: false,
+                    cancelable: true,
+                })
+
+                const dispatched = element.dispatchEvent(e)
+                if (!dispatched) {
+                    resolveFn()
                 }
-            })
 
-            const e = new CustomEvent('partial-submit', {
-                detail: { resolve: resolveFn, reject: rejectFn },
-                bubbles: false,
-                cancelable: true,
-            })
+                if (sequential) {
+                    await createdPromise
+                }
 
-            const dispatched = element.dispatchEvent(e)
-            if (!dispatched) {
-                resolveFn()
+                promises.push(createdPromise)
             }
 
-            if (sequential) {
-                await createdPromise
-            }
-
-            promises.push(createdPromise)
+            return await Promise.all(promises)
+        } finally {
+            resolveSentinel()
         }
-
-        return await Promise.all(promises)
     }
 
     vue.config.globalProperties.checkResponseForExpiredCart = async function (variables, response) {
@@ -109,8 +117,8 @@ document.addEventListener('vue:loaded', function (event) {
             return response?.data
         }
 
-        if (!response?.data?.placeOrder?.orderV2 && response?.data?.placeOrder?.errors) {
-            const message = response.data.placeOrder.errors.find(() => true).message
+        if (!response?.data?.placeOrder?.orderV2) {
+            const message = response.data?.placeOrder?.errors?.find(() => true)?.message ?? window.config.translations.errors.wrong
             Notify(message, 'error')
             throw new Error(message)
         }
