@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/...3.12.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/...3.12.1)
+## [3.12.1](https://github.com/rapidez/core/releases/tag/3.12.1) - 2026-11-19
+
+### Fixed
+
+- Blade override comments skill (#1476)
+
 ## [3.12.0](https://github.com/rapidez/core/releases/tag/3.12.0) - 2026-09-09
 
 ### Added
