@@ -33,7 +33,7 @@ export default {
         lastname: '',
         isEmailAvailable: true,
         error: null,
-        submitting: false,
+        running: false,
     }),
 
     render() {
@@ -52,11 +52,11 @@ export default {
                 return true
             }
 
-            if (this.submitting) {
+            if (this.running) {
                 return false
             }
 
-            this.submitting = true
+            this.running = true
 
             try {
                 let isAvailable = await this.checkEmailAvailability()
@@ -79,7 +79,7 @@ export default {
 
                 return await this.handleGuest()
             } finally {
-                this.submitting = false
+                this.running = false
             }
         },
 
