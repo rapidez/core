@@ -216,7 +216,8 @@ export const cart = computed({
         return cartStorage.value
     },
     set(value) {
-        const seq = ++cartWriteSeq
+        const seq = cartWriteSeq
+        cartWriteSeq++
 
         if (value.itemsV2) {
             value.items = value.itemsV2.items
