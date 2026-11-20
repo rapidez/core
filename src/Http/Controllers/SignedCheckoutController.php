@@ -20,12 +20,12 @@ class SignedCheckoutController
 
         $response = redirect()->to('checkout', 301);
 
-        if (! Quote::whereQuoteIdOrCustomerToken($data['mask'] ?? $data['token'])->exists()) {
+        if (! Quote::whereQuoteIdOrCustomerToken($data['mask'] ?? $data['customer_token'])->exists()) {
             return redirect(config('rapidez.magento_url'), 301);
         }
 
         $response->withCookie('mask', $data['mask'] ?? null, 525949, null, null, null, false);
-        $response->withCookie('token', $data['token'] ?? null, 525949, null, null, null, false);
+        $response->withCookie('token', $data['customer_token'] ?? null, 525949, null, null, null, false);
 
         return $response;
     }
