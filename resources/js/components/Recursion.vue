@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { h } from 'vue'
+import { h, resolveComponent } from 'vue'
 
 export default {
     props: {
@@ -25,7 +25,7 @@ export default {
                             return h('span')
                         }
 
-                        return h(self.$options, { data: item.data }, self.$slots)
+                        return h(resolveComponent('recursion'), { data: item.data }, self.$slots)
                     },
                 }
             })
