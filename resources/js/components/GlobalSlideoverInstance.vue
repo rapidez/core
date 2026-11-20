@@ -10,10 +10,10 @@ export default {
         }
     },
     mounted() {
-        window.$on('global-slideover-open', async (data) => {
+        window.$on('global-slideover-open', (data) => {
             this.title = data.title || ''
             this.position = data.position || 'left'
-            await this.$nextTick(() => document.getElementById('slideover-global')?.showModal())
+            this.$nextTick(() => document.getElementById('slideover-global')?.showModal())
         })
     },
 }
