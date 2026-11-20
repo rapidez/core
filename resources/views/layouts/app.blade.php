@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ strtok(Rapidez::config('general/locale/code'), '_') }}">
+<html lang="{{ strtok(Rapidez::config('general/locale/code'), '_') }}" class="has-[:is([popover]:popover-open,dialog[open])]:overflow-clip">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
