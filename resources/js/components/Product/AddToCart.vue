@@ -267,13 +267,22 @@ export default {
             return addition
         },
         async setDefaultOptions() {
-            if (!window.config.add_to_cart?.auto_select_configurable_options || !window.config.product?.super_attributes) {
+            if (
+                !window.config.add_to_cart?.auto_select_configurable_options ||
+                !window.config.product?.super_attributes ||
+                !this.product?.super_attributes
+            ) {
                 return
             }
             // We do not loop and use the values of enabledOptions directly.
             // This is on purpose in order to force recalculations of enabledOptions to be considered.
-            Object.keys(this.enabledOptions).map((attributeKey) => {
-                this.options[attributeKey] = this.enabledOptions[attributeKey].find(Boolean)
+            Object.entries(this.product.super_attributes).forEach(([attributeId, attribute]) => {
+                let value = this.enabledOptions[`super_${attribute.attribute_code}`]?.find(Boolean)
+                if (value === undefined) {
+                    return
+                }
+
+                this.options[attributeId] = value
             })
         },
         async setDefaultCustomSelectedOptions() {
@@ -358,8 +367,11 @@ export default {
         matchingChildren: function () {
             let children = Object.values(this.product.children).map((child) => child.entity_id)
             Object.entries(this.options).forEach(([attributeId, optionId]) => {
-                let code = this.product.super_attributes[attributeId].attribute_code
-                let option = this.product[`super_${code}_values`][optionId]
+                let code = this.product.super_attributes?.[attributeId]?.attribute_code
+                let option = this.product[`super_${code}_values`]?.[optionId]
+                if (!option) {
+                    return
+                }
 
                 // Subtract all children that don't fit this option
                 children = children.filter((child) => option.children.some((optionChild) => optionChild == child))
@@ -412,7 +424,10 @@ export default {
             let selectedOptions = []
 
             Object.entries(this.options).forEach(([optionId, optionValue]) => {
-                let attributeId = this.product.super_attributes[optionId].attribute_id
+                let attributeId = this.product.super_attributes?.[optionId]?.attribute_id
+                if (!attributeId || optionValue === undefined || optionValue === null) {
+                    return
+                }
                 selectedOptions.push(btoa('configurable/' + attributeId + '/' + optionValue))
             })
 
@@ -462,8 +477,11 @@ export default {
                         if (attributeId == currentAttributeId) {
                             return
                         }
-                        let code = this.product.super_attributes[attributeId].attribute_code
-                        let option = this.product[`super_${code}_values`][optionId]
+                        let code = this.product.super_attributes[attributeId]?.attribute_code
+                        let option = this.product[`super_${code}_values`]?.[optionId]
+                        if (!option) {
+                            return
+                        }
 
                         matchingOrOwnChildren = matchingOrOwnChildren.filter((child) =>
                             option.children.some((optionChild) => optionChild == child),
