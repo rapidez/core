@@ -12,7 +12,7 @@ window.Notify = (message, type = 'info', params = [], link = null) => {
     }
 
     pushNotification({
-        message: message,
+        message: window.htmlDecode(message),
         type: type,
         params: params,
         link: link,
