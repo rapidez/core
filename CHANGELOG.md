@@ -1,6 +1,12 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.15.0...5.15.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.16.0...5.16.0)
+## [5.16.0](https://github.com/rapidez/core/releases/tag/5.16.0) - 2026-11-24
+
+### Changed
+
+- rapidez/blade-components update (slideover refactor) (#1482)
+
 ## [5.15.0](https://github.com/rapidez/core/releases/tag/5.15.0) - 2026-11-24
 
 ### Changed
