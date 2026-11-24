@@ -243,6 +243,31 @@ export default {
         },
 
         routeToState(routeState) {
+            routeState = Object.fromEntries(Object.entries(routeState).map(([key, values]) => {
+                if (typeof values === 'string') {
+                    values = [values]
+                }
+
+                if (values.length !== 1) {
+                    return [key, values]
+                }
+
+                if (!values[0].startsWith('[') || !values[0].endsWith(']')) {
+                    return [key, values]
+                }
+
+                    try {
+                        const newValues = JSON.parse(values[0]);
+
+                        if (Array.isArray(newValues)) {
+                            return [key, newValues]
+                        }
+                    }
+                    catch (e) {}
+
+                    return [key, values]
+            }))
+            
             let ranges = Object.fromEntries(Object.entries(routeState).filter(([key]) => this.rangeAttributes.includes(key)))
 
             this.utmFields = Object.fromEntries(Object.entries(routeState).filter(([key]) => key.startsWith('utm_')))
