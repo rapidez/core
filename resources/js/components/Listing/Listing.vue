@@ -245,20 +245,18 @@ export default {
         routeToState(routeState) {
             routeState = Object.fromEntries(
                 Object.entries(routeState).map(([key, values]) => {
-                    if (typeof values === 'string') {
-                        values = [values]
-                    }
-
-                    if (values.length !== 1) {
+                    if (typeof values !== 'string' && values.length !== 1) {
                         return [key, values]
                     }
 
-                    if (!values[0].startsWith('[') || !values[0].endsWith(']')) {
+                    let val = Array.isArray(values) ? values[0] : values
+
+                    if (!val.startsWith('[') || !val.endsWith(']')) {
                         return [key, values]
                     }
 
                     try {
-                        const newValues = JSON.parse(values[0])
+                        const newValues = JSON.parse(val)
 
                         if (Array.isArray(newValues)) {
                             return [key, newValues]
