@@ -10,6 +10,12 @@ document.addEventListener('turbo:before-visit', function (e) {
 })
 
 document.addEventListener('turbo:before-render', () => {
+    // Don't cleanup if this visit won't render
+    // This avoids a bug where instant redirects destroy the config
+    if (Turbo.session.navigator.currentVisit?.willRender === false) {
+        return
+    }
+
     // Clean up old config.
     delete window.config.product
     delete window.config.category
