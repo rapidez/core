@@ -1,6 +1,18 @@
 # Changelog 
 
-[Unreleased changes](https://github.com/rapidez/core/compare/5.14.0...5.14.0)
+[Unreleased changes](https://github.com/rapidez/core/compare/5.15.0...5.15.0)
+## [5.15.0](https://github.com/rapidez/core/releases/tag/5.15.0) - 2026-11-24
+
+### Changed
+
+- Various js improvements (#1401)
+
+### Fixed
+
+- Fix typo in component name (#1478)
+- Fix nested category filter not rendering (#1479)
+- Decode html in notifications (#1485)
+
 ## [5.14.0](https://github.com/rapidez/core/releases/tag/5.14.0) - 2026-11-18
 
 ### Added
