@@ -1,15 +1,20 @@
 <global-slideover-instance>
-    <template v-slot="{ content, title, position }" v-cloak>
+    <template v-slot="{ title, position }" v-cloak>
         <x-rapidez::slideover
-            ref="root"
             id="slideover-global"
-            v-bind:class="{ '-right-full peer-checked:right-0 left-auto!': (position ?? 'left') === 'right' }"
+            position=""
+            closedby="any"
+            v-bind:class="position === 'right'
+                ? 'ml-auto translate-x-full starting:open:translate-x-full open:translate-x-0'
+                : '-translate-x-full starting:open:-translate-x-full open:translate-x-0'"
         >
-            <x-slot:title>
-                <div v-html="title"></div>
-            </x-slot:title>
-
-            <div id="global-slideover-content"></div>
+            <x-rapidez::slideover.header>
+                <div class="max-w-full px-10 truncate font-semibold" v-html="title"></div>
+                <x-rapidez::slideover.close commandfor="slideover-global" command="close" :aria-label="__('Close')" />
+            </x-rapidez::slideover.header>
+            <x-rapidez::slideover.content class="max-h-none">
+                <div id="global-slideover-content"></div>
+            </x-rapidez::slideover.content>
         </x-rapidez::slideover>
     </template>
 </global-slideover-instance>

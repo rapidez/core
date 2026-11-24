@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ strtok(Rapidez::config('general/locale/code'), '_') }}">
+<html lang="{{ strtok(Rapidez::config('general/locale/code'), '_') }}" class="has-[:is([popover]:popover-open,dialog[open])]:overflow-clip">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,7 +29,7 @@
     @stack('head')
     @config('design/head/includes')
 </head>
-<body class="text antialiased has-[.prevent-scroll:checked]:overflow-clip">
+<body class="text antialiased">
     <div id="app" class="flex flex-col min-h-dvh">
         @include('rapidez::layouts.partials.global-slideover')
 
