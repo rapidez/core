@@ -55,6 +55,7 @@ export default {
         options: {},
         customOptions: {},
         customSelectedOptions: {},
+        extraCartItems: {},
         error: null,
 
         adding: false,
@@ -105,26 +106,17 @@ export default {
                 }
 
                 let response = await window.magentoGraphQL(
-                    `mutation (
-                        $cartId: String!,
-                        $sku: String!,
-                        $quantity: Float!,
-                        $selected_options: [ID!],
-                        $entered_options: [EnteredOptionInput]
-                    ) { addProductsToCart(cartId: $cartId, cartItems: [{
-                        sku: $sku,
-                        quantity: $quantity,
-                        selected_options: $selected_options,
-                        entered_options: $entered_options
-                    }]) { cart { ...cart } user_errors { code message } } }
+                    `mutation ($cartId: String!, $cartItems: [CartItemInput!]!) {
+                        addProductsToCart(cartId: $cartId, cartItems: $cartItems) {
+                            cart { ...cart }
+                            user_errors { code message }
+                        }
+                    }
 
                     ` + config.fragments.cart,
                     {
-                        sku: this.product.sku,
                         cartId: mask.value,
-                        quantity: this.qty,
-                        selected_options: this.selectedOptions,
-                        entered_options: this.enteredOptions,
+                        cartItems: this.cartItems,
                     },
                 )
 
@@ -449,6 +441,18 @@ export default {
             })
 
             return enteredOptions
+        },
+
+        cartItems: function () {
+            return [
+                {
+                    sku: this.product.sku,
+                    quantity: this.qty,
+                    selected_options: this.selectedOptions,
+                    entered_options: this.enteredOptions,
+                },
+                ...Object.values(this.extraCartItems).filter((item) => item?.sku && Number(item.quantity) > 0),
+            ]
         },
 
         disabledOptions: function () {
