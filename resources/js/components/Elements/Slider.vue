@@ -66,8 +66,6 @@ export default {
         }
     },
     mounted() {
-        // Composables called after nextTick run outside the component scope,
-        // so collect them in our own scope to dispose them on unmount.
         this.sliderScope = effectScope()
         this.initSlider()
         this.initScrollState()
