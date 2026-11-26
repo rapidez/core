@@ -9,48 +9,28 @@ use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Http\Controllers\ConfigController;
 use Throwable;
 
-// POC: collects Vue templates (the Blade output) while the page renders and
-// returns an id for the placeholders. When the page is done, and with that
-// the frontend config from the view composers, the RenderServerSide
-// middleware sends them to the Node render server and swaps the placeholders
-// for the rendered HTML and search results. When SSR fails the placeholders
-// are removed, so the page renders like it always did.
+// POC: sends a Vue template (the Blade output of @ssr) to the Node render
+// server and returns the rendered HTML in front of the template, with the
+// search results pushed to the foot. When SSR is disabled or fails only the
+// template is returned, so the page renders like it always did.
 class RenderVueServerSide
 {
-    protected array $templates = [];
-
-    public function __invoke(string $template): ?int
+    public function __invoke(string $template): string
     {
-        if (! config('rapidez.ssr.enabled')) {
-            return null;
+        if (! config('rapidez.ssr.enabled') || ! $ssr = $this->render($template)) {
+            return $template;
         }
 
-        $this->templates[] = $template;
+        app('view')->startPush(
+            'foot',
+            '<script type="application/json" id="ssr-listing-results">'
+            . json_encode($ssr['results'][0] ?? null, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT)
+            . '</script>',
+        );
 
-        return array_key_last($this->templates);
-    }
-
-    public function replacePlaceholders(string $html): string
-    {
-        foreach ($this->templates as $id => $template) {
-            $ssr = $this->render($template);
-
-            $html = str_replace(
-                ["<!-- rapidez-ssr:{$id} -->", "<!-- rapidez-ssr-results:{$id} -->"],
-                $ssr ? [
-                    '<!-- SSR: ' . e(json_encode($ssr['timings'] + ['php_total' => $ssr['php_total']])) . ' -->'
-                    . '<div v-pre data-ssr-listing>' . $ssr['html'] . '</div>',
-                    '<script type="application/json" id="ssr-listing-results">'
-                    . json_encode($ssr['results'][0] ?? null, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT)
-                    . '</script>',
-                ] : ['', ''],
-                $html,
-            );
-        }
-
-        $this->templates = [];
-
-        return $html;
+        return '<!-- SSR: ' . e(json_encode($ssr['timings'] + ['php_total' => $ssr['php_total']])) . ' -->'
+            . '<div v-pre data-ssr-listing>' . $ssr['html'] . '</div>'
+            . $template;
     }
 
     protected function render(string $template): ?array
@@ -82,6 +62,12 @@ class RenderVueServerSide
     // The same config as config.js plus the per request frontend config.
     protected function config(): array
     {
+        // TODO: Replace with a frontend config hook, this runs the layout composers twice.
+        if (! request()->attributes->get('rapidez-ssr-composed')) {
+            request()->attributes->set('rapidez-ssr-composed', true);
+            app('view')->callComposer(view('rapidez::layouts.app'));
+        }
+
         $config = Cache::rememberForever(
             'ssr-config-' . config('rapidez.store') . '-' . Rapidez::getCacheKey(),
             fn () => array_merge(
