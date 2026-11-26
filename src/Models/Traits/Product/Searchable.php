@@ -181,13 +181,22 @@ trait Searchable
     {
         $attributeModel = config('rapidez.models.attribute');
         $indexableAttributeCodes = EavAttribute::getCachedIndexable()->pluck('attribute_code')->all();
+        $textMapping = [
+            'type'   => 'text',
+            'fields' => [
+                'keyword' => [
+                    'type'         => 'keyword',
+                    'ignore_above' => 256,
+                ],
+            ],
+        ];
+        $dateMapping = [
+            'type'   => 'date',
+            'format' => 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||strict_date_optional_time||epoch_millis',
+        ];
 
         $attributeTypeMapping = collect(
             $attributeModel::getCachedWhere(function ($attribute) use ($indexableAttributeCodes) {
-                if (in_array($attribute['code'], ['msrp_display_actual_price_type', 'price_view', 'shipment_type', 'status'])) {
-                    return false;
-                }
-
                 if (in_array($attribute['type'], ['gallery', 'static'])) {
                     return false;
                 }
@@ -201,7 +210,7 @@ trait Searchable
                     return true;
                 }
 
-                $alwaysInFlat = array_merge(['sku'], $indexableAttributeCodes, Eventy::filter('index.' . static::getModelName() . '.attributes', []));
+                $alwaysInFlat = array_merge($indexableAttributeCodes, Eventy::filter('index.' . static::getModelName() . '.attributes', []));
                 if (in_array($attribute['code'], $alwaysInFlat)) {
                     return true;
                 }
@@ -211,22 +220,11 @@ trait Searchable
         )
             ->mapWithKeys(fn ($attribute) => [$attribute['code'] => match (true) {
                 static::hasOptionLabelValues($attribute),
-                in_array($attribute['type'], ['varchar', 'text']) => [
-                    'type'   => 'text',
-                    'fields' => [
-                        'keyword' => [
-                            'type'         => 'keyword',
-                            'ignore_above' => 256,
-                        ],
-                    ],
-                ],
-                $attribute['type'] === 'int'      => ['type' => 'integer'],
-                $attribute['type'] === 'decimal'  => ['type' => 'double'],
-                $attribute['type'] === 'datetime' => [
-                    'type'   => 'date',
-                    'format' => 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||strict_date_optional_time||epoch_millis',
-                ],
-                default => null,
+                in_array($attribute['type'], ['varchar', 'text']) => $textMapping,
+                $attribute['type'] === 'int'                      => ['type' => 'integer'],
+                $attribute['type'] === 'decimal'                  => ['type' => 'double'],
+                $attribute['type'] === 'datetime'                 => $dateMapping,
+                default                                           => null,
             }])
             ->filter();
 
@@ -240,14 +238,25 @@ trait Searchable
             ]);
 
         return [
+            'date_detection'    => false,
+            'dynamic_templates' => [
+                [
+                    'prices' => [
+                        'path_match' => 'prices.*.*price',
+                        'mapping'    => [
+                            'type' => 'double',
+                        ],
+                    ],
+                ],
+            ],
             'properties' => [
                 ...$attributeTypeMapping,
                 ...$superAttributeTypeMapping,
+                'sku'              => $textMapping,
+                'created_at'       => $dateMapping,
+                'updated_at'       => $dateMapping,
                 'super_attributes' => [
                     'type' => 'flattened',
-                ],
-                'prices.*.min_price' => [
-                    'type' => 'double',
                 ],
                 'children' => [
                     'type' => 'flattened',
