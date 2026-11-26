@@ -53,6 +53,14 @@ const forward = [
     'dispatchEvent',
 ]
 
+for (let object = browser; object && object !== Object.prototype; object = Object.getPrototypeOf(object)) {
+    for (const key of Object.getOwnPropertyNames(object)) {
+        if (!(key in globalThis) && !forward.includes(key) && !['window', 'self', 'constructor'].includes(key)) {
+            forward.push(key)
+        }
+    }
+}
+
 for (const key of forward) {
     Object.defineProperty(globalThis, key, {
         configurable: true,

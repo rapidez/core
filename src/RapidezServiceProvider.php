@@ -21,6 +21,7 @@ use Illuminate\Support\Str;
 use Illuminate\View\View as ViewComponent;
 use Laravel\Mcp\Server\Tool;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
+use Rapidez\Core\Actions\RenderVueServerSide;
 use Rapidez\Core\Auth\MagentoCartTokenGuard;
 use Rapidez\Core\Auth\MagentoCustomerTokenGuard;
 use Rapidez\Core\Commands\IndexCommand;
@@ -37,6 +38,7 @@ use Rapidez\Core\Http\Controllers\Fallback\UrlRewriteController;
 use Rapidez\Core\Http\Middleware\CheckStoreCode;
 use Rapidez\Core\Http\Middleware\ConfigForTesting;
 use Rapidez\Core\Http\Middleware\DetermineAndSetShop;
+use Rapidez\Core\Http\Middleware\RenderServerSide;
 use Rapidez\Core\Http\Middleware\Uncacheable;
 use Rapidez\Core\Listeners\Healthcheck\ElasticsearchHealthcheck;
 use Rapidez\Core\Listeners\Healthcheck\MagentoSettingsHealthcheck;
@@ -269,6 +271,7 @@ elseif (!app()->environment('production')) { echo 'Turbo frame \"' . {$frame} .'
         }
 
         $this->app->make(Kernel::class)->pushMiddleware(DetermineAndSetShop::class);
+        $this->app->make(Kernel::class)->pushMiddleware(RenderServerSide::class);
 
         $this->app['router']->aliasMiddleware('store_code', CheckStoreCode::class);
         $this->app['router']->aliasMiddleware('uncacheable', Uncacheable::class);
@@ -514,6 +517,7 @@ elseif (!app()->environment('production')) { echo 'Turbo frame \"' . {$frame} .'
     {
         $this->app->singleton('rapidez', Rapidez::class);
         $this->app->bind('widget-directive', WidgetDirective::class);
+        $this->app->scoped(RenderVueServerSide::class);
 
         return $this;
     }

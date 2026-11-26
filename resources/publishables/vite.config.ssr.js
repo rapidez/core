@@ -11,6 +11,7 @@ export default defineConfig({
         alias: {
             '@': path.resolve(__dirname, './resources/js'),
             Vendor: path.resolve(__dirname, './vendor'),
+            'rapidez-ssr-app': path.resolve(__dirname, './resources/js/app.js'),
         },
     },
     build: {

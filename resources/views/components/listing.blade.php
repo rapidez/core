@@ -45,11 +45,10 @@
 @php($ssr = app(\Rapidez\Core\Actions\RenderVueServerSide::class)($template))
 
 <div class="min-h-screen">
-    @if ($ssr)
-        <!-- SSR: {{ json_encode($ssr['timings'] + ['php_total' => $ssr['php_total']]) }} -->
-        <div v-pre data-ssr-listing>{!! $ssr['html'] !!}</div>
+    @if ($ssr !== null)
+        <!-- rapidez-ssr:{{ $ssr }} -->
         @push('foot')
-            <script type="application/json" id="ssr-listing-results">@json($ssr['results'][0] ?? null)</script>
+            <!-- rapidez-ssr-results:{{ $ssr }} -->
         @endpush
     @endif
     {!! $template !!}
