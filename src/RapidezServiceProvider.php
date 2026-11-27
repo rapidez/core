@@ -245,6 +245,10 @@ class RapidezServiceProvider extends ServiceProvider
             return "<?php echo Rapidez::config({$expression}) ?>";
         });
 
+        Blade::directive('ssr', function ($expression) {
+            return "<?php echo app(\Rapidez\Core\Actions\RenderVueServerSide::class)(\$__env->make({$expression}, \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render()); ?>";
+        });
+
         Blade::directive('turboframe', function (string $frame) {
             return "<?php
 \$viewPath = config('rapidez.frontend.turbo_frames')[{$frame}] ?? null;

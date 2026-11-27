@@ -5,52 +5,6 @@
     @vite(vite_filename_paths(['Listing.vue', 'InstantSearch', 'instantsearch-components']))
 @endPushOnce
 
-{{-- POC: capture the Vue template so it can be rendered server side. --}}
-@php(ob_start())
-    <listing
-        {{ $attributes }}
-        v-slot="listingSlotProps"
-        v-cloak
-        v-bind:root-path='@json($rootPath)'
-    >
-        <div ref="root" v-show="listingSlotProps.ssrReplaced">
-            <ais-instant-search
-                v-if="listingSlotProps.searchClient"
-                :future="{ preserveSharedStateOnUnmount: true }"
-                :search-client="listingSlotProps.searchClient"
-                :middlewares="listingSlotProps.middlewares"
-                :index-name="listingSlotProps.index"
-                :routing="listingSlotProps.routing"
-            >
-                {{ $before ?? '' }}
-
-                @slotdefault('slot')
-                    <div class="flex gap-x-20 gap-y-5 max-lg:flex-col min-h-screen" ref="root">
-                        <div class="lg:w-80 shrink-0" data-testid="listing-filters">
-                            @include('rapidez::listing.filters')
-                        </div>
-                        <div class="flex-1" data-testid="listing-products">
-                            {{ $title ?? '' }}
-
-                            @include('rapidez::listing.products')
-                        </div>
-                    </div>
-                @endslotdefault
-
-                {{ $after ?? '' }}
-            </ais-instant-search>
-        </div>
-    </listing>
-@php($template = ob_get_clean())
-@php($ssr = app(\Rapidez\Core\Actions\RenderVueServerSide::class)($template))
-
 <div class="min-h-screen">
-    @if ($ssr)
-        <!-- SSR: {{ json_encode($ssr['timings'] + ['php_total' => $ssr['php_total']]) }} -->
-        <div v-pre data-ssr-listing>{!! $ssr['html'] !!}</div>
-        @push('foot')
-            <script type="application/json" id="ssr-listing-results">@json($ssr['results'][0] ?? null)</script>
-        @endpush
-    @endif
-    {!! $template !!}
+    @ssr('rapidez::listing.template')
 </div>

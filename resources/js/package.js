@@ -27,11 +27,7 @@ if (!window.process) {
 }
 
 import './polyfills'
-import { useLocalStorage, StorageSerializers, useScrollLock } from '@vueuse/core'
-import useOrder from './stores/useOrder'
-import { cart } from './stores/useCart'
-import { user } from './stores/useUser'
-import useMask from './stores/useMask'
+import { useLocalStorage } from '@vueuse/core'
 import './vue'
 import './fetch'
 import './helpers'
@@ -41,8 +37,12 @@ import './callbacks'
 import './vue-components'
 import './instantsearch'
 import { fetchCount } from './stores/useFetches'
-import { computed, createApp, ref, watch } from 'vue'
-;(() => import('./turbolinks'))()
+import { createRapidezApp } from './root'
+import { createApp, watch } from 'vue'
+
+if (!import.meta.env.SSR) {
+    ;(() => import('./turbolinks'))()
+}
 
 if (import.meta.env.VITE_DEBUG === 'true') {
     window.$on(
@@ -126,54 +126,8 @@ async function init() {
     }
 
     requestAnimationFrame(() => {
-        window.app = createApp({
+        createRapidezApp(createApp, {
             el: '#app',
-            methods: {
-                search(value) {
-                    if (value.length) {
-                        Turbo.visit(window.url('/search?q=' + encodeURIComponent(value)))
-                    }
-                },
-
-                setSearchParams(url) {
-                    window.history.pushState(window.history.state, '', new URL(url))
-                },
-
-                toggleScroll(bool = null) {
-                    if (bool === null) {
-                        this.scrollLock = !this.scrollLock
-                    } else {
-                        this.scrollLock = bool
-                    }
-                },
-
-                resizedPath(imagePath, size, store = null, sku = false) {
-                    if (!store) {
-                        store = window.config.store
-                    }
-
-                    if (sku) {
-                        return window.url(`/storage/${store}/resizes/${size}/sku/${imagePath}.webp`)
-                    }
-
-                    let url = new URL(imagePath)
-                    url = url.pathname.replace('/media', '').replace('/.renditions/', '/')
-
-                    return window.url(`/storage/${store}/resizes/${size}/magento${url}`)
-                },
-
-                categoryPositions(categoryId) {
-                    return {
-                        function_score: {
-                            script_score: {
-                                script: {
-                                    source: `doc.containsKey('positions.${categoryId}') && !doc['positions.${categoryId}'].empty && doc['positions.${categoryId}'].value =~ /^\\d+$/ ? Integer.parseInt(doc['positions.${categoryId}'].value) : 0`,
-                                },
-                            },
-                        },
-                    }
-                },
-            },
             mounted() {
                 window.$on('configError', () => {
                     app.config.globalProperties.configError.value = true
@@ -193,43 +147,6 @@ async function init() {
             destroyEvent: !!document.startViewTransition ? 'turbo:before-cache-timeout' : 'turbo:before-cache',
         })
 
-        // https://vuejs.org/api/application.html#app-config-performance
-        window.app.config.performance = import.meta.env.VITE_PERFORMANCE == 'true'
-        window.app.config.globalProperties = {
-            custom: ref({}),
-            config: window.config,
-            refs: ref({}),
-            loadingCount: fetchCount,
-            loading: ref(false),
-            autocompleteFacadeQuery: '',
-            csrfToken: ref(document.querySelector('[name=csrf-token]')?.content),
-            cart: cart,
-            order: useOrder(),
-            user: user,
-            mask: useMask(),
-            showTax: window.config.show_tax,
-            scrollLock: useScrollLock(document.body),
-            configError: ref(false),
-            // Wrap the local storage in getter and setter functions so you do not have to interact using .value
-            guestEmail: wrapValue(
-                useLocalStorage('email', window.debug ? 'wayne@enterprises.com' : '', { serializer: StorageSerializers.string }),
-            ),
-
-            loggedIn: computed(function () {
-                return user.value?.is_logged_in
-            }),
-
-            hasCart: computed(function () {
-                return cart.value?.id && cart.value.items.length
-            }),
-
-            canOrder: computed(function () {
-                return cart.value.items.every((item) => item.is_available && !item.errors?.length)
-            }),
-        }
-        window.app.config.globalProperties.window = window
-        window.app.config.globalProperties.config = window.config
-
         watch(fetchCount, function (count) {
             app.config.globalProperties.loading.value = count > 0
         })
@@ -244,8 +161,10 @@ async function init() {
     })
 }
 
-document.addEventListener('turbo:load', init)
-document.addEventListener('turbo:before-cache', () =>
-    setTimeout(() => document.dispatchEvent(new CustomEvent('turbo:before-cache-timeout'))),
-)
-setTimeout(init)
+if (!import.meta.env.SSR) {
+    document.addEventListener('turbo:load', init)
+    document.addEventListener('turbo:before-cache', () =>
+        setTimeout(() => document.dispatchEvent(new CustomEvent('turbo:before-cache-timeout'))),
+    )
+    setTimeout(init)
+}

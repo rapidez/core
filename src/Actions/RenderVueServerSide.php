@@ -9,27 +9,40 @@ use Rapidez\Core\Facades\Rapidez;
 use Rapidez\Core\Http\Controllers\ConfigController;
 use Throwable;
 
-// POC: sends a Vue template (the Blade output) to the Node render server
-// and returns the rendered HTML, the search results and timings. Returns
-// null when SSR is disabled or the render server fails, so the page
-// renders like it always did.
+// POC: sends a Vue template (the Blade output of @ssr) to the Node render
+// server and returns the rendered HTML in front of the template, with the
+// search results pushed to the foot. When SSR is disabled or fails only the
+// template is returned, so the page renders like it always did.
 class RenderVueServerSide
 {
-    public function __invoke(string $template): ?array
+    public function __invoke(string $template): string
     {
-        if (! config('rapidez.ssr.enabled')) {
-            return null;
+        if (! config('rapidez.ssr.enabled') || ! $ssr = $this->render($template)) {
+            return $template;
         }
 
+        app('view')->startPush(
+            'foot',
+            '<script type="application/json" id="ssr-listing-results">'
+            . json_encode($ssr['results'][0] ?? null, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT)
+            . '</script>',
+        );
+
+        return '<!-- SSR: ' . e(json_encode($ssr['timings'] + ['php_total' => $ssr['php_total']])) . ' -->'
+            . '<div v-pre data-ssr-listing>' . $ssr['html'] . '</div>'
+            . $template;
+    }
+
+    protected function render(string $template): ?array
+    {
         try {
             $start = microtime(true);
-            $config = $this->config();
 
             $response = Http::timeout(config('rapidez.ssr.timeout'))
                 ->post(rtrim(config('rapidez.ssr.url'), '/') . '/render', [
                     'url'      => request()->fullUrl(),
                     'template' => $template,
-                    'config'   => $config,
+                    'config'   => $this->config(),
                 ]);
 
             if (! $response->successful()) {
@@ -49,6 +62,12 @@ class RenderVueServerSide
     // The same config as config.js plus the per request frontend config.
     protected function config(): array
     {
+        // TODO: Replace with a frontend config hook, this runs the layout composers twice.
+        if (! request()->attributes->get('rapidez-ssr-composed')) {
+            request()->attributes->set('rapidez-ssr-composed', true);
+            app('view')->callComposer(view('rapidez::layouts.app'));
+        }
+
         $config = Cache::rememberForever(
             'ssr-config-' . config('rapidez.store') . '-' . Rapidez::getCacheKey(),
             fn () => array_merge(
