@@ -85,7 +85,9 @@ trait Searchable
                 $object = app($class[0], array_slice($class, 1));
                 $function = 'get' . ucfirst($type);
                 if (method_exists($object, $function)) {
-                    $data = array_merge_recursive($data, $object->{$function}());
+                    $data = $type === 'mapping'
+                        ? array_replace_recursive($data, $object->{$function}())
+                        : array_merge_recursive($data, $object->{$function}());
                 }
             });
 

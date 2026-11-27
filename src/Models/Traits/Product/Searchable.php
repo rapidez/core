@@ -180,25 +180,29 @@ trait Searchable
     protected static function indexMapping(): array
     {
         $attributeModel = config('rapidez.models.attribute');
+        $indexableAttributeCodes = EavAttribute::getCachedIndexable()->pluck('attribute_code')->all();
+        $textMapping = [
+            'type'   => 'text',
+            'fields' => [
+                'keyword' => [
+                    'type'         => 'keyword',
+                    'ignore_above' => 256,
+                ],
+            ],
+        ];
+        $dateMapping = [
+            'type'   => 'date',
+            'format' => 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||strict_date_optional_time||epoch_millis',
+        ];
 
         $attributeTypeMapping = collect(
-            $attributeModel::getCachedWhere(function ($attribute) {
-                if (in_array($attribute['code'], ['msrp_display_actual_price_type', 'price_view', 'shipment_type', 'status'])) {
+            $attributeModel::getCachedWhere(function ($attribute) use ($indexableAttributeCodes) {
+                if (in_array($attribute['type'], ['gallery', 'static'])) {
                     return false;
                 }
 
-                if (in_array($attribute['type'], ['varchar', 'text', 'gallery', 'static'])) {
-                    // Types best left up to ES to interpret the type.
-                    return false;
-                }
-
-                if (! empty($attribute['source_model'])) {
+                if (! empty($attribute['source_model']) && ! static::hasOptionLabelValues($attribute)) {
                     // Due to the source model value can be mapped to any type, best to let ES interpret them.
-                    return false;
-                }
-
-                if ($attribute['input'] === 'select' || $attribute['input'] === 'multiselect') {
-                    // Select means that while the type may be an int, the data won't be an int.
                     return false;
                 }
 
@@ -206,7 +210,7 @@ trait Searchable
                     return true;
                 }
 
-                $alwaysInFlat = array_merge(['sku'], Eventy::filter('index.' . static::getModelName() . '.attributes', []));
+                $alwaysInFlat = array_merge($indexableAttributeCodes, Eventy::filter('index.' . static::getModelName() . '.attributes', []));
                 if (in_array($attribute['code'], $alwaysInFlat)) {
                     return true;
                 }
@@ -214,22 +218,15 @@ trait Searchable
                 return false;
             })
         )
-            ->pluck('type', 'code')
-            ->map(function ($type) {
-                return array_filter([
-                    'type' => match ($type) {
-                        'int'      => 'integer',
-                        'decimal'  => 'double',
-                        'datetime' => 'date',
-                        default    => null
-                    },
-                    'format' => match ($type) {
-                        'datetime' => 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||strict_date_optional_time||epoch_millis',
-                        default    => null
-                    },
-                ]);
-            })
-            ->whereNotNull('type');
+            ->mapWithKeys(fn ($attribute) => [$attribute['code'] => match (true) {
+                static::hasOptionLabelValues($attribute),
+                in_array($attribute['type'], ['varchar', 'text']) => $textMapping,
+                $attribute['type'] === 'int'                      => ['type' => 'integer'],
+                $attribute['type'] === 'decimal'                  => ['type' => 'double'],
+                $attribute['type'] === 'datetime'                 => $dateMapping,
+                default                                           => null,
+            }])
+            ->filter();
 
         $superAttributeTypeMapping = SuperAttribute::all()
             ->pluck('attribute_code')
@@ -241,14 +238,25 @@ trait Searchable
             ]);
 
         return [
+            'date_detection'    => false,
+            'dynamic_templates' => [
+                [
+                    'prices' => [
+                        'path_match' => 'prices.*.*price',
+                        'mapping'    => [
+                            'type' => 'double',
+                        ],
+                    ],
+                ],
+            ],
             'properties' => [
                 ...$attributeTypeMapping,
                 ...$superAttributeTypeMapping,
+                'sku'              => $textMapping,
+                'created_at'       => $dateMapping,
+                'updated_at'       => $dateMapping,
                 'super_attributes' => [
                     'type' => 'flattened',
-                ],
-                'prices.*.min_price' => [
-                    'type' => 'double',
                 ],
                 'children' => [
                     'type' => 'flattened',
@@ -258,6 +266,15 @@ trait Searchable
                 ],
             ],
         ];
+    }
+
+    /**
+     * @param  array{input: ?string, source_model: ?string}  $attribute
+     */
+    protected static function hasOptionLabelValues(array $attribute): bool
+    {
+        return in_array($attribute['input'], ['select', 'multiselect'])
+            && in_array($attribute['source_model'], [null, '', 'Magento\Eav\Model\Entity\Attribute\Source\Table']);
     }
 
     public static function synonymFields(): array
