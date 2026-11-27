@@ -265,7 +265,7 @@ export default {
                     query: routeState.q || '__NO_QUERY__',
                     page: Number(routeState.page),
                     sortBy: routeState.sort,
-                    hitsPerPage: Number(routeState.hits),
+                    hitsPerPage: routeState.hits ? Number(routeState.hits) : undefined,
                 },
             }
         },
