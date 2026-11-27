@@ -74,7 +74,11 @@ export async function render({ url, template, config }) {
     const removeListeners = trackListeners()
 
     try {
-        return await renderTwice(scope.run(() => createApp(template, ssr)), ssr, start)
+        return await renderTwice(
+            scope.run(() => createApp(template, ssr)),
+            ssr,
+            start,
+        )
     } finally {
         ssr.instances.forEach((instance) => instance.dispose?.())
         ssr.scopes.forEach((componentScope) => componentScope.stop())
