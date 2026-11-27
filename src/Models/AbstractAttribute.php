@@ -66,7 +66,7 @@ class AbstractAttribute extends Model
             }
 
             $value = $this->option_values ?? $this->rawValue ?? $value;
-            $value = collect($value)->map(function ($val) {
+            $value = collect(is_iterable($value) ? $value : Arr::wrap($value))->map(function ($val) {
                 if (! is_string($val) || $this->is_html_allowed_on_front) {
                     return $val;
                 }

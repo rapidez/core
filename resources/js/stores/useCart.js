@@ -7,6 +7,7 @@ import { user } from './useUser'
 const cartStorage = useLocalStorage('cart', {}, { serializer: StorageSerializers.object })
 let age = 0
 let currentRefresh = null
+let cartWriteSeq = 0
 
 export const refresh = async function (force = false) {
     if (!mask.value) {
@@ -78,8 +79,12 @@ export const linkUserToCart = async function () {
             {
                 cart_id: mask.value,
             },
+            {
+                retryOnCartError: false,
+            },
         )
         .then((response) => window.app.config.globalProperties.updateCart([], response))
+        .catch(() => fetchCustomerCart())
 }
 
 export const fetchCustomerCart = async function () {
@@ -154,26 +159,6 @@ export const getAttributeValues = async function () {
     return await fetchAttributeValuesMemo(window.config.cart_attributes)
 }
 
-function areAddressesSame(address1, address2) {
-    const fieldsToCompare = ['city', 'postcode', 'company', 'firstname', 'lastname', 'telephone']
-
-    return (
-        fieldsToCompare.every((field) => (address1?.[field] ?? '') === (address2?.[field] ?? '')) &&
-        [0, 1, 2].every((key) => (address1?.street?.[key] ?? '') === (address2?.street?.[key] ?? ''))
-    )
-}
-
-function addCustomerAddressId(address) {
-    // TODO: RAP-1634 Remove if https://github.com/magento/magento2/pull/38909 is merged
-    if (address?.customer_address_id || address == null) {
-        return address
-    }
-    const customerAddress = user.value?.addresses?.find((customerAddress) => areAddressesSame(customerAddress, address))
-    address.customer_address_id = address.customer_address_id || customerAddress?.id
-
-    return address
-}
-
 function addIsAddressComplete(address) {
     if (!address) {
         return address
@@ -232,17 +217,25 @@ export const cart = computed({
         return cartStorage.value
     },
     set(value) {
+        cartWriteSeq++
+        const seq = cartWriteSeq
+
         if (value.itemsV2) {
             value.items = value.itemsV2.items
             delete value.itemsV2
         }
 
-        value.shipping_addresses = value.shipping_addresses?.map(addCustomerAddressId)?.map(addIsAddressComplete)
-        if (value.billing_address != null) {
-            value.billing_address = addCustomerAddressId(value.billing_address)
+        value.shipping_addresses = value.shipping_addresses?.map(addIsAddressComplete)
+        if (value.billing_address) {
             value.billing_address = addIsAddressComplete(value.billing_address)
-            // TODO: RAP-1879 Remove if https://github.com/magento/magento2/pull/38970 is merged
-            value.billing_address.same_as_shipping = areAddressesSame(value.shipping_addresses?.[0], value.billing_address)
+            // Magento resets this flag every time the shipping address is saved,
+            // it's set again when the billing address is saved with same_as_shipping.
+            value.billing_address.same_as_shipping = Boolean(value.shipping_addresses?.[0]?.same_as_billing)
+
+            if (value.billing_address.same_as_shipping) {
+                // Magento drops the customer address id when it copies the shipping address.
+                value.billing_address.customer_address_id = value.shipping_addresses[0].customer_address_id
+            }
         }
 
         if (value.id && value.id !== mask.value) {
@@ -304,6 +297,11 @@ export const cart = computed({
                 })
             })
             .finally(() => {
+                //  Ignore this stale response if a newer started.
+                if (seq !== cartWriteSeq) {
+                    return
+                }
+
                 cartStorage.value = value
                 age = Date.now()
             })

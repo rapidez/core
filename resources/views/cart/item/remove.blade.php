@@ -14,5 +14,5 @@
         data-testid="cart-item-remove"
     >
         @lang('Remove')
-    </x-rapidedz::button.link>
+    </x-rapidez::button.link>
 </graphql-mutation>

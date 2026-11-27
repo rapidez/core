@@ -306,10 +306,13 @@ on(
                 return
             }
 
+            const shippingAddressId = setShipping ? defaultShipping?.id : cart?.value?.shipping_addresses?.[0]?.customer_address_id
+
             magentoGraphQL(config.queries.setExistingAddressesOnCart, {
                 cart_id: mask.value,
                 shipping_address_id: defaultShipping?.id,
                 billing_address_id: defaultBilling?.id,
+                billing_same_as_shipping: Boolean(shippingAddressId) && shippingAddressId === defaultBilling?.id,
                 set_shipping: setShipping,
                 set_billing: setBilling,
             }).then((response) => window.app.config.globalProperties.updateCart([], response))

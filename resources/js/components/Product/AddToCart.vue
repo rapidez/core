@@ -91,23 +91,29 @@ export default {
                 return
             }
 
+            if (this.adding) {
+                return
+            }
+
             this.added = false
             this.adding = true
             this.error = null
 
-            if (!mask.value) {
-                await refreshMask()
-            }
-
-            const variables = {
-                sku: this.product.sku,
-                cartId: mask.value,
-                quantity: this.qty,
-                selected_options: this.selectedOptions,
-                entered_options: this.enteredOptions,
-            }
+            let variables = {}
 
             try {
+                if (!mask.value) {
+                    await refreshMask()
+                }
+
+                variables = {
+                    sku: this.product.sku,
+                    cartId: mask.value,
+                    quantity: this.qty,
+                    selected_options: this.selectedOptions,
+                    entered_options: this.enteredOptions,
+                }
+
                 let response = await window.magentoGraphQL(
                     `mutation (
                         $cartId: String!,
@@ -160,15 +166,19 @@ export default {
                 }
 
                 if (error?.response) {
-                    const responseData = await error.response.json()
-                    if (GraphQLError.prototype.isPrototypeOf(error) && !(await this.checkResponseForExpiredCart(variables, responseData))) {
-                        // If there are errors we may still get a newly updated cart back.
-                        await this.updateCart({}, responseData)
+                    try {
+                        const responseData = await error.response.json()
+                        if (GraphQLError.prototype.isPrototypeOf(error) && !(await this.checkResponseForExpiredCart(variables, responseData))) {
+                            // If there are errors we may still get a newly updated cart back.
+                            await this.updateCart({}, responseData)
+                        }
+                    } catch (parseError) {
+                        console.error('Could not parse add-to-cart error response', parseError)
                     }
                 }
+            } finally {
+                this.adding = false
             }
-
-            this.adding = false
         },
 
         calculatePrices: function () {
