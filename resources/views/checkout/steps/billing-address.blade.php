@@ -9,7 +9,7 @@
         region_id: cart.value.billing_address?.region.region_id || window.address_defaults.region_id,
     }))"
     :watch-ignore="['same_as_shipping']"
-    :before-request="(query, variables, options) => [variables.customer_address_id ? config.queries.setExistingBillingAddressOnCart : query, variables, options]"
+    :before-request="(query, variables, options) => [variables.customer_address_id ? config.queries.setExistingBillingAddressOnCart : query, { ...variables, telephone: variables.telephone ?? '' }, options]"
     :callback="updateCart"
     :error-callback="checkResponseForExpiredCart"
     group="billing"
