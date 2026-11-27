@@ -1,5 +1,6 @@
 <script>
 import { useElementHover, useIntervalFn, useScroll, useThrottleFn, useResizeObserver } from '@vueuse/core'
+import { effectScope } from 'vue'
 
 export default {
     render() {
@@ -65,19 +66,25 @@ export default {
         }
     },
     mounted() {
+        this.sliderScope = effectScope()
         this.initSlider()
         this.initScrollState()
         this.$nextTick(() => {
-            useResizeObserver(this.slider, useThrottleFn(this.updateSpan, 150, true, true))
-            this.mounted = true
-            if (this.loop) {
-                this.initLoop()
-            }
+            this.sliderScope.run(() => {
+                useResizeObserver(this.slider, useThrottleFn(this.updateSpan, 150, true, true))
+                this.mounted = true
+                if (this.loop) {
+                    this.initLoop()
+                }
 
-            this.initAutoPlay()
+                this.initAutoPlay()
+            })
         })
 
         this.updateSpan()
+    },
+    unmounted() {
+        this.sliderScope?.stop()
     },
     methods: {
         initSlider() {
