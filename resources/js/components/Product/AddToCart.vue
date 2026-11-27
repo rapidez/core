@@ -48,6 +48,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        disableProductRedirect: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data: () => ({
@@ -364,6 +368,10 @@ export default {
         },
 
         shouldRedirectToProduct: function () {
+            if (this.disableProductRedirect) {
+                return false
+            }
+
             // Never redirect if we're already on the product page
             if (window.location.pathname === this.product.url) {
                 return false
