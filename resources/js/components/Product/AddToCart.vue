@@ -168,7 +168,10 @@ export default {
                 if (error?.response) {
                     try {
                         const responseData = await error.response.json()
-                        if (GraphQLError.prototype.isPrototypeOf(error) && !(await this.checkResponseForExpiredCart(variables, responseData))) {
+                        if (
+                            GraphQLError.prototype.isPrototypeOf(error) &&
+                            !(await this.checkResponseForExpiredCart(variables, responseData))
+                        ) {
                             // If there are errors we may still get a newly updated cart back.
                             await this.updateCart({}, responseData)
                         }
