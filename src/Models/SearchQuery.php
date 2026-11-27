@@ -24,10 +24,19 @@ class SearchQuery extends Model
 
     protected function makeAllSearchableUsing(Builder $query)
     {
+        // Decide on a minimum popularity to make sure we don't index too much.
+        // Simply using an orderBy with a limit on the query doesn't work as the limit gets stripped off.
+        $minPopularity = $this->newQueryWithoutScope(IsActiveScope::class)
+            ->where('num_results', '>', 0)
+            ->orderByDesc('popularity')
+            ->offset(10000)
+            ->value('popularity') ?? 0;
+
         return $query
-            ->where(fn ($subQuery) => $subQuery
-                ->where('num_results', '>', 0)
-                ->orWhereNotNull('redirect')
+            ->where(
+                fn ($subQuery) => $subQuery
+                    ->where(fn ($subSubQuery) => $subSubQuery->where('num_results', '>', 0)->where('popularity', '>=', $minPopularity))
+                    ->orWhereNotNull('redirect')
             );
     }
 }
