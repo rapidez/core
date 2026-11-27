@@ -1,6 +1,6 @@
-import { setUrl } from './dom.js'
+import { setUrl, trackListeners } from './dom.js'
 import { createRapidezApp } from '../root'
-import { createSSRApp } from 'vue'
+import { createSSRApp, effectScope } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { createServerRootMixin } from 'vue-instantsearch/vue3/es/src/util/createServerRootMixin.js'
 import InstantSearch from 'vue-instantsearch/vue3/es/src/components/InstantSearch.js'
@@ -45,6 +45,11 @@ function createApp(template, ssr) {
     document.dispatchEvent(new CustomEvent('vue:loaded', { detail: { vue: app } }))
 
     app._context.components['ais-instant-search'] = SsrInstantSearch
+    app.mixin({
+        beforeCreate() {
+            ssr.scopes.push(this.$.scope)
+        },
+    })
     app.provide('$_rapidez_ssr', ssr)
     app.config.warnHandler = (msg) => ssr.warnings.push(msg)
 
@@ -60,10 +65,25 @@ export async function render({ url, template, config }) {
     // which doesn't happen server side. The native ones do work with SSR.
     template = template.replace(/\bv-txt=/g, 'v-text=').replace(/\bv-htm=/g, 'v-html=')
 
-    const ssr = { pass: 1, counter: 0, instances: [], warnings: [] }
+    const parser = document.createElement('template')
+    parser.innerHTML = template
+    template = parser.innerHTML
 
-    const app = createApp(template, ssr)
+    const ssr = { pass: 1, counter: 0, instances: [], warnings: [], scopes: [] }
+    const scope = effectScope(true)
+    const removeListeners = trackListeners()
 
+    try {
+        return await renderTwice(scope.run(() => createApp(template, ssr)), ssr, start)
+    } finally {
+        ssr.instances.forEach((instance) => instance.dispose?.())
+        ssr.scopes.forEach((componentScope) => componentScope.stop())
+        scope.stop()
+        removeListeners()
+    }
+}
+
+async function renderTwice(app, ssr, start) {
     await renderToString(app)
     const firstPass = performance.now()
 
@@ -82,8 +102,6 @@ export async function render({ url, template, config }) {
     ssr.counter = 0
     const html = await renderToString(app)
     const secondPass = performance.now()
-
-    ssr.instances.forEach((instance) => instance.dispose?.())
 
     return {
         html,

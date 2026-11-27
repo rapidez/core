@@ -86,3 +86,22 @@ globalThis.Turbo = { visit: () => {} }
 export function setUrl(url) {
     browser.happyDOM.setURL(url)
 }
+
+let addedListeners = null
+for (const target of [browser, browser.document]) {
+    const addEventListener = target.addEventListener
+    target.addEventListener = function (...args) {
+        addedListeners?.push([this, args])
+
+        return addEventListener.apply(this, args)
+    }
+}
+
+export function trackListeners() {
+    addedListeners = []
+
+    return () => {
+        addedListeners.forEach(([target, [type, listener, options]]) => target.removeEventListener(type, listener, options))
+        addedListeners = null
+    }
+}
