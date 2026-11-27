@@ -13,7 +13,7 @@
     {{-- otherwise the billing address would be overwritten while it's being filled in. --}}
     :before-request="(query, variables, options) => [
         variables.customer_address_id ? config.queries.setExistingShippingAddressesOnCart : query,
-        { ...variables, same_as_billing: cart.value.billing_address ? cart.value.billing_address.same_as_shipping : (refs.billingAddress?.data.same_as_shipping ?? true) },
+        { ...variables, telephone: variables.telephone ?? '', same_as_billing: cart.value.billing_address ? cart.value.billing_address.same_as_shipping : (refs.billingAddress?.data.same_as_shipping ?? true) },
         options,
     ]"
     :callback="updateCart"
