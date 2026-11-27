@@ -65,6 +65,14 @@ export default {
         specialPrice: 0,
     }),
 
+    created() {
+        // POC: mounted() doesn't run server side, without this the prices are 0.
+        if (import.meta.env.SSR) {
+            this.qty = this.defaultQty
+            this.calculatePrices()
+        }
+    },
+
     mounted() {
         this.qty = this.defaultQty
         this.calculatePrices()

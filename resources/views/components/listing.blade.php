@@ -5,14 +5,15 @@
     @vite(vite_filename_paths(['Listing.vue', 'InstantSearch', 'instantsearch-components']))
 @endPushOnce
 
-<div class="min-h-screen">
+{{-- POC: capture the Vue template so it can be rendered server side. --}}
+@php(ob_start())
     <listing
         {{ $attributes }}
         v-slot="listingSlotProps"
         v-cloak
         v-bind:root-path='@json($rootPath)'
     >
-        <div ref="root">
+        <div ref="root" v-show="listingSlotProps.ssrReplaced">
             <ais-instant-search
                 v-if="listingSlotProps.searchClient"
                 :future="{ preserveSharedStateOnUnmount: true }"
@@ -40,4 +41,16 @@
             </ais-instant-search>
         </div>
     </listing>
+@php($template = ob_get_clean())
+@php($ssr = app(\Rapidez\Core\Actions\RenderVueServerSide::class)($template))
+
+<div class="min-h-screen">
+    @if ($ssr)
+        <!-- SSR: {{ json_encode($ssr['timings'] + ['php_total' => $ssr['php_total']]) }} -->
+        <div v-pre data-ssr-listing>{!! $ssr['html'] !!}</div>
+        @push('foot')
+            <script type="application/json" id="ssr-listing-results">@json($ssr['results'][0] ?? null)</script>
+        @endpush
+    @endif
+    {!! $template !!}
 </div>
